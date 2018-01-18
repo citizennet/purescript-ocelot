@@ -43,7 +43,9 @@ type DropdownComponent e
   = H.Component HH.HTML (Query e) DropdownInput DropdownMessage (FX e)
 
 -- Component input and message types
-type DropdownInput = Unit
+type DropdownInput =
+  { items :: Array DropdownItem }
+
 type DropdownMessage = Void
 
 -- Component child types
@@ -52,7 +54,7 @@ type ChildSlot = Unit
 
 -- Return type of render function; must use Dispatch as child type (or coproduct)
 type DropdownHTML e =
-  H.ParentHTML (Query e) (ChildQuery e) DropdownInput (FX e)
+  H.ParentHTML (Query e) (ChildQuery e) ChildSlot (FX e)
 
 -- Return type of eval function
 type DropdownDSL e =
@@ -65,7 +67,7 @@ type DropdownDSL e =
 component :: ∀ e. DropdownComponent e
 component =
   H.parentComponent
-    { initialState: const { items: [], selections: [] }
+    { initialState: \i -> { items: i.items, selections: [] }
     , render
     , eval
     , receiver: const Nothing
@@ -77,7 +79,7 @@ component =
       [ HH.slot
           unit
           C.component
-          { items: [], render: renderContainer }
+          { items: st.items, render: renderContainer }
           ( HE.input HandleContainer )
       ]
 
