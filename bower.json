@@ -12,6 +12,7 @@
     "purescript-console": "^3.0.0",
     "purescript-halogen": "^3.1.0",
     "purescript-halogen-select": "^0.1.1",
-    "purescript-now": "^3.0.0"
+    "purescript-now": "^3.0.0",
+    "purescript-prelude": "^3.1.1"
   }
 }
