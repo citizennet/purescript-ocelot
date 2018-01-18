@@ -1,0 +1,17 @@
+# Dependencies
+.psci_modules
+bower_components
+node_modules
+
+# Generated files
+.psci
+output
+generated-docs
+package-lock.json
+
+# Generated examples
+**/dist/*.js
+
+# IDE
+*.swo
+*.swp
