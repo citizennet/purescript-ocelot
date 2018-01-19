@@ -12,6 +12,7 @@ import Select.Primitive.Search as S
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Halogen.HTML.Properties as HP
 
 ----------
 -- Item Types
@@ -177,7 +178,8 @@ renderSelections st = HH.div_
 -- One render function is required per primitive.
 
 renderSearch :: ∀ e. SearchState e -> H.HTML Void (ChildQuery e)
-renderSearch st = HH.input ( getInputProps [] )
+renderSearch st = textField "Search Field" "Type to search..." "This typeahead is automatically debounced at 150ms."
+
 
 renderContainer :: ∀ e. ContainerState String -> H.HTML Void (ChildQuery e)
 renderContainer st = HH.div_
@@ -190,3 +192,25 @@ renderContainer st = HH.div_
 
     renderItem :: Int -> TypeaheadItem -> H.HTML Void (ChildQuery e)
     renderItem ix item = HH.li ( getItemProps ix [] ) [ HH.text item ]
+
+
+----------
+-- Other render helpers
+
+cssLabel = HP.class_ $ HH.ClassName "f6 b db mb2"
+cssInput = HP.class_ $ HH.ClassName "input-reset pa2 mb2 db w-100 b--none"
+cssHelperText = HP.class_ $ HH.ClassName "f6 black-60 db mb2"
+
+-- textField :: ∀ e. String -> String -> String -> HTML e
+textField label placeholder helper =
+  HH.div
+  [ HP.class_ $ HH.ClassName "measure" ]
+  [ HH.label
+    [ cssLabel ]
+    [ HH.text label ]
+  , HH.input
+    ( getInputProps [ cssInput, HP.placeholder placeholder ] )
+  , HH.small
+    [ cssHelperText ]
+    [ HH.text helper ]
+  ]
