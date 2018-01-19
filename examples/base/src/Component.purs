@@ -48,29 +48,18 @@ component =
     render :: State -> HTML e
     render st =
       HH.section
-      [ HP.class_ $ HH.ClassName "mw5 mw7-ns center pa2 ph4-ns" ]
-      [ mount (HH.slot' CP.cp1 unit Dropdown.component { items: containerData } absurd)
-      , mount (HH.slot' CP.cp2 unit Typeahead.component { items: containerData } absurd)
+      [ HP.class_ $ HH.ClassName "mw6 mw7-ns center pa2 ph4-ns black-80 sans-serif" ]
+      [ title
+      , introduction
+      , mountWith
+          "A plain dropdown component that only allows a single selection."
+          (HH.slot' CP.cp1 unit Dropdown.component { items: containerData } absurd)
+          ""
+      , mountWith
+          "A typeahead that allows for multiple selections and renders custom items."
+          (HH.slot' CP.cp2 unit Typeahead.component { items: containerData } absurd)
+          ""
       ]
-      where
-        introduction :: HTML e
-        introduction =
-          HH.h1
-          [ HP.class_ $ HH.ClassName "f1 lh-title" ]
-          [ HH.text "CitizenNet Select Components" ]
-
-        mountWith :: _ -> _ -> _ -> HTML e
-        mountWith before slot after =
-          HH.div
-          [ HP.class_ $ HH.ClassName "pa3 ph0-1 bb b--black-10" ]
-          ( before <> slot <> after )
-
-        mount :: _ -> HTML e
-        mount slot = mountWith [] [slot] []
-
-        -- intro title body =
-
-
 
     eval :: Query ~> H.ParentDSL State Query _ _ _ (FX e)
     eval (NoOp a) = pure a
@@ -84,3 +73,35 @@ containerData =
   [ "item one"
   , "item two"
   , "who knows" ]
+
+
+----------
+-- CSS helpers
+
+cssTitle = HP.class_ $ HH.ClassName "f1 lh-title"
+cssIntroText = HP.class_ $ HH.ClassName "f4 lh-copy"
+cssExampleBlock = HP.class_ $ HH.ClassName "pa4 bg-near-white"
+cssPullQuote = HH.ClassName "pl4 mb4 bl bw2 b--blue f5 lh-copy"
+cssPostScript = HH.ClassName "f5 mt4 lh-copy black-60 i"
+
+title :: ∀ e. HTML e
+title =
+  HH.h1
+  [ cssTitle ]
+  [ HH.text "CitizenNet Select Components" ]
+
+introduction :: ∀ e. HTML e
+introduction =
+  HH.p
+  [ cssIntroText ]
+  [ HH.text "A demonstration of various pre-built selection components ready to be dropped in to Wildcat screens. This can be used to verify that components behave and look as expected & required." ]
+
+-- mountWith :: ∀ e. String -> _ -> String -> HTML e
+mountWith before slot after =
+  HH.div
+  [ cssExampleBlock ]
+  [ HH.p [ HP.class_ cssPullQuote ] [ HH.text before ]
+  , slot
+  , HH.p [ HP.class_ cssPostScript ] [ HH.text after ]
+  ]
+
