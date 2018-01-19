@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "cn-purs-ui",
+  "name": "purescript-cn-ui",
   "ignore": [
     "**/.*",
     "node_modules",
