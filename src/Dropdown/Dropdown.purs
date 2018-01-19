@@ -3,7 +3,6 @@ module CN.UI.Dropdown where
 import Prelude
 
 import Data.Array ((:), difference, mapWithIndex)
-import Data.Maybe (Maybe(Nothing))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -38,6 +37,7 @@ type State item e =
 -- Component query definition
 data Query item e a
   = HandleContainer (C.Message item (Query item e) e) a
+  | Receiver (DropdownInput item e) a
 
 -- Component top-level definition
 type DropdownComponent item e
@@ -70,12 +70,15 @@ type DropdownDSL item e =
 component :: ∀ item e. Eq item => DropdownComponent item e
 component =
   H.parentComponent
-    { initialState: \i -> { items: i.items, selections: [], itemHTML: i.itemHTML }
+    { initialState
     , render
     , eval
-    , receiver: const Nothing
+    , receiver: HE.input Receiver
     }
   where
+    initialState :: DropdownInput item e -> State item e
+    initialState input = { items: input.items, itemHTML: input.itemHTML, selections: [] }
+
     render :: State item e -> DropdownHTML item e
     render st =
       HH.div_
@@ -88,6 +91,9 @@ component =
 
     eval :: (Query item e) ~> (DropdownDSL item e)
     eval = case _ of
+
+      Receiver input a -> a <$ do
+        H.put $ initialState input
 
       HandleContainer m a -> case m of
         C.Emit q -> emit eval q a
