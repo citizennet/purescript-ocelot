@@ -3,7 +3,7 @@
   "scripts": {
     "build": "pulp build",
     "example-base": "pulp build --include examples/base/src --to examples/base/dist/example.js",
-    "watch-base": "pulp build --include examples/base/src --to examples/base/dist/example.js"
+    "watch-base": "pulp -w build --include examples/base/src --to examples/base/dist/example.js"
   },
   "devDependencies": {
     "pulp": "^12.0.1",

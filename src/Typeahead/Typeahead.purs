@@ -59,7 +59,7 @@ derive instance ordPrimitiveSlot :: Ord PrimitiveSlot
 -- Enclosing slot type
 data Slot = Slot PrimitiveSlot
 
-derive instance eqSlot :: Eq Slot
+derive instance eqSlot  :: Eq Slot
 derive instance ordSlot :: Ord Slot
 
 
@@ -87,7 +87,8 @@ component =
     render :: State -> TypeaheadHTML e
     render st =
       HH.div_
-      [ HH.slot
+      [ renderSelections st
+      , HH.slot
           ( Slot SearchSlot )
           S.component
           { render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
@@ -149,6 +150,11 @@ component =
                 $ Container
                 $ ContainerReceiver { render: renderContainer, items: newItems }
 
+          _ <- H.query (Slot ContainerSlot)
+                $ H.action
+                $ Container
+                $ Visibility Off
+
           pure a
 
       Receive { items } a -> H.modify _ { items = items } *> pure a
@@ -156,6 +162,17 @@ component =
 
 ----------
 -- Render helpers
+
+renderSelections :: ∀ e. State -> TypeaheadHTML e
+renderSelections st = HH.div_
+  if length st.selections <= 0
+    then []
+    else [ HH.ul_ $ renderSelection <$> st.selections ]
+  where
+    renderSelection str = HH.li_ [ HH.text str ]
+
+----------
+-- Primitive rendering
 
 -- One render function is required per primitive.
 
