@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "pulp build --to dist/example.js"
+    "watch": "pulp -w build --to dist/example.js"
   },
   "devDependencies": {
     "pulp": "^12.0.1",
