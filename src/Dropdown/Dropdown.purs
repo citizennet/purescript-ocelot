@@ -2,7 +2,8 @@ module CN.UI.Dropdown where
 
 import Prelude
 
-import Data.Array ((:), difference, mapWithIndex)
+import Data.Array (delete, mapWithIndex)
+import Data.Maybe (Maybe(..), maybe)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -30,7 +31,7 @@ data SelectableStatus
 -- Component state definition
 type State item e =
   { items :: Array item
-  , selections :: Array item
+  , selection :: Maybe item
   , itemHTML :: item -> Array (H.HTML Void (ChildQuery item e))
   }
 
@@ -41,7 +42,7 @@ data Query item e a
 
 -- Component top-level definition
 type DropdownComponent item e
-  = H.Component HH.HTML (Query item e) (DropdownInput item e) DropdownMessage (FX e)
+  = H.Component HH.HTML (Query item e) (DropdownInput item e) (DropdownMessage item) (FX e)
 
 -- Component input and message types
 type DropdownInput item e =
@@ -49,7 +50,9 @@ type DropdownInput item e =
   , itemHTML :: item -> Array (H.HTML Void (ChildQuery item e))
   }
 
-type DropdownMessage = Void
+data DropdownMessage item
+  = ItemSelected item
+
 
 -- Component child types
 type ChildQuery item e = Dispatch item (Query item e) e
@@ -61,7 +64,7 @@ type DropdownHTML item e =
 
 -- Return type of eval function
 type DropdownDSL item e =
-  H.ParentDSL (State item e) (Query item e) (ChildQuery item e) ChildSlot DropdownMessage (FX e)
+  H.ParentDSL (State item e) (Query item e) (ChildQuery item e) ChildSlot (DropdownMessage item) (FX e)
 
 
 
@@ -77,7 +80,7 @@ component =
     }
   where
     initialState :: DropdownInput item e -> State item e
-    initialState input = { items: input.items, itemHTML: input.itemHTML, selections: [] }
+    initialState input = { items: input.items, itemHTML: input.itemHTML, selection: Nothing }
 
     render :: State item e -> DropdownHTML item e
     render st =
@@ -99,14 +102,16 @@ component =
         C.Emit q -> emit eval q a
 
         C.ItemSelected item -> do
-          H.modify \st -> st { selections = item : st.selections }
+          H.modify \st -> st { selection = Just item }
 
           st <- H.get
           _ <- H.query unit
             $ H.action
             $ Container
             $ ContainerReceiver
-            $ { render: renderContainer st.itemHTML, items: difference st.items st.selections }
+            $ { render: renderContainer st.itemHTML, items: maybe st.items (flip delete st.items) st.selection }
+
+          H.raise $ ItemSelected item
 
           pure a
 
