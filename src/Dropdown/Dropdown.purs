@@ -7,6 +7,7 @@ import Data.Maybe (Maybe(..), maybe)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Halogen.HTML.Properties as HP
 import Select.Dispatch (ContainerQuery(..), ContainerState, Dispatch(..), emit, getContainerProps, getItemProps, getToggleProps)
 import Select.Effects (FX)
 import Select.Primitive.Container as C
@@ -88,7 +89,7 @@ component =
         [ HH.slot
             unit
             C.component
-            { items: st.items, render: renderContainer st.itemHTML }
+            { items: st.items, render: renderContainer st.itemHTML st.selection }
             ( HE.input HandleContainer )
         ]
 
@@ -109,7 +110,8 @@ component =
             $ H.action
             $ Container
             $ ContainerReceiver
-            $ { render: renderContainer st.itemHTML, items: maybe st.items (flip delete st.items) st.selection }
+            $ { render: renderContainer st.itemHTML st.selection
+              , items: maybe st.items (flip delete st.items) st.selection }
 
           H.raise $ ItemSelected item
 
@@ -120,8 +122,13 @@ component =
 -- Render helpers
 
 -- Render the dropdown
-renderContainer :: ∀ item e. (item -> Array (H.HTML Void (ChildQuery item e))) -> (ContainerState item) -> H.HTML Void (ChildQuery item e)
-renderContainer itemHTML st =
+renderContainer ::
+   ∀ item e
+   . (item -> Array (H.HTML Void (ChildQuery item e)))
+  -> Maybe item
+  -> (ContainerState item)
+  -> H.HTML Void (ChildQuery item e)
+renderContainer itemHTML selection st =
   HH.div_
   $ if not st.open
     then [ renderToggle ]
@@ -132,9 +139,9 @@ renderContainer itemHTML st =
     -- The clickable region that opens the dropdown
     renderToggle :: H.HTML Void (ChildQuery item e)
     renderToggle =
-      HH.span
+      HH.div
       ( getToggleProps [] )
-      [ HH.text "Toggle" ]
+      ((maybe [HH.text "Select"] itemHTML selection) <> [HH.button_ [HH.i [HP.class_ (HH.ClassName "caret")] []]])
 
     -- The individual items to render
     renderItems :: Array (H.HTML Void (ChildQuery item e)) -> H.HTML Void (ChildQuery item e)
