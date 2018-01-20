@@ -1,0 +1,12 @@
+{
+  "name": "css",
+  "version": "1.0.0",
+  "description": "CSS for Wildcat",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Honeyman",
+  "devDependencies": {
+    "tachyons": "^4.9.0"
+  }
+}

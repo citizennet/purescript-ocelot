@@ -52,13 +52,13 @@ component =
       [ title
       , introduction
       , mountWith
-          "A plain dropdown component that only allows a single selection."
+          "Text Field"
+          "Captures string input."
           (HH.slot' CP.cp1 unit Dropdown.component { items: containerData } absurd)
-          ""
       , mountWith
-          "A typeahead that allows for multiple selections and renders custom items."
+          "Typeahead"
+          "Captures string input and produces a menu."
           (HH.slot' CP.cp2 unit Typeahead.component { items: containerData } absurd)
-          ""
       ]
 
     eval :: Query ~> H.ParentDSL State Query _ _ _ (FX e)
@@ -79,10 +79,12 @@ containerData =
 -- CSS helpers
 
 cssTitle = HP.class_ $ HH.ClassName "f1 lh-title"
+cssExampleTitle = HP.class_ $ HH.ClassName "f2 lh-title"
+cssExampleDescription = HP.class_ $ HH.ClassName "f4 lh-copy black-70"
 cssIntroText = HP.class_ $ HH.ClassName "f4 lh-copy"
 cssExampleBlock = HP.class_ $ HH.ClassName "pa4 bg-near-white"
-cssPullQuote = HH.ClassName "pl4 mb4 bl bw2 b--blue f5 lh-copy"
-cssPostScript = HH.ClassName "f5 mt4 lh-copy black-60 i"
+cssPullQuote = HP.class_ $ HH.ClassName "pl4 mb4 bl bw2 b--blue f5 lh-copy"
+cssPostScript = HP.class_ $ HH.ClassName "f5 mt4 lh-copy black-60 i"
 
 title :: ∀ e. HTML e
 title =
@@ -97,11 +99,11 @@ introduction =
   [ HH.text "A demonstration of various pre-built selection components ready to be dropped in to Wildcat screens. This can be used to verify that components behave and look as expected & required." ]
 
 -- mountWith :: ∀ e. String -> _ -> String -> HTML e
-mountWith before slot after =
+mountWith title body slot =
   HH.div
-  [ cssExampleBlock ]
-  [ HH.p [ HP.class_ cssPullQuote ] [ HH.text before ]
-  , slot
-  , HH.p [ HP.class_ cssPostScript ] [ HH.text after ]
+  [ ]
+  [ HH.h2 [ cssExampleTitle ] [ HH.text title ]
+  , HH.p  [ cssExampleDescription ] [ HH.text body ]
+  , HH.div [ cssExampleBlock ] [ slot ]
   ]
 
