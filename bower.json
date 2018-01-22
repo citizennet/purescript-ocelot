@@ -6,7 +6,8 @@
     "node_modules",
     "bower_components",
     "output",
-    "dist"
+    "dist",
+    "style-guide"
   ],
   "dependencies": {
     "purescript-halogen": "^3.1.0",
