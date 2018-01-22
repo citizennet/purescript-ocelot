@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "tachyons": "^4.9.1"
+  }
+}
