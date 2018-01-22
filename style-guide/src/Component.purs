@@ -14,17 +14,29 @@ import Halogen.HTML.Properties as HP
 import Halogen.Component.ChildPath as CP
 import Select.Effects (FX)
 
+
+----------
+-- Component Types
+
 type State
   = Unit
 
 data Query a
   = NoOp a
+  | HandleDropdown (Dropdown.DropdownMessage DropdownItem) a
+
 
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct2 (Dropdown.Query e) (Typeahead.Query e)
+type ChildQuery e = Coproduct2 (Dropdown.Query DropdownItem e) (Typeahead.Query e)
 type ChildSlot = Either2 Unit Unit
+
+
+----------
+-- Item specializations
+
+type DropdownItem = String
 
 ----------
 -- Convenience types
@@ -54,21 +66,22 @@ component =
       , mountWith
           "Text Field"
           "Captures string input."
-          (HH.slot' CP.cp1 unit Dropdown.component { items: containerData } absurd)
+          ( HH.slot' CP.cp1 unit Dropdown.component { items: containerData, itemHTML: (\i -> [ HH.text i ]) } (HE.input HandleDropdown) )
       , mountWith
           "Typeahead"
           "Captures string input and produces a menu."
-          (HH.slot' CP.cp2 unit Typeahead.component { items: containerData } absurd)
+          ( HH.slot' CP.cp2 unit Typeahead.component { items: containerData } absurd )
       ]
 
     eval :: Query ~> H.ParentDSL State Query _ _ _ (FX e)
-    eval (NoOp a) = pure a
+    eval (NoOp next) = pure next
+    eval (HandleDropdown _ next) = pure next
 
 
 ----------
 -- Sample data
 
-containerData :: Array Dropdown.DropdownItem
+containerData :: Array DropdownItem
 containerData =
   [ "item one"
   , "item two"
