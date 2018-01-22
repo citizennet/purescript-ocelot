@@ -1,4 +1,4 @@
-# Purescript ui
+# Purescript UI
 
 This repository provides building blocks usable to create Wildcat screens. This includes common styles based on Tachyons, like primary buttons or tables, and pre-built components like dropdowns and typeaheads.
 
