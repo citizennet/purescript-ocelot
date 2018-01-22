@@ -15,7 +15,8 @@
     "purescript-dom": "^4.13.2",
     "purescript-css": "^3.3.0",
     "purescript-halogen-css": "^7.0.0",
-    "purescript-halogen-select": "^0.1.1"
+    "purescript-halogen-select": "^0.1.1",
+    "purescript-cn-ui": "../halogen-components"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"
