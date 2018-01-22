@@ -59,5 +59,5 @@ build-documentation:
 	echo "Documentation directory built successfully.\n"
 
 move-documentation:
-	cp -r ./style-guide/dist docs/; \
-	echo "Dist folder copied to docs./n"
+	cp -a ./style-guide/dist/. docs/; \
+	echo "Dist folder copied to docs.\n"
