@@ -1,18 +1,21 @@
 module CN.UI.Typeahead where
 
 import Prelude
+
 import Data.Array ((:), length, mapWithIndex, filter, difference)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Data.String (Pattern(..), contains)
 import Data.Time.Duration (Milliseconds(..))
-import Select.Dispatch
-import Select.Effects (FX)
-import Select.Primitive.Container as C
-import Select.Primitive.Search as S
 import Halogen as H
+import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Select.Effects (FX)
+import Select.Primitive.Container as C
+import Select.Primitive.Search as S
 
 ----------
 -- Item Types
@@ -29,14 +32,14 @@ type State =
   , selections :: Array TypeaheadItem }
 
 -- Component query definition
-data Query e a
-  = HandleContainer (C.Message String (Query e) e) a
-  | HandleSearch (S.Message String (Query e) e) a
+data Query a
+  = HandleContainer (C.Message Query String) a
+  | HandleSearch (S.Message Query String) a
   | Receive TypeaheadInput a
 
 -- Component top level definition
 type TypeaheadComponent e
-  = H.Component HH.HTML (Query e) TypeaheadInput TypeaheadMessage (FX e)
+  = H.Component HH.HTML Query TypeaheadInput TypeaheadMessage (FX e)
 
 -- Component input type
 type TypeaheadInput =
@@ -46,8 +49,10 @@ type TypeaheadInput =
 type TypeaheadMessage = Void
 
 -- Component child types
-type ChildQuery e = Dispatch TypeaheadItem (Query e) e
-type ChildSlot = Slot
+type ContainerQuery = C.ContainerQuery Query TypeaheadItem
+type SearchQuery e = S.SearchQuery Query TypeaheadItem e
+type ChildQuery e = Coproduct2 ContainerQuery (SearchQuery e)
+type ChildSlot = Either2 Slot Slot
 
 -- Primitive slot types
 data PrimitiveSlot
@@ -66,11 +71,11 @@ derive instance ordSlot :: Ord Slot
 
 -- Return from render function
 type TypeaheadHTML e =
-  H.ParentHTML (Query e) (ChildQuery e) ChildSlot (FX e)
+  H.ParentHTML Query (ChildQuery e) ChildSlot (FX e)
 
 -- Return from eval function
 type TypeaheadDSL e =
-  H.ParentDSL State (Query e) (ChildQuery e) ChildSlot TypeaheadMessage (FX e)
+  H.ParentDSL State Query (ChildQuery e) ChildSlot TypeaheadMessage (FX e)
 
 
 ----------
@@ -89,33 +94,28 @@ component =
     render st =
       HH.div_
       [ renderSelections st
-      , HH.slot
+      , HH.slot'
+          CP.cp2
           ( Slot SearchSlot )
           S.component
           { render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
           ( HE.input HandleSearch )
-      , HH.slot
+      , HH.slot'
+          CP.cp1
           ( Slot ContainerSlot )
           C.component
           { render: renderContainer, items: st.items }
           ( HE.input HandleContainer )
       ]
 
-    eval :: Query e ~> TypeaheadDSL e
+    eval :: Query ~> TypeaheadDSL e
     eval = case _ of
       HandleSearch message a -> case message of
-        S.Emit query -> case query of
-          Container containerQuery _ -> do
-            _ <- H.query (Slot ContainerSlot)
-                  $ H.action
-                  $ Container containerQuery
-            pure a
+        S.ContainerQuery query -> do
+          _ <- H.query' CP.cp1 (Slot ContainerSlot) query
+          pure a
 
-          ParentQuery parentQuery _ -> a <$ eval parentQuery
-
-          Search _ _ -> pure a
-
-        S.NewSearch text -> a <$ do
+        S.NewSearch text -> do
           st <- H.get
           let matches i = filter (\i' -> contains (Pattern i) i')
               available = difference (matches text st.items) st.selections
@@ -126,16 +126,16 @@ component =
                 | otherwise            = available
 
           -- Send the new items to the container
-          _ <- H.query (Slot ContainerSlot)
+          _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
-                $ Container
-                $ ContainerReceiver { render: renderContainer, items: newItems }
-
+                $ C.ContainerReceiver { render: renderContainer, items: newItems }
           pure a
+
+        S.Emit query -> eval query *> pure a
 
       HandleContainer message a -> case message of
         -- we don't embed any other queries except parent queries
-        C.Emit query -> emit eval query a
+        C.Emit query -> eval query *> pure a
 
         C.ItemSelected item -> a <$ do
           st <- H.get
@@ -146,15 +146,13 @@ component =
           newState <- H.get
           let newItems = difference newState.items newState.selections
 
-          _ <- H.query (Slot ContainerSlot)
+          _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
-                $ Container
-                $ ContainerReceiver { render: renderContainer, items: newItems }
+                $ C.ContainerReceiver { render: renderContainer, items: newItems }
 
-          _ <- H.query (Slot ContainerSlot)
+          _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
-                $ Container
-                $ Visibility Off
+                $ C.Visibility C.Off
 
           pure a
 
@@ -177,31 +175,35 @@ renderSelections st = HH.div_
 
 -- One render function is required per primitive.
 
-renderSearch :: ∀ e. SearchState e -> H.HTML Void (ChildQuery e)
+renderSearch :: ∀ e. S.SearchState e -> H.HTML Void (SearchQuery e)
 renderSearch st = textField "Search Field" "Type to search..." "This typeahead is automatically debounced at 150ms."
 
 
-renderContainer :: ∀ e. ContainerState String -> H.HTML Void (ChildQuery e)
+renderContainer :: C.ContainerState String -> H.HTML Void ContainerQuery
 renderContainer st = HH.div_
   if not st.open
     then []
     else [ renderItems $ renderItem `mapWithIndex` st.items ]
   where
-    renderItems :: Array (H.HTML Void (ChildQuery e)) -> H.HTML Void (ChildQuery e)
-    renderItems html = HH.div ( getContainerProps [] ) [ HH.ul_ html ]
+    renderItems :: Array (H.HTML Void ContainerQuery) -> H.HTML Void ContainerQuery
+    renderItems html = HH.div ( C.getContainerProps [] ) [ HH.ul_ html ]
 
-    renderItem :: Int -> TypeaheadItem -> H.HTML Void (ChildQuery e)
-    renderItem ix item = HH.li ( getItemProps ix [] ) [ HH.text item ]
+    renderItem :: Int -> TypeaheadItem -> H.HTML Void ContainerQuery
+    renderItem ix item = HH.li ( C.getItemProps ix [] ) [ HH.text item ]
 
 
 ----------
 -- Other render helpers
 
+cssLabel :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
 cssLabel = HP.class_ $ HH.ClassName "f6 b db mb2"
+cssInput :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
 cssInput = HP.class_ $ HH.ClassName "input-reset pa2 mb2 db w-100 b--none"
+cssHelperText :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
 cssHelperText = HP.class_ $ HH.ClassName "f6 black-60 db mb2"
 
 -- textField :: ∀ e. String -> String -> String -> HTML e
+textField :: ∀ p e. String → String → String → HH.HTML p (S.SearchQuery Query TypeaheadItem e Unit)
 textField label placeholder helper =
   HH.div
   [ HP.class_ $ HH.ClassName "measure" ]
@@ -209,7 +211,7 @@ textField label placeholder helper =
     [ cssLabel ]
     [ HH.text label ]
   , HH.input
-    ( getInputProps [ cssInput, HP.placeholder placeholder ] )
+    ( S.getInputProps [ cssInput, HP.placeholder placeholder ] )
   , HH.small
     [ cssHelperText ]
     [ HH.text helper ]
