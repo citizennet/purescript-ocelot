@@ -3,11 +3,9 @@ module Base.Component where
 import Prelude
 
 import CN.UI.Dropdown as Dropdown
-import CN.UI.Multiselect (MultiselectMessage)
-import CN.UI.Multiselect as Multiselect
 import CN.UI.Typeahead as Typeahead
-import Data.Either.Nested (Either2, Either3)
-import Data.Functor.Coproduct.Nested (Coproduct2, Coproduct3)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.Component.ChildPath (cp1)
@@ -27,17 +25,13 @@ type State
 data Query a
   = NoOp a
   | HandleDropdown (Dropdown.DropdownMessage DropdownItem) a
-  | HandleMultiselect (Multiselect.MultiselectMessage DropdownItem) a
 
 
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct3
-  (Dropdown.Query DropdownItem e)
-  (Multiselect.Query DropdownItem e)
-  (Typeahead.Query e)
-type ChildSlot = Either3 Unit Unit Unit
+type ChildQuery = Typeahead.Query
+type ChildSlot = Unit
 
 
 ----------
@@ -48,7 +42,7 @@ type DropdownItem = String
 ----------
 -- Convenience types
 
-type HTML e = H.ParentHTML Query (ChildQuery e) ChildSlot (FX e)
+type HTML e = H.ParentHTML Query (ChildQuery) ChildSlot (FX e)
 
 ----------
 -- Component definition
@@ -71,33 +65,14 @@ component =
       [ title
       , introduction
       , mountWith
-          "Select Field"
-          "Selects a single item from a list."
-          ( HH.slot'
-              CP.cp1
-              unit
-              Dropdown.component
-              { items: containerData, itemHTML: (\i -> [ HH.text i ]) }
-              (HE.input HandleDropdown) )
-      , mountWith
-          "Multiselect Field"
-          "Selects multiple items from a list."
-          ( HH.slot'
-              CP.cp2
-              unit
-              Multiselect.component
-              { items: containerData, itemHTML: (\i -> [ HH.text i ]), selection: ["item one"] }
-              (HE.input HandleMultiselect) )
-      , mountWith
           "Typeahead"
           "Captures string input and produces a menu."
-          ( HH.slot' CP.cp3 unit Typeahead.component { items: containerData } absurd )
+          ( HH.slot unit Typeahead.component { items: containerData } absurd )
       ]
 
     eval :: Query ~> H.ParentDSL State Query _ _ _ (FX e)
     eval (NoOp next) = pure next
     eval (HandleDropdown _ next) = pure next
-    eval (HandleMultiselect _ next) = pure next
 
 
 ----------
