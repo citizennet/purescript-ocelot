@@ -4,6 +4,7 @@ import Prelude
 
 import Data.Array (delete, difference, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
+import Data.Tuple (Tuple(Tuple))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -91,6 +92,7 @@ component =
     initialState :: DropdownInput item -> State item
     initialState i = { items: i.items, itemHTML: i.itemHTML, selection: i.selection }
 
+
     render :: State item -> DropdownHTML item e
     render st = case st.selection of
       Single item ->
@@ -100,32 +102,47 @@ component =
               unit
               C.component
               { items: maybe st.items (flip delete st.items) item
-              , render: renderContainer st.itemHTML }
+              , render: renderContainer st.itemHTML
+              }
               ( HE.input HandleContainer )
           ]
 
       Multi items ->
         HH.div_
           [ HH.ul_ (renderSelectedItem <$> items)
+          , renderMultiToggle
           , HH.slot
-            unit
-            C.component
-            { items: difference st.items items, render: renderContainer st.itemHTML }
-            ( HE.input HandleContainer )
+              unit
+              C.component
+              { items: difference st.items items, render: renderContainer st.itemHTML }
+              ( HE.input HandleContainer )
           ]
       where
         renderSingleToggle :: Maybe item -> DropdownHTML item e
         renderSingleToggle selected =
           HH.div
-          ( C.getToggleProps ToContainer [] )
-          (HH.fromPlainHTML <$>
-          (maybe [HH.text "Select"] st.itemHTML selected) <> [HH.button_ [HH.i [HP.class_ (HH.ClassName "caret")] []]])
+            ( C.getToggleProps ToContainer [] )
+            ( HH.fromPlainHTML <$> ( maybe [ HH.text "Select" ] st.itemHTML selected )
+              <> [ HH.button_
+                   [ HH.i
+                     [ HP.class_ (HH.ClassName "caret") ]
+                     []
+                   ]
+                 ]
+            )
+
+        renderMultiToggle :: DropdownHTML item e
+        renderMultiToggle =
+          HH.div
+            ( C.getToggleProps ToContainer [] )
+            [ HH.text "Select" ]
 
         renderSelectedItem :: item -> DropdownHTML item e
         renderSelectedItem item =
           HH.li_
-             $ (HH.fromPlainHTML <$> (st.itemHTML item))
-            <> [HH.button [ HE.onClick $ HE.input_ (ItemRemoved item) ] [ HH.text "X" ]]
+             $ ( HH.fromPlainHTML <$> (st.itemHTML item) )
+            <> [ HH.button [ HE.onClick $ HE.input_ (ItemRemoved item) ] [ HH.text "X" ] ]
+
 
     eval :: (Query item) ~> (DropdownDSL item e)
     eval = case _ of
@@ -137,18 +154,18 @@ component =
 
       ItemRemoved item a -> a <$ do
         st <- H.get
-        let selection = case st.selection of
-              Single _ -> Single Nothing
-              Multi items -> Multi $ delete item items
-        let containerItems = case st.selection of
-              Single _ -> st.items
-              Multi items -> difference st.items $ delete item items
+        Tuple selection items <- pure $ case st.selection of
+          Single _ -> Tuple (Single Nothing) st.items
+          Multi items -> do
+            let containerItems = delete item items
+            Tuple (Multi containerItems) (difference st.items containerItems)
         H.modify (_ { selection = selection })
         _ <- H.query unit
           $ H.action
           $ C.ContainerReceiver
           $ { render: renderContainer st.itemHTML
-            , items: containerItems }
+            , items
+            }
         H.raise $ SelectionChanged selection
 
       HandleContainer m a -> case m of
@@ -156,25 +173,23 @@ component =
 
         C.ItemSelected item -> a <$ do
           st <- H.get
-          let selection = case st.selection of
-                Single _ -> Single $ Just item
-                Multi items -> Multi $ snoc items item
-          let containerItems = case st.selection of
-                Single _ -> delete item st.items
-                Multi items -> difference st.items $ snoc items item
+          Tuple selection items <- pure $ case st.selection of
+            Single _ -> Tuple (Single $ Just item) (delete item st.items)
+            Multi items -> do
+              let containerItems = snoc items item
+              Tuple (Multi containerItems) (difference st.items containerItems)
           H.modify (_ { selection = selection })
-
           _ <- H.query unit
             $ H.action
             $ C.ContainerReceiver
             $ { render: renderContainer st.itemHTML
-              , items: containerItems }
+              , items
+              }
           _ <- case st.selection of
             Single _ -> H.query unit
               $ H.action
               $ C.Visibility C.Off
             Multi _ -> (pure <<< pure) unit
-
           H.raise $ SelectionChanged selection
 
 
@@ -193,7 +208,6 @@ renderContainer itemHTML st =
   $ if not st.open
     then [ ]
     else [ renderItems $ renderItem `mapWithIndex` st.items ]
-
   where
     -- The individual items to render
     renderItems :: Array (H.HTML Void (ChildQuery item)) -> H.HTML Void (ChildQuery item)
