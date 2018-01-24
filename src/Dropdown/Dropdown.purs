@@ -8,7 +8,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Dispatch (ContainerQuery(..), ContainerState, Dispatch(..), emit, getContainerProps, getItemProps, getToggleProps)
+import Select.Dispatch as D
 import Select.Effects (FX)
 import Select.Primitive.Container as C
 
@@ -56,7 +56,7 @@ data DropdownMessage item
 
 
 -- Component child types
-type ChildQuery item e = Dispatch item (Query item e) e
+type ChildQuery item e = D.Dispatch item (Query item e) e
 type ChildSlot = Unit
 
 -- Return type of render function; must use Dispatch as child type (or coproduct)
@@ -100,22 +100,24 @@ component =
         H.put $ initialState input
 
       HandleContainer m a -> case m of
-        C.Emit q -> emit eval q a
+        C.Emit q -> D.emit eval q a
 
-        C.ItemSelected item -> do
+        C.ItemSelected item -> a <$ do
           H.modify \st -> st { selection = Just item }
 
           st <- H.get
           _ <- H.query unit
             $ H.action
-            $ Container
-            $ ContainerReceiver
+            $ D.Container
+            $ D.ContainerReceiver
             $ { render: renderContainer st.itemHTML st.selection
               , items: maybe st.items (flip delete st.items) st.selection }
+          _ <- H.query unit
+            $ H.action
+            $ D.Container
+            $ D.Visibility D.Off
 
           H.raise $ ItemSelected item
-
-          pure a
 
 
 ----------
@@ -126,7 +128,7 @@ renderContainer ::
    ∀ item e
    . (item -> Array (H.HTML Void (ChildQuery item e)))
   -> Maybe item
-  -> (ContainerState item)
+  -> (D.ContainerState item)
   -> H.HTML Void (ChildQuery item e)
 renderContainer itemHTML selection st =
   HH.div_
@@ -140,17 +142,17 @@ renderContainer itemHTML selection st =
     renderToggle :: H.HTML Void (ChildQuery item e)
     renderToggle =
       HH.div
-      ( getToggleProps [] )
+      ( D.getToggleProps [] )
       ((maybe [HH.text "Select"] itemHTML selection) <> [HH.button_ [HH.i [HP.class_ (HH.ClassName "caret")] []]])
 
     -- The individual items to render
     renderItems :: Array (H.HTML Void (ChildQuery item e)) -> H.HTML Void (ChildQuery item e)
     renderItems html =
       HH.div
-      ( getContainerProps [] )
+      ( D.getContainerProps [] )
       [ HH.ul_ html ]
 
     -- One particular item to render
     renderItem :: Int -> item -> H.HTML Void (ChildQuery item e)
     renderItem index item =
-      HH.li ( getItemProps index [] ) $ itemHTML item
+      HH.li ( D.getItemProps index [] ) $ itemHTML item
