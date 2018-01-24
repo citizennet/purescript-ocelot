@@ -48,6 +48,7 @@ type DropdownComponent item e
 -- Component input and message types
 type DropdownInput item e =
   { items :: Array item
+  , selection :: Maybe item
   , itemHTML :: item -> Array (H.HTML Void (ChildQuery item e))
   }
 
@@ -65,8 +66,13 @@ type DropdownHTML item e =
 
 -- Return type of eval function
 type DropdownDSL item e =
-  H.ParentDSL (State item e) (Query item e) (ChildQuery item e) ChildSlot (DropdownMessage item) (FX e)
-
+  H.ParentDSL
+    (State item e)
+    (Query item e)
+    (ChildQuery item e)
+    ChildSlot
+    (DropdownMessage item)
+    (FX e)
 
 
 ----------
@@ -81,7 +87,10 @@ component =
     }
   where
     initialState :: DropdownInput item e -> State item e
-    initialState input = { items: input.items, itemHTML: input.itemHTML, selection: Nothing }
+    initialState i = { items: i.items, itemHTML: i.itemHTML, selection: i.selection }
+
+    maybeDelete :: Maybe item -> Array item -> Array item
+    maybeDelete item items = maybe items (flip delete items) item
 
     render :: State item e -> DropdownHTML item e
     render st =
@@ -89,7 +98,8 @@ component =
         [ HH.slot
             unit
             C.component
-            { items: st.items, render: renderContainer st.itemHTML st.selection }
+            { items: maybeDelete st.selection st.items
+            , render: renderContainer st.itemHTML st.selection }
             ( HE.input HandleContainer )
         ]
 
@@ -111,7 +121,7 @@ component =
             $ D.Container
             $ D.ContainerReceiver
             $ { render: renderContainer st.itemHTML st.selection
-              , items: maybe st.items (flip delete st.items) st.selection }
+              , items: maybeDelete st.selection st.items }
           _ <- H.query unit
             $ H.action
             $ D.Container

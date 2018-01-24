@@ -67,7 +67,7 @@ component =
       where
         renderSelectedItem :: item -> MultiselectHTML item e
         renderSelectedItem item =
-          HH.div_
+          HH.li_
              $ (HH.fromPlainHTML <$> (st.itemHTML item))
             <> [HH.button [ HE.onClick $ HE.input_ (ItemRemoved item) ] [ HH.text "X" ]]
 
