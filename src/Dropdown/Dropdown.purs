@@ -2,13 +2,12 @@ module CN.UI.Dropdown where
 
 import Prelude
 
-import Data.Array (delete, mapWithIndex)
+import Data.Array (delete, difference, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Dispatch as D
 import Select.Effects (FX)
 import Select.Primitive.Container as C
 
@@ -29,47 +28,50 @@ data SelectableStatus
 ----------
 -- Component types
 
+-- Type of Selection
+data SelectionType item
+  = Single (Maybe item)
+  | Multi (Array item)
+
 -- Component state definition
-type State item e =
+type State item =
   { items :: Array item
-  , selection :: Maybe item
-  , itemHTML :: item -> Array (H.HTML Void (ChildQuery item e))
+  , selection :: SelectionType item
+  , itemHTML :: item -> Array HH.PlainHTML
   }
 
 -- Component query definition
-data Query item e a
-  = HandleContainer (C.Message item (Query item e) e) a
-  | Receiver (DropdownInput item e) a
+data Query item a
+  = HandleContainer (C.Message (Query item) item) a
+  | ToContainer (C.ContainerQuery (Query item) item Unit) a
+  | ItemRemoved item a
+  | Receiver (DropdownInput item) a
 
 -- Component top-level definition
 type DropdownComponent item e
-  = H.Component HH.HTML (Query item e) (DropdownInput item e) (DropdownMessage item) (FX e)
+  = H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) (FX e)
 
 -- Component input and message types
-type DropdownInput item e =
-  { items :: Array item
-  , selection :: Maybe item
-  , itemHTML :: item -> Array (H.HTML Void (ChildQuery item e))
-  }
+type DropdownInput item = State item
 
 data DropdownMessage item
-  = ItemSelected item
+  = SelectionChanged (SelectionType item)
 
 
 -- Component child types
-type ChildQuery item e = D.Dispatch item (Query item e) e
+type ChildQuery item = C.ContainerQuery (Query item) item
 type ChildSlot = Unit
 
 -- Return type of render function; must use Dispatch as child type (or coproduct)
 type DropdownHTML item e =
-  H.ParentHTML (Query item e) (ChildQuery item e) ChildSlot (FX e)
+  H.ParentHTML (Query item) (ChildQuery item) ChildSlot (FX e)
 
 -- Return type of eval function
 type DropdownDSL item e =
   H.ParentDSL
-    (State item e)
-    (Query item e)
-    (ChildQuery item e)
+    (State item)
+    (Query item)
+    (ChildQuery item)
     ChildSlot
     (DropdownMessage item)
     (FX e)
@@ -86,83 +88,121 @@ component =
     , receiver: HE.input Receiver
     }
   where
-    initialState :: DropdownInput item e -> State item e
+    initialState :: DropdownInput item -> State item
     initialState i = { items: i.items, itemHTML: i.itemHTML, selection: i.selection }
 
-    maybeDelete :: Maybe item -> Array item -> Array item
-    maybeDelete item items = maybe items (flip delete items) item
+    render :: State item -> DropdownHTML item e
+    render st = case st.selection of
+      Single item ->
+        HH.div_
+          [ renderSingleToggle item
+          , HH.slot
+              unit
+              C.component
+              { items: maybe st.items (flip delete st.items) item
+              , render: renderContainer st.itemHTML }
+              ( HE.input HandleContainer )
+          ]
 
-    render :: State item e -> DropdownHTML item e
-    render st =
-      HH.div_
-        [ HH.slot
+      Multi items ->
+        HH.div_
+          [ HH.ul_ (renderSelectedItem <$> items)
+          , HH.slot
             unit
             C.component
-            { items: maybeDelete st.selection st.items
-            , render: renderContainer st.itemHTML st.selection }
+            { items: difference st.items items, render: renderContainer st.itemHTML }
             ( HE.input HandleContainer )
-        ]
+          ]
+      where
+        renderSingleToggle :: Maybe item -> DropdownHTML item e
+        renderSingleToggle selected =
+          HH.div
+          ( C.getToggleProps ToContainer [] )
+          (HH.fromPlainHTML <$>
+          (maybe [HH.text "Select"] st.itemHTML selected) <> [HH.button_ [HH.i [HP.class_ (HH.ClassName "caret")] []]])
 
-    eval :: (Query item e) ~> (DropdownDSL item e)
+        renderSelectedItem :: item -> DropdownHTML item e
+        renderSelectedItem item =
+          HH.li_
+             $ (HH.fromPlainHTML <$> (st.itemHTML item))
+            <> [HH.button [ HE.onClick $ HE.input_ (ItemRemoved item) ] [ HH.text "X" ]]
+
+    eval :: (Query item) ~> (DropdownDSL item e)
     eval = case _ of
 
       Receiver input a -> a <$ do
         H.put $ initialState input
 
+      ToContainer q a -> H.query unit q *> pure a
+
+      ItemRemoved item a -> a <$ do
+        st <- H.get
+        let selection = case st.selection of
+              Single _ -> Single Nothing
+              Multi items -> Multi $ delete item items
+        let containerItems = case st.selection of
+              Single _ -> st.items
+              Multi items -> difference st.items $ delete item items
+        H.modify (_ { selection = selection })
+        _ <- H.query unit
+          $ H.action
+          $ C.ContainerReceiver
+          $ { render: renderContainer st.itemHTML
+            , items: containerItems }
+        H.raise $ SelectionChanged selection
+
       HandleContainer m a -> case m of
-        C.Emit q -> D.emit eval q a
+        C.Emit q -> eval q *> pure a
 
         C.ItemSelected item -> a <$ do
-          H.modify \st -> st { selection = Just item }
-
           st <- H.get
-          _ <- H.query unit
-            $ H.action
-            $ D.Container
-            $ D.ContainerReceiver
-            $ { render: renderContainer st.itemHTML st.selection
-              , items: maybeDelete st.selection st.items }
-          _ <- H.query unit
-            $ H.action
-            $ D.Container
-            $ D.Visibility D.Off
+          let selection = case st.selection of
+                Single _ -> Single $ Just item
+                Multi items -> Multi $ snoc items item
+          let containerItems = case st.selection of
+                Single _ -> delete item st.items
+                Multi items -> difference st.items $ snoc items item
+          H.modify (_ { selection = selection })
 
-          H.raise $ ItemSelected item
+          _ <- H.query unit
+            $ H.action
+            $ C.ContainerReceiver
+            $ { render: renderContainer st.itemHTML
+              , items: containerItems }
+          _ <- case st.selection of
+            Single _ -> H.query unit
+              $ H.action
+              $ C.Visibility C.Off
+            Multi _ -> (pure <<< pure) unit
+
+          H.raise $ SelectionChanged selection
 
 
 ----------
 -- Render helpers
 
+-- The clickable region that opens the dropdown
 -- Render the dropdown
 renderContainer ::
-   ∀ item e
-   . (item -> Array (H.HTML Void (ChildQuery item e)))
-  -> Maybe item
-  -> (D.ContainerState item)
-  -> H.HTML Void (ChildQuery item e)
-renderContainer itemHTML selection st =
+   ∀ item
+   . (item -> Array HH.PlainHTML)
+  -> (C.ContainerState item)
+  -> H.HTML Void (ChildQuery item)
+renderContainer itemHTML st =
   HH.div_
   $ if not st.open
-    then [ renderToggle ]
-    else [ renderToggle, renderItems $ renderItem `mapWithIndex` st.items ]
+    then [ ]
+    else [ renderItems $ renderItem `mapWithIndex` st.items ]
 
   where
-
-    -- The clickable region that opens the dropdown
-    renderToggle :: H.HTML Void (ChildQuery item e)
-    renderToggle =
-      HH.div
-      ( D.getToggleProps [] )
-      ((maybe [HH.text "Select"] itemHTML selection) <> [HH.button_ [HH.i [HP.class_ (HH.ClassName "caret")] []]])
-
     -- The individual items to render
-    renderItems :: Array (H.HTML Void (ChildQuery item e)) -> H.HTML Void (ChildQuery item e)
+    renderItems :: Array (H.HTML Void (ChildQuery item)) -> H.HTML Void (ChildQuery item)
     renderItems html =
       HH.div
-      ( D.getContainerProps [] )
+      ( C.getContainerProps [] )
       [ HH.ul_ html ]
 
     -- One particular item to render
-    renderItem :: Int -> item -> H.HTML Void (ChildQuery item e)
+    renderItem :: Int -> item -> H.HTML Void (ChildQuery item)
     renderItem index item =
-      HH.li ( D.getItemProps index [] ) $ itemHTML item
+      HH.li ( C.getItemProps index [] ) $ HH.fromPlainHTML <$> (itemHTML item)
