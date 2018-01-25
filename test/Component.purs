@@ -7,7 +7,7 @@ import CN.UI.Typeahead as Typeahead
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(..), maybe)
+import Data.Maybe (Maybe(Nothing))
 import Data.Newtype (class Newtype, unwrap)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
@@ -65,8 +65,8 @@ component =
     eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Void (FX e)
     eval (NoOp next) = pure next
     eval (HandleDropdown m next) = pure next <* case m of
-      Dropdown.SelectionChanged (Dropdown.Single item) -> H.liftAff $ logShow $ maybe "Empty!" (unwrap >>> _.name) item
-      _ -> pure unit
+      Dropdown.ItemRemoved item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> "was removed")
+      Dropdown.ItemSelected item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> "was selected")
 
 ----------
 -- Sample data

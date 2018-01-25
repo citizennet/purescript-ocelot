@@ -39,7 +39,7 @@ type State item =
 data Query item a
   = HandleContainer (C.Message (Query item) item) a
   | ToContainer (C.ContainerQuery (Query item) item Unit) a
-  | ItemRemoved item a
+  | Removed item a
   | Receiver (DropdownInput item) a
 
 -- Component top-level definition
@@ -50,7 +50,8 @@ type DropdownComponent item e
 type DropdownInput item = State item
 
 data DropdownMessage item
-  = SelectionChanged (SelectionType item)
+  = ItemSelected item
+  | ItemRemoved item
 
 
 -- Component child types
@@ -135,7 +136,7 @@ component =
         renderSelectedItem item =
           HH.li_
              $ ( HH.fromPlainHTML <$> (st.itemHTML item) )
-            <> [ HH.button [ HE.onClick $ HE.input_ (ItemRemoved item) ] [ HH.text "X" ] ]
+            <> [ HH.button [ HE.onClick $ HE.input_ (Removed item) ] [ HH.text "X" ] ]
 
 
     eval :: (Query item) ~> (DropdownDSL item e)
@@ -146,7 +147,7 @@ component =
 
       ToContainer q a -> H.query unit q *> pure a
 
-      ItemRemoved item a -> a <$ do
+      Removed item a -> a <$ do
         st <- H.get
         Tuple selection items <- pure $ case st.selection of
           Single _ -> Tuple (Single Nothing) st.items
@@ -160,7 +161,7 @@ component =
           $ { render: renderContainer st.itemHTML
             , items
             }
-        H.raise $ SelectionChanged selection
+        H.raise $ ItemRemoved item
 
       HandleContainer m a -> case m of
         C.Emit q -> eval q *> pure a
@@ -184,7 +185,7 @@ component =
               $ H.action
               $ C.Visibility C.Off
             Multi _ -> (pure <<< pure) unit
-          H.raise $ SelectionChanged selection
+          H.raise $ ItemSelected item
 
 
 ----------
