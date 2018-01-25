@@ -198,7 +198,7 @@ renderSelections st = HH.div_
       , HH.span
         [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
         , HE.onClick (HE.input_ (Remove item)) ]
-        [ HH.text "×;" ]
+        [ HH.text "×" ]
       ]
 
 renderContainer :: State -> C.ContainerState String -> H.HTML Void ContainerQuery
