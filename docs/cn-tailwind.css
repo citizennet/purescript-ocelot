@@ -582,10 +582,9 @@ button,
   cursor: pointer;
 }
 
-/* CitizenNet CSS ... /*
-
-
-/* ... CitizenNet CSS /*
+/* CitizenNet core CSS ...
+** @import "citizennet-css"
+*/
 
 /* Import utilities after our CSS to avoid overwriting them. */
 
@@ -2588,6 +2587,26 @@ button,
   margin: 2rem;
 }
 
+.m-10 {
+  margin: 2.5rem;
+}
+
+.m-12 {
+  margin: 3rem;
+}
+
+.m-16 {
+  margin: 4rem;
+}
+
+.m-20 {
+  margin: 5rem;
+}
+
+.m-80 {
+  margin: 20rem;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -2664,6 +2683,56 @@ button,
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
+}
+
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.mx-10 {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.my-12 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.mx-12 {
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.my-16 {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.mx-16 {
+  margin-left: 4rem;
+  margin-right: 4rem;
+}
+
+.my-20 {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.mx-20 {
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+
+.my-80 {
+  margin-top: 20rem;
+  margin-bottom: 20rem;
+}
+
+.mx-80 {
+  margin-left: 20rem;
+  margin-right: 20rem;
 }
 
 .my-auto {
@@ -2798,6 +2867,86 @@ button,
   margin-left: 2rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.mr-10 {
+  margin-right: 2.5rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
+.ml-10 {
+  margin-left: 2.5rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
+
+.mr-12 {
+  margin-right: 3rem;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
+.ml-12 {
+  margin-left: 3rem;
+}
+
+.mt-16 {
+  margin-top: 4rem;
+}
+
+.mr-16 {
+  margin-right: 4rem;
+}
+
+.mb-16 {
+  margin-bottom: 4rem;
+}
+
+.ml-16 {
+  margin-left: 4rem;
+}
+
+.mt-20 {
+  margin-top: 5rem;
+}
+
+.mr-20 {
+  margin-right: 5rem;
+}
+
+.mb-20 {
+  margin-bottom: 5rem;
+}
+
+.ml-20 {
+  margin-left: 5rem;
+}
+
+.mt-80 {
+  margin-top: 20rem;
+}
+
+.mr-80 {
+  margin-right: 20rem;
+}
+
+.mb-80 {
+  margin-bottom: 20rem;
+}
+
+.ml-80 {
+  margin-left: 20rem;
+}
+
 .mt-auto {
   margin-top: auto;
 }
@@ -2926,6 +3075,30 @@ button,
   margin: -2rem;
 }
 
+.-m-10 {
+  margin: -2.5rem;
+}
+
+.-m-12 {
+  margin: -3rem;
+}
+
+.-m-16 {
+  margin: -4rem;
+}
+
+.-m-20 {
+  margin: -5rem;
+}
+
+.-m-80 {
+  margin: -20rem;
+}
+
+.-m-auto {
+  margin: -auto;
+}
+
 .-m-px {
   margin: -1px;
 }
@@ -2998,6 +3171,66 @@ button,
 .-mx-8 {
   margin-left: -2rem;
   margin-right: -2rem;
+}
+
+.-my-10 {
+  margin-top: -2.5rem;
+  margin-bottom: -2.5rem;
+}
+
+.-mx-10 {
+  margin-left: -2.5rem;
+  margin-right: -2.5rem;
+}
+
+.-my-12 {
+  margin-top: -3rem;
+  margin-bottom: -3rem;
+}
+
+.-mx-12 {
+  margin-left: -3rem;
+  margin-right: -3rem;
+}
+
+.-my-16 {
+  margin-top: -4rem;
+  margin-bottom: -4rem;
+}
+
+.-mx-16 {
+  margin-left: -4rem;
+  margin-right: -4rem;
+}
+
+.-my-20 {
+  margin-top: -5rem;
+  margin-bottom: -5rem;
+}
+
+.-mx-20 {
+  margin-left: -5rem;
+  margin-right: -5rem;
+}
+
+.-my-80 {
+  margin-top: -20rem;
+  margin-bottom: -20rem;
+}
+
+.-mx-80 {
+  margin-left: -20rem;
+  margin-right: -20rem;
+}
+
+.-my-auto {
+  margin-top: -auto;
+  margin-bottom: -auto;
+}
+
+.-mx-auto {
+  margin-left: -auto;
+  margin-right: -auto;
 }
 
 .-my-px {
@@ -3122,6 +3355,102 @@ button,
   margin-left: -2rem;
 }
 
+.-mt-10 {
+  margin-top: -2.5rem;
+}
+
+.-mr-10 {
+  margin-right: -2.5rem;
+}
+
+.-mb-10 {
+  margin-bottom: -2.5rem;
+}
+
+.-ml-10 {
+  margin-left: -2.5rem;
+}
+
+.-mt-12 {
+  margin-top: -3rem;
+}
+
+.-mr-12 {
+  margin-right: -3rem;
+}
+
+.-mb-12 {
+  margin-bottom: -3rem;
+}
+
+.-ml-12 {
+  margin-left: -3rem;
+}
+
+.-mt-16 {
+  margin-top: -4rem;
+}
+
+.-mr-16 {
+  margin-right: -4rem;
+}
+
+.-mb-16 {
+  margin-bottom: -4rem;
+}
+
+.-ml-16 {
+  margin-left: -4rem;
+}
+
+.-mt-20 {
+  margin-top: -5rem;
+}
+
+.-mr-20 {
+  margin-right: -5rem;
+}
+
+.-mb-20 {
+  margin-bottom: -5rem;
+}
+
+.-ml-20 {
+  margin-left: -5rem;
+}
+
+.-mt-80 {
+  margin-top: -20rem;
+}
+
+.-mr-80 {
+  margin-right: -20rem;
+}
+
+.-mb-80 {
+  margin-bottom: -20rem;
+}
+
+.-ml-80 {
+  margin-left: -20rem;
+}
+
+.-mt-auto {
+  margin-top: -auto;
+}
+
+.-mr-auto {
+  margin-right: -auto;
+}
+
+.-mb-auto {
+  margin-bottom: -auto;
+}
+
+.-ml-auto {
+  margin-left: -auto;
+}
+
 .-mt-px {
   margin-top: -1px;
 }
@@ -3220,6 +3549,26 @@ button,
   padding: 2rem;
 }
 
+.p-10 {
+  padding: 2.5rem;
+}
+
+.p-12 {
+  padding: 3rem;
+}
+
+.p-16 {
+  padding: 4rem;
+}
+
+.p-20 {
+  padding: 5rem;
+}
+
+.p-80 {
+  padding: 20rem;
+}
+
 .p-px {
   padding: 1px;
 }
@@ -3292,6 +3641,56 @@ button,
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.px-16 {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.px-20 {
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.py-80 {
+  padding-top: 20rem;
+  padding-bottom: 20rem;
+}
+
+.px-80 {
+  padding-left: 20rem;
+  padding-right: 20rem;
 }
 
 .py-px {
@@ -3414,6 +3813,86 @@ button,
 
 .pl-8 {
   padding-left: 2rem;
+}
+
+.pt-10 {
+  padding-top: 2.5rem;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
+}
+
+.pb-10 {
+  padding-bottom: 2.5rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+}
+
+.pt-12 {
+  padding-top: 3rem;
+}
+
+.pr-12 {
+  padding-right: 3rem;
+}
+
+.pb-12 {
+  padding-bottom: 3rem;
+}
+
+.pl-12 {
+  padding-left: 3rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
+}
+
+.pr-16 {
+  padding-right: 4rem;
+}
+
+.pb-16 {
+  padding-bottom: 4rem;
+}
+
+.pl-16 {
+  padding-left: 4rem;
+}
+
+.pt-20 {
+  padding-top: 5rem;
+}
+
+.pr-20 {
+  padding-right: 5rem;
+}
+
+.pb-20 {
+  padding-bottom: 5rem;
+}
+
+.pl-20 {
+  padding-left: 5rem;
+}
+
+.pt-80 {
+  padding-top: 20rem;
+}
+
+.pr-80 {
+  padding-right: 20rem;
+}
+
+.pb-80 {
+  padding-bottom: 20rem;
+}
+
+.pl-80 {
+  padding-left: 20rem;
 }
 
 .pt-px {
@@ -4493,6 +4972,10 @@ button,
 .z-auto {
   z-index: auto;
 }
+
+/* CitizenNet utilities
+** @import "citizennet-css"
+*/
 
 @media (min-width: 576px) {
   .sm\:list-reset {
@@ -6466,6 +6949,26 @@ button,
     margin: 2rem;
   }
 
+  .sm\:m-10 {
+    margin: 2.5rem;
+  }
+
+  .sm\:m-12 {
+    margin: 3rem;
+  }
+
+  .sm\:m-16 {
+    margin: 4rem;
+  }
+
+  .sm\:m-20 {
+    margin: 5rem;
+  }
+
+  .sm\:m-80 {
+    margin: 20rem;
+  }
+
   .sm\:m-auto {
     margin: auto;
   }
@@ -6542,6 +7045,56 @@ button,
   .sm\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .sm\:my-10 {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .sm\:mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .sm\:my-12 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .sm\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .sm\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .sm\:mx-16 {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+
+  .sm\:my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .sm\:mx-20 {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .sm\:my-80 {
+    margin-top: 20rem;
+    margin-bottom: 20rem;
+  }
+
+  .sm\:mx-80 {
+    margin-left: 20rem;
+    margin-right: 20rem;
   }
 
   .sm\:my-auto {
@@ -6676,6 +7229,86 @@ button,
     margin-left: 2rem;
   }
 
+  .sm\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
+  .sm\:mr-10 {
+    margin-right: 2.5rem;
+  }
+
+  .sm\:mb-10 {
+    margin-bottom: 2.5rem;
+  }
+
+  .sm\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .sm\:mt-12 {
+    margin-top: 3rem;
+  }
+
+  .sm\:mr-12 {
+    margin-right: 3rem;
+  }
+
+  .sm\:mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .sm\:ml-12 {
+    margin-left: 3rem;
+  }
+
+  .sm\:mt-16 {
+    margin-top: 4rem;
+  }
+
+  .sm\:mr-16 {
+    margin-right: 4rem;
+  }
+
+  .sm\:mb-16 {
+    margin-bottom: 4rem;
+  }
+
+  .sm\:ml-16 {
+    margin-left: 4rem;
+  }
+
+  .sm\:mt-20 {
+    margin-top: 5rem;
+  }
+
+  .sm\:mr-20 {
+    margin-right: 5rem;
+  }
+
+  .sm\:mb-20 {
+    margin-bottom: 5rem;
+  }
+
+  .sm\:ml-20 {
+    margin-left: 5rem;
+  }
+
+  .sm\:mt-80 {
+    margin-top: 20rem;
+  }
+
+  .sm\:mr-80 {
+    margin-right: 20rem;
+  }
+
+  .sm\:mb-80 {
+    margin-bottom: 20rem;
+  }
+
+  .sm\:ml-80 {
+    margin-left: 20rem;
+  }
+
   .sm\:mt-auto {
     margin-top: auto;
   }
@@ -6804,6 +7437,30 @@ button,
     margin: -2rem;
   }
 
+  .sm\:-m-10 {
+    margin: -2.5rem;
+  }
+
+  .sm\:-m-12 {
+    margin: -3rem;
+  }
+
+  .sm\:-m-16 {
+    margin: -4rem;
+  }
+
+  .sm\:-m-20 {
+    margin: -5rem;
+  }
+
+  .sm\:-m-80 {
+    margin: -20rem;
+  }
+
+  .sm\:-m-auto {
+    margin: -auto;
+  }
+
   .sm\:-m-px {
     margin: -1px;
   }
@@ -6876,6 +7533,66 @@ button,
   .sm\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .sm\:-my-10 {
+    margin-top: -2.5rem;
+    margin-bottom: -2.5rem;
+  }
+
+  .sm\:-mx-10 {
+    margin-left: -2.5rem;
+    margin-right: -2.5rem;
+  }
+
+  .sm\:-my-12 {
+    margin-top: -3rem;
+    margin-bottom: -3rem;
+  }
+
+  .sm\:-mx-12 {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+
+  .sm\:-my-16 {
+    margin-top: -4rem;
+    margin-bottom: -4rem;
+  }
+
+  .sm\:-mx-16 {
+    margin-left: -4rem;
+    margin-right: -4rem;
+  }
+
+  .sm\:-my-20 {
+    margin-top: -5rem;
+    margin-bottom: -5rem;
+  }
+
+  .sm\:-mx-20 {
+    margin-left: -5rem;
+    margin-right: -5rem;
+  }
+
+  .sm\:-my-80 {
+    margin-top: -20rem;
+    margin-bottom: -20rem;
+  }
+
+  .sm\:-mx-80 {
+    margin-left: -20rem;
+    margin-right: -20rem;
+  }
+
+  .sm\:-my-auto {
+    margin-top: -auto;
+    margin-bottom: -auto;
+  }
+
+  .sm\:-mx-auto {
+    margin-left: -auto;
+    margin-right: -auto;
   }
 
   .sm\:-my-px {
@@ -7000,6 +7717,102 @@ button,
     margin-left: -2rem;
   }
 
+  .sm\:-mt-10 {
+    margin-top: -2.5rem;
+  }
+
+  .sm\:-mr-10 {
+    margin-right: -2.5rem;
+  }
+
+  .sm\:-mb-10 {
+    margin-bottom: -2.5rem;
+  }
+
+  .sm\:-ml-10 {
+    margin-left: -2.5rem;
+  }
+
+  .sm\:-mt-12 {
+    margin-top: -3rem;
+  }
+
+  .sm\:-mr-12 {
+    margin-right: -3rem;
+  }
+
+  .sm\:-mb-12 {
+    margin-bottom: -3rem;
+  }
+
+  .sm\:-ml-12 {
+    margin-left: -3rem;
+  }
+
+  .sm\:-mt-16 {
+    margin-top: -4rem;
+  }
+
+  .sm\:-mr-16 {
+    margin-right: -4rem;
+  }
+
+  .sm\:-mb-16 {
+    margin-bottom: -4rem;
+  }
+
+  .sm\:-ml-16 {
+    margin-left: -4rem;
+  }
+
+  .sm\:-mt-20 {
+    margin-top: -5rem;
+  }
+
+  .sm\:-mr-20 {
+    margin-right: -5rem;
+  }
+
+  .sm\:-mb-20 {
+    margin-bottom: -5rem;
+  }
+
+  .sm\:-ml-20 {
+    margin-left: -5rem;
+  }
+
+  .sm\:-mt-80 {
+    margin-top: -20rem;
+  }
+
+  .sm\:-mr-80 {
+    margin-right: -20rem;
+  }
+
+  .sm\:-mb-80 {
+    margin-bottom: -20rem;
+  }
+
+  .sm\:-ml-80 {
+    margin-left: -20rem;
+  }
+
+  .sm\:-mt-auto {
+    margin-top: -auto;
+  }
+
+  .sm\:-mr-auto {
+    margin-right: -auto;
+  }
+
+  .sm\:-mb-auto {
+    margin-bottom: -auto;
+  }
+
+  .sm\:-ml-auto {
+    margin-left: -auto;
+  }
+
   .sm\:-mt-px {
     margin-top: -1px;
   }
@@ -7098,6 +7911,26 @@ button,
     padding: 2rem;
   }
 
+  .sm\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .sm\:p-12 {
+    padding: 3rem;
+  }
+
+  .sm\:p-16 {
+    padding: 4rem;
+  }
+
+  .sm\:p-20 {
+    padding: 5rem;
+  }
+
+  .sm\:p-80 {
+    padding: 20rem;
+  }
+
   .sm\:p-px {
     padding: 1px;
   }
@@ -7170,6 +8003,56 @@ button,
   .sm\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .sm\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .sm\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .sm\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .sm\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .sm\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .sm\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .sm\:px-20 {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .sm\:py-80 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .sm\:px-80 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .sm\:py-px {
@@ -7292,6 +8175,86 @@ button,
 
   .sm\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .sm\:pt-10 {
+    padding-top: 2.5rem;
+  }
+
+  .sm\:pr-10 {
+    padding-right: 2.5rem;
+  }
+
+  .sm\:pb-10 {
+    padding-bottom: 2.5rem;
+  }
+
+  .sm\:pl-10 {
+    padding-left: 2.5rem;
+  }
+
+  .sm\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .sm\:pr-12 {
+    padding-right: 3rem;
+  }
+
+  .sm\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .sm\:pl-12 {
+    padding-left: 3rem;
+  }
+
+  .sm\:pt-16 {
+    padding-top: 4rem;
+  }
+
+  .sm\:pr-16 {
+    padding-right: 4rem;
+  }
+
+  .sm\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .sm\:pl-16 {
+    padding-left: 4rem;
+  }
+
+  .sm\:pt-20 {
+    padding-top: 5rem;
+  }
+
+  .sm\:pr-20 {
+    padding-right: 5rem;
+  }
+
+  .sm\:pb-20 {
+    padding-bottom: 5rem;
+  }
+
+  .sm\:pl-20 {
+    padding-left: 5rem;
+  }
+
+  .sm\:pt-80 {
+    padding-top: 20rem;
+  }
+
+  .sm\:pr-80 {
+    padding-right: 20rem;
+  }
+
+  .sm\:pb-80 {
+    padding-bottom: 20rem;
+  }
+
+  .sm\:pl-80 {
+    padding-left: 20rem;
   }
 
   .sm\:pt-px {
@@ -10337,6 +11300,26 @@ button,
     margin: 2rem;
   }
 
+  .md\:m-10 {
+    margin: 2.5rem;
+  }
+
+  .md\:m-12 {
+    margin: 3rem;
+  }
+
+  .md\:m-16 {
+    margin: 4rem;
+  }
+
+  .md\:m-20 {
+    margin: 5rem;
+  }
+
+  .md\:m-80 {
+    margin: 20rem;
+  }
+
   .md\:m-auto {
     margin: auto;
   }
@@ -10413,6 +11396,56 @@ button,
   .md\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .md\:my-10 {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .md\:mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .md\:my-12 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .md\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .md\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .md\:mx-16 {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+
+  .md\:my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .md\:mx-20 {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .md\:my-80 {
+    margin-top: 20rem;
+    margin-bottom: 20rem;
+  }
+
+  .md\:mx-80 {
+    margin-left: 20rem;
+    margin-right: 20rem;
   }
 
   .md\:my-auto {
@@ -10547,6 +11580,86 @@ button,
     margin-left: 2rem;
   }
 
+  .md\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
+  .md\:mr-10 {
+    margin-right: 2.5rem;
+  }
+
+  .md\:mb-10 {
+    margin-bottom: 2.5rem;
+  }
+
+  .md\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .md\:mt-12 {
+    margin-top: 3rem;
+  }
+
+  .md\:mr-12 {
+    margin-right: 3rem;
+  }
+
+  .md\:mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .md\:ml-12 {
+    margin-left: 3rem;
+  }
+
+  .md\:mt-16 {
+    margin-top: 4rem;
+  }
+
+  .md\:mr-16 {
+    margin-right: 4rem;
+  }
+
+  .md\:mb-16 {
+    margin-bottom: 4rem;
+  }
+
+  .md\:ml-16 {
+    margin-left: 4rem;
+  }
+
+  .md\:mt-20 {
+    margin-top: 5rem;
+  }
+
+  .md\:mr-20 {
+    margin-right: 5rem;
+  }
+
+  .md\:mb-20 {
+    margin-bottom: 5rem;
+  }
+
+  .md\:ml-20 {
+    margin-left: 5rem;
+  }
+
+  .md\:mt-80 {
+    margin-top: 20rem;
+  }
+
+  .md\:mr-80 {
+    margin-right: 20rem;
+  }
+
+  .md\:mb-80 {
+    margin-bottom: 20rem;
+  }
+
+  .md\:ml-80 {
+    margin-left: 20rem;
+  }
+
   .md\:mt-auto {
     margin-top: auto;
   }
@@ -10675,6 +11788,30 @@ button,
     margin: -2rem;
   }
 
+  .md\:-m-10 {
+    margin: -2.5rem;
+  }
+
+  .md\:-m-12 {
+    margin: -3rem;
+  }
+
+  .md\:-m-16 {
+    margin: -4rem;
+  }
+
+  .md\:-m-20 {
+    margin: -5rem;
+  }
+
+  .md\:-m-80 {
+    margin: -20rem;
+  }
+
+  .md\:-m-auto {
+    margin: -auto;
+  }
+
   .md\:-m-px {
     margin: -1px;
   }
@@ -10747,6 +11884,66 @@ button,
   .md\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .md\:-my-10 {
+    margin-top: -2.5rem;
+    margin-bottom: -2.5rem;
+  }
+
+  .md\:-mx-10 {
+    margin-left: -2.5rem;
+    margin-right: -2.5rem;
+  }
+
+  .md\:-my-12 {
+    margin-top: -3rem;
+    margin-bottom: -3rem;
+  }
+
+  .md\:-mx-12 {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+
+  .md\:-my-16 {
+    margin-top: -4rem;
+    margin-bottom: -4rem;
+  }
+
+  .md\:-mx-16 {
+    margin-left: -4rem;
+    margin-right: -4rem;
+  }
+
+  .md\:-my-20 {
+    margin-top: -5rem;
+    margin-bottom: -5rem;
+  }
+
+  .md\:-mx-20 {
+    margin-left: -5rem;
+    margin-right: -5rem;
+  }
+
+  .md\:-my-80 {
+    margin-top: -20rem;
+    margin-bottom: -20rem;
+  }
+
+  .md\:-mx-80 {
+    margin-left: -20rem;
+    margin-right: -20rem;
+  }
+
+  .md\:-my-auto {
+    margin-top: -auto;
+    margin-bottom: -auto;
+  }
+
+  .md\:-mx-auto {
+    margin-left: -auto;
+    margin-right: -auto;
   }
 
   .md\:-my-px {
@@ -10871,6 +12068,102 @@ button,
     margin-left: -2rem;
   }
 
+  .md\:-mt-10 {
+    margin-top: -2.5rem;
+  }
+
+  .md\:-mr-10 {
+    margin-right: -2.5rem;
+  }
+
+  .md\:-mb-10 {
+    margin-bottom: -2.5rem;
+  }
+
+  .md\:-ml-10 {
+    margin-left: -2.5rem;
+  }
+
+  .md\:-mt-12 {
+    margin-top: -3rem;
+  }
+
+  .md\:-mr-12 {
+    margin-right: -3rem;
+  }
+
+  .md\:-mb-12 {
+    margin-bottom: -3rem;
+  }
+
+  .md\:-ml-12 {
+    margin-left: -3rem;
+  }
+
+  .md\:-mt-16 {
+    margin-top: -4rem;
+  }
+
+  .md\:-mr-16 {
+    margin-right: -4rem;
+  }
+
+  .md\:-mb-16 {
+    margin-bottom: -4rem;
+  }
+
+  .md\:-ml-16 {
+    margin-left: -4rem;
+  }
+
+  .md\:-mt-20 {
+    margin-top: -5rem;
+  }
+
+  .md\:-mr-20 {
+    margin-right: -5rem;
+  }
+
+  .md\:-mb-20 {
+    margin-bottom: -5rem;
+  }
+
+  .md\:-ml-20 {
+    margin-left: -5rem;
+  }
+
+  .md\:-mt-80 {
+    margin-top: -20rem;
+  }
+
+  .md\:-mr-80 {
+    margin-right: -20rem;
+  }
+
+  .md\:-mb-80 {
+    margin-bottom: -20rem;
+  }
+
+  .md\:-ml-80 {
+    margin-left: -20rem;
+  }
+
+  .md\:-mt-auto {
+    margin-top: -auto;
+  }
+
+  .md\:-mr-auto {
+    margin-right: -auto;
+  }
+
+  .md\:-mb-auto {
+    margin-bottom: -auto;
+  }
+
+  .md\:-ml-auto {
+    margin-left: -auto;
+  }
+
   .md\:-mt-px {
     margin-top: -1px;
   }
@@ -10969,6 +12262,26 @@ button,
     padding: 2rem;
   }
 
+  .md\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .md\:p-12 {
+    padding: 3rem;
+  }
+
+  .md\:p-16 {
+    padding: 4rem;
+  }
+
+  .md\:p-20 {
+    padding: 5rem;
+  }
+
+  .md\:p-80 {
+    padding: 20rem;
+  }
+
   .md\:p-px {
     padding: 1px;
   }
@@ -11041,6 +12354,56 @@ button,
   .md\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .md\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .md\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .md\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .md\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .md\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .md\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .md\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .md\:px-20 {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .md\:py-80 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .md\:px-80 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .md\:py-px {
@@ -11163,6 +12526,86 @@ button,
 
   .md\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .md\:pt-10 {
+    padding-top: 2.5rem;
+  }
+
+  .md\:pr-10 {
+    padding-right: 2.5rem;
+  }
+
+  .md\:pb-10 {
+    padding-bottom: 2.5rem;
+  }
+
+  .md\:pl-10 {
+    padding-left: 2.5rem;
+  }
+
+  .md\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .md\:pr-12 {
+    padding-right: 3rem;
+  }
+
+  .md\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .md\:pl-12 {
+    padding-left: 3rem;
+  }
+
+  .md\:pt-16 {
+    padding-top: 4rem;
+  }
+
+  .md\:pr-16 {
+    padding-right: 4rem;
+  }
+
+  .md\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .md\:pl-16 {
+    padding-left: 4rem;
+  }
+
+  .md\:pt-20 {
+    padding-top: 5rem;
+  }
+
+  .md\:pr-20 {
+    padding-right: 5rem;
+  }
+
+  .md\:pb-20 {
+    padding-bottom: 5rem;
+  }
+
+  .md\:pl-20 {
+    padding-left: 5rem;
+  }
+
+  .md\:pt-80 {
+    padding-top: 20rem;
+  }
+
+  .md\:pr-80 {
+    padding-right: 20rem;
+  }
+
+  .md\:pb-80 {
+    padding-bottom: 20rem;
+  }
+
+  .md\:pl-80 {
+    padding-left: 20rem;
   }
 
   .md\:pt-px {
@@ -14208,6 +15651,26 @@ button,
     margin: 2rem;
   }
 
+  .lg\:m-10 {
+    margin: 2.5rem;
+  }
+
+  .lg\:m-12 {
+    margin: 3rem;
+  }
+
+  .lg\:m-16 {
+    margin: 4rem;
+  }
+
+  .lg\:m-20 {
+    margin: 5rem;
+  }
+
+  .lg\:m-80 {
+    margin: 20rem;
+  }
+
   .lg\:m-auto {
     margin: auto;
   }
@@ -14284,6 +15747,56 @@ button,
   .lg\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .lg\:my-10 {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .lg\:mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .lg\:my-12 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .lg\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .lg\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .lg\:mx-16 {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+
+  .lg\:my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .lg\:mx-20 {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .lg\:my-80 {
+    margin-top: 20rem;
+    margin-bottom: 20rem;
+  }
+
+  .lg\:mx-80 {
+    margin-left: 20rem;
+    margin-right: 20rem;
   }
 
   .lg\:my-auto {
@@ -14418,6 +15931,86 @@ button,
     margin-left: 2rem;
   }
 
+  .lg\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
+  .lg\:mr-10 {
+    margin-right: 2.5rem;
+  }
+
+  .lg\:mb-10 {
+    margin-bottom: 2.5rem;
+  }
+
+  .lg\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .lg\:mt-12 {
+    margin-top: 3rem;
+  }
+
+  .lg\:mr-12 {
+    margin-right: 3rem;
+  }
+
+  .lg\:mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .lg\:ml-12 {
+    margin-left: 3rem;
+  }
+
+  .lg\:mt-16 {
+    margin-top: 4rem;
+  }
+
+  .lg\:mr-16 {
+    margin-right: 4rem;
+  }
+
+  .lg\:mb-16 {
+    margin-bottom: 4rem;
+  }
+
+  .lg\:ml-16 {
+    margin-left: 4rem;
+  }
+
+  .lg\:mt-20 {
+    margin-top: 5rem;
+  }
+
+  .lg\:mr-20 {
+    margin-right: 5rem;
+  }
+
+  .lg\:mb-20 {
+    margin-bottom: 5rem;
+  }
+
+  .lg\:ml-20 {
+    margin-left: 5rem;
+  }
+
+  .lg\:mt-80 {
+    margin-top: 20rem;
+  }
+
+  .lg\:mr-80 {
+    margin-right: 20rem;
+  }
+
+  .lg\:mb-80 {
+    margin-bottom: 20rem;
+  }
+
+  .lg\:ml-80 {
+    margin-left: 20rem;
+  }
+
   .lg\:mt-auto {
     margin-top: auto;
   }
@@ -14546,6 +16139,30 @@ button,
     margin: -2rem;
   }
 
+  .lg\:-m-10 {
+    margin: -2.5rem;
+  }
+
+  .lg\:-m-12 {
+    margin: -3rem;
+  }
+
+  .lg\:-m-16 {
+    margin: -4rem;
+  }
+
+  .lg\:-m-20 {
+    margin: -5rem;
+  }
+
+  .lg\:-m-80 {
+    margin: -20rem;
+  }
+
+  .lg\:-m-auto {
+    margin: -auto;
+  }
+
   .lg\:-m-px {
     margin: -1px;
   }
@@ -14618,6 +16235,66 @@ button,
   .lg\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .lg\:-my-10 {
+    margin-top: -2.5rem;
+    margin-bottom: -2.5rem;
+  }
+
+  .lg\:-mx-10 {
+    margin-left: -2.5rem;
+    margin-right: -2.5rem;
+  }
+
+  .lg\:-my-12 {
+    margin-top: -3rem;
+    margin-bottom: -3rem;
+  }
+
+  .lg\:-mx-12 {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+
+  .lg\:-my-16 {
+    margin-top: -4rem;
+    margin-bottom: -4rem;
+  }
+
+  .lg\:-mx-16 {
+    margin-left: -4rem;
+    margin-right: -4rem;
+  }
+
+  .lg\:-my-20 {
+    margin-top: -5rem;
+    margin-bottom: -5rem;
+  }
+
+  .lg\:-mx-20 {
+    margin-left: -5rem;
+    margin-right: -5rem;
+  }
+
+  .lg\:-my-80 {
+    margin-top: -20rem;
+    margin-bottom: -20rem;
+  }
+
+  .lg\:-mx-80 {
+    margin-left: -20rem;
+    margin-right: -20rem;
+  }
+
+  .lg\:-my-auto {
+    margin-top: -auto;
+    margin-bottom: -auto;
+  }
+
+  .lg\:-mx-auto {
+    margin-left: -auto;
+    margin-right: -auto;
   }
 
   .lg\:-my-px {
@@ -14742,6 +16419,102 @@ button,
     margin-left: -2rem;
   }
 
+  .lg\:-mt-10 {
+    margin-top: -2.5rem;
+  }
+
+  .lg\:-mr-10 {
+    margin-right: -2.5rem;
+  }
+
+  .lg\:-mb-10 {
+    margin-bottom: -2.5rem;
+  }
+
+  .lg\:-ml-10 {
+    margin-left: -2.5rem;
+  }
+
+  .lg\:-mt-12 {
+    margin-top: -3rem;
+  }
+
+  .lg\:-mr-12 {
+    margin-right: -3rem;
+  }
+
+  .lg\:-mb-12 {
+    margin-bottom: -3rem;
+  }
+
+  .lg\:-ml-12 {
+    margin-left: -3rem;
+  }
+
+  .lg\:-mt-16 {
+    margin-top: -4rem;
+  }
+
+  .lg\:-mr-16 {
+    margin-right: -4rem;
+  }
+
+  .lg\:-mb-16 {
+    margin-bottom: -4rem;
+  }
+
+  .lg\:-ml-16 {
+    margin-left: -4rem;
+  }
+
+  .lg\:-mt-20 {
+    margin-top: -5rem;
+  }
+
+  .lg\:-mr-20 {
+    margin-right: -5rem;
+  }
+
+  .lg\:-mb-20 {
+    margin-bottom: -5rem;
+  }
+
+  .lg\:-ml-20 {
+    margin-left: -5rem;
+  }
+
+  .lg\:-mt-80 {
+    margin-top: -20rem;
+  }
+
+  .lg\:-mr-80 {
+    margin-right: -20rem;
+  }
+
+  .lg\:-mb-80 {
+    margin-bottom: -20rem;
+  }
+
+  .lg\:-ml-80 {
+    margin-left: -20rem;
+  }
+
+  .lg\:-mt-auto {
+    margin-top: -auto;
+  }
+
+  .lg\:-mr-auto {
+    margin-right: -auto;
+  }
+
+  .lg\:-mb-auto {
+    margin-bottom: -auto;
+  }
+
+  .lg\:-ml-auto {
+    margin-left: -auto;
+  }
+
   .lg\:-mt-px {
     margin-top: -1px;
   }
@@ -14840,6 +16613,26 @@ button,
     padding: 2rem;
   }
 
+  .lg\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .lg\:p-12 {
+    padding: 3rem;
+  }
+
+  .lg\:p-16 {
+    padding: 4rem;
+  }
+
+  .lg\:p-20 {
+    padding: 5rem;
+  }
+
+  .lg\:p-80 {
+    padding: 20rem;
+  }
+
   .lg\:p-px {
     padding: 1px;
   }
@@ -14912,6 +16705,56 @@ button,
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .lg\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .lg\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .lg\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .lg\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .lg\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .lg\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .lg\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .lg\:px-20 {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .lg\:py-80 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .lg\:px-80 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .lg\:py-px {
@@ -15034,6 +16877,86 @@ button,
 
   .lg\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .lg\:pt-10 {
+    padding-top: 2.5rem;
+  }
+
+  .lg\:pr-10 {
+    padding-right: 2.5rem;
+  }
+
+  .lg\:pb-10 {
+    padding-bottom: 2.5rem;
+  }
+
+  .lg\:pl-10 {
+    padding-left: 2.5rem;
+  }
+
+  .lg\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .lg\:pr-12 {
+    padding-right: 3rem;
+  }
+
+  .lg\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .lg\:pl-12 {
+    padding-left: 3rem;
+  }
+
+  .lg\:pt-16 {
+    padding-top: 4rem;
+  }
+
+  .lg\:pr-16 {
+    padding-right: 4rem;
+  }
+
+  .lg\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .lg\:pl-16 {
+    padding-left: 4rem;
+  }
+
+  .lg\:pt-20 {
+    padding-top: 5rem;
+  }
+
+  .lg\:pr-20 {
+    padding-right: 5rem;
+  }
+
+  .lg\:pb-20 {
+    padding-bottom: 5rem;
+  }
+
+  .lg\:pl-20 {
+    padding-left: 5rem;
+  }
+
+  .lg\:pt-80 {
+    padding-top: 20rem;
+  }
+
+  .lg\:pr-80 {
+    padding-right: 20rem;
+  }
+
+  .lg\:pb-80 {
+    padding-bottom: 20rem;
+  }
+
+  .lg\:pl-80 {
+    padding-left: 20rem;
   }
 
   .lg\:pt-px {
@@ -18079,6 +20002,26 @@ button,
     margin: 2rem;
   }
 
+  .xl\:m-10 {
+    margin: 2.5rem;
+  }
+
+  .xl\:m-12 {
+    margin: 3rem;
+  }
+
+  .xl\:m-16 {
+    margin: 4rem;
+  }
+
+  .xl\:m-20 {
+    margin: 5rem;
+  }
+
+  .xl\:m-80 {
+    margin: 20rem;
+  }
+
   .xl\:m-auto {
     margin: auto;
   }
@@ -18155,6 +20098,56 @@ button,
   .xl\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .xl\:my-10 {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .xl\:mx-10 {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
+
+  .xl\:my-12 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .xl\:mx-12 {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+
+  .xl\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .xl\:mx-16 {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+
+  .xl\:my-20 {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .xl\:mx-20 {
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .xl\:my-80 {
+    margin-top: 20rem;
+    margin-bottom: 20rem;
+  }
+
+  .xl\:mx-80 {
+    margin-left: 20rem;
+    margin-right: 20rem;
   }
 
   .xl\:my-auto {
@@ -18289,6 +20282,86 @@ button,
     margin-left: 2rem;
   }
 
+  .xl\:mt-10 {
+    margin-top: 2.5rem;
+  }
+
+  .xl\:mr-10 {
+    margin-right: 2.5rem;
+  }
+
+  .xl\:mb-10 {
+    margin-bottom: 2.5rem;
+  }
+
+  .xl\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .xl\:mt-12 {
+    margin-top: 3rem;
+  }
+
+  .xl\:mr-12 {
+    margin-right: 3rem;
+  }
+
+  .xl\:mb-12 {
+    margin-bottom: 3rem;
+  }
+
+  .xl\:ml-12 {
+    margin-left: 3rem;
+  }
+
+  .xl\:mt-16 {
+    margin-top: 4rem;
+  }
+
+  .xl\:mr-16 {
+    margin-right: 4rem;
+  }
+
+  .xl\:mb-16 {
+    margin-bottom: 4rem;
+  }
+
+  .xl\:ml-16 {
+    margin-left: 4rem;
+  }
+
+  .xl\:mt-20 {
+    margin-top: 5rem;
+  }
+
+  .xl\:mr-20 {
+    margin-right: 5rem;
+  }
+
+  .xl\:mb-20 {
+    margin-bottom: 5rem;
+  }
+
+  .xl\:ml-20 {
+    margin-left: 5rem;
+  }
+
+  .xl\:mt-80 {
+    margin-top: 20rem;
+  }
+
+  .xl\:mr-80 {
+    margin-right: 20rem;
+  }
+
+  .xl\:mb-80 {
+    margin-bottom: 20rem;
+  }
+
+  .xl\:ml-80 {
+    margin-left: 20rem;
+  }
+
   .xl\:mt-auto {
     margin-top: auto;
   }
@@ -18417,6 +20490,30 @@ button,
     margin: -2rem;
   }
 
+  .xl\:-m-10 {
+    margin: -2.5rem;
+  }
+
+  .xl\:-m-12 {
+    margin: -3rem;
+  }
+
+  .xl\:-m-16 {
+    margin: -4rem;
+  }
+
+  .xl\:-m-20 {
+    margin: -5rem;
+  }
+
+  .xl\:-m-80 {
+    margin: -20rem;
+  }
+
+  .xl\:-m-auto {
+    margin: -auto;
+  }
+
   .xl\:-m-px {
     margin: -1px;
   }
@@ -18489,6 +20586,66 @@ button,
   .xl\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .xl\:-my-10 {
+    margin-top: -2.5rem;
+    margin-bottom: -2.5rem;
+  }
+
+  .xl\:-mx-10 {
+    margin-left: -2.5rem;
+    margin-right: -2.5rem;
+  }
+
+  .xl\:-my-12 {
+    margin-top: -3rem;
+    margin-bottom: -3rem;
+  }
+
+  .xl\:-mx-12 {
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+
+  .xl\:-my-16 {
+    margin-top: -4rem;
+    margin-bottom: -4rem;
+  }
+
+  .xl\:-mx-16 {
+    margin-left: -4rem;
+    margin-right: -4rem;
+  }
+
+  .xl\:-my-20 {
+    margin-top: -5rem;
+    margin-bottom: -5rem;
+  }
+
+  .xl\:-mx-20 {
+    margin-left: -5rem;
+    margin-right: -5rem;
+  }
+
+  .xl\:-my-80 {
+    margin-top: -20rem;
+    margin-bottom: -20rem;
+  }
+
+  .xl\:-mx-80 {
+    margin-left: -20rem;
+    margin-right: -20rem;
+  }
+
+  .xl\:-my-auto {
+    margin-top: -auto;
+    margin-bottom: -auto;
+  }
+
+  .xl\:-mx-auto {
+    margin-left: -auto;
+    margin-right: -auto;
   }
 
   .xl\:-my-px {
@@ -18613,6 +20770,102 @@ button,
     margin-left: -2rem;
   }
 
+  .xl\:-mt-10 {
+    margin-top: -2.5rem;
+  }
+
+  .xl\:-mr-10 {
+    margin-right: -2.5rem;
+  }
+
+  .xl\:-mb-10 {
+    margin-bottom: -2.5rem;
+  }
+
+  .xl\:-ml-10 {
+    margin-left: -2.5rem;
+  }
+
+  .xl\:-mt-12 {
+    margin-top: -3rem;
+  }
+
+  .xl\:-mr-12 {
+    margin-right: -3rem;
+  }
+
+  .xl\:-mb-12 {
+    margin-bottom: -3rem;
+  }
+
+  .xl\:-ml-12 {
+    margin-left: -3rem;
+  }
+
+  .xl\:-mt-16 {
+    margin-top: -4rem;
+  }
+
+  .xl\:-mr-16 {
+    margin-right: -4rem;
+  }
+
+  .xl\:-mb-16 {
+    margin-bottom: -4rem;
+  }
+
+  .xl\:-ml-16 {
+    margin-left: -4rem;
+  }
+
+  .xl\:-mt-20 {
+    margin-top: -5rem;
+  }
+
+  .xl\:-mr-20 {
+    margin-right: -5rem;
+  }
+
+  .xl\:-mb-20 {
+    margin-bottom: -5rem;
+  }
+
+  .xl\:-ml-20 {
+    margin-left: -5rem;
+  }
+
+  .xl\:-mt-80 {
+    margin-top: -20rem;
+  }
+
+  .xl\:-mr-80 {
+    margin-right: -20rem;
+  }
+
+  .xl\:-mb-80 {
+    margin-bottom: -20rem;
+  }
+
+  .xl\:-ml-80 {
+    margin-left: -20rem;
+  }
+
+  .xl\:-mt-auto {
+    margin-top: -auto;
+  }
+
+  .xl\:-mr-auto {
+    margin-right: -auto;
+  }
+
+  .xl\:-mb-auto {
+    margin-bottom: -auto;
+  }
+
+  .xl\:-ml-auto {
+    margin-left: -auto;
+  }
+
   .xl\:-mt-px {
     margin-top: -1px;
   }
@@ -18711,6 +20964,26 @@ button,
     padding: 2rem;
   }
 
+  .xl\:p-10 {
+    padding: 2.5rem;
+  }
+
+  .xl\:p-12 {
+    padding: 3rem;
+  }
+
+  .xl\:p-16 {
+    padding: 4rem;
+  }
+
+  .xl\:p-20 {
+    padding: 5rem;
+  }
+
+  .xl\:p-80 {
+    padding: 20rem;
+  }
+
   .xl\:p-px {
     padding: 1px;
   }
@@ -18783,6 +21056,56 @@ button,
   .xl\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .xl\:py-10 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .xl\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .xl\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .xl\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .xl\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .xl\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+
+  .xl\:py-20 {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .xl\:px-20 {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .xl\:py-80 {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .xl\:px-80 {
+    padding-left: 20rem;
+    padding-right: 20rem;
   }
 
   .xl\:py-px {
@@ -18905,6 +21228,86 @@ button,
 
   .xl\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .xl\:pt-10 {
+    padding-top: 2.5rem;
+  }
+
+  .xl\:pr-10 {
+    padding-right: 2.5rem;
+  }
+
+  .xl\:pb-10 {
+    padding-bottom: 2.5rem;
+  }
+
+  .xl\:pl-10 {
+    padding-left: 2.5rem;
+  }
+
+  .xl\:pt-12 {
+    padding-top: 3rem;
+  }
+
+  .xl\:pr-12 {
+    padding-right: 3rem;
+  }
+
+  .xl\:pb-12 {
+    padding-bottom: 3rem;
+  }
+
+  .xl\:pl-12 {
+    padding-left: 3rem;
+  }
+
+  .xl\:pt-16 {
+    padding-top: 4rem;
+  }
+
+  .xl\:pr-16 {
+    padding-right: 4rem;
+  }
+
+  .xl\:pb-16 {
+    padding-bottom: 4rem;
+  }
+
+  .xl\:pl-16 {
+    padding-left: 4rem;
+  }
+
+  .xl\:pt-20 {
+    padding-top: 5rem;
+  }
+
+  .xl\:pr-20 {
+    padding-right: 5rem;
+  }
+
+  .xl\:pb-20 {
+    padding-bottom: 5rem;
+  }
+
+  .xl\:pl-20 {
+    padding-left: 5rem;
+  }
+
+  .xl\:pt-80 {
+    padding-top: 20rem;
+  }
+
+  .xl\:pr-80 {
+    padding-right: 20rem;
+  }
+
+  .xl\:pb-80 {
+    padding-bottom: 20rem;
+  }
+
+  .xl\:pl-80 {
+    padding-left: 20rem;
   }
 
   .xl\:pt-px {
