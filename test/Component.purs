@@ -130,9 +130,9 @@ documentationBlock title description block =
 componentBlock :: ∀ e. String -> HTML e -> HTML e
 componentBlock config slot =
   HH.div
-  [ css "rounded overflow-hidden border-2 border-grey-light mb-8 bg-white" ]
+  [ css "rounded border-2 border-grey-light mb-8 bg-white" ]
   [ HH.div [ css "border-b-2 border-grey-light p-4" ] [ mkConfig config ]
-  , HH.div [ css "p-4 bg-grey-lightest" ] [ slot ]
+  , HH.div [ css "p-4 pb-8 bg-grey-lightest" ] [ slot ]
   ]
   where
     mkConfig :: ∀ i p. String -> H.HTML i p

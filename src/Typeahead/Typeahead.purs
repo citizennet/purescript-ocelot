@@ -29,7 +29,8 @@ type TypeaheadItem = String
 -- Component state definition
 type State =
   { items      :: Array TypeaheadItem
-  , selections :: Array TypeaheadItem }
+  , selections :: Array TypeaheadItem
+  , search     :: Maybe String }
 
 -- Component query definition
 data Query a
@@ -58,13 +59,11 @@ type ChildSlot = Either2 Slot Slot
 data PrimitiveSlot
   = ContainerSlot
   | SearchSlot
-
 derive instance eqPrimitiveSlot :: Eq PrimitiveSlot
 derive instance ordPrimitiveSlot :: Ord PrimitiveSlot
 
 -- Enclosing slot type
 data Slot = Slot PrimitiveSlot
-
 derive instance eqSlot  :: Eq Slot
 derive instance ordSlot :: Ord Slot
 
@@ -84,7 +83,7 @@ type TypeaheadDSL e =
 component :: ∀ e. TypeaheadComponent e
 component =
   H.parentComponent
-    { initialState: \i -> { items: i.items, selections: [] }
+    { initialState: \i -> { items: i.items, search: Nothing,  selections: [] }
     , render
     , eval
     , receiver: HE.input Receive
@@ -92,8 +91,12 @@ component =
   where
     render :: State -> TypeaheadHTML e
     render st =
-      HH.div_
-      [ renderSelections st
+      HH.div
+      [ HP.class_ $ HH.ClassName "w-full px-3" ]
+      [ HH.label
+        [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
+        [ HH.text "Typeahead" ]
+      , renderSelections st
       , HH.slot'
           CP.cp2
           ( Slot SearchSlot )
@@ -106,6 +109,9 @@ component =
           C.component
           { render: renderContainer, items: st.items }
           ( HE.input HandleContainer )
+      , HH.p
+        [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
+        [ HH.text "This typeahead automatically debounces at 150ms." ]
       ]
 
     eval :: Query ~> TypeaheadDSL e
@@ -129,6 +135,7 @@ component =
           _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
                 $ C.ContainerReceiver { render: renderContainer, items: newItems }
+
           pure a
 
         S.Emit query -> eval query *> pure a
@@ -166,53 +173,45 @@ renderSelections :: ∀ e. State -> TypeaheadHTML e
 renderSelections st = HH.div_
   if length st.selections <= 0
     then []
-    else [ HH.ul_ $ renderSelection <$> st.selections ]
+    else [ HH.div
+      [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full border-b border-grey-lighter" ]
+      [ HH.ul
+        [ HP.class_ $ HH.ClassName "list-reset" ]
+        $ renderSelection <$> st.selections ]
+      ]
   where
-    renderSelection str = HH.li_ [ HH.text str ]
-
-----------
--- Primitive rendering
-
--- One render function is required per primitive.
-
-renderSearch :: ∀ e. S.SearchState e -> H.HTML Void (SearchQuery e)
-renderSearch st = textField "Search Field" "Type to search..." "This typeahead is automatically debounced at 150ms."
-
+    renderSelection str = HH.li
+      [ HP.class_ $ HH.ClassName "px-4 py-1 text-grey-darkest" ]
+      [ HH.text str ]
 
 renderContainer :: C.ContainerState String -> H.HTML Void ContainerQuery
-renderContainer st = HH.div_
+renderContainer st = HH.div [ HP.class_ $ HH.ClassName "relative" ]
   if not st.open
     then []
-    else [ renderItems $ renderItem `mapWithIndex` st.items ]
+    else [ HH.div
+      ( C.getContainerProps
+        [ HP.class_ $ HH.ClassName "absolute bg-white shadow rounded-sm pin-t pin-l w-full" ]
+      )
+      [ HH.ul
+        [ HP.class_ $ HH.ClassName "list-reset" ]
+        $ renderItem `mapWithIndex` st.items
+      ]
+    ]
   where
-    renderItems :: Array (H.HTML Void ContainerQuery) -> H.HTML Void ContainerQuery
-    renderItems html = HH.div ( C.getContainerProps [] ) [ HH.ul_ html ]
-
     renderItem :: Int -> TypeaheadItem -> H.HTML Void ContainerQuery
-    renderItem ix item = HH.li ( C.getItemProps ix [] ) [ HH.text item ]
+    renderItem ix item = HH.li
+      ( C.getItemProps ix
+        [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
+      )
+      [ HH.text item ]
+      where
+        hover = if st.highlightedIndex == Just ix then " bg-grey-lighter" else ""
 
-
-----------
--- Other render helpers
-
-cssLabel :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
-cssLabel = HP.class_ $ HH.ClassName "f6 b db mb2"
-cssInput :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
-cssInput = HP.class_ $ HH.ClassName "input-reset pa2 mb2 db w-100 b--none"
-cssHelperText :: ∀ p i. HH.IProp ( "class" ∷ String | p ) i
-cssHelperText = HP.class_ $ HH.ClassName "f6 black-60 db mb2"
-
--- textField :: ∀ e. String -> String -> String -> HTML e
-textField :: ∀ p e. String → String → String → HH.HTML p (S.SearchQuery Query TypeaheadItem e Unit)
-textField label placeholder helper =
-  HH.div
-  [ HP.class_ $ HH.ClassName "measure" ]
-  [ HH.label
-    [ cssLabel ]
-    [ HH.text label ]
-  , HH.input
-    ( S.getInputProps [ cssInput, HP.placeholder placeholder ] )
-  , HH.small
-    [ cssHelperText ]
-    [ HH.text helper ]
-  ]
+renderSearch :: ∀ e. S.SearchState e -> H.HTML Void (SearchQuery e)
+renderSearch _ =
+  HH.input
+  ( S.getInputProps
+    [ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
+    , HP.placeholder "Type to search..."
+    ]
+  )
