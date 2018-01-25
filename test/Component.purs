@@ -64,11 +64,11 @@ component =
 ----------
 -- Sample data
 
-containerData :: Array DropdownItem
+containerData :: Array String
 containerData =
-  [ "item one"
-  , "item two"
-  , "who knows" ]
+  [ "Instagram"
+  , "Facebook"
+  , "Twitter" ]
 
 
 ----------
