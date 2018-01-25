@@ -9540,7 +9540,7 @@ var PS = {};
   // Render helpers
   var renderSelections = function (st) {
       var renderSelection = function (item) {
-          return Halogen_HTML_Elements.li([ Halogen_HTML_Properties.class_("px-4 py-1 hover:bg-grey-lighter relative") ])([ Halogen_HTML_Elements.span_([ Halogen_HTML_Core.text(item) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(Remove.create(item))) ])([ Halogen_HTML_Core.text("\xd7") ]) ]);
+          return Halogen_HTML_Elements.li([ Halogen_HTML_Properties.class_("px-4 py-1 hover:bg-grey-lighter relative") ])([ Halogen_HTML_Elements.span_([ Halogen_HTML_Core.text(item) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(Remove.create(item))) ])([ Halogen_HTML_Core.text("\xd7;") ]) ]);
       };
       return Halogen_HTML_Elements.div_((function () {
           var $29 = Data_Array.length(st.selections) <= 0;
