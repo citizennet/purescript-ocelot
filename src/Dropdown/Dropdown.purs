@@ -15,12 +15,6 @@ import Select.Primitive.Container as C
 ----------
 -- Item types
 
-type DropdownItem = String
-
-data SelectedStatus
-  = Selected
-  | NotSelected
-
 data SelectableStatus
   = Selectable
   | NotSelectable

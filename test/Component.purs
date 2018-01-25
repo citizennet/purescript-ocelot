@@ -4,11 +4,12 @@ import Prelude
 
 import CN.UI.Dropdown as Dropdown
 import CN.UI.Typeahead as Typeahead
+import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), maybe)
+import Data.Newtype (class Newtype, unwrap)
 import Halogen as H
-import Halogen.Component.ChildPath (cp1)
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -24,14 +25,14 @@ type State
 
 data Query a
   = NoOp a
-  | HandleDropdown (Dropdown.DropdownMessage DropdownItem) a
+  | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 
 ----------
 -- Child paths
 
-type ChildQuery = Typeahead.Query
-type ChildSlot = Unit
+type ChildQuery = Coproduct2 Typeahead.Query (Dropdown.Query TestRecord)
+type ChildSlot = Either2 Unit Unit
 
 
 ----------
@@ -67,16 +68,48 @@ component =
       , mountWith
           "Typeahead"
           "Captures string input and produces a menu."
-          ( HH.slot unit Typeahead.component { items: containerData } absurd )
+          ( HH.slot' CP.cp1 unit Typeahead.component { items: containerData } absurd )
+      , mountWith
+          "Single Select"
+          "Selects a single value from a list."
+          ( HH.slot'
+              CP.cp2
+              unit
+              Dropdown.component
+              { items: dropdownData
+              , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
+              , selection: Dropdown.Single Nothing
+              }
+              (HE.input HandleDropdown)
+          )
       ]
 
     eval :: Query ~> H.ParentDSL State Query _ _ _ (FX e)
     eval (NoOp next) = pure next
-    eval (HandleDropdown _ next) = pure next
-
+    eval (HandleDropdown m next) = pure next <* case m of
+      Dropdown.SelectionChanged (Dropdown.Single item) -> H.liftAff $ logShow $ maybe "Empty!" (unwrap >>> _.name) item
+      _ -> pure unit
 
 ----------
 -- Sample data
+
+newtype TestRecord = TestRecord
+  { name :: String
+  , id :: Int
+  }
+
+instance eqTestRecord :: Eq TestRecord where
+  eq (TestRecord { id: id'' }) (TestRecord { id: id' }) = id'' == id'
+
+derive instance newtypeTestRecord :: Newtype TestRecord _
+
+dropdownData :: Array TestRecord
+dropdownData =
+  [ TestRecord { name: "Chris", id: 0 }
+  , TestRecord { name: "Dave", id: 1 }
+  , TestRecord { name: "Thomas", id: 2 }
+  , TestRecord { name: "Forest", id: 3 }
+  ]
 
 containerData :: Array DropdownItem
 containerData =
