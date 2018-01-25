@@ -3,8 +3,9 @@
   "scripts": {
     "build-prod": "npm run build-docs && npm run build-css && npm run copy-css",
     "build-dev": "pulp build",
-    "watch": "pulp -w build",
+    "watch-dev": "pulp -w build",
     "build-docs": "pulp build -I test --to docs/example.js",
+    "watch-docs": "pulp -w build -I test --to docs/example.js",
     "build-css": "cd css && npm run build-prod",
     "copy-css": "cp css/dist/cn-tailwind.css docs/cn-tailwind.css"
   },
