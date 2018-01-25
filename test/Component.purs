@@ -136,7 +136,7 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
-cnDocumentationBlocks = typeaheadBlock <> []
+cnDocumentationBlocks = typeaheadBlock <> dropdownBlock <> []
 
 typeaheadBlock :: ∀ e. Array (HTML e)
 typeaheadBlock = documentationBlock
