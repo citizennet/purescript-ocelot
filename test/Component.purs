@@ -9,11 +9,11 @@ import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(Nothing))
 import Data.Newtype (class Newtype, unwrap)
+import Data.Tuple (Tuple(Tuple))
 import Halogen as H
 import Halogen.Component.ChildPath as CP
-import Data.Tuple (Tuple(Tuple))
-import Halogen.HTML.Events as HE
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Select.Effects (FX)
 
@@ -65,8 +65,8 @@ component =
     eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Void (FX e)
     eval (NoOp next) = pure next
     eval (HandleDropdown m next) = pure next <* case m of
-      Dropdown.ItemRemoved item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> "was removed")
-      Dropdown.ItemSelected item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> "was selected")
+      Dropdown.ItemRemoved item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
+      Dropdown.ItemSelected item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
 ----------
 -- Sample data
@@ -150,9 +150,12 @@ dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock
   "Dropdown"
   "Select from a list."
-  ( componentBlock "Single select configuration." slot )
+  $ HH.div_
+    [ componentBlock "Single select configuration." singleSlot
+    , componentBlock "Multi select configuration." multiSlot
+    ]
   where
-    slot =
+    singleSlot =
       ( HH.slot'
           CP.cp2
           unit
@@ -160,6 +163,23 @@ dropdownBlock = documentationBlock
           { items: dropdownData
           , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
           , selection: Dropdown.Single Nothing
+          , placeholder: "Select a dev..."
+          , title: "Single Selection"
+          , helpText: "Some useful help text can go here."
+          }
+          (HE.input HandleDropdown)
+      )
+    multiSlot =
+      ( HH.slot'
+          CP.cp2
+          unit
+          Dropdown.component
+          { items: dropdownData
+          , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
+          , selection: Dropdown.Multi []
+          , placeholder: "Select some devs..."
+          , title: "Multi Selection"
+          , helpText: "Some useful help text can go here."
           }
           (HE.input HandleDropdown)
       )
