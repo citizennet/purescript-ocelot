@@ -71,6 +71,7 @@ component =
 ----------
 -- Sample data
 
+<<<<<<< HEAD
 newtype TestRecord = TestRecord
   { name :: String
   , id :: Int
@@ -89,11 +90,11 @@ dropdownData =
   , TestRecord { name: "Forest", id: 3 }
   ]
 
-containerData :: Array DropdownItem
+containerData :: Array String
 containerData =
-  [ "item one"
-  , "item two"
-  , "who knows" ]
+  [ "Instagram"
+  , "Facebook"
+  , "Twitter" ]
 
 
 ----------

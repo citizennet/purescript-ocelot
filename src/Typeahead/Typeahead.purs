@@ -2,12 +2,13 @@ module CN.UI.Typeahead where
 
 import Prelude
 
-import Data.Array ((:), length, mapWithIndex, filter, difference)
+import Data.Array ((:), length, mapWithIndex, filter, difference, dropEnd, takeEnd)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(..))
-import Data.String (Pattern(..), contains)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String (Pattern(..), contains, split)
 import Data.Time.Duration (Milliseconds(..))
+import Data.Foldable (foldr)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -34,8 +35,9 @@ type State =
 
 -- Component query definition
 data Query a
-  = HandleContainer (C.Message Query String) a
-  | HandleSearch (S.Message Query String) a
+  = HandleContainer (C.Message Query TypeaheadItem) a
+  | HandleSearch (S.Message Query TypeaheadItem) a
+  | Remove TypeaheadItem a
   | Receive TypeaheadInput a
 
 -- Component top level definition
@@ -107,7 +109,7 @@ component =
           CP.cp1
           ( Slot ContainerSlot )
           C.component
-          { render: renderContainer, items: st.items }
+          { render: renderContainer st, items: st.items }
           ( HE.input HandleContainer )
       , HH.p
         [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
@@ -116,13 +118,20 @@ component =
 
     eval :: Query ~> TypeaheadDSL e
     eval = case _ of
+      Remove item a -> do
+        st <- H.get
+        H.modify _ { selections = filter (\str -> item /= str) st.selections }
+        eval $ HandleSearch (S.NewSearch (fromMaybe "" st.search)) a
+
       HandleSearch message a -> case message of
         S.ContainerQuery query -> do
           _ <- H.query' CP.cp1 (Slot ContainerSlot) query
           pure a
 
         S.NewSearch text -> do
+          H.modify _ { search = if text == "" then Nothing else Just text }
           st <- H.get
+
           let matches i = filter (\i' -> contains (Pattern i) i')
               available = difference (matches text st.items) st.selections
 
@@ -134,7 +143,7 @@ component =
           -- Send the new items to the container
           _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
-                $ C.ContainerReceiver { render: renderContainer, items: newItems }
+                $ C.ContainerReceiver { render: renderContainer st, items: newItems }
 
           pure a
 
@@ -148,14 +157,15 @@ component =
           st <- H.get
           if length (filter ((==) item) st.items) > 0
             then H.modify _ { selections = item : st.selections }
-            else H.modify _ { items = item : st.items, selections = item : st.selections }
+            else H.modify _ { items = item : st.items
+                            , selections = item : st.selections }
 
           newState <- H.get
           let newItems = difference newState.items newState.selections
 
           _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
-                $ C.ContainerReceiver { render: renderContainer, items: newItems }
+                $ C.ContainerReceiver { render: renderContainer st, items: newItems }
 
           _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
@@ -174,18 +184,25 @@ renderSelections st = HH.div_
   if length st.selections <= 0
     then []
     else [ HH.div
-      [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full border-b border-grey-lighter" ]
+      [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
       [ HH.ul
         [ HP.class_ $ HH.ClassName "list-reset" ]
         $ renderSelection <$> st.selections ]
       ]
   where
-    renderSelection str = HH.li
-      [ HP.class_ $ HH.ClassName "px-4 py-1 text-grey-darkest" ]
-      [ HH.text str ]
+    renderSelection item =
+      HH.li
+      [ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
+      [ HH.span_
+        [ HH.text item ]
+      , HH.span
+        [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
+        , HE.onClick (HE.input_ (Remove item)) ]
+        [ HH.text "×" ]
+      ]
 
-renderContainer :: C.ContainerState String -> H.HTML Void ContainerQuery
-renderContainer st = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+renderContainer :: State -> C.ContainerState String -> H.HTML Void ContainerQuery
+renderContainer parentSt st = HH.div [ HP.class_ $ HH.ClassName "relative" ]
   if not st.open
     then []
     else [ HH.div
@@ -194,18 +211,29 @@ renderContainer st = HH.div [ HP.class_ $ HH.ClassName "relative" ]
       )
       [ HH.ul
         [ HP.class_ $ HH.ClassName "list-reset" ]
-        $ renderItem `mapWithIndex` st.items
+        $ renderItem (parentSt.search) `mapWithIndex` st.items
       ]
     ]
   where
-    renderItem :: Int -> TypeaheadItem -> H.HTML Void ContainerQuery
-    renderItem ix item = HH.li
+    renderItem :: Maybe String -> Int -> TypeaheadItem -> H.HTML Void ContainerQuery
+
+    renderItem Nothing ix item = HH.li
       ( C.getItemProps ix
         [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
       )
-      [ HH.text item ]
+        [ HH.text item ]
       where
         hover = if st.highlightedIndex == Just ix then " bg-grey-lighter" else ""
+
+
+    renderItem (Just search) ix item = HH.li
+      ( C.getItemProps ix
+        [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
+      )
+      ( boldMatches (Pattern search) item )
+      where
+        hover = if st.highlightedIndex == Just ix then " bg-grey-lighter" else ""
+
 
 renderSearch :: ∀ e. S.SearchState e -> H.HTML Void (SearchQuery e)
 renderSearch _ =
@@ -215,3 +243,12 @@ renderSearch _ =
     , HP.placeholder "Type to search..."
     ]
   )
+
+boldMatches :: ∀ i p. Pattern -> String -> Array (H.HTML i p)
+boldMatches p@(Pattern p') src = html <> lastHtml
+  where
+    bold = HH.span [ HP.class_ $ HH.ClassName "font-bold" ] [ HH.text p' ]
+    alreadySplit = split p src
+    html = foldr (\text acc -> [ HH.text text, bold ] <> acc) [] (dropEnd 1 alreadySplit)
+    lastHtml = map HH.text $ takeEnd 1 alreadySplit
+
