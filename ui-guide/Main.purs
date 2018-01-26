@@ -1,7 +1,7 @@
 module Main where
 
 import Prelude
-import Base.Component as Component
+import UIGuide.Components.TextFields as TextFields
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Aff.Console (CONSOLE, log)
@@ -12,5 +12,4 @@ import Select.Effects (Effects)
 main :: ∀ e. Eff (HA.HalogenEffects (Effects (console :: CONSOLE | e))) Unit
 main = HA.runHalogenAff do
   body <- HA.awaitBody
-  log "You should add some tests."
-  runUI Component.component unit body
+  runUI TextFields.component unit body

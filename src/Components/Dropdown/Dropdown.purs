@@ -19,7 +19,6 @@ data SelectableStatus
   = Selectable
   | NotSelectable
 
-
 ----------
 -- Component types
 
