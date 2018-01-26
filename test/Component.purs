@@ -71,7 +71,6 @@ component =
 ----------
 -- Sample data
 
-<<<<<<< HEAD
 newtype TestRecord = TestRecord
   { name :: String
   , id :: Int
