@@ -1,4 +1,4 @@
-module CN.UI.Dropdown where
+module CN.UI.Components.Dropdown where
 
 import Prelude
 

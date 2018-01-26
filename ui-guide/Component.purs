@@ -2,8 +2,8 @@ module Base.Component where
 
 import Prelude
 
-import CN.UI.Dropdown as Dropdown
-import CN.UI.Typeahead as Typeahead
+import CN.UI.Components.Dropdown as Dropdown
+import CN.UI.Components.Typeahead as Typeahead
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
