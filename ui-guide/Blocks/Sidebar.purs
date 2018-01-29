@@ -50,7 +50,7 @@ type Anchor = String
 type Link = String
 
 cnNavSections :: Array (Tuple Title (Array (Tuple Anchor Link)))
-cnNavSections = [ intro, global, components ]
+cnNavSections = [ intro, atoms, components, blocks ]
   where
     mkNavSection :: Title -> Array Anchor -> Tuple Title (Array (Tuple Anchor Link))
     mkNavSection title xs = Tuple title links
@@ -58,14 +58,14 @@ cnNavSections = [ intro, global, components ]
         links :: Array (Tuple Anchor Link)
         links = (\a -> Tuple a "#") <$> xs
 
-    intro = mkNavSection "Introduction" [ "What is this?" ]
+    intro = mkNavSection "Introduction" [ "CitizenNet UI Guide" ]
 
-    global = mkNavSection "Global"
+    atoms = mkNavSection "Atoms"
       [ "Grid"
       , "Typography"
       , "Colors" ]
 
-    components = mkNavSection "Components"
+    blocks = mkNavSection "Blocks"
       [ "Frame"
       , "Text Fields"
       , "Buttons"
@@ -79,4 +79,10 @@ cnNavSections = [ intro, global, components ]
       , "Paging"
       , "Loading"
       , "Validation" ]
+
+    components = mkNavSection "Components"
+      [ "Dropdown"
+      , "Typeahead"
+      , "Date Picker"
+      , "Image Picker" ]
 
