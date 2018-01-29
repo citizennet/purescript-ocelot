@@ -1,4 +1,4 @@
-module CN.UI.Typeahead where
+module CN.UI.Components.Typeahead where
 
 import Prelude
 

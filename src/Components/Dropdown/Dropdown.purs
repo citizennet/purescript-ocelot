@@ -1,4 +1,4 @@
-module CN.UI.Dropdown where
+module CN.UI.Components.Dropdown where
 
 import Prelude
 
@@ -18,7 +18,6 @@ import Select.Primitive.Container as C
 data SelectableStatus
   = Selectable
   | NotSelectable
-
 
 ----------
 -- Component types

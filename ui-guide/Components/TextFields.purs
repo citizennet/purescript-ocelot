@@ -1,9 +1,10 @@
-module Base.Component where
+module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Dropdown as Dropdown
-import CN.UI.Typeahead as Typeahead
+import CN.UI.Components.Dropdown as Dropdown
+import CN.UI.Components.Typeahead as Typeahead
+import UIGuide.Blocks.Sidebar as Sidebar
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
@@ -60,7 +61,7 @@ component =
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render :: State -> HTML e
-    render st = container cnNavSections cnDocumentationBlocks
+    render st = container Sidebar.cnNavSections cnDocumentationBlocks
 
     eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Void (FX e)
     eval (NoOp next) = pure next
@@ -111,7 +112,7 @@ container navs blocks =
   [ css "font-sans font-normal text-black leading-normal" ]
   [ HH.div
     [ css "min-h-screen" ]
-    [ sidebar navs
+    [ Sidebar.sidebar navs
     , innerContainer "CitizenNet UI Guide" blocks
     ]
   ]
@@ -201,73 +202,3 @@ componentBlock config slot =
   where
     mkConfig :: ∀ i p. String -> H.HTML i p
     mkConfig str = HH.p_ [ HH.text str ]
-
-sidebar :: ∀ i p. Array (Tuple String (Array (Tuple String String))) -> H.HTML i p
-sidebar navSections =
-  HH.div
-  [ HP.id_ "sidebar"
-  , css "hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-lighter w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col" ]
-  [ HH.div
-    [ css "p-8 flex-1 overflow-y-scroll" ]
-    [ HH.nav
-      [ HP.id_ "nav"
-      , css "text-base overflow-y-scroll" ]
-      ( navSection <$> navSections )
-    ]
-  ]
-  where
-    navSection :: Tuple Title (Array (Tuple Anchor Link)) -> H.HTML i p
-    navSection (Tuple title items) =
-      HH.div
-      [ css "mb-8" ]
-      [ HH.p
-        [ css "mb-4 text-grey-dark uppercase tracking-wide font-bold text-xs" ]
-        [ HH.text title ]
-      , HH.ul
-        [ css "list-reset" ]
-        ( navLink <$> items )
-      ]
-      where
-        navLink (Tuple anchor link) =
-          HH.li
-          [ css "mb-3" ]
-          [ HH.a
-            [ css "hover:underline text-grey-darkest"
-            , HP.href link ]
-            [ HH.text anchor ]
-          ]
-
-type Title = String
-type Anchor = String
-type Link = String
-
-cnNavSections :: Array (Tuple Title (Array (Tuple Anchor Link)))
-cnNavSections = [ intro, global, components ]
-  where
-    mkNavSection :: Title -> Array Anchor -> Tuple Title (Array (Tuple Anchor Link))
-    mkNavSection title xs = Tuple title links
-      where
-        links :: Array (Tuple Anchor Link)
-        links = (\a -> Tuple a "#") <$> xs
-
-    intro = mkNavSection "Introduction" [ "What is this?" ]
-
-    global = mkNavSection "Global"
-      [ "Grid"
-      , "Typography"
-      , "Colors" ]
-
-    components = mkNavSection "Components"
-      [ "Frame"
-      , "Text Fields"
-      , "Buttons"
-      , "Dialogs"
-      , "Hovercards"
-      , "Filters"
-      , "Sorting"
-      , "Modals"
-      , "Menus"
-      , "Toasts"
-      , "Paging"
-      , "Loading"
-      , "Validation" ]

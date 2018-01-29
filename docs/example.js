@@ -9440,7 +9440,7 @@ var PS = {};
                   if (selected instanceof Data_Maybe.Just) {
                       return " text-grey-darkest py-1 px-3 hover:bg-grey-lightest";
                   };
-                  throw new Error("Failed pattern match at CN.UI.Dropdown line 171, column 27 - line 175, column 13: " + [ selected.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 170, column 27 - line 174, column 13: " + [ selected.constructor.name ]);
               })();
               var toggleHTML = (function () {
                   if (selected instanceof Data_Maybe.Nothing) {
@@ -9449,7 +9449,7 @@ var PS = {};
                   if (selected instanceof Data_Maybe.Just) {
                       return Data_Array.snoc(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML.fromPlainHTML)(st.itemHTML(selected.value0)))(closeButton(selected.value0));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Dropdown line 176, column 26 - line 178, column 93: " + [ selected.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 175, column 26 - line 177, column 93: " + [ selected.constructor.name ]);
               })();
               return Halogen_HTML_Elements.div(Select_Primitive_Container.getToggleProps(ToContainer.create)([ Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName("rounded-sm bg-white block w-full appearance-none ds-input" + " py-1 px-1")) ]))([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_(toggleProps) ])(toggleHTML) ]);
           };
@@ -9468,7 +9468,7 @@ var PS = {};
                       render: renderContainer(st.itemHTML)
                   })(Halogen_HTML_Events.input(HandleContainer.create)) ]);
               };
-              throw new Error("Failed pattern match at CN.UI.Dropdown line 108, column 9 - line 130, column 16: " + [ st.selection.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 107, column 9 - line 129, column 16: " + [ st.selection.constructor.name ]);
           })(), Halogen_HTML_Elements.p([ Halogen_HTML_Properties.class_("mt-1 text-grey-dark text-xs") ])([ Halogen_HTML_Core.text(st.helpText) ]) ]);
       };
       var initialState = function (i) {
@@ -9498,7 +9498,7 @@ var PS = {};
                           var containerItems = Data_Array["delete"](dictEq)(v.value0)(v1.selection.value0);
                           return new Data_Tuple.Tuple(new Multi(containerItems), Data_Array.difference(dictEq)(v1.items)(containerItems));
                       };
-                      throw new Error("Failed pattern match at CN.UI.Dropdown line 223, column 41 - line 227, column 78: " + [ v1.selection.constructor.name ]);
+                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 222, column 41 - line 226, column 78: " + [ v1.selection.constructor.name ]);
                   })()))(function (v2) {
                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
                           var $31 = {};
@@ -9534,7 +9534,7 @@ var PS = {};
                               var containerItems = Data_Array.snoc(v1.selection.value0)(v.value0.value0);
                               return new Data_Tuple.Tuple(new Multi(containerItems), Data_Array.difference(dictEq)(v1.items)(containerItems));
                           };
-                          throw new Error("Failed pattern match at CN.UI.Dropdown line 242, column 43 - line 246, column 80: " + [ v1.selection.constructor.name ]);
+                          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 241, column 43 - line 245, column 80: " + [ v1.selection.constructor.name ]);
                       })()))(function (v2) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
                               var $45 = {};
@@ -9557,7 +9557,7 @@ var PS = {};
                                       if (v1.selection instanceof Multi) {
                                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Control_Applicative.pure(Data_Maybe.applicativeMaybe)(Data_Unit.unit));
                                       };
-                                      throw new Error("Failed pattern match at CN.UI.Dropdown line 254, column 16 - line 258, column 44: " + [ v1.selection.constructor.name ]);
+                                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 253, column 16 - line 257, column 44: " + [ v1.selection.constructor.name ]);
                                   })())(function (v4) {
                                       return Halogen_Query_HalogenM.raise(new ItemSelected(v.value0.value0));
                                   });
@@ -9566,9 +9566,9 @@ var PS = {};
                       });
                   }));
               };
-              throw new Error("Failed pattern match at CN.UI.Dropdown line 237, column 30 - line 259, column 38: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 236, column 30 - line 258, column 38: " + [ v.value0.constructor.name ]);
           };
-          throw new Error("Failed pattern match at CN.UI.Dropdown line 214, column 12 - line 259, column 38: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 213, column 12 - line 258, column 38: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
@@ -9587,7 +9587,7 @@ var PS = {};
   exports["ItemRemoved"] = ItemRemoved;
   exports["component"] = component;
   exports["renderContainer"] = renderContainer;
-})(PS["CN.UI.Dropdown"] = PS["CN.UI.Dropdown"] || {});
+})(PS["CN.UI.Components.Dropdown"] = PS["CN.UI.Components.Dropdown"] || {});
 (function(exports) {
   // Generated by purs version 0.11.7
   "use strict";
@@ -9972,7 +9972,7 @@ var PS = {};
           if (x instanceof SearchSlot && y instanceof SearchSlot) {
               return Data_Ordering.EQ.value;
           };
-          throw new Error("Failed pattern match at CN.UI.Typeahead line 65, column 8 - line 65, column 54: " + [ x.constructor.name, y.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 65, column 8 - line 65, column 54: " + [ x.constructor.name, y.constructor.name ]);
       };
   });
   var ordSlot = new Data_Ord.Ord(function () {
@@ -10020,7 +10020,7 @@ var PS = {};
                           })();
                           return Halogen_HTML_Elements.li(Select_Primitive_Container.getItemProps(ix)([ Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName("px-4 py-1 text-grey-darkest" + hover)) ]))(boldMatches(v.value0)(item));
                       };
-                      throw new Error("Failed pattern match at CN.UI.Typeahead line 218, column 5 - line 218, column 85: " + [ v.constructor.name, ix.constructor.name, item.constructor.name ]);
+                      throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 218, column 5 - line 218, column 85: " + [ v.constructor.name, ix.constructor.name, item.constructor.name ]);
                   };
               };
           };
@@ -10100,7 +10100,7 @@ var PS = {};
                               if (Data_Boolean.otherwise) {
                                   return available;
                               };
-                              throw new Error("Failed pattern match at CN.UI.Typeahead line 139, column 15 - line 141, column 51: " + [  ]);
+                              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 139, column 15 - line 141, column 51: " + [  ]);
                           })();
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query["query'"](Data_Either.eqEither(eqSlot)(Data_Either.eqEither(eqSlot)(Data_Eq.eqVoid)))(Halogen_Component_ChildPath.cp1)(new Slot(ContainerSlot.value))(Halogen_Query.action(Select_Primitive_Container.ContainerReceiver.create({
                               render: renderContainer(v1),
@@ -10114,7 +10114,7 @@ var PS = {};
               if (v.value0 instanceof Select_Primitive_Search.Emit) {
                   return Control_Apply.applySecond(Halogen_Query_HalogenM.applyHalogenM)($$eval(v.value0.value0))(Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1));
               };
-              throw new Error("Failed pattern match at CN.UI.Typeahead line 126, column 33 - line 150, column 45: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 126, column 33 - line 150, column 45: " + [ v.value0.constructor.name ]);
           };
           if (v instanceof HandleContainer) {
               if (v.value0 instanceof Select_Primitive_Container.Emit) {
@@ -10162,7 +10162,7 @@ var PS = {};
                       });
                   }));
               };
-              throw new Error("Failed pattern match at CN.UI.Typeahead line 152, column 36 - line 174, column 17: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 152, column 36 - line 174, column 17: " + [ v.value0.constructor.name ]);
           };
           if (v instanceof Receive) {
               return Control_Apply.applySecond(Halogen_Query_HalogenM.applyHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
@@ -10176,7 +10176,7 @@ var PS = {};
                   return $83;
               }))(Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1));
           };
-          throw new Error("Failed pattern match at CN.UI.Typeahead line 120, column 12 - line 176, column 68: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 120, column 12 - line 176, column 68: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(ordSlot)(Data_Either.ordEither(ordSlot)(Data_Ord.ordVoid)))({
           initialState: function (i) {
@@ -10207,224 +10207,7 @@ var PS = {};
   exports["ordPrimitiveSlot"] = ordPrimitiveSlot;
   exports["eqSlot"] = eqSlot;
   exports["ordSlot"] = ordSlot;
-})(PS["CN.UI.Typeahead"] = PS["CN.UI.Typeahead"] || {});
-(function(exports) {
-  // Generated by purs version 0.11.7
-  "use strict";
-  var CN_UI_Dropdown = PS["CN.UI.Dropdown"];
-  var CN_UI_Typeahead = PS["CN.UI.Typeahead"];
-  var Control_Applicative = PS["Control.Applicative"];
-  var Control_Apply = PS["Control.Apply"];
-  var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
-  var Control_Monad_Aff_Console = PS["Control.Monad.Aff.Console"];
-  var Control_Semigroupoid = PS["Control.Semigroupoid"];
-  var Data_Either = PS["Data.Either"];
-  var Data_Either_Nested = PS["Data.Either.Nested"];
-  var Data_Eq = PS["Data.Eq"];
-  var Data_Function = PS["Data.Function"];
-  var Data_Functor = PS["Data.Functor"];
-  var Data_Functor_Coproduct_Nested = PS["Data.Functor.Coproduct.Nested"];
-  var Data_Maybe = PS["Data.Maybe"];
-  var Data_Newtype = PS["Data.Newtype"];
-  var Data_Ord = PS["Data.Ord"];
-  var Data_Semigroup = PS["Data.Semigroup"];
-  var Data_Show = PS["Data.Show"];
-  var Data_Tuple = PS["Data.Tuple"];
-  var Data_Unit = PS["Data.Unit"];
-  var Data_Void = PS["Data.Void"];
-  var Halogen = PS["Halogen"];
-  var Halogen_Component = PS["Halogen.Component"];
-  var Halogen_Component_ChildPath = PS["Halogen.Component.ChildPath"];
-  var Halogen_HTML = PS["Halogen.HTML"];
-  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
-  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
-  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
-  var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
-  var Prelude = PS["Prelude"];
-  var Select_Effects = PS["Select.Effects"];        
-  var TestRecord = function (x) {
-      return x;
-  };
-  var NoOp = (function () {
-      function NoOp(value0) {
-          this.value0 = value0;
-      };
-      NoOp.create = function (value0) {
-          return new NoOp(value0);
-      };
-      return NoOp;
-  })();
-  var HandleDropdown = (function () {
-      function HandleDropdown(value0, value1) {
-          this.value0 = value0;
-          this.value1 = value1;
-      };
-      HandleDropdown.create = function (value0) {
-          return function (value1) {
-              return new HandleDropdown(value0, value1);
-          };
-      };
-      return HandleDropdown;
-  })();
-  var newtypeTestRecord = new Data_Newtype.Newtype(function (n) {
-      return n;
-  }, TestRecord);
-  var eqTestRecord = new Data_Eq.Eq(function (v) {
-      return function (v1) {
-          return v.id === v1.id;
-      };
-  });
-  var dropdownData = [ {
-      name: "Chris",
-      id: 0
-  }, {
-      name: "Dave",
-      id: 1
-  }, {
-      name: "Thomas",
-      id: 2
-  }, {
-      name: "Forest",
-      id: 3
-  } ];
-  var css = function ($29) {
-      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($29));
-  };
-  var documentationBlock = function (title) {
-      return function (description) {
-          return function (block) {
-              return [ Halogen_HTML_Elements.h1_([ Halogen_HTML_Core.text(title) ]), Halogen_HTML_Elements.div([ css("text-xl text-grey-dark mb-4") ])([ Halogen_HTML_Core.text(description) ]), block ];
-          };
-      };
-  };
-  var innerContainer = function (title) {
-      return function (blocks) {
-          return Halogen_HTML_Elements.div([ css("md:ml-80") ])([ Halogen_HTML_Elements.div([ css("fixed w-full z-20") ])([ Halogen_HTML_Elements.div([ css("pin-t bg-white md:hidden relative border-b border-grey-light h-12 flex items-center") ])([ Halogen_HTML_Elements.a([ css("mx-auto inline-flex items-center"), Halogen_HTML_Properties.href("#") ])([ Halogen_HTML_Core.text(title) ]) ]) ]), Halogen_HTML_Elements.div([ css("px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto") ])(blocks) ]);
-      };
-  };
-  var sidebar = function (navSections) {
-      var navSection = function (v) {
-          var navLink = function (v1) {
-              return Halogen_HTML_Elements.li([ css("mb-3") ])([ Halogen_HTML_Elements.a([ css("hover:underline text-grey-darkest"), Halogen_HTML_Properties.href(v1.value1) ])([ Halogen_HTML_Core.text(v1.value0) ]) ]);
-          };
-          return Halogen_HTML_Elements.div([ css("mb-8") ])([ Halogen_HTML_Elements.p([ css("mb-4 text-grey-dark uppercase tracking-wide font-bold text-xs") ])([ Halogen_HTML_Core.text(v.value0) ]), Halogen_HTML_Elements.ul([ css("list-reset") ])(Data_Functor.map(Data_Functor.functorArray)(navLink)(v.value1)) ]);
-      };
-      return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.id_("sidebar"), css("hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-lighter w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col") ])([ Halogen_HTML_Elements.div([ css("p-8 flex-1 overflow-y-scroll") ])([ Halogen_HTML_Elements.nav([ Halogen_HTML_Properties.id_("nav"), css("text-base overflow-y-scroll") ])(Data_Functor.map(Data_Functor.functorArray)(navSection)(navSections)) ]) ]);
-  };
-  var containerData = [ "Instagram", "Facebook", "Twitter" ];
-  var container = function (navs) {
-      return function (blocks) {
-          return Halogen_HTML_Elements.body([ css("font-sans font-normal text-black leading-normal") ])([ Halogen_HTML_Elements.div([ css("min-h-screen") ])([ sidebar(navs), innerContainer("CitizenNet UI Guide")(blocks) ]) ]);
-      };
-  };
-  var componentBlock = function (config) {
-      return function (slot) {
-          var mkConfig = function (str) {
-              return Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text(str) ]);
-          };
-          return Halogen_HTML_Elements.div([ css("rounded border-2 border-grey-light mb-8 bg-white") ])([ Halogen_HTML_Elements.div([ css("border-b-2 border-grey-light p-4") ])([ mkConfig(config) ]), Halogen_HTML_Elements.div([ css("p-4 pb-8 bg-grey-lightest") ])([ slot ]) ]);
-      };
-  };
-  var dropdownBlock = (function () {
-      var singleSlot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Dropdown.component(eqTestRecord))({
-          items: dropdownData,
-          itemHTML: function (i) {
-              return [ Halogen_HTML_Core.text((function (v) {
-                  return v.name;
-              })(Data_Newtype.unwrap(newtypeTestRecord)(i))) ];
-          },
-          selection: new CN_UI_Dropdown.Single(Data_Maybe.Nothing.value),
-          placeholder: "Select a dev...",
-          title: "Single Selection",
-          helpText: "Some useful help text can go here."
-      })(Halogen_HTML_Events.input(HandleDropdown.create));
-      var multiSlot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Dropdown.component(eqTestRecord))({
-          items: dropdownData,
-          itemHTML: function (i) {
-              return [ Halogen_HTML_Core.text((function (v) {
-                  return v.name;
-              })(Data_Newtype.unwrap(newtypeTestRecord)(i))) ];
-          },
-          selection: new CN_UI_Dropdown.Multi([  ]),
-          placeholder: "Select some devs...",
-          title: "Multi Selection",
-          helpText: "Some useful help text can go here."
-      })(Halogen_HTML_Events.input(HandleDropdown.create));
-      return documentationBlock("Dropdown")("Select from a list.")(Halogen_HTML_Elements.div_([ componentBlock("Single select configuration.")(singleSlot), componentBlock("Multi select configuration.")(multiSlot) ]));
-  })();
-  var typeaheadBlock = (function () {
-      var slot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Typeahead.component)({
-          items: containerData
-      })(Data_Void.absurd);
-      return documentationBlock("Typeahead")("Uses string input to search pre-determined entries.")(componentBlock("No configuration set.")(slot));
-  })();
-  var cnNavSections = (function () {
-      var mkNavSection = function (title) {
-          return function (xs) {
-              var links = Data_Functor.map(Data_Functor.functorArray)(function (a) {
-                  return new Data_Tuple.Tuple(a, "#");
-              })(xs);
-              return new Data_Tuple.Tuple(title, links);
-          };
-      };
-      var intro = mkNavSection("Introduction")([ "What is this?" ]);
-      var global = mkNavSection("Global")([ "Grid", "Typography", "Colors" ]);
-      var components = mkNavSection("Components")([ "Frame", "Text Fields", "Buttons", "Dialogs", "Hovercards", "Filters", "Sorting", "Modals", "Menus", "Toasts", "Paging", "Loading", "Validation" ]);
-      return [ intro, global, components ];
-  })();
-  var cnDocumentationBlocks = Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlock)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(dropdownBlock)([  ]));
-  var component = (function () {
-      var render = function (st) {
-          return container(cnNavSections)(cnDocumentationBlocks);
-      };
-      var $$eval = function (v) {
-          if (v instanceof NoOp) {
-              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
-          };
-          if (v instanceof HandleDropdown) {
-              return Control_Apply.applyFirst(Halogen_Query_HalogenM.applyHalogenM)(Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1))((function () {
-                  if (v.value0 instanceof CN_UI_Dropdown.ItemRemoved) {
-                      return Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(Control_Monad_Aff_Class.monadAffAff))(Control_Monad_Aff_Console.logShow(Data_Show.showString)((function (v1) {
-                          return v1.name;
-                      })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was removed"));
-                  };
-                  if (v.value0 instanceof CN_UI_Dropdown.ItemSelected) {
-                      return Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(Control_Monad_Aff_Class.monadAffAff))(Control_Monad_Aff_Console.logShow(Data_Show.showString)((function (v1) {
-                          return v1.name;
-                      })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was selected"));
-                  };
-                  throw new Error("Failed pattern match at Base.Component line 67, column 49 - line 69, column 102: " + [ v.value0.constructor.name ]);
-              })());
-          };
-          throw new Error("Failed pattern match at Base.Component line 65, column 5 - line 65, column 78: " + [ v.constructor.name ]);
-      };
-      return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid)))({
-          initialState: Data_Function["const"](Data_Unit.unit),
-          render: render,
-          "eval": $$eval,
-          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
-      });
-  })();
-  exports["NoOp"] = NoOp;
-  exports["HandleDropdown"] = HandleDropdown;
-  exports["component"] = component;
-  exports["TestRecord"] = TestRecord;
-  exports["dropdownData"] = dropdownData;
-  exports["containerData"] = containerData;
-  exports["css"] = css;
-  exports["container"] = container;
-  exports["innerContainer"] = innerContainer;
-  exports["cnDocumentationBlocks"] = cnDocumentationBlocks;
-  exports["typeaheadBlock"] = typeaheadBlock;
-  exports["dropdownBlock"] = dropdownBlock;
-  exports["documentationBlock"] = documentationBlock;
-  exports["componentBlock"] = componentBlock;
-  exports["sidebar"] = sidebar;
-  exports["cnNavSections"] = cnNavSections;
-  exports["eqTestRecord"] = eqTestRecord;
-  exports["newtypeTestRecord"] = newtypeTestRecord;
-})(PS["Base.Component"] = PS["Base.Component"] || {});
+})(PS["CN.UI.Components.Typeahead"] = PS["CN.UI.Components.Typeahead"] || {});
 (function(exports) {
   // Generated by purs version 0.11.7
   "use strict";
@@ -11859,9 +11642,242 @@ var PS = {};
   exports["runUI"] = runUI;
 })(PS["Halogen.VDom.Driver"] = PS["Halogen.VDom.Driver"] || {});
 (function(exports) {
+    "use strict";
+  var Control_Semigroupoid = PS["Control.Semigroupoid"];
+  var Data_Functor = PS["Data.Functor"];
+  var Data_Tuple = PS["Data.Tuple"];
+  var Halogen = PS["Halogen"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Prelude = PS["Prelude"];        
+  var css = function ($8) {
+      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($8));
+  };
+  var sidebar = function (navSections) {
+      var navSection = function (v) {
+          var navLink = function (v1) {
+              return Halogen_HTML_Elements.li([ css("mb-3") ])([ Halogen_HTML_Elements.a([ css("hover:underline text-grey-darkest"), Halogen_HTML_Properties.href(v1.value1) ])([ Halogen_HTML_Core.text(v1.value0) ]) ]);
+          };
+          return Halogen_HTML_Elements.div([ css("mb-8") ])([ Halogen_HTML_Elements.p([ css("mb-4 text-grey-dark uppercase tracking-wide font-bold text-xs") ])([ Halogen_HTML_Core.text(v.value0) ]), Halogen_HTML_Elements.ul([ css("list-reset") ])(Data_Functor.map(Data_Functor.functorArray)(navLink)(v.value1)) ]);
+      };
+      return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.id_("sidebar"), css("hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-lighter w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col") ])([ Halogen_HTML_Elements.div([ css("p-8 flex-1 overflow-y-scroll") ])([ Halogen_HTML_Elements.nav([ Halogen_HTML_Properties.id_("nav"), css("text-base overflow-y-scroll") ])(Data_Functor.map(Data_Functor.functorArray)(navSection)(navSections)) ]) ]);
+  };
+  var cnNavSections = (function () {
+      var mkNavSection = function (title) {
+          return function (xs) {
+              var links = Data_Functor.map(Data_Functor.functorArray)(function (a) {
+                  return new Data_Tuple.Tuple(a, "#");
+              })(xs);
+              return new Data_Tuple.Tuple(title, links);
+          };
+      };
+      var intro = mkNavSection("Introduction")([ "CitizenNet UI Guide" ]);
+      var components = mkNavSection("Components")([ "Dropdown", "Typeahead", "Date Picker", "Image Picker" ]);
+      var blocks = mkNavSection("Blocks")([ "Frame", "Text Fields", "Buttons", "Dialogs", "Hovercards", "Filters", "Sorting", "Modals", "Menus", "Toasts", "Paging", "Loading", "Validation" ]);
+      var atoms = mkNavSection("Atoms")([ "Grid", "Typography", "Colors" ]);
+      return [ intro, atoms, components, blocks ];
+  })();
+  exports["css"] = css;
+  exports["sidebar"] = sidebar;
+  exports["cnNavSections"] = cnNavSections;
+})(PS["UIGuide.Blocks.Sidebar"] = PS["UIGuide.Blocks.Sidebar"] || {});
+(function(exports) {
   // Generated by purs version 0.11.7
   "use strict";
-  var Base_Component = PS["Base.Component"];
+  var CN_UI_Components_Dropdown = PS["CN.UI.Components.Dropdown"];
+  var CN_UI_Components_Typeahead = PS["CN.UI.Components.Typeahead"];
+  var Control_Applicative = PS["Control.Applicative"];
+  var Control_Apply = PS["Control.Apply"];
+  var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
+  var Control_Monad_Aff_Console = PS["Control.Monad.Aff.Console"];
+  var Control_Semigroupoid = PS["Control.Semigroupoid"];
+  var Data_Either = PS["Data.Either"];
+  var Data_Either_Nested = PS["Data.Either.Nested"];
+  var Data_Eq = PS["Data.Eq"];
+  var Data_Function = PS["Data.Function"];
+  var Data_Functor_Coproduct_Nested = PS["Data.Functor.Coproduct.Nested"];
+  var Data_Maybe = PS["Data.Maybe"];
+  var Data_Newtype = PS["Data.Newtype"];
+  var Data_Ord = PS["Data.Ord"];
+  var Data_Semigroup = PS["Data.Semigroup"];
+  var Data_Show = PS["Data.Show"];
+  var Data_Tuple = PS["Data.Tuple"];
+  var Data_Unit = PS["Data.Unit"];
+  var Data_Void = PS["Data.Void"];
+  var Halogen = PS["Halogen"];
+  var Halogen_Component = PS["Halogen.Component"];
+  var Halogen_Component_ChildPath = PS["Halogen.Component.ChildPath"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
+  var Prelude = PS["Prelude"];
+  var Select_Effects = PS["Select.Effects"];
+  var UIGuide_Blocks_Sidebar = PS["UIGuide.Blocks.Sidebar"];        
+  var TestRecord = function (x) {
+      return x;
+  };
+  var NoOp = (function () {
+      function NoOp(value0) {
+          this.value0 = value0;
+      };
+      NoOp.create = function (value0) {
+          return new NoOp(value0);
+      };
+      return NoOp;
+  })();
+  var HandleDropdown = (function () {
+      function HandleDropdown(value0, value1) {
+          this.value0 = value0;
+          this.value1 = value1;
+      };
+      HandleDropdown.create = function (value0) {
+          return function (value1) {
+              return new HandleDropdown(value0, value1);
+          };
+      };
+      return HandleDropdown;
+  })();
+  var newtypeTestRecord = new Data_Newtype.Newtype(function (n) {
+      return n;
+  }, TestRecord);
+  var eqTestRecord = new Data_Eq.Eq(function (v) {
+      return function (v1) {
+          return v.id === v1.id;
+      };
+  });
+  var dropdownData = [ {
+      name: "Chris",
+      id: 0
+  }, {
+      name: "Dave",
+      id: 1
+  }, {
+      name: "Thomas",
+      id: 2
+  }, {
+      name: "Forest",
+      id: 3
+  } ];
+  var css = function ($21) {
+      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($21));
+  };
+  var documentationBlock = function (title) {
+      return function (description) {
+          return function (block) {
+              return [ Halogen_HTML_Elements.h1_([ Halogen_HTML_Core.text(title) ]), Halogen_HTML_Elements.div([ css("text-xl text-grey-dark mb-4") ])([ Halogen_HTML_Core.text(description) ]), block ];
+          };
+      };
+  };
+  var innerContainer = function (title) {
+      return function (blocks) {
+          return Halogen_HTML_Elements.div([ css("md:ml-80") ])([ Halogen_HTML_Elements.div([ css("fixed w-full z-20") ])([ Halogen_HTML_Elements.div([ css("pin-t bg-white md:hidden relative border-b border-grey-light h-12 flex items-center") ])([ Halogen_HTML_Elements.a([ css("mx-auto inline-flex items-center"), Halogen_HTML_Properties.href("#") ])([ Halogen_HTML_Core.text(title) ]) ]) ]), Halogen_HTML_Elements.div([ css("px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto") ])(blocks) ]);
+      };
+  };
+  var containerData = [ "Instagram", "Facebook", "Twitter" ];
+  var container = function (navs) {
+      return function (blocks) {
+          return Halogen_HTML_Elements.body([ css("font-sans font-normal text-black leading-normal") ])([ Halogen_HTML_Elements.div([ css("min-h-screen") ])([ UIGuide_Blocks_Sidebar.sidebar(navs), innerContainer("CitizenNet UI Guide")(blocks) ]) ]);
+      };
+  };
+  var componentBlock = function (config) {
+      return function (slot) {
+          var mkConfig = function (str) {
+              return Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text(str) ]);
+          };
+          return Halogen_HTML_Elements.div([ css("rounded border-2 border-grey-light mb-8 bg-white") ])([ Halogen_HTML_Elements.div([ css("border-b-2 border-grey-light p-4") ])([ mkConfig(config) ]), Halogen_HTML_Elements.div([ css("p-4 pb-8 bg-grey-lightest") ])([ slot ]) ]);
+      };
+  };
+  var dropdownBlock = (function () {
+      var singleSlot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Components_Dropdown.component(eqTestRecord))({
+          items: dropdownData,
+          itemHTML: function (i) {
+              return [ Halogen_HTML_Core.text((function (v) {
+                  return v.name;
+              })(Data_Newtype.unwrap(newtypeTestRecord)(i))) ];
+          },
+          selection: new CN_UI_Components_Dropdown.Single(Data_Maybe.Nothing.value),
+          placeholder: "Select a dev...",
+          title: "Single Selection",
+          helpText: "Some useful help text can go here."
+      })(Halogen_HTML_Events.input(HandleDropdown.create));
+      var multiSlot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Components_Dropdown.component(eqTestRecord))({
+          items: dropdownData,
+          itemHTML: function (i) {
+              return [ Halogen_HTML_Core.text((function (v) {
+                  return v.name;
+              })(Data_Newtype.unwrap(newtypeTestRecord)(i))) ];
+          },
+          selection: new CN_UI_Components_Dropdown.Multi([  ]),
+          placeholder: "Select some devs...",
+          title: "Multi Selection",
+          helpText: "Some useful help text can go here."
+      })(Halogen_HTML_Events.input(HandleDropdown.create));
+      return documentationBlock("Dropdown")("Select from a list.")(Halogen_HTML_Elements.div_([ componentBlock("Single select configuration.")(singleSlot), componentBlock("Multi select configuration.")(multiSlot) ]));
+  })();
+  var typeaheadBlock = (function () {
+      var slot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Components_Typeahead.component)({
+          items: containerData
+      })(Data_Void.absurd);
+      return documentationBlock("Typeahead")("Uses string input to search pre-determined entries.")(componentBlock("No configuration set.")(slot));
+  })();
+  var cnDocumentationBlocks = Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlock)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(dropdownBlock)([  ]));
+  var component = (function () {
+      var render = function (st) {
+          return container(UIGuide_Blocks_Sidebar.cnNavSections)(cnDocumentationBlocks);
+      };
+      var $$eval = function (v) {
+          if (v instanceof NoOp) {
+              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
+          };
+          if (v instanceof HandleDropdown) {
+              return Control_Apply.applyFirst(Halogen_Query_HalogenM.applyHalogenM)(Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1))((function () {
+                  if (v.value0 instanceof CN_UI_Components_Dropdown.ItemRemoved) {
+                      return Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(Control_Monad_Aff_Class.monadAffAff))(Control_Monad_Aff_Console.logShow(Data_Show.showString)((function (v1) {
+                          return v1.name;
+                      })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was removed"));
+                  };
+                  if (v.value0 instanceof CN_UI_Components_Dropdown.ItemSelected) {
+                      return Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(Control_Monad_Aff_Class.monadAffAff))(Control_Monad_Aff_Console.logShow(Data_Show.showString)((function (v1) {
+                          return v1.name;
+                      })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was selected"));
+                  };
+                  throw new Error("Failed pattern match at UIGuide.Components.TextFields line 68, column 49 - line 70, column 102: " + [ v.value0.constructor.name ]);
+              })());
+          };
+          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 66, column 5 - line 66, column 78: " + [ v.constructor.name ]);
+      };
+      return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid)))({
+          initialState: Data_Function["const"](Data_Unit.unit),
+          render: render,
+          "eval": $$eval,
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
+      });
+  })();
+  exports["NoOp"] = NoOp;
+  exports["HandleDropdown"] = HandleDropdown;
+  exports["component"] = component;
+  exports["TestRecord"] = TestRecord;
+  exports["dropdownData"] = dropdownData;
+  exports["containerData"] = containerData;
+  exports["css"] = css;
+  exports["container"] = container;
+  exports["innerContainer"] = innerContainer;
+  exports["cnDocumentationBlocks"] = cnDocumentationBlocks;
+  exports["typeaheadBlock"] = typeaheadBlock;
+  exports["dropdownBlock"] = dropdownBlock;
+  exports["documentationBlock"] = documentationBlock;
+  exports["componentBlock"] = componentBlock;
+  exports["eqTestRecord"] = eqTestRecord;
+  exports["newtypeTestRecord"] = newtypeTestRecord;
+})(PS["UIGuide.Components.TextFields"] = PS["UIGuide.Components.TextFields"] || {});
+(function(exports) {
+  // Generated by purs version 0.11.7
+  "use strict";
   var Control_Bind = PS["Control.Bind"];
   var Control_Monad_Aff = PS["Control.Monad.Aff"];
   var Control_Monad_Aff_Console = PS["Control.Monad.Aff.Console"];
@@ -11871,11 +11887,10 @@ var PS = {};
   var Halogen_Aff_Util = PS["Halogen.Aff.Util"];
   var Halogen_VDom_Driver = PS["Halogen.VDom.Driver"];
   var Prelude = PS["Prelude"];
-  var Select_Effects = PS["Select.Effects"];        
+  var Select_Effects = PS["Select.Effects"];
+  var UIGuide_Components_TextFields = PS["UIGuide.Components.TextFields"];        
   var main = Halogen_Aff_Util.runHalogenAff(Control_Bind.bind(Control_Monad_Aff.bindAff)(Halogen_Aff_Util.awaitBody)(function (v) {
-      return Control_Bind.discard(Control_Bind.discardUnit)(Control_Monad_Aff.bindAff)(Control_Monad_Aff_Console.log("You should add some tests."))(function () {
-          return Halogen_VDom_Driver.runUI(Base_Component.component)(Data_Unit.unit)(v);
-      });
+      return Halogen_VDom_Driver.runUI(UIGuide_Components_TextFields.component)(Data_Unit.unit)(v);
   }));
   exports["main"] = main;
 })(PS["Main"] = PS["Main"] || {});
