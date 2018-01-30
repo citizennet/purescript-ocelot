@@ -91,8 +91,8 @@ renderTypeahead st@(Typeahead.State st') =
 			:: Typeahead.TypeaheadState o item e
 			-> C.ContainerState item
 			-> H.HTML Void (C.ContainerQuery o item)
-		renderContainer (Typeahead.State parentSt) st = HH.div [ HP.class_ $ HH.ClassName "relative" ]
-			if not st.open
+		renderContainer (Typeahead.State parentState) containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+			if not containerState.open
 				then []
 				else [ HH.div
 					( C.getContainerProps
@@ -100,7 +100,7 @@ renderTypeahead st@(Typeahead.State st') =
 					)
 					[ HH.ul
 						[ HP.class_ $ HH.ClassName "list-reset" ]
-						$ renderItem (parentSt.search) `mapWithIndex` st.items
+						$ renderItem (parentState.search) `mapWithIndex` containerState.items
 					]
 				]
 			where
@@ -111,7 +111,7 @@ renderTypeahead st@(Typeahead.State st') =
 					)
 						[ HH.text $ Typeahead.toString item ]
 					where
-						hover = if st.highlightedIndex == Just ix then " bg-grey-lighter" else ""
+						hover = if containerState.highlightedIndex == Just ix then " bg-grey-lighter" else ""
 
 				renderItem search ix item = HH.li
 					( C.getItemProps ix
@@ -119,16 +119,17 @@ renderTypeahead st@(Typeahead.State st') =
 					)
 					( boldMatches (Pattern search) $ Typeahead.toString item )
 					where
-						hover = if st.highlightedIndex == Just ix then " bg-grey-lighter" else ""
+						hover = if containerState.highlightedIndex == Just ix then " bg-grey-lighter" else ""
 
 		renderSearch
 			:: S.SearchState e
 			-> H.HTML Void (S.SearchQuery o item e)
-		renderSearch _ =
+		renderSearch searchState =
 			HH.input
 			( S.getInputProps
 				[ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
 				, HP.placeholder "Type to search..."
+        , HP.value searchState.search
 				]
 			)
 

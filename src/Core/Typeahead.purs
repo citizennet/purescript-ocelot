@@ -135,6 +135,7 @@ defaultConfig =
 type HandlerRecord o item e =
   { newSearch :: String -> TypeaheadDSL o item e Unit
   , itemSelected :: item -> TypeaheadDSL o item e Unit
+  , itemRemoved :: item -> TypeaheadDSL o item e Unit
   }
 
 
@@ -209,71 +210,66 @@ component =
     , receiver: HE.input TypeaheadReceiver
     }
   where
-		initialState :: TypeaheadInput o item e -> State o item e
-		initialState i = store i.render $ State
-				{ items: i.items
-				, selections: i.initialSelection
-				, debounceTime: i.debounceTime
-				, search: fromMaybe "" i.search
-				, config: i.config
-				}
+    initialState :: TypeaheadInput o item e -> State o item e
+    initialState i = store i.render $ State
+        { items: i.items
+        , selections: i.initialSelection
+        , debounceTime: i.debounceTime
+        , search: fromMaybe "" i.search
+        , config: i.config
+        }
 
 
-		eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
-		eval = case _ of
+    eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
+    eval = case _ of
+      -- Handle messages from the container.
+      HandleContainer message a -> case message of
 
-			-- Handle messages from the container.
-			HandleContainer message a -> case message of
+        -- Evaluate an embedded parent query
+        Container.Emit query -> H.raise (Emit query) *> pure a
 
-				-- Evaluate an embedded parent query
-				Container.Emit query -> H.raise (Emit query) *> pure a
+        -- TODO:
+        -- Handle a new item selection
+        Container.ItemSelected item -> a <$ do
+          (Tuple _ (State st)) <- getState
+          case st.config of
+             Left { itemSelected } -> itemSelected item
+             Right _ -> itemSelectedFn item
 
-				-- TODO:
-				-- Handle a new item selection
-				Container.ItemSelected item -> a <$ do
-					H.raise $ ItemSelected item
-					(Tuple _ (State st)) <- getState
-					case st.config of
-						 Left { itemSelected } -> itemSelected item
-						 Right _ -> itemSelectedFn item
+      -- Handle messages from the search.
+      HandleSearch message a -> case message of
 
-			-- Handle messages from the search.
-			HandleSearch message a -> case message of
+        -- Evaluate an embedded parent query
+        Search.Emit query -> H.raise (Emit query) *> pure a
 
-				-- Evaluate an embedded parent query
-				Search.Emit query -> H.raise (Emit query) *> pure a
+        -- Route a container query to its correct slot.
+        Search.ContainerQuery query -> do
+          _ <- H.query' CP.cp1 (Slot ContainerSlot) query
+          pure a
 
-				-- Route a container query to its correct slot.
-				Search.ContainerQuery query -> do
-					_ <- H.query' CP.cp1 (Slot ContainerSlot) query
-					pure a
+        -- TODO
+        -- Handle a new search
+        Search.NewSearch text -> a <$ do
+          (Tuple _ (State st)) <- getState
+          case st.config of
+             Left { newSearch } -> newSearch text
+             Right _ -> newSearchFn text
 
-				-- TODO
-				-- Handle a new search
-				Search.NewSearch text -> a <$ do
-					(Tuple _ (State st)) <- getState
-					case st.config of
-						 Left { newSearch } -> newSearch text
-						 Right _ -> newSearchFn text
+      -- Handle a 'remove' event on the selections list.
+      Remove item a -> a <$ do
+        (Tuple _ (State st)) <- getState
+        case st.config of
+             Left { itemRemoved } -> itemRemoved item
+             Right _ -> itemRemovedFn item
 
-			-- Handle a 'remove' event on the selections list.
-			Remove item a -> a <$ do
-				(Tuple _ (State st)) <- getState
+      -- Return the current selections to the parent.
+      Selections reply -> do
+        (Tuple _ (State st)) <- getState
+        pure $ reply st.selections
 
-				H.modify $ seeks \(State st') -> State
-					$ st' { items = item : st.items
-								, selections = st.selections }
-
-				H.raise $ ItemRemoved item
-
-			-- Return the current selections to the parent.
-			Selections reply -> do
-				(Tuple _ (State st)) <- getState
-				pure $ reply st.selections
-
-			-- Overwrite the state with new input.
-			TypeaheadReceiver input a -> a <$ do
-				H.put $ initialState input
+      -- Overwrite the state with new input.
+      TypeaheadReceiver input a -> a <$ do
+        H.put $ initialState input
 
 
 ----------
@@ -328,15 +324,43 @@ itemSelectedFn item = do
         One (Just i) -> Tuple (One $ Just item) ((:) i $ filter ((/=) item) st.items)
         Many xs      -> Tuple (Many $ item : xs) (filter ((/=) item) st.items)
 
-  H.modify $ seeks \(State st') -> State $ st' { selections = newSelections }
+  H.modify $ seeks \(State st') -> State
+    $ st' { selections = newSelections
+          , items = newItems }
 
   -- Send the new items to the container
   _ <- H.query' CP.cp1 (Slot ContainerSlot)
         $ H.action
         $ Container.ReplaceItems newItems
 
+  -- Send an empty string to the search
+  _ <- H.query' CP.cp2 (Slot SearchSlot)
+        $ H.action
+        $ Search.TextInput ""
+
+  H.raise $ ItemSelected item
+
   pure unit
 
 
+-- Standard removal
+itemRemovedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
+itemRemovedFn item = do
+  (Tuple _ (State st)) <- getState
 
+  let (Tuple newSelections newItems) = case st.selections of
+        One _ -> Tuple (One Nothing) (item : st.items)
+        Many xs -> Tuple (Many $ filter ((/=) item) xs) (item : st.items)
 
+  H.modify $ seeks \(State st') -> State
+    $ st' { selections = newSelections
+          , items = newItems }
+
+  -- Send the new items to the container
+  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems newItems
+
+  H.raise $ ItemRemoved item
+
+  pure unit
