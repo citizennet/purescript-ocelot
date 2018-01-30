@@ -133,17 +133,16 @@ component =
       ]
       where
         inputStyle :: String
-        inputStyle = "rounded-sm bg-white block w-full appearance-none ds-input"
+        inputStyle = "rounded-sm bg-white block w-full appearance-none ds-input flex py-1 px-1"
 
-        browseButtonStyle :: HH.ClassName
+        browseButtonStyle :: String
         browseButtonStyle =
-          HH.ClassName
-            "font-medium text-blue-light border-l pl-2 text-sm cursor-pointer float-right"
+          "font-medium text-blue-light border-l ml-1 px-3 text-sm cursor-pointer self-center"
 
         browseButton :: DropdownHTML item e
         browseButton =
           HH.p
-            [ HP.class_ browseButtonStyle ]
+            [ HP.class_ $ HH.ClassName browseButtonStyle ]
             [ HH.text "Browse" ]
 
         closeButton :: item -> DropdownHTML item e
@@ -159,17 +158,18 @@ component =
           HH.div
             ( C.getToggleProps
               ToContainer
-              [ HP.class_ $ HH.ClassName $ inputStyle <> " py-1 px-1" ]
+              [ HP.class_ $ HH.ClassName inputStyle ]
             )
             [ HH.div
-              [ HP.class_ $ HH.ClassName toggleProps ]
+              [ HP.class_ $ HH.ClassName toggleStyle ]
               toggleHTML
+            , browseButton
             ]
           where
-            toggleProps :: String
-            toggleProps = case selected of
-              Nothing -> " text-grey-dark py-1 px-3"
-              Just _ -> " text-grey-darkest py-1 px-3 hover:bg-grey-lightest"
+            toggleStyle :: String
+            toggleStyle = case selected of
+              Nothing -> " text-grey-dark py-1 px-3 flex-auto"
+              Just _ -> " text-grey-darkest py-1 px-3 flex-auto hover:bg-grey-lightest"
 
             toggleHTML :: Array (DropdownHTML item e)
             toggleHTML = case selected of
@@ -181,9 +181,11 @@ component =
           HH.div
             ( C.getToggleProps
                 ToContainer
-                [ HP.class_ $ HH.ClassName (inputStyle <> " text-grey-dark py-2 px-4") ]
+                [ HP.class_ $ HH.ClassName inputStyle ]
             )
-            [ HH.text st.placeholder
+            [ HH.div
+              [ HP.class_ $ HH.ClassName "text-grey-dark py-1 px-3 flex-auto" ]
+              [ HH.text st.placeholder ]
             , browseButton
             ]
 

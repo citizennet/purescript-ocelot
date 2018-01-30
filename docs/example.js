@@ -9432,13 +9432,15 @@ var PS = {};
               };
               return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("bg-white rounded-sm w-full border-b border-grey-lighter") ])([ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.class_("list-reset") ])(Data_Functor.map(Data_Functor.functorArray)(renderSelectedItem)(items)) ]);
           };
+          var browseButton = Halogen_HTML_Elements.p([ Halogen_HTML_Properties.class_("font-medium text-blue-light border-l ml-1 px-3 text-sm cursor-pointer self-center") ])([ Halogen_HTML_Core.text("Browse") ]);
+          var renderMultiToggle = Halogen_HTML_Elements.div(Select_Primitive_Container.getToggleProps(ToContainer.create)([ Halogen_HTML_Properties.class_("rounded-sm bg-white block w-full appearance-none ds-input flex py-1 px-1") ]))([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("text-grey-dark py-1 px-3 flex-auto") ])([ Halogen_HTML_Core.text(st.placeholder) ]), browseButton ]);
           var renderSingleToggle = function (selected) {
-              var toggleProps = (function () {
+              var toggleStyle = (function () {
                   if (selected instanceof Data_Maybe.Nothing) {
-                      return " text-grey-dark py-1 px-3";
+                      return " text-grey-dark py-1 px-3 flex-auto";
                   };
                   if (selected instanceof Data_Maybe.Just) {
-                      return " text-grey-darkest py-1 px-3 hover:bg-grey-lightest";
+                      return " text-grey-darkest py-1 px-3 flex-auto hover:bg-grey-lightest";
                   };
                   throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 170, column 27 - line 174, column 13: " + [ selected.constructor.name ]);
               })();
@@ -9451,10 +9453,8 @@ var PS = {};
                   };
                   throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 175, column 26 - line 177, column 93: " + [ selected.constructor.name ]);
               })();
-              return Halogen_HTML_Elements.div(Select_Primitive_Container.getToggleProps(ToContainer.create)([ Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName("rounded-sm bg-white block w-full appearance-none ds-input" + " py-1 px-1")) ]))([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_(toggleProps) ])(toggleHTML) ]);
+              return Halogen_HTML_Elements.div(Select_Primitive_Container.getToggleProps(ToContainer.create)([ Halogen_HTML_Properties.class_("rounded-sm bg-white block w-full appearance-none ds-input flex py-1 px-1") ]))([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_(toggleStyle) ])(toggleHTML), browseButton ]);
           };
-          var browseButton = Halogen_HTML_Elements.p([ Halogen_HTML_Properties.class_("font-medium text-blue-light border-l pl-2 text-sm cursor-pointer float-right") ])([ Halogen_HTML_Core.text("Browse") ]);
-          var renderMultiToggle = Halogen_HTML_Elements.div(Select_Primitive_Container.getToggleProps(ToContainer.create)([ Halogen_HTML_Properties.class_("rounded-sm bg-white block w-full appearance-none ds-input" + " text-grey-dark py-2 px-4") ]))([ Halogen_HTML_Core.text(st.placeholder), browseButton ]);
           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("w-full px-3") ])([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2") ])([ Halogen_HTML_Core.text(st.title) ]), (function () {
               if (st.selection instanceof Single) {
                   return Halogen_HTML_Elements.div_([ renderSingleToggle(st.selection.value0), Halogen_HTML.slot(Data_Unit.unit)(Select_Primitive_Container.component)({
@@ -9498,7 +9498,7 @@ var PS = {};
                           var containerItems = Data_Array["delete"](dictEq)(v.value0)(v1.selection.value0);
                           return new Data_Tuple.Tuple(new Multi(containerItems), Data_Array.difference(dictEq)(v1.items)(containerItems));
                       };
-                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 222, column 41 - line 226, column 78: " + [ v1.selection.constructor.name ]);
+                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 224, column 41 - line 228, column 78: " + [ v1.selection.constructor.name ]);
                   })()))(function (v2) {
                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
                           var $31 = {};
@@ -9534,7 +9534,7 @@ var PS = {};
                               var containerItems = Data_Array.snoc(v1.selection.value0)(v.value0.value0);
                               return new Data_Tuple.Tuple(new Multi(containerItems), Data_Array.difference(dictEq)(v1.items)(containerItems));
                           };
-                          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 241, column 43 - line 245, column 80: " + [ v1.selection.constructor.name ]);
+                          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 243, column 43 - line 247, column 80: " + [ v1.selection.constructor.name ]);
                       })()))(function (v2) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
                               var $45 = {};
@@ -9557,7 +9557,7 @@ var PS = {};
                                       if (v1.selection instanceof Multi) {
                                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Control_Applicative.pure(Data_Maybe.applicativeMaybe)(Data_Unit.unit));
                                       };
-                                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 253, column 16 - line 257, column 44: " + [ v1.selection.constructor.name ]);
+                                      throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 255, column 16 - line 259, column 44: " + [ v1.selection.constructor.name ]);
                                   })())(function (v4) {
                                       return Halogen_Query_HalogenM.raise(new ItemSelected(v.value0.value0));
                                   });
@@ -9566,9 +9566,9 @@ var PS = {};
                       });
                   }));
               };
-              throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 236, column 30 - line 258, column 38: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 238, column 30 - line 260, column 38: " + [ v.value0.constructor.name ]);
           };
-          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 213, column 12 - line 258, column 38: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Components.Dropdown line 215, column 12 - line 260, column 38: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
@@ -11642,7 +11642,8 @@ var PS = {};
   exports["runUI"] = runUI;
 })(PS["Halogen.VDom.Driver"] = PS["Halogen.VDom.Driver"] || {});
 (function(exports) {
-    "use strict";
+  // Generated by purs version 0.11.7
+  "use strict";
   var Control_Semigroupoid = PS["Control.Semigroupoid"];
   var Data_Functor = PS["Data.Functor"];
   var Data_Tuple = PS["Data.Tuple"];
