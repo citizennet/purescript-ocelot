@@ -131,13 +131,16 @@ renderTypeahead renderItem st@(Typeahead.State st') =
 			:: S.SearchState e
 			-> H.HTML Void (S.SearchQuery o item e)
 		renderSearch searchState =
-			HH.input
-			( S.getInputProps
-				[ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
-				, HP.placeholder "Type to search..."
-        , HP.value searchState.search
-				]
-			)
+                  HH.div
+                    [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
+                    [ HH.input
+                      ( S.getInputProps
+                        [ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
+                        , HP.placeholder "Type to search..."
+                        , HP.value searchState.search
+                        ]
+                      )
+                    ]
 
 
 -- A default renderer for items

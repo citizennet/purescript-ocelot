@@ -9966,13 +9966,6 @@ var PS = {};
       CaseInsensitive.value = new CaseInsensitive();
       return CaseInsensitive;
   })();
-  var Fuzzy = (function () {
-      function Fuzzy() {
-
-      };
-      Fuzzy.value = new Fuzzy();
-      return Fuzzy;
-  })();
   var CustomMatch = (function () {
       function CustomMatch(value0) {
           this.value0 = value0;
@@ -10137,7 +10130,7 @@ var PS = {};
                   if (v.value1.selections instanceof Many) {
                       return new Data_Tuple.Tuple(Many.create(Data_Array.filter(Data_Eq.notEq(dictEq)(item))(v.value1.selections.value0)), Data_Array.cons(item)(v.value1.items));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 381, column 40 - line 383, column 74: " + [ v.value1.selections.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 377, column 40 - line 379, column 74: " + [ v.value1.selections.constructor.name ]);
               })();
               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v2) {
                   return State((function () {
@@ -10178,7 +10171,7 @@ var PS = {};
                       if (v.value1.selections instanceof Many) {
                           return new Data_Tuple.Tuple(Many.create(Data_Array.cons(item)(v.value1.selections.value0)), Data_Array.filter(Data_Eq.notEq(dictEq)(item))(v.value1.items));
                       };
-                      throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 345, column 40 - line 348, column 79: " + [ v.value1.selections.constructor.name ]);
+                      throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 341, column 40 - line 344, column 79: " + [ v.value1.selections.constructor.name ]);
                   })();
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v2) {
                       return State((function () {
@@ -10244,10 +10237,7 @@ var PS = {};
                                       return matchType.value0(text)(item);
                                   })(v.value1.items);
                               };
-                              if (matchType instanceof Fuzzy) {
-                                  return v.value1.items;
-                              };
-                              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 314, column 17 - line 320, column 26: " + [ matchType.constructor.name ]);
+                              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 313, column 17 - line 316, column 72: " + [ matchType.constructor.name ]);
                           })();
                         
                           // However, if the typeahead is Insertable, then use the provided function in that type
@@ -10263,7 +10253,7 @@ var PS = {};
                                   };
                                   return matches;
                               };
-                              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 324, column 18 - line 326, column 94: " + [ insertable.constructor.name ]);
+                              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 320, column 18 - line 322, column 94: " + [ insertable.constructor.name ]);
                           })();
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v1) {
                               return State((function () {
@@ -10303,7 +10293,7 @@ var PS = {};
           if (x instanceof SearchSlot && y instanceof SearchSlot) {
               return Data_Ordering.EQ.value;
           };
-          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 200, column 8 - line 200, column 54: " + [ x.constructor.name, y.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 199, column 8 - line 199, column 54: " + [ x.constructor.name, y.constructor.name ]);
       };
   });
   var ordSlot = new Data_Ord.Ord(function () {
@@ -10319,7 +10309,7 @@ var PS = {};
       return function (dictStringComparable) {
           return {
               insertable: NotInsertable.value,
-              matchType: Fuzzy.value,
+              matchType: CaseInsensitive.value,
               keepOpen: true
           };
       };
@@ -10357,10 +10347,10 @@ var PS = {};
                           if (v1.value1.config instanceof Data_Either.Right) {
                               return itemSelectedFn(dictEq)(v1.value1.config.value0.keepOpen)(v.value0.value0);
                           };
-                          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 241, column 11 - line 243, column 64: " + [ v1.value1.config.constructor.name ]);
+                          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 240, column 11 - line 242, column 64: " + [ v1.value1.config.constructor.name ]);
                       }));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 233, column 36 - line 243, column 64: " + [ v.value0.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 232, column 36 - line 242, column 64: " + [ v.value0.constructor.name ]);
               };
               if (v instanceof HandleSearch) {
                   if (v.value0 instanceof Select_Primitives_Search.Emit) {
@@ -10379,10 +10369,10 @@ var PS = {};
                           if (v1.value1.config instanceof Data_Either.Right) {
                               return newSearchFn(dictEq)(dictStringComparable)(v1.value1.config.value0.matchType)(v1.value1.config.value0.insertable)(v.value0.value0);
                           };
-                          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 259, column 11 - line 261, column 86: " + [ v1.value1.config.constructor.name ]);
+                          throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 258, column 11 - line 260, column 86: " + [ v1.value1.config.constructor.name ]);
                       }));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 246, column 33 - line 261, column 86: " + [ v.value0.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 245, column 33 - line 260, column 86: " + [ v.value0.constructor.name ]);
               };
               if (v instanceof Remove) {
                   return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Select_Primitives_State.getState(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
@@ -10392,7 +10382,7 @@ var PS = {};
                       if (v1.value1.config instanceof Data_Either.Right) {
                           return itemRemovedFn(dictEq)(v.value0);
                       };
-                      throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 266, column 9 - line 268, column 43: " + [ v1.value1.config.constructor.name ]);
+                      throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 265, column 9 - line 267, column 43: " + [ v1.value1.config.constructor.name ]);
                   }));
               };
               if (v instanceof Selections) {
@@ -10403,7 +10393,7 @@ var PS = {};
               if (v instanceof TypeaheadReceiver) {
                   return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Control_Monad_State_Class.put(Halogen_Query_HalogenM.monadStateHalogenM)(initialState(v.value0)));
               };
-              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 231, column 12 - line 277, column 35: " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Core.Typeahead line 230, column 12 - line 276, column 35: " + [ v.constructor.name ]);
           };
           return Halogen_Component.parentComponent(Data_Either.ordEither(ordSlot)(Data_Either.ordEither(ordSlot)(Data_Ord.ordVoid)))({
               initialState: initialState,
@@ -10428,7 +10418,6 @@ var PS = {};
   exports["Emit"] = Emit;
   exports["Exact"] = Exact;
   exports["CaseInsensitive"] = CaseInsensitive;
-  exports["Fuzzy"] = Fuzzy;
   exports["CustomMatch"] = CustomMatch;
   exports["NotInsertable"] = NotInsertable;
   exports["Insertable"] = Insertable;
@@ -10449,7 +10438,8 @@ var PS = {};
   exports["ordPrimitiveSlot"] = ordPrimitiveSlot;
 })(PS["CN.UI.Core.Typeahead"] = PS["CN.UI.Core.Typeahead"] || {});
 (function(exports) {
-    "use strict";
+  // Generated by purs version 0.11.7
+  "use strict";
   var CN_UI_Core_Typeahead = PS["CN.UI.Core.Typeahead"];
   var Data_Array = PS["Data.Array"];
   var Data_Either = PS["Data.Either"];
@@ -10471,9 +10461,6 @@ var PS = {};
   var Prelude = PS["Prelude"];
   var Select_Primitives_Container = PS["Select.Primitives.Container"];
   var Select_Primitives_Search = PS["Select.Primitives.Search"];        
-
-  //--------
-  // Render functions
   var renderTypeahead = function (dictStringComparable) {
       return function (renderItem) {
           return function (v) {
@@ -10493,7 +10480,7 @@ var PS = {};
                   throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 81, column 25 - line 100, column 42: " + [ v.selections.constructor.name ]);
               })();
               var renderSearch = function (searchState) {
-                  return Halogen_HTML_Elements.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.class_("placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"), Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.value(searchState.search) ]));
+                  return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex items-center border-b-2 border-red-lighter") ])([ Halogen_HTML_Elements.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.class_("placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"), Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.value(searchState.search) ])) ]);
               };
               var renderContainer = function (v1) {
                   return function (containerState) {
@@ -10517,10 +10504,6 @@ var PS = {};
           };
       };
   };
-
-  //--------
-  // Helpers
-  // Wrap matching text in a bold span when the user performs a search
   var boldMatches = function (v) {
       return function (src) {
           var bold = Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("font-bold") ])([ Halogen_HTML_Core.text(v) ]);
@@ -10534,8 +10517,6 @@ var PS = {};
           return Data_Semigroup.append(Data_Semigroup.semigroupArray)(html)(lastHtml);
       };
   };
-
-  // A default renderer for items
   var defaultRenderItem = function (dictStringComparable) {
       return function (dictEq) {
           return function (v) {
@@ -10566,8 +10547,6 @@ var PS = {};
           };
       };
   };
-
-  // A default multi-select using the default render item function
   var defaultMulti$prime = function (dictStringComparable) {
       return function (dictEq) {
           return function (xs) {
@@ -12064,7 +12043,8 @@ var PS = {};
   exports["cnNavSections"] = cnNavSections;
 })(PS["UIGuide.Blocks.Sidebar"] = PS["UIGuide.Blocks.Sidebar"] || {});
 (function(exports) {
-    "use strict";
+  // Generated by purs version 0.11.7
+  "use strict";
   var CN_UI_Components_Dropdown = PS["CN.UI.Components.Dropdown"];
   var CN_UI_Components_Typeahead = PS["CN.UI.Components.Typeahead"];
   var CN_UI_Core_Typeahead = PS["CN.UI.Core.Typeahead"];
@@ -12097,9 +12077,6 @@ var PS = {};
   var Prelude = PS["Prelude"];
   var Select_Effects = PS["Select.Effects"];
   var UIGuide_Blocks_Sidebar = PS["UIGuide.Blocks.Sidebar"];        
-
-  //--------
-  // Sample data
   var TestRecord = function (x) {
       return x;
   };
@@ -12157,9 +12134,6 @@ var PS = {};
       name: "Forest",
       id: 3
   } ];
-
-  //--------
-  // HTML
   var css = function ($23) {
       return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($23));
   };
@@ -12221,14 +12195,8 @@ var PS = {};
       return documentationBlock("Typeahead")("Uses string input to search pre-determined entries.")(componentBlock("No configuration set.")(slot));
   })();
   var cnDocumentationBlocks = Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlock)(dropdownBlock);
-
-  //--------
-  // Component definition
   var component = (function () {
-    
-      // For the sake of testing and visual demonstration, we'll just render
-      // out a bunch of selection variants in respective slots
-  var render = function (st) {
+      var render = function (st) {
           return container(UIGuide_Blocks_Sidebar.cnNavSections)(cnDocumentationBlocks);
       };
       var $$eval = function (v) {

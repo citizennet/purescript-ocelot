@@ -115,7 +115,6 @@ type ConfigRecord item =
 data MatchType item
   = Exact
   | CaseInsensitive
-  | Fuzzy
   | CustomMatch (String -> item -> Boolean)
 
 -- The typeahead can either not insert un-matched values, or it can insert them so long
@@ -130,7 +129,7 @@ data Insertable item
 defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
 defaultConfig =
   { insertable: NotInsertable
-  , matchType: Fuzzy
+  , matchType: CaseInsensitive
   , keepOpen: true
   }
 
@@ -315,9 +314,6 @@ newSearchFn matchType insertable text = do
         Exact -> filter (\item -> contains (Pattern text) (toString item)) st.items
         CaseInsensitive -> filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
         CustomMatch match -> filter (\item -> match text item) st.items
-
-        -- TODO: Fuzzy search not yet implemented.
-        Fuzzy -> st.items
 
       -- However, if the typeahead is Insertable, then use the provided function in that type
       -- to construct a new item and add it to the item liste
