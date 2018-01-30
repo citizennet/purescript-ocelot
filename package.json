@@ -1,14 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "build-prod": "npm run build-dev && npm run build-ui && npm run build-css && npm run copy-css",
+    "build-prod": "npm run build-dev && npm run build-ui && npm run build-css",
     "clean": "rm -rf output bower_components node_modules && cd css && rm -rf node_modules",
     "build-dev": "pulp build",
     "watch-dev": "pulp -w build",
     "build-ui": "pulp build -I ui-guide --to docs/example.js",
-    "watch-ui": "pulp -w build -I ui-guide --to docs/example.js",
-    "build-css": "cd css && npm run build-prod",
-    "copy-css": "cp css/dist/cn-tailwind.css docs/cn-tailwind.css"
+    "watch-ui": "pulp -w --then 'npm run build-css' build -I ui-guide --to docs/example.js",
+    "build-css": "cd css && npm run build-prod && cp ./dist/cn-tailwind.css ../docs/cn-tailwind.css"
   },
   "devDependencies": {
     "pulp": "^12.0.1",
