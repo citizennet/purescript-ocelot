@@ -20,13 +20,35 @@ import CN.UI.Core.Typeahead as Typeahead
 ----------
 -- Default typeahead
 
-defaultMulti :: ∀ o item e. Typeahead.StringComparable item => Array item -> Typeahead.TypeaheadInput o item e
-defaultMulti xs =
+-- A default multi-select that is provided with a renderItem function to determine
+-- rendering a specific item in the container
+defaultMulti :: ∀ o item e
+   . Typeahead.StringComparable item
+  => Eq item
+  => Array item
+  -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
+  -> Typeahead.TypeaheadInput o item e
+defaultMulti xs renderItem =
   { items: xs
   , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: Typeahead.Many []
-  , render: renderTypeahead
+  , render: renderTypeahead renderItem
+  , config: Right Typeahead.defaultConfig
+  }
+
+-- A default multi-select using the default render item function
+defaultMulti' :: ∀ o item e
+   . Typeahead.StringComparable item
+  => Eq item
+  => Array item
+  -> Typeahead.TypeaheadInput o item e
+defaultMulti' xs =
+  { items: xs
+  , debounceTime: Milliseconds 0.0
+  , search: Nothing
+  , initialSelection: Typeahead.Many []
+  , render: renderTypeahead defaultRenderItem
   , config: Right Typeahead.defaultConfig
   }
 
@@ -35,9 +57,10 @@ defaultMulti xs =
 -- Render functions
 
 renderTypeahead :: ∀ o item e. Typeahead.StringComparable item
-	=> Typeahead.TypeaheadState o item e
+  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
+	-> Typeahead.TypeaheadState o item e
 	-> Typeahead.TypeaheadHTML o item e
-renderTypeahead st@(Typeahead.State st') =
+renderTypeahead renderItem st@(Typeahead.State st') =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
 	[ HH.label
@@ -100,26 +123,9 @@ renderTypeahead st@(Typeahead.State st') =
 					)
 					[ HH.ul
 						[ HP.class_ $ HH.ClassName "list-reset" ]
-						$ renderItem (parentState.search) `mapWithIndex` containerState.items
+						$ renderItem (parentState.search) containerState.highlightedIndex `mapWithIndex` containerState.items
 					]
 				]
-			where
-				renderItem :: String -> Int -> item -> H.HTML Void (C.ContainerQuery o item)
-				renderItem "" ix item = HH.li
-					( C.getItemProps ix
-						[ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
-					)
-						[ HH.text $ Typeahead.toString item ]
-					where
-						hover = if containerState.highlightedIndex == Just ix then " bg-grey-lighter" else ""
-
-				renderItem search ix item = HH.li
-					( C.getItemProps ix
-						[ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
-					)
-					( boldMatches (Pattern search) $ Typeahead.toString item )
-					where
-						hover = if containerState.highlightedIndex == Just ix then " bg-grey-lighter" else ""
 
 		renderSearch
 			:: S.SearchState e
@@ -133,6 +139,30 @@ renderTypeahead st@(Typeahead.State st') =
 				]
 			)
 
+
+-- A default renderer for items
+defaultRenderItem :: ∀ o item
+  . Typeahead.StringComparable item
+ => Eq item
+ => String
+ -> (Maybe Int)
+ -> Int
+ -> item
+ -> H.HTML Void (C.ContainerQuery o item)
+defaultRenderItem "" highlightIndex itemIndex item = HH.li
+  ( C.getItemProps itemIndex
+    [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
+  )
+    [ HH.text $ Typeahead.toString item ]
+  where
+    hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
+defaultRenderItem search highlightIndex itemIndex item = HH.li
+  ( C.getItemProps itemIndex
+    [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
+  )
+  ( boldMatches (Pattern search) $ Typeahead.toString item )
+  where
+    hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
 
 ----------
 -- Helpers

@@ -4,11 +4,11 @@ import Prelude
 
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
-import Data.Array (filter, (:))
+import Data.Array (filter, (:), length)
 import Data.Either (Either(..))
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.String (Pattern(..), contains)
+import Data.String (Pattern(..), contains, toLower)
 import Data.Time.Duration (Milliseconds)
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
@@ -101,30 +101,37 @@ data TypeaheadMessage o item
 -- item selected)
 
 type EvalConfig o item e =
-  Either (HandlerRecord o item e) ConfigRecord
+  Either (HandlerRecord o item e) (ConfigRecord item)
 
 -- Some standard functionality is baked in to the component
 -- and can be configured if the user wants a more 'out of the
 -- box' experience. This is a sample.
-type ConfigRecord =
-  { insertable  :: Boolean        -- If no match, insert?
-  , matchType   :: MatchType      -- Function to match
-  , keepOpen    :: Boolean        -- Stay open on selection?
-  , duplicates  :: Boolean        -- Allow duplicates?
+type ConfigRecord item =
+  { insertable  :: Insertable item  -- If no match, insert? Requires ability to construct item
+  , matchType   :: MatchType item   -- Function to match
+  , keepOpen    :: Boolean          -- Stay open on selection?
   }
 
-data MatchType
+data MatchType item
   = Exact
   | CaseInsensitive
   | Fuzzy
+  | CustomMatch (String -> item -> Boolean)
+
+-- The typeahead can either not insert un-matched values, or it can insert them so long
+-- as there is a way to go from a string to your custom item type. If your data is just
+-- a string, use `id`
+data Insertable item
+  = NotInsertable
+  | Insertable (String -> item)
+
 
 -- A default config can help minimize their efforts.
-defaultConfig :: ConfigRecord
+defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
 defaultConfig =
-  { insertable: false
+  { insertable: NotInsertable
   , matchType: Fuzzy
   , keepOpen: true
-  , duplicates: false
   }
 
 -- Alternately, they can provide the full handlers for the
@@ -228,13 +235,12 @@ component =
         -- Evaluate an embedded parent query
         Container.Emit query -> H.raise (Emit query) *> pure a
 
-        -- TODO:
         -- Handle a new item selection
         Container.ItemSelected item -> a <$ do
           (Tuple _ (State st)) <- getState
           case st.config of
              Left { itemSelected } -> itemSelected item
-             Right _ -> itemSelectedFn item
+             Right { keepOpen } -> itemSelectedFn keepOpen item
 
       -- Handle messages from the search.
       HandleSearch message a -> case message of
@@ -247,13 +253,12 @@ component =
           _ <- H.query' CP.cp1 (Slot ContainerSlot) query
           pure a
 
-        -- TODO
         -- Handle a new search
         Search.NewSearch text -> a <$ do
           (Tuple _ (State st)) <- getState
           case st.config of
              Left { newSearch } -> newSearch text
-             Right _ -> newSearchFn text
+             Right { insertable, matchType } -> newSearchFn matchType insertable text
 
       -- Handle a 'remove' event on the selections list.
       Remove item a -> a <$ do
@@ -293,15 +298,32 @@ containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE
 -- behaviors out of the box. However, if you need more fine-grained control over
 -- state and behaviors, you can provide custom handlers.
 
-
--- Searching requires the ability to compare the item to a string. We supply a type
--- class for StringComparable; strings already have an instance of it and take no
--- further effort.
-newSearchFn :: ∀ o item e. Eq item => StringComparable item => String -> TypeaheadDSL o item e Unit
-newSearchFn text = do
+-- Use a default matching function to determine what items match the user's search,
+-- or use one provided by the user. If searches are insertable, allow the user to select
+-- items they've searched, constructing a new item from the string using the user's function.
+-- Finally, update the new items available in the container.
+newSearchFn :: ∀ o item e. Eq item => StringComparable item
+  => MatchType item
+  -> Insertable item
+  -> String
+  -> TypeaheadDSL o item e Unit
+newSearchFn matchType insertable text = do
   (Tuple _ (State st)) <- getState
 
-  let matches = filter (\item -> contains (Pattern text) (toString item)) st.items
+  -- The base filter matches on strings using the StringComparable type class
+  let matches = case matchType of
+        Exact -> filter (\item -> contains (Pattern text) (toString item)) st.items
+        CaseInsensitive -> filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
+        CustomMatch match -> filter (\item -> match text item) st.items
+
+        -- TODO: Fuzzy search not yet implemented.
+        Fuzzy -> st.items
+
+      -- However, if the typeahead is Insertable, then use the provided function in that type
+      -- to construct a new item and add it to the item liste
+      newItems = case insertable of
+        NotInsertable -> matches
+        Insertable mkItem -> if length matches <= 0 then (mkItem text) : matches else matches
 
   -- Update the selections
   H.modify $ seeks \(State st') -> State $ st' { search = text }
@@ -309,14 +331,15 @@ newSearchFn text = do
   -- Send the new items to the container
   _ <- H.query' CP.cp1 (Slot ContainerSlot)
         $ H.action
-        $ Container.ReplaceItems matches
+        $ Container.ReplaceItems newItems
 
   pure unit
 
 
--- Manages a selection depending on what kind of select this is.
-itemSelectedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
-itemSelectedFn item = do
+-- Standard selection: Take the item out of the available items list and put it in the
+-- selected list. Reset the search, and close the container unless it's set to stay open.
+itemSelectedFn :: ∀ o item e. Eq item => Boolean -> item -> TypeaheadDSL o item e Unit
+itemSelectedFn keepOpen item = do
   (Tuple _ (State st)) <- getState
 
   let (Tuple newSelections newItems) = case st.selections of
@@ -338,12 +361,19 @@ itemSelectedFn item = do
         $ H.action
         $ Search.TextInput ""
 
+  -- Unless you're meant to stay open on selection, close the menu.
+  _ <- if keepOpen then pure Nothing else do
+       H.query' CP.cp1 (Slot ContainerSlot)
+         $ H.action
+         $ Container.Visibility Container.Off
+
   H.raise $ ItemSelected item
 
   pure unit
 
 
--- Standard removal
+-- Standard removal: When an item is removed, put it back into the available items list
+-- and take it out of the selected list.
 itemRemovedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
 itemRemovedFn item = do
   (Tuple _ (State st)) <- getState

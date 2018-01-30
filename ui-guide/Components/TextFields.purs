@@ -3,7 +3,7 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (defaultMulti) as Typeahead
+import CN.UI.Components.Typeahead (defaultMulti') as Typeahead
 import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
 import UIGuide.Blocks.Sidebar as Sidebar
 import Control.Monad.Aff.Console (logShow)
@@ -145,7 +145,7 @@ typeaheadBlock = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
-    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.defaultMulti containerData ) (HE.input HandleTypeahead)
+    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.defaultMulti' containerData ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock
