@@ -10480,7 +10480,7 @@ var PS = {};
                   throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 81, column 25 - line 100, column 42: " + [ v.selections.constructor.name ]);
               })();
               var renderSearch = function (searchState) {
-                  return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex items-center border-b-2 border-red-lighter") ])([ Halogen_HTML_Elements.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.class_("placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"), Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.value(searchState.search) ])) ]);
+                  return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex items-center border-b-2") ])([ Halogen_HTML_Elements.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.class_("placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"), Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.value(searchState.search) ])) ]);
               };
               var renderContainer = function (v1) {
                   return function (containerState) {
