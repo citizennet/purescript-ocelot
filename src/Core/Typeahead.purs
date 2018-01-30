@@ -17,9 +17,9 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
 import Select.Effects (FX)
-import Select.Primitive.Container as Container
-import Select.Primitive.Search as Search
-import Select.Primitive.State (getState)
+import Select.Primitives.Container as Container
+import Select.Primitives.Search as Search
+import Select.Primitives.State (getState)
 
 ----------
 -- Motivation
@@ -311,9 +311,9 @@ newSearchFn text = do
   H.modify $ seeks \(State st') -> State $ st' { search = text }
 
   -- Send the new items to the container
-  --  _ <- H.query' CP.cp1 (Slot ContainerSlot)
-  --        $ H.action
-  --        $ Container.ReplaceItems matches
+  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems matches
 
   pure unit
 
@@ -331,9 +331,9 @@ itemSelectedFn item = do
   H.modify $ seeks \(State st') -> State $ st' { selections = newSelections }
 
   -- Send the new items to the container
-  --  _ <- H.query' CP.cp1 (Slot ContainerSlot)
-  --        $ H.action
-  --        $ Container.ReplaceItems newItems
+  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems newItems
 
   pure unit
 

@@ -12,8 +12,8 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Primitive.Container as C
-import Select.Primitive.Search as S
+import Select.Primitives.Container as C
+import Select.Primitives.Search as S
 import CN.UI.Core.Typeahead as Typeahead
 
 
