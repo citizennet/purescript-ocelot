@@ -3,14 +3,15 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead as Typeahead
+import CN.UI.Components.Typeahead (defaultMulti) as Typeahead
+import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
 import UIGuide.Blocks.Sidebar as Sidebar
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(Nothing))
 import Data.Newtype (class Newtype, unwrap)
-import Data.Tuple (Tuple(Tuple))
+import Data.Tuple (Tuple)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -28,23 +29,20 @@ type State
 data Query a
   = NoOp a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
+  | HandleTypeahead (Typeahead.TypeaheadMessage Query String) a
 
 
 ----------
 -- Child paths
 
-type ChildQuery = Coproduct2 Typeahead.Query (Dropdown.Query TestRecord)
+type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query String e) (Dropdown.Query TestRecord)
 type ChildSlot = Either2 Unit Unit
 
-----------
--- Item specializations
-
-type DropdownItem = String
 
 ----------
 -- Convenience types
 
-type HTML e = H.ParentHTML Query (ChildQuery) ChildSlot (FX e)
+type HTML e = H.ParentHTML Query (ChildQuery e) ChildSlot (FX e)
 
 ----------
 -- Component definition
@@ -63,11 +61,13 @@ component =
     render :: State -> HTML e
     render st = container Sidebar.cnNavSections cnDocumentationBlocks
 
-    eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Void (FX e)
+    eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (FX e)
     eval (NoOp next) = pure next
+    eval (HandleTypeahead m next) = pure next
     eval (HandleDropdown m next) = pure next <* case m of
       Dropdown.ItemRemoved item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
       Dropdown.ItemSelected item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
+
 
 ----------
 -- Sample data
@@ -137,7 +137,7 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
-cnDocumentationBlocks = typeaheadBlock <> dropdownBlock <> []
+cnDocumentationBlocks = typeaheadBlock <> dropdownBlock
 
 typeaheadBlock :: ∀ e. Array (HTML e)
 typeaheadBlock = documentationBlock
@@ -145,7 +145,7 @@ typeaheadBlock = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
-    slot = HH.slot' CP.cp1 unit Typeahead.component { items: containerData } absurd
+    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.defaultMulti containerData ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock
