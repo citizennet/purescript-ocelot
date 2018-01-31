@@ -69,9 +69,7 @@ testAsyncMulti' fetch xs =
   , initialSelection: Typeahead.Many []
   , render: renderTypeahead defaultRenderItem
   , config: Right
-    { insertable: Typeahead.NotInsertable
-    , matchType: Typeahead.CaseInsensitive
-    , fetchType: Typeahead.Async fetch
+    { fetchType: Typeahead.Async Typeahead.CaseInsensitive Typeahead.NotInsertable fetch
     , keepOpen: true
     }
   }

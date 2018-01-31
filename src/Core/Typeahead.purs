@@ -3,6 +3,8 @@ module CN.UI.Core.Typeahead where
 import Prelude
 
 import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Console (log)
+import Data.Traversable (traverse_)
 import Network.HTTP.Affjax (AJAX)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
@@ -80,6 +82,7 @@ data TypeaheadQuery o item e a
   | HandleSearch (Search.Message o item) a
   | Remove item a
   | Selections (SelectionType item -> a)
+  | Initialize a
   | TypeaheadReceiver (TypeaheadInput o item e) a
 
 type TypeaheadInput o item e =
@@ -106,48 +109,49 @@ data TypeaheadMessage o item
 type EvalConfig o item e =
   Either (HandlerRecord o item e) (ConfigRecord item)
 
--- Some standard functionality is baked in to the component
--- and can be configured if the user wants a more 'out of the
--- box' experience. This is a sample.
-type ConfigRecord item =
-  { insertable  :: Insertable item  -- If no match, insert? Requires ability to construct item
-  , matchType   :: MatchType item   -- Function to match
-  , fetchType   :: FetchType item
-  , keepOpen    :: Boolean          -- Stay open on selection?
+-- A default config can help minimize work.
+defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
+defaultConfig =
+  { fetchType: Sync CaseInsensitive NotInsertable
+  , keepOpen: true
   }
 
---
-data FetchType item
-  = Sync
-  | Async (forall e. Aff (ajax :: AJAX | e) (Array item))  -- impredicative
+-- Some standard functionality is baked in to the component
+-- and can be configured if the user wants a more 'out of the
+-- box' experience.
+type ConfigRecord item =
+  { fetchType   :: FetchType item
+  , keepOpen    :: Boolean
+  }
 
-data MatchType item
-  = Exact
+-- Indicates how the typeahead should fetch data.
+--
+-- - `Sync`: The typeahead expects data provided by the parent.
+-- - `Async`: The typeahead will fetch its own data on initialization (but not after)
+-- - `ContinuousAsync`: The typeahead will fetch data every time a search is performed
+data FetchType item
+  = Sync (FilterType item) (Insertable item)
+  | Async (FilterType item) (Insertable item) (forall e. Aff (ajax :: AJAX | e) (Array item))
+  | ContinuousAsync (Insertable item) (forall e. String -> Aff (ajax :: AJAX | e) (Array item))
+
+data FilterType item
+  = NoFilter
+  | Exact
   | CaseInsensitive
   | CustomMatch (String -> item -> Boolean)
 
 -- The typeahead can either not insert un-matched values, or it can insert them so long
 -- as there is a way to go from a string to your custom item type. If your data is just
--- a string, use `id`
+-- a string, use `id`. If you want to tag inserted items so you can send them to the
+-- DB on selection, make sure your Insertable function encodes this information.
 data Insertable item
   = NotInsertable
   | Insertable (String -> item)
 
-
--- A default config can help minimize their efforts.
-defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
-defaultConfig =
-  { insertable: NotInsertable
-  , matchType: CaseInsensitive
-  , fetchType: Sync
-  , keepOpen: true
-  }
-
--- Alternately, they can provide the full handlers for the
--- two most important queries, with full access to the state
--- and slot types, though this is certainly a more 'advanced'
--- case.
-
+-- If you need something more custom, you can provide handlers for the most important
+-- eval functions yourself. If you only need one, import the relevant function from
+-- this module to the right field
+-- (ex: import Typeahead as Typeahead; itemSelected: Typeahead.itemSelected)
 type HandlerRecord o item e =
   { newSearch :: String -> TypeaheadDSL o item e Unit
   , itemSelected :: item -> TypeaheadDSL o item e Unit
@@ -219,11 +223,13 @@ derive instance ordPrimitiveSlot :: Ord PrimitiveSlot
 component :: ∀ o item e
   . Eq item => StringComparable item => TypeaheadComponent o item e
 component =
-  H.parentComponent
+  H.lifecycleParentComponent
     { initialState
     , render: extract
     , eval
     , receiver: HE.input TypeaheadReceiver
+    , initializer: Just $ H.action Initialize
+    , finalizer: Nothing
     }
   where
     initialState :: TypeaheadInput o item e -> State o item e
@@ -234,7 +240,6 @@ component =
         , search: fromMaybe "" i.search
         , config: i.config
         }
-
 
     eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
     eval = case _ of
@@ -249,7 +254,7 @@ component =
           (Tuple _ (State st)) <- getState
           case st.config of
              Left { itemSelected } -> itemSelected item
-             Right { keepOpen } -> itemSelectedFn keepOpen item
+             Right config -> evalItemSelected config item
 
       -- Handle messages from the search.
       HandleSearch message a -> case message of
@@ -267,23 +272,49 @@ component =
           (Tuple _ (State st)) <- getState
           case st.config of
              Left { newSearch } -> newSearch text
-             Right config -> newSearchFn config text
+             Right config -> evalNewSearch config text
 
       -- Handle a 'remove' event on the selections list.
       Remove item a -> a <$ do
         (Tuple _ (State st)) <- getState
         case st.config of
              Left { itemRemoved } -> itemRemoved item
-             Right _ -> itemRemovedFn item
+             Right _ -> evalItemRemoved item
 
       -- Return the current selections to the parent.
       Selections reply -> do
         (Tuple _ (State st)) <- getState
         pure $ reply st.selections
 
-      -- Overwrite the state with new input.
+      -- Specialty function specifically for Async type; fetches
+      -- data using provided function.
+      Initialize a -> do
+        (Tuple _ (State st)) <- getState
+
+        case st.config of
+          Right c -> case c.fetchType of
+            Async _ _ fetch -> do
+              items <- H.liftAff fetch
+              H.liftAff $ traverse_ (log <<< toString) items
+              H.modify
+                $ seeks
+                $ \(State st') -> State
+                $ st' { items = items }
+              pure a
+
+            -- In any other case, do not modify item data.
+            _ -> pure a
+          _ -> pure a
+
+
+      -- Overwrite the state with new input, handling the case in which the typeahead fetches its
+      -- own data to avoid unnecessary requests.
       TypeaheadReceiver input a -> a <$ do
         H.put $ initialState input
+        -- In the case of Async this will fetch the items again. We can also modify this to _not_
+        -- overwrite the items field if the config type is Async or otherwise optimize performance.
+        eval (Initialize a)
+
 
 
 ----------
@@ -312,44 +343,25 @@ containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE
 -- items they've searched, constructing a new item from the string using the user's function.
 -- Finally, update the new items available in the container.
 
-newSearchFn :: ∀ o item e. Eq item => StringComparable item
+evalNewSearch :: ∀ o item e. Eq item => StringComparable item
   => ConfigRecord item
   -> String
   -> TypeaheadDSL o item e Unit
-newSearchFn { fetchType, matchType, insertable } text = do
+evalNewSearch { fetchType } text = unit <$ do
 
-  -- If synchronous, use existing items from the state.
-  -- If async, use provided function to fetch the items (empty array if fails)
-  items <- case fetchType of
-    Sync -> getState >>= \(Tuple _ (State st)) -> pure st.items
-    Async f -> H.liftAff f
-
-  -- The base filter matches on strings using the StringComparable type class
-  let matches = case matchType of
-        Exact ->
-          filter
-            (\item -> contains (Pattern text) (toString item))
-            items
-        CaseInsensitive ->
-          filter
-            (\item -> contains (Pattern $ toLower text) (toLower $ toString item))
-            items
-        CustomMatch match ->
-          filter
-            (\item -> match text item)
-            items
-
-      -- However, if the typeahead is Insertable, then use the provided function in that type
-      -- to construct a new item and add it to the item liste
-      newItems = case insertable of
-        NotInsertable -> matches
-        Insertable mkItem ->
-          if length matches <= 0
-            then (mkItem text) : matches
-            else matches
-
-  -- Update the selections
+  -- Update the search value
   H.modify $ seeks \(State st') -> State $ st' { search = text }
+
+  -- If sync or async, use existing items from the state.
+  -- If continuous async, use provided function to fetch the items (empty array if fails)
+  newItems <- case fetchType of
+    -- In any non-continuous, use the correct filter and do not fetch new items.
+    Sync f i -> pure =<< applyInsertable i =<< applyFilter f
+    Async f i _ -> pure =<< applyInsertable i =<< applyFilter f
+
+    -- WARN: ContinuousAsync assumes you just want the items returned -- that you are filtering
+    -- yourself in the function.
+    ContinuousAsync i fetch -> H.liftAff (fetch text)
 
   -- Send the new items to the container
   _ <- H.query' CP.cp1 (Slot ContainerSlot)
@@ -358,13 +370,38 @@ newSearchFn { fetchType, matchType, insertable } text = do
 
   H.raise $ NewSearch text
 
-  pure unit
+  where
+    -- Set up the filter
+    applyFilter matchType = getState >>= \(Tuple _ (State st)) -> pure $ do
+      -- Note: The base filter matches on strings using the StringComparable type class
+      case matchType of
+        NoFilter ->
+          st.items
+        Exact ->
+          filter (\item -> contains (Pattern text) (toString item)) st.items
+        CaseInsensitive ->
+          filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
+        CustomMatch match ->
+          filter (\item -> match text item) st.items
+
+    -- If the typeahead is Insertable, then use the provided function in that type
+    -- to construct a new item and add it to the item list. NOTE: If you want to be able
+    -- to tell what items have been inserted, ensure your item type encodes this! Your
+    -- mkItem function can tag items that were inserted.
+    applyInsertable insertable currentItems = case insertable of
+      NotInsertable -> pure currentItems
+      Insertable mkItem | length currentItems > 0 -> pure currentItems
+                        | otherwise -> pure $ (mkItem text) : currentItems
 
 
 -- Standard selection: Take the item out of the available items list and put it in the
 -- selected list. Reset the search, and close the container unless it's set to stay open.
-itemSelectedFn :: ∀ o item e. Eq item => Boolean -> item -> TypeaheadDSL o item e Unit
-itemSelectedFn keepOpen item = do
+
+-- WARN: This doesn't tell you if the new item selected was an inserted item that needs
+-- to be written anywhere else! If you need this functionality, your item type must encode
+-- it, like: (MyItem IsNew item) & mkItem item = MyItem IsNew item
+evalItemSelected :: ∀ o item e. Eq item => ConfigRecord item -> item -> TypeaheadDSL o item e Unit
+evalItemSelected { keepOpen } item = unit <$ do
   (Tuple _ (State st)) <- getState
 
   let (Tuple newSelections newItems) = case st.selections of
@@ -394,13 +431,11 @@ itemSelectedFn keepOpen item = do
 
   H.raise $ ItemSelected item
 
-  pure unit
-
 
 -- Standard removal: When an item is removed, put it back into the available items list
 -- and take it out of the selected list.
-itemRemovedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
-itemRemovedFn item = do
+evalItemRemoved :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
+evalItemRemoved item = unit <$ do
   (Tuple _ (State st)) <- getState
 
   let (Tuple newSelections newItems) = case st.selections of
@@ -417,10 +452,3 @@ itemRemovedFn item = do
         $ Container.ReplaceItems newItems
 
   H.raise $ ItemRemoved item
-
-  pure unit
-
-
-
-
-
