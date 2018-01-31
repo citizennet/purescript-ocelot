@@ -4,7 +4,7 @@ import Prelude
 import UIGuide.Components.TextFields as TextFields
 
 import Control.Monad.Eff (Eff)
-import Control.Monad.Aff.Console (CONSOLE, log)
+import Control.Monad.Aff.Console (CONSOLE)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Select.Effects (Effects)

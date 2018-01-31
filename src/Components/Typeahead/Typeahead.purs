@@ -141,7 +141,7 @@ renderTypeahead renderItem st@(Typeahead.State st') =
 				then []
 				else [ HH.div
 					( C.getContainerProps
-						[ HP.class_ $ HH.ClassName "absolute bg-white shadow rounded-sm pin-t pin-l w-full" ]
+						[ HP.class_ $ HH.ClassName "absolute bg-white shadow h-64 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
 					)
 					[ HH.ul
 						[ HP.class_ $ HH.ClassName "list-reset" ]
