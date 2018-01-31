@@ -4,11 +4,11 @@ import Prelude
 
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
-import Data.Array (filter, (:))
+import Data.Array (filter, (:), length)
 import Data.Either (Either(..))
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.String (Pattern(..), contains)
+import Data.String (Pattern(..), contains, toLower)
 import Data.Time.Duration (Milliseconds)
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
@@ -101,30 +101,36 @@ data TypeaheadMessage o item
 -- item selected)
 
 type EvalConfig o item e =
-  Either (HandlerRecord o item e) ConfigRecord
+  Either (HandlerRecord o item e) (ConfigRecord item)
 
 -- Some standard functionality is baked in to the component
 -- and can be configured if the user wants a more 'out of the
 -- box' experience. This is a sample.
-type ConfigRecord =
-  { insertable  :: Boolean        -- If no match, insert?
-  , matchType   :: MatchType      -- Function to match
-  , keepOpen    :: Boolean        -- Stay open on selection?
-  , duplicates  :: Boolean        -- Allow duplicates?
+type ConfigRecord item =
+  { insertable  :: Insertable item  -- If no match, insert? Requires ability to construct item
+  , matchType   :: MatchType item   -- Function to match
+  , keepOpen    :: Boolean          -- Stay open on selection?
   }
 
-data MatchType
+data MatchType item
   = Exact
   | CaseInsensitive
-  | Fuzzy
+  | CustomMatch (String -> item -> Boolean)
+
+-- The typeahead can either not insert un-matched values, or it can insert them so long
+-- as there is a way to go from a string to your custom item type. If your data is just
+-- a string, use `id`
+data Insertable item
+  = NotInsertable
+  | Insertable (String -> item)
+
 
 -- A default config can help minimize their efforts.
-defaultConfig :: ConfigRecord
+defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
 defaultConfig =
-  { insertable: false
-  , matchType: Fuzzy
+  { insertable: NotInsertable
+  , matchType: CaseInsensitive
   , keepOpen: true
-  , duplicates: false
   }
 
 -- Alternately, they can provide the full handlers for the
@@ -135,6 +141,7 @@ defaultConfig =
 type HandlerRecord o item e =
   { newSearch :: String -> TypeaheadDSL o item e Unit
   , itemSelected :: item -> TypeaheadDSL o item e Unit
+  , itemRemoved :: item -> TypeaheadDSL o item e Unit
   }
 
 
@@ -209,71 +216,64 @@ component =
     , receiver: HE.input TypeaheadReceiver
     }
   where
-		initialState :: TypeaheadInput o item e -> State o item e
-		initialState i = store i.render $ State
-				{ items: i.items
-				, selections: i.initialSelection
-				, debounceTime: i.debounceTime
-				, search: fromMaybe "" i.search
-				, config: i.config
-				}
+    initialState :: TypeaheadInput o item e -> State o item e
+    initialState i = store i.render $ State
+        { items: i.items
+        , selections: i.initialSelection
+        , debounceTime: i.debounceTime
+        , search: fromMaybe "" i.search
+        , config: i.config
+        }
 
 
-		eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
-		eval = case _ of
+    eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
+    eval = case _ of
+      -- Handle messages from the container.
+      HandleContainer message a -> case message of
 
-			-- Handle messages from the container.
-			HandleContainer message a -> case message of
+        -- Evaluate an embedded parent query
+        Container.Emit query -> H.raise (Emit query) *> pure a
 
-				-- Evaluate an embedded parent query
-				Container.Emit query -> H.raise (Emit query) *> pure a
+        -- Handle a new item selection
+        Container.ItemSelected item -> a <$ do
+          (Tuple _ (State st)) <- getState
+          case st.config of
+             Left { itemSelected } -> itemSelected item
+             Right { keepOpen } -> itemSelectedFn keepOpen item
 
-				-- TODO:
-				-- Handle a new item selection
-				Container.ItemSelected item -> a <$ do
-					H.raise $ ItemSelected item
-					(Tuple _ (State st)) <- getState
-					case st.config of
-						 Left { itemSelected } -> itemSelected item
-						 Right _ -> itemSelectedFn item
+      -- Handle messages from the search.
+      HandleSearch message a -> case message of
 
-			-- Handle messages from the search.
-			HandleSearch message a -> case message of
+        -- Evaluate an embedded parent query
+        Search.Emit query -> H.raise (Emit query) *> pure a
 
-				-- Evaluate an embedded parent query
-				Search.Emit query -> H.raise (Emit query) *> pure a
+        -- Route a container query to its correct slot.
+        Search.ContainerQuery query -> do
+          _ <- H.query' CP.cp1 (Slot ContainerSlot) query
+          pure a
 
-				-- Route a container query to its correct slot.
-				Search.ContainerQuery query -> do
-					_ <- H.query' CP.cp1 (Slot ContainerSlot) query
-					pure a
+        -- Handle a new search
+        Search.NewSearch text -> a <$ do
+          (Tuple _ (State st)) <- getState
+          case st.config of
+             Left { newSearch } -> newSearch text
+             Right { insertable, matchType } -> newSearchFn matchType insertable text
 
-				-- TODO
-				-- Handle a new search
-				Search.NewSearch text -> a <$ do
-					(Tuple _ (State st)) <- getState
-					case st.config of
-						 Left { newSearch } -> newSearch text
-						 Right _ -> newSearchFn text
+      -- Handle a 'remove' event on the selections list.
+      Remove item a -> a <$ do
+        (Tuple _ (State st)) <- getState
+        case st.config of
+             Left { itemRemoved } -> itemRemoved item
+             Right _ -> itemRemovedFn item
 
-			-- Handle a 'remove' event on the selections list.
-			Remove item a -> a <$ do
-				(Tuple _ (State st)) <- getState
+      -- Return the current selections to the parent.
+      Selections reply -> do
+        (Tuple _ (State st)) <- getState
+        pure $ reply st.selections
 
-				H.modify $ seeks \(State st') -> State
-					$ st' { items = item : st.items
-								, selections = st.selections }
-
-				H.raise $ ItemRemoved item
-
-			-- Return the current selections to the parent.
-			Selections reply -> do
-				(Tuple _ (State st)) <- getState
-				pure $ reply st.selections
-
-			-- Overwrite the state with new input.
-			TypeaheadReceiver input a -> a <$ do
-				H.put $ initialState input
+      -- Overwrite the state with new input.
+      TypeaheadReceiver input a -> a <$ do
+        H.put $ initialState input
 
 
 ----------
@@ -297,38 +297,32 @@ containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE
 -- behaviors out of the box. However, if you need more fine-grained control over
 -- state and behaviors, you can provide custom handlers.
 
-
--- Searching requires the ability to compare the item to a string. We supply a type
--- class for StringComparable; strings already have an instance of it and take no
--- further effort.
-newSearchFn :: ∀ o item e. Eq item => StringComparable item => String -> TypeaheadDSL o item e Unit
-newSearchFn text = do
+-- Use a default matching function to determine what items match the user's search,
+-- or use one provided by the user. If searches are insertable, allow the user to select
+-- items they've searched, constructing a new item from the string using the user's function.
+-- Finally, update the new items available in the container.
+newSearchFn :: ∀ o item e. Eq item => StringComparable item
+  => MatchType item
+  -> Insertable item
+  -> String
+  -> TypeaheadDSL o item e Unit
+newSearchFn matchType insertable text = do
   (Tuple _ (State st)) <- getState
 
-  let matches = filter (\item -> contains (Pattern text) (toString item)) st.items
+  -- The base filter matches on strings using the StringComparable type class
+  let matches = case matchType of
+        Exact -> filter (\item -> contains (Pattern text) (toString item)) st.items
+        CaseInsensitive -> filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
+        CustomMatch match -> filter (\item -> match text item) st.items
+
+      -- However, if the typeahead is Insertable, then use the provided function in that type
+      -- to construct a new item and add it to the item liste
+      newItems = case insertable of
+        NotInsertable -> matches
+        Insertable mkItem -> if length matches <= 0 then (mkItem text) : matches else matches
 
   -- Update the selections
   H.modify $ seeks \(State st') -> State $ st' { search = text }
-
-  -- Send the new items to the container
-  _ <- H.query' CP.cp1 (Slot ContainerSlot)
-        $ H.action
-        $ Container.ReplaceItems matches
-
-  pure unit
-
-
--- Manages a selection depending on what kind of select this is.
-itemSelectedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
-itemSelectedFn item = do
-  (Tuple _ (State st)) <- getState
-
-  let (Tuple newSelections newItems) = case st.selections of
-        One Nothing  -> Tuple (One $ Just item) (filter ((/=) item) st.items)
-        One (Just i) -> Tuple (One $ Just item) ((:) i $ filter ((/=) item) st.items)
-        Many xs      -> Tuple (Many $ item : xs) (filter ((/=) item) st.items)
-
-  H.modify $ seeks \(State st') -> State $ st' { selections = newSelections }
 
   -- Send the new items to the container
   _ <- H.query' CP.cp1 (Slot ContainerSlot)
@@ -338,5 +332,61 @@ itemSelectedFn item = do
   pure unit
 
 
+-- Standard selection: Take the item out of the available items list and put it in the
+-- selected list. Reset the search, and close the container unless it's set to stay open.
+itemSelectedFn :: ∀ o item e. Eq item => Boolean -> item -> TypeaheadDSL o item e Unit
+itemSelectedFn keepOpen item = do
+  (Tuple _ (State st)) <- getState
+
+  let (Tuple newSelections newItems) = case st.selections of
+        One Nothing  -> Tuple (One $ Just item) (filter ((/=) item) st.items)
+        One (Just i) -> Tuple (One $ Just item) ((:) i $ filter ((/=) item) st.items)
+        Many xs      -> Tuple (Many $ item : xs) (filter ((/=) item) st.items)
+
+  H.modify $ seeks \(State st') -> State
+    $ st' { selections = newSelections
+          , items = newItems }
+
+  -- Send the new items to the container
+  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems newItems
+
+  -- Send an empty string to the search
+  _ <- H.query' CP.cp2 (Slot SearchSlot)
+        $ H.action
+        $ Search.TextInput ""
+
+  -- Unless you're meant to stay open on selection, close the menu.
+  _ <- if keepOpen then pure Nothing else do
+       H.query' CP.cp1 (Slot ContainerSlot)
+         $ H.action
+         $ Container.Visibility Container.Off
+
+  H.raise $ ItemSelected item
+
+  pure unit
 
 
+-- Standard removal: When an item is removed, put it back into the available items list
+-- and take it out of the selected list.
+itemRemovedFn :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
+itemRemovedFn item = do
+  (Tuple _ (State st)) <- getState
+
+  let (Tuple newSelections newItems) = case st.selections of
+        One _ -> Tuple (One Nothing) (item : st.items)
+        Many xs -> Tuple (Many $ filter ((/=) item) xs) (item : st.items)
+
+  H.modify $ seeks \(State st') -> State
+    $ st' { selections = newSelections
+          , items = newItems }
+
+  -- Send the new items to the container
+  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems newItems
+
+  H.raise $ ItemRemoved item
+
+  pure unit
