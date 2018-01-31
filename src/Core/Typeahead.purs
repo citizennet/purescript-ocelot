@@ -2,6 +2,8 @@ module CN.UI.Core.Typeahead where
 
 import Prelude
 
+import Control.Monad.Aff (Aff)
+import Network.HTTP.Affjax (AJAX)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Data.Array (filter, (:), length)
@@ -92,6 +94,7 @@ type TypeaheadInput o item e =
 data TypeaheadMessage o item
   = ItemSelected item
   | ItemRemoved item
+  | NewSearch String
   | Emit (o Unit)
 
 -- The idea: maintain an Either where you either provide
@@ -109,8 +112,14 @@ type EvalConfig o item e =
 type ConfigRecord item =
   { insertable  :: Insertable item  -- If no match, insert? Requires ability to construct item
   , matchType   :: MatchType item   -- Function to match
+  , fetchType   :: FetchType item
   , keepOpen    :: Boolean          -- Stay open on selection?
   }
+
+--
+data FetchType item
+  = Sync
+  | Async (forall e. Aff (ajax :: AJAX | e) (Array item))  -- impredicative
 
 data MatchType item
   = Exact
@@ -130,6 +139,7 @@ defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
 defaultConfig =
   { insertable: NotInsertable
   , matchType: CaseInsensitive
+  , fetchType: Sync
   , keepOpen: true
   }
 
@@ -257,7 +267,7 @@ component =
           (Tuple _ (State st)) <- getState
           case st.config of
              Left { newSearch } -> newSearch text
-             Right { insertable, matchType } -> newSearchFn matchType insertable text
+             Right config -> newSearchFn config text
 
       -- Handle a 'remove' event on the selections list.
       Remove item a -> a <$ do
@@ -301,25 +311,42 @@ containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE
 -- or use one provided by the user. If searches are insertable, allow the user to select
 -- items they've searched, constructing a new item from the string using the user's function.
 -- Finally, update the new items available in the container.
+
 newSearchFn :: ∀ o item e. Eq item => StringComparable item
-  => MatchType item
-  -> Insertable item
+  => ConfigRecord item
   -> String
   -> TypeaheadDSL o item e Unit
-newSearchFn matchType insertable text = do
-  (Tuple _ (State st)) <- getState
+newSearchFn { fetchType, matchType, insertable } text = do
+
+  -- If synchronous, use existing items from the state.
+  -- If async, use provided function to fetch the items (empty array if fails)
+  items <- case fetchType of
+    Sync -> getState >>= \(Tuple _ (State st)) -> pure st.items
+    Async f -> H.liftAff f
 
   -- The base filter matches on strings using the StringComparable type class
   let matches = case matchType of
-        Exact -> filter (\item -> contains (Pattern text) (toString item)) st.items
-        CaseInsensitive -> filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
-        CustomMatch match -> filter (\item -> match text item) st.items
+        Exact ->
+          filter
+            (\item -> contains (Pattern text) (toString item))
+            items
+        CaseInsensitive ->
+          filter
+            (\item -> contains (Pattern $ toLower text) (toLower $ toString item))
+            items
+        CustomMatch match ->
+          filter
+            (\item -> match text item)
+            items
 
       -- However, if the typeahead is Insertable, then use the provided function in that type
       -- to construct a new item and add it to the item liste
       newItems = case insertable of
         NotInsertable -> matches
-        Insertable mkItem -> if length matches <= 0 then (mkItem text) : matches else matches
+        Insertable mkItem ->
+          if length matches <= 0
+            then (mkItem text) : matches
+            else matches
 
   -- Update the selections
   H.modify $ seeks \(State st') -> State $ st' { search = text }
@@ -328,6 +355,8 @@ newSearchFn matchType insertable text = do
   _ <- H.query' CP.cp1 (Slot ContainerSlot)
         $ H.action
         $ Container.ReplaceItems newItems
+
+  H.raise $ NewSearch text
 
   pure unit
 
@@ -390,3 +419,8 @@ itemRemovedFn item = do
   H.raise $ ItemRemoved item
 
   pure unit
+
+
+
+
+

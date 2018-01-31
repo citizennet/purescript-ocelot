@@ -2,10 +2,12 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (defaultMulti') as Typeahead
-import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
 import UIGuide.Blocks.Sidebar as Sidebar
+import UIGuide.Utilities.Async as Async
+
+import CN.UI.Components.Dropdown as Dropdown
+import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
+import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
@@ -29,13 +31,13 @@ type State
 data Query a
   = NoOp a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-  | HandleTypeahead (Typeahead.TypeaheadMessage Query String) a
+  | HandleTypeahead (Typeahead.TypeaheadMessage Query Async.Todo) a
 
 
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query String e) (Dropdown.Query TestRecord)
+type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query Async.Todo e) (Dropdown.Query TestRecord)
 type ChildSlot = Either2 Unit Unit
 
 
@@ -63,10 +65,14 @@ component =
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (FX e)
     eval (NoOp next) = pure next
+
     eval (HandleTypeahead m next) = pure next
+
     eval (HandleDropdown m next) = pure next <* case m of
-      Dropdown.ItemRemoved item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
-      Dropdown.ItemSelected item -> H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
+      Dropdown.ItemRemoved item ->
+        H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
+      Dropdown.ItemSelected item ->
+        H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
 
 ----------
@@ -145,7 +151,7 @@ typeaheadBlock = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
-    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.defaultMulti' containerData ) (HE.input HandleTypeahead)
+    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' Async.fetchTodos [] ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock

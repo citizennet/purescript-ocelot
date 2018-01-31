@@ -2,6 +2,8 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
+import Control.Monad.Aff (Aff)
+import Network.HTTP.Affjax (AJAX)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.String (Pattern(Pattern), split)
@@ -50,6 +52,28 @@ defaultMulti' xs =
   , initialSelection: Typeahead.Many []
   , render: renderTypeahead defaultRenderItem
   , config: Right Typeahead.defaultConfig
+  }
+
+
+-- A default multi-select using the default render item function
+testAsyncMulti' :: ∀ o item e
+  . Typeahead.StringComparable item
+ => Eq item
+ => (forall e'. Aff (ajax :: AJAX | e') (Array item))
+ -> Array item
+ -> Typeahead.TypeaheadInput o item e
+testAsyncMulti' fetch xs =
+  { items: xs
+  , debounceTime: Milliseconds 500.0
+  , search: Nothing
+  , initialSelection: Typeahead.Many []
+  , render: renderTypeahead defaultRenderItem
+  , config: Right
+    { insertable: Typeahead.NotInsertable
+    , matchType: Typeahead.CaseInsensitive
+    , fetchType: Typeahead.Async fetch
+    , keepOpen: true
+    }
   }
 
 
