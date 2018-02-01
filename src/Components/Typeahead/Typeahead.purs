@@ -2,6 +2,7 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
+import Data.Tuple (Tuple(..))
 import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Maybe (Maybe(Just, Nothing))
@@ -61,7 +62,7 @@ testAsyncMulti' :: ∀ o item e
  => String -- TODO: Should be polymorphic; this is the source the parent can use to determine what data to return
  -> Typeahead.TypeaheadInput o item e
 testAsyncMulti' source =
-  { items: Typeahead.Async source NotAsked
+  { items: Typeahead.ContinuousAsync (Tuple source source) NotAsked
   , debounceTime: Milliseconds 500.0
   , search: Nothing
   , initialSelection: Typeahead.Many []

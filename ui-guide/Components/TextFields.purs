@@ -75,6 +75,7 @@ component =
       Typeahead.RequestData (Typeahead.ContinuousAsync src _) -> do
          -- Not using SRC or STR here but should!
          todos <- H.liftAff Async.fetchTodos
+         H.liftAff $ logShow todos
          _ <- H.query' CP.cp1 unit $ H.action ( Typeahead.FulfillRequest $ Typeahead.ContinuousAsync src todos )
          pure next
       _ -> pure next

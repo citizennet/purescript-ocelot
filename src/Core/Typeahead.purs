@@ -306,6 +306,7 @@ component =
         -- (Tuple _ (State st)) <- getState
 
         H.modify $ seeks $ \(State st) -> State st { items = method }
+        H.liftAff $ log "Received new data in FulfillRequest."
 
         let updateContainer (Failure e) = do
               -- Close the container
@@ -331,6 +332,7 @@ component =
           ContinuousAsync src items -> updateContainer items
           _ -> pure unit
 
+        H.liftAff $ log "Updated container with new data in FulfillRequest."
         pure a
 
       -- Overwrite the state with new input.
@@ -423,10 +425,11 @@ evalNewSearch { filterType, insertable } text = unit <$ do
     ContinuousAsync (Tuple src _) _ -> do
        -- Update the value with the search
        let continuous = ContinuousAsync (Tuple src text) Loading
-       -- Request data
-       H.raise $ RequestData continuous
        -- Update items to loading
        H.modify $ seeks $ \(State st') -> State st' { items = continuous }
+       H.liftAff $ log "Requested new data in evalNewSearch."
+       -- Request data
+       H.raise $ RequestData continuous
        -- Return the loading value
        pure continuous
 

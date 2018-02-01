@@ -7,6 +7,7 @@ import Data.Argonaut (Json, decodeJson, (.?))
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData(..))
 import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Console (log, CONSOLE)
 import CN.UI.Core.Typeahead (class StringComparable)
 
 import Data.Traversable (traverse)
@@ -17,11 +18,13 @@ import Data.Traversable (traverse)
 fetchTodos :: forall e.
    Aff
      ( ajax :: AJAX
+     , console :: CONSOLE
      | e
      )
      (RemoteData String (Array Todo))
 fetchTodos = do
   res <- get "https://jsonplaceholder.typicode.com/todos"
+  log "Fetching todos..."
   case decodeTodos res.response of
     Left s -> pure $ Failure s
     Right arr -> pure $ Success arr
@@ -34,6 +37,9 @@ newtype Todo = Todo
   , completed :: Boolean }
 
 derive instance eqTodo :: Eq Todo
+
+instance showTodo :: Show Todo where
+  show (Todo { title, completed }) = title <> " " <> show completed
 instance stringComparableTodo :: StringComparable Todo where
   toString (Todo { title, completed }) = title <> " " <> show completed
 
