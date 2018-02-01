@@ -10,36 +10,8 @@
 @tailwind utilities;
 
 /* CitizenNet utilities */
-
 .cc-teal { caret-color: config('colors.teal'); }
 .no-outline { outline: none; }
+.focus\:no-outline:focus { @apply .no-outline; }
+.disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
 
-/* CitizenNet styles */
-
-/* CN.UI.Block.Input */
-
-.cn-input {
-    @apply .bg-white;
-    @apply .cc-teal;
-    @apply .font-light;
-    @apply .px-4;
-    @apply .py-2;
-    @apply .rounded-sm;
-    @apply .text-sm;
-    @apply .w-full;
-}
-
-.cn-input:disabled {
-    @apply .bg-grey-light;
-}
-
-.cn-input:focus {
-    @apply .no-outline;
-}
-
-/* CN.UI.Block.FormInput */
-
-.cn-form-label {
-  @apply .font-medium;
-  @apply .text-sm;
-}
