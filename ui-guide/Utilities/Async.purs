@@ -5,6 +5,7 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Argonaut (Json, decodeJson, (.?))
 import Network.HTTP.Affjax (get, AJAX)
+import Network.RemoteData (RemoteData(..))
 import Control.Monad.Aff (Aff)
 import CN.UI.Core.Typeahead (class StringComparable)
 
@@ -18,12 +19,12 @@ fetchTodos :: forall e.
      ( ajax :: AJAX
      | e
      )
-     (Array Todo)
+     (RemoteData String (Array Todo))
 fetchTodos = do
   res <- get "https://jsonplaceholder.typicode.com/todos"
   case decodeTodos res.response of
-    Left s -> pure []
-    Right arr -> pure arr
+    Left s -> pure $ Failure s
+    Right arr -> pure $ Success arr
 
 ----------
 -- Todos from JSON API

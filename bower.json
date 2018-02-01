@@ -19,6 +19,7 @@
     "purescript-psci-support": "^3.0.0",
     "purescript-aff": "^4.0.2",
     "purescript-affjax": "^5.0.0",
-    "purescript-argonaut": "^3.1.0"
+    "purescript-argonaut": "^3.1.0",
+    "purescript-remotedata": "^2.2.0"
   }
 }

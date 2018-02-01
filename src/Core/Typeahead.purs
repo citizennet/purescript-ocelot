@@ -2,9 +2,9 @@ module CN.UI.Core.Typeahead where
 
 import Prelude
 
+import Network.RemoteData (RemoteData(..))
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log)
-import Data.Traversable (traverse_)
 import Network.HTTP.Affjax (AJAX)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
@@ -65,17 +65,39 @@ type State o item e = Store (TypeaheadState o item e) (TypeaheadHTML o item e)
 
 -- Newtype because of the self-reference in config function.
 newtype TypeaheadState o item e = State
-  { items :: Array item
+  { items :: SyncMethod TypeaheadError (Array item)
   , selections :: SelectionType item
   , debounceTime :: Milliseconds
   , search :: String
   , config :: EvalConfig o item e
   }
 
+type TypeaheadError = String
+
+-- Indicates how the typeahead should fetch data. Async types store both their function
+-- to fetch data and the result of running that function.
+--
+-- - `Sync`: The typeahead expects data provided by the parent.
+-- - `Async`: The typeahead will fetch its own data on initialization (but not after)
+-- - `ContinuousAsync`: The typeahead will fetch data every time a search is performed
+data SyncMethod err a
+  = Sync a
+  | Async (forall e. Aff (ajax :: AJAX | e) (RemoteData err a)) (RemoteData err a)
+  | ContinuousAsync (forall e. String -> Aff (ajax :: AJAX | e) (RemoteData err a)) (RemoteData err a)
+
+-- Cannot make / derive a functor instance. See:
+-- https://github.com/purescript/purescript/issues/3232
+mapSyncMethod :: forall err a. (a -> a) -> SyncMethod err a -> SyncMethod err a
+mapSyncMethod f (Sync x) = Sync $ f x
+mapSyncMethod f (Async fetch x) = Async fetch $ f <$> x
+mapSyncMethod f (ContinuousAsync fetch x) = ContinuousAsync fetch $ f <$> x
+
 -- Could also provide 'Limit Int' for restricted lists
 data SelectionType item
   = One (Maybe item)
   | Many (Array item)
+
+derive instance functorSelectionType :: Functor SelectionType
 
 data TypeaheadQuery o item e a
   = HandleContainer (Container.Message o item) a
@@ -86,7 +108,7 @@ data TypeaheadQuery o item e a
   | TypeaheadReceiver (TypeaheadInput o item e) a
 
 type TypeaheadInput o item e =
-  { items :: Array item
+  { items :: SyncMethod TypeaheadError (Array item)
   , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
@@ -112,7 +134,8 @@ type EvalConfig o item e =
 -- A default config can help minimize work.
 defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
 defaultConfig =
-  { fetchType: Sync CaseInsensitive NotInsertable
+  { filterType: CaseInsensitive
+  , insertable: NotInsertable
   , keepOpen: true
   }
 
@@ -120,19 +143,10 @@ defaultConfig =
 -- and can be configured if the user wants a more 'out of the
 -- box' experience.
 type ConfigRecord item =
-  { fetchType   :: FetchType item
+  { filterType  :: FilterType item
+  , insertable  :: Insertable item
   , keepOpen    :: Boolean
   }
-
--- Indicates how the typeahead should fetch data.
---
--- - `Sync`: The typeahead expects data provided by the parent.
--- - `Async`: The typeahead will fetch its own data on initialization (but not after)
--- - `ContinuousAsync`: The typeahead will fetch data every time a search is performed
-data FetchType item
-  = Sync (FilterType item) (Insertable item)
-  | Async (FilterType item) (Insertable item) (forall e. Aff (ajax :: AJAX | e) (Array item))
-  | ContinuousAsync (Insertable item) (forall e. String -> Aff (ajax :: AJAX | e) (Array item))
 
 data FilterType item
   = NoFilter
@@ -291,19 +305,16 @@ component =
       Initialize a -> do
         (Tuple _ (State st)) <- getState
 
-        case st.config of
-          Right c -> case c.fetchType of
-            Async _ _ fetch -> do
-              items <- H.liftAff fetch
-              H.liftAff $ traverse_ (log <<< toString) items
-              H.modify
-                $ seeks
-                $ \(State st') -> State
-                $ st' { items = items }
-              pure a
+        case st.items of
+          Async fetch _ -> do
+            items <- H.liftAff fetch
+            H.modify
+              $ seeks
+              $ \(State st') -> State
+              $ st' { items = Async fetch items }
+            pure a
 
             -- In any other case, do not modify item data.
-            _ -> pure a
           _ -> pure a
 
 
@@ -325,10 +336,46 @@ component =
 -- handlers.
 
 searchSlot :: ∀ o item e. Search.SearchInput o item e -> TypeaheadHTML o item e
-searchSlot i = HH.slot' CP.cp2 (Slot SearchSlot) Search.component i (HE.input HandleSearch)
+searchSlot i =
+  HH.slot' CP.cp2 (Slot SearchSlot) Search.component i (HE.input HandleSearch)
 
 containerSlot :: ∀ o item e. Container.ContainerInput o item -> TypeaheadHTML o item e
-containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE.input HandleContainer)
+containerSlot i =
+  HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE.input HandleContainer)
+
+
+-- Given an item, the items, and the selections, move an item from the items list to
+-- the selections list.
+selectItem :: ∀ item
+  . Eq item
+ => StringComparable item
+ => item
+ -> SyncMethod TypeaheadError (Array item)
+ -> SelectionType item
+ -> Tuple (SyncMethod TypeaheadError (Array item)) (SelectionType item)
+selectItem item items selections = case selections of
+  One Nothing  -> Tuple (remove item items) (One $ Just item)
+  One (Just i) -> Tuple (insert i $ remove item items) (One $ Just item)
+  Many xs      -> Tuple (remove item items) (Many $ item : xs)
+    where
+      insert i is = mapSyncMethod (\i' -> i : i') is
+      remove i is = mapSyncMethod (filter ((/=) i)) is
+
+-- Given an item, the items, and the selections, move an item from the selections list to
+-- the items list.
+removeItem :: ∀ item
+  . Eq item
+ => StringComparable item
+ => item
+ -> SyncMethod TypeaheadError (Array item)
+ -> SelectionType item
+ -> Tuple (SyncMethod TypeaheadError (Array item)) (SelectionType item)
+removeItem item items selections = case selections of
+  One  _  -> Tuple (insert item items) (One Nothing)
+  Many xs -> Tuple (insert item items) (Many $ filter ((/=) item) xs)
+    where
+      insert i is = mapSyncMethod (\i' -> i : i') is
+
 
 
 ----------
@@ -343,55 +390,96 @@ containerSlot i = HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE
 -- items they've searched, constructing a new item from the string using the user's function.
 -- Finally, update the new items available in the container.
 
-evalNewSearch :: ∀ o item e. Eq item => StringComparable item
-  => ConfigRecord item
-  -> String
-  -> TypeaheadDSL o item e Unit
-evalNewSearch { fetchType } text = unit <$ do
-
-  -- Update the search value
+evalNewSearch :: ∀ o item e
+  . Eq item
+ => StringComparable item
+ => ConfigRecord item
+ -> String
+ -> TypeaheadDSL o item e Unit
+evalNewSearch { filterType, insertable } text = unit <$ do
+  -- Update the search value so it can replace the text field
   H.modify $ seeks \(State st') -> State $ st' { search = text }
 
-  -- If sync or async, use existing items from the state.
-  -- If continuous async, use provided function to fetch the items (empty array if fails)
-  newItems <- case fetchType of
-    -- In any non-continuous, use the correct filter and do not fetch new items.
-    Sync f i -> pure =<< applyInsertable i =<< applyFilter f
-    Async f i _ -> pure =<< applyInsertable i =<< applyFilter f
+  -- Fetch the state in order to get current items
+  (Tuple _ (State st)) <- getState
 
-    -- WARN: ContinuousAsync assumes you just want the items returned -- that you are filtering
-    -- yourself in the function.
-    ContinuousAsync i fetch -> H.liftAff (fetch text)
+  -- In non-continuous, use existing items from the state.
+  -- In continuous, use the provided function to fetch the items.
+  -- WARN: ContinuousAsync assumes you just want the items returned -- it doesn't filter.
+  -- This behavior can be changed to reflect usual filtering if needed; there exists
+  -- a `NoFilter` option that will achieve the same behavior.
+  fetchItemsResult <- case st.items of
+    Sync items -> pure $ Sync $ (applyInsertable <<< applyFilter) items
+    Async fetch items -> pure $ Async fetch $ (applyInsertable <<< applyFilter) <$> items
+    ContinuousAsync fetch _ -> do
+       -- Update items on state to loading
+       H.modify
+         $ seeks
+         $ \(State st') -> State
+         $ st' { items = ContinuousAsync fetch Loading }
+       -- Fetch items
+       items <- H.liftAff (fetch text)
+       -- Update items on state with new results
+       H.modify
+         $ seeks
+         $ \(State st') -> State
+         $ st' { items = ContinuousAsync fetch items }
+       -- Return filtered items wrapped in the correct type
+       pure $ ContinuousAsync fetch $ (applyInsertable <<< applyFilter) <$> items
 
-  -- Send the new items to the container
-  _ <- H.query' CP.cp1 (Slot ContainerSlot)
+  _ <- case fetchItemsResult of
+    -- If sync, send new items to the container.
+    Sync items -> do
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
         $ H.action
-        $ Container.ReplaceItems newItems
+        $ Container.ReplaceItems items
+      pure unit
+
+    -- If async, handle remote data cases.
+    Async _ items -> updateContainer items
+    ContinuousAsync _ items -> updateContainer items
 
   H.raise $ NewSearch text
 
   where
+    -- Failure: Close and clear the container.
+    updateContainer (Failure e) = do
+      -- Close the container
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.Visibility Container.Off
+      -- Clear the container
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems []
+      H.liftAff $ log e
+    -- Success: Update the items in the container.
+    updateContainer (Success items) = do
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems items
+      pure unit
+    -- NotAsked or Loading: No updates for the container. Only
+    -- possible in the ContinuousAsync case. Do nothing.
+    updateContainer _ = pure unit
+
     -- Set up the filter
-    applyFilter matchType = getState >>= \(Tuple _ (State st)) -> pure $ do
-      -- Note: The base filter matches on strings using the StringComparable type class
-      case matchType of
-        NoFilter ->
-          st.items
-        Exact ->
-          filter (\item -> contains (Pattern text) (toString item)) st.items
+    applyFilter items =
+      case filterType of
+        NoFilter -> items
+        Exact -> filter (\item -> contains (Pattern text) (toString item)) items
         CaseInsensitive ->
-          filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) st.items
-        CustomMatch match ->
-          filter (\item -> match text item) st.items
+          filter (\item -> contains (Pattern $ toLower text) (toLower $ toString item)) items
+        CustomMatch match -> filter (\item -> match text item) items
 
     -- If the typeahead is Insertable, then use the provided function in that type
     -- to construct a new item and add it to the item list. NOTE: If you want to be able
     -- to tell what items have been inserted, ensure your item type encodes this! Your
     -- mkItem function can tag items that were inserted.
-    applyInsertable insertable currentItems = case insertable of
-      NotInsertable -> pure currentItems
-      Insertable mkItem | length currentItems > 0 -> pure currentItems
-                        | otherwise -> pure $ (mkItem text) : currentItems
+    applyInsertable items = case insertable of
+      NotInsertable -> items
+      Insertable mkItem | length items > 0 -> items
+                        | otherwise -> (mkItem text) : items
 
 
 -- Standard selection: Take the item out of the available items list and put it in the
@@ -400,23 +488,25 @@ evalNewSearch { fetchType } text = unit <$ do
 -- WARN: This doesn't tell you if the new item selected was an inserted item that needs
 -- to be written anywhere else! If you need this functionality, your item type must encode
 -- it, like: (MyItem IsNew item) & mkItem item = MyItem IsNew item
-evalItemSelected :: ∀ o item e. Eq item => ConfigRecord item -> item -> TypeaheadDSL o item e Unit
+evalItemSelected :: ∀ o item e
+  . StringComparable item
+ => Eq item
+ => ConfigRecord item
+ -> item
+ -> TypeaheadDSL o item e Unit
 evalItemSelected { keepOpen } item = unit <$ do
   (Tuple _ (State st)) <- getState
-
-  let (Tuple newSelections newItems) = case st.selections of
-        One Nothing  -> Tuple (One $ Just item) (filter ((/=) item) st.items)
-        One (Just i) -> Tuple (One $ Just item) ((:) i $ filter ((/=) item) st.items)
-        Many xs      -> Tuple (Many $ item : xs) (filter ((/=) item) st.items)
-
-  H.modify $ seeks \(State st') -> State
-    $ st' { selections = newSelections
-          , items = newItems }
+  let (Tuple newItems newSelections) = selectItem item st.items st.selections
 
   -- Send the new items to the container
-  _ <- H.query' CP.cp1 (Slot ContainerSlot)
-        $ H.action
-        $ Container.ReplaceItems newItems
+  case newItems of
+    Sync i -> updateContainer (Success i)
+    Async _ i -> updateContainer i
+    ContinuousAsync _ i -> updateContainer i
+
+  H.modify $ seeks \(State st') -> State st'
+    { selections = newSelections
+    , items = newItems }
 
   -- Send an empty string to the search
   _ <- H.query' CP.cp2 (Slot SearchSlot)
@@ -431,24 +521,49 @@ evalItemSelected { keepOpen } item = unit <$ do
 
   H.raise $ ItemSelected item
 
+  where
+    -- Success: Update the items in the container.
+    updateContainer (Success items) = do
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems items
+      pure unit
+    -- Failure, NotAsked, or Loading: No updates for the container.
+    -- Shouldn't even be possible; no items will be rendered unless
+    -- in a Success state.
+    updateContainer _ = pure unit
+
 
 -- Standard removal: When an item is removed, put it back into the available items list
 -- and take it out of the selected list.
-evalItemRemoved :: ∀ o item e. Eq item => item -> TypeaheadDSL o item e Unit
+evalItemRemoved :: ∀ o item e
+  . StringComparable item
+ => Eq item
+ => item
+ -> TypeaheadDSL o item e Unit
 evalItemRemoved item = unit <$ do
   (Tuple _ (State st)) <- getState
+  let (Tuple newItems newSelections) = removeItem item st.items st.selections
 
-  let (Tuple newSelections newItems) = case st.selections of
-        One _ -> Tuple (One Nothing) (item : st.items)
-        Many xs -> Tuple (Many $ filter ((/=) item) xs) (item : st.items)
+  H.modify $ seeks \(State st') -> State $ st'
+    { selections = newSelections
+    , items = newItems }
 
-  H.modify $ seeks \(State st') -> State
-    $ st' { selections = newSelections
-          , items = newItems }
-
-  -- Send the new items to the container
-  _ <- H.query' CP.cp1 (Slot ContainerSlot)
-        $ H.action
-        $ Container.ReplaceItems newItems
+  case newItems of
+    Sync i -> updateContainer (Success i)
+    Async _ i -> updateContainer i
+    ContinuousAsync _ i -> updateContainer i
 
   H.raise $ ItemRemoved item
+
+  where
+    -- Success: Update the items in the container.
+    updateContainer (Success items) = do
+      _ <- H.query' CP.cp1 (Slot ContainerSlot)
+        $ H.action
+        $ Container.ReplaceItems items
+      pure unit
+    -- Failure, NotAsked, or Loading: No updates for the container.
+    -- Shouldn't even be possible; no items will be rendered unless
+    -- in a Success state.
+    updateContainer _ = pure unit

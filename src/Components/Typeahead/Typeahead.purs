@@ -4,6 +4,7 @@ import Prelude
 
 import Control.Monad.Aff (Aff)
 import Network.HTTP.Affjax (AJAX)
+import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.String (Pattern(Pattern), split)
@@ -31,7 +32,7 @@ defaultMulti :: ∀ o item e
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
   -> Typeahead.TypeaheadInput o item e
 defaultMulti xs renderItem =
-  { items: xs
+  { items: Typeahead.Sync xs
   , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: Typeahead.Many []
@@ -46,7 +47,7 @@ defaultMulti' :: ∀ o item e
   => Array item
   -> Typeahead.TypeaheadInput o item e
 defaultMulti' xs =
-  { items: xs
+  { items: Typeahead.Sync xs
   , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: Typeahead.Many []
@@ -59,19 +60,15 @@ defaultMulti' xs =
 testAsyncMulti' :: ∀ o item e
   . Typeahead.StringComparable item
  => Eq item
- => (forall e'. Aff (ajax :: AJAX | e') (Array item))
- -> Array item
+ => (forall e'. Aff (ajax :: AJAX | e') (RemoteData String (Array item)))
  -> Typeahead.TypeaheadInput o item e
-testAsyncMulti' fetch xs =
-  { items: xs
+testAsyncMulti' fetch =
+  { items: Typeahead.Async fetch NotAsked
   , debounceTime: Milliseconds 500.0
   , search: Nothing
   , initialSelection: Typeahead.Many []
   , render: renderTypeahead defaultRenderItem
-  , config: Right
-    { fetchType: Typeahead.Async Typeahead.CaseInsensitive Typeahead.NotInsertable fetch
-    , keepOpen: true
-    }
+  , config: Right Typeahead.defaultConfig
   }
 
 
@@ -92,67 +89,71 @@ renderTypeahead renderItem st@(Typeahead.State st') =
 	, Typeahead.searchSlot
 			{ render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
 	, Typeahead.containerSlot
-			{ render: renderContainer st, items: st'.items }
+			{ render: renderContainer st, items: unpack st'.items }
 	, HH.p
 		[ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
 		[ HH.text "This typeahead automatically debounces at 150ms." ]
 	]
 	where
-		renderSelections :: Typeahead.TypeaheadHTML o item e
-		renderSelections =
-			case st'.selections of
-				(Typeahead.One Nothing) -> HH.div_ []
+    unpack (Typeahead.Sync x) = x
+    unpack (Typeahead.Async _ x) = withDefault [] x
+    unpack (Typeahead.ContinuousAsync _ x) = withDefault [] x
 
-				(Typeahead.One (Just x)) -> HH.div_
-					[ HH.div
-						[ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
-						[ HH.ul
-							[ HP.class_ $ HH.ClassName "list-reset" ]
-							[ renderSelection x ]
-						]
-					]
+    renderSelections :: Typeahead.TypeaheadHTML o item e
+    renderSelections =
+      case st'.selections of
+        (Typeahead.One Nothing) -> HH.div_ []
 
-				(Typeahead.Many xs) -> HH.div_
-					[ HH.div
-						[ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
-						[ HH.ul
-							[ HP.class_ $ HH.ClassName "list-reset" ]
-							$ renderSelection <$> xs
-						]
-					]
-			where
-				renderSelection item =
-					HH.li
-					[ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
-					[ HH.span_
-						[ HH.text $ Typeahead.toString item ]
-					, HH.span
-						[ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
-						, HE.onClick (HE.input_ (Typeahead.Remove item)) ]
-						[ HH.text "×" ]
-					]
+        (Typeahead.One (Just x)) -> HH.div_
+          [ HH.div
+            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
+            [ HH.ul
+              [ HP.class_ $ HH.ClassName "list-reset" ]
+              [ renderSelection x ]
+            ]
+          ]
 
-		renderContainer
-			:: Typeahead.TypeaheadState o item e
-			-> C.ContainerState item
-			-> H.HTML Void (C.ContainerQuery o item)
-		renderContainer (Typeahead.State parentState) containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
-			if not containerState.open
-				then []
-				else [ HH.div
-					( C.getContainerProps
-						[ HP.class_ $ HH.ClassName "absolute bg-white shadow h-64 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
-					)
-					[ HH.ul
-						[ HP.class_ $ HH.ClassName "list-reset" ]
-						$ renderItem (parentState.search) containerState.highlightedIndex `mapWithIndex` containerState.items
-					]
-				]
+        (Typeahead.Many xs) -> HH.div_
+          [ HH.div
+            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
+            [ HH.ul
+              [ HP.class_ $ HH.ClassName "list-reset" ]
+              $ renderSelection <$> xs
+            ]
+          ]
+      where
+        renderSelection item =
+          HH.li
+          [ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
+          [ HH.span_
+            [ HH.text $ Typeahead.toString item ]
+          , HH.span
+            [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
+            , HE.onClick (HE.input_ (Typeahead.Remove item)) ]
+            [ HH.text "×" ]
+          ]
 
-		renderSearch
-			:: S.SearchState e
-			-> H.HTML Void (S.SearchQuery o item e)
-		renderSearch searchState =
+    renderContainer
+      :: Typeahead.TypeaheadState o item e
+      -> C.ContainerState item
+      -> H.HTML Void (C.ContainerQuery o item)
+    renderContainer (Typeahead.State parentState) containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+      if not containerState.open
+        then []
+        else [ HH.div
+          ( C.getContainerProps
+            [ HP.class_ $ HH.ClassName "absolute bg-white shadow h-64 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
+          )
+          [ HH.ul
+            [ HP.class_ $ HH.ClassName "list-reset" ]
+            $ renderItem (parentState.search) containerState.highlightedIndex `mapWithIndex` containerState.items
+          ]
+        ]
+
+    renderSearch
+      :: S.SearchState e
+      -> H.HTML Void (S.SearchQuery o item e)
+    renderSearch searchState =
                   HH.div
                     [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
                     [ HH.input

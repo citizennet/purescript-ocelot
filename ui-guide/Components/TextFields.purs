@@ -151,7 +151,8 @@ typeaheadBlock = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
-    slot = HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' Async.fetchTodos [] ) (HE.input HandleTypeahead)
+    slot =
+      HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' Async.fetchTodos ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock
