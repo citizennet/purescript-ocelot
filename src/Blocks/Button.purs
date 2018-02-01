@@ -8,7 +8,7 @@ import Halogen.HTML.Properties as HP
 
 data ButtonType
   = Default
-  | Primary 
+  | Primary
 
 data ButtonSize
   = Small
@@ -19,7 +19,7 @@ type ButtonProps =
   { type_ :: ButtonType }
 
 buttonClasses :: Array HH.ClassName
-buttonClasses = 
+buttonClasses =
   [ HH.ClassName "px-3 py-2 rounded shadow text-sm" ]
 
 buttonTypeClasses :: ButtonType -> Array HH.ClassName
@@ -37,7 +37,7 @@ button_ { type_ } =
   HH.button
     [ HP.classes (buttonTypeClasses type_ <> buttonClasses) ]
 
-button 
+button
   :: ∀ p i
    . ButtonProps
   -> Array (HH.IProp HTMLbutton i)

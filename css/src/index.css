@@ -9,6 +9,37 @@
 /* Import utilities after our CSS to avoid overwriting them. */
 @tailwind utilities;
 
-/* CitizenNet utilities
-** @import "citizennet-css"
-*/
+/* CitizenNet utilities */
+
+.cc-teal { caret-color: config('colors.teal'); }
+.no-outline { outline: none; }
+
+/* CitizenNet styles */
+
+/* CN.UI.Block.Input */
+
+.cn-input {
+    @apply .bg-white;
+    @apply .cc-teal;
+    @apply .font-light;
+    @apply .px-4;
+    @apply .py-2;
+    @apply .rounded-sm;
+    @apply .text-sm;
+    @apply .w-full;
+}
+
+.cn-input:disabled {
+    @apply .bg-grey-light;
+}
+
+.cn-input:focus {
+    @apply .no-outline;
+}
+
+/* CN.UI.Block.FormInput */
+
+.cn-form-label {
+  @apply .font-medium;
+  @apply .text-sm;
+}
