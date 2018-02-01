@@ -3,7 +3,7 @@ module CN.UI.Core.Typeahead where
 import Prelude
 
 import Network.RemoteData (RemoteData(..))
-import Control.Monad.Aff.Console (log)
+import Control.Monad.Aff.Console (logShow)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Data.Array (filter, (:), length)
@@ -59,18 +59,16 @@ instance stringComparableString :: StringComparable String where
 -- Component Types
 
 -- State type is necessary so render function can be provided.
-type State o item e = Store (TypeaheadState o item e) (TypeaheadHTML o item e)
+type State o source err item e = Store (TypeaheadState o source err item e) (TypeaheadHTML o source err item e)
 
 -- Newtype because of the self-reference in config function.
-newtype TypeaheadState o item e = State
-  { items :: SyncMethod TypeaheadError (Array item)
+newtype TypeaheadState o source err item e = State
+  { items :: SyncMethod source err (Array item)
   , selections :: SelectionType item
   , debounceTime :: Milliseconds
   , search :: String
-  , config :: EvalConfig o item e
+  , config :: EvalConfig o source err item e
   }
-
-type TypeaheadError = String
 
 -- Indicates how the typeahead should fetch data. Async types store both their function
 -- to fetch data and the result of running that function.
@@ -84,12 +82,12 @@ type TypeaheadError = String
 -- the `FulfillRequest` query to send the response. Only applies to Async/ContinuousAsync.
 --
 -- For now, specialized to a string.
-data SyncMethod err a
+data SyncMethod source err a
   = Sync a
-  | Async String (RemoteData err a)
-  | ContinuousAsync (Tuple String String) (RemoteData err a)
+  | Async source (RemoteData err a)
+  | ContinuousAsync String source (RemoteData err a)
 
-derive instance functorSyncMethod :: Functor (SyncMethod err)
+derive instance functorSyncMethod :: Functor (SyncMethod source err)
 
 -- Could also provide 'Limit Int' for restricted lists
 data SelectionType item
@@ -98,28 +96,28 @@ data SelectionType item
 
 derive instance functorSelectionType :: Functor SelectionType
 
-data TypeaheadQuery o item e a
+data TypeaheadQuery o source err item e a
   = HandleContainer (Container.Message o item) a
   | HandleSearch (Search.Message o item) a
   | Remove item a
   | Selections (SelectionType item -> a)
-  | FulfillRequest (SyncMethod TypeaheadError (Array item)) a
-  | TypeaheadReceiver (TypeaheadInput o item e) a
+  | FulfillRequest (SyncMethod source err (Array item)) a
+  | TypeaheadReceiver (TypeaheadInput o source err item e) a
 
-type TypeaheadInput o item e =
-  { items :: SyncMethod TypeaheadError (Array item)
+type TypeaheadInput o source err item e =
+  { items :: SyncMethod source err (Array item)
   , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
-  , render :: TypeaheadState o item e -> TypeaheadHTML o item e
-  , config :: EvalConfig o item e
+  , render :: TypeaheadState o source err item e -> TypeaheadHTML o source err item e
+  , config :: EvalConfig o source err item e
   }
 
-data TypeaheadMessage o item
+data TypeaheadMessage o source err item
   = ItemSelected item
   | ItemRemoved item
   | NewSearch String
-  | RequestData (SyncMethod TypeaheadError (Array item)) -- For now specialized to String, but should be any arbitrary `source` used by the parent to
+  | RequestData (SyncMethod source err (Array item))
   | Emit (o Unit)
 
 -- The idea: maintain an Either where you either provide
@@ -128,8 +126,8 @@ data TypeaheadMessage o item
 -- for the two important child messages (new search or
 -- item selected)
 
-type EvalConfig o item e =
-  Either (HandlerRecord o item e) (ConfigRecord item)
+type EvalConfig o source err item e =
+  Either (HandlerRecord o source err item e) (ConfigRecord item)
 
 -- A default config can help minimize work.
 defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
@@ -166,38 +164,38 @@ data Insertable item
 -- eval functions yourself. If you only need one, import the relevant function from
 -- this module to the right field
 -- (ex: import Typeahead as Typeahead; itemSelected: Typeahead.itemSelected)
-type HandlerRecord o item e =
-  { newSearch :: String -> TypeaheadDSL o item e Unit
-  , itemSelected :: item -> TypeaheadDSL o item e Unit
-  , itemRemoved :: item -> TypeaheadDSL o item e Unit
+type HandlerRecord o source err item e =
+  { newSearch :: String -> TypeaheadDSL o source err item e Unit
+  , itemSelected :: item -> TypeaheadDSL o source err item e Unit
+  , itemRemoved :: item -> TypeaheadDSL o source err item e Unit
   }
 
 
 ----------
 -- Convenience component types
 
-type TypeaheadComponent o item e =
+type TypeaheadComponent o source err item e =
   H.Component
     HH.HTML
-    (TypeaheadQuery o item e)
-    (TypeaheadInput o item e)
-    (TypeaheadMessage o item)
+    (TypeaheadQuery o source err item e)
+    (TypeaheadInput o source err item e)
+    (TypeaheadMessage o source err item)
     (FX e)
 
-type TypeaheadHTML o item e =
+type TypeaheadHTML o source err item e =
   H.ParentHTML
-    (TypeaheadQuery o item e)
+    (TypeaheadQuery o source err item e)
     (ChildQuery o item e)
     ChildSlot
     (FX e)
 
-type TypeaheadDSL o item e =
+type TypeaheadDSL o source err item e =
   H.ParentDSL
-    (State o item e)
-    (TypeaheadQuery o item e)
+    (State o source err item e)
+    (TypeaheadQuery o source err item e)
     (ChildQuery o item e)
     ChildSlot
-    (TypeaheadMessage o item)
+    (TypeaheadMessage o source err item)
     (FX e)
 
 
@@ -234,8 +232,11 @@ derive instance ordPrimitiveSlot :: Ord PrimitiveSlot
 -- so our default functions can operate on them. The most common are likely to
 -- be Array or Maybe.
 
-component :: ∀ o item e
-  . Eq item => StringComparable item => TypeaheadComponent o item e
+component :: ∀ o source err item e
+  . Show err
+ => Eq item
+ => StringComparable item
+ => TypeaheadComponent o source err item e
 component =
   H.parentComponent
     { initialState
@@ -244,7 +245,7 @@ component =
     , receiver: HE.input TypeaheadReceiver
     }
   where
-    initialState :: TypeaheadInput o item e -> State o item e
+    initialState :: TypeaheadInput o source err item e -> State o source err item e
     initialState i = store i.render $ State
         { items: i.items
         , selections: i.initialSelection
@@ -253,7 +254,7 @@ component =
         , config: i.config
         }
 
-    eval :: TypeaheadQuery o item e ~> TypeaheadDSL o item e
+    eval :: TypeaheadQuery o source err item e ~> TypeaheadDSL o source err item e
     eval = case _ of
       -- Handle messages from the container.
       HandleContainer message a -> case message of
@@ -306,7 +307,6 @@ component =
         -- (Tuple _ (State st)) <- getState
 
         H.modify $ seeks $ \(State st) -> State st { items = method }
-        H.liftAff $ log "Received new data in FulfillRequest."
 
         let updateContainer (Failure e) = do
               -- Close the container
@@ -317,7 +317,7 @@ component =
               _ <- H.query' CP.cp1 (Slot ContainerSlot)
                 $ H.action
                 $ Container.ReplaceItems []
-              H.liftAff $ log e
+              H.liftAff $ logShow e
 
             updateContainer (Success items) = do
               _ <- H.query' CP.cp1 (Slot ContainerSlot)
@@ -328,11 +328,9 @@ component =
             updateContainer _ = pure unit
 
         case method of
-          Async src items -> updateContainer items
-          ContinuousAsync src items -> updateContainer items
+          Async _ items -> updateContainer items
+          ContinuousAsync _ _ items -> updateContainer items
           _ -> pure unit
-
-        H.liftAff $ log "Updated container with new data in FulfillRequest."
         pure a
 
       -- Overwrite the state with new input.
@@ -349,24 +347,24 @@ component =
 -- without managing the wiring. Allows them to maintain full control over rendering without having to manage
 -- handlers.
 
-searchSlot :: ∀ o item e. Search.SearchInput o item e -> TypeaheadHTML o item e
+searchSlot :: ∀ o source err item e. Search.SearchInput o item e -> TypeaheadHTML o source err item e
 searchSlot i =
   HH.slot' CP.cp2 (Slot SearchSlot) Search.component i (HE.input HandleSearch)
 
-containerSlot :: ∀ o item e. Container.ContainerInput o item -> TypeaheadHTML o item e
+containerSlot :: ∀ o source err item e. Container.ContainerInput o item -> TypeaheadHTML o source err item e
 containerSlot i =
   HH.slot' CP.cp1 (Slot ContainerSlot) Container.component i (HE.input HandleContainer)
 
 
 -- Given an item, the items, and the selections, move an item from the items list to
 -- the selections list.
-selectItem :: ∀ item
+selectItem :: ∀ source err item
   . Eq item
  => StringComparable item
  => item
- -> SyncMethod TypeaheadError (Array item)
+ -> SyncMethod source err (Array item)
  -> SelectionType item
- -> Tuple (SyncMethod TypeaheadError (Array item)) (SelectionType item)
+ -> Tuple (SyncMethod source err (Array item)) (SelectionType item)
 selectItem item items selections = case selections of
   One Nothing  -> Tuple (remove item items) (One $ Just item)
   One (Just i) -> Tuple (insert i $ remove item items) (One $ Just item)
@@ -377,13 +375,13 @@ selectItem item items selections = case selections of
 
 -- Given an item, the items, and the selections, move an item from the selections list to
 -- the items list.
-removeItem :: ∀ item
+removeItem :: ∀ source err item
   . Eq item
  => StringComparable item
  => item
- -> SyncMethod TypeaheadError (Array item)
+ -> SyncMethod source err (Array item)
  -> SelectionType item
- -> Tuple (SyncMethod TypeaheadError (Array item)) (SelectionType item)
+ -> Tuple (SyncMethod source err (Array item)) (SelectionType item)
 removeItem item items selections = case selections of
   One  _  -> Tuple (insert item items) (One Nothing)
   Many xs -> Tuple (insert item items) (Many $ filter ((/=) item) xs)
@@ -404,12 +402,13 @@ removeItem item items selections = case selections of
 -- items they've searched, constructing a new item from the string using the user's function.
 -- Finally, update the new items available in the container.
 
-evalNewSearch :: ∀ o item e
-  . Eq item
+evalNewSearch :: ∀ o source err item e
+  . Show err
+ => Eq item
  => StringComparable item
  => ConfigRecord item
  -> String
- -> TypeaheadDSL o item e Unit
+ -> TypeaheadDSL o source err item e Unit
 evalNewSearch { filterType, insertable } text = unit <$ do
   -- Update the search value so it can replace the text field
   H.modify $ seeks \(State st') -> State $ st' { search = text }
@@ -422,12 +421,11 @@ evalNewSearch { filterType, insertable } text = unit <$ do
   newItems <- case st.items of
     Sync items -> pure $ Sync $ (applyInsertable <<< applyFilter) items
     Async src items -> pure $ Async src $ (applyInsertable <<< applyFilter) <$> items
-    ContinuousAsync (Tuple src _) _ -> do
+    ContinuousAsync _ src _ -> do
        -- Update the value with the search
-       let continuous = ContinuousAsync (Tuple src text) Loading
+       let continuous = ContinuousAsync text src Loading
        -- Update items to loading
        H.modify $ seeks $ \(State st') -> State st' { items = continuous }
-       H.liftAff $ log "Requested new data in evalNewSearch."
        -- Request data
        H.raise $ RequestData continuous
        -- Return the loading value
@@ -443,7 +441,7 @@ evalNewSearch { filterType, insertable } text = unit <$ do
 
     -- If async, handle remote data cases.
     Async _ items -> updateContainer items
-    ContinuousAsync _ items -> updateContainer items
+    ContinuousAsync _ _ items -> updateContainer items
 
   H.raise $ NewSearch text
 
@@ -458,7 +456,7 @@ evalNewSearch { filterType, insertable } text = unit <$ do
       _ <- H.query' CP.cp1 (Slot ContainerSlot)
         $ H.action
         $ Container.ReplaceItems []
-      H.liftAff $ log e
+      H.liftAff $ logShow e
     -- Success: Update the items in the container.
     updateContainer (Success items) = do
       _ <- H.query' CP.cp1 (Slot ContainerSlot)
@@ -494,12 +492,12 @@ evalNewSearch { filterType, insertable } text = unit <$ do
 -- WARN: This doesn't tell you if the new item selected was an inserted item that needs
 -- to be written anywhere else! If you need this functionality, your item type must encode
 -- it, like: (MyItem IsNew item) & mkItem item = MyItem IsNew item
-evalItemSelected :: ∀ o item e
+evalItemSelected :: ∀ o source err item e
   . StringComparable item
  => Eq item
  => ConfigRecord item
  -> item
- -> TypeaheadDSL o item e Unit
+ -> TypeaheadDSL o source err item e Unit
 evalItemSelected { keepOpen } item = unit <$ do
   (Tuple _ (State st)) <- getState
   let (Tuple newItems newSelections) = selectItem item st.items st.selections
@@ -508,7 +506,7 @@ evalItemSelected { keepOpen } item = unit <$ do
   case newItems of
     Sync i -> updateContainer (Success i)
     Async _ i -> updateContainer i
-    ContinuousAsync _ i -> updateContainer i
+    ContinuousAsync _ _ i -> updateContainer i
 
   H.modify $ seeks \(State st') -> State st'
     { selections = newSelections
@@ -542,11 +540,11 @@ evalItemSelected { keepOpen } item = unit <$ do
 
 -- Standard removal: When an item is removed, put it back into the available items list
 -- and take it out of the selected list.
-evalItemRemoved :: ∀ o item e
+evalItemRemoved :: ∀ o source err item e
   . StringComparable item
  => Eq item
  => item
- -> TypeaheadDSL o item e Unit
+ -> TypeaheadDSL o source err item e Unit
 evalItemRemoved item = unit <$ do
   (Tuple _ (State st)) <- getState
   let (Tuple newItems newSelections) = removeItem item st.items st.selections
@@ -558,7 +556,7 @@ evalItemRemoved item = unit <$ do
   case newItems of
     Sync i -> updateContainer (Success i)
     Async _ i -> updateContainer i
-    ContinuousAsync _ i -> updateContainer i
+    ContinuousAsync _ _ i -> updateContainer i
 
   H.raise $ ItemRemoved item
 

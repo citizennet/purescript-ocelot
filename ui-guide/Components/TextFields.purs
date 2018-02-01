@@ -7,11 +7,11 @@ import UIGuide.Utilities.Async as Async
 
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
-import CN.UI.Core.Typeahead as Typeahead
+import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(Nothing))
+import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.Tuple (Tuple)
 import Halogen as H
@@ -31,13 +31,13 @@ type State
 data Query a
   = NoOp a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-  | HandleTypeahead (Typeahead.TypeaheadMessage Query Async.Todo) a
+  | HandleTypeahead (Typeahead.TypeaheadMessage Query (Async.Source Async.Todo) Async.Err Async.Todo) a
 
 
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query Async.Todo e) (Dropdown.Query TestRecord)
+type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query (Async.Source Async.Todo) Async.Err Async.Todo e) (Dropdown.Query TestRecord)
 type ChildSlot = Either2 Unit Unit
 
 
@@ -67,17 +67,18 @@ component =
     eval (NoOp next) = pure next
 
     eval (HandleTypeahead m next) = case m of
-      Typeahead.RequestData (Typeahead.Async src _) -> do
-         -- Not using SRC here but should!
-         todos <- H.liftAff Async.fetchTodos
-         _ <- H.query' CP.cp1 unit $ H.action ( Typeahead.FulfillRequest $ Typeahead.Async src todos )
-         pure next
-      Typeahead.RequestData (Typeahead.ContinuousAsync src _) -> do
-         -- Not using SRC or STR here but should!
-         todos <- H.liftAff Async.fetchTodos
-         H.liftAff $ logShow todos
-         _ <- H.query' CP.cp1 unit $ H.action ( Typeahead.FulfillRequest $ Typeahead.ContinuousAsync src todos )
-         pure next
+      Typeahead.RequestData source -> do
+        res <- H.liftAff $ Async.load source
+
+        let replaceItems Nothing v = v
+            replaceItems (Just _) s@(Typeahead.Sync _) = s
+            replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
+            replaceItems (Just d) (Typeahead.ContinuousAsync srch src _) = Typeahead.ContinuousAsync srch src d
+
+        _ <- H.query' CP.cp1 unit $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
+        pure next
+
+      -- Ignore other messages
       _ -> pure next
 
     eval (HandleDropdown m next) = pure next <* case m of
@@ -164,7 +165,7 @@ typeaheadBlock = documentationBlock
   ( componentBlock "No configuration set." slot )
   where
     slot =
-      HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' "GET ME SOME TODOS" ) (HE.input HandleTypeahead)
+      HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' Async.todos ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock

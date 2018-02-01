@@ -2,7 +2,6 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
-import Data.Tuple (Tuple(..))
 import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Maybe (Maybe(Just, Nothing))
@@ -24,12 +23,13 @@ import CN.UI.Core.Typeahead as Typeahead
 
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
-defaultMulti :: ∀ o item e
+defaultMulti :: ∀ o source err item e
    . Typeahead.StringComparable item
   => Eq item
+  => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> Typeahead.TypeaheadInput o item e
+  -> Typeahead.TypeaheadInput o source err item e
 defaultMulti xs renderItem =
   { items: Typeahead.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -40,11 +40,12 @@ defaultMulti xs renderItem =
   }
 
 -- A default multi-select using the default render item function
-defaultMulti' :: ∀ o item e
+defaultMulti' :: ∀ o source err item e
    . Typeahead.StringComparable item
   => Eq item
+  => Show err
   => Array item
-  -> Typeahead.TypeaheadInput o item e
+  -> Typeahead.TypeaheadInput o source err item e
 defaultMulti' xs =
   { items: Typeahead.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -56,13 +57,14 @@ defaultMulti' xs =
 
 
 -- A default multi-select using the default render item function
-testAsyncMulti' :: ∀ o item e
+testAsyncMulti' :: ∀ o source err item e
   . Typeahead.StringComparable item
  => Eq item
- => String -- TODO: Should be polymorphic; this is the source the parent can use to determine what data to return
- -> Typeahead.TypeaheadInput o item e
+ => Show err
+ => source
+ -> Typeahead.TypeaheadInput o source err item e
 testAsyncMulti' source =
-  { items: Typeahead.ContinuousAsync (Tuple source source) NotAsked
+  { items: Typeahead.ContinuousAsync "" source NotAsked
   , debounceTime: Milliseconds 500.0
   , search: Nothing
   , initialSelection: Typeahead.Many []
@@ -74,10 +76,13 @@ testAsyncMulti' source =
 ----------
 -- Render functions
 
-renderTypeahead :: ∀ o item e. Typeahead.StringComparable item
-  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-	-> Typeahead.TypeaheadState o item e
-	-> Typeahead.TypeaheadHTML o item e
+renderTypeahead :: ∀ o source err item e
+  . Typeahead.StringComparable item
+ => Eq item
+ => Show err
+ => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
+ -> Typeahead.TypeaheadState o source err item e
+ -> Typeahead.TypeaheadHTML o source err item e
 renderTypeahead renderItem st@(Typeahead.State st') =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
@@ -96,9 +101,9 @@ renderTypeahead renderItem st@(Typeahead.State st') =
 	where
     unpack (Typeahead.Sync x) = x
     unpack (Typeahead.Async _ x) = withDefault [] x
-    unpack (Typeahead.ContinuousAsync _ x) = withDefault [] x
+    unpack (Typeahead.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections :: Typeahead.TypeaheadHTML o item e
+    renderSelections :: Typeahead.TypeaheadHTML o source err item e
     renderSelections =
       case st'.selections of
         (Typeahead.One Nothing) -> HH.div_ []
@@ -133,7 +138,7 @@ renderTypeahead renderItem st@(Typeahead.State st') =
           ]
 
     renderContainer
-      :: Typeahead.TypeaheadState o item e
+      :: Typeahead.TypeaheadState o source err item e
       -> C.ContainerState item
       -> H.HTML Void (C.ContainerQuery o item)
     renderContainer (Typeahead.State parentState) containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
