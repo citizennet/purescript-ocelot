@@ -5,20 +5,24 @@ import Prelude
 import UIGuide.Blocks.Sidebar as Sidebar
 import UIGuide.Utilities.Async as Async
 
+import CN.UI.Block.Button as Button
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
+
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.Tuple (Tuple)
+
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+
 import Select.Effects (FX)
 
 
@@ -165,7 +169,25 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
-cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock
+cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock <> buttonBlock
+
+buttonBlock :: ∀ e. Array (HTML e)
+buttonBlock = documentationBlock
+  "Button"
+  "Some button shit"
+  (HH.div_
+    [ Button.button_
+      { type_: Button.Primary }
+      [ HH.text "Submit" ]
+    , HH.span
+      [ HP.class_ (HH.ClassName "ml-4") ]
+      [ Button.button
+        { type_: Button.Default }
+        []
+        [ HH.text "Cancel" ]
+      ]
+    ]
+  )
 
 typeaheadBlockTodos :: ∀ e. Array (HTML e)
 typeaheadBlockTodos = documentationBlock
