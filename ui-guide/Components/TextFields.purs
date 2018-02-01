@@ -2,6 +2,7 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
+import CN.UI.Block.Button as Button
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti') as Typeahead
 import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
@@ -137,7 +138,28 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
-cnDocumentationBlocks = typeaheadBlock <> dropdownBlock
+cnDocumentationBlocks = 
+  typeaheadBlock 
+  <> dropdownBlock
+  <> buttonBlock
+
+buttonBlock :: ∀ e. Array (HTML e)
+buttonBlock = documentationBlock
+  "Button"
+  "Some button shit"
+  (HH.div_ 
+    [ Button.button_
+      { type_: Button.Primary }
+      [ HH.text "Submit" ]
+    , HH.span
+      [ HP.class_ (HH.ClassName "ml-4") ]
+      [ Button.button 
+        { type_: Button.Default }
+        []
+        [ HH.text "Cancel" ]
+      ]
+    ]
+  )
 
 typeaheadBlock :: ∀ e. Array (HTML e)
 typeaheadBlock = documentationBlock
