@@ -8,13 +8,24 @@ import Data.Argonaut (Json, decodeJson, (.?))
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Control.Monad.Aff (Aff)
-import CN.UI.Core.Typeahead (class StringComparable, SyncMethod(..))
+import CN.UI.Core.Typeahead (class StringComparable, SyncMethod(..), toString)
 
 import Data.Traversable (traverse)
 
 
 ----------
 -- Async types
+
+data Item
+  = Users User
+  | Todos Todo
+derive instance eqItem :: Eq Item
+instance showItem :: Show Item where
+  show (Users u) = show u
+  show (Todos t) = show t
+instance stringComparableItem :: StringComparable Item where
+  toString (Users u) = toString u
+  toString (Todos t) = toString t
 
 type Source item =
   { path :: String
@@ -26,17 +37,17 @@ type Err = String
 ----------
 -- Sources
 
-users :: Source User
+users :: Source Item
 users =
   { path: "users"
   , root: "https://jsonplaceholder.typicode.com/"
-  , decoder: decodeWith decodeUser }
+  , decoder: (map <<< map <<< map) (\u -> Users u) $ decodeWith decodeUser }
 
-todos :: Source Todo
+todos :: Source Item
 todos =
   { path: "todos"
   , root: "https://jsonplaceholder.typicode.com/"
-  , decoder: decodeWith decodeTodo }
+  , decoder: (map <<< map <<< map) (\t -> Todos t) $ decodeWith decodeTodo }
 
 
 ----------

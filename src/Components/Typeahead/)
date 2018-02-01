@@ -30,14 +30,21 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query (Async.Source Async.Item) Async.Err Async.Item) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
+  | HandleTypeahead TypeaheadMX a
 
+data TypeaheadMX
+  = TodoMessage TypeaheadSlot (Typeahead.TypeaheadMessage Query (Async.Source Async.Todo) Async.Err Async.Todo)
+  | UserMessage TypeaheadSlot (Typeahead.TypeaheadMessage Query (Async.Source Async.User) Async.Err Async.User)
+
+data TypeaheadQX e
+  = TodoQuery (Typeahead.TypeaheadQuery Query (Async.Source Async.Todo) Async.Err Async.Todo e)
+  | UserQuery (Typeahead.TypeaheadQuery Query (Async.Source Async.User) Async.Err Async.User e)
 
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query (Async.Source Async.Item) Async.Err Async.Item e) (Dropdown.Query TestRecord)
+type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query (Async.Source Async.Todo) Async.Err Async.Todo e) (Dropdown.Query TestRecord)
 type ChildSlot = Either2 TypeaheadSlot Unit
 
 data Slot a = Slot a
@@ -75,7 +82,7 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (FX e)
     eval (NoOp next) = pure next
 
-    eval (HandleTypeahead slot m next) = case m of
+    eval (HandleTypeahead m next) = case m of
       Typeahead.RequestData source -> do
         res <- H.liftAff $ Async.load source
 
@@ -84,7 +91,7 @@ component =
             replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
             replaceItems (Just d) (Typeahead.ContinuousAsync srch src _) = Typeahead.ContinuousAsync srch src d
 
-        _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
+        _ <- H.query' CP.cp1 unit $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
         pure next
 
       -- Ignore other messages
