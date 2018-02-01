@@ -7,7 +7,7 @@ import UIGuide.Utilities.Async as Async
 
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
-import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
+import CN.UI.Core.Typeahead as Typeahead
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
@@ -66,7 +66,18 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (FX e)
     eval (NoOp next) = pure next
 
-    eval (HandleTypeahead m next) = pure next
+    eval (HandleTypeahead m next) = case m of
+      Typeahead.RequestData (Typeahead.Async src _) -> do
+         -- Not using SRC here but should!
+         todos <- H.liftAff Async.fetchTodos
+         _ <- H.query' CP.cp1 unit $ H.action ( Typeahead.FulfillRequest $ Typeahead.Async src todos )
+         pure next
+      Typeahead.RequestData (Typeahead.ContinuousAsync src _) -> do
+         -- Not using SRC or STR here but should!
+         todos <- H.liftAff Async.fetchTodos
+         _ <- H.query' CP.cp1 unit $ H.action ( Typeahead.FulfillRequest $ Typeahead.ContinuousAsync src todos )
+         pure next
+      _ -> pure next
 
     eval (HandleDropdown m next) = pure next <* case m of
       Dropdown.ItemRemoved item ->
@@ -152,7 +163,7 @@ typeaheadBlock = documentationBlock
   ( componentBlock "No configuration set." slot )
   where
     slot =
-      HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' Async.fetchTodos ) (HE.input HandleTypeahead)
+      HH.slot' CP.cp1 unit Typeahead.component ( Typeahead.testAsyncMulti' "GET ME SOME TODOS" ) (HE.input HandleTypeahead)
 
 dropdownBlock :: ∀ e. Array (HTML e)
 dropdownBlock = documentationBlock

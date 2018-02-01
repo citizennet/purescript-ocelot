@@ -2,8 +2,6 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Maybe (Maybe(Just, Nothing))
@@ -60,10 +58,10 @@ defaultMulti' xs =
 testAsyncMulti' :: ∀ o item e
   . Typeahead.StringComparable item
  => Eq item
- => (forall e'. Aff (ajax :: AJAX | e') (RemoteData String (Array item)))
+ => String -- TODO: Should be polymorphic; this is the source the parent can use to determine what data to return
  -> Typeahead.TypeaheadInput o item e
-testAsyncMulti' fetch =
-  { items: Typeahead.Async fetch NotAsked
+testAsyncMulti' source =
+  { items: Typeahead.Async source NotAsked
   , debounceTime: Milliseconds 500.0
   , search: Nothing
   , initialSelection: Typeahead.Many []

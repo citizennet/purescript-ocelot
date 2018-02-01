@@ -3,9 +3,7 @@ module CN.UI.Core.Typeahead where
 import Prelude
 
 import Network.RemoteData (RemoteData(..))
-import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log)
-import Network.HTTP.Affjax (AJAX)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Data.Array (filter, (:), length)
@@ -80,17 +78,18 @@ type TypeaheadError = String
 -- - `Sync`: The typeahead expects data provided by the parent.
 -- - `Async`: The typeahead will fetch its own data on initialization (but not after)
 -- - `ContinuousAsync`: The typeahead will fetch data every time a search is performed
+--
+-- The `source` is a way to use message passing to tell the parent what data you need to fetch.
+-- They are responsible for properly interpreting the request, performing it, and then using
+-- the `FulfillRequest` query to send the response. Only applies to Async/ContinuousAsync.
+--
+-- For now, specialized to a string.
 data SyncMethod err a
   = Sync a
-  | Async (forall e. Aff (ajax :: AJAX | e) (RemoteData err a)) (RemoteData err a)
-  | ContinuousAsync (forall e. String -> Aff (ajax :: AJAX | e) (RemoteData err a)) (RemoteData err a)
+  | Async String (RemoteData err a)
+  | ContinuousAsync (Tuple String String) (RemoteData err a)
 
--- Cannot make / derive a functor instance. See:
--- https://github.com/purescript/purescript/issues/3232
-mapSyncMethod :: forall err a. (a -> a) -> SyncMethod err a -> SyncMethod err a
-mapSyncMethod f (Sync x) = Sync $ f x
-mapSyncMethod f (Async fetch x) = Async fetch $ f <$> x
-mapSyncMethod f (ContinuousAsync fetch x) = ContinuousAsync fetch $ f <$> x
+derive instance functorSyncMethod :: Functor (SyncMethod err)
 
 -- Could also provide 'Limit Int' for restricted lists
 data SelectionType item
@@ -104,7 +103,7 @@ data TypeaheadQuery o item e a
   | HandleSearch (Search.Message o item) a
   | Remove item a
   | Selections (SelectionType item -> a)
-  | Initialize a
+  | FulfillRequest (SyncMethod TypeaheadError (Array item)) a
   | TypeaheadReceiver (TypeaheadInput o item e) a
 
 type TypeaheadInput o item e =
@@ -120,6 +119,7 @@ data TypeaheadMessage o item
   = ItemSelected item
   | ItemRemoved item
   | NewSearch String
+  | RequestData (SyncMethod TypeaheadError (Array item)) -- For now specialized to String, but should be any arbitrary `source` used by the parent to
   | Emit (o Unit)
 
 -- The idea: maintain an Either where you either provide
@@ -237,13 +237,11 @@ derive instance ordPrimitiveSlot :: Ord PrimitiveSlot
 component :: ∀ o item e
   . Eq item => StringComparable item => TypeaheadComponent o item e
 component =
-  H.lifecycleParentComponent
+  H.parentComponent
     { initialState
     , render: extract
     , eval
     , receiver: HE.input TypeaheadReceiver
-    , initializer: Just $ H.action Initialize
-    , finalizer: Nothing
     }
   where
     initialState :: TypeaheadInput o item e -> State o item e
@@ -300,32 +298,46 @@ component =
         (Tuple _ (State st)) <- getState
         pure $ reply st.selections
 
-      -- Specialty function specifically for Async type; fetches
-      -- data using provided function.
-      Initialize a -> do
-        (Tuple _ (State st)) <- getState
+      -- Listens to data returned by the parent.
+      FulfillRequest method a -> do
+        -- TODO: This should handle any filtering / insertable stuff!
+        -- Otherwise it will always send the full result. In the case
+        -- of continuous async we may need filtering applied.
+        -- (Tuple _ (State st)) <- getState
 
-        case st.items of
-          Async fetch _ -> do
-            items <- H.liftAff fetch
-            H.modify
-              $ seeks
-              $ \(State st') -> State
-              $ st' { items = Async fetch items }
-            pure a
+        H.modify $ seeks $ \(State st) -> State st { items = method }
 
-            -- In any other case, do not modify item data.
-          _ -> pure a
+        let updateContainer (Failure e) = do
+              -- Close the container
+              _ <- H.query' CP.cp1 (Slot ContainerSlot)
+                $ H.action
+                $ Container.Visibility Container.Off
+              -- Clear the container
+              _ <- H.query' CP.cp1 (Slot ContainerSlot)
+                $ H.action
+                $ Container.ReplaceItems []
+              H.liftAff $ log e
 
+            updateContainer (Success items) = do
+              _ <- H.query' CP.cp1 (Slot ContainerSlot)
+                $ H.action
+                $ Container.ReplaceItems items
+              pure unit
 
-      -- Overwrite the state with new input, handling the case in which the typeahead fetches its
-      -- own data to avoid unnecessary requests.
+            updateContainer _ = pure unit
+
+        case method of
+          Async src items -> updateContainer items
+          ContinuousAsync src items -> updateContainer items
+          _ -> pure unit
+
+        pure a
+
+      -- Overwrite the state with new input.
+      -- WARN: This will mess things up when the parent re-renders. Only here temporarily.
+      -- TODO: Only modify relevant parts of state after the init.
       TypeaheadReceiver input a -> a <$ do
         H.put $ initialState input
-        -- In the case of Async this will fetch the items again. We can also modify this to _not_
-        -- overwrite the items field if the config type is Async or otherwise optimize performance.
-        eval (Initialize a)
-
 
 
 ----------
@@ -358,8 +370,8 @@ selectItem item items selections = case selections of
   One (Just i) -> Tuple (insert i $ remove item items) (One $ Just item)
   Many xs      -> Tuple (remove item items) (Many $ item : xs)
     where
-      insert i is = mapSyncMethod (\i' -> i : i') is
-      remove i is = mapSyncMethod (filter ((/=) i)) is
+      insert i is = (\i' -> i : i') <$> is
+      remove i is = (filter ((/=) i)) <$> is
 
 -- Given an item, the items, and the selections, move an item from the selections list to
 -- the items list.
@@ -374,7 +386,7 @@ removeItem item items selections = case selections of
   One  _  -> Tuple (insert item items) (One Nothing)
   Many xs -> Tuple (insert item items) (Many $ filter ((/=) item) xs)
     where
-      insert i is = mapSyncMethod (\i' -> i : i') is
+      insert i is = (\i' -> i : i') <$> is
 
 
 
@@ -404,30 +416,21 @@ evalNewSearch { filterType, insertable } text = unit <$ do
   (Tuple _ (State st)) <- getState
 
   -- In non-continuous, use existing items from the state.
-  -- In continuous, use the provided function to fetch the items.
-  -- WARN: ContinuousAsync assumes you just want the items returned -- it doesn't filter.
-  -- This behavior can be changed to reflect usual filtering if needed; there exists
-  -- a `NoFilter` option that will achieve the same behavior.
-  fetchItemsResult <- case st.items of
+  -- In continuous, ask for the data and immediately move on.
+  newItems <- case st.items of
     Sync items -> pure $ Sync $ (applyInsertable <<< applyFilter) items
-    Async fetch items -> pure $ Async fetch $ (applyInsertable <<< applyFilter) <$> items
-    ContinuousAsync fetch _ -> do
-       -- Update items on state to loading
-       H.modify
-         $ seeks
-         $ \(State st') -> State
-         $ st' { items = ContinuousAsync fetch Loading }
-       -- Fetch items
-       items <- H.liftAff (fetch text)
-       -- Update items on state with new results
-       H.modify
-         $ seeks
-         $ \(State st') -> State
-         $ st' { items = ContinuousAsync fetch items }
-       -- Return filtered items wrapped in the correct type
-       pure $ ContinuousAsync fetch $ (applyInsertable <<< applyFilter) <$> items
+    Async src items -> pure $ Async src $ (applyInsertable <<< applyFilter) <$> items
+    ContinuousAsync (Tuple src _) _ -> do
+       -- Update the value with the search
+       let continuous = ContinuousAsync (Tuple src text) Loading
+       -- Request data
+       H.raise $ RequestData continuous
+       -- Update items to loading
+       H.modify $ seeks $ \(State st') -> State st' { items = continuous }
+       -- Return the loading value
+       pure continuous
 
-  _ <- case fetchItemsResult of
+  _ <- case newItems of
     -- If sync, send new items to the container.
     Sync items -> do
       _ <- H.query' CP.cp1 (Slot ContainerSlot)
