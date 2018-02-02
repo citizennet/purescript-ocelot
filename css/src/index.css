@@ -5,13 +5,55 @@
 ** @import "citizennet-css"
 */
 
-
 /* Import utilities after our CSS to avoid overwriting them. */
 @tailwind utilities;
 
-/* CitizenNet utilities */
-.cc-teal { caret-color: config('colors.teal'); }
-.no-outline { outline: none; }
-.focus\:no-outline:focus { @apply .no-outline; }
-.disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
+/* cn utilities */
 
+.cc-teal { caret-color: config('colors.teal'); }
+.no-content { content: ''; }
+.no-outline { outline: none; }
+.scale-0 { transform: scale(0); }
+.scale-1 { transform: scale(1); }
+
+/* pseudo utilities */
+
+.after\:absolute:after { @apply .absolute; }
+.after\:bg-teal:after { @apply .bg-teal; }
+.after\:all-02s-ease:after { transition: all 0.2s ease; }
+.after\:h-3:after { @apply .h-3; }
+.after\:left-w-6\/2--w-4\/2:after { 
+  left: calc((config('width.6') / 2) - (config('width.3') / 2)); 
+}
+.after\:no-content:after { @apply .no-content; }
+.after\:rounded-full:after { @apply .rounded-full; }
+.after\:top-w-6\/2--w-4\/2:after { 
+  top: calc((config('width.6') / 2) - (config('width.3') / 2)); 
+}
+.after\:w-3:after { @apply .w-3; }
+.before\:absolute:before { @apply .absolute; }
+.before\:border-solid:before { @apply .border-solid; }
+.before\:border:before { @apply .border; }
+.before\:h-6:before { @apply .h-6; }
+.before\:no-content:before { @apply .no-content; }
+.before\:pin-l:before { @apply .pin-l; }
+.before\:pin-t:before { @apply .pin-t; }
+.before\:rounded-full:before { @apply .rounded-full; }
+.before\:w-6:before { @apply .w-6; }
+.checked\:sibling\:before\:border-teal:checked + *:before { 
+  @apply .border-teal;
+}
+.checked\:sibling\:after\:opacity-100:checked + *:after {
+  @apply .opacity-100;
+}
+.checked\:sibling\:after\:scale-1:checked + *:after {
+  @apply .scale-1;
+}
+.disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
+.focus\:no-outline:focus { @apply .no-outline; }
+.not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after {
+  @apply .opacity-0;
+}
+.not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after {
+  @apply .scale-0;
+}

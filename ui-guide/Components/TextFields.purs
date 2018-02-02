@@ -5,6 +5,7 @@ import Prelude
 import CN.UI.Block.Button as Button
 import CN.UI.Block.Input as Input
 import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.Radio as Radio
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti') as Typeahead
 import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
@@ -143,11 +144,29 @@ innerContainer title blocks =
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
 cnDocumentationBlocks =
-  inputBlock
+  radioBlock
+  <>inputBlock
   <> formInputBlock
   <> typeaheadBlock
   <> dropdownBlock
   <> buttonBlock
+
+radioBlock :: ∀ e. Array (HTML e)
+radioBlock = documentationBlock
+  "Radio"
+  "A radio button"
+  ( HH.div_
+    [ Radio.radio 
+      { label: "Apples" } 
+      [ HP.name "fruit" ] 
+    , Radio.radio 
+      { label: "Bananas" } 
+      [ HP.name "fruit" ]
+    , Radio.radio 
+      { label: "Oranges" } 
+      [ HP.name "fruit" ]
+    ]
+  )
 
 inputBlock :: ∀ e. Array (HTML e)
 inputBlock = documentationBlock
