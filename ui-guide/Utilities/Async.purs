@@ -2,12 +2,14 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
+import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Maybe (Maybe(..))
 import Data.Either (Either)
 import Data.Argonaut (Json, decodeJson, (.?))
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Control.Monad.Aff (Aff)
+import Control.Monad.Eff.Class (liftEff)
 import CN.UI.Core.Typeahead (class StringComparable, SyncMethod(..), toString)
 
 import Data.Traversable (traverse)
@@ -19,10 +21,13 @@ import Data.Traversable (traverse)
 data Item
   = Users User
   | Todos Todo
+
 derive instance eqItem :: Eq Item
+
 instance showItem :: Show Item where
   show (Users u) = show u
   show (Todos t) = show t
+
 instance stringComparableItem :: StringComparable Item where
   toString (Users u) = toString u
   toString (Todos t) = toString t
@@ -30,7 +35,13 @@ instance stringComparableItem :: StringComparable Item where
 type Source item =
   { path :: String
   , root :: String
+  , speed :: Speed
   , decoder :: Json -> RemoteData Err (Array item) }
+
+data Speed
+  = Fast
+  | Slow
+  | Fail
 
 type Err = String
 
@@ -41,27 +52,44 @@ users :: Source Item
 users =
   { path: "users"
   , root: "https://jsonplaceholder.typicode.com/"
-  , decoder: (map <<< map <<< map) (\u -> Users u) $ decodeWith decodeUser }
+  , speed: Fast
+  , decoder: (map <<< map <<< map) (\x -> Users x) $ decodeWith decodeUser
+  }
 
 todos :: Source Item
 todos =
   { path: "todos"
   , root: "https://jsonplaceholder.typicode.com/"
-  , decoder: (map <<< map <<< map) (\t -> Todos t) $ decodeWith decodeTodo }
+  , speed: Fast
+  , decoder: (map <<< map <<< map) (\x -> Todos x) $ decodeWith decodeTodo
+  }
+
+slow :: Source Item
+slow = users { speed = Slow }
+
+fail :: Source Item
+fail = users { speed = Fail }
 
 
 ----------
 -- Functions
 
 -- Not yet using 'search'
-load :: ∀ eff item. SyncMethod (Source item) Err (Array item) -> Aff ( ajax :: AJAX | eff ) (Maybe (RemoteData Err (Array item)))
+-- load :: ∀ eff item. SyncMethod (Source item) Err (Array item) -> Aff ( ajax :: AJAX, timer :: TIMER | eff ) (Maybe (RemoteData Err (Array item)))
 load (Sync _) = pure Nothing
 load (Async src _) = Just <$> loadFromSource src
 load (ContinuousAsync search src _) = Just <$> loadFromSource src
 
 -- Given a source, load the resulting data.
-loadFromSource :: ∀ eff item. Source item -> Aff ( ajax :: AJAX | eff ) (RemoteData Err (Array item))
-loadFromSource { root, path, decoder } = get (root <> path) >>= (pure <<< decoder <<< _.response)
+-- loadFromSource :: ∀ eff item. Source item -> Aff ( ajax :: AJAX, timer :: TIMER | eff ) (RemoteData Err (Array item))
+loadFromSource { root, path, speed, decoder } = case speed of
+  Fast -> get (root <> path) >>= (pure <<< decoder <<< _.response)
+  Fail -> get path >>= (pure <<< decoder <<< _.response)
+  Slow -> do
+    _ <- liftEff $ setTimeout 5000 (pure unit)
+    res <- get (root <> path)
+    pure $ decoder res.response
+
 
 ----------
 -- Typeas for the JSON API
@@ -74,10 +102,12 @@ newtype Todo = Todo
   , completed :: Boolean }
 
 derive instance eqTodo :: Eq Todo
+
 instance showTodo :: Show Todo where
-  show (Todo { title, completed }) = title <> " " <> show completed
+  show (Todo { title, completed }) = "Todo: " <> title <> " " <> show completed
+
 instance stringComparableTodo :: StringComparable Todo where
-  toString (Todo { title, completed }) = title <> " " <> show completed
+  toString (Todo { title }) = title
 
 decodeTodo :: Json -> Either String Todo
 decodeTodo json = do
@@ -108,3 +138,5 @@ decodeUser json = do
   city <- obj .? "address" >>= \i -> i .? "city"
 
   pure $ User { id, name, city }
+
+

@@ -10,7 +10,12 @@ import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
 
+import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (logShow)
+import Control.Monad.Eff.Timer (TIMER)
+
+import Network.HTTP.Affjax (get, AJAX)
+
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
@@ -23,7 +28,8 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
-import Select.Effects (FX)
+-- import Select.Effects (FX)
+import Select.Effects (FX) as SELECT
 
 
 ----------
@@ -31,6 +37,8 @@ import Select.Effects (FX)
 
 type State
   = Unit
+
+type FX e = SELECT.FX (timer :: TIMER | e)
 
 data Query a
   = NoOp a
@@ -82,12 +90,6 @@ component =
     eval (HandleTypeahead slot m next) = case m of
       Typeahead.RequestData source -> do
         res <- H.liftAff $ Async.load source
-
-        let replaceItems Nothing v = v
-            replaceItems (Just _) s@(Typeahead.Sync _) = s
-            replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
-            replaceItems (Just d) (Typeahead.ContinuousAsync srch src _) = Typeahead.ContinuousAsync srch src d
-
         _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
         pure next
 
@@ -99,6 +101,12 @@ component =
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
+
+    -- Helper to replace items dependent on sync types
+    replaceItems Nothing v = v
+    replaceItems (Just _) s@(Typeahead.Sync _) = s
+    replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
+    replaceItems (Just d) (Typeahead.ContinuousAsync srch src _) = Typeahead.ContinuousAsync srch src d
 
 
 ----------
@@ -195,6 +203,7 @@ typeaheadBlockTodos = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
+    slot :: HTML e
     slot =
       HH.slot' CP.cp1 TypeaheadTodos Typeahead.component ( Typeahead.testAsyncMulti' Async.todos ) (HE.input $ HandleTypeahead TypeaheadTodos)
 
@@ -204,6 +213,7 @@ typeaheadBlockUsers = documentationBlock
   "Uses string input to search pre-determined entries."
   ( componentBlock "No configuration set." slot )
   where
+    slot :: HTML e
     slot =
       HH.slot' CP.cp1 TypeaheadUsers Typeahead.component ( Typeahead.testAsyncMulti' Async.users ) (HE.input $ HandleTypeahead TypeaheadUsers)
 

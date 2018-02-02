@@ -4,6 +4,7 @@ import Prelude
 
 import Network.RemoteData (RemoteData(..))
 import Control.Monad.Aff.Console (logShow)
+
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..))
 import Data.Array (filter, (:), length)
@@ -12,12 +13,15 @@ import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.String (Pattern(..), contains, toLower)
 import Data.Time.Duration (Milliseconds)
+
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
+
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
+
 import Select.Effects (FX)
 import Select.Primitives.Container as Container
 import Select.Primitives.Search as Search
@@ -174,7 +178,7 @@ type HandlerRecord o source err item e =
 ----------
 -- Convenience component types
 
-type TypeaheadComponent o source err item e =
+type (TypeaheadComponent o source err item e =
   H.Component
     HH.HTML
     (TypeaheadQuery o source err item e)
