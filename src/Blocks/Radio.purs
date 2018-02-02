@@ -19,12 +19,13 @@ labelClasses = HH.ClassName <$>
 
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
-  [ "checked:sibling:after:opacity-100"
+  [ "absolute"
+  , "checked:sibling:after:opacity-100"
   , "checked:sibling:after:scale-1"
   , "checked:sibling:before:border-teal"
-  , "hidden"
   , "not:checked:sibling:after:opacity-0"
   , "not:checked:sibling:after:scale-0"
+  , "opacity-0"
   ]
 
 spanClasses :: Array HH.ClassName
