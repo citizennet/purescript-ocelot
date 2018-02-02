@@ -43,6 +43,7 @@ labelClasses = HH.ClassName <$>
   , "before:w-6"
   , "cursor-pointer"
   , "inline-block"
+  , "leading-normal"
   , "pl-8"
   , "relative"
   , "text-black"
@@ -54,8 +55,7 @@ radio
   -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 radio props iprops =
-  HH.label
-    [ HP.class_ (HH.ClassName "h-6") ]
+  HH.label_
     [ HH.input iprops'
     , HH.span
       [ HP.classes labelClasses ]
