@@ -7,11 +7,18 @@ import DOM.HTML.Indexed.InputType (InputType(InputRadio))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 
-type RadioProps = 
+type RadioProps =
   { label :: String }
 
-radioClasses :: Array HH.ClassName
-radioClasses = HH.ClassName <$>
+labelClasses :: Array HH.ClassName
+labelClasses = HH.ClassName <$>
+  [ "flex"
+  , "flex-col"
+  , "py-1"
+  ]
+
+inputClasses :: Array HH.ClassName
+inputClasses = HH.ClassName <$>
   [ "checked:sibling:after:opacity-100"
   , "checked:sibling:after:scale-1"
   , "checked:sibling:before:border-teal"
@@ -20,8 +27,8 @@ radioClasses = HH.ClassName <$>
   , "not:checked:sibling:after:scale-0"
   ]
 
-labelClasses :: Array HH.ClassName
-labelClasses = HH.ClassName <$>
+spanClasses :: Array HH.ClassName
+spanClasses = HH.ClassName <$>
   [ "after:absolute"
   , "after:bg-teal"
   , "after:all-02s-ease"
@@ -55,12 +62,13 @@ radio
   -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 radio props iprops =
-  HH.label_
+  HH.label
+    [ HP.classes labelClasses ]
     [ HH.input iprops'
     , HH.span
-      [ HP.classes labelClasses ]
+      [ HP.classes spanClasses ]
       [ HH.text props.label ]
     ]
     where 
      iprops' = 
-       iprops <> [ HP.type_ InputRadio, HP.classes radioClasses ]
+       iprops <> [ HP.type_ InputRadio, HP.classes inputClasses ]
