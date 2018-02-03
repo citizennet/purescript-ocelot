@@ -28,8 +28,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
--- import Select.Effects (FX)
-import Select.Effects (FX) as SELECT
+import Select.Effects (Effects)
 
 
 ----------
@@ -38,7 +37,7 @@ import Select.Effects (FX) as SELECT
 type State
   = Unit
 
-type FX e = SELECT.FX (timer :: TIMER | e)
+type MyEffects e = ( timer :: TIMER | Effects e )
 
 data Query a
   = NoOp a
@@ -49,8 +48,11 @@ data Query a
 ----------
 -- Child paths
 
-type ChildQuery e = Coproduct2 (Typeahead.TypeaheadQuery Query (Async.Source Async.Item) Async.Err Async.Item e) (Dropdown.Query TestRecord)
 type ChildSlot = Either2 TypeaheadSlot Unit
+type ChildQuery e =
+  Coproduct2
+    (Typeahead.TypeaheadQuery Query (Async.Source Async.Item) Async.Err Async.Item e)
+    (Dropdown.Query TestRecord)
 
 data Slot a = Slot a
 derive instance eqSlot :: Eq a => Eq (Slot a)
@@ -65,12 +67,12 @@ derive instance ordTypeaheadSlot :: Ord TypeaheadSlot
 ----------
 -- Convenience types
 
-type HTML e = H.ParentHTML Query (ChildQuery e) ChildSlot (FX e)
+type HTML e = H.ParentHTML Query (ChildQuery e) ChildSlot (Aff (TypeaheadEffects e))
 
 ----------
 -- Component definition
 
-component :: ∀ e. H.Component HH.HTML Query Unit Void (FX e)
+component :: ∀ e. H.Component HH.HTML Query Unit Void (Aff (TypeaheadEffects e))
 component =
   H.parentComponent
   { initialState: const unit
@@ -84,7 +86,7 @@ component =
     render :: State -> HTML e
     render st = container Sidebar.cnNavSections cnDocumentationBlocks
 
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (FX e)
+    eval :: Query ~> H.ParentDSL State Query (ChildQuery e) ChildSlot Void (Aff (TypeaheadEffects e))
     eval (NoOp next) = pure next
 
     eval (HandleTypeahead slot m next) = case m of
