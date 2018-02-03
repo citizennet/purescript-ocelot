@@ -3,6 +3,8 @@ module CN.UI.Core.Typeahead where
 import Prelude
 
 import Network.RemoteData (RemoteData(..))
+import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow)
 
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -22,7 +24,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
 
-import Select.Effects (FX)
+import Select.Effects (Effects)
 import Select.Primitives.Container as Container
 import Select.Primitives.Search as Search
 import Select.Primitives.State (getState)
@@ -63,15 +65,15 @@ instance stringComparableString :: StringComparable String where
 -- Component Types
 
 -- State type is necessary so render function can be provided.
-type State o source err item e = Store (TypeaheadState o source err item e) (TypeaheadHTML o source err item e)
+type State o source err item e = Store (TypeaheadState o source err item) (TypeaheadHTML o source err item e)
 
 -- Newtype because of the self-reference in config function.
-newtype TypeaheadState o source err item e = State
+newtype TypeaheadState o source err item = State
   { items :: SyncMethod source err (Array item)
   , selections :: SelectionType item
   , debounceTime :: Milliseconds
   , search :: String
-  , config :: EvalConfig o source err item e
+  , config :: ConfigRecord item
   }
 
 -- Indicates how the typeahead should fetch data. Async types store both their function
@@ -113,8 +115,8 @@ type TypeaheadInput o source err item e =
   , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
-  , render :: TypeaheadState o source err item e -> TypeaheadHTML o source err item e
-  , config :: EvalConfig o source err item e
+  , render :: TypeaheadState o source err item -> TypeaheadHTML o source err item e
+  , config :: ConfigRecord item
   }
 
 data TypeaheadMessage o source err item
@@ -130,8 +132,8 @@ data TypeaheadMessage o source err item
 -- for the two important child messages (new search or
 -- item selected)
 
-type EvalConfig o source err item e =
-  Either (HandlerRecord o source err item e) (ConfigRecord item)
+--  type EvalConfig o source err item e =
+--    Either (HandlerRecord o source err item e) (ConfigRecord item)
 
 -- A default config can help minimize work.
 defaultConfig :: ∀ item. Eq item => StringComparable item => ConfigRecord item
@@ -168,30 +170,31 @@ data Insertable item
 -- eval functions yourself. If you only need one, import the relevant function from
 -- this module to the right field
 -- (ex: import Typeahead as Typeahead; itemSelected: Typeahead.itemSelected)
-type HandlerRecord o source err item e =
-  { newSearch :: String -> TypeaheadDSL o source err item e Unit
-  , itemSelected :: item -> TypeaheadDSL o source err item e Unit
-  , itemRemoved :: item -> TypeaheadDSL o source err item e Unit
-  }
+
+--  type HandlerRecord o source err item e =
+--    { newSearch :: String -> TypeaheadDSL o source err item e Unit
+--    , itemSelected :: item -> TypeaheadDSL o source err item e Unit
+--    , itemRemoved :: item -> TypeaheadDSL o source err item e Unit
+--    }
 
 
 ----------
 -- Convenience component types
 
-type (TypeaheadComponent o source err item e =
+type TypeaheadComponent o source err item e =
   H.Component
     HH.HTML
     (TypeaheadQuery o source err item e)
     (TypeaheadInput o source err item e)
     (TypeaheadMessage o source err item)
-    (FX e)
+    (Aff e)
 
 type TypeaheadHTML o source err item e =
   H.ParentHTML
     (TypeaheadQuery o source err item e)
     (ChildQuery o item e)
     ChildSlot
-    (FX e)
+    (Aff e)
 
 type TypeaheadDSL o source err item e =
   H.ParentDSL
@@ -200,7 +203,7 @@ type TypeaheadDSL o source err item e =
     (ChildQuery o item e)
     ChildSlot
     (TypeaheadMessage o source err item)
-    (FX e)
+    (Aff e)
 
 
 ----------
@@ -210,7 +213,7 @@ type ContainerQuery o item =
   Container.ContainerQuery o item
 
 type SearchQuery o item e =
-  Search.SearchQuery o item e
+  Search.SearchQuery o item (Effects e)
 
 type ChildQuery o item e =
   Coproduct2 (ContainerQuery o item) (SearchQuery o item e)
@@ -351,7 +354,7 @@ component =
 -- without managing the wiring. Allows them to maintain full control over rendering without having to manage
 -- handlers.
 
-searchSlot :: ∀ o source err item e. Search.SearchInput o item e -> TypeaheadHTML o source err item e
+searchSlot :: ∀ o source err item e. Search.SearchInput o item (Effects e) -> TypeaheadHTML o source err item e
 searchSlot i =
   HH.slot' CP.cp2 (Slot SearchSlot) Search.component i (HE.input HandleSearch)
 

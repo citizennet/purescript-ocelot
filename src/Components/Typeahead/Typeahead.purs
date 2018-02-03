@@ -13,6 +13,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Select.Effects (Effects)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 import CN.UI.Core.Typeahead as Typeahead
@@ -155,8 +156,8 @@ renderTypeahead renderItem st@(Typeahead.State st') =
         ]
 
     renderSearch
-      :: S.SearchState e
-      -> H.HTML Void (S.SearchQuery o item e)
+      :: S.SearchState (Effects e)
+      -> H.HTML Void (S.SearchQuery o item (Effects e))
     renderSearch searchState =
                   HH.div
                     [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]

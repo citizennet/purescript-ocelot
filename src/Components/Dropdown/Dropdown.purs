@@ -2,6 +2,7 @@ module CN.UI.Components.Dropdown where
 
 import Prelude
 
+import Control.Monad.Aff (Aff)
 import Data.Array (delete, difference, length, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
 import Data.Tuple (Tuple(Tuple))
@@ -9,7 +10,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Effects (FX)
+import Select.Effects (Effects)
 import Select.Primitives.Container as C
 
 ----------
@@ -46,7 +47,7 @@ data Query item a
 
 -- Component top-level definition
 type DropdownComponent item e
-  = H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) (FX e)
+  = H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) (Aff (Effects e))
 
 -- Component input and message types
 type DropdownInput item = State item
@@ -62,7 +63,7 @@ type ChildSlot = Unit
 
 -- Return type of render function; must use Dispatch as child type (or coproduct)
 type DropdownHTML item e =
-  H.ParentHTML (Query item) (ChildQuery item) ChildSlot (FX e)
+  H.ParentHTML (Query item) (ChildQuery item) ChildSlot (Aff (Effects e))
 
 -- Return type of eval function
 type DropdownDSL item e =
@@ -72,7 +73,7 @@ type DropdownDSL item e =
     (ChildQuery item)
     ChildSlot
     (DropdownMessage item)
-    (FX e)
+    (Aff (Effects e))
 
 
 ----------
