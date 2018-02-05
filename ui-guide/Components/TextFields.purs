@@ -4,12 +4,14 @@ import Prelude
 
 import UIGuide.Blocks.Sidebar as Sidebar
 import UIGuide.Utilities.Async as Async
+import UIGuide.Utilities.Effects (MyEffects)
 
 import CN.UI.Block.Button as Button
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead as Typeahead
-import CN.UI.Core.Typeahead as Typeahead
+import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
+import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
 
+import Data.Tuple (Tuple)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow)
 import Control.Monad.Eff.Timer (TIMER)
@@ -20,7 +22,6 @@ import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
-import Data.Tuple (Tuple)
 
 import Halogen as H
 import Halogen.Component.ChildPath as CP
@@ -28,7 +29,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
-import UIGuide.Utilities.Effects (MyEffects)
 
 
 ----------
@@ -79,7 +79,7 @@ component =
   where
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
-    --  render :: State -> HTML eff m
+    render :: State -> HTML eff m
     render st = container Sidebar.cnNavSections cnDocumentationBlocks
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery eff m) ChildSlot Void m
@@ -141,11 +141,10 @@ containerData =
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
 
---  container :: ∀ eff m
---    . MonadAff ( MyEffects eff ) m
---   => Array (Tuple String (Array (Tuple String String)))
---   -> Array (HTML eff m)
---   -> HTML eff m
+container :: ∀ i p
+  . Array (Tuple String (Array (Tuple String String)))
+ -> Array (H.HTML i p)
+ -> H.HTML i p
 container navs blocks =
   HH.body
   [ css "font-sans font-normal text-black leading-normal" ]
@@ -156,7 +155,10 @@ container navs blocks =
     ]
   ]
 
-innerContainer :: ∀ i p. String -> Array (H.HTML i p) -> H.HTML i p
+innerContainer :: ∀ i p
+  . String
+ -> Array (H.HTML i p)
+ -> H.HTML i p
 innerContainer title blocks =
   HH.div
   [ css "md:ml-80" ]
@@ -180,9 +182,7 @@ innerContainer title blocks =
 --   => Array (HTML eff m)
 cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock <> buttonBlock
 
---  buttonBlock :: ∀ eff m
---    . MonadAff ( MyEffects eff ) m
---   => Array (HTML eff m)
+buttonBlock :: ∀ i p. Array (H.HTML i p)
 buttonBlock = documentationBlock
   "Button"
   "Some button shit"
@@ -201,7 +201,7 @@ buttonBlock = documentationBlock
   )
 
 --  typeaheadBlockTodos :: ∀ eff m
---    . MonadAff ( MyEffects eff ) m
+--    . MonadAff _ m
 --   => Array (HTML eff m)
 typeaheadBlockTodos = documentationBlock
   "Typeahead"
@@ -283,5 +283,5 @@ componentBlock config slot =
   , HH.div [ css "p-4 pb-8 bg-grey-lightest" ] [ slot ]
   ]
   where
-    mkConfig :: ∀ i p. String -> H.HTML i p
+    mkConfig :: String -> H.HTML i p
     mkConfig str = HH.p_ [ HH.text str ]
