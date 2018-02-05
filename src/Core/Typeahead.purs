@@ -1,4 +1,4 @@
-module CN.UI.Core.Typeahead2 where
+module CN.UI.Core.Typeahead where
 
 import Prelude
 
@@ -19,6 +19,7 @@ import Control.Comonad.Store (Store, store, seeks)
 
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
 
 import Select.Effects (Effects)
@@ -33,7 +34,7 @@ import Select.Primitives.State (getState)
 type State o item source err eff m =
   Store
     (TypeaheadState item source err)
-    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m)
+    (TypeaheadHTML o item source err eff m)
 
 type TypeaheadState item source err =
   { items :: SyncMethod source err (Array item)
@@ -48,11 +49,12 @@ type TypeaheadInput o item source err eff m =
   , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
-  , render
-    :: TypeaheadState item source err
-    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
+  , render :: TypeaheadState item source err -> TypeaheadHTML o item source err eff m
   , config :: Config item
   }
+
+type TypeaheadHTML o item source err eff m
+  = H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
 
 data TypeaheadQuery o item source err eff m a
   = HandleContainer (C.Message o item) a
@@ -115,12 +117,27 @@ data SelectionType item
   | Many (Array item)
 derive instance functorSelectionType :: Functor SelectionType
 
-
 class CompareToString a where
-  comparableStr :: a -> String
+  compareToString :: a -> String
 
 instance compareToStringString :: CompareToString String where
-  comparableStr = id
+  compareToString = id
+
+
+----------
+-- Helper functions
+
+containerSlot :: ∀ o item source err eff m
+  . MonadAff (Effects eff) m
+ => C.ContainerInput o item
+ -> TypeaheadHTML o item source err eff m
+containerSlot i = HH.slot' CP.cp1 ContainerSlot C.component i (HE.input HandleContainer)
+
+searchSlot :: ∀ o item source err eff m
+  . MonadAff (Effects eff) m
+ => S.SearchInput o item (Effects eff)
+ -> TypeaheadHTML o item source err eff m
+searchSlot i = HH.slot' CP.cp2 SearchSlot S.component i (HE.input HandleSearch)
 
 
 ----------
@@ -257,9 +274,9 @@ component =
 applyFilter :: ∀ item. CompareToString item => FilterType item -> String -> Array item -> Array item
 applyFilter filterType text items = case filterType of
   NoFilter -> items
-  Exact -> filter (\item -> contains (Pattern text) (comparableStr item)) items
+  Exact -> filter (\item -> contains (Pattern text) (compareToString item)) items
   CaseInsensitive ->
-    filter (\item -> contains (Pattern $ toLower text) (toLower $ comparableStr item)) items
+    filter (\item -> contains (Pattern $ toLower text) (toLower $ compareToString item)) items
   CustomMatch match -> filter (\item -> match text item) items
 
 applyInsertable :: ∀ item. CompareToString item => Insertable item -> String -> Array item -> Array item

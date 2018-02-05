@@ -2,21 +2,26 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
+import Control.Monad.Aff.Class (class MonadAff)
+
 import Network.RemoteData (RemoteData(..), withDefault)
+
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
+import Data.Foldable (foldr)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.String (Pattern(Pattern), split)
 import Data.Time.Duration (Milliseconds(..))
-import Data.Either (Either(..))
-import Data.Foldable (foldr)
+
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+
 import Select.Effects (Effects)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
-import CN.UI.Core.Typeahead as Typeahead
+
+import CN.UI.Core.Typeahead as TA
 
 
 ----------
@@ -24,92 +29,109 @@ import CN.UI.Core.Typeahead as Typeahead
 
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
-defaultMulti :: ∀ o source err item e
-   . Typeahead.StringComparable item
+defaultMulti :: ∀ o item source err eff m
+   . MonadAff (Effects eff) m
+  => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> Typeahead.TypeaheadInput o source err item e
+  -> TA.TypeaheadInput o item source err eff m
 defaultMulti xs renderItem =
-  { items: Typeahead.Sync xs
+  { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
   , search: Nothing
-  , initialSelection: Typeahead.Many []
-  , render: renderTypeahead renderItem
-  , config: Right Typeahead.defaultConfig
+  , initialSelection: TA.Many []
+  , render: renderTA renderItem
+  , config: defaultConfig
   }
 
 -- A default multi-select using the default render item function
-defaultMulti' :: ∀ o source err item e
-   . Typeahead.StringComparable item
+defaultMulti' :: ∀ o item source err eff m
+   . MonadAff (Effects eff) m
+  => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
-  -> Typeahead.TypeaheadInput o source err item e
+  -> TA.TypeaheadInput o item source err eff m
 defaultMulti' xs =
-  { items: Typeahead.Sync xs
+  { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
   , search: Nothing
-  , initialSelection: Typeahead.Many []
-  , render: renderTypeahead defaultRenderItem
-  , config: Right Typeahead.defaultConfig
+  , initialSelection: TA.Many []
+  , render: renderTA defaultRenderItem
+  , config: defaultConfig
   }
 
 
 -- A default multi-select using the default render item function
-testAsyncMulti' :: ∀ o source err item e
-  . Typeahead.StringComparable item
+testAsyncMulti' :: ∀ o item source err eff m
+  . MonadAff (Effects eff) m
+ => TA.CompareToString item
  => Eq item
  => Show err
  => source
- -> Typeahead.TypeaheadInput o source err item e
+ -> TA.TypeaheadInput o item source err eff m
 testAsyncMulti' source =
-  { items: Typeahead.ContinuousAsync "" source NotAsked
+  { items: TA.ContinuousAsync "" source NotAsked
   , debounceTime: Milliseconds 500.0
   , search: Nothing
-  , initialSelection: Typeahead.Many []
-  , render: renderTypeahead defaultRenderItem
-  , config: Right Typeahead.defaultConfig
+  , initialSelection: TA.Many []
+  , render: renderTA defaultRenderItem
+  , config: defaultConfig
   }
 
 
 ----------
+-- Default Configuration
+
+defaultConfig :: ∀ item
+  . TA.CompareToString item
+ => Eq item
+ => TA.Config item
+defaultConfig =
+  { insertable: TA.NotInsertable
+  , filterType: TA.CaseInsensitive
+  , keepOpen: true
+  }
+
+----------
 -- Render functions
 
-renderTypeahead :: ∀ o source err item e
-  . Typeahead.StringComparable item
+renderTA :: ∀ o item source err eff m
+  . MonadAff (Effects eff) m
+ => TA.CompareToString item
  => Eq item
  => Show err
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
- -> Typeahead.TypeaheadState o source err item e
- -> Typeahead.TypeaheadHTML o source err item e
-renderTypeahead renderItem st@(Typeahead.State st') =
+ -> TA.TypeaheadState item source err
+ -> TA.TypeaheadHTML o item source err eff m
+renderTA renderItem st =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
 	[ HH.label
 		[ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
-		[ HH.text "Typeahead" ]
+		[ HH.text "TA" ]
 	, renderSelections
-	, Typeahead.searchSlot
+	, TA.searchSlot
 			{ render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
-	, Typeahead.containerSlot
-			{ render: renderContainer st, items: unpack st'.items }
+	, TA.containerSlot
+			{ render: renderContainer st, items: unpack st.items }
 	, HH.p
 		[ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
 		[ HH.text "This typeahead automatically debounces at 150ms." ]
 	]
 	where
-    unpack (Typeahead.Sync x) = x
-    unpack (Typeahead.Async _ x) = withDefault [] x
-    unpack (Typeahead.ContinuousAsync _ _ x) = withDefault [] x
+    unpack (TA.Sync x) = x
+    unpack (TA.Async _ x) = withDefault [] x
+    unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections :: Typeahead.TypeaheadHTML o source err item e
+    renderSelections :: TA.TypeaheadHTML o item source err eff m
     renderSelections =
-      case st'.selections of
-        (Typeahead.One Nothing) -> HH.div_ []
+      case st.selections of
+        (TA.One Nothing) -> HH.div_ []
 
-        (Typeahead.One (Just x)) -> HH.div_
+        (TA.One (Just x)) -> HH.div_
           [ HH.div
             [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
             [ HH.ul
@@ -118,7 +140,7 @@ renderTypeahead renderItem st@(Typeahead.State st') =
             ]
           ]
 
-        (Typeahead.Many xs) -> HH.div_
+        (TA.Many xs) -> HH.div_
           [ HH.div
             [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
             [ HH.ul
@@ -131,18 +153,18 @@ renderTypeahead renderItem st@(Typeahead.State st') =
           HH.li
           [ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
           [ HH.span_
-            [ HH.text $ Typeahead.toString item ]
+            [ HH.text $ TA.compareToString item ]
           , HH.span
             [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
-            , HE.onClick (HE.input_ (Typeahead.Remove item)) ]
+            , HE.onClick (HE.input_ (TA.Remove item)) ]
             [ HH.text "×" ]
           ]
 
     renderContainer
-      :: Typeahead.TypeaheadState o source err item e
+      :: TA.TypeaheadState item source err
       -> C.ContainerState item
       -> H.HTML Void (C.ContainerQuery o item)
-    renderContainer (Typeahead.State parentState) containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+    renderContainer parentState containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
       if not containerState.open
         then []
         else [ HH.div
@@ -156,8 +178,8 @@ renderTypeahead renderItem st@(Typeahead.State st') =
         ]
 
     renderSearch
-      :: S.SearchState (Effects e)
-      -> H.HTML Void (S.SearchQuery o item (Effects e))
+      :: S.SearchState (Effects eff)
+      -> H.HTML Void (S.SearchQuery o item (Effects eff))
     renderSearch searchState =
                   HH.div
                     [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
@@ -173,7 +195,7 @@ renderTypeahead renderItem st@(Typeahead.State st') =
 
 -- A default renderer for items
 defaultRenderItem :: ∀ o item
-  . Typeahead.StringComparable item
+  . TA.CompareToString item
  => Eq item
  => String
  -> (Maybe Int)
@@ -184,14 +206,14 @@ defaultRenderItem "" highlightIndex itemIndex item = HH.li
   ( C.getItemProps itemIndex
     [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
   )
-    [ HH.text $ Typeahead.toString item ]
+    [ HH.text $ TA.compareToString item ]
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
 defaultRenderItem search highlightIndex itemIndex item = HH.li
   ( C.getItemProps itemIndex
     [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
   )
-  ( boldMatches (Pattern search) $ Typeahead.toString item )
+  ( boldMatches (Pattern search) $ TA.compareToString item )
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
 

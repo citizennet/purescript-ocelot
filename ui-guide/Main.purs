@@ -4,12 +4,11 @@ import Prelude
 import UIGuide.Components.TextFields as TextFields
 
 import Control.Monad.Eff (Eff)
-import Control.Monad.Aff.Console (CONSOLE)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
-import Select.Effects (Effects)
+import UIGuide.Utilities.Effects (MyEffects)
 
-main :: ∀ e. Eff (HA.HalogenEffects (Effects (console :: CONSOLE | e))) Unit
+main :: ∀ eff. Eff (MyEffects eff) Unit
 main = HA.runHalogenAff do
   body <- HA.awaitBody
   runUI TextFields.component unit body

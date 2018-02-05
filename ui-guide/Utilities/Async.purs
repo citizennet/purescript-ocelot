@@ -2,15 +2,17 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
+import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Maybe (Maybe(..))
 import Data.Either (Either)
 import Data.Argonaut (Json, decodeJson, (.?))
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
-import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
-import CN.UI.Core.Typeahead (class StringComparable, SyncMethod(..), toString)
+
+import CN.UI.Core.Typeahead (class CompareToString, SyncMethod(..), compareToString)
+import UIGuide.Utilities.Effects (MyEffects)
 
 import Data.Traversable (traverse)
 
@@ -28,9 +30,9 @@ instance showItem :: Show Item where
   show (Users u) = show u
   show (Todos t) = show t
 
-instance stringComparableItem :: StringComparable Item where
-  toString (Users u) = toString u
-  toString (Todos t) = toString t
+instance compareToStringItem :: CompareToString Item where
+  compareToString (Users u) = compareToString u
+  compareToString (Todos t) = compareToString t
 
 type Source item =
   { path :: String
@@ -75,13 +77,11 @@ fail = users { speed = Fail }
 -- Functions
 
 -- Not yet using 'search'
--- load :: ∀ eff item. SyncMethod (Source item) Err (Array item) -> Aff ( ajax :: AJAX, timer :: TIMER | eff ) (Maybe (RemoteData Err (Array item)))
 load (Sync _) = pure Nothing
 load (Async src _) = Just <$> loadFromSource src
 load (ContinuousAsync search src _) = Just <$> loadFromSource src
 
 -- Given a source, load the resulting data.
--- loadFromSource :: ∀ eff item. Source item -> Aff ( ajax :: AJAX, timer :: TIMER | eff ) (RemoteData Err (Array item))
 loadFromSource { root, path, speed, decoder } = case speed of
   Fast -> get (root <> path) >>= (pure <<< decoder <<< _.response)
   Fail -> get path >>= (pure <<< decoder <<< _.response)
@@ -106,8 +106,8 @@ derive instance eqTodo :: Eq Todo
 instance showTodo :: Show Todo where
   show (Todo { title, completed }) = "Todo: " <> title <> " " <> show completed
 
-instance stringComparableTodo :: StringComparable Todo where
-  toString (Todo { title }) = title
+instance stringComparableTodo :: CompareToString Todo where
+  compareToString (Todo { title }) = title
 
 decodeTodo :: Json -> Either String Todo
 decodeTodo json = do
@@ -126,8 +126,8 @@ newtype User = User
 derive instance eqUser :: Eq User
 instance showUser :: Show User where
   show (User { id, name }) = show id <> ": " <> name
-instance stringComparableUser :: StringComparable User where
-  toString (User { name }) = name
+instance stringComparableUser :: CompareToString User where
+  compareToString (User { name }) = name
 
 decodeUser :: Json -> Either String User
 decodeUser json = do
