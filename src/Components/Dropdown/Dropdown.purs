@@ -2,6 +2,7 @@ module CN.UI.Components.Dropdown where
 
 import Prelude
 
+import DOM (DOM)
 import Control.Monad.Aff.Class (class MonadAff)
 import Data.Array (delete, difference, length, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
@@ -10,7 +11,6 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Effects (Effects)
 import Select.Primitives.Container as C
 
 ----------
@@ -75,7 +75,7 @@ type DropdownDSL item m =
 ----------
 -- Component definition
 component :: ∀ item eff m
-  . MonadAff ( Effects eff ) m
+  . MonadAff ( dom :: DOM | eff ) m
  => Eq item
  => H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) m
 component =

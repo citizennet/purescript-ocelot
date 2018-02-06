@@ -3,16 +3,16 @@ module UIGuide.Utilities.Async where
 import Prelude
 
 import Control.Monad.Aff (Aff)
+import Network.HTTP.Affjax (get, AJAX)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
+
 import Data.Maybe (Maybe(..))
 import Data.Either (Either)
 import Data.Argonaut (Json, decodeJson, (.?))
-import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Control.Monad.Eff.Class (liftEff)
 
 import CN.UI.Core.Typeahead (class CompareToString, SyncMethod(..), compareToString)
-import UIGuide.Utilities.Effects (MyEffects)
 
 import Data.Traversable (traverse)
 
@@ -77,11 +77,17 @@ fail = users { speed = Fail }
 -- Functions
 
 -- Not yet using 'search'
+load :: ∀ eff item
+  . SyncMethod (Source item) Err (Array item)
+ -> Aff (ajax :: AJAX, timer :: TIMER | eff) (Maybe (RemoteData Err (Array item)))
 load (Sync _) = pure Nothing
 load (Async src _) = Just <$> loadFromSource src
 load (ContinuousAsync search src _) = Just <$> loadFromSource src
 
 -- Given a source, load the resulting data.
+loadFromSource :: ∀ eff item
+  . Source item
+ -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
 loadFromSource { root, path, speed, decoder } = case speed of
   Fast -> get (root <> path) >>= (pure <<< decoder <<< _.response)
   Fail -> get path >>= (pure <<< decoder <<< _.response)

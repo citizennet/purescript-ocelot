@@ -3,9 +3,11 @@ module CN.UI.Core.Typeahead where
 import Prelude
 
 import Network.RemoteData (RemoteData(..))
-import Control.Monad.Aff.Console (logShow)
+import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff.AVar (AVAR)
 
+import DOM (DOM)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String (Pattern(..), contains, toLower)
 import Data.Tuple (Tuple(..))
@@ -22,7 +24,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
 
-import Select.Effects (Effects)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 import Select.Primitives.State (getState)
@@ -77,7 +78,7 @@ data TypeaheadMessage o item source err
 
 type ChildQuery o item eff = Coproduct2
   (C.ContainerQuery o item)
-  (S.SearchQuery    o item (Effects eff))
+  (S.SearchQuery    o item ( avar :: AVAR | eff ))
 type ChildSlot = Either2 Slot Slot
 
 data Slot
@@ -128,14 +129,14 @@ instance compareToStringString :: CompareToString String where
 -- Helper functions
 
 containerSlot :: ∀ o item source err eff m
-  . MonadAff (Effects eff) m
+  . MonadAff ( dom :: DOM | eff ) m
  => C.ContainerInput o item
  -> TypeaheadHTML o item source err eff m
 containerSlot i = HH.slot' CP.cp1 ContainerSlot C.component i (HE.input HandleContainer)
 
 searchSlot :: ∀ o item source err eff m
-  . MonadAff (Effects eff) m
- => S.SearchInput o item (Effects eff)
+  . MonadAff ( avar :: AVAR | eff ) m
+ => S.SearchInput o item ( avar :: AVAR | eff )
  -> TypeaheadHTML o item source err eff m
 searchSlot i = HH.slot' CP.cp2 SearchSlot S.component i (HE.input HandleSearch)
 
@@ -144,7 +145,7 @@ searchSlot i = HH.slot' CP.cp2 SearchSlot S.component i (HE.input HandleSearch)
 -- Component
 
 component :: ∀ o item source err eff m
-  . MonadAff (Effects eff) m
+  . MonadAff ( console :: CONSOLE | eff ) m
  => CompareToString item
  => Eq item
  => Show err

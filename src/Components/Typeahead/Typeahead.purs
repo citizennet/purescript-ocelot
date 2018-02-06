@@ -3,6 +3,8 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Control.Monad.Aff.Class (class MonadAff)
+import DOM (DOM)
+import Control.Monad.Aff.AVar (AVAR)
 
 import Network.RemoteData (RemoteData(..), withDefault)
 
@@ -17,7 +19,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
-import Select.Effects (Effects)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
@@ -30,13 +31,13 @@ import CN.UI.Core.Typeahead as TA
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
 defaultMulti :: ∀ o item source err eff m
-   . MonadAff (Effects eff) m
+  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> TA.TypeaheadInput o item source err eff m
+  -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
 defaultMulti xs renderItem =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -48,12 +49,12 @@ defaultMulti xs renderItem =
 
 -- A default multi-select using the default render item function
 defaultMulti' :: ∀ o item source err eff m
-   . MonadAff (Effects eff) m
+  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
-  -> TA.TypeaheadInput o item source err eff m
+  -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
 defaultMulti' xs =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -66,12 +67,12 @@ defaultMulti' xs =
 
 -- A default multi-select using the default render item function
 testAsyncMulti' :: ∀ o item source err eff m
-  . MonadAff (Effects eff) m
+  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
  => TA.CompareToString item
  => Eq item
  => Show err
  => source
- -> TA.TypeaheadInput o item source err eff m
+ -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
 testAsyncMulti' source =
   { items: TA.ContinuousAsync "" source NotAsked
   , debounceTime: Milliseconds 500.0
@@ -99,13 +100,13 @@ defaultConfig =
 -- Render functions
 
 renderTA :: ∀ o item source err eff m
-  . MonadAff (Effects eff) m
+  . MonadAff ( _ ) m
  => TA.CompareToString item
  => Eq item
  => Show err
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
  -> TA.TypeaheadState item source err
- -> TA.TypeaheadHTML o item source err eff m
+ -> TA.TypeaheadHTML o item source err ( _ ) m
 renderTA renderItem st =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
@@ -126,7 +127,7 @@ renderTA renderItem st =
     unpack (TA.Async _ x) = withDefault [] x
     unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections :: TA.TypeaheadHTML o item source err eff m
+    renderSelections :: TA.TypeaheadHTML o item source err _ m
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []
@@ -178,8 +179,8 @@ renderTA renderItem st =
         ]
 
     renderSearch
-      :: S.SearchState (Effects eff)
-      -> H.HTML Void (S.SearchQuery o item (Effects eff))
+      :: S.SearchState _
+      -> H.HTML Void (S.SearchQuery o item _)
     renderSearch searchState =
                   HH.div
                     [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
