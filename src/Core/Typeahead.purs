@@ -2,14 +2,16 @@ module CN.UI.Core.Typeahead where
 
 import Prelude
 
-import Network.RemoteData (RemoteData(..))
+import Network.RemoteData (RemoteData(Success, Failure, Loading))
+import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Aff.Class (class MonadAff)
 
+import DOM (DOM)
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.String (Pattern(..), contains, toLower)
+import Data.String (Pattern(Pattern), contains, toLower)
 import Data.Tuple (Tuple(..))
-import Data.Array ((:), filter, length)
+import Data.Array (filter, length, (:))
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Time.Duration (Milliseconds)
@@ -124,15 +126,20 @@ instance compareToStringString :: CompareToString String where
 ----------
 -- Component
 
+type Effects eff = ( dom :: DOM, avar :: AVAR, console :: CONSOLE | eff )
+
+-- The render functions for this component use DOM and AVAR in addition to the CONSOLE
+-- used here. You MUST cross-reference effects among everything used.
+-- Be careful composing effect types.
 component :: ∀ o item source err eff m
-  . MonadAff ( console :: CONSOLE | eff ) m
+  . MonadAff (Effects eff) m
  => CompareToString item
  => Eq item
  => Show err
  => H.Component
       HH.HTML
-      (TypeaheadQuery o item source err eff m)
-      (TypeaheadInput o item source err eff m)
+      (TypeaheadQuery o item source err (Effects eff) m)
+      (TypeaheadInput o item source err (Effects eff) m)
       (TypeaheadMessage o item source err)
       m
 component =
@@ -144,8 +151,8 @@ component =
     }
   where
     initialState
-      :: (TypeaheadInput o item source err eff m)
-      -> State o item source err eff m
+      :: (TypeaheadInput o item source err (Effects eff) m)
+      -> State o item source err (Effects eff) m
     initialState i = store i.render
       { items: i.items
       , selections: i.initialSelection
@@ -155,11 +162,11 @@ component =
       }
 
     eval
-      :: (TypeaheadQuery o item source err eff m)
+      :: (TypeaheadQuery o item source err (Effects eff) m)
       ~> H.ParentDSL
-          (State o item source err eff m)
-          (TypeaheadQuery o item source err eff m)
-          (ChildQuery o item eff)
+          (State o item source err (Effects eff) m)
+          (TypeaheadQuery o item source err (Effects eff) m)
+          (ChildQuery o item (Effects eff))
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m

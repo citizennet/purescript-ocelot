@@ -3,8 +3,6 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Control.Monad.Aff.Class (class MonadAff)
-import DOM (DOM)
-import Control.Monad.Aff.AVar (AVAR)
 
 import Network.RemoteData (RemoteData(..), withDefault)
 
@@ -28,16 +26,30 @@ import CN.UI.Core.Typeahead as TA
 ----------
 -- Default typeahead
 
+-- The effects when an input and render are split from a component MUST be:
+-- Any effects used in rendering, including child slots;
+-- Any effects used in eval, like the console
+-- This can lead to all kinds of issues if you don't manually cross-reference
+-- effects used in renders, inputs, and components.
+-- type Effects eff = TA.Effects eff
+
+-- MAKE SURE ALL EFFECTS MATCH ACROSS COMPONENT / INPUT / RENDER
+-- However, DEFER adding effects until absolutely necessary (usually this is only
+-- in the actual function definitions for eval / render and the input type. do not
+-- prematurely provide a specific effect if it can at all be avoided).
+
+-- TODO: Write up what I've learned from two days of hell with effects rows.
+
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
 defaultMulti :: ∀ o item source err eff m
-  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
+  . MonadAff (TA.Effects eff) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> TA.TypeaheadInput o item source err ( dom :: DOM, avar :: AVAR | eff ) m
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultMulti xs renderItem =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -49,12 +61,12 @@ defaultMulti xs renderItem =
 
 -- A default multi-select using the default render item function
 defaultMulti' :: ∀ o item source err eff m
-  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
+  . MonadAff (TA.Effects eff) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
-  -> TA.TypeaheadInput o item source err ( dom :: DOM, avar :: AVAR | eff ) m
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultMulti' xs =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -67,12 +79,12 @@ defaultMulti' xs =
 
 -- A default multi-select using the default render item function
 testAsyncMulti' :: ∀ o item source err eff m
-  . MonadAff _ m
+  . MonadAff (TA.Effects eff) m
  => TA.CompareToString item
  => Eq item
  => Show err
  => source
- -> TA.TypeaheadInput o item source err _ m
+ -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 testAsyncMulti' source =
   { items: TA.ContinuousAsync "" source NotAsked
   , debounceTime: Milliseconds 500.0
@@ -100,20 +112,19 @@ defaultConfig =
 -- Render functions
 
 renderTA :: ∀ o item source err eff m
-  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
+  . MonadAff (TA.Effects eff) m
  => TA.CompareToString item
  => Eq item
- => Show err
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
  -> TA.TypeaheadState item source err
- -> H.ParentHTML (TA.TypeaheadQuery o item source err (dom :: DOM, avar :: AVAR | eff) m) (TA.ChildQuery o item (dom :: DOM, avar :: AVAR | eff) ) TA.ChildSlot m
+ -> H.ParentHTML (TA.TypeaheadQuery o item source err (TA.Effects eff) m) (TA.ChildQuery o item (TA.Effects eff)) TA.ChildSlot m
 renderTA renderItem st =
-	HH.div
-	[ HP.class_ $ HH.ClassName "w-full px-3" ]
-	[ HH.label
-		[ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
-		[ HH.text "TA" ]
-	, renderSelections
+  HH.div
+  [ HP.class_ $ HH.ClassName "w-full px-3" ]
+  [ HH.label
+    [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
+    [ HH.text "Typeahead" ]
+  , renderSelections
   , HH.slot'
       CP.cp2
       TA.SearchSlot
@@ -126,21 +137,15 @@ renderTA renderItem st =
       C.component
       { render: renderContainer st, items: unpack st.items }
       (HE.input TA.HandleContainer)
-	, HH.p
-		[ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
-		[ HH.text "This typeahead automatically debounces at 150ms." ]
-	]
-	where
+  , HH.p
+    [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
+    [ HH.text "This typeahead automatically debounces at 150ms." ]
+  ]
+  where
     unpack (TA.Sync x) = x
     unpack (TA.Async _ x) = withDefault [] x
     unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections
-      :: H.ParentHTML
-          (TA.TypeaheadQuery o item source err (dom :: DOM, avar :: AVAR | eff) m)
-          (TA.ChildQuery o item (dom :: DOM, avar :: AVAR | eff))
-          TA.ChildSlot
-          m
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []
@@ -172,10 +177,6 @@ renderTA renderItem st =
             [ HH.text "×" ]
           ]
 
-    renderContainer
-      :: TA.TypeaheadState item source err
-      -> C.ContainerState item
-      -> H.HTML Void (C.ContainerQuery o item)
     renderContainer parentState containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
       if not containerState.open
         then []
@@ -189,31 +190,20 @@ renderTA renderItem st =
           ]
         ]
 
-    --  renderSearch
-    --    :: S.SearchState _
-    --    -> H.HTML Void (S.SearchQuery o item _)
     renderSearch searchState =
-                  HH.div
-                    [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
-                    [ HH.input
-                      ( S.getInputProps
-                        [ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
-                        , HP.placeholder "Type to search..."
-                        , HP.value searchState.search
-                        ]
-                      )
-                    ]
+      HH.div
+        [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
+        [ HH.input
+          ( S.getInputProps
+            [ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
+            , HP.placeholder "Type to search..."
+            , HP.value searchState.search
+            ]
+          )
+        ]
 
 
--- A default renderer for items
-defaultRenderItem :: ∀ o item
-  . TA.CompareToString item
- => Eq item
- => String
- -> (Maybe Int)
- -> Int
- -> item
- -> H.HTML Void (C.ContainerQuery o item)
+defaultRenderItem :: forall o item. TA.CompareToString item => String -> Maybe Int -> Int -> item -> HH.HTML Void (C.ContainerQuery o item Unit)
 defaultRenderItem "" highlightIndex itemIndex item = HH.li
   ( C.getItemProps itemIndex
     [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
@@ -221,6 +211,7 @@ defaultRenderItem "" highlightIndex itemIndex item = HH.li
     [ HH.text $ TA.compareToString item ]
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
+
 defaultRenderItem search highlightIndex itemIndex item = HH.li
   ( C.getItemProps itemIndex
     [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
@@ -229,8 +220,6 @@ defaultRenderItem search highlightIndex itemIndex item = HH.li
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
 
-----------
--- Helpers
 
 -- Wrap matching text in a bold span when the user performs a search
 boldMatches :: ∀ i p. Pattern -> String -> Array (H.HTML i p)
@@ -240,4 +229,3 @@ boldMatches p@(Pattern p') src = html <> lastHtml
     alreadySplit = split p src
     html = foldr (\text acc -> [ HH.text text, bold ] <> acc) [] (dropEnd 1 alreadySplit)
     lastHtml = map HH.text $ takeEnd 1 alreadySplit
-

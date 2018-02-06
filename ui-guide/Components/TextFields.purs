@@ -5,15 +5,13 @@ import Prelude
 import UIGuide.Blocks.Sidebar as Sidebar
 import UIGuide.Utilities.Async as Async
 
-import Data.Time.Duration (Milliseconds(..))
-import Network.RemoteData (RemoteData(..))
 import Control.Monad.Eff.Timer (TIMER)
 import Network.HTTP.Affjax (AJAX)
 
 import CN.UI.Block.Button as Button
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead as Typeahead
-import CN.UI.Core.Typeahead as Typeahead
+import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
+import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
 
 import Data.Tuple (Tuple)
 import Control.Monad.Aff.Class (class MonadAff)
@@ -39,7 +37,6 @@ import Halogen.HTML.Properties as HP
 type State
   = Unit
 
-type Effects eff = ( avar :: AVAR, dom :: DOM, ajax :: AJAX, timer :: TIMER, console :: CONSOLE | eff )
 
 data Query a
   = NoOp a
@@ -65,8 +62,10 @@ derive instance ordTypeaheadSlot :: Ord TypeaheadSlot
 ----------
 -- Component definition
 
-component :: ∀ m eff
-  . MonadAff ( Effects eff ) m
+type Effects eff = ( avar :: AVAR, dom :: DOM, ajax :: AJAX, timer :: TIMER, console :: CONSOLE | eff )
+
+component :: ∀ eff m
+  . MonadAff (Effects eff) m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.parentComponent
@@ -78,10 +77,10 @@ component =
   where
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
-    render :: State -> H.ParentHTML Query (ChildQuery eff m) ChildSlot m
+    render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
     render st = container Sidebar.cnNavSections cnDocumentationBlocks
 
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery eff m) ChildSlot Void m
+    eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
     eval (HandleTypeahead slot m next) = case m of
@@ -177,10 +176,9 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ eff m
-  . MonadAff ( Effects eff ) m
- => Array (H.ParentHTML Query (ChildQuery eff m) ChildSlot m)
--- cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock <> buttonBlock
-cnDocumentationBlocks = dropdownBlock <> buttonBlock
+  . MonadAff (Effects eff) m
+ => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock <> buttonBlock
 
 buttonBlock :: ∀ i p. Array (H.HTML i p)
 buttonBlock = documentationBlock
@@ -202,7 +200,7 @@ buttonBlock = documentationBlock
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
-  => Array (H.ParentHTML Query (ChildQuery (avar :: AVAR, dom :: DOM, console :: CONSOLE | eff) m) ChildSlot m)
+ => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 typeaheadBlockTodos = documentationBlock
   "Typeahead"
   "Uses string input to search pre-determined entries."
@@ -213,22 +211,28 @@ typeaheadBlockTodos = documentationBlock
         CP.cp1
         TypeaheadTodos
         Typeahead.component
-        ( testAsyncMulti' Async.todos )
+        ( Typeahead.testAsyncMulti' Async.todos )
         (HE.input $ HandleTypeahead TypeaheadTodos)
-      where
-        testAsyncMulti' source =
-          { items: Typeahead.ContinuousAsync "" source NotAsked
-          , debounceTime: Milliseconds 500.0
-          , search: Nothing
-          , initialSelection: Typeahead.Many []
-          , render: Typeahead.renderTA Typeahead.defaultRenderItem
-          , config: Typeahead.defaultConfig
-          }
 
+typeaheadBlockUsers :: ∀ eff m
+  . MonadAff (Effects eff) m
+ => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+typeaheadBlockUsers = documentationBlock
+  "Typeahead"
+  "Uses string input to search pre-determined entries."
+  ( componentBlock "No configuration set." slot )
+  where
+    slot =
+      HH.slot'
+        CP.cp1
+        TypeaheadUsers
+        Typeahead.component
+        ( Typeahead.testAsyncMulti' Async.users )
+        (HE.input $ HandleTypeahead TypeaheadUsers)
 
 dropdownBlock :: ∀ eff m
   . MonadAff ( Effects eff ) m
- => Array (H.ParentHTML Query (ChildQuery eff m) ChildSlot m)
+ => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 dropdownBlock = documentationBlock
   "Dropdown"
   "Select from a list."

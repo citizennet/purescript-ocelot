@@ -7,7 +7,7 @@ import Control.Monad.Eff (Eff)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 
-main :: Eff _ Unit
+main :: forall eff. Eff (HA.HalogenEffects (TextFields.Effects eff)) Unit
 main = HA.runHalogenAff do
   body <- HA.awaitBody
   runUI TextFields.component unit body
