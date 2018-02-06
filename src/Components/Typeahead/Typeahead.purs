@@ -31,13 +31,13 @@ import CN.UI.Core.Typeahead as TA
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
 defaultMulti :: ∀ o item source err eff m
-  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
+  . MonadAff _ m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
+  -> TA.TypeaheadInput o item source err _ m
 defaultMulti xs renderItem =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -49,12 +49,12 @@ defaultMulti xs renderItem =
 
 -- A default multi-select using the default render item function
 defaultMulti' :: ∀ o item source err eff m
-  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
+  . MonadAff _ m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
-  -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
+  -> TA.TypeaheadInput o item source err _ m
 defaultMulti' xs =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -67,12 +67,12 @@ defaultMulti' xs =
 
 -- A default multi-select using the default render item function
 testAsyncMulti' :: ∀ o item source err eff m
-  . MonadAff ( avar :: AVAR, avar :: AVAR | eff ) m
+  . MonadAff _ m
  => TA.CompareToString item
  => Eq item
  => Show err
  => source
- -> TA.TypeaheadInput o item source err ( avar :: AVAR | eff ) m
+ -> TA.TypeaheadInput o item source err _ m
 testAsyncMulti' source =
   { items: TA.ContinuousAsync "" source NotAsked
   , debounceTime: Milliseconds 500.0
@@ -100,13 +100,13 @@ defaultConfig =
 -- Render functions
 
 renderTA :: ∀ o item source err eff m
-  . MonadAff ( _ ) m
+  . MonadAff _ m
  => TA.CompareToString item
  => Eq item
  => Show err
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
  -> TA.TypeaheadState item source err
- -> TA.TypeaheadHTML o item source err ( _ ) m
+ -> H.ParentHTML (TA.TypeaheadQuery o item source err _ m) (TA.ChildQuery o item _) TA.ChildSlot m
 renderTA renderItem st =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
@@ -127,7 +127,7 @@ renderTA renderItem st =
     unpack (TA.Async _ x) = withDefault [] x
     unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections :: TA.TypeaheadHTML o item source err _ m
+    renderSelections :: H.ParentHTML (TA.TypeaheadQuery o item source err _ m) (TA.ChildQuery o item _) TA.ChildSlot m
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []

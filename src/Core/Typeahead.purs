@@ -35,7 +35,7 @@ import Select.Primitives.State (getState)
 type State o item source err eff m =
   Store
     (TypeaheadState item source err)
-    (TypeaheadHTML o item source err eff m)
+    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m)
 
 type TypeaheadState item source err =
   { items :: SyncMethod source err (Array item)
@@ -50,12 +50,11 @@ type TypeaheadInput o item source err eff m =
   , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
-  , render :: TypeaheadState item source err -> TypeaheadHTML o item source err eff m
+  , render
+    :: TypeaheadState item source err
+    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
   , config :: Config item
   }
-
-type TypeaheadHTML o item source err eff m
-  = H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
 
 data TypeaheadQuery o item source err eff m a
   = HandleContainer (C.Message o item) a
@@ -78,7 +77,7 @@ data TypeaheadMessage o item source err
 
 type ChildQuery o item eff = Coproduct2
   (C.ContainerQuery o item)
-  (S.SearchQuery    o item ( avar :: AVAR | eff ))
+  (S.SearchQuery    o item eff)
 type ChildSlot = Either2 Slot Slot
 
 data Slot
@@ -131,13 +130,13 @@ instance compareToStringString :: CompareToString String where
 containerSlot :: ∀ o item source err eff m
   . MonadAff ( dom :: DOM | eff ) m
  => C.ContainerInput o item
- -> TypeaheadHTML o item source err eff m
+ -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
 containerSlot i = HH.slot' CP.cp1 ContainerSlot C.component i (HE.input HandleContainer)
 
 searchSlot :: ∀ o item source err eff m
   . MonadAff ( avar :: AVAR | eff ) m
  => S.SearchInput o item ( avar :: AVAR | eff )
- -> TypeaheadHTML o item source err eff m
+ -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item ( avar :: AVAR | eff )) ChildSlot m
 searchSlot i = HH.slot' CP.cp2 SearchSlot S.component i (HE.input HandleSearch)
 
 
