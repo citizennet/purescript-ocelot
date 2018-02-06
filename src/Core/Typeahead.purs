@@ -5,9 +5,7 @@ import Prelude
 import Network.RemoteData (RemoteData(..))
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.AVar (AVAR)
 
-import DOM (DOM)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String (Pattern(..), contains, toLower)
 import Data.Tuple (Tuple(..))
@@ -21,7 +19,6 @@ import Control.Comonad.Store (Store, store, seeks)
 
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.Component.ChildPath as CP
 
 import Select.Primitives.Container as C
@@ -122,22 +119,6 @@ class CompareToString a where
 
 instance compareToStringString :: CompareToString String where
   compareToString = id
-
-
-----------
--- Helper functions
-
-containerSlot :: ∀ o item source err eff m
-  . MonadAff ( dom :: DOM | eff ) m
- => C.ContainerInput o item
- -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
-containerSlot i = HH.slot' CP.cp1 ContainerSlot C.component i (HE.input HandleContainer)
-
-searchSlot :: ∀ o item source err eff m
-  . MonadAff ( avar :: AVAR | eff ) m
- => S.SearchInput o item ( avar :: AVAR | eff )
- -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item ( avar :: AVAR | eff )) ChildSlot m
-searchSlot i = HH.slot' CP.cp2 SearchSlot S.component i (HE.input HandleSearch)
 
 
 ----------

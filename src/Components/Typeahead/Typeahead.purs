@@ -18,12 +18,12 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Halogen.Component.ChildPath as CP
 
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Core.Typeahead as TA
-
 
 ----------
 -- Default typeahead
@@ -31,13 +31,13 @@ import CN.UI.Core.Typeahead as TA
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
 defaultMulti :: ∀ o item source err eff m
-  . MonadAff _ m
+  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
   -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
-  -> TA.TypeaheadInput o item source err _ m
+  -> TA.TypeaheadInput o item source err ( dom :: DOM, avar :: AVAR | eff ) m
 defaultMulti xs renderItem =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -49,12 +49,12 @@ defaultMulti xs renderItem =
 
 -- A default multi-select using the default render item function
 defaultMulti' :: ∀ o item source err eff m
-  . MonadAff _ m
+  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
   => TA.CompareToString item
   => Eq item
   => Show err
   => Array item
-  -> TA.TypeaheadInput o item source err _ m
+  -> TA.TypeaheadInput o item source err ( dom :: DOM, avar :: AVAR | eff ) m
 defaultMulti' xs =
   { items: TA.Sync xs
   , debounceTime: Milliseconds 0.0
@@ -100,13 +100,13 @@ defaultConfig =
 -- Render functions
 
 renderTA :: ∀ o item source err eff m
-  . MonadAff _ m
+  . MonadAff ( dom :: DOM, avar :: AVAR | eff ) m
  => TA.CompareToString item
  => Eq item
  => Show err
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
  -> TA.TypeaheadState item source err
- -> H.ParentHTML (TA.TypeaheadQuery o item source err _ m) (TA.ChildQuery o item _) TA.ChildSlot m
+ -> H.ParentHTML (TA.TypeaheadQuery o item source err (dom :: DOM, avar :: AVAR | eff) m) (TA.ChildQuery o item (dom :: DOM, avar :: AVAR | eff) ) TA.ChildSlot m
 renderTA renderItem st =
 	HH.div
 	[ HP.class_ $ HH.ClassName "w-full px-3" ]
@@ -114,10 +114,18 @@ renderTA renderItem st =
 		[ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
 		[ HH.text "TA" ]
 	, renderSelections
-	, TA.searchSlot
-			{ render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
-	, TA.containerSlot
-			{ render: renderContainer st, items: unpack st.items }
+  , HH.slot'
+      CP.cp2
+      TA.SearchSlot
+      S.component
+      { render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
+      (HE.input TA.HandleSearch)
+  , HH.slot'
+      CP.cp1
+      TA.ContainerSlot
+      C.component
+      { render: renderContainer st, items: unpack st.items }
+      (HE.input TA.HandleContainer)
 	, HH.p
 		[ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
 		[ HH.text "This typeahead automatically debounces at 150ms." ]
@@ -127,11 +135,15 @@ renderTA renderItem st =
     unpack (TA.Async _ x) = withDefault [] x
     unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
 
-    renderSelections :: H.ParentHTML (TA.TypeaheadQuery o item source err _ m) (TA.ChildQuery o item _) TA.ChildSlot m
+    renderSelections
+      :: H.ParentHTML
+          (TA.TypeaheadQuery o item source err (dom :: DOM, avar :: AVAR | eff) m)
+          (TA.ChildQuery o item (dom :: DOM, avar :: AVAR | eff))
+          TA.ChildSlot
+          m
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []
-
         (TA.One (Just x)) -> HH.div_
           [ HH.div
             [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
@@ -140,7 +152,6 @@ renderTA renderItem st =
               [ renderSelection x ]
             ]
           ]
-
         (TA.Many xs) -> HH.div_
           [ HH.div
             [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
@@ -178,9 +189,9 @@ renderTA renderItem st =
           ]
         ]
 
-    renderSearch
-      :: S.SearchState _
-      -> H.HTML Void (S.SearchQuery o item _)
+    --  renderSearch
+    --    :: S.SearchState _
+    --    -> H.HTML Void (S.SearchQuery o item _)
     renderSearch searchState =
                   HH.div
                     [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
