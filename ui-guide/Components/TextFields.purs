@@ -9,8 +9,13 @@ import Control.Monad.Eff.Timer (TIMER)
 import Network.HTTP.Affjax (AJAX)
 
 import CN.UI.Block.Button as Button
+import CN.UI.Block.Input as Input
+import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.Radio as Radio
+
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
+
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
 
 import Data.Tuple (Tuple)
@@ -145,7 +150,9 @@ container :: ∀ i p
  -> H.HTML i p
 container navs blocks =
   HH.body
-  [ css "font-sans font-normal text-black leading-normal" ]
+  [ css "font-sans font-normal text-black leading-normal"
+  , HP.class_ (HH.ClassName "bg-grey-lightest")
+  ]
   [ HH.div
     [ css "min-h-screen" ]
     [ Sidebar.sidebar navs
@@ -175,12 +182,55 @@ innerContainer title blocks =
     blocks
   ]
 
-cnDocumentationBlocks :: ∀ eff m
-  . MonadAff (Effects eff) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-cnDocumentationBlocks = typeaheadBlockTodos <> typeaheadBlockUsers <> dropdownBlock <> buttonBlock
+cnDocumentationBlocks :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+cnDocumentationBlocks =
+  radioBlock
+  <> inputBlock
+  <> formInputBlock
+  <> typeaheadBlockUsers
+  <> typeaheadBlockTodos
+  <> dropdownBlock
+  <> buttonBlock
 
-buttonBlock :: ∀ i p. Array (H.HTML i p)
+radioBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+radioBlock = documentationBlock
+  "Radio"
+  "A radio button"
+  ( HH.div_
+    [ Radio.radio
+      { label: "Apples" }
+      [ HP.name "fruit" ]
+    , Radio.radio
+      { label: "Bananas" }
+      [ HP.name "fruit" ]
+    , Radio.radio
+      { label: "Oranges" }
+      [ HP.name "fruit" ]
+    ]
+  )
+
+inputBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+inputBlock = documentationBlock
+  "Input"
+  "Some input shit"
+  ( HH.div_
+      [ Input.input [ HP.placeholder "address@gmail.com" ] ]
+  )
+
+formInputBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+formInputBlock = documentationBlock
+  "Input Form Block"
+  "Some form input shit"
+  ( HH.div_
+    [ FormControl.formControl
+      { label: "Email"
+      , helpText: (Just "You really should fill this shit out")
+      }
+      (Input.input [ HP.placeholder "address@gmail.com" ])
+    ]
+  )
+
+buttonBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 buttonBlock = documentationBlock
   "Button"
   "Some button shit"

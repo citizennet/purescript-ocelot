@@ -35,5 +35,10 @@ config.colors = Object.assign(config.colors, {
   'teal-dark': '#00A3CC'
 })
 
+config.borderColors = Object.assign(
+  { 'default': config.colors['grey-light'] },
+  config.colors
+)
+
 // Export the new configuration
 module.exports = config
