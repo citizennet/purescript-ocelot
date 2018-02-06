@@ -182,7 +182,7 @@ innerContainer title blocks =
     blocks
   ]
 
-cnDocumentationBlocks :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
   radioBlock
   <> inputBlock
@@ -192,7 +192,7 @@ cnDocumentationBlocks =
   <> dropdownBlock
   <> buttonBlock
 
-radioBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 radioBlock = documentationBlock
   "Radio"
   "A radio button"
@@ -209,7 +209,7 @@ radioBlock = documentationBlock
     ]
   )
 
-inputBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+inputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 inputBlock = documentationBlock
   "Input"
   "Some input shit"
@@ -217,7 +217,7 @@ inputBlock = documentationBlock
       [ Input.input [ HP.placeholder "address@gmail.com" ] ]
   )
 
-formInputBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+formInputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 formInputBlock = documentationBlock
   "Input Form Block"
   "Some form input shit"
@@ -230,7 +230,7 @@ formInputBlock = documentationBlock
     ]
   )
 
-buttonBlock :: ∀ eff. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+buttonBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 buttonBlock = documentationBlock
   "Button"
   "Some button shit"
