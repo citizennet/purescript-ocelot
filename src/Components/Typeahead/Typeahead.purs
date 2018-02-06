@@ -3,15 +3,12 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Control.Monad.Aff.Class (class MonadAff)
-
 import Network.RemoteData (RemoteData(..), withDefault)
-
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Foldable (foldr)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.String (Pattern(Pattern), split)
 import Data.Time.Duration (Milliseconds(..))
-
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -23,22 +20,46 @@ import Select.Primitives.Search as S
 
 import CN.UI.Core.Typeahead as TA
 
+
 ----------
--- Default typeahead
+-- Default typeahead configurations
 
--- The effects when an input and render are split from a component MUST be:
--- Any effects used in rendering, including child slots;
--- Any effects used in eval, like the console
--- This can lead to all kinds of issues if you don't manually cross-reference
--- effects used in renders, inputs, and components.
--- type Effects eff = TA.Effects eff
+-- A default single-select that is provided with a renderItem function.
+defaultSingle :: ∀ o item source err eff m
+  . MonadAff (TA.Effects eff) m
+  => TA.CompareToString item
+  => Eq item
+  => Show err
+  => Array item
+  -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultSingle xs renderItem =
+  { items: TA.Sync xs
+  , debounceTime: Milliseconds 0.0
+  , search: Nothing
+  , initialSelection: TA.One Nothing
+  , render: renderTA renderItem
+  , config: defaultConfig
+  }
 
--- MAKE SURE ALL EFFECTS MATCH ACROSS COMPONENT / INPUT / RENDER
--- However, DEFER adding effects until absolutely necessary (usually this is only
--- in the actual function definitions for eval / render and the input type. do not
--- prematurely provide a specific effect if it can at all be avoided).
-
--- TODO: Write up what I've learned from two days of hell with effects rows.
+-- A default multi-select limited to N total possible selections.
+defaultLimit :: ∀ o item source err eff m
+  . MonadAff (TA.Effects eff) m
+  => TA.CompareToString item
+  => Eq item
+  => Show err
+  => Int
+  -> Array item
+  -> (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultLimit n xs renderItem =
+  { items: TA.Sync xs
+  , debounceTime: Milliseconds 0.0
+  , search: Nothing
+  , initialSelection: TA.Limit n []
+  , render: renderTA renderItem
+  , config: defaultConfig
+  }
 
 -- A default multi-select that is provided with a renderItem function to determine
 -- rendering a specific item in the container
@@ -76,22 +97,39 @@ defaultMulti' xs =
   , config: defaultConfig
   }
 
-
 -- A default multi-select using the default render item function
-testAsyncMulti' :: ∀ o item source err eff m
+defaultAsyncMulti' :: ∀ o item source err eff m
+  . MonadAff (TA.Effects eff) m
+  => TA.CompareToString item
+  => Eq item
+  => Show err
+  => source
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultAsyncMulti' source =
+  { items: TA.Async source NotAsked
+  , debounceTime: Milliseconds 0.0
+  , search: Nothing
+  , initialSelection: TA.Many []
+  , render: renderTA defaultRenderItem
+  , config: defaultConfig
+  }
+
+-- A continuous asynchronous typeahead, reasonably debounced and
+-- not filtered.
+defaultContAsyncMulti' :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => TA.CompareToString item
  => Eq item
  => Show err
  => source
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-testAsyncMulti' source =
+defaultContAsyncMulti' source =
   { items: TA.ContinuousAsync "" source NotAsked
-  , debounceTime: Milliseconds 500.0
+  , debounceTime: Milliseconds 300.0
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA defaultRenderItem
-  , config: defaultConfig
+  , config: contAsyncConfig
   }
 
 
@@ -107,6 +145,17 @@ defaultConfig =
   , filterType: TA.CaseInsensitive
   , keepOpen: true
   }
+
+contAsyncConfig :: ∀ item
+  . TA.CompareToString item
+ => Eq item
+ => TA.Config item
+contAsyncConfig =
+  { insertable: TA.NotInsertable
+  , filterType: TA.NoFilter
+  , keepOpen: true
+  }
+
 
 ----------
 -- Render functions
@@ -165,6 +214,14 @@ renderTA renderItem st =
               $ renderSelection <$> xs
             ]
           ]
+        (TA.Limit _ xs) -> HH.div_
+          [ HH.div
+            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
+            [ HH.ul
+              [ HP.class_ $ HH.ClassName "list-reset" ]
+              $ renderSelection <$> xs
+            ]
+          ]
       where
         renderSelection item =
           HH.li
@@ -182,7 +239,7 @@ renderTA renderItem st =
         then []
         else [ HH.div
           ( C.getContainerProps
-            [ HP.class_ $ HH.ClassName "absolute bg-white shadow h-64 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
+            [ HP.class_ $ HH.ClassName "absolute bg-white shadow max-h-80 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
           )
           [ HH.ul
             [ HP.class_ $ HH.ClassName "list-reset" ]
@@ -211,7 +268,6 @@ defaultRenderItem "" highlightIndex itemIndex item = HH.li
     [ HH.text $ TA.compareToString item ]
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
-
 defaultRenderItem search highlightIndex itemIndex item = HH.li
   ( C.getItemProps itemIndex
     [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]

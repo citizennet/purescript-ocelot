@@ -14,9 +14,9 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Radio as Radio
 
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (testAsyncMulti') as Typeahead
+import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
 
-import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadQuery(..), component) as Typeahead
+import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
 
 import Data.Tuple (Tuple)
 import Control.Monad.Aff.Class (class MonadAff)
@@ -25,8 +25,8 @@ import Control.Monad.Aff.Console (logShow, CONSOLE)
 import DOM (DOM)
 import Control.Monad.Aff.AVar (AVAR)
 
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
+import Data.Either.Nested (Either3)
+import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 
@@ -46,17 +46,24 @@ type State
 data Query a
   = NoOp a
   | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
+  | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 
 ----------
 -- Child paths
 
-type ChildSlot = Either2 TypeaheadSlot Unit
+type ChildSlot = Either3 TypeaheadSlot Unit SyncTypeaheadSlot
 type ChildQuery eff m =
-  Coproduct2
+  Coproduct3
     (Typeahead.TypeaheadQuery Query Async.Item (Async.Source Async.Item) Async.Err eff m)
     (Dropdown.Query TestRecord)
+    (Typeahead.TypeaheadQuery Query String Void Void eff m)
+
+data SyncTypeaheadSlot
+  = SyncTypeaheadStrings
+derive instance eqSyncTypeaheadSlot :: Eq SyncTypeaheadSlot
+derive instance ordSyncTypeaheadSlot :: Ord SyncTypeaheadSlot
 
 data TypeaheadSlot
   = TypeaheadTodos
@@ -67,6 +74,7 @@ derive instance ordTypeaheadSlot :: Ord TypeaheadSlot
 ----------
 -- Component definition
 
+-- NOTE: Uses the same effects but does not compose with typeahead effects. Written out again from scratch.
 type Effects eff = ( avar :: AVAR, dom :: DOM, ajax :: AJAX, timer :: TIMER, console :: CONSOLE | eff )
 
 component :: ∀ eff m
@@ -88,6 +96,11 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
+    -- No messages necessary to handle, really.
+    eval (HandleSyncTypeahead m next) = pure next
+
+    -- Responsible for fetching data based on source and returning it to the component.
+    -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
       Typeahead.RequestData source -> do
         res <- H.liftAff $ Async.load source
@@ -151,7 +164,6 @@ container :: ∀ i p
 container navs blocks =
   HH.body
   [ css "font-sans font-normal text-black leading-normal"
-  , HP.class_ (HH.ClassName "bg-grey-lightest")
   ]
   [ HH.div
     [ css "min-h-screen" ]
@@ -170,7 +182,7 @@ innerContainer title blocks =
   [ HH.div
     [ css "fixed w-full z-20" ]
     [ HH.div
-      [ css "pin-t bg-white md:hidden relative border-b border-grey-light h-12 flex items-center" ]
+      [ css "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
       [ HH.a
         [ css "mx-auto inline-flex items-center"
         , HP.href "#" ]
@@ -187,6 +199,7 @@ cnDocumentationBlocks =
   radioBlock
   <> inputBlock
   <> formInputBlock
+  <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
@@ -248,20 +261,36 @@ buttonBlock = documentationBlock
     ]
   )
 
+typeaheadBlockStrings :: ∀ eff m
+  . MonadAff (Effects eff) m
+ => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+typeaheadBlockStrings = documentationBlock
+  "Synchronous Typeahead"
+  "Uses string input to search pre-determined entries."
+  ( componentBlock "Set to sync." slot )
+  where
+    slot =
+      HH.slot'
+        CP.cp3
+        SyncTypeaheadStrings
+        Typeahead.component
+        ( Typeahead.defaultMulti' containerData )
+        (HE.input $ HandleSyncTypeahead )
+
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 typeaheadBlockTodos = documentationBlock
-  "Typeahead"
-  "Uses string input to search pre-determined entries."
-  ( componentBlock "No configuration set." slot )
+  "Continuous Async Typeahead"
+  "Uses string input to search pre-determined entries; fetches data."
+  ( componentBlock "Set to continuous async." slot )
   where
     slot =
       HH.slot'
         CP.cp1
         TypeaheadTodos
         Typeahead.component
-        ( Typeahead.testAsyncMulti' Async.todos )
+        ( Typeahead.defaultContAsyncMulti' Async.todos )
         (HE.input $ HandleTypeahead TypeaheadTodos)
 
 typeaheadBlockUsers :: ∀ eff m
@@ -270,14 +299,14 @@ typeaheadBlockUsers :: ∀ eff m
 typeaheadBlockUsers = documentationBlock
   "Typeahead"
   "Uses string input to search pre-determined entries."
-  ( componentBlock "No configuration set." slot )
+  ( componentBlock "Set to default sync." slot )
   where
     slot =
       HH.slot'
         CP.cp1
         TypeaheadUsers
         Typeahead.component
-        ( Typeahead.testAsyncMulti' Async.users )
+        ( Typeahead.defaultAsyncMulti' Async.users )
         (HE.input $ HandleTypeahead TypeaheadUsers)
 
 dropdownBlock :: ∀ eff m

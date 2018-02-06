@@ -20,6 +20,7 @@ import Data.Traversable (traverse)
 ----------
 -- Async types
 
+-- A wrapper for various possible item types.
 data Item
   = Users User
   | Todos Todo
