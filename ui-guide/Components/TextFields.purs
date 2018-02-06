@@ -3,14 +3,16 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import CN.UI.Block.Button as Button
+import CN.UI.Block.Input as Input
+import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.Radio as Radio
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti') as Typeahead
 import CN.UI.Core.Typeahead (TypeaheadMessage, TypeaheadQuery, component) as Typeahead
-import UIGuide.Blocks.Sidebar as Sidebar
 import Control.Monad.Aff.Console (logShow)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(Nothing))
+import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.Tuple (Tuple)
 import Halogen as H
@@ -19,6 +21,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Select.Effects (FX)
+import UIGuide.Blocks.Sidebar as Sidebar
 
 
 ----------
@@ -110,7 +113,9 @@ container :: ∀ e
  -> HTML e
 container navs blocks =
   HH.body
-  [ css "font-sans font-normal text-black leading-normal" ]
+  [ css "font-sans font-normal text-black leading-normal"
+  , HP.class_ (HH.ClassName "bg-grey-lightest")
+  ]
   [ HH.div
     [ css "min-h-screen" ]
     [ Sidebar.sidebar navs
@@ -138,10 +143,51 @@ innerContainer title blocks =
   ]
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
-cnDocumentationBlocks = 
-  typeaheadBlock 
+cnDocumentationBlocks =
+  radioBlock
+  <>inputBlock
+  <> formInputBlock
+  <> typeaheadBlock
   <> dropdownBlock
   <> buttonBlock
+
+radioBlock :: ∀ e. Array (HTML e)
+radioBlock = documentationBlock
+  "Radio"
+  "A radio button"
+  ( HH.div_
+    [ Radio.radio 
+      { label: "Apples" } 
+      [ HP.name "fruit" ] 
+    , Radio.radio 
+      { label: "Bananas" } 
+      [ HP.name "fruit" ]
+    , Radio.radio 
+      { label: "Oranges" } 
+      [ HP.name "fruit" ]
+    ]
+  )
+
+inputBlock :: ∀ e. Array (HTML e)
+inputBlock = documentationBlock
+  "Input"
+  "Some input shit"
+  ( HH.div_
+      [ Input.input [ HP.placeholder "address@gmail.com" ] ]
+  )
+
+formInputBlock :: ∀ e. Array (HTML e)
+formInputBlock = documentationBlock
+  "Input Form Block"
+  "Some form input shit"
+  ( HH.div_
+    [ FormControl.formControl
+      { label: "Email"
+      , helpText: (Just "You really should fill this shit out")
+      }
+      (Input.input [ HP.placeholder "address@gmail.com" ])
+    ]
+  )
 
 buttonBlock :: ∀ e. Array (HTML e)
 buttonBlock = documentationBlock
