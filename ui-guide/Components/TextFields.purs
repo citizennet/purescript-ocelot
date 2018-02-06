@@ -103,8 +103,9 @@ component =
     -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
       Typeahead.RequestData source -> do
-        res <- H.liftAff $ Async.load source
-        _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
+        _ <- H.fork do
+          res <- H.liftAff $ Async.load source
+          H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
         pure next
 
       -- Ignore other messages
