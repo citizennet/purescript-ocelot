@@ -2,6 +2,7 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
+import CN.UI.Block.Toggle as Toggle
 import CN.UI.Block.Button as Button
 import CN.UI.Block.Input as Input
 import CN.UI.Block.FormControl as FormControl
@@ -144,12 +145,22 @@ innerContainer title blocks =
 
 cnDocumentationBlocks :: ∀ e. Array (HTML e)
 cnDocumentationBlocks =
-  radioBlock
-  <>inputBlock
+  switchBlock
+  <> radioBlock
+  <> inputBlock
   <> formInputBlock
   <> typeaheadBlock
   <> dropdownBlock
   <> buttonBlock
+
+switchBlock :: ∀ e. Array (HTML e)
+switchBlock = documentationBlock
+  "switch"
+  "some toggle switch shit"
+  ( HH.div_
+    [ Toggle.toggle []
+    ]
+  )
 
 radioBlock :: ∀ e. Array (HTML e)
 radioBlock = documentationBlock
