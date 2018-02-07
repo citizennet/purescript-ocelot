@@ -23,6 +23,7 @@ inputClasses = HH.ClassName <$>
 spanClasses :: Array HH.ClassName
 spanClasses = HH.ClassName <$>
   [ "after:absolute"
+  , "after:all-02s-ease"
   , "after:bg-grey-darkest"
   , "after:block"
   , "after:h-4"
@@ -31,6 +32,7 @@ spanClasses = HH.ClassName <$>
   , "after:rounded-lg"
   , "after:w-4"
   , "before:absolute"
+  , "before:all-02s-ease"
   , "before:no-content"
   , "before:"
   , "bg-grey-light"
@@ -39,7 +41,6 @@ spanClasses = HH.ClassName <$>
   , "h-3"
   , "relative"
   , "rounded-lg"
-  , "shadow-inner"
   , "w-8"
   ]
 
