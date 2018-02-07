@@ -10,7 +10,7 @@
     "style-guide"
   ],
   "dependencies": {
-    "purescript-halogen": "^3.1.0",
+    "purescript-halogen": "^3.1.1",
     "purescript-halogen-select": "citizennet/purescript-halogen-select"
   },
   "devDependencies": {

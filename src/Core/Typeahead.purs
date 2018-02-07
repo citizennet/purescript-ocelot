@@ -45,14 +45,12 @@ type State o item source err eff m =
 type TypeaheadState item source err =
   { items :: SyncMethod source err (Array item)
   , selections :: SelectionType item
-  , debounceTime :: Milliseconds
   , search :: String
   , config :: Config item
   }
 
 type TypeaheadInput o item source err eff m =
   { items :: SyncMethod source err (Array item)
-  , debounceTime :: Milliseconds
   , search :: Maybe String
   , initialSelection :: SelectionType item
   , render
@@ -142,7 +140,7 @@ data Insertable item
 data SyncMethod source err a
   = Sync a
   | Async source (RemoteData err a)
-  | ContinuousAsync String source (RemoteData err a)
+  | ContinuousAsync Milliseconds String source (RemoteData err a)
 derive instance functorSyncMethod :: Functor (SyncMethod source err)
 
 -- A convenience type for when you mount a sync typeahead, filling in the
@@ -233,7 +231,6 @@ component =
     initialState i = store i.render
       { items: i.items
       , selections: i.initialSelection
-      , debounceTime: i.debounceTime
       , search: fromMaybe "" i.search
       , config: i.config
       }
@@ -281,11 +278,11 @@ component =
           items' <- case st.items of
             Sync i -> pure $ Sync $ (applyI <<< applyF) i
             Async src i -> pure $ Async src $ (applyI <<< applyF) <$> i
-            ContinuousAsync _ src _ -> do
+            ContinuousAsync db _ src _ -> do
               -- ContinuousAsync may take some time to complete. Set status
               -- to Loading and request the data. When the data is fulfilled,
               -- the status will change again.
-              let cont = ContinuousAsync text src Loading
+              let cont = ContinuousAsync db text src Loading
               H.modify $ seeks $ _ { items = cont }
               H.raise $ RequestData cont
               pure cont
@@ -327,8 +324,8 @@ component =
             H.modify $ seeks $ _ { items = async }
             H.raise $ RequestData async
             pure a
-          ContinuousAsync text src _ -> do
-            let cont = ContinuousAsync text src Loading
+          ContinuousAsync db text src _ -> do
+            let cont = ContinuousAsync db text src Loading
             H.modify $ seeks $ _ { items = cont }
             H.raise $ RequestData cont
             pure a
@@ -342,7 +339,7 @@ component =
     -- type.
     updateContainer (Sync i) = updateContainerWith (Success i)
     updateContainer (Async _ i) = updateContainerWith i
-    updateContainer (ContinuousAsync _ _ i) = updateContainerWith i
+    updateContainer (ContinuousAsync _ _ _ i) = updateContainerWith i
 
     -- On failure, clear the items in the container and toggle it closed. We can
     -- display an error or some other information, but not using the container.

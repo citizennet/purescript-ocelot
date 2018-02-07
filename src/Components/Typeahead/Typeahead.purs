@@ -35,7 +35,6 @@ defaultSingle :: ∀ o item source err eff m
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultSingle xs renderItem =
   { items: TA.Sync xs
-  , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA renderItem
@@ -54,7 +53,6 @@ defaultLimit :: ∀ o item source err eff m
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultLimit n xs renderItem =
   { items: TA.Sync xs
-  , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: TA.Limit n []
   , render: renderTA renderItem
@@ -73,7 +71,6 @@ defaultMulti :: ∀ o item source err eff m
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultMulti xs renderItem =
   { items: TA.Sync xs
-  , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA renderItem
@@ -90,7 +87,6 @@ defaultMulti' :: ∀ o item source err eff m
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultMulti' xs =
   { items: TA.Sync xs
-  , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA defaultRenderItem
@@ -107,7 +103,6 @@ defaultAsyncMulti' :: ∀ o item source err eff m
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultAsyncMulti' source =
   { items: TA.Async source NotAsked
-  , debounceTime: Milliseconds 0.0
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA defaultRenderItem
@@ -124,8 +119,7 @@ defaultContAsyncMulti' :: ∀ o item source err eff m
  => source
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
 defaultContAsyncMulti' source =
-  { items: TA.ContinuousAsync "" source NotAsked
-  , debounceTime: Milliseconds 300.0
+  { items: TA.ContinuousAsync (Milliseconds 500.0) "" source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA defaultRenderItem
@@ -178,7 +172,12 @@ renderTA renderItem st =
       CP.cp2
       TA.SearchSlot
       S.component
-      { render: renderSearch, search: Nothing, debounceTime: Milliseconds 150.0 }
+      { render: renderSearch
+      , search: Nothing
+      , debounceTime: case st.items of
+          (TA.ContinuousAsync db _ _ _) -> db
+          _ -> Milliseconds 0.0
+      }
       (HE.input TA.HandleSearch)
   , HH.slot'
       CP.cp1
@@ -188,12 +187,12 @@ renderTA renderItem st =
       (HE.input TA.HandleContainer)
   , HH.p
     [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
-    [ HH.text "This typeahead automatically debounces at 150ms." ]
+    [ HH.text "Some helper text that might be useful." ]
   ]
   where
     unpack (TA.Sync x) = x
     unpack (TA.Async _ x) = withDefault [] x
-    unpack (TA.ContinuousAsync _ _ x) = withDefault [] x
+    unpack (TA.ContinuousAsync _ _ _ x) = withDefault [] x
 
     renderSelections =
       case st.selections of

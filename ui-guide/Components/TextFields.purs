@@ -121,7 +121,7 @@ component =
     replaceItems Nothing v = v
     replaceItems (Just _) s@(Typeahead.Sync _) = s
     replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
-    replaceItems (Just d) (Typeahead.ContinuousAsync srch src _) = Typeahead.ContinuousAsync srch src d
+    replaceItems (Just d) (Typeahead.ContinuousAsync db srch src _) = Typeahead.ContinuousAsync db srch src d
 
 
 ----------

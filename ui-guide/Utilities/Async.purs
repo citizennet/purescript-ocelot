@@ -83,7 +83,7 @@ load :: ∀ eff item
  -> Aff (ajax :: AJAX, timer :: TIMER | eff) (Maybe (RemoteData Err (Array item)))
 load (Sync _) = pure Nothing
 load (Async src _) = Just <$> loadFromSource src
-load (ContinuousAsync search src _) = Just <$> loadFromSource src
+load (ContinuousAsync _ search src _) = Just <$> loadFromSource src
 
 -- Given a source, load the resulting data.
 loadFromSource :: ∀ eff item
