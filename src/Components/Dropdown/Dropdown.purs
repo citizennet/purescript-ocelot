@@ -2,6 +2,8 @@ module CN.UI.Components.Dropdown where
 
 import Prelude
 
+import DOM (DOM)
+import Control.Monad.Aff.Class (class MonadAff)
 import Data.Array (delete, difference, length, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
 import Data.Tuple (Tuple(Tuple))
@@ -9,7 +11,6 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Select.Effects (FX)
 import Select.Primitives.Container as C
 
 ----------
@@ -44,10 +45,6 @@ data Query item a
   | Removed item a
   | Receiver (DropdownInput item) a
 
--- Component top-level definition
-type DropdownComponent item e
-  = H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) (FX e)
-
 -- Component input and message types
 type DropdownInput item = State item
 
@@ -61,23 +58,26 @@ type ChildQuery item = C.ContainerQuery (Query item) item
 type ChildSlot = Unit
 
 -- Return type of render function; must use Dispatch as child type (or coproduct)
-type DropdownHTML item e =
-  H.ParentHTML (Query item) (ChildQuery item) ChildSlot (FX e)
+type DropdownHTML item m =
+  H.ParentHTML (Query item) (ChildQuery item) ChildSlot m
 
 -- Return type of eval function
-type DropdownDSL item e =
+type DropdownDSL item m =
   H.ParentDSL
     (State item)
     (Query item)
     (ChildQuery item)
     ChildSlot
     (DropdownMessage item)
-    (FX e)
+    m
 
 
 ----------
 -- Component definition
-component :: ∀ item e. Eq item => DropdownComponent item e
+component :: ∀ item eff m
+  . MonadAff ( dom :: DOM | eff ) m
+ => Eq item
+ => H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) m
 component =
   H.parentComponent
     { initialState
@@ -96,8 +96,7 @@ component =
       , helpText: i.helpText
       }
 
-
-    render :: State item -> DropdownHTML item e
+    render :: State item -> DropdownHTML item m
     render st =
       HH.div
       [ HP.class_ $ HH.ClassName "w-full px-3" ]
@@ -139,13 +138,13 @@ component =
         browseButtonStyle =
           "font-medium text-blue-light border-l ml-1 px-3 text-sm cursor-pointer self-center"
 
-        browseButton :: DropdownHTML item e
+        browseButton :: DropdownHTML item m
         browseButton =
           HH.p
             [ HP.class_ $ HH.ClassName browseButtonStyle ]
             [ HH.text "Browse" ]
 
-        closeButton :: item -> DropdownHTML item e
+        closeButton :: item -> DropdownHTML item m
         closeButton item =
           HH.button
             [ HE.onClick $ HE.input_ (Removed item)
@@ -153,7 +152,7 @@ component =
             ]
             [ HH.text "✕" ]
 
-        renderSingleToggle :: Maybe item -> DropdownHTML item e
+        renderSingleToggle :: Maybe item -> DropdownHTML item m
         renderSingleToggle selected =
           HH.div
             ( C.getToggleProps
@@ -171,12 +170,12 @@ component =
               Nothing -> " text-grey-dark py-1 px-3 flex-auto"
               Just _ -> " text-grey-darkest py-1 px-3 flex-auto hover:bg-grey-lightest"
 
-            toggleHTML :: Array (DropdownHTML item e)
+            toggleHTML :: Array (DropdownHTML item m)
             toggleHTML = case selected of
               Nothing -> [ HH.text st.placeholder ]
               Just item -> snoc (HH.fromPlainHTML <$> (st.itemHTML item)) (closeButton item)
 
-        renderMultiToggle :: DropdownHTML item e
+        renderMultiToggle :: DropdownHTML item m
         renderMultiToggle =
           HH.div
             ( C.getToggleProps
@@ -189,7 +188,7 @@ component =
             , browseButton
             ]
 
-        renderSelection :: Array item -> DropdownHTML item e
+        renderSelection :: Array item -> DropdownHTML item m
         renderSelection items =
           if length items == 0
           then HH.div_ []
@@ -201,7 +200,7 @@ component =
                 ( renderSelectedItem <$> items )
               ]
 
-        renderSelectedItem :: item -> DropdownHTML item e
+        renderSelectedItem :: item -> DropdownHTML item m
         renderSelectedItem item =
           HH.li
             [ HP.class_ $ HH.ClassName "px-1 py-1 text-grey-darkest" ]
@@ -211,7 +210,7 @@ component =
             ]
 
 
-    eval :: (Query item) ~> (DropdownDSL item e)
+    eval :: (Query item) ~> (DropdownDSL item m)
     eval = case _ of
 
       Receiver input a -> a <$ do
