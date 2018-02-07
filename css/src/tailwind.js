@@ -21,6 +21,14 @@ config.margin = Object.assign(config.margin, {
 
 config.negativeMargin = config.margin
 
+config.maxHeight = Object.assign(config.maxHeight, {
+  '10': '2.5rem',
+  '12': '3rem',
+  '16': '4rem',
+  '20': '5rem',
+  '80': '20rem',
+})
+
 config.colors = Object.assign(config.colors, {
   'black': '#333',
   'grey-darkest': '#666',

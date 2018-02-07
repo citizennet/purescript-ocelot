@@ -10,12 +10,17 @@
     "style-guide"
   ],
   "dependencies": {
-    "purescript-halogen": "^3.1.0",
+    "purescript-halogen": "^3.1.1",
     "purescript-halogen-select": "citizennet/purescript-halogen-select"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
     "purescript-debug": "^3.0.0",
-    "purescript-psci-support": "^3.0.0"
+    "purescript-psci-support": "^3.0.0",
+    "purescript-aff": "^4.0.2",
+    "purescript-affjax": "^5.0.0",
+    "purescript-argonaut": "^3.1.0",
+    "purescript-remotedata": "^2.2.0",
+    "purescript-js-timers": "^3.0.0"
   }
 }
