@@ -309,8 +309,14 @@ component =
       -- The callback: when the parent has fetched data, they'll call this to update
       -- the typeahead with that data.
       FulfillRequest items a -> do
+        (Tuple _ st) <- getState
         H.modify $ seeks $ _ { items = items }
-        _ <- updateContainer items
+
+        let applyI = applyInsertable st.config.insertable st.search
+            applyF = applyFilter st.config.filterType st.search
+            newItems = (applyI <<< applyF) <$> items
+
+        _ <- updateContainer newItems
         pure a
 
       -- If synchronous, do nothing; if not, request the data for the component.

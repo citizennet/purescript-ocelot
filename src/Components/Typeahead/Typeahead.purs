@@ -146,7 +146,7 @@ contAsyncConfig :: ∀ item
  => TA.Config item
 contAsyncConfig =
   { insertable: TA.NotInsertable
-  , filterType: TA.NoFilter
+  , filterType: TA.CaseInsensitive
   , keepOpen: true
   }
 
