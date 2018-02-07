@@ -8716,9 +8716,9 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:all-02s-ease", "after:bg-grey-darkest", "after:block", "after:h-4", "after:no-content", "after:pin-l", "after:rounded-lg", "after:w-4", "before:absolute", "before:no-content", "all-02s-ease", "bg-grey-light", "items-center", "flex", "h-3", "relative", "rounded-lg", "w-8" ]);
+  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:all-02s-ease", "after:bg-white", "after:block", "after:h-4", "after:left-2px", "after:no-content", "after:rounded-lg", "after:shadow", "after:w-4", "before:absolute", "before:no-content", "all-02s-ease", "bg-grey-light", "items-center", "flex", "h-5", "relative", "rounded-full", "w-8" ]);
   var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "cursor-pointer", "select-none" ]);
-  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-teal", "checked:sibling:after:transform-w-4-0", "offscreen" ]);
+  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-teal", "checked:sibling:after:transform-w-4--4px", "offscreen" ]);
   var toggle = function (iprops) {
       var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.classes(inputClasses), Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputCheckbox.value), Halogen_HTML_Properties.checked(false) ]);
       return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(spanClasses) ])([  ]) ]);

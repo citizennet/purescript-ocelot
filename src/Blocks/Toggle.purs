@@ -16,7 +16,7 @@ labelClasses = HH.ClassName <$>
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
   [ "checked:sibling:bg-teal"
-  , "checked:sibling:after:transform-w-4-0"
+  , "checked:sibling:after:transform-w-4--4px"
   , "offscreen"
   ]
 
@@ -24,12 +24,13 @@ spanClasses :: Array HH.ClassName
 spanClasses = HH.ClassName <$>
   [ "after:absolute"
   , "after:all-02s-ease"
-  , "after:bg-grey-darkest"
+  , "after:bg-white"
   , "after:block"
   , "after:h-4"
+  , "after:left-2px"
   , "after:no-content"
-  , "after:pin-l"
   , "after:rounded-lg"
+  , "after:shadow"
   , "after:w-4"
   , "before:absolute"
   , "before:no-content"
@@ -37,9 +38,9 @@ spanClasses = HH.ClassName <$>
   , "bg-grey-light"
   , "items-center"
   , "flex"
-  , "h-3"
+  , "h-5"
   , "relative"
-  , "rounded-lg"
+  , "rounded-full"
   , "w-8"
   ]
 
