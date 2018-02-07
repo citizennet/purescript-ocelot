@@ -11,7 +11,7 @@ import DOM (DOM)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String (Pattern(Pattern), contains, toLower)
 import Data.Tuple (Tuple(..))
-import Data.Array (filter, length, (:))
+import Data.Array (filter, length, (:), difference)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Time.Duration (Milliseconds)
@@ -143,6 +143,20 @@ data SyncMethod source err a
   | ContinuousAsync Milliseconds String source (RemoteData err a)
 derive instance functorSyncMethod :: Functor (SyncMethod source err)
 
+-- Applicative instance will only be used on equivalent constructors (async async, sync sync, etc.)
+-- However, defined to bias towards latest constructor (Sync < Async < ContinuousAsync)
+instance applySyncMethod :: Functor (SyncMethod source err) => Apply (SyncMethod source err) where
+  apply (Sync f) (Sync a) = Sync (f a)
+  apply (Sync f) (Async src a) = Async src (f <$> a)
+  apply (Sync f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <$> a)
+  apply (Async _ f) (Async src a) = Async src (f <*> a)
+  apply (Async src f) (Sync a) = Async src (f <*> Success a)
+  apply (Async _ f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <*> a)
+  apply (ContinuousAsync db sch src f) (Sync a) = ContinuousAsync db sch src (f <*> Success a)
+  apply (ContinuousAsync db sch src f) (Async _ a) = ContinuousAsync db sch src (f <*> a)
+  apply (ContinuousAsync _ _ _ f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <*> a)
+
+
 -- A convenience type for when you mount a sync typeahead, filling in the
 -- source and error fields with Void on your behalf.
 type TypeaheadSyncMessage o item = TypeaheadMessage o item Void Void
@@ -250,12 +264,15 @@ component =
            H.raise (Emit query)
            pure a
 
-        -- Select an item, removing it from the list of available items.
+        -- Select an item, removing it from the list of available items in the container.
+        -- Does not remove the item from the parent state.
         C.ItemSelected item -> do
           (Tuple _ st) <- getState
-          let (Tuple items' selections') = selectItem item st.items st.selections
-          H.modify $ seeks _ { items = items', selections = selections' }
-          _ <- updateContainer items'
+          let selections = selectItem item st.items st.selections
+          H.modify $ seeks _ { selections = selections }
+          _ <- H.query' CP.cp1 ContainerSlot
+             $ H.action
+             $ C.ReplaceItems (diffItemsSelections st.items selections)
           _ <- if st.config.keepOpen
                then pure Nothing
                else H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
@@ -269,13 +286,12 @@ component =
         -- Perform a new search, fetching data if ContinuousAsync.
         S.NewSearch text -> do
           H.modify $ seeks _ { search = text }
-
           (Tuple _ st) <- getState
 
           let applyI = applyInsertable st.config.insertable text
               applyF = applyFilter st.config.filterType text
 
-          items' <- case st.items of
+          newItems <- case st.items of
             Sync i -> pure $ Sync $ (applyI <<< applyF) i
             Async src i -> pure $ Async src $ (applyI <<< applyF) <$> i
             ContinuousAsync db _ src _ -> do
@@ -287,7 +303,7 @@ component =
               H.raise $ RequestData cont
               pure cont
 
-          _ <- updateContainer items'
+          _ <- updateContainer st.items st.selections
 
           H.raise $ NewSearch text
           pure a
@@ -295,9 +311,11 @@ component =
       -- Remove a currently-selected item.
       Remove item a -> do
         (Tuple _ st) <- getState
-        let (Tuple items' selections') = removeItem item st.items st.selections
-        H.modify $ seeks _ { selections = selections', items = items' }
-        _ <- updateContainer items'
+        let selections = removeItem item st.items st.selections
+        H.modify $ seeks _ { selections = selections }
+        _ <- H.query' CP.cp1 ContainerSlot
+           $ H.action
+           $ C.ReplaceItems (diffItemsSelections st.items selections)
         H.raise $ ItemRemoved item
         pure a
 
@@ -316,7 +334,10 @@ component =
             applyF = applyFilter st.config.filterType st.search
             newItems = (applyI <<< applyF) <$> items
 
-        _ <- updateContainer newItems
+        _ <- H.query' CP.cp1 ContainerSlot
+           $ H.action
+           $ C.ReplaceItems (diffItemsSelections newItems st.selections)
+
         pure a
 
       -- If synchronous, do nothing; if not, request the data for the component.
@@ -349,7 +370,7 @@ component =
 
     -- On failure, clear the items in the container and toggle it closed. We can
     -- display an error or some other information, but not using the container.
-    updateContainerWith (Failure e) = do
+    updateContainerWith (Failure e) _ = do
       _ <- H.query' CP.cp1 ContainerSlot
          $ H.action
          $ C.Visibility C.Off
@@ -358,13 +379,14 @@ component =
          $ C.ReplaceItems []
       H.liftAff $ logShow e
     -- On success, replace the items in the container.
-    updateContainerWith (Success items') = do
+    updateContainerWith i@(Success _) selections = do
+      let mock = Async "" i
       _ <- H.query' CP.cp1 ContainerSlot
          $ H.action
-         $ C.ReplaceItems items'
+         $ C.ReplaceItems (diffItemsSelections mock selections)
       pure unit
     -- On NotAsked or Loading, do nothing. The container doesn't yet need to update.
-    updateContainerWith _ = pure unit
+    updateContainerWith _ _ = pure unit
 
 
 
@@ -394,13 +416,11 @@ removeItem :: ∀ item source err
  => item
  -> SyncMethod source err (Array item)
  -> SelectionType item
- -> Tuple (SyncMethod source err (Array item)) (SelectionType item)
+ -> SelectionType item
 removeItem item items selections = case selections of
-  One  _  -> Tuple (insert item items) (One Nothing)
-  Limit n xs  -> Tuple (insert item items) (Limit n $ filter ((/=) item) xs)
-  Many xs -> Tuple (insert item items) (Many $ filter ((/=) item) xs)
-    where
-      insert i is = (\i' -> i : i') <$> is
+  One  _  -> One Nothing
+  Limit n xs  -> Limit n $ filter ((/=) item) xs
+  Many xs -> Many $ filter ((/=) item) xs
 
 -- Remove an item from the items and place it in the selections list.
 selectItem :: ∀ item source err
@@ -409,16 +429,26 @@ selectItem :: ∀ item source err
  => item
  -> SyncMethod source err (Array item)
  -> SelectionType item
- -> Tuple (SyncMethod source err (Array item)) (SelectionType item)
+ -> SelectionType item
 selectItem item items selections = case selections of
-  One Nothing  -> Tuple (remove item items) (One $ Just item)
-  One (Just i) -> Tuple (insert i $ remove item items) (One $ Just item)
-  Many xs      -> Tuple (remove item items) (Many $ item : xs)
-  Limit n xs   ->
-    if length xs >= n
-      then (Tuple items (Limit n xs))
-      else Tuple (remove item items) (Limit n $ item : xs)
-    where
-      insert i is = (\i' -> i : i') <$> is
-      remove i is = (filter ((/=) i)) <$> is
+  One _ -> One $ Just item
+  Many xs -> Many $ item : xs
+  Limit n xs -> if length xs >= n then selections else Limit n $ item : xs
 
+diffItemsSelections :: ∀ item source err
+  . CompareToString item
+ => Eq item
+ => SyncMethod source err (Array item)
+ -> SelectionType item
+ -> Array item
+diffItemsSelections items selections = difference (unpackItems items) (unpackSelections selections)
+  where
+    unpackSelections (One Nothing) = []
+    unpackSelections (One (Just i)) = [i]
+    unpackSelections (Limit _ xs) = xs
+    unpackSelections (Many xs) = xs
+
+    unpackItems (Sync xs) = xs
+    unpackItems (Async _ (Success xs)) = xs
+    unpackItems (ContinuousAsync _ _ _ (Success xs)) = xs
+    unpackItems _ = []
