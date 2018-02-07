@@ -10,6 +10,7 @@
 
 /* cn utilities */
 
+.all-02s-ease { transition: all 0.2s ease; }
 .cc-teal { caret-color: config('colors.teal'); }
 .no-content { content: ''; }
 .no-outline { outline: none; }
@@ -20,7 +21,7 @@
 /* pseudo utilities */
 
 .after\:absolute:after { @apply .absolute; }
-.after\:all-02s-ease:after { transition: all 0.2s ease; }
+.after\:all-02s-ease:after { @apply .all-02s-ease; }
 .after\:bg-grey-darkest:after { @apply .bg-grey-darkest; }
 .after\:bg-teal:after { @apply .bg-teal; }
 .after\:block:after { @apply .block; }
@@ -33,13 +34,11 @@
 .after\:rounded-lg:after { @apply .rounded-lg; }
 .after\:top-w-6\/2--w-4\/2:after { top: calc((config('width.6') / 2) - (config('width.3') / 2)); }
 .after\:w-3:after { @apply .w-3; }
-.after\:w-3:after { @apply .w-3; }
 .after\:w-4:after { @apply .w-4; }
 .before\:absolute:before { @apply .absolute; }
-.before\:all-02s-ease:before{ transition: all 0.2s ease; }
+.before\:all-02s-ease:before{ @apply .all-02s-ease; }
 .before\:bg-teal:before { @apply .bg-teal; }
 .after\:bg-teal:after { @apply .bg-teal; }
-.after\:all-02s-ease:after { transition: all 0.2s ease; }
 .after\:h-3:after { @apply .h-3; }
 .after\:left-w-6\/2--w-4\/2:after { left: calc((config('width.6') / 2) - (config('width.3') / 2)); }
 .after\:no-content:after { @apply .no-content; }
