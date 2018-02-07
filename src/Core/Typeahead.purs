@@ -143,19 +143,6 @@ data SyncMethod source err a
   | ContinuousAsync Milliseconds String source (RemoteData err a)
 derive instance functorSyncMethod :: Functor (SyncMethod source err)
 
--- Applicative instance will only be used on equivalent constructors (async async, sync sync, etc.)
--- However, defined to bias towards latest constructor (Sync < Async < ContinuousAsync)
-instance applySyncMethod :: Functor (SyncMethod source err) => Apply (SyncMethod source err) where
-  apply (Sync f) (Sync a) = Sync (f a)
-  apply (Sync f) (Async src a) = Async src (f <$> a)
-  apply (Sync f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <$> a)
-  apply (Async _ f) (Async src a) = Async src (f <*> a)
-  apply (Async src f) (Sync a) = Async src (f <*> Success a)
-  apply (Async _ f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <*> a)
-  apply (ContinuousAsync db sch src f) (Sync a) = ContinuousAsync db sch src (f <*> Success a)
-  apply (ContinuousAsync db sch src f) (Async _ a) = ContinuousAsync db sch src (f <*> a)
-  apply (ContinuousAsync _ _ _ f) (ContinuousAsync db sch src a) = ContinuousAsync db sch src (f <*> a)
-
 
 -- A convenience type for when you mount a sync typeahead, filling in the
 -- source and error fields with Void on your behalf.
@@ -303,7 +290,7 @@ component =
               H.raise $ RequestData cont
               pure cont
 
-          _ <- updateContainer st.items st.selections
+          _ <- updateContainer newItems st.selections
 
           H.raise $ NewSearch text
           pure a
@@ -334,9 +321,7 @@ component =
             applyF = applyFilter st.config.filterType st.search
             newItems = (applyI <<< applyF) <$> items
 
-        _ <- H.query' CP.cp1 ContainerSlot
-           $ H.action
-           $ C.ReplaceItems (diffItemsSelections newItems st.selections)
+        _ <- updateContainer newItems st.selections
 
         pure a
 
