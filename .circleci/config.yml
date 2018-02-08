@@ -75,7 +75,7 @@ jobs:
           command: |
             cp -r persisted/dist dist
             cp -r persisted/css/node_modules css/node_modules
-            npm run build-css
+            npm run build-css-prod
 
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
