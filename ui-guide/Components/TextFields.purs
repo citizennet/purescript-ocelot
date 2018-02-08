@@ -2,39 +2,32 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import UIGuide.Blocks.Sidebar as Sidebar
-import UIGuide.Utilities.Async as Async
-
-import Control.Monad.Eff.Timer (TIMER)
-import Network.HTTP.Affjax (AJAX)
-
 import CN.UI.Block.Button as Button
-import CN.UI.Block.Input as Input
 import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.Input as Input
 import CN.UI.Block.Radio as Radio
-
+import CN.UI.Block.Toggle as Toggle
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
-
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
-
-import Data.Tuple (Tuple)
+import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
-
+import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import Control.Monad.Aff.AVar (AVAR)
-
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
-
+import Data.Tuple (Tuple)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Network.HTTP.Affjax (AJAX)
+import UIGuide.Blocks.Sidebar as Sidebar
+import UIGuide.Utilities.Async as Async
 
 ----------
 -- Component Types
@@ -165,6 +158,7 @@ container :: ∀ i p
 container navs blocks =
   HH.body
   [ css "font-sans font-normal text-black leading-normal"
+  , HP.class_ (HH.ClassName "bg-grey-lightest")
   ]
   [ HH.div
     [ css "min-h-screen" ]
@@ -197,7 +191,8 @@ innerContainer title blocks =
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  radioBlock
+  switchBlock
+  <> radioBlock
   <> inputBlock
   <> formInputBlock
   <> typeaheadBlockStrings
@@ -206,6 +201,14 @@ cnDocumentationBlocks =
   <> dropdownBlock
   <> buttonBlock
 
+switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+switchBlock = documentationBlock
+  "switch"
+  "some toggle switch shit"
+  ( HH.div_
+    [ Toggle.toggle []
+    ]
+  )
 radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 radioBlock = documentationBlock
   "Radio"
