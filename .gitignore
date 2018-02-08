@@ -1,0 +1,6 @@
+# Generated Files
+package-lock.json
+
+# IDE
+*.swo
+*.swp
