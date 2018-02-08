@@ -9,7 +9,7 @@ output
 generated-docs
 package-lock.json
 
-# Generated files
+# dist folder should only be built by Circle CI
 dist
 
 # IDE
