@@ -96,7 +96,7 @@ jobs:
           command: |
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
-            git add dist/cn-tailwind.css
+            git add -f dist/cn-tailwind.css  # Only CircleCI writes /dist
             git commit --allow-empty -m "CSS built by CircleCI"
             git push -u origin master
 
