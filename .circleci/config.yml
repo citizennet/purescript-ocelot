@@ -35,10 +35,13 @@ jobs:
           key: v0.0-npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/ui-guide/node_modules
-            - ~/ui-guide/node_modules
+            - ~/ui-guide/css/node_modules
 
       - save_cache:
           key: v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          paths:
+            - ~/ui-guide/bower_components
+            - ~/ui-guide/output
 
       # Persist generated JS into the workspace
       - persist_to_workspace:
