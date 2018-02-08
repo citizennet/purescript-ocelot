@@ -78,16 +78,16 @@ jobs:
           fingerprints:
             - "bf:0e:a0:9d:37:6e:40:34:3c:72:90:f5:c8:93:cd:a5"
 
-			- run:
-					name: Push files to gh-pages branch on GitHub
-					command: |
-						rm -rf ../gh-pages/dist
-						mv docs/dist ../gh-pages/dist
-						cd ../gh-pages  # Moves into gh-pages branch using worktree
+      - run:
+          name: Push files to gh-pages branch on GitHub
+          command: |
+            rm -rf ../gh-pages/dist
+            mv docs/dist ../gh-pages/dist
+            cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "you@example.com"
             git config --global user.name "Your Name"
-						git commit --allow-empty -a -m "Build triggered by CircleCI"
-						git push -u origin gh-pages
+            git commit --allow-empty -a -m "Build triggered by CircleCI"
+            git push -u origin gh-pages
 
 workflows:
 	version: 2
