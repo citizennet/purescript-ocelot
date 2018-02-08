@@ -84,6 +84,8 @@ jobs:
 						rm -rf ../gh-pages/dist
 						mv docs/dist ../gh-pages/dist
 						cd ../gh-pages  # Moves into gh-pages branch using worktree
+            git config --global user.email "you@example.com"
+            git config --global user.name "Your Name"
 						git commit --allow-empty -a -m "Build triggered by CircleCI"
 						git push -u origin gh-pages
 
