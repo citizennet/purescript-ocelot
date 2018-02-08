@@ -45,9 +45,10 @@ jobs:
 
       # Persist generated JS into the workspace
       - persist_to_workspace:
-          root: docs
+          root: .
           paths:
-            - .
+            - dist
+            - css
 
   docs:
     <<: *defaults
@@ -72,8 +73,8 @@ jobs:
       - run:
           name: Build CSS
           command: |
-            cp -r persisted/dist docs/dist
-            cp -r persisted/css/node_modules docs/css/node_modules
+            cp -r persisted/dist dist
+            cp -r persisted/css/node_modules css/node_modules
             npm run build-css
 
       # Enable building docs with read/write SSH key
@@ -87,8 +88,8 @@ jobs:
             rm -rf ../gh-pages/dist
             mv docs/dist ../gh-pages/dist
             cd ../gh-pages  # Moves into gh-pages branch using worktree
-            git config --global user.email "you@example.com"
-            git config --global user.name "Your Name"
+            git config --global user.email "dev@citizennet.com"
+            git config --global user.name "CircleCI"
             git commit --allow-empty -a -m "Build triggered by CircleCI"
             git push -u origin gh-pages
 

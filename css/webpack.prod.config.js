@@ -21,7 +21,7 @@ module.exports = merge(dev, {
 		new	PurgecssPlugin({
 			// Locations of any files to scan
 			paths: glob.sync([
-				path.join(__dirname, "../docs/**/*.js")
+				path.join(__dirname, "../dist/**/*.js")
 			]),
 			extractors: [
 				{
