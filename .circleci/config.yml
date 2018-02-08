@@ -51,17 +51,17 @@ jobs:
     steps:
       - checkout
 
-      run:
-        name: Prepare branches locally
-        command: |
-          git checkout gh-pages
-          git checkout master
+      - run:
+          name: Prepare branches locally
+          command: |
+            git checkout gh-pages
+            git checkout master
 
-      run:
-        name: Set up gh-pages in worktree for easy artifact copying
-        command: |
-          mkdir ../gh-pages
-          git worktree add ../gh-pages gh-pages
+      - run:
+          name: Set up gh-pages in worktree for easy artifact copying
+          command: |
+            mkdir ../gh-pages
+            git worktree add ../gh-pages gh-pages
 
       - attach_workspace:
           at: persisted
