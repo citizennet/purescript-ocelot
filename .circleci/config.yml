@@ -89,7 +89,7 @@ jobs:
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
           fingerprints:
-            - "bf:0e:a0:9d:37:6e:40:34:3c:72:90:f5:c8:93:cd:a5"
+            - "53:31:90:1f:78:25:11:3a:1b:5d:a6:2f:04:7c:cb:39"
 
       - run:
           name: Add built CSS file to master branch on GitHub
