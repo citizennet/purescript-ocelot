@@ -24,10 +24,8 @@ jobs:
             - v0.0-bower-cache
 
       - run:
-          name: Install dependencies and compile base
-          command: |
-            npm install
-            pulp build
+          name: Install Bower and NPM dependencies
+          command: npm install # postinstall runs Bower
 
       - run:
           name: Verify the project and all components build successfully
@@ -35,6 +33,9 @@ jobs:
 
       - save_cache:
           key: v0.0-npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/ui-guide/node_modules
+            - ~/ui-guide/node_modules
 
       - save_cache:
           key: v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
@@ -69,7 +70,7 @@ jobs:
           name: Build CSS
           command: |
             cp -r persisted/dist docs/dist
-            npm run install-css
+            cp -r persisted/css/node_modules docs/css/node_modules
             npm run build-css
 
       # Enable building docs with read/write SSH key
@@ -82,7 +83,7 @@ jobs:
 					command: |
 						rm -rf ../gh-pages/dist
 						mv docs/dist ../gh-pages/dist
-						cd ../gh-pages  # Moves into gh-pages branch
+						cd ../gh-pages  # Moves into gh-pages branch using worktree
 						git commit --allow-empty -a -m "Build triggered by CircleCI"
 						git push -u origin gh-pages
 
@@ -94,9 +95,9 @@ workflows:
 
 			# On master branch, rebuild documentation site
 			- docs:
-					filters:
-						branches:
-							only: master
+					# filters:
+					#   branches:
+					#     only: master
 
 					requires:
 						- test
