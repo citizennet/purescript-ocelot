@@ -35,7 +35,6 @@ jobs:
           key: v0.0-npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/ui-guide/node_modules
-            - ~/ui-guide/css/node_modules
 
       - save_cache:
           key: v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
@@ -48,7 +47,6 @@ jobs:
           root: .
           paths:
             - dist
-            - css
 
   docs:
     <<: *defaults
@@ -70,12 +68,23 @@ jobs:
       - attach_workspace:
           at: persisted
 
+      - restore_cache:
+          keys:
+            - v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
+            - v0.0-css-cache-{{ .Branch }}
+            - v0.0-css-cache
+
       - run:
           name: Build CSS
           command: |
             cp -r persisted/dist dist
-            cp -r persisted/css/node_modules css/node_modules
+            npm run install-css
             npm run build-css-prod
+
+      - save_cache:
+          key: v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
+          paths:
+            - ~/ui-guide/css/node_modules
 
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
@@ -83,10 +92,19 @@ jobs:
             - "bf:0e:a0:9d:37:6e:40:34:3c:72:90:f5:c8:93:cd:a5"
 
       - run:
+          name: Add built CSS file to master branch on GitHub
+          command: |
+            git config --global user.email "dev@citizennet.com"
+            git config --global user.name "CircleCI"
+            git add dist/cn-tailwinds.css
+            git commit --allow-empty -m "CSS built by CircleCI"
+            git push -u origin master
+
+      - run:
           name: Push files to gh-pages branch on GitHub
           command: |
             rm -rf ../gh-pages/dist
-            mv docs/dist ../gh-pages/dist
+            cp -r dist ../gh-pages/dist
             cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
