@@ -9,8 +9,10 @@ output
 generated-docs
 package-lock.json
 
-# dist folder should only be built by Circle CI
+# Allow the CSS file only; Circle CI will overwrite whatever you
+# put so feel free to handle merge conflicts however you want.
 dist
+!dist/cn-tailwind.css
 
 # IDE
 *.swo

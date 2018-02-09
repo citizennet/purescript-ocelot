@@ -91,14 +91,14 @@ jobs:
           fingerprints:
             - "53:31:90:1f:78:25:11:3a:1b:5d:a6:2f:04:7c:cb:39"
 
-      # - run:
-      #     name: Add built CSS file to master branch on GitHub
-      #     command: |
-      #       git config --global user.email "dev@citizennet.com"
-      #       git config --global user.name "CircleCI"
-      #       git add -f dist/cn-tailwind.css  # Only CircleCI writes /dist
-      #       git commit --allow-empty -m "CSS built by CircleCI"
-      #       git push -u origin master
+      - run:
+          name: Add built CSS file to master branch on GitHub
+          command: |
+            git config --global user.email "dev@citizennet.com"
+            git config --global user.name "CircleCI"
+            git add dist/cn-tailwind.css  # Only CircleCI writes /dist
+            git commit -m "CSS built by CircleCI"
+            git push -u origin master
 
       - run:
           name: Push files to gh-pages branch on GitHub
