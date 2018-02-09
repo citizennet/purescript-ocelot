@@ -9730,9 +9730,9 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-underline", "uppercase", "mt-4", "mr-6", "text-xs", "tracking-wide", "leading-normal" ]);
-  var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "text-grey", "hover:border-b-2", "hover:border-blue", "hover:text-white" ]);
-  var activeTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-b-2", "border-blue", "text-white" ]);
+  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "mr-6", "mt-4", "no-underline", "text-xs", "tracking-wide", "uppercase" ]);
+  var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "text-grey-70", "hover:border-b-2", "hover:border-blue-88", "hover:text-white" ]);
+  var activeTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-b-2", "border-blue-88", "text-white" ]);
   var navigationTab = function (dictEq) {
       return function (activePage) {
           return function (tab) {
@@ -9751,7 +9751,7 @@ var PS = {};
   };
   var navigationTabs = function (dictEq) {
       return function (v) {
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex h-12 bg-black") ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs));
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex h-12 bg-black-10") ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs));
       };
   };
   exports["tabClasses"] = tabClasses;
