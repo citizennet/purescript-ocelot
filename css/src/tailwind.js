@@ -48,8 +48,8 @@ config.colors = Object.assign(config.colors, {
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
   'grey-70': 'rgb(143,158,179)',
-  'grey-70-a30': 'rgb(143,158,179,0.3)',
-  'grey-70-a40': 'rgb(143,158,179,0.4)',
+  'grey-70-a30': 'rgba(143,158,179,0.3)',
+  'grey-70-a40': 'rgba(143,158,179,0.4)',
   'grey-90': '#E1E3E6',
   'grey-95': '#F0F1F2',
   'blue-75': '#F0F1F2',
@@ -61,6 +61,11 @@ config.borderColors = Object.assign(
   { 'default': config.colors['grey-light'] },
   config.colors
 )
+
+config.modules = Object.assign(config.modules, {
+  'borderWidths': ['responsive', 'hover'],
+  'visibility': ['responsive', 'hover', 'focus', 'group-hover']
+})
 
 // Export the new configuration
 module.exports = config
