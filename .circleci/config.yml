@@ -95,7 +95,7 @@ jobs:
           name: Push files to gh-pages branch on GitHub
           command: |
             rm -rf ../gh-pages/dist
-            mv dist ../gh-pages/dist
+            cp -r dist ../gh-pages/dist
             cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
@@ -113,8 +113,6 @@ workflows:
           filters:
             branches:
               only: master
-            tags:
-              ignore: /^dist-.*/
 
           requires:
             - test
