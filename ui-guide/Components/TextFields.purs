@@ -15,6 +15,7 @@ import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
+import Data.StrMap as StrMap
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
@@ -142,7 +143,19 @@ containerData :: Array String
 containerData =
   [ "Instagram"
   , "Facebook"
-  , "Twitter" ]
+  , "Twitter"
+  , "Pinterest"
+  , "Snapchat"
+  , "YouTube"
+  , "Reddit"
+  , "Voat"
+  , "Discord"
+  , "4Chan"
+  , "8Chan"
+  , "Digg"
+  , "Myspace"
+  , "Friendster"
+  ]
 
 
 ----------
@@ -278,8 +291,10 @@ typeaheadBlockStrings = documentationBlock
         CP.cp3
         SyncTypeaheadStrings
         Typeahead.component
-        ( Typeahead.defaultMulti' containerData )
+        ( Typeahead.defaultMulti' toStrMap containerData )
         (HE.input $ HandleSyncTypeahead )
+
+    toStrMap = StrMap.singleton "value"
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m

@@ -6,9 +6,11 @@ import Network.RemoteData (RemoteData(Success, Failure, Loading))
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Aff.Class (class MonadAff)
-
+import Data.StrMap (StrMap)
+import Data.Fuzzy as Fuzz
+import Data.Fuzzy (Fuzzy(..))
 import DOM (DOM)
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.String (Pattern(Pattern), contains, toLower)
 import Data.Tuple (Tuple(..))
 import Data.Array (filter, length, (:), difference)
@@ -59,6 +61,7 @@ type TypeaheadInput o item source err eff m =
   , config :: Config item
   }
 
+-- `item` is wrapped in `Fuzzy` to support highlighting in render functions
 -- `HandleContainer` & `HandleSearch`: Manage routing for child messages
 -- `Remove`: The user has removed a currently-selected item.
 -- `Selections`: The parent wants to know the current selections.
@@ -66,8 +69,8 @@ type TypeaheadInput o item source err eff m =
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data TypeaheadQuery o item source err eff m a
-  = HandleContainer (C.Message o item) a
-  | HandleSearch (S.Message o item) a
+  = HandleContainer (C.Message o (Fuzzy item)) a
+  | HandleSearch (S.Message o (Fuzzy item)) a
   | Remove item a
   | Selections (SelectionType item -> a)
   | FulfillRequest (SyncMethod source err (Array item)) a
@@ -92,8 +95,8 @@ data TypeaheadMessage o item source err
 
 -- The typeahead relies on the Search and Container primitives.
 type ChildQuery o item eff = Coproduct2
-  (C.ContainerQuery o item)
-  (S.SearchQuery    o item eff)
+  (C.ContainerQuery o (Fuzzy item))
+  (S.SearchQuery    o (Fuzzy item) eff)
 type ChildSlot = Either2 Slot Slot
 
 data Slot
@@ -116,6 +119,7 @@ data FilterType item
   = NoFilter
   | Exact
   | CaseInsensitive
+  | FuzzyMatch (item -> StrMap String)
   | CustomMatch (String -> item -> Boolean)
 
 -- If an item is meant to be insertable, you must provide a function
@@ -253,13 +257,14 @@ component =
 
         -- Select an item, removing it from the list of available items in the container.
         -- Does not remove the item from the parent state.
-        C.ItemSelected item -> do
+        C.ItemSelected (Fuzzy { original: item }) -> do
           (Tuple _ st) <- getState
           let selections = selectItem item st.items st.selections
           H.modify $ seeks _ { selections = selections }
-          _ <- H.query' CP.cp1 ContainerSlot
-             $ H.action
-             $ C.ReplaceItems (diffItemsSelections st.items selections)
+          -- TODO:
+          --  _ <- H.query' CP.cp1 ContainerSlot
+          --     $ H.action
+          --     $ C.ReplaceItems (diffItemsSelections st.items selections)
           _ <- if st.config.keepOpen
                then pure Nothing
                else H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
@@ -290,7 +295,8 @@ component =
               H.raise $ RequestData cont
               pure cont
 
-          _ <- updateContainer newItems st.selections
+          -- TODO:
+          --  _ <- updateContainer newItems st.selections
 
           H.raise $ NewSearch text
           pure a
@@ -300,9 +306,10 @@ component =
         (Tuple _ st) <- getState
         let selections = removeItem item st.items st.selections
         H.modify $ seeks _ { selections = selections }
-        _ <- H.query' CP.cp1 ContainerSlot
-           $ H.action
-           $ C.ReplaceItems (diffItemsSelections st.items selections)
+        -- TODO:
+        --  _ <- H.query' CP.cp1 ContainerSlot
+        --     $ H.action
+        --     $ C.ReplaceItems (diffItemsSelections st.items selections)
         H.raise $ ItemRemoved item
         pure a
 
@@ -321,7 +328,8 @@ component =
             applyF = applyFilter st.config.filterType st.search
             newItems = (applyI <<< applyF) <$> items
 
-        _ <- updateContainer newItems st.selections
+        -- TODO:
+        --  _ <- updateContainer newItems st.selections
 
         pure a
 
@@ -386,6 +394,7 @@ applyFilter filterType text items = case filterType of
   CaseInsensitive ->
     filter (\item -> contains (Pattern $ toLower text) (toLower $ compareToString item)) items
   CustomMatch match -> filter (\item -> match text item) items
+  FuzzyMatch toStrMap -> filter (isJust <<< Fuzz.match true toStrMap text) items
 
 -- Update items dependent on the insertable configuration.
 applyInsertable :: ∀ item. CompareToString item => Insertable item -> String -> Array item -> Array item

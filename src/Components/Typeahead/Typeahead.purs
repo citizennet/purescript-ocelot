@@ -7,6 +7,7 @@ import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Foldable (foldr)
 import Data.Maybe (Maybe(Just, Nothing))
+import Data.StrMap (StrMap)
 import Data.String (Pattern(Pattern), split)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
@@ -83,14 +84,15 @@ defaultMulti' :: ∀ o item source err eff m
   => TA.CompareToString item
   => Eq item
   => Show err
-  => Array item
+  => (item -> StrMap String)
+  -> Array item
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultMulti' xs =
+defaultMulti' toStrMap xs =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA defaultRenderItem
-  , config: defaultConfig
+  , config: defaultFuzzyConfig toStrMap
   }
 
 -- A default multi-select using the default render item function
@@ -137,6 +139,20 @@ defaultConfig :: ∀ item
 defaultConfig =
   { insertable: TA.NotInsertable
   , filterType: TA.CaseInsensitive
+  , keepOpen: true
+  }
+
+-- toStrMap should take an item and produce a string map
+-- include the keys / values you want to filter against
+-- https://github.com/citizennet/purescript-fuzzy/blob/develop/test/Main.purs
+defaultFuzzyConfig :: ∀ item
+  . TA.CompareToString item
+ => Eq item
+ => (item -> StrMap String)
+ -> TA.Config item
+defaultFuzzyConfig toStrMap =
+  { insertable: TA.NotInsertable
+  , filterType: TA.FuzzyMatch toStrMap
   , keepOpen: true
   }
 
