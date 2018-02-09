@@ -119,9 +119,9 @@ workflows:
 
       # On master branch, rebuild documentation site
       - docs:
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
 
           requires:
             - test
