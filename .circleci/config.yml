@@ -102,7 +102,7 @@ jobs:
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
             git commit --allow-empty -m "CSS built by CircleCI"
-            git tag "dist-$CIRCLE_BUILD_NUM" # Preface with dist- to avoid recursive builds
+            git tag dist-{{ .BuildNum }} # Preface with dist- to avoid recursive builds
             git push --follow-tags origin master
 
       - run:
