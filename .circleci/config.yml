@@ -103,8 +103,8 @@ jobs:
             git config --global user.name "CircleCI"
             git commit --allow-empty -m "CSS built by CircleCI"
             # Preface with dist- to avoid recursive builds
-            git tag dist-$CIRCLE_BUILD_NUM
-            git push --follow-tags origin master
+            git tag dist-${CIRCLE_BUILD_NUM}
+            git push --tags origin master
 
       - run:
           name: Push files to gh-pages branch on GitHub
