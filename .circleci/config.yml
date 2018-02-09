@@ -107,7 +107,10 @@ workflows:
   version: 2
   build:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
 
       # On master branch, rebuild documentation site
       - docs:
