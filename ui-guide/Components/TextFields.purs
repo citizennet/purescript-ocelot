@@ -4,6 +4,7 @@ import Prelude
 
 import CN.UI.Block.Button as Button
 import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.FormHeader as FormHeader
 import CN.UI.Block.Input as Input
 import CN.UI.Block.Radio as Radio
 import CN.UI.Block.Toggle as Toggle
@@ -12,9 +13,10 @@ import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultCon
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (logShow, CONSOLE)
+import Control.Monad.Aff.Console (log, logShow, CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
+import DOM.Event.Types (MouseEvent)
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
@@ -41,7 +43,7 @@ data Query a
   | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-
+  | HandleFormHeaderClick MouseEvent a
 
 ----------
 -- Child paths
@@ -110,11 +112,17 @@ component =
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
+    eval (HandleFormHeaderClick _ next) = do
+      H.liftAff (log "submit form")
+      pure next
+
     -- Helper to replace items dependent on sync types
     replaceItems Nothing v = v
     replaceItems (Just _) s@(Typeahead.Sync _) = s
     replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
     replaceItems (Just d) (Typeahead.ContinuousAsync db srch src _) = Typeahead.ContinuousAsync db srch src d
+
+
 
 
 ----------
@@ -195,6 +203,7 @@ cnDocumentationBlocks =
   <> radioBlock
   <> inputBlock
   <> formInputBlock
+  <> formHeaderBlock
   <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
@@ -209,6 +218,7 @@ switchBlock = documentationBlock
     [ Toggle.toggle []
     ]
   )
+
 radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 radioBlock = documentationBlock
   "Radio"
@@ -247,23 +257,49 @@ formInputBlock = documentationBlock
     ]
   )
 
+formHeaderBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+formHeaderBlock = documentationBlock
+  "Form Header"
+  ""
+  (componentBlock "Form Header" header)
+  where
+    header = 
+      FormHeader.formHeader 
+        { name: "Campaign Group"
+        , onClick: HE.input HandleFormHeaderClick
+        , title: "New"
+        }
+
 buttonBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 buttonBlock = documentationBlock
-  "Button"
-  "Some button shit"
-  (HH.div_
-    [ Button.button_
-      { type_: Button.Primary }
-      [ HH.text "Submit" ]
-    , HH.span
-      [ HP.class_ (HH.ClassName "ml-4") ]
-      [ Button.button
+  "Buttons"
+  ""
+  ( HH.div_ 
+    [ componentBlock "Default" default
+    , componentBlock "Primary" primary
+    , componentBlock "Secondary" secondary
+    ]
+  )
+  where
+    default = 
+      Button.button
         { type_: Button.Default }
         []
         [ HH.text "Cancel" ]
-      ]
-    ]
-  )
+      
+    primary =
+      Button.button_
+        { type_: Button.Primary }
+        [ HH.text "Submit" ]
+
+    secondary =
+      HH.div
+        [ css "bg-black-10 h-full" ]
+        [ Button.button_
+            { type_: Button.Secondary }
+            [ HH.text "Options" ]
+        ]
+  
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m

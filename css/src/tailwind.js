@@ -42,17 +42,19 @@ config.maxHeight = Object.assign(config.maxHeight, {
 })
 
 config.colors = Object.assign(config.colors, {
-  'black': '#333',
-  'grey-darkest': '#666',
-  'grey-darker': '#999',
-  'grey-dark': 'rgba(0,0,0,0.35)',
-  'grey': '#BFBFBF',
-  'grey-light': 'rgba(128,128,128,0.2)',
-  'grey-lighter': '#E6E6E6',
-  'grey-lightest': '#F5F5F5',
-  'white': '#FFF',
-  'teal': '#0BB6D9',
-  'teal-dark': '#00A3CC'
+  'black-10': '#00081A',
+  'black-20': '#242A33',
+  'grey-50': 'rgb(102,113,128)',
+  'grey-50-a20': 'rgba(102,113,128,0.2)',
+  'grey-50-a30': 'rgba(102,113,128,0.3)',
+  'grey-70': 'rgb(143,158,179)',
+  'grey-70-a30': 'rgb(143,158,179,0.3)',
+  'grey-70-a40': 'rgb(143,158,179,0.4)',
+  'grey-90': '#E1E3E6',
+  'grey-95': '#F0F1F2',
+  'blue-75': '#F0F1F2',
+  'blue-88': '#00BBE0',
+  'blue-100': '#E6F0FF'
 })
 
 config.borderColors = Object.assign(

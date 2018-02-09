@@ -14,6 +14,7 @@ labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "flex"
   , "flex-col"
+  , "inline-block"
   , "py-1"
   ]
 
@@ -50,7 +51,6 @@ spanClasses = HH.ClassName <$>
   , "before:rounded-full"
   , "before:w-6"
   , "cursor-pointer"
-  , "inline-block"
   , "leading-normal"
   , "pl-8"
   , "relative"
