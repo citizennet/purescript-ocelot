@@ -99,7 +99,8 @@ jobs:
             cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
-            git commit --allow-empty -a -m "Build triggered by CircleCI"
+            git add .
+            git commit --allow-empty -m "Build triggered by CircleCI"
             git push -u origin gh-pages
 
 workflows:
