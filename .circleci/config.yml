@@ -44,9 +44,9 @@ jobs:
 
       # Persist generated JS into the workspace
       - persist_to_workspace:
-          root: .
+          root: dist
           paths:
-            - dist
+            .
 
   docs:
     <<: *defaults
@@ -58,7 +58,6 @@ jobs:
           command: |
             git checkout gh-pages
             git checkout master
-            git pull
 
       - run:
           name: Set up gh-pages in worktree for easy artifact copying
@@ -67,7 +66,7 @@ jobs:
             git worktree add ../gh-pages gh-pages
 
       - attach_workspace:
-          at: persisted
+          at: dist
 
       - restore_cache:
           keys:
@@ -78,7 +77,6 @@ jobs:
       - run:
           name: Build CSS
           command: |
-            cp -r persisted/dist dist
             npm run install-css
             npm run build-css-prod
 
@@ -105,7 +103,7 @@ jobs:
           name: Push files to gh-pages branch on GitHub
           command: |
             rm -rf ../gh-pages/dist
-            cp -r dist ../gh-pages/dist
+            mv dist ../gh-pages/dist
             cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
