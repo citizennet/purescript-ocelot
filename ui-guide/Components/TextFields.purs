@@ -19,14 +19,12 @@ import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
-import Data.Tuple (Tuple)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import UIGuide.Blocks.Sidebar as Sidebar
 import UIGuide.Utilities.Async as Async
 
 ----------
@@ -84,7 +82,7 @@ component =
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = container Sidebar.cnNavSections cnDocumentationBlocks
+    render st = HH.div_ cnDocumentationBlocks
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
@@ -150,44 +148,6 @@ containerData =
 
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
-
-container :: ∀ i p
-  . Array (Tuple String (Array (Tuple String String)))
- -> Array (H.HTML i p)
- -> H.HTML i p
-container navs blocks =
-  HH.body
-  [ css "font-sans font-normal text-black leading-normal"
-  , HP.class_ (HH.ClassName "bg-grey-lightest")
-  ]
-  [ HH.div
-    [ css "min-h-screen" ]
-    [ Sidebar.sidebar navs
-    , innerContainer "CitizenNet UI Guide" blocks
-    ]
-  ]
-
-innerContainer :: ∀ i p
-  . String
- -> Array (H.HTML i p)
- -> H.HTML i p
-innerContainer title blocks =
-  HH.div
-  [ css "md:ml-80" ]
-  [ HH.div
-    [ css "fixed w-full z-20" ]
-    [ HH.div
-      [ css "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
-      [ HH.a
-        [ css "mx-auto inline-flex items-center"
-        , HP.href "#" ]
-        [ HH.text title ]
-      ]
-    ]
-  , HH.div
-    [ css "px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto" ]
-    blocks
-  ]
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =

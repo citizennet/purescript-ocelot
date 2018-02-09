@@ -3,7 +3,7 @@
 -- https://github.com/rnons/purescript-halogen-storybook/
 -- to fit with our UI guide branding needs
 
-module UIGuide.Router
+module UIGuide.App
   ( Stories
   , StoryQuery
   , runStorybook
