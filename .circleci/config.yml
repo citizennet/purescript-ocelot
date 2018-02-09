@@ -94,11 +94,12 @@ jobs:
       - run:
           name: Add built CSS file to master branch on GitHub
           command: |
+            git add dist
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
-            git add dist/cn-tailwind.css  # Only CircleCI writes /dist
             git commit -m "CSS built by CircleCI"
-            git push -u origin master
+            git tag "dist-{{ .BuildNum }}" # Preface with dist- to avoid recursive builds
+            git push --follow-tags origin master
 
       - run:
           name: Push files to gh-pages branch on GitHub
@@ -122,6 +123,8 @@ workflows:
           filters:
             branches:
               only: master
+            tags:
+              only: ignore: /^dist-.*/
 
           requires:
             - test
