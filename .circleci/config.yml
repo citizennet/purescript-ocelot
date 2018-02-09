@@ -124,7 +124,7 @@ workflows:
             branches:
               only: master
             tags:
-              only: ignore: /^dist-.*/
+              ignore: /^dist-.*/
 
           requires:
             - test
