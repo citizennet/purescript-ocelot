@@ -223,7 +223,12 @@ navigationTabBlock
 navigationTabBlock = documentationBlock
   "Navigation Tabs"
   "Tabs for navigating, eg. between form pages"
-  (componentBlock "No configuration set." (NavigationTab.navigationTabs tabConfig))
+  (componentBlock "No configuration set."
+    (HH.div
+      [ HP.class_ (HH.ClassName "bg-black px-12") ]
+      [ NavigationTab.navigationTabs tabConfig ]
+    )
+  )
 
 switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 switchBlock = documentationBlock

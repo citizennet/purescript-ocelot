@@ -60,5 +60,10 @@ config.borderColors = Object.assign(
   config.colors
 )
 
+config.modules = Object.assign(config.modules, {
+  'borderWidths': ['responsive', 'hover'],
+  'visibility': ['responsive', 'hover', 'focus', 'group-hover']
+})
+
 // Export the new configuration
 module.exports = config

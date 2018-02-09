@@ -39,7 +39,7 @@ activeTabClasses = HH.ClassName <$>
 inactiveTabClasses :: Array HH.ClassName
 inactiveTabClasses = HH.ClassName <$>
   [ "text-grey"
-  , "border-b-2"
+  , "hover:border-b-2"
   , "hover:border-blue"
   , "hover:text-white"
   ]

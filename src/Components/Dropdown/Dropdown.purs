@@ -132,7 +132,7 @@ component =
       ]
       where
         inputStyle :: String
-        inputStyle = "rounded-sm bg-white block w-full appearance-none ds-input flex py-1 px-1"
+        inputStyle = "rounded-sm bg-white w-full flex py-1 px-1"
 
         browseButtonStyle :: String
         browseButtonStyle =
@@ -148,7 +148,7 @@ component =
         closeButton item =
           HH.button
             [ HE.onClick $ HE.input_ (Removed item)
-            , HP.class_ $ HH.ClassName "float-right leading-normal text-transparent hover:text-grey-dark"
+            , HP.class_ $ HH.ClassName "text-grey-light float-right leading-normal invisible group-hover:visible"
             ]
             [ HH.text "✕" ]
 
@@ -167,8 +167,8 @@ component =
           where
             toggleStyle :: String
             toggleStyle = case selected of
-              Nothing -> " text-grey-dark py-1 px-3 flex-auto"
-              Just _ -> " text-grey-darkest py-1 px-3 flex-auto hover:bg-grey-lightest"
+              Nothing -> "leading-normal text-grey-dark py-1 px-3 flex-auto"
+              Just _ -> "leading-normal group text-grey-darkest py-1 px-3 flex-auto hover:bg-grey-lightest"
 
             toggleHTML :: Array (DropdownHTML item m)
             toggleHTML = case selected of
@@ -183,7 +183,7 @@ component =
                 [ HP.class_ $ HH.ClassName inputStyle ]
             )
             [ HH.div
-              [ HP.class_ $ HH.ClassName "text-grey-dark py-1 px-3 flex-auto" ]
+              [ HP.class_ $ HH.ClassName "leading-normal text-grey-dark py-1 px-3 flex-auto" ]
               [ HH.text st.placeholder ]
             , browseButton
             ]
@@ -205,7 +205,7 @@ component =
           HH.li
             [ HP.class_ $ HH.ClassName "px-1 py-1 text-grey-darkest" ]
             [ HH.div
-              [ HP.class_ $ HH.ClassName "hover:bg-grey-lightest px-3 py-1" ]
+              [ HP.class_ $ HH.ClassName "leading-normal group hover:bg-grey-lightest px-3 py-1" ]
               ( snoc (HH.fromPlainHTML <$> (st.itemHTML item)) (closeButton item) )
             ]
 
@@ -293,6 +293,6 @@ renderContainer itemHTML st =
         props =
           [ HP.class_
             $ HH.ClassName
-            $ "px-4 py-1 text-grey-darkest"
+            $ "leading-normal px-4 py-1 text-grey-darkest"
             <> if st.highlightedIndex == Just index then " bg-grey-lighter" else ""
           ]
