@@ -8634,10 +8634,10 @@ var PS = {};
               return [ "bg-blue-88", "hover:bg-blue-88", "text-white" ];
           };
           if (v instanceof Secondary) {
-              return [ "bg-grey-70-a30", "hover:grey-70-a40", "text-white" ];
+              return [ "bg-grey-70-a30", "hover:grey-70-a40", "text-grey-70" ];
           };
           if (v instanceof Transparent) {
-              return [ "bg-transparent", "text-black-20" ];
+              return [ "bg-transparent", "text-grey-70" ];
           };
           throw new Error("Failed pattern match at CN.UI.Block.Button line 31, column 5 - line 35, column 8: " + [ v.constructor.name ]);
       };

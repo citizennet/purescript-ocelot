@@ -43,12 +43,12 @@ buttonTypeClasses type_ = HH.ClassName <$> classNames type_
     classNames Secondary =
       [ "bg-grey-70-a30"
       , "hover:grey-70-a40"
-      , "text-white"
+      , "text-grey-70"
       ]
 
     classNames Transparent =
       [ "bg-transparent"
-      , "text-black-20"
+      , "text-grey-70"
       ]
 
 button_
