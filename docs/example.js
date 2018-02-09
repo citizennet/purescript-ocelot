@@ -9690,9 +9690,9 @@ var PS = {};
   var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-blue-darkest", "flex", "items-center", "h-16", "p-4", "w-full" ]);
+  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-black-10", "flex", "items-center", "h-16", "p-4", "w-full" ]);
   var formHeader = function (props) {
-      return Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-grey mr-4") ])([ Halogen_HTML_Core.text(props.name) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-white") ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("mr-2") ])([ CN_UI_Block_Button.button({
+      return Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-grey-70 mr-4") ])([ Halogen_HTML_Core.text(props.name) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-white") ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("mr-2") ])([ CN_UI_Block_Button.button({
           type_: CN_UI_Block_Button.Transparent.value
       })([  ])([ Halogen_HTML_Core.text("Cancel") ]) ]), CN_UI_Block_Button.button({
           type_: CN_UI_Block_Button.Primary.value

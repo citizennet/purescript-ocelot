@@ -17,7 +17,7 @@ type FormHeaderProps i =
 
 headerClasses :: Array HH.ClassName
 headerClasses = HH.ClassName <$>
-  [ "bg-blue-darkest"
+  [ "bg-black-10"
   , "flex"
   , "items-center"
   , "h-16"
@@ -32,7 +32,7 @@ formHeader props =
     [ HH.div 
         [ HP.class_ (HH.ClassName "flex-1") ]
         [ HH.span 
-            [ HP.class_ (HH.ClassName "text-grey mr-4") ]
+            [ HP.class_ (HH.ClassName "text-grey-70 mr-4") ]
             [ HH.text props.name ]
         , HH.span
             [ HP.class_ (HH.ClassName "text-white") ]
