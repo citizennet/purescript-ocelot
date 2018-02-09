@@ -23,7 +23,7 @@ inputClasses = HH.ClassName <$>
   [ "absolute"
   , "checked:sibling:after:opacity-100"
   , "checked:sibling:after:scale-1"
-  , "checked:sibling:before:border-teal"
+  , "checked:sibling:before:border-blue-88"
   , "not:checked:sibling:after:opacity-0"
   , "not:checked:sibling:after:scale-0"
   , "opacity-0"
@@ -32,7 +32,7 @@ inputClasses = HH.ClassName <$>
 spanClasses :: Array HH.ClassName
 spanClasses = HH.ClassName <$>
   [ "after:absolute"
-  , "after:bg-teal"
+  , "after:bg-blue-88"
   , "after:all-02s-ease"
   , "after:h-3"
   , "after:left-w-6/2--w-4/2"

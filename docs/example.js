@@ -9731,7 +9731,7 @@ var PS = {};
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
   var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "mr-6", "mt-4", "no-underline", "text-xs", "tracking-wide", "uppercase" ]);
-  var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "text-grey-70", "hover:border-b-2", "hover:border-blue-88", "hover:text-white" ]);
+  var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "hover:border-b-2", "hover:border-blue-88", "hover:text-white", "text-grey-70" ]);
   var activeTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-b-2", "border-blue-88", "text-white" ]);
   var navigationTab = function (dictEq) {
       return function (activePage) {
@@ -9772,9 +9772,9 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:bg-teal", "after:all-02s-ease", "after:h-3", "after:left-w-6/2--w-4/2", "after:no-content", "after:rounded-full", "after:top-w-6/2--w-4/2", "after:w-3", "before:absolute", "before:border", "before:border-color-grey", "before:border-solid", "before:h-6", "before:no-content", "before:pin-l", "before:pin-t", "before:rounded-full", "before:w-6", "cursor-pointer", "leading-normal", "pl-8", "relative", "text-black" ]);
+  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:bg-blue-88", "after:all-02s-ease", "after:h-3", "after:left-w-6/2--w-4/2", "after:no-content", "after:rounded-full", "after:top-w-6/2--w-4/2", "after:w-3", "before:absolute", "before:border", "before:border-color-grey", "before:border-solid", "before:h-6", "before:no-content", "before:pin-l", "before:pin-t", "before:rounded-full", "before:w-6", "cursor-pointer", "leading-normal", "pl-8", "relative", "text-black" ]);
   var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "flex-col", "inline-block", "py-1" ]);
-  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "checked:sibling:after:opacity-100", "checked:sibling:after:scale-1", "checked:sibling:before:border-teal", "not:checked:sibling:after:opacity-0", "not:checked:sibling:after:scale-0", "opacity-0" ]);
+  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "checked:sibling:after:opacity-100", "checked:sibling:after:scale-1", "checked:sibling:before:border-blue-88", "not:checked:sibling:after:opacity-0", "not:checked:sibling:after:scale-0", "opacity-0" ]);
   var radio = function (props) {
       return function (iprops) {
           var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.classes(inputClasses) ]);
@@ -9797,7 +9797,7 @@ var PS = {};
   var Prelude = PS["Prelude"];        
   var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:all-02s-ease", "after:bg-white", "after:block", "after:h-4", "after:left-2px", "after:no-content", "after:rounded-lg", "after:shadow", "after:w-4", "before:absolute", "before:no-content", "all-02s-ease", "bg-grey-light", "items-center", "flex", "h-5", "relative", "rounded-full", "w-8" ]);
   var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "cursor-pointer", "select-none" ]);
-  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-teal", "checked:sibling:after:transform-w-4--4px", "offscreen" ]);
+  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-blue-88", "checked:sibling:after:transform-w-4--4px", "offscreen" ]);
   var toggle = function (iprops) {
       var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.classes(inputClasses), Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputCheckbox.value), Halogen_HTML_Properties.checked(false) ]);
       return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(spanClasses) ])([  ]) ]);

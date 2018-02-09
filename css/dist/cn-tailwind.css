@@ -5459,8 +5459,8 @@ button,
   transition: all .2s ease;
 }
 
-.cc-teal {
-  caret-color: #4dc0b5;
+.cc-blue-88 {
+  caret-color: #00bbe0;
 }
 
 .gotham {
@@ -5498,12 +5498,12 @@ button,
   transition: all .2s ease;
 }
 
-.after\:bg-teal:after {
-  background-color: #4dc0b5;
+.after\:bg-blue-88:after {
+  background-color: #00bbe0;
 }
 
-.after\:bg-teal:after {
-  background-color: #4dc0b5;
+.after\:bg-blue-88:after {
+  background-color: #00bbe0;
 }
 
 .after\:bg-white:after {
@@ -5574,8 +5574,8 @@ button,
   transition: all .2s ease;
 }
 
-.before\:bg-teal:before {
-  background-color: #4dc0b5;
+.before\:bg-blue-88:before {
+  background-color: #00bbe0;
 }
 
 .before\:border-solid:before {
@@ -5622,16 +5622,16 @@ button,
   transform: translate(calc(1rem - 4px), 0);
 }
 
-.checked\:sibling\:before\:bg-teal:checked + *:before {
-  background-color: #4dc0b5;
+.checked\:sibling\:before\:bg-blue-88:checked + *:before {
+  background-color: #00bbe0;
 }
 
-.checked\:sibling\:before\:border-teal:checked + *:before {
-  border-color: #4dc0b5;
+.checked\:sibling\:before\:border-blue-88:checked + *:before {
+  border-color: #00bbe0;
 }
 
-.checked\:sibling\:bg-teal:checked + * {
-  background-color: #4dc0b5;
+.checked\:sibling\:bg-blue-88:checked + * {
+  background-color: #00bbe0;
 }
 
 .disabled\:bg-grey-light:disabled {

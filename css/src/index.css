@@ -11,7 +11,7 @@
 /* cn utilities */
 
 .all-02s-ease { transition: all 0.2s ease; }
-.cc-teal { caret-color: config('colors.teal'); }
+.cc-blue-88 { caret-color: config('colors.blue-88'); }
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
@@ -23,8 +23,8 @@
 
 .after\:absolute:after { @apply .absolute; }
 .after\:all-02s-ease:after { @apply .all-02s-ease; }
-.after\:bg-teal:after { @apply .bg-teal; }
-.after\:bg-teal:after { @apply .bg-teal; }
+.after\:bg-blue-88:after { @apply .bg-blue-88; }
+.after\:bg-blue-88:after { @apply .bg-blue-88; }
 .after\:bg-white:after { @apply .bg-white; }
 .after\:block:after { @apply .block; }
 .after\:h-3:after { @apply .h-3; }
@@ -42,7 +42,7 @@
 .after\:w-4:after { @apply .w-4; }
 .before\:absolute:before { @apply .absolute; }
 .before\:all-02s-ease:before{ @apply .all-02s-ease; }
-.before\:bg-teal:before { @apply .bg-teal; }
+.before\:bg-blue-88:before { @apply .bg-blue-88; }
 .before\:border-solid:before { @apply .border-solid; }
 .before\:border:before { @apply .border; }
 .before\:h-6:before { @apply .h-6; }
@@ -54,9 +54,9 @@
 .checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
 .checked\:sibling\:after\:transform-w-4--4px:checked + *:after { transform: translate(calc(config('width.4') - 4px), 0); }
-.checked\:sibling\:before\:bg-teal:checked + *:before { @apply .bg-teal; }
-.checked\:sibling\:before\:border-teal:checked + *:before { @apply .border-teal; }
-.checked\:sibling\:bg-teal:checked + * { @apply .bg-teal; }
+.checked\:sibling\:before\:bg-blue-88:checked + *:before { @apply .bg-blue-88; }
+.checked\:sibling\:before\:border-blue-88:checked + *:before { @apply .border-blue-88; }
+.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
 .disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
 .focus\:no-outline:focus { @apply .no-outline; }
 .not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
