@@ -13,6 +13,7 @@ package-lock.json
 # put so feel free to handle merge conflicts however you want.
 dist/*
 !dist/cn-tailwind.css
+!dist/index.html
 
 # IDE
 *.swo
