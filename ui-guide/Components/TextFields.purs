@@ -5,6 +5,7 @@ import Prelude
 import CN.UI.Block.Button as Button
 import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Input as Input
+import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Block.Radio as Radio
 import CN.UI.Block.Toggle as Toggle
 import CN.UI.Components.Dropdown as Dropdown
@@ -144,6 +145,19 @@ containerData =
   , "Facebook"
   , "Twitter" ]
 
+tabs :: Array (NavigationTab.Tab Boolean)
+tabs =
+  [ { name: "Accounts & Spend", link: "#", page: true }
+  , { name: "Automatic Optimization", link: "#", page: false }
+  , { name: "Creative", link: "#", page: false }
+  ]
+
+tabConfig :: NavigationTab.TabConfig Boolean
+tabConfig =
+  { tabs: tabs
+  , activePage: true
+  }
+
 
 ----------
 -- HTML
@@ -191,7 +205,8 @@ innerContainer title blocks =
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  switchBlock
+  navigationTabBlock
+  <> switchBlock
   <> radioBlock
   <> inputBlock
   <> formInputBlock
@@ -200,6 +215,15 @@ cnDocumentationBlocks =
   <> typeaheadBlockTodos
   <> dropdownBlock
   <> buttonBlock
+
+navigationTabBlock
+  :: ∀ eff m
+  . MonadAff (Effects eff) m
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+navigationTabBlock = documentationBlock
+  "Navigation Tabs"
+  "Tabs for navigating, eg. between form pages"
+  (componentBlock "No configuration set." (NavigationTab.navigationTabs tabConfig))
 
 switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 switchBlock = documentationBlock

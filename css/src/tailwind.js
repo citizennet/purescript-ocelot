@@ -42,7 +42,7 @@ config.maxHeight = Object.assign(config.maxHeight, {
 })
 
 config.colors = Object.assign(config.colors, {
-  'black': '#333',
+  'black': '#00081A',
   'grey-darkest': '#666',
   'grey-darker': '#999',
   'grey-dark': 'rgba(0,0,0,0.35)',
