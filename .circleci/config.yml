@@ -86,6 +86,10 @@ jobs:
           paths:
             - ~/ui-guide/css/node_modules
 
+      # TODO:
+      # Use conditional statements to avoid committing when
+      # the CSS has not been changed in merge.
+
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
           fingerprints:
@@ -97,7 +101,7 @@ jobs:
             git add dist
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
-            git commit -m "CSS built by CircleCI"
+            git commit --allow-empty -m "CSS built by CircleCI"
             git tag "dist-{{ .BuildNum }}" # Preface with dist- to avoid recursive builds
             git push --follow-tags origin master
 
