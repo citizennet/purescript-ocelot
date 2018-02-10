@@ -432,7 +432,7 @@ selectItem item items selections = case selections of
 diffItemsSelections :: ∀ item source err
   . CompareToString item
  => Eq item
- => SyncMethod source err (Array item)
+ => Array (Fuzzy item)
  -> SelectionType item
  -> Array item
 diffItemsSelections items selections = difference (unpackItems items) (unpackSelections selections)
