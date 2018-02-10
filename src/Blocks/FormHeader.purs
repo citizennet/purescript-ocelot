@@ -22,6 +22,7 @@ headerClasses = HH.ClassName <$>
   , "items-center"
   , "h-16"
   , "p-4"
+  , "text-base"
   , "w-full"
   ]
 
@@ -29,9 +30,9 @@ formHeader :: ∀ p i. FormHeaderProps i -> HH.HTML p i
 formHeader props =
   HH.header
     [ HP.classes headerClasses ]
-    [ HH.div 
+    [ HH.div
         [ HP.class_ (HH.ClassName "flex-1") ]
-        [ HH.span 
+        [ HH.span
             [ HP.class_ (HH.ClassName "text-grey-70 mr-4") ]
             [ HH.text props.name ]
         , HH.span
@@ -40,12 +41,12 @@ formHeader props =
         ]
     , HH.span
         [ HP.class_( HH.ClassName "mr-2" ) ]
-        [ Button.button 
+        [ Button.button
             { type_: Button.Transparent }
             []
             [ HH.text "Cancel" ]
         ]
-    , Button.button 
+    , Button.button
         { type_: Button.Primary }
         [ HE.onClick props.onClick ]
         [ HH.text "Create" ]

@@ -67,5 +67,9 @@ config.modules = Object.assign(config.modules, {
   'visibility': ['responsive', 'hover', 'focus', 'group-hover']
 })
 
+config.options = Object.assign(config.options, {
+  'important': true
+})
+
 // Export the new configuration
 module.exports = config
