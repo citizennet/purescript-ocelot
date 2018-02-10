@@ -1,9 +1,9 @@
 const merge = require('webpack-merge')
 const dev = require('./webpack.dev.config.js')
-const path = require('path');
-const glob = require('glob-all');
-const PurgecssPlugin = require('purgecss-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const path = require('path')
+const glob = require('glob-all')
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 
 // Custom PurgeCSS extractor for Tailwind that allows special characters in
@@ -21,20 +21,17 @@ module.exports = merge(dev, {
 		new	PurgecssPlugin({
 			// Locations of any files to scan
 			paths: glob.sync([
-				path.join(__dirname, "../src/**/*.purs"),
-				path.join(__dirname, "../test/**/*.purs"),
-				path.join(__dirname, "../docs/**/*.js"),
+				path.join(__dirname, "../dist/**/*.js")
 			]),
 			extractors: [
 				{
 					extractor: TailwindExtractor,
-					extensions: [ "js", "purs" ]
+					extensions: [ "js" ]
 				}
 			]
 		}),
 
 		// Minify the CSS after processing
 		new OptimizeCssAssetsPlugin()
-
 	]
 })
