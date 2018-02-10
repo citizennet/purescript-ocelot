@@ -4,7 +4,9 @@ import Prelude
 
 import CN.UI.Block.Button as Button
 import CN.UI.Block.FormControl as FormControl
+import CN.UI.Block.FormHeader as FormHeader
 import CN.UI.Block.Input as Input
+import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Block.Radio as Radio
 import CN.UI.Block.Toggle as Toggle
 import CN.UI.Components.Dropdown as Dropdown
@@ -12,21 +14,20 @@ import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultCon
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (logShow, CONSOLE)
+import Control.Monad.Aff.Console (log, logShow, CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
+import DOM.Event.Types (MouseEvent)
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
-import Data.Tuple (Tuple)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import UIGuide.Blocks.Sidebar as Sidebar
 import UIGuide.Utilities.Async as Async
 
 ----------
@@ -41,7 +42,7 @@ data Query a
   | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-
+  | HandleFormHeaderClick MouseEvent a
 
 ----------
 -- Child paths
@@ -84,7 +85,7 @@ component =
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = container Sidebar.cnNavSections cnDocumentationBlocks
+    render st = HH.div_ cnDocumentationBlocks
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
@@ -110,11 +111,17 @@ component =
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
+    eval (HandleFormHeaderClick _ next) = do
+      H.liftAff (log "submit form")
+      pure next
+
     -- Helper to replace items dependent on sync types
     replaceItems Nothing v = v
     replaceItems (Just _) s@(Typeahead.Sync _) = s
     replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
     replaceItems (Just d) (Typeahead.ContinuousAsync db srch src _) = Typeahead.ContinuousAsync db srch src d
+
+
 
 
 ----------
@@ -144,6 +151,19 @@ containerData =
   , "Facebook"
   , "Twitter" ]
 
+tabs :: Array (NavigationTab.Tab Boolean)
+tabs =
+  [ { name: "Accounts & Spend", link: "#", page: true }
+  , { name: "Automatic Optimization", link: "#", page: false }
+  , { name: "Creative", link: "#", page: false }
+  ]
+
+tabConfig :: NavigationTab.TabConfig Boolean
+tabConfig =
+  { tabs: tabs
+  , activePage: true
+  }
+
 
 ----------
 -- HTML
@@ -151,55 +171,33 @@ containerData =
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
 
-container :: ∀ i p
-  . Array (Tuple String (Array (Tuple String String)))
- -> Array (H.HTML i p)
- -> H.HTML i p
-container navs blocks =
-  HH.body
-  [ css "font-sans font-normal text-black leading-normal"
-  , HP.class_ (HH.ClassName "bg-grey-lightest")
-  ]
-  [ HH.div
-    [ css "min-h-screen" ]
-    [ Sidebar.sidebar navs
-    , innerContainer "CitizenNet UI Guide" blocks
-    ]
-  ]
-
-innerContainer :: ∀ i p
-  . String
- -> Array (H.HTML i p)
- -> H.HTML i p
-innerContainer title blocks =
-  HH.div
-  [ css "md:ml-80" ]
-  [ HH.div
-    [ css "fixed w-full z-20" ]
-    [ HH.div
-      [ css "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
-      [ HH.a
-        [ css "mx-auto inline-flex items-center"
-        , HP.href "#" ]
-        [ HH.text title ]
-      ]
-    ]
-  , HH.div
-    [ css "px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto" ]
-    blocks
-  ]
-
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  switchBlock
+  navigationTabBlock
+  <> switchBlock
   <> radioBlock
   <> inputBlock
   <> formInputBlock
+  <> formHeaderBlock
   <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
   <> buttonBlock
+
+navigationTabBlock
+  :: ∀ eff m
+  . MonadAff (Effects eff) m
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+navigationTabBlock = documentationBlock
+  "Navigation Tabs"
+  "Tabs for navigating, eg. between form pages"
+  (componentBlock "No configuration set."
+    (HH.div
+      [ HP.class_ (HH.ClassName "bg-black px-12") ]
+      [ NavigationTab.navigationTabs tabConfig ]
+    )
+  )
 
 switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 switchBlock = documentationBlock
@@ -209,6 +207,7 @@ switchBlock = documentationBlock
     [ Toggle.toggle []
     ]
   )
+
 radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 radioBlock = documentationBlock
   "Radio"
@@ -247,23 +246,49 @@ formInputBlock = documentationBlock
     ]
   )
 
+formHeaderBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+formHeaderBlock = documentationBlock
+  "Form Header"
+  ""
+  (componentBlock "Form Header" header)
+  where
+    header = 
+      FormHeader.formHeader 
+        { name: "Campaign Group"
+        , onClick: HE.input HandleFormHeaderClick
+        , title: "New"
+        }
+
 buttonBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 buttonBlock = documentationBlock
-  "Button"
-  "Some button shit"
-  (HH.div_
-    [ Button.button_
-      { type_: Button.Primary }
-      [ HH.text "Submit" ]
-    , HH.span
-      [ HP.class_ (HH.ClassName "ml-4") ]
-      [ Button.button
+  "Buttons"
+  ""
+  ( HH.div_ 
+    [ componentBlock "Default" default
+    , componentBlock "Primary" primary
+    , componentBlock "Secondary" secondary
+    ]
+  )
+  where
+    default = 
+      Button.button
         { type_: Button.Default }
         []
         [ HH.text "Cancel" ]
-      ]
-    ]
-  )
+      
+    primary =
+      Button.button_
+        { type_: Button.Primary }
+        [ HH.text "Submit" ]
+
+    secondary =
+      HH.div
+        [ css "bg-black-10 h-full" ]
+        [ Button.button_
+            { type_: Button.Secondary }
+            [ HH.text "Options" ]
+        ]
+  
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m

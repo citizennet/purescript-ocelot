@@ -9,7 +9,7 @@ import Halogen.HTML.Properties as HP
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
   [ "bg-white"
-  , "cc-teal"
+  , "cc-blue-88"
   , "disabled:bg-grey-light"
   , "focus:no-outline"
   , "font-light"

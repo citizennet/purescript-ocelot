@@ -15,7 +15,7 @@ labelClasses = HH.ClassName <$>
 
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
-  [ "checked:sibling:bg-teal"
+  [ "checked:sibling:bg-blue-88"
   , "checked:sibling:after:transform-w-4--4px"
   , "offscreen"
   ]
