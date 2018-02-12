@@ -175,8 +175,7 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  buttonBlock
-  <> switchBlock
+  switchBlock
   <> radioBlock
   <> inputBlock
   <> formHeaderBlock
@@ -185,39 +184,6 @@ cnDocumentationBlocks =
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
-
-buttonBlock 
-  :: ∀ eff m
-   . MonadAff (Effects eff) m 
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-buttonBlock =
-  [ documentation
-      { header: "Buttons"
-      , subheader: "Perform Actions" 
-      }
-      [ Component.component
-          { title: "Default" }
-          [ Button.button_
-              { type_: Button.Default }
-              [ HH.text "Cancel" ]
-          ]
-      , Component.component
-          { title: "Primary" }
-          [ Button.button_
-              { type_: Button.Primary }
-              [ HH.text "Submit" ]
-          ]
-      , Component.component
-          { title: "Secondary" }
-          [ HH.div
-              [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-16 w-full") ]
-              [ Button.button_
-                  { type_: Button.Secondary }
-                  [ HH.text "Options" ]
-              ]
-          ]
-      ]
-  ]
 
 switchBlock 
   :: ∀ eff m
