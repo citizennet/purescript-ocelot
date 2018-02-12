@@ -2,13 +2,7 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.FormHeader as FormHeader
-import CN.UI.Block.Input as Input
 import CN.UI.Block.NavigationTab as NavigationTab
-import CN.UI.Block.Radio as Radio
-import CN.UI.Block.Toggle as Toggle
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
@@ -29,6 +23,8 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.Utilities.Async as Async
+import UIGuide.Block.Component as Component
+import UIGuide.Block.Documentation (documentation)
 
 ----------
 -- Component Types
@@ -42,7 +38,6 @@ data Query a
   | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-  | HandleFormHeaderClick MouseEvent a
 
 ----------
 -- Child paths
@@ -111,10 +106,6 @@ component =
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
-    eval (HandleFormHeaderClick _ next) = do
-      H.liftAff (log "submit form")
-      pure next
-
     -- Helper to replace items dependent on sync types
     replaceItems Nothing v = v
     replaceItems (Just _) s@(Typeahead.Sync _) = s
@@ -173,122 +164,26 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  navigationTabBlock
-  <> switchBlock
-  <> radioBlock
-  <> inputBlock
-  <> formInputBlock
-  <> formHeaderBlock
+  tabsBlock 
   <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
-  <> buttonBlock
 
-navigationTabBlock
+tabsBlock
   :: ∀ eff m
   . MonadAff (Effects eff) m
   => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-navigationTabBlock = documentationBlock
-  "Navigation Tabs"
-  "Tabs for navigating, eg. between form pages"
-  (componentBlock "No configuration set."
-    (HH.div
-      [ HP.class_ (HH.ClassName "bg-black px-12") ]
-      [ NavigationTab.navigationTabs tabConfig ]
-    )
-  )
-
-switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-switchBlock = documentationBlock
-  "switch"
-  "some toggle switch shit"
-  ( HH.div_
-    [ Toggle.toggle []
-    ]
-  )
-
-radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-radioBlock = documentationBlock
-  "Radio"
-  "A radio button"
-  ( HH.div_
-    [ Radio.radio
-      { label: "Apples" }
-      [ HP.name "fruit" ]
-    , Radio.radio
-      { label: "Bananas" }
-      [ HP.name "fruit" ]
-    , Radio.radio
-      { label: "Oranges" }
-      [ HP.name "fruit" ]
-    ]
-  )
-
-inputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-inputBlock = documentationBlock
-  "Input"
-  "Some input shit"
-  ( HH.div_
-      [ Input.input [ HP.placeholder "address@gmail.com" ] ]
-  )
-
-formInputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-formInputBlock = documentationBlock
-  "Input Form Block"
-  "Some form input shit"
-  ( HH.div_
-    [ FormControl.formControl
-      { label: "Email"
-      , helpText: (Just "You really should fill this shit out")
+tabsBlock = 
+  [ documentation
+      { header: "Tabs" 
+      , subheader: "Tabs for navigating, eg. between form pages"
       }
-      (Input.input [ HP.placeholder "address@gmail.com" ])
-    ]
-  )
-
-formHeaderBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-formHeaderBlock = documentationBlock
-  "Form Header"
-  ""
-  (componentBlock "Form Header" header)
-  where
-    header = 
-      FormHeader.formHeader 
-        { name: "Campaign Group"
-        , onClick: HE.input HandleFormHeaderClick
-        , title: "New"
-        }
-
-buttonBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-buttonBlock = documentationBlock
-  "Buttons"
-  ""
-  ( HH.div_ 
-    [ componentBlock "Default" default
-    , componentBlock "Primary" primary
-    , componentBlock "Secondary" secondary
-    ]
-  )
-  where
-    default = 
-      Button.button
-        { type_: Button.Default }
-        []
-        [ HH.text "Cancel" ]
-      
-    primary =
-      Button.button_
-        { type_: Button.Primary }
-        [ HH.text "Submit" ]
-
-    secondary =
-      HH.div
-        [ css "bg-black-10 h-full" ]
-        [ Button.button_
-            { type_: Button.Secondary }
-            [ HH.text "Options" ]
-        ]
-  
+      [ Component.component
+          { title: "Tabs" }
+          [ NavigationTab.navigationTabs tabConfig ]
+      ]
+  ]
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m

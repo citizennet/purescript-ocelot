@@ -6,6 +6,10 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 
+formControlClasses :: Array HH.ClassName
+formControlClasses = HH.ClassName <$>
+  [ "w-full" ]
+
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = HH.ClassName <$>
   [ "leading-loose"
@@ -32,7 +36,8 @@ formControl
   -> HH.HTML p i
   -> HH.HTML p i
 formControl props html =
-  HH.div_
+  HH.div
+    [ HP.classes formControlClasses ]
     [ HH.label
       [ HP.class_ (HH.ClassName "w-full") ]
       [ label props.label

@@ -21,7 +21,7 @@ type IsActive = Boolean
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "leading-normal"
-  , "mr-6"
+  , "mx-3"
   , "mt-4"
   , "no-underline"
   , "text-xs"
@@ -44,14 +44,22 @@ inactiveTabClasses = HH.ClassName <$>
   , "text-grey-70"
   ]
 
-
-navigationTabs :: ∀ p i page. Eq page => TabConfig page -> HH.HTML p i
+navigationTabs 
+  :: ∀ p i page
+   . Eq page 
+  => TabConfig page 
+  -> HH.HTML p i
 navigationTabs { tabs, activePage } =
   HH.div
-    [ HP.class_ (HH.ClassName "flex h-12 bg-black-10") ]
+    [ HP.class_ (HH.ClassName "flex w-full h-12 bg-black-10") ]
     $ navigationTab activePage <$> tabs
 
-navigationTab :: ∀ p i page. Eq page => page -> Tab page -> HH.HTML p i
+navigationTab 
+  :: ∀ p i page
+   . Eq page 
+  => page 
+  -> Tab page 
+  -> HH.HTML p i
 navigationTab activePage tab =
   HH.a
     [ HP.href tab.link
