@@ -973,6 +973,10 @@ button,
   background-color: #f0f1f2 !important;
 }
 
+.bg-blue-82 {
+  background-color: #00abd1 !important;
+}
+
 .bg-blue-88 {
   background-color: #00bbe0 !important;
 }
@@ -1315,6 +1319,10 @@ button,
 
 .hover\:bg-blue-75:hover {
   background-color: #f0f1f2 !important;
+}
+
+.hover\:bg-blue-82:hover {
+  background-color: #00abd1 !important;
 }
 
 .hover\:bg-blue-88:hover {
@@ -1721,6 +1729,10 @@ button,
   border-color: #f0f1f2 !important;
 }
 
+.border-blue-82 {
+  border-color: #00abd1 !important;
+}
+
 .border-blue-88 {
   border-color: #00bbe0 !important;
 }
@@ -2063,6 +2075,10 @@ button,
 
 .hover\:border-blue-75:hover {
   border-color: #f0f1f2 !important;
+}
+
+.hover\:border-blue-82:hover {
+  border-color: #00abd1 !important;
 }
 
 .hover\:border-blue-88:hover {
@@ -4711,6 +4727,10 @@ button,
   color: #f0f1f2 !important;
 }
 
+.text-blue-82 {
+  color: #00abd1 !important;
+}
+
 .text-blue-88 {
   color: #00bbe0 !important;
 }
@@ -5053,6 +5073,10 @@ button,
 
 .hover\:text-blue-75:hover {
   color: #f0f1f2 !important;
+}
+
+.hover\:text-blue-82:hover {
+  color: #00abd1 !important;
 }
 
 .hover\:text-blue-88:hover {
@@ -6075,6 +6099,10 @@ html {
     background-color: #f0f1f2 !important;
   }
 
+  .sm\:bg-blue-82 {
+    background-color: #00abd1 !important;
+  }
+
   .sm\:bg-blue-88 {
     background-color: #00bbe0 !important;
   }
@@ -6417,6 +6445,10 @@ html {
 
   .sm\:hover\:bg-blue-75:hover {
     background-color: #f0f1f2 !important;
+  }
+
+  .sm\:hover\:bg-blue-82:hover {
+    background-color: #00abd1 !important;
   }
 
   .sm\:hover\:bg-blue-88:hover {
@@ -6823,6 +6855,10 @@ html {
     border-color: #f0f1f2 !important;
   }
 
+  .sm\:border-blue-82 {
+    border-color: #00abd1 !important;
+  }
+
   .sm\:border-blue-88 {
     border-color: #00bbe0 !important;
   }
@@ -7165,6 +7201,10 @@ html {
 
   .sm\:hover\:border-blue-75:hover {
     border-color: #f0f1f2 !important;
+  }
+
+  .sm\:hover\:border-blue-82:hover {
+    border-color: #00abd1 !important;
   }
 
   .sm\:hover\:border-blue-88:hover {
@@ -9805,6 +9845,10 @@ html {
     color: #f0f1f2 !important;
   }
 
+  .sm\:text-blue-82 {
+    color: #00abd1 !important;
+  }
+
   .sm\:text-blue-88 {
     color: #00bbe0 !important;
   }
@@ -10147,6 +10191,10 @@ html {
 
   .sm\:hover\:text-blue-75:hover {
     color: #f0f1f2 !important;
+  }
+
+  .sm\:hover\:text-blue-82:hover {
+    color: #00abd1 !important;
   }
 
   .sm\:hover\:text-blue-88:hover {
@@ -10906,6 +10954,10 @@ html {
     background-color: #f0f1f2 !important;
   }
 
+  .md\:bg-blue-82 {
+    background-color: #00abd1 !important;
+  }
+
   .md\:bg-blue-88 {
     background-color: #00bbe0 !important;
   }
@@ -11248,6 +11300,10 @@ html {
 
   .md\:hover\:bg-blue-75:hover {
     background-color: #f0f1f2 !important;
+  }
+
+  .md\:hover\:bg-blue-82:hover {
+    background-color: #00abd1 !important;
   }
 
   .md\:hover\:bg-blue-88:hover {
@@ -11654,6 +11710,10 @@ html {
     border-color: #f0f1f2 !important;
   }
 
+  .md\:border-blue-82 {
+    border-color: #00abd1 !important;
+  }
+
   .md\:border-blue-88 {
     border-color: #00bbe0 !important;
   }
@@ -11996,6 +12056,10 @@ html {
 
   .md\:hover\:border-blue-75:hover {
     border-color: #f0f1f2 !important;
+  }
+
+  .md\:hover\:border-blue-82:hover {
+    border-color: #00abd1 !important;
   }
 
   .md\:hover\:border-blue-88:hover {
@@ -14636,6 +14700,10 @@ html {
     color: #f0f1f2 !important;
   }
 
+  .md\:text-blue-82 {
+    color: #00abd1 !important;
+  }
+
   .md\:text-blue-88 {
     color: #00bbe0 !important;
   }
@@ -14978,6 +15046,10 @@ html {
 
   .md\:hover\:text-blue-75:hover {
     color: #f0f1f2 !important;
+  }
+
+  .md\:hover\:text-blue-82:hover {
+    color: #00abd1 !important;
   }
 
   .md\:hover\:text-blue-88:hover {
@@ -15737,6 +15809,10 @@ html {
     background-color: #f0f1f2 !important;
   }
 
+  .lg\:bg-blue-82 {
+    background-color: #00abd1 !important;
+  }
+
   .lg\:bg-blue-88 {
     background-color: #00bbe0 !important;
   }
@@ -16079,6 +16155,10 @@ html {
 
   .lg\:hover\:bg-blue-75:hover {
     background-color: #f0f1f2 !important;
+  }
+
+  .lg\:hover\:bg-blue-82:hover {
+    background-color: #00abd1 !important;
   }
 
   .lg\:hover\:bg-blue-88:hover {
@@ -16485,6 +16565,10 @@ html {
     border-color: #f0f1f2 !important;
   }
 
+  .lg\:border-blue-82 {
+    border-color: #00abd1 !important;
+  }
+
   .lg\:border-blue-88 {
     border-color: #00bbe0 !important;
   }
@@ -16827,6 +16911,10 @@ html {
 
   .lg\:hover\:border-blue-75:hover {
     border-color: #f0f1f2 !important;
+  }
+
+  .lg\:hover\:border-blue-82:hover {
+    border-color: #00abd1 !important;
   }
 
   .lg\:hover\:border-blue-88:hover {
@@ -19467,6 +19555,10 @@ html {
     color: #f0f1f2 !important;
   }
 
+  .lg\:text-blue-82 {
+    color: #00abd1 !important;
+  }
+
   .lg\:text-blue-88 {
     color: #00bbe0 !important;
   }
@@ -19809,6 +19901,10 @@ html {
 
   .lg\:hover\:text-blue-75:hover {
     color: #f0f1f2 !important;
+  }
+
+  .lg\:hover\:text-blue-82:hover {
+    color: #00abd1 !important;
   }
 
   .lg\:hover\:text-blue-88:hover {
@@ -20568,6 +20664,10 @@ html {
     background-color: #f0f1f2 !important;
   }
 
+  .xl\:bg-blue-82 {
+    background-color: #00abd1 !important;
+  }
+
   .xl\:bg-blue-88 {
     background-color: #00bbe0 !important;
   }
@@ -20910,6 +21010,10 @@ html {
 
   .xl\:hover\:bg-blue-75:hover {
     background-color: #f0f1f2 !important;
+  }
+
+  .xl\:hover\:bg-blue-82:hover {
+    background-color: #00abd1 !important;
   }
 
   .xl\:hover\:bg-blue-88:hover {
@@ -21316,6 +21420,10 @@ html {
     border-color: #f0f1f2 !important;
   }
 
+  .xl\:border-blue-82 {
+    border-color: #00abd1 !important;
+  }
+
   .xl\:border-blue-88 {
     border-color: #00bbe0 !important;
   }
@@ -21658,6 +21766,10 @@ html {
 
   .xl\:hover\:border-blue-75:hover {
     border-color: #f0f1f2 !important;
+  }
+
+  .xl\:hover\:border-blue-82:hover {
+    border-color: #00abd1 !important;
   }
 
   .xl\:hover\:border-blue-88:hover {
@@ -24298,6 +24410,10 @@ html {
     color: #f0f1f2 !important;
   }
 
+  .xl\:text-blue-82 {
+    color: #00abd1 !important;
+  }
+
   .xl\:text-blue-88 {
     color: #00bbe0 !important;
   }
@@ -24640,6 +24756,10 @@ html {
 
   .xl\:hover\:text-blue-75:hover {
     color: #f0f1f2 !important;
+  }
+
+  .xl\:hover\:text-blue-82:hover {
+    color: #00abd1 !important;
   }
 
   .xl\:hover\:text-blue-88:hover {
