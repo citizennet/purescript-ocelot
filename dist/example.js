@@ -8623,7 +8623,9 @@ var PS = {};
   var Unsafe_Coerce = PS["Unsafe.Coerce"];
   var element = Halogen_HTML_Core.element(Data_Maybe.Nothing.value);
   var h1 = element("h1");
-  var h1_ = h1([  ]);    
+  var h1_ = h1([  ]);
+  var h2 = element("h2");
+  var h3 = element("h3");
   var header = element("header");
   var input = function (props) {
       return element("input")(props)([  ]);
@@ -8649,6 +8651,8 @@ var PS = {};
   exports["div_"] = div_;
   exports["h1"] = h1;
   exports["h1_"] = h1_;
+  exports["h2"] = h2;
+  exports["h3"] = h3;
   exports["header"] = header;
   exports["input"] = input;
   exports["label"] = label;
@@ -8794,6 +8798,7 @@ var PS = {};
   var Prelude = PS["Prelude"];        
   var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-bold", "leading-loose", "text-black", "text-sm" ]);
   var helpTextClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-loose", "text-grey-darker", "text-sm" ]);
+  var formControlClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full" ]);
   var formControl = function (props) {
       return function (html) {
           var label = function (x) {
@@ -8806,9 +8811,9 @@ var PS = {};
               if (v instanceof Data_Maybe.Just) {
                   return Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(helpTextClasses) ])([ Halogen_HTML_Core.text(v.value0) ]);
               };
-              throw new Error("Failed pattern match at CN.UI.Block.FormControl line 44, column 5 - line 45, column 5: " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at CN.UI.Block.FormControl line 49, column 5 - line 50, column 5: " + [ v.constructor.name ]);
           };
-          return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("w-full") ])([ label(props.label), html, helpText(props.helpText) ]) ]);
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("w-full") ])([ label(props.label), html, helpText(props.helpText) ]) ]);
       };
   };
   exports["formControl"] = formControl;
@@ -9851,7 +9856,7 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "mr-6", "mt-4", "no-underline", "text-xs", "tracking-wide", "uppercase" ]);
+  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "mx-3", "mt-4", "no-underline", "text-xs", "tracking-wide", "uppercase" ]);
   var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "hover:border-b-2", "hover:border-blue-88", "hover:text-white", "text-grey-70" ]);
   var activeTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-b-2", "border-blue-88", "text-white" ]);
   var navigationTab = function (dictEq) {
@@ -9864,7 +9869,7 @@ var PS = {};
                   if (!v) {
                       return inactiveTabClasses;
                   };
-                  throw new Error("Failed pattern match at CN.UI.Block.NavigationTab line 63, column 5 - line 63, column 48: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Block.NavigationTab line 71, column 5 - line 71, column 48: " + [ v.constructor.name ]);
               };
               return Halogen_HTML_Elements.a([ Halogen_HTML_Properties.href(tab.link), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(tabClasses)(tabStyles(Data_Eq.eq(dictEq)(tab.page)(activePage)))) ])([ Halogen_HTML_Core.text(tab.name) ]);
           };
@@ -9872,7 +9877,7 @@ var PS = {};
   };
   var navigationTabs = function (dictEq) {
       return function (v) {
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex h-12 bg-black-10") ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs));
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex w-full h-12 bg-black-10") ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs));
       };
   };
   exports["tabClasses"] = tabClasses;
@@ -14514,7 +14519,7 @@ var PS = {};
           }));
       };
       var renderSidebar = function (state) {
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.id_("sidebar"), Halogen_HTML_Properties.class_("hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-lighter w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col") ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("p-8 flex-1 overflow-y-scroll") ])([ Halogen_HTML_Elements.nav([ Halogen_HTML_Properties.class_("text-base overflow-y-scroll") ])([ renderNavs(state) ]) ]) ]);
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.id_("sidebar"), Halogen_HTML_Properties.class_("hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-95 w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col") ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("p-8 flex-1 overflow-y-scroll") ])([ Halogen_HTML_Elements.nav([ Halogen_HTML_Properties.class_("text-base overflow-y-scroll") ])([ renderNavs(state) ]) ]) ]);
       };
       var renderContainer = function (state) {
           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("md:ml-80") ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("fixed w-full z-20") ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center") ])([ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.class_("mx-auto inline-flex items-center"), Halogen_HTML_Properties.href("") ])([ Halogen_HTML_Core.text("CitizenNet UI Guide") ]) ]) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto") ])([ renderSlot(state) ]) ]);
@@ -14559,6 +14564,219 @@ var PS = {};
   };
   exports["runStorybook"] = runStorybook;
 })(PS["UIGuide.App"] = PS["UIGuide.App"] || {});
+(function(exports) {
+  // Generated by purs version 0.11.7
+  "use strict";
+  var Data_Functor = PS["Data.Functor"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Prelude = PS["Prelude"];        
+  var titleClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "block", "font-light", "mb-10", "text-grey-70", "text-sm", "tracking-wide", "uppercase" ]);
+  var contentClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "flex-col", "items-center", "w-full" ]);
+  var componentClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-95", "flex", "flex-col", "items-center", "justify-center", "my-6", "p-10" ]);
+  var component = function (props) {
+      return function (html) {
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(componentClasses) ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(titleClasses) ])([ Halogen_HTML_Core.text(props.title) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(contentClasses) ])(html) ]);
+      };
+  };
+  exports["component"] = component;
+})(PS["UIGuide.Block.Component"] = PS["UIGuide.Block.Component"] || {});
+(function(exports) {
+  // Generated by purs version 0.11.7
+  "use strict";
+  var Data_Functor = PS["Data.Functor"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Prelude = PS["Prelude"];        
+  var subheaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-light", "leading-normal", "text-grey-50", "text-sm" ]);
+  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-light", "leading-loose", "text-black-20" ]);
+  var documentationClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([  ]);
+  var documentation = function (props) {
+      return function (html) {
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(documentationClasses) ])([ Halogen_HTML_Elements.h1([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Core.text(props.header) ]), Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.classes(subheaderClasses) ])([ Halogen_HTML_Core.text(props.subheader) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("mt-5") ])(html) ]);
+      };
+  };
+  exports["documentation"] = documentation;
+})(PS["UIGuide.Block.Documentation"] = PS["UIGuide.Block.Documentation"] || {});
+(function(exports) {
+  // Generated by purs version 0.11.7
+  "use strict";
+  var CN_UI_Block_Button = PS["CN.UI.Block.Button"];
+  var Control_Applicative = PS["Control.Applicative"];
+  var Data_Function = PS["Data.Function"];
+  var Data_Maybe = PS["Data.Maybe"];
+  var Data_Unit = PS["Data.Unit"];
+  var Halogen = PS["Halogen"];
+  var Halogen_Component = PS["Halogen.Component"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
+  var Prelude = PS["Prelude"];
+  var UIGuide_Block_Component = PS["UIGuide.Block.Component"];
+  var UIGuide_Block_Documentation = PS["UIGuide.Block.Documentation"];
+  var component = (function () {
+      var render = function (v) {
+          return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.documentation({
+              header: "Buttons",
+              subheader: "Perform Actions"
+          })([ UIGuide_Block_Component.component({
+              title: "Default"
+          })([ CN_UI_Block_Button.button_({
+              type_: CN_UI_Block_Button.Default.value
+          })([ Halogen_HTML_Core.text("Cancel") ]) ]), UIGuide_Block_Component.component({
+              title: "Primary"
+          })([ CN_UI_Block_Button.button_({
+              type_: CN_UI_Block_Button.Primary.value
+          })([ Halogen_HTML_Core.text("Submit") ]) ]), UIGuide_Block_Component.component({
+              title: "Secondary"
+          })([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("bg-black-10 flex items-center justify-center h-16 w-full") ])([ CN_UI_Block_Button.button_({
+              type_: CN_UI_Block_Button.Secondary.value
+          })([ Halogen_HTML_Core.text("Options") ]) ]) ]) ]) ]);
+      };
+      var $$eval = function (v) {
+          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
+      };
+      return Halogen_Component.component(Halogen_HTML_Core.bifunctorHTML)({
+          initialState: Data_Function["const"](Data_Unit.unit),
+          render: render,
+          "eval": $$eval,
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
+      });
+  })();
+  exports["component"] = component;
+})(PS["UIGuide.Components.Button"] = PS["UIGuide.Components.Button"] || {});
+(function(exports) {
+  // Generated by purs version 0.11.7
+  "use strict";
+  var CN_UI_Block_FormControl = PS["CN.UI.Block.FormControl"];
+  var CN_UI_Block_FormHeader = PS["CN.UI.Block.FormHeader"];
+  var CN_UI_Block_Input = PS["CN.UI.Block.Input"];
+  var CN_UI_Block_Radio = PS["CN.UI.Block.Radio"];
+  var CN_UI_Block_Toggle = PS["CN.UI.Block.Toggle"];
+  var Control_Applicative = PS["Control.Applicative"];
+  var Control_Bind = PS["Control.Bind"];
+  var Control_Monad_Aff = PS["Control.Monad.Aff"];
+  var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
+  var Control_Monad_Aff_Console = PS["Control.Monad.Aff.Console"];
+  var DOM_Event_Types = PS["DOM.Event.Types"];
+  var Data_Function = PS["Data.Function"];
+  var Data_Maybe = PS["Data.Maybe"];
+  var Data_Unit = PS["Data.Unit"];
+  var Halogen = PS["Halogen"];
+  var Halogen_Component = PS["Halogen.Component"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
+  var Prelude = PS["Prelude"];
+  var UIGuide_Block_Component = PS["UIGuide.Block.Component"];
+  var UIGuide_Block_Documentation = PS["UIGuide.Block.Documentation"];        
+  var NoOp = (function () {
+      function NoOp(value0) {
+          this.value0 = value0;
+      };
+      NoOp.create = function (value0) {
+          return new NoOp(value0);
+      };
+      return NoOp;
+  })();
+  var HandleFormHeaderClick = (function () {
+      function HandleFormHeaderClick(value0, value1) {
+          this.value0 = value0;
+          this.value1 = value1;
+      };
+      HandleFormHeaderClick.create = function (value0) {
+          return function (value1) {
+              return new HandleFormHeaderClick(value0, value1);
+          };
+      };
+      return HandleFormHeaderClick;
+  })();
+  var component = (function () {
+      var render = function (v) {
+          return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.documentation({
+              header: "Form Header",
+              subheader: "The header used on forms"
+          })([ UIGuide_Block_Component.component({
+              title: "Form Header"
+          })([ CN_UI_Block_FormHeader.formHeader({
+              name: "Campaign Group",
+              onClick: Halogen_HTML_Events.input(HandleFormHeaderClick.create),
+              title: "New"
+          }) ]) ]), UIGuide_Block_Documentation.documentation({
+              header: "Input",
+              subheader: "Inputing very important text"
+          })([ UIGuide_Block_Component.component({
+              title: "Input"
+          })([ CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesdesignpatterns@gmail.com") ]) ]), UIGuide_Block_Component.component({
+              title: "Input with Form Control"
+          })([ CN_UI_Block_FormControl.formControl({
+              label: "Email",
+              helpText: new Data_Maybe.Just("Dave will spam your email with gang of four patterns")
+          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesdesignpatterns@gmail.com") ])) ]) ]), UIGuide_Block_Documentation.documentation({
+              header: "Toggle",
+              subheader: "Enable or disable something"
+          })([ UIGuide_Block_Component.component({
+              title: "Toggle"
+          })([ CN_UI_Block_Toggle.toggle([  ]) ]), UIGuide_Block_Component.component({
+              title: "Toggle with Form Control"
+          })([ CN_UI_Block_FormControl.formControl({
+              label: "Dave's OO Emails",
+              helpText: new Data_Maybe.Just("Once enabled, you can never unsubscribe.")
+          })(CN_UI_Block_Toggle.toggle([  ])) ]) ]), UIGuide_Block_Documentation.documentation({
+              header: "Radio",
+              subheader: "Select one option"
+          })([ UIGuide_Block_Component.component({
+              title: "Radio"
+          })([ Halogen_HTML_Elements.div_([ CN_UI_Block_Radio.radio({
+              label: "Apples"
+          })([ Halogen_HTML_Properties.name("fruit") ]), CN_UI_Block_Radio.radio({
+              label: "Bananas"
+          })([ Halogen_HTML_Properties.name("fruit") ]), CN_UI_Block_Radio.radio({
+              label: "Oranges"
+          })([ Halogen_HTML_Properties.name("fruit") ]) ]) ]), UIGuide_Block_Component.component({
+              title: "Radio with Form Control"
+          })([ CN_UI_Block_FormControl.formControl({
+              label: "Platform",
+              helpText: new Data_Maybe.Just("Where do you want your ad to appear?")
+          })(Halogen_HTML_Elements.div_([ CN_UI_Block_Radio.radio({
+              label: "Facebook"
+          })([ Halogen_HTML_Properties.name("platform") ]), CN_UI_Block_Radio.radio({
+              label: "Instagram"
+          })([ Halogen_HTML_Properties.name("platform") ]), CN_UI_Block_Radio.radio({
+              label: "Twitter"
+          })([ Halogen_HTML_Properties.name("platform") ]) ])) ]) ]) ]);
+      };
+      var $$eval = function (v) {
+          if (v instanceof NoOp) {
+              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
+          };
+          if (v instanceof HandleFormHeaderClick) {
+              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(Control_Monad_Aff_Class.monadAffAff))(Control_Monad_Aff_Console.log("submit form")))(function () {
+                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+              });
+          };
+          throw new Error("Failed pattern match at UIGuide.Components.FormControl line 43, column 12 - line 49, column 15: " + [ v.constructor.name ]);
+      };
+      return Halogen_Component.component(Halogen_HTML_Core.bifunctorHTML)({
+          initialState: Data_Function["const"](Data_Unit.unit),
+          render: render,
+          "eval": $$eval,
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
+      });
+  })();
+  exports["NoOp"] = NoOp;
+  exports["HandleFormHeaderClick"] = HandleFormHeaderClick;
+  exports["component"] = component;
+})(PS["UIGuide.Components.FormControl"] = PS["UIGuide.Components.FormControl"] || {});
 (function(exports) {
   /* global exports */
   /* global XMLHttpRequest */
@@ -15239,13 +15457,7 @@ var PS = {};
 (function(exports) {
   // Generated by purs version 0.11.7
   "use strict";
-  var CN_UI_Block_Button = PS["CN.UI.Block.Button"];
-  var CN_UI_Block_FormControl = PS["CN.UI.Block.FormControl"];
-  var CN_UI_Block_FormHeader = PS["CN.UI.Block.FormHeader"];
-  var CN_UI_Block_Input = PS["CN.UI.Block.Input"];
   var CN_UI_Block_NavigationTab = PS["CN.UI.Block.NavigationTab"];
-  var CN_UI_Block_Radio = PS["CN.UI.Block.Radio"];
-  var CN_UI_Block_Toggle = PS["CN.UI.Block.Toggle"];
   var CN_UI_Components_Dropdown = PS["CN.UI.Components.Dropdown"];
   var CN_UI_Components_Typeahead = PS["CN.UI.Components.Typeahead"];
   var CN_UI_Core_Typeahead = PS["CN.UI.Core.Typeahead"];
@@ -15284,6 +15496,8 @@ var PS = {};
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
   var Network_HTTP_Affjax = PS["Network.HTTP.Affjax"];
   var Prelude = PS["Prelude"];
+  var UIGuide_Block_Component = PS["UIGuide.Block.Component"];
+  var UIGuide_Block_Documentation = PS["UIGuide.Block.Documentation"];
   var UIGuide_Utilities_Async = PS["UIGuide.Utilities.Async"];        
   var TypeaheadTodos = (function () {
       function TypeaheadTodos() {
@@ -15357,18 +15571,6 @@ var PS = {};
       };
       return HandleDropdown;
   })();
-  var HandleFormHeaderClick = (function () {
-      function HandleFormHeaderClick(value0, value1) {
-          this.value0 = value0;
-          this.value1 = value1;
-      };
-      HandleFormHeaderClick.create = function (value0) {
-          return function (value1) {
-              return new HandleFormHeaderClick(value0, value1);
-          };
-      };
-      return HandleFormHeaderClick;
-  })();
   var tabs = [ {
       name: "Accounts & Spend",
       link: "#",
@@ -15385,6 +15587,14 @@ var PS = {};
   var tabConfig = {
       tabs: tabs,
       activePage: true
+  };
+  var tabsBlock = function (dictMonadAff) {
+      return [ UIGuide_Block_Documentation.documentation({
+          header: "Tabs",
+          subheader: "Tabs for navigating, eg. between form pages"
+      })([ UIGuide_Block_Component.component({
+          title: "Tabs"
+      })([ CN_UI_Block_NavigationTab.navigationTabs(Data_Eq.eqBoolean)(tabConfig) ]) ]) ];
   };
   var newtypeTestRecord = new Data_Newtype.Newtype(function (n) {
       return n;
@@ -15416,7 +15626,7 @@ var PS = {};
           if (x instanceof TypeaheadUsers && y instanceof TypeaheadUsers) {
               return Data_Ordering.EQ.value;
           };
-          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 66, column 8 - line 66, column 54: " + [ x.constructor.name, y.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 61, column 8 - line 61, column 54: " + [ x.constructor.name, y.constructor.name ]);
       };
   });
   var eqTestRecord = new Data_Eq.Eq(function (v) {
@@ -15449,8 +15659,8 @@ var PS = {};
       name: "Forest",
       id: 3
   } ];
-  var css = function ($76) {
-      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($76));
+  var css = function ($68) {
+      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($68));
   };
   var documentationBlock = function (title) {
       return function (description) {
@@ -15458,27 +15668,6 @@ var PS = {};
               return [ Halogen_HTML_Elements.h1_([ Halogen_HTML_Core.text(title) ]), Halogen_HTML_Elements.div([ css("text-xl text-grey-dark mb-4") ])([ Halogen_HTML_Core.text(description) ]), block ];
           };
       };
-  };
-  var formInputBlock = function (dictMonadAff) {
-      return documentationBlock("Input Form Block")("Some form input shit")(Halogen_HTML_Elements.div_([ CN_UI_Block_FormControl.formControl({
-          label: "Email",
-          helpText: new Data_Maybe.Just("You really should fill this shit out")
-      })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("address@gmail.com") ])) ]));
-  };
-  var inputBlock = function (dictMonadAff) {
-      return documentationBlock("Input")("Some input shit")(Halogen_HTML_Elements.div_([ CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("address@gmail.com") ]) ]));
-  };
-  var radioBlock = function (dictMonadAff) {
-      return documentationBlock("Radio")("A radio button")(Halogen_HTML_Elements.div_([ CN_UI_Block_Radio.radio({
-          label: "Apples"
-      })([ Halogen_HTML_Properties.name("fruit") ]), CN_UI_Block_Radio.radio({
-          label: "Bananas"
-      })([ Halogen_HTML_Properties.name("fruit") ]), CN_UI_Block_Radio.radio({
-          label: "Oranges"
-      })([ Halogen_HTML_Properties.name("fruit") ]) ]));
-  };
-  var switchBlock = function (dictMonadAff) {
-      return documentationBlock("switch")("some toggle switch shit")(Halogen_HTML_Elements.div_([ CN_UI_Block_Toggle.toggle([  ]) ]));
   };
   var containerData = [ "Instagram", "Facebook", "Twitter" ];
   var componentBlock = function (config) {
@@ -15516,17 +15705,6 @@ var PS = {};
       })(Halogen_HTML_Events.input(HandleDropdown.create));
       return documentationBlock("Dropdown")("Select from a list.")(Halogen_HTML_Elements.div_([ componentBlock("Single select configuration.")(singleSlot), componentBlock("Multi select configuration.")(multiSlot) ]));
   };
-  var formHeaderBlock = function (dictMonadAff) {
-      var header = CN_UI_Block_FormHeader.formHeader({
-          name: "Campaign Group",
-          onClick: Halogen_HTML_Events.input(HandleFormHeaderClick.create),
-          title: "New"
-      });
-      return documentationBlock("Form Header")("")(componentBlock("Form Header")(header));
-  };
-  var navigationTabBlock = function (dictMonadAff) {
-      return documentationBlock("Navigation Tabs")("Tabs for navigating, eg. between form pages")(componentBlock("No configuration set.")(Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("bg-black px-12") ])([ CN_UI_Block_NavigationTab.navigationTabs(Data_Eq.eqBoolean)(tabConfig) ])));
-  };
   var typeaheadBlockStrings = function (dictMonadAff) {
       var slot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(SyncTypeaheadStrings.value)(CN_UI_Core_Typeahead.component(dictMonadAff)(CN_UI_Core_Typeahead.compareToStringString)(Data_Eq.eqString)(Data_Void.showVoid))(CN_UI_Components_Typeahead["defaultMulti'"](dictMonadAff)(CN_UI_Core_Typeahead.compareToStringString)(Data_Eq.eqString)(Data_Void.showVoid)(containerData))(Halogen_HTML_Events.input(HandleSyncTypeahead.create));
       return documentationBlock("Synchronous Typeahead")("Uses string input to search pre-determined entries.")(componentBlock("Set to sync.")(slot));
@@ -15539,20 +15717,8 @@ var PS = {};
       var slot = Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(TypeaheadUsers.value)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.compareToStringItem)(UIGuide_Utilities_Async.eqItem)(Data_Show.showString))(CN_UI_Components_Typeahead["defaultAsyncMulti'"](dictMonadAff)(UIGuide_Utilities_Async.compareToStringItem)(UIGuide_Utilities_Async.eqItem)(Data_Show.showString)(UIGuide_Utilities_Async.users))(Halogen_HTML_Events.input(HandleTypeahead.create(TypeaheadUsers.value)));
       return documentationBlock("Typeahead")("Uses string input to search pre-determined entries.")(componentBlock("Set to default sync.")(slot));
   };
-  var buttonBlock = function (dictMonadAff) {
-      var secondary = Halogen_HTML_Elements.div([ css("bg-black-10 h-full") ])([ CN_UI_Block_Button.button_({
-          type_: CN_UI_Block_Button.Secondary.value
-      })([ Halogen_HTML_Core.text("Options") ]) ]);
-      var primary = CN_UI_Block_Button.button_({
-          type_: CN_UI_Block_Button.Primary.value
-      })([ Halogen_HTML_Core.text("Submit") ]);
-      var $$default = CN_UI_Block_Button.button({
-          type_: CN_UI_Block_Button.Default.value
-      })([  ])([ Halogen_HTML_Core.text("Cancel") ]);
-      return documentationBlock("Buttons")("")(Halogen_HTML_Elements.div_([ componentBlock("Default")($$default), componentBlock("Primary")(primary), componentBlock("Secondary")(secondary) ]));
-  };
   var cnDocumentationBlocks = function (dictMonadAff) {
-      return Data_Semigroup.append(Data_Semigroup.semigroupArray)(navigationTabBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(switchBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(radioBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(formInputBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(formHeaderBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockStrings(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockUsers(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockTodos(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(dropdownBlock(dictMonadAff))(buttonBlock(dictMonadAff)))))))))));
+      return Data_Semigroup.append(Data_Semigroup.semigroupArray)(tabsBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockStrings(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockUsers(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockTodos(dictMonadAff))(dropdownBlock(dictMonadAff)))));
   };
   var component = function (dictMonadAff) {
       var replaceItems = function (v) {
@@ -15569,7 +15735,7 @@ var PS = {};
               if (v instanceof Data_Maybe.Just && v1 instanceof CN_UI_Core_Typeahead.ContinuousAsync) {
                   return new CN_UI_Core_Typeahead.ContinuousAsync(v1.value0, v1.value1, v1.value2, v.value0);
               };
-              throw new Error("Failed pattern match at UIGuide.Components.TextFields line 119, column 5 - line 119, column 31: " + [ v.constructor.name, v1.constructor.name ]);
+              throw new Error("Failed pattern match at UIGuide.Components.TextFields line 110, column 5 - line 110, column 31: " + [ v.constructor.name, v1.constructor.name ]);
           };
       };
       var render = function (st) {
@@ -15604,15 +15770,10 @@ var PS = {};
                           return v1.name;
                       })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was selected"));
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.TextFields line 108, column 49 - line 112, column 74: " + [ v.value0.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.TextFields line 103, column 49 - line 107, column 74: " + [ v.value0.constructor.name ]);
               })());
           };
-          if (v instanceof HandleFormHeaderClick) {
-              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Aff_Class.liftAff(Halogen_Query_HalogenM.monadAffHalogenM(dictMonadAff))(Control_Monad_Aff_Console.log("submit form")))(function () {
-                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-              });
-          };
-          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 90, column 5 - line 90, column 91: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 85, column 5 - line 85, column 91: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(ordTypeaheadSlot)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(ordSyncTypeaheadSlot)(Data_Ord.ordVoid))))({
           initialState: Data_Function["const"](Data_Unit.unit),
@@ -15625,7 +15786,6 @@ var PS = {};
   exports["HandleTypeahead"] = HandleTypeahead;
   exports["HandleSyncTypeahead"] = HandleSyncTypeahead;
   exports["HandleDropdown"] = HandleDropdown;
-  exports["HandleFormHeaderClick"] = HandleFormHeaderClick;
   exports["SyncTypeaheadStrings"] = SyncTypeaheadStrings;
   exports["TypeaheadTodos"] = TypeaheadTodos;
   exports["TypeaheadUsers"] = TypeaheadUsers;
@@ -15637,13 +15797,7 @@ var PS = {};
   exports["tabConfig"] = tabConfig;
   exports["css"] = css;
   exports["cnDocumentationBlocks"] = cnDocumentationBlocks;
-  exports["navigationTabBlock"] = navigationTabBlock;
-  exports["switchBlock"] = switchBlock;
-  exports["radioBlock"] = radioBlock;
-  exports["inputBlock"] = inputBlock;
-  exports["formInputBlock"] = formInputBlock;
-  exports["formHeaderBlock"] = formHeaderBlock;
-  exports["buttonBlock"] = buttonBlock;
+  exports["tabsBlock"] = tabsBlock;
   exports["typeaheadBlockStrings"] = typeaheadBlockStrings;
   exports["typeaheadBlockTodos"] = typeaheadBlockTodos;
   exports["typeaheadBlockUsers"] = typeaheadBlockUsers;
@@ -15660,6 +15814,7 @@ var PS = {};
 (function(exports) {
   // Generated by purs version 0.11.7
   "use strict";
+  var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
   var Data_Foldable = PS["Data.Foldable"];
   var Data_Function = PS["Data.Function"];
   var Data_StrMap = PS["Data.StrMap"];
@@ -15667,10 +15822,10 @@ var PS = {};
   var Halogen_Storybook_Proxy = PS["Halogen.Storybook.Proxy"];
   var Prelude = PS["Prelude"];
   var UIGuide_App = PS["UIGuide.App"];
+  var UIGuide_Components_Button = PS["UIGuide.Components.Button"];
+  var UIGuide_Components_FormControl = PS["UIGuide.Components.FormControl"];
   var UIGuide_Components_TextFields = PS["UIGuide.Components.TextFields"];        
-  var routes = function (dictMonadAff) {
-      return Data_StrMap.fromFoldable(Data_Foldable.foldableArray)([ Data_Tuple.Tuple.create("Text Fields")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_TextFields.component(dictMonadAff))), Data_Tuple.Tuple.create("Other Text Fields")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_TextFields.component(dictMonadAff))), Data_Tuple.Tuple.create("More Text Fields")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_TextFields.component(dictMonadAff))) ]);
-  };
+  var routes = Data_StrMap.fromFoldable(Data_Foldable.foldableArray)([ Data_Tuple.Tuple.create("Text Fields")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_TextFields.component(Control_Monad_Aff_Class.monadAffAff))), Data_Tuple.Tuple.create("Buttons")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_Button.component)), Data_Tuple.Tuple.create("Form Controls")(Halogen_Storybook_Proxy.proxy(UIGuide_Components_FormControl.component)) ]);
   exports["routes"] = routes;
 })(PS["UIGuide.App.Routes"] = PS["UIGuide.App.Routes"] || {});
 (function(exports) {
@@ -15678,7 +15833,6 @@ var PS = {};
   "use strict";
   var Control_Bind = PS["Control.Bind"];
   var Control_Monad_Aff = PS["Control.Monad.Aff"];
-  var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
   var Control_Monad_Eff = PS["Control.Monad.Eff"];
   var Halogen_Aff = PS["Halogen.Aff"];
   var Halogen_Aff_Util = PS["Halogen.Aff.Util"];
@@ -15686,7 +15840,7 @@ var PS = {};
   var UIGuide_App = PS["UIGuide.App"];
   var UIGuide_App_Routes = PS["UIGuide.App.Routes"];        
   var main = Halogen_Aff_Util.runHalogenAff(Control_Bind.bind(Control_Monad_Aff.bindAff)(Halogen_Aff_Util.awaitBody)(function (v) {
-      return UIGuide_App.runStorybook(UIGuide_App_Routes.routes(Control_Monad_Aff_Class.monadAffAff))(v);
+      return UIGuide_App.runStorybook(UIGuide_App_Routes.routes)(v);
   }));
   exports["main"] = main;
 })(PS["Main"] = PS["Main"] || {});
