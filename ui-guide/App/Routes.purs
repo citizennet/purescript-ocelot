@@ -2,8 +2,6 @@ module UIGuide.App.Routes
   ( routes )
 where
 
-import Prelude
-
 import Data.StrMap as SM
 import UIGuide.App (proxy)
 import Data.Tuple (Tuple(..))
@@ -13,8 +11,10 @@ import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.TextFields as TextFields
 
 routes = SM.fromFoldable
-  [ Tuple "Text Fields" $ proxy $ TextFields.component
-  , Tuple "Buttons" $ proxy $ Button.component
-  , Tuple "Form Controls" $ proxy $ FormControl.component
+  [ Tuple "textfields"
+      { anchor: "Text Fields", component: proxy TextFields.component }
+  , Tuple "buttons"
+      { anchor: "Buttons", component: proxy Button.component }
+  , Tuple "formcontrols"
+      { anchor: "Form Controls", component: proxy FormControl.component }
   ]
-

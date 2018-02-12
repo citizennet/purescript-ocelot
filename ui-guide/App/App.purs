@@ -6,6 +6,7 @@
 module UIGuide.App
   ( Stories
   , StoryQuery
+  , Page
   , runStorybook
   , module Halogen.Storybook.Proxy
   ) where
@@ -14,6 +15,7 @@ import Prelude
 
 import Control.Monad.Aff (Aff, launchAff_)
 
+import Data.Tuple (Tuple(..))
 import Data.Const (Const)
 import Data.Functor (mapFlipped)
 import Data.Maybe (Maybe(..))
@@ -40,15 +42,12 @@ type State =
 
 type StoryQuery = ProxyS (Const Void) Unit
 
--- | Stories config, each story consists of a story name and a component.
--- | Note the component needs to be proxied explicitly.
--- |
--- | ```
--- | stories :: forall m. Stories m
--- | stories = SM.fromFoldable
--- |   [ Tuple "count" $ proxy $ ExpCount.component
--- | ```
-type Stories m = SM.StrMap (H.Component HH.HTML StoryQuery Unit Void m)
+type Stories m = SM.StrMap (Page m)
+
+type Page m =
+  { anchor :: String
+  , component :: H.Component HH.HTML StoryQuery Unit Void m
+  }
 
 type Slot = String
 
@@ -112,7 +111,7 @@ app stories =
   renderSlot :: State -> HTML m
   renderSlot state =
     case SM.lookup state.route stories of
-      Just cmp -> HH.slot state.route cmp unit absurd
+      Just { component } -> HH.slot state.route component unit absurd
       -- TODO: Fill in a home page HTML renderer
       _ -> HH.div_ []
 
@@ -132,14 +131,14 @@ app stories =
   renderNavs :: State -> HTML m
   renderNavs { route } =
     HH.ul [ HP.class_ $ HH.ClassName "list-reset" ] $
-      mapFlipped (SM.keys stories) $ \name ->
+      mapFlipped (SM.toUnfoldable stories) $ \(Tuple href { anchor }) ->
         HH.li
         [ HP.class_ $ HH.ClassName "mb-3" ]
         [ HH.a
-          [ HP.class_ $ HH.ClassName $ if route == name then linkActiveClass else linkClass
-          , HP.href $ "#" <> encodeURI name
+          [ HP.class_ $ HH.ClassName $ if route == href then linkActiveClass else linkClass
+          , HP.href $ "#" <> encodeURI href
           ]
-          [ HH.text name ]
+          [ HH.text anchor ]
         ]
     where
       linkClass = "hover:underline text-grey-darkest"
