@@ -2,13 +2,7 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.FormHeader as FormHeader
-import CN.UI.Block.Input as Input
 import CN.UI.Block.NavigationTab as NavigationTab
-import CN.UI.Block.Radio as Radio
-import CN.UI.Block.Toggle as Toggle
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
 import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
@@ -44,7 +38,6 @@ data Query a
   | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
-  | HandleFormHeaderClick MouseEvent a
 
 ----------
 -- Child paths
@@ -113,10 +106,6 @@ component =
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
 
-    eval (HandleFormHeaderClick _ next) = do
-      H.liftAff (log "submit form")
-      pure next
-
     -- Helper to replace items dependent on sync types
     replaceItems Nothing v = v
     replaceItems (Just _) s@(Typeahead.Sync _) = s
@@ -175,55 +164,11 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  switchBlock
-  <> radioBlock
-  <> inputBlock
-  <> formHeaderBlock
-  <> tabsBlock 
+  tabsBlock 
   <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
-
-switchBlock 
-  :: ∀ eff m
-   . MonadAff (Effects eff) m 
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-switchBlock = 
-  [ documentation 
-      { header: "Toggle"
-      , subheader: "Enable or disable something" }
-      [ Component.component
-        { title: "Toggle" }
-        [ Toggle.toggle [] ]
-      ]
-  ]
-
-radioBlock 
-  :: ∀ eff m
-   . MonadAff (Effects eff) m 
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-radioBlock = 
-  [ documentation
-      { header: "Radio"
-      , subheader: "Select one option"
-      }
-      [ Component.component
-          { title: "Radio" }
-          [ HH.div_
-              [ Radio.radio
-                  { label: "Apples" }
-                  [ HP.name "fruit" ]
-              , Radio.radio
-                  { label: "Bananas" }
-                  [ HP.name "fruit" ]
-              , Radio.radio
-                  { label: "Oranges" }
-                  [ HP.name "fruit" ]
-              ]
-          ]
-      ]    
-  ]
 
 tabsBlock
   :: ∀ eff m
@@ -238,51 +183,6 @@ tabsBlock =
           { title: "Tabs" }
           [ NavigationTab.navigationTabs tabConfig ]
       ]
-  ]
-
-inputBlock 
-  :: ∀ eff m
-  . MonadAff (Effects eff) m 
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-inputBlock =
-  [ documentation 
-      { header: "Input"
-      , subheader: "Inputing very important text"
-      }
-      [ Component.component
-          { title: "Input" }
-          [ Input.input 
-              [ HP.placeholder "davelovesdesignpatterns@gmail.com" ]
-          ]
-      , Component.component
-          { title: "Input with Form Control" }
-          [ FormControl.formControl
-            { label: "Email"
-            , helpText: Just "Dave will spam your email with gang of four patterns"
-            }
-            ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
-          ]
-      ]
-  ] 
-
-formHeaderBlock 
-  :: ∀ eff m
-   . MonadAff (Effects eff) m 
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-formHeaderBlock =
-  [ documentation
-      { header: "Form Header"
-      , subheader: "The header used on forms"
-      }
-      [ Component.component
-          { title: "Form Header" }
-          [ FormHeader.formHeader 
-              { name: "Campaign Group"
-              , onClick: HE.input HandleFormHeaderClick
-              , title: "New"
-              }
-          ]
-      ]  
   ]
 
 typeaheadBlockStrings :: ∀ eff m
