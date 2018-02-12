@@ -21,7 +21,7 @@ type IsActive = Boolean
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "leading-normal"
-  , "mr-6"
+  , "mx-3"
   , "mt-4"
   , "no-underline"
   , "text-xs"
