@@ -29,6 +29,8 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.Utilities.Async as Async
+import UIGuide.Block.Component as Component
+import UIGuide.Block.Documentation (documentation)
 
 ----------
 -- Component Types
@@ -173,122 +175,149 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  navigationTabBlock
+  buttonBlock
   <> switchBlock
   <> radioBlock
   <> inputBlock
-  <> formInputBlock
   <> formHeaderBlock
+  <> tabsBlock 
   <> typeaheadBlockStrings
   <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
-  <> buttonBlock
 
-navigationTabBlock
+buttonBlock 
+  :: ∀ eff m
+   . MonadAff (Effects eff) m 
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+buttonBlock =
+  [ documentation
+      { header: "Buttons"
+      , subheader: "Perform Actions" 
+      }
+      [ Component.component
+          { title: "Default" }
+          [ Button.button_
+              { type_: Button.Default }
+              [ HH.text "Cancel" ]
+          ]
+      , Component.component
+          { title: "Primary" }
+          [ Button.button_
+              { type_: Button.Primary }
+              [ HH.text "Submit" ]
+          ]
+      , Component.component
+          { title: "Secondary" }
+          [ HH.div
+              [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-16 w-full") ]
+              [ Button.button_
+                  { type_: Button.Secondary }
+                  [ HH.text "Options" ]
+              ]
+          ]
+      ]
+  ]
+
+switchBlock 
+  :: ∀ eff m
+   . MonadAff (Effects eff) m 
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+switchBlock = 
+  [ documentation 
+      { header: "Toggle"
+      , subheader: "Enable or disable something" }
+      [ Component.component
+        { title: "Toggle" }
+        [ Toggle.toggle [] ]
+      ]
+  ]
+
+radioBlock 
+  :: ∀ eff m
+   . MonadAff (Effects eff) m 
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+radioBlock = 
+  [ documentation
+      { header: "Radio"
+      , subheader: "Select one option"
+      }
+      [ Component.component
+          { title: "Radio" }
+          [ HH.div_
+              [ Radio.radio
+                  { label: "Apples" }
+                  [ HP.name "fruit" ]
+              , Radio.radio
+                  { label: "Bananas" }
+                  [ HP.name "fruit" ]
+              , Radio.radio
+                  { label: "Oranges" }
+                  [ HP.name "fruit" ]
+              ]
+          ]
+      ]    
+  ]
+
+tabsBlock
   :: ∀ eff m
   . MonadAff (Effects eff) m
   => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-navigationTabBlock = documentationBlock
-  "Navigation Tabs"
-  "Tabs for navigating, eg. between form pages"
-  (componentBlock "No configuration set."
-    (HH.div
-      [ HP.class_ (HH.ClassName "bg-black px-12") ]
-      [ NavigationTab.navigationTabs tabConfig ]
-    )
-  )
-
-switchBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-switchBlock = documentationBlock
-  "switch"
-  "some toggle switch shit"
-  ( HH.div_
-    [ Toggle.toggle []
-    ]
-  )
-
-radioBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-radioBlock = documentationBlock
-  "Radio"
-  "A radio button"
-  ( HH.div_
-    [ Radio.radio
-      { label: "Apples" }
-      [ HP.name "fruit" ]
-    , Radio.radio
-      { label: "Bananas" }
-      [ HP.name "fruit" ]
-    , Radio.radio
-      { label: "Oranges" }
-      [ HP.name "fruit" ]
-    ]
-  )
-
-inputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-inputBlock = documentationBlock
-  "Input"
-  "Some input shit"
-  ( HH.div_
-      [ Input.input [ HP.placeholder "address@gmail.com" ] ]
-  )
-
-formInputBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-formInputBlock = documentationBlock
-  "Input Form Block"
-  "Some form input shit"
-  ( HH.div_
-    [ FormControl.formControl
-      { label: "Email"
-      , helpText: (Just "You really should fill this shit out")
+tabsBlock = 
+  [ documentation
+      { header: "Tabs" 
+      , subheader: "Tabs for navigating, eg. between form pages"
       }
-      (Input.input [ HP.placeholder "address@gmail.com" ])
-    ]
-  )
+      [ Component.component
+          { title: "Tabs" }
+          [ NavigationTab.navigationTabs tabConfig ]
+      ]
+  ]
 
-formHeaderBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-formHeaderBlock = documentationBlock
-  "Form Header"
-  ""
-  (componentBlock "Form Header" header)
-  where
-    header = 
-      FormHeader.formHeader 
-        { name: "Campaign Group"
-        , onClick: HE.input HandleFormHeaderClick
-        , title: "New"
-        }
+inputBlock 
+  :: ∀ eff m
+  . MonadAff (Effects eff) m 
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+inputBlock =
+  [ documentation 
+      { header: "Input"
+      , subheader: "Inputing very important text"
+      }
+      [ Component.component
+          { title: "Input" }
+          [ Input.input 
+              [ HP.placeholder "davelovesdesignpatterns@gmail.com" ]
+          ]
+      , Component.component
+          { title: "Input with Form Control" }
+          [ FormControl.formControl
+            { label: "Email"
+            , helpText: Just "Dave will spam your email with gang of four patterns"
+            }
+            ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
+          ]
+      ]
+  ] 
 
-buttonBlock :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-buttonBlock = documentationBlock
-  "Buttons"
-  ""
-  ( HH.div_ 
-    [ componentBlock "Default" default
-    , componentBlock "Primary" primary
-    , componentBlock "Secondary" secondary
-    ]
-  )
-  where
-    default = 
-      Button.button
-        { type_: Button.Default }
-        []
-        [ HH.text "Cancel" ]
-      
-    primary =
-      Button.button_
-        { type_: Button.Primary }
-        [ HH.text "Submit" ]
-
-    secondary =
-      HH.div
-        [ css "bg-black-10 h-full" ]
-        [ Button.button_
-            { type_: Button.Secondary }
-            [ HH.text "Options" ]
-        ]
-  
+formHeaderBlock 
+  :: ∀ eff m
+   . MonadAff (Effects eff) m 
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+formHeaderBlock =
+  [ documentation
+      { header: "Form Header"
+      , subheader: "The header used on forms"
+      }
+      [ Component.component
+          { title: "Form Header" }
+          [ FormHeader.formHeader 
+              { name: "Campaign Group"
+              , onClick: HE.input HandleFormHeaderClick
+              , title: "New"
+              }
+          ]
+      ]  
+  ]
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m
