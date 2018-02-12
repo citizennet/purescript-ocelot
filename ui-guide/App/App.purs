@@ -120,7 +120,7 @@ app stories =
   renderSidebar state =
     HH.div
     [ HP.id_ "sidebar"
-    , HP.class_ $ HH.ClassName "hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-lighter w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col" ]
+    , HP.class_ $ HH.ClassName "hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-95 w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col" ]
     [ HH.div
       [ HP.class_ $ HH.ClassName "p-8 flex-1 overflow-y-scroll" ]
       [ HH.nav
