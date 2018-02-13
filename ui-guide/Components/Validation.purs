@@ -10,11 +10,25 @@ import CN.UI.Core.Typeahead as TA
 
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
+import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER)
 
 import DOM (DOM)
 
+-- Validation imports
+import Control.Alt ((<|>))
+import Data.Bifunctor as Bifunctor
+import Data.String as String
+import Data.String.Regex as Regex
+import Data.String.Regex.Flags as Regex.Flags
+import Partial.Unsafe (unsafePartial)
+import Data.Validation.Semiring (V, unV, invalid, isValid)
+import Data.Semiring.Free (Free, free)
+import Data.Generic.Rep as Generic
+import Data.Generic.Rep.Eq as Generic.Eq
+import Data.Generic.Rep.Show as Generic.Show
+
+import Data.Either (fromRight)
 import Data.Either.Nested (Either4)
 import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -37,12 +51,9 @@ import UIGuide.Block.Documentation as Documentation
 -- Component Types
 
 type State =
-  { developers :: Array TestRecord
-  , todos :: Array Async.Todo
-  , users1 :: Array Async.User
-  , users2 :: Array Async.User
-  , textField1 :: String
-  , textField2 :: String }
+  { raw :: UnvalidatedForm
+  , validation :: Maybe (V FormErrors ValidatedForm)
+  }
 
 data Query a
   = NoOp a
@@ -82,12 +93,14 @@ component :: ∀ eff m
 component =
   H.parentComponent
   { initialState: const
-      { developers: []
-      , todos: []
-      , users1: []
-      , users2: []
-      , textField1: ""
-      , textField2: "" }
+      { raw:
+        { developers: []
+        , todos: []
+        , users1: []
+        , users2: []
+        , email: ""
+        , username: "" }
+      , validation: Nothing }
   , render
   , eval
   , receiver: const Nothing
@@ -96,7 +109,7 @@ component =
     render
       :: State
       -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_ [ renderForm, renderStatus st ]
+    render st = HH.div_ [ renderForm, renderValidation st ]
 
     eval
       :: Query
@@ -105,8 +118,8 @@ component =
 
     -- Done asynchronously so data can load in the background.
     eval (UpdateTextField i str next) = case i of
-      1 -> H.modify (_ { textField1 = str }) *> pure next
-      2 -> H.modify (_ { textField2 = str }) *> pure next
+      1 -> H.modify (_ { raw { email = str }}) *> pure next
+      2 -> H.modify (_ { raw { username = str }}) *> pure next
       _ -> pure next
 
     eval (HandleA message next) = case message of
@@ -155,28 +168,178 @@ component =
       users1 <- H.query' CP.cp3 unit (H.request TA.Selections)
       users2 <- H.query' CP.cp4 unit (H.request TA.Selections)
 
-      H.modify (_ { developers = fromMaybe [] $ TA.unpackSelections <$> devs
-                  , todos = fromMaybe [] $ TA.unpackSelections <$> todos
-                  , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
-                  , users2 = fromMaybe [] $ TA.unpackSelections <$> users2 })
+      H.modify
+        (_ { raw
+              { developers = fromMaybe [] $ TA.unpackSelections <$> devs
+              , todos = fromMaybe [] $ TA.unpackSelections <$> todos
+              , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
+              , users2 = fromMaybe [] $ TA.unpackSelections <$> users2 }
+           })
 
       -- Validate data
       st <- H.get
-
+      H.modify (_ { validation = Just $ runValidation st.raw })
       pure next
-
 
 
 ----------
 -- Validation
 
 -----
--- On Form Submit
+-- Run validation
 
+runValidation :: UnvalidatedForm -> V FormErrors ValidatedForm
+runValidation f =
+  { developers: _
+  , todos: _
+  , users1: _
+  , users2: _
+  , email: _
+  , username: _ }
+  <$> (Bifunctor.lmap free $ validateDevelopers f.developers)
+  <*> (Bifunctor.lmap free $ validateTodos f.todos)
+  <*> (Bifunctor.lmap free $ validateUsers1 f.users1)
+  <*> (Bifunctor.lmap free $ validateUsers2 f.users2)
+  <*> (Bifunctor.lmap free $ validateEmail f.email)
+  <*> (Bifunctor.lmap free $ validateUsername f.username)
+
+-----
+-- Top level form types
+
+type UnvalidatedForm =
+  { developers :: Array TestRecord
+  , todos      :: Array Async.Todo
+  , users1     :: Array Async.User
+  , users2     :: Array Async.User
+  , email      :: String
+  , username   :: String }
+
+type ValidatedForm =
+  { developers :: ValidatedArray TestRecord
+  , todos      :: ValidatedArray Async.Todo
+  , users1     :: ValidatedArray Async.User
+  , users2     :: ValidatedArray Async.User
+  , email      :: Email
+  , username   :: Username }
+
+-----
+-- Validation for form fields
+
+validateDevelopers :: Array TestRecord -> V FormError (ValidatedArray TestRecord)
+validateDevelopers xs =
+  Bifunctor.bimap FailDevelopers ValidatedArray
+  $ validateMinLengthArr 2 xs
+
+validateTodos :: Array Async.Todo -> V FormError (ValidatedArray Async.Todo)
+validateTodos xs =
+  Bifunctor.bimap FailTodos ValidatedArray
+  $ validateNonEmptyArr xs
+
+validateUsers1 :: Array Async.User -> V FormError (ValidatedArray Async.User)
+validateUsers1 xs =
+  Bifunctor.bimap FailUsers1 ValidatedArray
+  $ validateNonEmptyArr xs
+  *> validateMinLengthArr 2 xs
+
+validateUsers2 :: Array Async.User -> V FormError (ValidatedArray Async.User)
+validateUsers2 xs =
+  Bifunctor.bimap FailUsers2 ValidatedArray
+  $ validateNonEmptyArr xs
+
+validateEmail :: String -> V FormError Email
+validateEmail email =
+  Bifunctor.bimap FailEmail Email
+  $  validateNonEmptyStr email
+  *> validateEmailRegex email
+
+validateUsername :: String -> V FormError Username
+validateUsername uname =
+  Bifunctor.bimap FailUsername Username
+  $  validateNonEmptyStr uname
+  *> validateMinLengthStr 8 uname
+
+-----
+-- Specialized types
+
+newtype Email = Email String
+newtype Username = Username String
+newtype ValidatedArray a = ValidatedArray (Array a)
+
+-----
+-- Form types
+
+data FormErrorF a
+  = FailDevelopers a
+  | FailTodos a
+  | FailUsers1 a
+  | FailUsers2 a
+  | FailEmail a
+  | FailUsername a
+
+derive instance functorFormErrorF :: Functor FormErrorF
+derive instance genericFormErrorF :: Generic.Generic (FormErrorF a) _
+instance showFormErrorF :: Show a => Show (FormErrorF a) where
+  show = Generic.Show.genericShow
+
+type FormError = FormErrorF ValidationErrors
+type FormErrors = Free FormError
+
+-----
+-- Validation types
+
+type ValidationErrors = Free ValidationError
+
+data ValidationError
+  = EmptyField
+  | InvalidEmail
+  | UnderMinLength
+
+derive instance genericValidationError :: Generic.Generic ValidationError _
+
+instance eqValidationError :: Eq ValidationError where
+  eq = Generic.Eq.genericEq
+
+instance showValidationError :: Show ValidationError where
+  show = Generic.Show.genericShow
+
+-----
+-- Possible validations to run on any field
+
+validateNonEmptyStr :: String -> V ValidationErrors String
+validateNonEmptyStr str
+  | String.null str = invalid $ free EmptyField
+  | otherwise = pure str
+
+validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
+validateNonEmptyArr [] = invalid $ free EmptyField
+validateNonEmptyArr xs = pure xs
+
+validateEmailRegex :: String -> V ValidationErrors String
+validateEmailRegex email
+  | Regex.test emailRegex email = pure email
+  | otherwise = invalid $ free InvalidEmail
+
+validateMinLengthStr :: Int -> String -> V ValidationErrors String
+validateMinLengthStr n str
+  | String.length str >= n = pure str
+  | otherwise = invalid $ free UnderMinLength
+
+validateMinLengthArr :: ∀ a. Int -> Array a -> V ValidationErrors (Array a)
+validateMinLengthArr n xs
+  | length xs >= n = pure xs
+  | otherwise = invalid $ free UnderMinLength
 
 
 -----
--- On Blur
+-- Regexes to use in running validations
+
+unsafeRegexFromString :: String -> Regex.Regex
+unsafeRegexFromString str =
+  let regex = Regex.regex str Regex.Flags.noFlags
+   in unsafePartial $ fromRight regex
+
+emailRegex :: Regex.Regex
+emailRegex = unsafeRegexFromString "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$"
 
 
 
@@ -238,56 +401,21 @@ renderForm =
   ]
 
 
-renderStatus :: ∀ eff m
+renderValidation :: ∀ eff m
   . MonadAff (Effects eff) m
  => State
  -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-renderStatus st =
-  HH.div
+renderValidation st = case st.validation of
+  Nothing -> HH.div_ []
+  Just v  ->
+    HH.div
     [ HP.class_ $ HH.ClassName "mt-4 p-4 bg-grey-lightest font-mono" ]
-    (
-      ( if length st.developers > 0
-          then [ HH.p
-                  [ HP.class_ $ HH.ClassName "py-1" ]
-                  [ HH.text (show st.developers) ]
-                ]
-          else [] )
-      <>
-      ( if length st.todos > 0
-          then [ HH.p
-                 [ HP.class_ $ HH.ClassName "py-1" ]
-                 [ HH.text (show st.todos) ]
-               ]
-          else [] )
-      <>
-      ( if length st.users1 > 0
-          then [ HH.p
-                 [ HP.class_ $ HH.ClassName "py-1" ]
-                 [ HH.text (show st.users1) ]
-                ]
-           else [] )
-      <>
-      ( if length st.users2 > 0
-           then [ HH.p
-                  [ HP.class_ $ HH.ClassName "py-1" ]
-                  [ HH.text (show st.users2) ]
-                ]
-           else [] )
-      <>
-      ( if st.textField1 /= ""
-           then [ HH.p
-                  [ HP.class_ $ HH.ClassName "py-1" ]
-                  [ HH.text (show 1 <> ": " <> st.textField1) ]
-                ]
-           else [] )
-      <>
-      ( if st.textField2 /= ""
-           then [ HH.p
-                  [ HP.class_ $ HH.ClassName "py-1" ]
-                  [ HH.text (show 2 <> ": " <> st.textField2) ]
-                ]
-           else [] )
-    )
+    [ showV v ]
+
+  where
+    renderLine x = HH.p [ HP.class_ $ HH.ClassName "py-1" ] [ HH.text x ]
+    stringify = unV show (const "")
+    showV = renderLine <<< stringify
 
 ----------
 -- Sample data
