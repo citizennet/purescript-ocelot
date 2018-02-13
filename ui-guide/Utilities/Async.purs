@@ -9,7 +9,7 @@ import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Maybe (Maybe(..))
 import Data.Either (Either)
 import Data.Argonaut (Json, decodeJson, (.?))
-import Network.RemoteData (RemoteData, fromEither)
+import Network.RemoteData (RemoteData(..), fromEither)
 import Control.Monad.Eff.Class (liftEff)
 
 import CN.UI.Core.Typeahead (class CompareToString, SyncMethod(..), compareToString)
@@ -65,10 +65,10 @@ fail = users
 -- Not yet using 'search'
 load :: ∀ eff item
   . SyncMethod (Source item) Err (Array item)
- -> Aff (ajax :: AJAX, timer :: TIMER | eff) (Maybe (RemoteData Err (Array item)))
-load (Sync _) = pure Nothing
-load (Async src _) = Just <$> loadFromSource src
-load (ContinuousAsync _ search src _) = Just <$> loadFromSource src
+ -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
+load (Sync xs) = pure $ Success xs
+load (Async src _) = loadFromSource src
+load (ContinuousAsync _ search src _) = loadFromSource src
 
 -- Given a source, load the resulting data.
 loadFromSource :: ∀ eff item

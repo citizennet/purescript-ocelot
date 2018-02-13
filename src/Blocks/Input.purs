@@ -1,4 +1,4 @@
-module CN.UI.Block.Input (input) where
+module CN.UI.Block.Input (input, inputClasses) where
 
 import Prelude
 

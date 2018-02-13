@@ -376,7 +376,7 @@ component =
 
 
 ----------
--- Helpers
+-- Interal helpers
 
 -- Filter items dependent on the filterable configuration.
 applyFilter :: ∀ item. CompareToString item => FilterType item -> String -> Array item -> Array item
@@ -426,14 +426,30 @@ diffItemsSelections :: ∀ item source err
  => SyncMethod source err (Array item)
  -> SelectionType item
  -> Array item
-diffItemsSelections items selections = difference (unpackItems items) (unpackSelections selections)
-  where
-    unpackSelections (One Nothing) = []
-    unpackSelections (One (Just i)) = [i]
-    unpackSelections (Limit _ xs) = xs
-    unpackSelections (Many xs) = xs
+diffItemsSelections items selections
+  = difference (fromMaybe [] $ maybeUnpackItems items) (unpackSelections selections)
 
-    unpackItems (Sync xs) = xs
-    unpackItems (Async _ (Success xs)) = xs
-    unpackItems (ContinuousAsync _ _ _ (Success xs)) = xs
-    unpackItems _ = []
+
+----------
+-- External Helpers
+
+unpackSelections :: ∀ item. SelectionType item -> Array item
+unpackSelections (One Nothing) = []
+unpackSelections (One (Just i)) = [i]
+unpackSelections (Limit _ xs) = xs
+unpackSelections (Many xs) = xs
+
+maybeUnpackItems :: ∀ source err item. SyncMethod source err (Array item) -> Maybe (Array item)
+maybeUnpackItems (Sync xs) = Just xs
+maybeUnpackItems (Async _ (Success xs)) = Just xs
+maybeUnpackItems (ContinuousAsync _ _ _ (Success xs)) = Just xs
+maybeUnpackItems _ = Nothing
+
+maybeReplaceItems :: ∀ source err item
+  . RemoteData err (Array item)
+ -> SyncMethod source err (Array item)
+ -> Maybe (SyncMethod source err (Array item))
+maybeReplaceItems _ (Sync _) = Nothing
+maybeReplaceItems xs (Async src _) = Just $ Async src xs
+maybeReplaceItems xs (ContinuousAsync time search src _)
+  = Just $ ContinuousAsync time search src xs

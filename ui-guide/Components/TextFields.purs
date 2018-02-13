@@ -4,14 +4,13 @@ import Prelude
 
 import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
-import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
+import CN.UI.Components.Typeahead (defaultContAsyncMulti', defaultMulti') as Typeahead
+import CN.UI.Core.Typeahead (TypeaheadMessage(RequestData), TypeaheadQuery(FulfillRequest), TypeaheadSyncMessage, component, maybeReplaceItems) as Typeahead
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (log, logShow, CONSOLE)
+import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import DOM.Event.Types (MouseEvent)
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
@@ -86,10 +85,14 @@ component =
     -- Responsible for fetching data based on source and returning it to the component.
     -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
-      Typeahead.RequestData source -> do
+      Typeahead.RequestData syncMethod -> do
         _ <- H.fork do
-          res <- H.liftAff $ Async.load source
-          H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
+          res <- H.liftAff $ Async.load syncMethod
+          case Typeahead.maybeReplaceItems res syncMethod of
+            Nothing -> pure next
+            (Just newSync) -> do
+              _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest newSync
+              pure next
         pure next
 
       -- Ignore other messages
@@ -100,14 +103,6 @@ component =
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
-
-    -- Helper to replace items dependent on sync types
-    replaceItems Nothing v = v
-    replaceItems (Just _) s@(Typeahead.Sync _) = s
-    replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
-    replaceItems (Just d) (Typeahead.ContinuousAsync db srch src _) = Typeahead.ContinuousAsync db srch src d
-
-
 
 
 ----------
