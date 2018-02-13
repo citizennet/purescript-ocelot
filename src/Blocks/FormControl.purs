@@ -6,7 +6,11 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 
-helpTextClasses :: Array HH.ClassName 
+formControlClasses :: Array HH.ClassName
+formControlClasses = HH.ClassName <$>
+  [ "w-full" ]
+
+helpTextClasses :: Array HH.ClassName
 helpTextClasses = HH.ClassName <$>
   [ "leading-loose"
   , "text-grey-darker"
@@ -15,7 +19,8 @@ helpTextClasses = HH.ClassName <$>
 
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
-  [ "leading-loose"
+  [ "font-bold"
+  , "leading-loose"
   , "text-black"
   , "text-sm"
   ]
@@ -29,11 +34,12 @@ formControl
   :: ∀ p i
    . FormControlProps
   -> HH.HTML p i
-  -> HH.HTML p i 
+  -> HH.HTML p i
 formControl props html =
-  HH.fieldset_
+  HH.div
+    [ HP.classes formControlClasses ]
     [ HH.label
-      []
+      [ HP.class_ (HH.ClassName "w-full") ]
       [ label props.label
       , html
       , helpText props.helpText
@@ -41,7 +47,7 @@ formControl props html =
     ]
   where
     helpText Nothing = HH.text ""
-    helpText (Just x) = 
+    helpText (Just x) =
       HH.span
         [ HP.classes helpTextClasses ]
         [ HH.text x ]

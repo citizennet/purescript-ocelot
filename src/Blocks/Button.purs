@@ -9,24 +9,47 @@ import Halogen.HTML.Properties as HP
 data ButtonType
   = Default
   | Primary
-
-data ButtonSize
-  = Small
-  | Medium
-  | Large
+  | Secondary
+  | Transparent 
 
 type ButtonProps =
   { type_ :: ButtonType }
 
 buttonClasses :: Array HH.ClassName
-buttonClasses =
-  [ HH.ClassName "px-3 py-2 rounded shadow text-sm" ]
+buttonClasses = HH.ClassName <$>
+  [ "no-outline"
+  , "px-3"
+  , "py-2"
+  , "rounded"
+  , "shadow"
+  , "text-sm"
+  ]
 
 buttonTypeClasses :: ButtonType -> Array HH.ClassName
-buttonTypeClasses Default =
-  [ HH.ClassName "bg-grey-light hover:bg-grey" ]
-buttonTypeClasses Primary =
-  [ HH.ClassName "bg-teal hover:bg-teal-dark text-white" ]
+buttonTypeClasses type_ = HH.ClassName <$> classNames type_
+  where
+    classNames Default = 
+      [ "bg-grey-50-a20"
+      , "hover:bg-grey-50-a30"
+      , "text-black-20"
+      ]
+
+    classNames Primary =
+      [ "bg-blue-88"
+      , "hover:bg-blue-88"
+      , "text-white" 
+      ]
+
+    classNames Secondary =
+      [ "bg-grey-70-a30"
+      , "hover:grey-70-a40"
+      , "text-grey-70"
+      ]
+
+    classNames Transparent =
+      [ "bg-transparent"
+      , "text-grey-70"
+      ]
 
 button_
   :: ∀ p i

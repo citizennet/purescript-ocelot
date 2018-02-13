@@ -3,11 +3,11 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Control.Monad.Aff.Class (class MonadAff)
-import Network.RemoteData (RemoteData(..), withDefault)
+import Network.RemoteData (RemoteData(NotAsked))
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Foldable (foldr)
-import Data.Maybe (Maybe(Just, Nothing))
 import Data.StrMap (StrMap)
+import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
 import Data.String (Pattern(Pattern), split)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
@@ -20,6 +20,7 @@ import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Core.Typeahead as TA
+import CN.UI.Block.Input as Input
 
 
 ----------
@@ -152,8 +153,9 @@ defaultFuzzyConfig :: ∀ item
  -> TA.Config item
 defaultFuzzyConfig toStrMap =
   { insertable: TA.NotInsertable
-  , filterType: TA.FuzzyMatch toStrMap
+  , filterType: TA.FuzzyMatch
   , keepOpen: true
+  , toStrMap
   }
 
 contAsyncConfig :: ∀ item
@@ -177,13 +179,9 @@ renderTA :: ∀ o item source err eff m
  => (String -> (Maybe Int) -> Int -> item -> H.HTML Void (C.ContainerQuery o item))
  -> TA.TypeaheadState item source err
  -> H.ParentHTML (TA.TypeaheadQuery o item source err (TA.Effects eff) m) (TA.ChildQuery o item (TA.Effects eff)) TA.ChildSlot m
-renderTA renderItem st =
-  HH.div
-  [ HP.class_ $ HH.ClassName "w-full px-3" ]
-  [ HH.label
-    [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
-    [ HH.text "Typeahead" ]
-  , renderSelections
+renderTA renderItem st = HH.span
+  [ HP.class_ $ HH.ClassName "w-full" ]
+  [ renderSelections
   , HH.slot'
       CP.cp2
       TA.SearchSlot
@@ -199,17 +197,10 @@ renderTA renderItem st =
       CP.cp1
       TA.ContainerSlot
       C.component
-      { render: renderContainer st, items: unpack st.items }
+      { render: renderContainer st, items: fromMaybe [] $ TA.maybeUnpackItems st.items }
       (HE.input TA.HandleContainer)
-  , HH.p
-    [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
-    [ HH.text "Some helper text that might be useful." ]
   ]
   where
-    unpack (TA.Sync x) = x
-    unpack (TA.Async _ x) = withDefault [] x
-    unpack (TA.ContinuousAsync _ _ _ x) = withDefault [] x
-
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []
@@ -265,10 +256,9 @@ renderTA renderItem st =
     renderSearch searchState =
       HH.div
         [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
-        [ HH.input
+        [ Input.input
           ( S.getInputProps
-            [ HP.class_ $ HH.ClassName "placeholder-grey-dark text-grey-darkest rounded-sm bg-white py-2 px-4 block w-full appearance-none ds-input"
-            , HP.placeholder "Type to search..."
+            [ HP.placeholder "Type to search..."
             , HP.value searchState.search
             ]
           )

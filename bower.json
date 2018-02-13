@@ -11,9 +11,9 @@
     "docs"
   ],
   "dependencies": {
-    "purescript-halogen": "^3.1.1",
-    "purescript-halogen-select": "citizennet/purescript-halogen-select",
-    "purescript-fuzzy": "https://github.com/citizennet/purescript-fuzzy.git#develop"
+    "purescript-halogen": "^3.1.2",
+    "purescript-halogen-select": "^0.1.7",
+    "purescript-fuzzy": "^0.1.2"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
@@ -23,6 +23,11 @@
     "purescript-affjax": "^5.0.0",
     "purescript-argonaut": "^3.1.0",
     "purescript-remotedata": "^2.2.0",
-    "purescript-js-timers": "^3.0.0"
+    "purescript-js-timers": "^3.0.0",
+    "purescript-halogen-storybook": "^0.1.0",
+    "purescript-validation": "^3.2.0",
+    "purescript-generics-rep": "^5.4.0",
+    "purescript-halogen-select": "citizennet/purescript-halogen-select",
+    "purescript-fuzzy": "citizennet/purescript-fuzzy"
   }
 }

@@ -86,49 +86,37 @@ jobs:
           paths:
             - ~/ui-guide/css/node_modules
 
-      # TODO:
-      # Use conditional statements to avoid committing when
-      # the CSS has not been changed in merge.
-
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
           fingerprints:
             - "53:31:90:1f:78:25:11:3a:1b:5d:a6:2f:04:7c:cb:39"
 
       - run:
-          name: Add built CSS file to master branch on GitHub
-          command: |
-            git add dist
-            git config --global user.email "dev@citizennet.com"
-            git config --global user.name "CircleCI"
-            git commit --allow-empty -m "CSS built by CircleCI"
-            git tag dist-{{ .BuildNum }} # Preface with dist- to avoid recursive builds
-            git push --follow-tags origin master
-
-      - run:
           name: Push files to gh-pages branch on GitHub
           command: |
             rm -rf ../gh-pages/dist
-            mv dist ../gh-pages/dist
+            cp -r dist ../gh-pages/dist
             cd ../gh-pages  # Moves into gh-pages branch using worktree
             git config --global user.email "dev@citizennet.com"
             git config --global user.name "CircleCI"
-            git commit --allow-empty -a -m "Build triggered by CircleCI"
+            git add .
+            git commit --allow-empty -m "Build triggered by CircleCI"
             git push -u origin gh-pages
 
 workflows:
   version: 2
   build:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: gh-pages
 
       # On master branch, rebuild documentation site
       - docs:
           filters:
             branches:
               only: master
-            tags:
-              ignore: /^dist-.*/
 
           requires:
             - test
