@@ -110,16 +110,15 @@ derive instance ordPrimitiveSlot :: Ord Slot
 -- Data modeling
 
 type Config item =
-  { filterType  :: FilterType item
-  , insertable  :: Insertable item
-  , keepOpen    :: Boolean
+  { filterType :: FilterType item
+  , insertable :: Insertable item
+  , keepOpen   :: Boolean
+  , toStrMap   :: (item -> StrMap String)
   }
 
 data FilterType item
   = NoFilter
-  | Exact
-  | CaseInsensitive
-  | FuzzyMatch (item -> StrMap String)
+  | FuzzyMatch
   | CustomMatch (String -> item -> Boolean)
 
 -- If an item is meant to be insertable, you must provide a function
@@ -390,9 +389,6 @@ component =
 applyFilter :: ∀ item. CompareToString item => FilterType item -> String -> Array item -> Array item
 applyFilter filterType text items = case filterType of
   NoFilter -> items
-  Exact -> filter (\item -> contains (Pattern text) (compareToString item)) items
-  CaseInsensitive ->
-    filter (\item -> contains (Pattern $ toLower text) (toLower $ compareToString item)) items
   CustomMatch match -> filter (\item -> match text item) items
   FuzzyMatch toStrMap -> filter (isJust <<< Fuzz.match true toStrMap text) items
 
