@@ -20,22 +20,7 @@ import Data.Traversable (traverse)
 ----------
 -- Async types
 
--- A wrapper for various possible item types.
-data Item
-  = Users User
-  | Todos Todo
-
-derive instance eqItem :: Eq Item
-
-instance showItem :: Show Item where
-  show (Users u) = show u
-  show (Todos t) = show t
-
-instance compareToStringItem :: CompareToString Item where
-  compareToString (Users u) = compareToString u
-  compareToString (Todos t) = compareToString t
-
-type Source item =
+newtype Source item = Source
   { path :: String
   , root :: String
   , speed :: Speed
@@ -51,27 +36,27 @@ type Err = String
 ----------
 -- Sources
 
-users :: Source Item
-users =
+users :: Source User
+users = Source
   { path: "users"
   , root: "https://jsonplaceholder.typicode.com/"
   , speed: Fast
-  , decoder: (map <<< map <<< map) (\x -> Users x) $ decodeWith decodeUser
+  , decoder: decodeWith decodeUser
   }
 
-todos :: Source Item
-todos =
+todos :: Source Todo
+todos = Source
   { path: "todos"
   , root: "https://jsonplaceholder.typicode.com/"
   , speed: Fast
-  , decoder: (map <<< map <<< map) (\x -> Todos x) $ decodeWith decodeTodo
+  , decoder: decodeWith decodeTodo
   }
 
-slow :: Source Item
-slow = users { speed = Slow }
+slow :: Source User
+slow = users
 
-fail :: Source Item
-fail = users { speed = Fail }
+fail :: Source User
+fail = users
 
 
 ----------
@@ -89,7 +74,7 @@ load (ContinuousAsync _ search src _) = Just <$> loadFromSource src
 loadFromSource :: ∀ eff item
   . Source item
  -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
-loadFromSource { root, path, speed, decoder } = case speed of
+loadFromSource (Source { root, path, speed, decoder }) = case speed of
   Fast -> get (root <> path) >>= (pure <<< decoder <<< _.response)
   Fail -> get path >>= (pure <<< decoder <<< _.response)
   Slow -> do

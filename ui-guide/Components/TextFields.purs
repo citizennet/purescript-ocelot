@@ -35,17 +35,17 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
+  | HandleTypeahead Unit (Typeahead.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 ----------
 -- Child paths
 
-type ChildSlot = Either3 TypeaheadSlot Unit SyncTypeaheadSlot
+type ChildSlot = Either3 Unit Unit SyncTypeaheadSlot
 type ChildQuery eff m =
   Coproduct3
-    (Typeahead.TypeaheadQuery Query Async.Item (Async.Source Async.Item) Async.Err eff m)
+    (Typeahead.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
     (Dropdown.Query TestRecord)
     (Typeahead.TypeaheadQuery Query String Void Void eff m)
 
@@ -54,11 +54,6 @@ data SyncTypeaheadSlot
 derive instance eqSyncTypeaheadSlot :: Eq SyncTypeaheadSlot
 derive instance ordSyncTypeaheadSlot :: Ord SyncTypeaheadSlot
 
-data TypeaheadSlot
-  = TypeaheadTodos
-  | TypeaheadUsers
-derive instance eqTypeaheadSlot :: Eq TypeaheadSlot
-derive instance ordTypeaheadSlot :: Ord TypeaheadSlot
 
 ----------
 -- Component definition
@@ -164,9 +159,8 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  tabsBlock 
+  tabsBlock
   <> typeaheadBlockStrings
-  <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
 
@@ -174,9 +168,9 @@ tabsBlock
   :: ∀ eff m
   . MonadAff (Effects eff) m
   => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-tabsBlock = 
+tabsBlock =
   [ documentation
-      { header: "Tabs" 
+      { header: "Tabs"
       , subheader: "Tabs for navigating, eg. between form pages"
       }
       [ Component.component
@@ -212,26 +206,10 @@ typeaheadBlockTodos = documentationBlock
     slot =
       HH.slot'
         CP.cp1
-        TypeaheadTodos
+        unit
         Typeahead.component
         ( Typeahead.defaultContAsyncMulti' Async.todos )
-        (HE.input $ HandleTypeahead TypeaheadTodos)
-
-typeaheadBlockUsers :: ∀ eff m
-  . MonadAff (Effects eff) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-typeaheadBlockUsers = documentationBlock
-  "Typeahead"
-  "Uses string input to search pre-determined entries."
-  ( componentBlock "Set to default sync." slot )
-  where
-    slot =
-      HH.slot'
-        CP.cp1
-        TypeaheadUsers
-        Typeahead.component
-        ( Typeahead.defaultAsyncMulti' Async.users )
-        (HE.input $ HandleTypeahead TypeaheadUsers)
+        (HE.input $ HandleTypeahead unit)
 
 dropdownBlock :: ∀ eff m
   . MonadAff ( Effects eff ) m
