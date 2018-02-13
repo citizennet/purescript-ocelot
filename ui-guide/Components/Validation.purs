@@ -400,7 +400,6 @@ renderForm =
       ]
   ]
 
-
 renderValidation :: ∀ eff m
   . MonadAff (Effects eff) m
  => State
@@ -416,6 +415,7 @@ renderValidation st = case st.validation of
     renderLine x = HH.p [ HP.class_ $ HH.ClassName "py-1" ] [ HH.text x ]
     stringify = unV show (const "")
     showV = renderLine <<< stringify
+
 
 ----------
 -- Sample data
