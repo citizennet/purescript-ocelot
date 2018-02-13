@@ -40,7 +40,9 @@ type State =
   { developers :: Array TestRecord
   , todos :: Array Async.Todo
   , users1 :: Array Async.User
-  , users2 :: Array Async.User }
+  , users2 :: Array Async.User
+  , textField1 :: String
+  , textField2 :: String }
 
 data Query a
   = NoOp a
@@ -48,6 +50,7 @@ data Query a
   | HandleB (TA.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleC (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
   | HandleD (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
+  | UpdateTextField Int String a
   | FormSubmit a
 
 
@@ -78,7 +81,13 @@ component :: ∀ eff m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.parentComponent
-  { initialState: const { developers: [], todos: [], users1: [], users2: [] }
+  { initialState: const
+      { developers: []
+      , todos: []
+      , users1: []
+      , users2: []
+      , textField1: ""
+      , textField2: "" }
   , render
   , eval
   , receiver: const Nothing
@@ -87,27 +96,19 @@ component =
     render
       :: State
       -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_
-      ( [ renderForm ]
-        <> ( if length st.developers > 0
-              then [ HH.text (show st.developers) ]
-              else [] )
-        <> ( if length st.todos > 0
-              then [ HH.text (show st.todos) ]
-              else [] )
-        <> ( if length st.users1 > 0
-              then [ HH.text (show st.users1) ]
-              else [] )
-        <> ( if length st.users2 > 0
-              then [ HH.text (show st.users2) ]
-              else [] )
-      )
+    render st = HH.div_ [ renderForm, renderStatus st ]
+
     eval
       :: Query
       ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
     -- Done asynchronously so data can load in the background.
+    eval (UpdateTextField i str next) = case i of
+      1 -> H.modify (_ { textField1 = str }) *> pure next
+      2 -> H.modify (_ { textField2 = str }) *> pure next
+      _ -> pure next
+
     eval (HandleA message next) = case message of
       _ -> pure next
 
@@ -148,6 +149,7 @@ component =
       _ -> pure next
 
     eval (FormSubmit next) = do
+      -- Collect data from components
       devs <- H.query' CP.cp1 unit (H.request TA.Selections)
       todos <- H.query' CP.cp2 unit (H.request TA.Selections)
       users1 <- H.query' CP.cp3 unit (H.request TA.Selections)
@@ -158,8 +160,23 @@ component =
                   , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
                   , users2 = fromMaybe [] $ TA.unpackSelections <$> users2 })
 
+      -- Validate data
       st <- H.get
+
       pure next
+
+
+
+----------
+-- Validation
+
+-----
+-- On Form Submit
+
+
+
+-----
+-- On Blur
 
 
 
@@ -202,12 +219,16 @@ renderForm =
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
           }
-          ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
+          ( Input.input
+            [ HP.placeholder "davelovesgangoffour@gmail.com"
+            , HE.onValueInput (HE.input $ UpdateTextField 1) ] )
         , FormControl.formControl
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
           }
-          ( Input.input [ HP.placeholder "Placehold me" ] )
+          ( Input.input
+            [ HP.placeholder "Placehold me"
+            , HE.onValueInput (HE.input $ UpdateTextField 2) ] )
         , Button.button
             { type_: Button.Primary }
             [ HP.type_ HP.ButtonSubmit ]
@@ -215,6 +236,58 @@ renderForm =
         ]
       ]
   ]
+
+
+renderStatus :: ∀ eff m
+  . MonadAff (Effects eff) m
+ => State
+ -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+renderStatus st =
+  HH.div
+    [ HP.class_ $ HH.ClassName "mt-4 p-4 bg-grey-lightest font-mono" ]
+    (
+      ( if length st.developers > 0
+          then [ HH.p
+                  [ HP.class_ $ HH.ClassName "py-1" ]
+                  [ HH.text (show st.developers) ]
+                ]
+          else [] )
+      <>
+      ( if length st.todos > 0
+          then [ HH.p
+                 [ HP.class_ $ HH.ClassName "py-1" ]
+                 [ HH.text (show st.todos) ]
+               ]
+          else [] )
+      <>
+      ( if length st.users1 > 0
+          then [ HH.p
+                 [ HP.class_ $ HH.ClassName "py-1" ]
+                 [ HH.text (show st.users1) ]
+                ]
+           else [] )
+      <>
+      ( if length st.users2 > 0
+           then [ HH.p
+                  [ HP.class_ $ HH.ClassName "py-1" ]
+                  [ HH.text (show st.users2) ]
+                ]
+           else [] )
+      <>
+      ( if st.textField1 /= ""
+           then [ HH.p
+                  [ HP.class_ $ HH.ClassName "py-1" ]
+                  [ HH.text (show 1 <> ": " <> st.textField1) ]
+                ]
+           else [] )
+      <>
+      ( if st.textField2 /= ""
+           then [ HH.p
+                  [ HP.class_ $ HH.ClassName "py-1" ]
+                  [ HH.text (show 2 <> ": " <> st.textField2) ]
+                ]
+           else [] )
+    )
 
 ----------
 -- Sample data

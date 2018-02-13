@@ -3,7 +3,7 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Control.Monad.Aff.Class (class MonadAff)
-import Network.RemoteData (RemoteData(..), withDefault)
+import Network.RemoteData (RemoteData(NotAsked))
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Foldable (foldr)
 import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
@@ -239,10 +239,9 @@ renderTA renderItem st = HH.span
     renderSearch searchState =
       HH.div
         [ HP.class_ $ HH.ClassName "flex items-center border-b-2" ]
-        [ HH.input
+        [ Input.input
           ( S.getInputProps
-            [ HP.classes Input.inputClasses
-            , HP.placeholder "Type to search..."
+            [ HP.placeholder "Type to search..."
             , HP.value searchState.search
             ]
           )

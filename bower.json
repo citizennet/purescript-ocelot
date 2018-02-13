@@ -23,6 +23,7 @@
     "purescript-argonaut": "^3.1.0",
     "purescript-remotedata": "^2.2.0",
     "purescript-js-timers": "^3.0.0",
-    "purescript-halogen-storybook": "^0.1.0"
+    "purescript-halogen-storybook": "^0.1.0",
+    "purescript-validation": "^3.2.0"
   }
 }
