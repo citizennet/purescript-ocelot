@@ -50,7 +50,7 @@ type ChildQuery eff m =
     (Dropdown.Query TestRecord)
     (Typeahead.TypeaheadQuery Query String Void Void eff m)
 
-data SyncTypeaheadSlot
+dat
   = SyncTypeaheadStrings
 derive instance eqSyncTypeaheadSlot :: Eq SyncTypeaheadSlot
 derive instance ordSyncTypeaheadSlot :: Ord SyncTypeaheadSlot

@@ -239,7 +239,7 @@ renderTA renderItem st = HH.span
             [ HH.text "×" ]
           ]
 
-    renderContainer parentState containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+    renderContainer parentSt containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
       if not containerState.open
         then []
         else [ HH.div
@@ -248,7 +248,7 @@ renderTA renderItem st = HH.span
           )
           [ HH.ul
             [ HP.class_ $ HH.ClassName "list-reset" ]
-            $ renderItem (parentState.search) containerState.highlightedIndex `mapWithIndex` containerState.items
+            $ renderItem parentSt.config.fuzzyConfig.renderKey containerState.highlightedIndex `mapWithIndex` containerState.items
           ]
         ]
 
@@ -276,7 +276,7 @@ defaultRenderItem key highlightIndex itemIndex item = HH.li
 -- WARN: If the key you provided does not exist in the map, your item will not be
 -- rendered!
 boldMatches :: ∀ item i p. String -> Fuzzy item -> Array (H.HTML i p)
-boldMatches key (Fuzzy { segments }) = boldMatch <$> (fromMaybe [] $ lookup key segments)
+boldMatches key (Fuzzy { segments }) = boldMatch <$> (fromMaybe [ Left key ] $ lookup key segments)
   where
     boldMatch (Left str) = HH.text str
     boldMatch (Right str) = HH.span [ HP.class_ $ HH.ClassName "font-bold" ] [ HH.text str ]
