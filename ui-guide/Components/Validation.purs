@@ -51,12 +51,11 @@ type State =
   }
 
 data Query a
-  = NoOp a
+  = UpdateTextField Int String a
   | HandleA (TA.TypeaheadMessage Query TestRecord Void Void) a
   | HandleB (TA.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleC (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
   | HandleD (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
-  | UpdateTextField Int String a
   | FormSubmit a
 
 
@@ -71,6 +70,12 @@ type ChildQuery eff m = Coproduct4
   (TA.TypeaheadQuery Query Async.User (Async.Source Async.User) Async.Err eff m)
 
 
+cp1 :: ∀ eff m. CP.ChildPath (TA.TypeaheadQuery Query TestRecord Void Void eff m) (ChildQuery eff m) Unit ChildSlot
+cp1 = CP.cp1
+
+cp2 :: ∀ eff m. CP.ChildPath (TA.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m) (ChildQuery eff m) Unit ChildSlot
+cp2 = CP.cp2
+
 ----------
 -- Component definition
 
@@ -81,6 +86,9 @@ type Effects eff =
   , ajax :: AJAX
   , timer :: TIMER
   , console :: CONSOLE | eff )
+
+--  mapp = M.fromFoldable
+--    [ Tuple
 
 component :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -109,57 +117,30 @@ component =
     eval
       :: Query
       ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
-    eval (NoOp next) = pure next
+    eval (HandleA message next) = case message of
+      _ -> pure next
 
-    -- Done asynchronously so data can load in the background.
+    eval (HandleB message next) = case message of
+      TA.RequestData syncMethod -> load CP.cp2 syncMethod *> pure next
+      _ -> pure next
+
+    eval (HandleC message next) = case message of
+      TA.RequestData syncMethod -> load CP.cp3 syncMethod *> pure next
+      _ -> pure next
+
+    eval (HandleD message next) = case message of
+      TA.RequestData syncMethod -> load CP.cp4 syncMethod *> pure next
+      _ -> pure next
+
     eval (UpdateTextField i str next) = case i of
       1 -> H.modify (_ { raw { email = str }}) *> pure next
       2 -> H.modify (_ { raw { username = str }}) *> pure next
       _ -> pure next
 
-    eval (HandleA message next) = case message of
-      _ -> pure next
-
-    eval (HandleB message next) = case message of
-      TA.RequestData syncMethod -> do
-         _ <- H.fork do
-          res <- H.liftAff $ Async.load syncMethod
-          case TA.maybeReplaceItems res syncMethod of
-            Nothing -> pure Nothing
-            (Just newSync) -> do
-               _ <- H.query' CP.cp2 unit $ H.action $ TA.FulfillRequest newSync
-               pure Nothing
-         pure next
-      _ -> pure next
-
-    eval (HandleC message next) = case message of
-      TA.RequestData syncMethod -> do
-         _ <- H.fork do
-          res <- H.liftAff $ Async.load syncMethod
-          case TA.maybeReplaceItems res syncMethod of
-            Nothing -> pure Nothing
-            (Just newSync) -> do
-               _ <- H.query' CP.cp3 unit $ H.action $ TA.FulfillRequest newSync
-               pure Nothing
-         pure next
-      _ -> pure next
-
-    eval (HandleD message next) = case message of
-      TA.RequestData syncMethod -> do
-         _ <- H.fork do
-          res <- H.liftAff $ Async.load syncMethod
-          case TA.maybeReplaceItems res syncMethod of
-            Nothing -> pure Nothing
-            (Just newSync) -> do
-               _ <- H.query' CP.cp4 unit $ H.action $ TA.FulfillRequest newSync
-               pure Nothing
-         pure next
-      _ -> pure next
-
     eval (FormSubmit next) = do
       -- Collect data from components
-      devs <- H.query' CP.cp1 unit (H.request TA.Selections)
-      todos <- H.query' CP.cp2 unit (H.request TA.Selections)
+      devs   <- H.query' CP.cp1 unit (H.request TA.Selections)
+      todos  <- H.query' CP.cp2 unit (H.request TA.Selections)
       users1 <- H.query' CP.cp3 unit (H.request TA.Selections)
       users2 <- H.query' CP.cp4 unit (H.request TA.Selections)
 
@@ -175,6 +156,19 @@ component =
       st <- H.get
       H.modify (_ { validation = Just $ runValidation st.raw })
       pure next
+
+
+    load :: ∀ item
+      . CP.ChildPath (TA.TypeaheadQuery Query item (Async.Source item) Async.Err (Effects eff) m) (ChildQuery (Effects eff) m) Unit ChildSlot
+     -> TA.SyncMethod (Async.Source item) Async.Err (Array item)
+     -> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m Unit
+    load cp m = do
+      res <- H.liftAff $ Async.load m
+      case TA.maybeReplaceItems res m of
+        Nothing -> pure unit
+        (Just newSync) -> do
+           _ <- H.query' cp unit $ H.action $ TA.FulfillRequest newSync
+           pure unit
 
 
 ----------
