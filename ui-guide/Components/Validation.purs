@@ -15,6 +15,7 @@ import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Array (length)
 import Data.Bifunctor as Bifunctor
+
 import Data.Either (fromRight)
 import Data.Either.Nested (Either4)
 import Data.Functor.Coproduct.Nested (Coproduct4)
@@ -222,7 +223,7 @@ type ValidatedForm =
 validateDevelopers :: Array TestRecord -> V FormError (ValidatedArray TestRecord)
 validateDevelopers xs =
   Bifunctor.bimap FailDevelopers ValidatedArray
-  $ validateMinLengthArr 2 xs
+  $ validateMinLength 2 xs
 
 validateTodos :: Array Async.Todo -> V FormError (ValidatedArray Async.Todo)
 validateTodos xs =
@@ -233,7 +234,7 @@ validateUsers1 :: Array Async.User -> V FormError (ValidatedArray Async.User)
 validateUsers1 xs =
   Bifunctor.bimap FailUsers1 ValidatedArray
   $ validateNonEmptyArr xs
-  *> validateMinLengthArr 2 xs
+  *> validateMinLength 2 xs
 
 validateUsers2 :: Array Async.User -> V FormError (ValidatedArray Async.User)
 validateUsers2 xs =
@@ -248,9 +249,9 @@ validateEmail email =
 
 validateUsername :: String -> V FormError Username
 validateUsername uname =
-  Bifunctor.bimap FailUsername Username
+  Bifunctor.bimap FailUsername (Username <<< String.Utils.fromCharArray)
   $  validateNonEmptyStr uname
-  *> validateMinLengthStr 8 uname
+  *> validateMinLength 8 (String.Utils.toCharArray uname)
 
 -----
 -- Specialized types
@@ -313,15 +314,11 @@ validateEmailRegex email
   | Regex.test emailRegex email = pure email
   | otherwise = invalid $ free InvalidEmail
 
-validateMinLengthStr :: Int -> String -> V ValidationErrors String
-validateMinLengthStr n str
-  | String.length str >= n = pure str
+validateMinLength :: ∀ f a. Foldable.Foldable f => Int -> f a -> V ValidationErrors (f a)
+validateMinLength n f
+  | Foldable.length f >= n = pure f
   | otherwise = invalid $ free UnderMinLength
 
-validateMinLengthArr :: ∀ a. Int -> Array a -> V ValidationErrors (Array a)
-validateMinLengthArr n xs
-  | length xs >= n = pure xs
-  | otherwise = invalid $ free UnderMinLength
 
 
 -----
