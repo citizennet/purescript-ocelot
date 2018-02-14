@@ -407,17 +407,21 @@ selectItem item items selections = case selections of
 
 --  Construct new array of fuzzy items to send to the container by diffing the
 --  original items & current selections
-newContainerItems :: ∀ item source err
+removeSelections :: ∀ item source err
   . Eq item
  => SyncMethod source err (Array item)
  -> SelectionType item
- -> Array item
-newContainerItems items selections
-  = difference (fromMaybe [] $ maybeUnpackItems items) (unpackSelections selections)
+ -> SyncMethod source err (Array item)
+removeSelections items selections = case items of
+  (Sync _) -> Sync getDiff
+  (Async src d) -> Async src (const getDiff <$> d)
+  (ContinuousAsync ms sch src d) -> ContinuousAsync ms sch src (const getDiff <$> d)
+  where
+    getDiff = difference (fromMaybe [] $ maybeUnpackItems items) (unpackSelections selections)
 
 -- Attempt to match new items against the user's search.
 getNewItems :: ∀ item source err. Eq item => TypeaheadState item source err -> SyncMethod source err (Array (Fuzzy item))
-getNewItems st = (sort <<< applyF <<< applyI) <$> fuzzyItems st.items
+getNewItems st = (sort <<< applyF <<< applyI) <$> (fuzzyItems <<< removeSelections st.items) st.selections
   where
     matcher :: item -> Fuzzy item
     matcher = Fuzz.match true st.config.fuzzyConfig.toStrMap st.search
