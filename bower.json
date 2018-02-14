@@ -28,6 +28,7 @@
     "purescript-validation": "^3.2.0",
     "purescript-generics-rep": "^5.4.0",
     "purescript-halogen-select": "citizennet/purescript-halogen-select",
-    "purescript-fuzzy": "citizennet/purescript-fuzzy"
+    "purescript-fuzzy": "citizennet/purescript-fuzzy",
+    "purescript-strings": "^3.5.0"
   }
 }

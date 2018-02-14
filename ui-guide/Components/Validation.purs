@@ -7,32 +7,30 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Input as Input
 import CN.UI.Components.Typeahead as TAInput
 import CN.UI.Core.Typeahead as TA
-import Control.Alt ((<|>))
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE, logShow)
+import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import Data.Array (length)
 import Data.Bifunctor as Bifunctor
 
 import Data.Foldable as Foldable
-import Data.Either (fromRight)
-import Data.Either.Nested (Either4)
-import Data.Functor.Coproduct.Nested (Coproduct4)
-import Data.Generic.Rep as Generic
-import Data.Generic.Rep.Eq as Generic.Eq
-import Data.Generic.Rep.Show as Generic.Show
-import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Newtype (class Newtype)
-import Data.Semiring.Free (Free, free)
-import Data.StrMap (StrMap, fromFoldable)
 import Data.String as String
 import Data.String.Utils as String.Utils
 import Data.String.Regex as Regex
 import Data.String.Regex.Flags as Regex.Flags
+import Data.Generic.Rep as Generic
+import Data.Generic.Rep.Eq as Generic.Eq
+import Data.Generic.Rep.Show as Generic.Show
+
+import Data.Either (fromRight)
+import Data.Either.Nested (Either4)
+import Data.Functor.Coproduct.Nested (Coproduct4)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Newtype (class Newtype)
+import Data.StrMap (StrMap, fromFoldable)
 import Data.Tuple (Tuple(..))
-import Data.Validation.Semiring (V, unV, invalid, isValid)
+import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -106,7 +104,7 @@ component =
     render
       :: State
       -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_ [ renderForm, renderValidation st ]
+    render st = HH.div_ [ renderForm st, renderValidation st ]
 
     eval
       :: Query
@@ -193,12 +191,12 @@ runValidation f =
   , users2: _
   , email: _
   , username: _ }
-  <$> (Bifunctor.lmap free $ validateDevelopers f.developers)
-  <*> (Bifunctor.lmap free $ validateTodos f.todos)
-  <*> (Bifunctor.lmap free $ validateUsers1 f.users1)
-  <*> (Bifunctor.lmap free $ validateUsers2 f.users2)
-  <*> (Bifunctor.lmap free $ validateEmail f.email)
-  <*> (Bifunctor.lmap free $ validateUsername f.username)
+  <$> (Bifunctor.lmap pure $ validateDevelopers f.developers)
+  <*> (Bifunctor.lmap pure $ validateTodos f.todos)
+  <*> (Bifunctor.lmap pure $ validateUsers1 f.users1)
+  <*> (Bifunctor.lmap pure $ validateUsers2 f.users2)
+  <*> (Bifunctor.lmap pure $ validateEmail f.email)
+  <*> (Bifunctor.lmap pure $ validateUsername f.username)
 
 -----
 -- Top level form types
@@ -276,15 +274,16 @@ data FormErrorF a
 derive instance functorFormErrorF :: Functor FormErrorF
 derive instance genericFormErrorF :: Generic.Generic (FormErrorF a) _
 instance showFormErrorF :: Show a => Show (FormErrorF a) where
-  show = Generic.Show.genericShow
+  show (FailDevelopers a) = "Developers " <> show a
+  show a = Generic.Show.genericShow a
 
 type FormError = FormErrorF ValidationErrors
-type FormErrors = Free FormError
+type FormErrors = Array FormError
 
 -----
 -- Validation types
 
-type ValidationErrors = Free ValidationError
+type ValidationErrors = Array ValidationError
 
 data ValidationError
   = EmptyField
@@ -297,30 +296,31 @@ instance eqValidationError :: Eq ValidationError where
   eq = Generic.Eq.genericEq
 
 instance showValidationError :: Show ValidationError where
-  show = Generic.Show.genericShow
+  show EmptyField = "cannot be empty"
+  show InvalidEmail = "is not a valid email"
+  show UnderMinLength = "is not long enough"
 
 -----
 -- Possible validations to run on any field
 
 validateNonEmptyStr :: String -> V ValidationErrors String
 validateNonEmptyStr str
-  | String.null str = invalid $ free EmptyField
+  | String.null str = invalid $ pure EmptyField
   | otherwise = pure str
 
 validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
-validateNonEmptyArr [] = invalid $ free EmptyField
+validateNonEmptyArr [] = invalid $ pure EmptyField
 validateNonEmptyArr xs = pure xs
 
 validateEmailRegex :: String -> V ValidationErrors String
 validateEmailRegex email
   | Regex.test emailRegex email = pure email
-  | otherwise = invalid $ free InvalidEmail
+  | otherwise = invalid $ pure InvalidEmail
 
 validateMinLength :: ∀ f a. Foldable.Foldable f => Int -> f a -> V ValidationErrors (f a)
 validateMinLength n f
   | Foldable.length f >= n = pure f
-  | otherwise = invalid $ free UnderMinLength
-
+  | otherwise = invalid $ pure UnderMinLength
 
 
 -----
@@ -341,8 +341,9 @@ emailRegex = unsafeRegexFromString "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,
 
 renderForm :: ∀ eff m
   . MonadAff (Effects eff) m
- => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-renderForm =
+ => State
+ -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+renderForm st =
   HH.form
   [ HE.onSubmit $ HE.input_ FormSubmit ]
   [ Documentation.documentation
@@ -354,26 +355,31 @@ renderForm =
         [ FormControl.formControl
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
+          , valid: Just $ validateDevelopers st.raw.developers
           }
           ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testFuzzyConfig testRecords) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
+          , valid: Just $ validateTodos st.raw.todos
           }
           ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todoFuzzyConfig Async.todos) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
+          , valid: Just $ validateUsers1 st.raw.users1
           }
           ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
+          , valid: Just $ validateUsers2 st.raw.users2
           }
           ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
+          , valid: Just $ validateEmail st.raw.email
           }
           ( Input.input
             [ HP.placeholder "davelovesgangoffour@gmail.com"
@@ -381,6 +387,7 @@ renderForm =
         , FormControl.formControl
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
+          , valid: Nothing :: Maybe (V FormError String)
           }
           ( Input.input
             [ HP.placeholder "Placehold me"
