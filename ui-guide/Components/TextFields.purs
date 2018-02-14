@@ -43,17 +43,12 @@ data Query a
 ----------
 -- Child paths
 
-type ChildSlot = Either3 Unit Unit SyncTypeaheadSlot
+type ChildSlot = Either3 Unit Unit Unit
 type ChildQuery eff m =
   Coproduct3
     (Typeahead.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
     (Dropdown.Query TestRecord)
     (Typeahead.TypeaheadQuery Query String Void Void eff m)
-
-dat
-  = SyncTypeaheadStrings
-derive instance eqSyncTypeaheadSlot :: Eq SyncTypeaheadSlot
-derive instance ordSyncTypeaheadSlot :: Ord SyncTypeaheadSlot
 
 
 ----------
@@ -199,7 +194,7 @@ typeaheadBlockStrings = documentationBlock
     slot =
       HH.slot'
         CP.cp3
-        SyncTypeaheadStrings
+        unit
         Typeahead.component
         ( Typeahead.defaultMulti' fuzzyConfig containerData )
         (HE.input $ HandleSyncTypeahead )

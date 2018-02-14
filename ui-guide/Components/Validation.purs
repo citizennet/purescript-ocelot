@@ -16,6 +16,7 @@ import DOM (DOM)
 import Data.Array (length)
 import Data.Bifunctor as Bifunctor
 
+import Data.Foldable as Foldable
 import Data.Either (fromRight)
 import Data.Either.Nested (Either4)
 import Data.Functor.Coproduct.Nested (Coproduct4)
@@ -27,6 +28,7 @@ import Data.Newtype (class Newtype)
 import Data.Semiring.Free (Free, free)
 import Data.StrMap (StrMap, fromFoldable)
 import Data.String as String
+import Data.String.Utils as String.Utils
 import Data.String.Regex as Regex
 import Data.String.Regex.Flags as Regex.Flags
 import Data.Tuple (Tuple(..))
