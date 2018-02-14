@@ -7,45 +7,39 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Input as Input
 import CN.UI.Components.Typeahead as TAInput
 import CN.UI.Core.Typeahead as TA
-
+import Control.Alt ((<|>))
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER)
-
 import DOM (DOM)
-
--- Validation imports
-import Control.Alt ((<|>))
+import Data.Array (length)
 import Data.Bifunctor as Bifunctor
-import Data.String as String
-import Data.String.Regex as Regex
-import Data.String.Regex.Flags as Regex.Flags
-import Partial.Unsafe (unsafePartial)
-import Data.Validation.Semiring (V, unV, invalid, isValid)
-import Data.Semiring.Free (Free, free)
-import Data.Generic.Rep as Generic
-import Data.Generic.Rep.Eq as Generic.Eq
-import Data.Generic.Rep.Show as Generic.Show
-
 import Data.Either (fromRight)
 import Data.Either.Nested (Either4)
 import Data.Functor.Coproduct.Nested (Coproduct4)
+import Data.Generic.Rep as Generic
+import Data.Generic.Rep.Eq as Generic.Eq
+import Data.Generic.Rep.Show as Generic.Show
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Newtype (class Newtype)
-import Data.Array (length)
-
+import Data.Semiring.Free (Free, free)
+import Data.StrMap (StrMap, fromFoldable)
+import Data.String as String
+import Data.String.Regex as Regex
+import Data.String.Regex.Flags as Regex.Flags
+import Data.Tuple (Tuple(..))
+import Data.Validation.Semiring (V, unV, invalid, isValid)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-
 import Network.HTTP.Affjax (AJAX)
-
-import UIGuide.Utilities.Async as Async
+import Partial.Unsafe (unsafePartial)
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
+import UIGuide.Utilities.Async as Async
 
 ----------
 -- Component Types
@@ -362,22 +356,22 @@ renderForm =
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
           }
-          ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testRecords) (HE.input HandleA) )
+          ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testFuzzyConfig testRecords) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
           }
-          ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todos) (HE.input HandleB) )
+          ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todoFuzzyConfig Async.todos) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           }
-          ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.users) (HE.input HandleC) )
+          ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           }
-          ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.users) (HE.input HandleD) )
+          ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
@@ -428,12 +422,6 @@ newtype TestRecord = TestRecord
 instance eqTestRecord :: Eq TestRecord where
   eq (TestRecord { id: id'' }) (TestRecord { id: id' }) = id'' == id'
 
-instance show :: Show TestRecord where
-  show (TestRecord { name }) = name
-
-instance compareToStringTestRecord :: TA.CompareToString TestRecord where
-  compareToString (TestRecord { name }) = name
-
 derive instance newtypeTestRecord :: Newtype TestRecord _
 
 testRecords :: Array TestRecord
@@ -443,3 +431,9 @@ testRecords =
   , TestRecord { name: "Thomas", id: 2 }
   , TestRecord { name: "Forest", id: 3 }
   ]
+
+testFuzzyConfig :: { renderKey :: String, toStrMap :: TestRecord -> StrMap String }
+testFuzzyConfig =
+  { renderKey: "name"
+  , toStrMap: \(TestRecord { name, id }) -> fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
+  }

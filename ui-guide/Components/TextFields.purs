@@ -11,20 +11,21 @@ import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import Data.StrMap as StrMap
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
+import Data.StrMap (StrMap)
+import Data.StrMap as StrMap
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import UIGuide.Utilities.Async as Async
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation (documentation)
+import UIGuide.Utilities.Async as Async
 
 ----------
 -- Component Types
@@ -200,10 +201,11 @@ typeaheadBlockStrings = documentationBlock
         CP.cp3
         SyncTypeaheadStrings
         Typeahead.component
-        ( Typeahead.defaultMulti' toStrMap containerData )
+        ( Typeahead.defaultMulti' fuzzyConfig containerData )
         (HE.input $ HandleSyncTypeahead )
 
-    toStrMap = StrMap.singleton "value"
+    fuzzyConfig :: { renderKey :: String, toStrMap :: String -> StrMap String }
+    fuzzyConfig = { renderKey: "id", toStrMap: StrMap.singleton "value" }
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -218,7 +220,7 @@ typeaheadBlockTodos = documentationBlock
         CP.cp1
         unit
         Typeahead.component
-        ( Typeahead.defaultContAsyncMulti' Async.todos )
+        ( Typeahead.defaultContAsyncMulti' Async.todoFuzzyConfig Async.todos )
         (HE.input $ HandleTypeahead unit)
 
 dropdownBlock :: ∀ eff m

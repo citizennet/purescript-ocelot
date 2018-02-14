@@ -2,19 +2,18 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
+import CN.UI.Core.Typeahead (SyncMethod(..))
 import Control.Monad.Aff (Aff)
-import Network.HTTP.Affjax (get, AJAX)
-import Control.Monad.Eff.Timer (setTimeout, TIMER)
-
-import Data.Maybe (Maybe(..))
-import Data.Either (Either)
-import Data.Argonaut (Json, decodeJson, (.?))
-import Network.RemoteData (RemoteData(..), fromEither)
 import Control.Monad.Eff.Class (liftEff)
-
-import CN.UI.Core.Typeahead (class CompareToString, SyncMethod(..), compareToString)
-
+import Control.Monad.Eff.Timer (setTimeout, TIMER)
+import Data.Argonaut (Json, decodeJson, (.?))
+import Data.Either (Either)
+import Data.Maybe (Maybe(..))
+import Data.StrMap (StrMap, fromFoldable)
 import Data.Traversable (traverse)
+import Data.Tuple (Tuple(..))
+import Network.HTTP.Affjax (get, AJAX)
+import Network.RemoteData (RemoteData(..), fromEither)
 
 
 ----------
@@ -84,7 +83,7 @@ loadFromSource (Source { root, path, speed, decoder }) = case speed of
 
 
 ----------
--- Typeas for the JSON API
+-- Types for the JSON API
 
 decodeWith :: ∀ item. (Json -> Either String item) -> Json -> RemoteData Err (Array item)
 decodeWith decoder json = fromEither $ traverse decoder =<< decodeJson json
@@ -98,9 +97,6 @@ derive instance eqTodo :: Eq Todo
 instance showTodo :: Show Todo where
   show (Todo { title, completed }) = "Todo: " <> title <> " " <> show completed
 
-instance stringComparableTodo :: CompareToString Todo where
-  compareToString (Todo { title }) = title
-
 decodeTodo :: Json -> Either String Todo
 decodeTodo json = do
   obj <- decodeJson json
@@ -108,7 +104,14 @@ decodeTodo json = do
   completed <- obj .? "completed"
   pure $ Todo { title, completed }
 
-
+todoFuzzyConfig :: { renderKey :: String, toStrMap :: Todo -> StrMap String }
+todoFuzzyConfig =
+  { renderKey: "title"
+  , toStrMap: \(Todo { title, completed }) -> fromFoldable
+    [ Tuple "title" title
+    , Tuple "completed" (if completed then "completed" else "")
+    ]
+   }
 
 newtype User = User
   { id :: Int
@@ -118,8 +121,6 @@ newtype User = User
 derive instance eqUser :: Eq User
 instance showUser :: Show User where
   show (User { id, name }) = show id <> ": " <> name
-instance stringComparableUser :: CompareToString User where
-  compareToString (User { name }) = name
 
 decodeUser :: Json -> Either String User
 decodeUser json = do
@@ -131,4 +132,13 @@ decodeUser json = do
 
   pure $ User { id, name, city }
 
+userFuzzyConfig :: { renderKey :: String, toStrMap :: User -> StrMap String }
+userFuzzyConfig =
+  { renderKey: "name"
+  , toStrMap: \(User { id, name, city }) -> fromFoldable
+    [ Tuple "id" (show id)
+    , Tuple "name" name
+    , Tuple "city" city
+    ]
+  }
 
