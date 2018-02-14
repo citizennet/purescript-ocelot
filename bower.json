@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "purescript-halogen": "^3.1.1",
-    "purescript-halogen-select": "citizennet/purescript-halogen-select",
+    "purescript-halogen-select": "citizennet/purescript-halogen-select"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
