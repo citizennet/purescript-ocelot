@@ -2,8 +2,6 @@
 @tailwind preflight;
 
 /* CitizenNet core CSS ...
-** @import "citizennet-css"
-*/
 
 /* Import utilities after our CSS to avoid overwriting them. */
 @tailwind utilities;
@@ -59,9 +57,10 @@
 .checked\:sibling\:before\:border-blue-88:checked + *:before { @apply .border-blue-88; }
 .checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
 .disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
-.focus\:no-outline:focus { @apply .no-outline !important; }
-.not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0 !important; }
-.not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0 !important; }
+
+.focus\:no-outline:focus { @apply .no-outline; }
+.not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
+.not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
 
 html { @apply .gotham; font-size: 16px; }
 

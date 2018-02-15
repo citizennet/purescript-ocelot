@@ -2,23 +2,21 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
+import CN.UI.Core.Typeahead as TA
 import Control.Monad.Aff.Class (class MonadAff)
-import Network.RemoteData (RemoteData(..), withDefault)
 import Data.Array (dropEnd, mapWithIndex, takeEnd)
 import Data.Foldable (foldr)
-import Data.Maybe (Maybe(Just, Nothing))
+import Data.Maybe (Maybe(..))
 import Data.String (Pattern(Pattern), split)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
+import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Halogen.Component.ChildPath as CP
-
+import Network.RemoteData (RemoteData(..), withDefault)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
-
-import CN.UI.Core.Typeahead as TA
 
 
 ----------
@@ -89,6 +87,22 @@ defaultMulti' xs =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
+  , render: renderTA defaultRenderItem
+  , config: defaultConfig
+  }
+
+-- A default async single select using the default render function
+defaultAsyncSingle' :: ∀ o item source err eff m
+  . MonadAff (TA.Effects eff) m
+  => TA.CompareToString item
+  => Eq item
+  => Show err
+  => source
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultAsyncSingle' source =
+  { items: TA.Async source NotAsked
+  , search: Nothing
+  , initialSelection: TA.One Nothing
   , render: renderTA defaultRenderItem
   , config: defaultConfig
   }
@@ -164,10 +178,7 @@ renderTA :: ∀ o item source err eff m
 renderTA renderItem st =
   HH.div
   [ HP.class_ $ HH.ClassName "w-full px-3" ]
-  [ HH.label
-    [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
-    [ HH.text "Typeahead" ]
-  , renderSelections
+  [ renderSelections
   , HH.slot'
       CP.cp2
       TA.SearchSlot
@@ -185,9 +196,6 @@ renderTA renderItem st =
       C.component
       { render: renderContainer st, items: unpack st.items }
       (HE.input TA.HandleContainer)
-  , HH.p
-    [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
-    [ HH.text "Some helper text that might be useful." ]
   ]
   where
     unpack (TA.Sync x) = x
