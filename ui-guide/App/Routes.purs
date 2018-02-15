@@ -1,20 +1,28 @@
 module UIGuide.App.Routes
-  ( routes )
+  ( routes, groups )
 where
 
-import Prelude
 
-import Data.StrMap as SM
-import UIGuide.App (proxy)
+import Data.Map as M
 import Data.Tuple (Tuple(..))
+
+import UIGuide.App (Group(Fundamental, Primitive), proxy)
 
 import UIGuide.Components.Button as Button
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.TextFields as TextFields
 
-routes = SM.fromFoldable
-  [ Tuple "Text Fields" $ proxy $ TextFields.component
-  , Tuple "Buttons" $ proxy $ Button.component
-  , Tuple "Form Controls" $ proxy $ FormControl.component
-  ]
 
+----------
+-- Routes
+
+groups = [ Primitive, Fundamental ]
+
+routes = M.fromFoldable
+  [ Tuple "textfields"
+      { anchor: "Text Fields", component: proxy TextFields.component, group: Primitive }
+  , Tuple "buttons"
+      { anchor: "Buttons", component: proxy Button.component, group: Primitive }
+  , Tuple "formcontrols"
+      { anchor: "Form Controls", component: proxy FormControl.component, group: Fundamental }
+  ]
