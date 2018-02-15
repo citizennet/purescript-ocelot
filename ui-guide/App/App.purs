@@ -54,14 +54,12 @@ type Page m =
   }
 
 data Group
-  = Primitive
-  | Fundamental
+  = FormElements
 
 derive instance eqGroup :: Eq Group
 derive instance ordGroup :: Ord Group
 instance showGroup :: Show Group where
-  show Primitive = "Primitive"
-  show Fundamental = "Fundamental"
+  show FormElements = "Form Elements"
 
 
 type Slot = String
