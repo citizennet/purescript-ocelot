@@ -2,8 +2,6 @@
 @tailwind preflight;
 
 /* CitizenNet core CSS ...
-** @import "citizennet-css"
-*/
 
 /* Import utilities after our CSS to avoid overwriting them. */
 @tailwind utilities;
