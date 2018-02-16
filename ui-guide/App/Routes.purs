@@ -16,10 +16,15 @@ import UIGuide.Components.TextFields as TextFields
 ----------
 -- Routes
 
-groups = [ FormElements ]
+groups = 
+  [ Components
+  , FormElements
+  ]
 
 routes = M.fromFoldable
-  [ Tuple "textfields"
+  [ Tuple "tabs"
+    { anchor: "Tabs", component: proxy Tab.component, group: Components }
+  , Tuple "textfields"
       { anchor: "Text Fields", component: proxy TextFields.component, group: FormElements }
   , Tuple "buttons"
       { anchor: "Buttons", component: proxy Button.component, group: FormElements }
