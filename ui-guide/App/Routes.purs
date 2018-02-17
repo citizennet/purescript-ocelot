@@ -10,13 +10,15 @@ import UIGuide.Components.Card as Card
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Tab as Tab
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Validation as Validation
 
 ----------
 -- Routes
 
-groups = 
+groups =
   [ Components
   , FormElements
+  , Behaviors
   ]
 
 routes = M.fromFoldable
@@ -30,4 +32,6 @@ routes = M.fromFoldable
       { anchor: "Buttons", component: proxy Button.component, group: FormElements }
   , Tuple "formcontrols"
       { anchor: "Form Controls", component: proxy FormControl.component, group: FormElements }
+  , Tuple "validation"
+      { anchor: "Validation", component: proxy Validation.component, group: Behaviors }
   ]

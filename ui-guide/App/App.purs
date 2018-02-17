@@ -56,12 +56,14 @@ type Page m =
 data Group
   = FormElements
   | Components
+  | Behaviors
 
 derive instance eqGroup :: Eq Group
 derive instance ordGroup :: Ord Group
 instance showGroup :: Show Group where
   show FormElements = "Form Elements"
   show Components = "Components"
+  show Behaviors = "Behaviors"
 
 
 type Slot = String
