@@ -4,8 +4,8 @@ import Prelude
 
 import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (defaultContAsyncMulti', defaultMulti') as Typeahead
-import CN.UI.Core.Typeahead (TypeaheadMessage(RequestData), TypeaheadQuery(FulfillRequest), TypeaheadSyncMessage, component, maybeReplaceItems) as Typeahead
+import CN.UI.Components.Typeahead as Typeahead
+import CN.UI.Core.Typeahead as Typeahead
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, logShow)
@@ -196,11 +196,13 @@ typeaheadBlockStrings = documentationBlock
         CP.cp3
         unit
         Typeahead.component
-        ( Typeahead.defaultMulti' fuzzyConfig containerData )
+        ( Typeahead.defaultMulti
+            containerData
+            (StrMap.singleton "id")
+            (Typeahead.defaultContainerRow $ Typeahead.boldMatches "id")
+            (Typeahead.defaultSelectionRow $ HH.text)
+        )
         (HE.input $ HandleSyncTypeahead )
-
-    fuzzyConfig :: { renderKey :: String, toStrMap :: String -> StrMap String }
-    fuzzyConfig = { renderKey: "id", toStrMap: StrMap.singleton "value" }
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -215,7 +217,12 @@ typeaheadBlockTodos = documentationBlock
         CP.cp1
         unit
         Typeahead.component
-        ( Typeahead.defaultContAsyncMulti' Async.todoFuzzyConfig Async.todos )
+        ( Typeahead.defaultContAsyncMulti
+            Async.todos
+            Async.todoToStrMap
+            Async.todoRenderFuzzy
+            Async.todoRenderItem
+        )
         (HE.input $ HandleTypeahead unit)
 
 dropdownBlock :: ∀ eff m

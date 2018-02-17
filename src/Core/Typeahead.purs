@@ -111,10 +111,10 @@ derive instance ordPrimitiveSlot :: Ord Slot
 -- Data modeling
 
 type Config item =
-  { filterType  :: FilterType item
-  , insertable  :: Insertable item
-  , keepOpen    :: Boolean
-  , fuzzyConfig :: FuzzyConfig item
+  { filterType :: FilterType item
+  , insertable :: Insertable item
+  , keepOpen   :: Boolean
+  , toStrMap   :: item -> StrMap String
   }
 
 data FilterType item
@@ -122,13 +122,6 @@ data FilterType item
   | FuzzyMatch
   | CustomMatch (String -> item -> Boolean)
 
-
--- - `toStrMap`: Function to transform item to set of fields you want to be filterable by fuzzy matching
--- - `renderKey`: Key to the string label you want to render in renderContainer
--- TODO: Consider if there are better ways to handle this use case (more general)
-type FuzzyConfig item =
-  { toStrMap  :: (item -> StrMap String)
-  , renderKey :: String }
 
 -- If an item is meant to be insertable, you must provide a function
 -- describing how to move from a search string to an item. Note: this
@@ -369,7 +362,7 @@ applyFilter :: ∀ item. FilterType item -> String -> Array (Fuzzy item) -> Arra
 applyFilter filterType text items = case filterType of
   NoFilter -> items
   CustomMatch match -> filter (\item -> match text $ (_.original <<< unwrap) item) items
-  FuzzyMatch -> filter (\(Fuzzy { ratio }) -> ratio > (1 % 6)) items
+  FuzzyMatch -> filter (\(Fuzzy { ratio }) -> ratio > (2 % 3)) items
 
 -- Update items dependent on the insertable configuration. Only provide insertable if there is an exact match.
 -- Fuzzy is always run over the container items so this match is available.
@@ -424,7 +417,7 @@ getNewItems :: ∀ item source err. Eq item => TypeaheadState item source err ->
 getNewItems st = (sort <<< applyF <<< applyI) <$> (fuzzyItems <<< removeSelections st.items) st.selections
   where
     matcher :: item -> Fuzzy item
-    matcher = Fuzz.match true st.config.fuzzyConfig.toStrMap st.search
+    matcher = Fuzz.match true st.config.toStrMap st.search
 
     fuzzyItems :: SyncMethod source err (Array item) -> SyncMethod source err (Array (Fuzzy item))
     fuzzyItems = (map <<< map) matcher
