@@ -2,7 +2,9 @@ module CN.UI.Block.FormControl (formControl) where
 
 import Prelude
 
+import CN.UI.Core.Validation (ValidationErrors, htmlE)
 import Data.Maybe (Maybe(..))
+import Data.String as String
 import Data.Validation.Semigroup (V, isValid, unV)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -34,16 +36,15 @@ labelClasses = HH.ClassName <$>
   , "text-sm"
   ]
 
-type FormControlProps err item =
+type FormControlProps =
   { helpText :: Maybe String
   , label :: String
-  , valid :: Maybe (V err item)
+  , valid :: Maybe ValidationErrors
   }
 
 formControl
-  :: ∀ p i err item
-   . Show err
-  => FormControlProps err item
+  :: ∀ p i
+  . FormControlProps
   -> HH.HTML p i
   -> HH.HTML p i
 formControl props html =
@@ -57,12 +58,10 @@ formControl props html =
       ]
     ]
   where
-    helpText (Just v) text
-      | isValid v = helpText Nothing text
-      | otherwise =
+    helpText (Just errors) _ =
         HH.span
           [ HP.classes errorTextClasses ]
-          [ HH.text $ unV show (const "") v ]
+          (HH.fromPlainHTML <$> htmlE errors)
     helpText Nothing (Just x) =
       HH.span
         [ HP.classes helpTextClasses ]

@@ -13,7 +13,8 @@
   "dependencies": {
     "purescript-halogen": "^3.1.2",
     "purescript-halogen-select": "^0.1.7",
-    "purescript-fuzzy": "^0.1.2"
+    "purescript-fuzzy": "^0.1.2",
+    "purescript-email-validate": "^2.0.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
@@ -29,6 +30,7 @@
     "purescript-generics-rep": "^5.4.0",
     "purescript-halogen-select": "citizennet/purescript-halogen-select",
     "purescript-fuzzy": "citizennet/purescript-fuzzy",
-    "purescript-stringutils": "^0.0.7"
+    "purescript-stringutils": "^0.0.7",
+    "purescript-variant": "^4.1.0"
   }
 }

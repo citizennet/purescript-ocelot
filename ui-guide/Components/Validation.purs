@@ -7,30 +7,39 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Input as Input
 import CN.UI.Components.Typeahead as TAInput
 import CN.UI.Core.Typeahead as TA
+import CN.UI.Core.Validation (validateNonEmptyStr, validateNonEmptyArr, validateStrIsEmail, validateMinLength, validateDependence, ValidationError, ValidationErrors)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
+import Data.Array as Array
+import Data.Bifunctor (rmap)
 import Data.Bifunctor as Bifunctor
-
+import Data.Const (Const(..))
+import Data.Either (fromRight)
+import Data.Either.Nested (Either4)
+import Data.Foldable (class Foldable)
 import Data.Foldable as Foldable
-import Data.String as String
-import Data.String.Utils as String.Utils
-import Data.String.Regex as Regex
-import Data.String.Regex.Flags as Regex.Flags
+import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Eq as Generic.Eq
 import Data.Generic.Rep.Show as Generic.Show
-
-import Data.Either (fromRight)
-import Data.Either.Nested (Either4)
-import Data.Functor.Coproduct.Nested (Coproduct4)
+import Data.Int (fromString)
+import Data.List.NonEmpty (NonEmptyList(..))
+import Data.Map as Map
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Newtype (class Newtype)
-import Data.StrMap (StrMap, fromFoldable)
+import Data.Monoid (class Monoid)
+import Data.Newtype (class Newtype, unwrap)
+import Data.StrMap (StrMap, fromFoldable, insert)
+import Data.String as String
+import Data.String.Regex as Regex
+import Data.String.Regex.Flags as Regex.Flags
+import Data.String.Utils as String.Utils
+import Data.Symbol (class IsSymbol, reflectSymbol)
 import Data.Tuple (Tuple(..))
 import Data.Validation.Semigroup (V, invalid, unV)
+import Data.Variant (Variant, SProxy(..), case_, on, inj)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -38,6 +47,8 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import Partial.Unsafe (unsafePartial)
+import Type.Proxy (Proxy(..))
+import Type.Row (class RowToList, Cons, Nil, RLProxy(..), RProxy(..), kind RowList)
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -47,8 +58,9 @@ import UIGuide.Utilities.Async as Async
 
 type State =
   { raw :: UnvalidatedForm
-  , validation :: Maybe (V FormErrors ValidatedForm)
+  , validation :: FormErrors
   }
+
 
 data Query a
   = UpdateTextField Int String a
@@ -87,9 +99,6 @@ type Effects eff =
   , timer :: TIMER
   , console :: CONSOLE | eff )
 
---  mapp = M.fromFoldable
---    [ Tuple
-
 component :: ∀ eff m
   . MonadAff (Effects eff) m
  => H.Component HH.HTML Query Unit Void m
@@ -103,7 +112,7 @@ component =
         , users2: []
         , email: ""
         , username: "" }
-      , validation: Nothing }
+      , validation: Map.empty }
   , render
   , eval
   , receiver: const Nothing
@@ -112,7 +121,7 @@ component =
     render
       :: State
       -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_ [ renderForm st, renderValidation st ]
+    render st = HH.div_ [ renderForm st ]
 
     eval
       :: Query
@@ -154,7 +163,9 @@ component =
 
       -- Validate data
       st <- H.get
-      H.modify (_ { validation = Just $ runValidation st.raw })
+      let validation = runValidation st.raw
+      let formErrors = unV id (const Map.empty) validation
+      H.modify (_ { validation = formErrors })
       pure next
 
 
@@ -185,13 +196,12 @@ runValidation f =
   , users2: _
   , email: _
   , username: _ }
-  <$> (Bifunctor.lmap pure $ validateDevelopers f.developers)
-  <*> (Bifunctor.lmap pure $ validateTodos f.todos)
-  <*> (Bifunctor.lmap pure $ validateUsers1 f.users1)
-  <*> (Bifunctor.lmap pure $ validateUsers2 f.users2)
-  <*> (Bifunctor.lmap pure $ validateEmail f.email)
-  <*> (Bifunctor.lmap pure $ validateUsername f.username)
-
+  <$> validateDevelopers f.developers
+  <*> validateTodos f.todos
+  <*> validateUsers1 f.users1 f.users2
+  <*> validateUsers2 f.users2 f.users1
+  <*> validateEmail f.email
+  <*> validateUsername f.username
 -----
 -- Top level form types
 
@@ -214,38 +224,48 @@ type ValidatedForm =
 -----
 -- Validation for form fields
 
-validateDevelopers :: Array TestRecord -> V FormError (ValidatedArray TestRecord)
+validateDevelopers :: Array TestRecord -> V FormErrors (ValidatedArray TestRecord)
 validateDevelopers xs =
-  Bifunctor.bimap FailDevelopers ValidatedArray
-  $ validateMinLength 2 xs
+  Bifunctor.bimap (toMap FailDevelopers) ValidatedArray
+  $ validateMinLength 2 "Must select more than one developer" xs
 
-validateTodos :: Array Async.Todo -> V FormError (ValidatedArray Async.Todo)
+validateTodos :: Array Async.Todo -> V FormErrors (ValidatedArray Async.Todo)
 validateTodos xs =
-  Bifunctor.bimap FailTodos ValidatedArray
-  $ validateNonEmptyArr xs
+  Bifunctor.bimap (toMap FailTodos) ValidatedArray
+  $ validateNonEmptyArr "Todos cannot be empty" xs
 
-validateUsers1 :: Array Async.User -> V FormError (ValidatedArray Async.User)
-validateUsers1 xs =
-  Bifunctor.bimap FailUsers1 ValidatedArray
-  $ validateNonEmptyArr xs
-  *> validateMinLength 2 xs
+validateUsers1 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
+validateUsers1 users1 users2 =
+  Bifunctor.bimap (toMap FailUsers1) ValidatedArray
+  $ validateNonEmptyArr "Users cannot be empty" users1
+  *> validateMinLength 2 "Must select more than one user" users1
+  *> validateUserDependence users2 users2
 
-validateUsers2 :: Array Async.User -> V FormError (ValidatedArray Async.User)
-validateUsers2 xs =
-  Bifunctor.bimap FailUsers2 ValidatedArray
-  $ validateNonEmptyArr xs
+validateUsers2 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
+validateUsers2 users2 users1 =
+  Bifunctor.bimap (toMap FailUsers2) ValidatedArray
+  $ validateNonEmptyArr "Users2 cannot be empty" users2
+  *> validateUserDependence users2 users1
 
-validateEmail :: String -> V FormError Email
+validateUserDependence :: Array Async.User -> Array Async.User -> V ValidationErrors (Array Async.User)
+validateUserDependence users1 users2 =
+  validateDependence
+    (\u1 u2 -> Array.length u1 + (Array.length u2) > 4)
+    users1
+    users2
+    "Users 1 and 2 must combine to 5 or more"
+
+validateEmail :: String -> V FormErrors Email
 validateEmail email =
-  Bifunctor.bimap FailEmail Email
-  $  validateNonEmptyStr email
-  *> validateEmailRegex email
+  Bifunctor.bimap (toMap FailEmail) Email
+  $  validateNonEmptyStr "Email cannot be empty" email
+  *> validateStrIsEmail "Must be a valid email" email
 
-validateUsername :: String -> V FormError Username
+validateUsername :: String -> V FormErrors Username
 validateUsername uname =
-  Bifunctor.bimap FailUsername (Username <<< String.Utils.fromCharArray)
-  $  validateNonEmptyStr uname
-  *> validateMinLength 8 (String.Utils.toCharArray uname)
+  Bifunctor.bimap (toMap FailUsername) (Username <<< String.Utils.fromCharArray)
+  $  validateNonEmptyStr "Username cannot be empty" uname
+  *> validateMinLength 8 "Username must be longer than 8 characters" (String.Utils.toCharArray uname)
 
 -----
 -- Specialized types
@@ -255,81 +275,26 @@ newtype Username = Username String
 newtype ValidatedArray a = ValidatedArray (Array a)
 
 -----
--- Form types
+-- Keys and Map for storing errors on the state
 
-data FormErrorF a
-  = FailDevelopers a
-  | FailTodos a
-  | FailUsers1 a
-  | FailUsers2 a
-  | FailEmail a
-  | FailUsername a
+data FormErrorKey
+  = FailDevelopers
+  | FailTodos
+  | FailUsers1
+  | FailUsers2
+  | FailEmail
+  | FailUsername
 
-derive instance functorFormErrorF :: Functor FormErrorF
-derive instance genericFormErrorF :: Generic.Generic (FormErrorF a) _
-instance showFormErrorF :: Show a => Show (FormErrorF a) where
-  show (FailDevelopers a) = "Developers " <> show a
-  show a = Generic.Show.genericShow a
+derive instance eqFormErrorKey :: Eq FormErrorKey
+derive instance ordFormErrorKey :: Ord FormErrorKey
+derive instance genericFormErrorKey :: Generic.Generic (FormErrorKey) _
+instance showFormErrorF :: Show (FormErrorKey) where
+  show = Generic.Show.genericShow
 
-type FormError = FormErrorF ValidationErrors
-type FormErrors = Array FormError
+type FormErrors = Map.Map FormErrorKey ValidationErrors
 
------
--- Validation types
-
-type ValidationErrors = Array ValidationError
-
-data ValidationError
-  = EmptyField
-  | InvalidEmail
-  | UnderMinLength
-
-derive instance genericValidationError :: Generic.Generic ValidationError _
-
-instance eqValidationError :: Eq ValidationError where
-  eq = Generic.Eq.genericEq
-
-instance showValidationError :: Show ValidationError where
-  show EmptyField = "cannot be empty"
-  show InvalidEmail = "is not a valid email"
-  show UnderMinLength = "is not long enough"
-
------
--- Possible validations to run on any field
-
-validateNonEmptyStr :: String -> V ValidationErrors String
-validateNonEmptyStr str
-  | String.null str = invalid $ pure EmptyField
-  | otherwise = pure str
-
-validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
-validateNonEmptyArr [] = invalid $ pure EmptyField
-validateNonEmptyArr xs = pure xs
-
-validateEmailRegex :: String -> V ValidationErrors String
-validateEmailRegex email
-  | Regex.test emailRegex email = pure email
-  | otherwise = invalid $ pure InvalidEmail
-
-validateMinLength :: ∀ f a. Foldable.Foldable f => Int -> f a -> V ValidationErrors (f a)
-validateMinLength n f
-  | Foldable.length f >= n = pure f
-  | otherwise = invalid $ pure UnderMinLength
-
-
------
--- Regexes to use in running validations
-
-unsafeRegexFromString :: String -> Regex.Regex
-unsafeRegexFromString str =
-  let regex = Regex.regex str Regex.Flags.noFlags
-   in unsafePartial $ fromRight regex
-
-emailRegex :: Regex.Regex
-emailRegex = unsafeRegexFromString "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$"
-
-
-
+toMap :: FormErrorKey -> ValidationErrors -> FormErrors
+toMap key errors = Map.fromFoldable $ Array.singleton $ Tuple key errors
 ----------
 -- Rendering
 
@@ -349,31 +314,31 @@ renderForm st =
         [ FormControl.formControl
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
-          , valid: Just $ validateDevelopers st.raw.developers
+          , valid: Map.lookup FailDevelopers st.validation
           }
           ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testFuzzyConfig testRecords) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
-          , valid: Just $ validateTodos st.raw.todos
+          , valid: Map.lookup FailTodos st.validation
           }
           ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todoFuzzyConfig Async.todos) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
-          , valid: Just $ validateUsers1 st.raw.users1
+          , valid: Map.lookup FailUsers1 st.validation
           }
           ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
-          , valid: Just $ validateUsers2 st.raw.users2
+          , valid: Map.lookup FailUsers2 st.validation
           }
           ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
-          , valid: Just $ validateEmail st.raw.email
+          , valid: Map.lookup FailEmail st.validation
           }
           ( Input.input
             [ HP.placeholder "davelovesgangoffour@gmail.com"
@@ -381,7 +346,7 @@ renderForm st =
         , FormControl.formControl
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
-          , valid: Nothing :: Maybe (V FormError String)
+          , valid: Map.lookup FailUsername st.validation
           }
           ( Input.input
             [ HP.placeholder "Placehold me"
@@ -393,22 +358,6 @@ renderForm st =
         ]
       ]
   ]
-
-renderValidation :: ∀ eff m
-  . MonadAff (Effects eff) m
- => State
- -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-renderValidation st = case st.validation of
-  Nothing -> HH.div_ []
-  Just v  ->
-    HH.div
-    [ HP.class_ $ HH.ClassName "mt-4 p-4 bg-grey-lightest font-mono" ]
-    [ showV v ]
-
-  where
-    renderLine x = HH.p [ HP.class_ $ HH.ClassName "py-1" ] [ HH.text x ]
-    stringify = unV show (const "")
-    showV = renderLine <<< stringify
 
 
 ----------

@@ -79,7 +79,7 @@ component =
               [ FormControl.formControl
                 { label: "Email"
                 , helpText: Just "Dave will spam your email with gang of four patterns"
-                , valid: Nothing :: Maybe (V String String)
+                , valid: Nothing
                 }
                 ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
               ]
@@ -95,7 +95,7 @@ component =
               [ FormControl.formControl
                 { label: "Dave's OO Emails"
                 , helpText: Just "Once enabled, you can never unsubscribe."
-                , valid: Nothing :: Maybe (V String String)
+                , valid: Nothing
                 }
                 ( Toggle.toggle [] )
               ]
@@ -124,7 +124,7 @@ component =
               [ FormControl.formControl
                   { label: "Platform"
                   , helpText: Just "Where do you want your ad to appear?"
-                  , valid: Nothing :: Maybe (V String String)
+                  , valid: Nothing
                   }
                   ( HH.div_
                     [ Radio.radio
