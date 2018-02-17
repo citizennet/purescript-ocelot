@@ -11,7 +11,6 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
 import Data.Maybe (Maybe(..))
-import Data.Validation.Semigroup (V)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE

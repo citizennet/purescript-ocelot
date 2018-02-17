@@ -4,8 +4,6 @@ import Prelude
 
 import CN.UI.Core.Validation (ValidationErrors, htmlE)
 import Data.Maybe (Maybe(..))
-import Data.String as String
-import Data.Validation.Semigroup (V, isValid, unV)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 

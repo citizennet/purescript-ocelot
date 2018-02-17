@@ -18,7 +18,7 @@ import Text.Email.Validate (isValid)
 type ValidationErrors = Array ValidationError
 
 data ValidationError
-  = EmptyField String
+  = EmptyField
   | InvalidEmail String
   | UnderMinLength Int String
   | Dependency String
@@ -34,14 +34,14 @@ instance showValidationError :: Show ValidationError where
 -----
 -- Possible validations to run on any field
 
-validateNonEmptyStr :: String -> String -> V ValidationErrors String
-validateNonEmptyStr msg str
-  | null str = invalid $ pure (EmptyField msg)
+validateNonEmptyStr :: String -> V ValidationErrors String
+validateNonEmptyStr str
+  | null str = invalid $ pure EmptyField
   | otherwise = pure str
 
-validateNonEmptyArr :: ∀ a. String -> Array a -> V ValidationErrors (Array a)
-validateNonEmptyArr msg [] = invalid $ pure (EmptyField msg)
-validateNonEmptyArr _ xs = pure xs
+validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
+validateNonEmptyArr [] = invalid $ pure EmptyField
+validateNonEmptyArr xs = pure xs
 
 validateStrIsEmail :: String -> String -> V ValidationErrors String
 validateStrIsEmail msg email
@@ -63,9 +63,9 @@ validateDependence f item1 item2 msg
 -- Helper functions for printing error messages from ValidationErrors
 
 showE :: ValidationError -> String
-showE (EmptyField msg) = msg
+showE EmptyField = "Required"
 showE (InvalidEmail msg) = msg
-showE (UnderMinLength n msg) = msg
+showE (UnderMinLength _ msg) = msg
 showE (Dependency msg) = msg
 
 htmlE :: ValidationErrors -> Array HH.PlainHTML

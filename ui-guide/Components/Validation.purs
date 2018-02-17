@@ -7,48 +7,31 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.Input as Input
 import CN.UI.Components.Typeahead as TAInput
 import CN.UI.Core.Typeahead as TA
-import CN.UI.Core.Validation (validateNonEmptyStr, validateNonEmptyArr, validateStrIsEmail, validateMinLength, validateDependence, ValidationError, ValidationErrors)
+import CN.UI.Core.Validation as CV
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Array as Array
-import Data.Bifunctor (rmap)
 import Data.Bifunctor as Bifunctor
-import Data.Const (Const(..))
-import Data.Either (fromRight)
 import Data.Either.Nested (Either4)
-import Data.Foldable (class Foldable)
-import Data.Foldable as Foldable
 import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
-import Data.Generic.Rep.Eq as Generic.Eq
 import Data.Generic.Rep.Show as Generic.Show
-import Data.Int (fromString)
-import Data.List.NonEmpty (NonEmptyList(..))
 import Data.Map as Map
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Monoid (class Monoid)
-import Data.Newtype (class Newtype, unwrap)
-import Data.StrMap (StrMap, fromFoldable, insert)
-import Data.String as String
-import Data.String.Regex as Regex
-import Data.String.Regex.Flags as Regex.Flags
+import Data.Newtype (class Newtype)
+import Data.StrMap (StrMap, fromFoldable)
 import Data.String.Utils as String.Utils
-import Data.Symbol (class IsSymbol, reflectSymbol)
 import Data.Tuple (Tuple(..))
-import Data.Validation.Semigroup (V, invalid, unV)
-import Data.Variant (Variant, SProxy(..), case_, on, inj)
+import Data.Validation.Semigroup (V, unV)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import Partial.Unsafe (unsafePartial)
-import Type.Proxy (Proxy(..))
-import Type.Row (class RowToList, Cons, Nil, RLProxy(..), RProxy(..), kind RowList)
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -227,29 +210,32 @@ type ValidatedForm =
 validateDevelopers :: Array TestRecord -> V FormErrors (ValidatedArray TestRecord)
 validateDevelopers xs =
   Bifunctor.bimap (toMap FailDevelopers) ValidatedArray
-  $ validateMinLength 2 "Must select more than one developer" xs
+  $ CV.validateMinLength 2 "Must select more than one developer" xs
 
 validateTodos :: Array Async.Todo -> V FormErrors (ValidatedArray Async.Todo)
 validateTodos xs =
   Bifunctor.bimap (toMap FailTodos) ValidatedArray
-  $ validateNonEmptyArr "Todos cannot be empty" xs
+  $ CV.validateNonEmptyArr xs
 
 validateUsers1 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
 validateUsers1 users1 users2 =
   Bifunctor.bimap (toMap FailUsers1) ValidatedArray
-  $ validateNonEmptyArr "Users cannot be empty" users1
-  *> validateMinLength 2 "Must select more than one user" users1
+  $ CV.validateNonEmptyArr users1
+  *> CV.validateMinLength 2 "Must select more than one user" users1
   *> validateUserDependence users2 users2
 
 validateUsers2 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
 validateUsers2 users2 users1 =
   Bifunctor.bimap (toMap FailUsers2) ValidatedArray
-  $ validateNonEmptyArr "Users2 cannot be empty" users2
+  $ CV.validateNonEmptyArr users2
   *> validateUserDependence users2 users1
 
-validateUserDependence :: Array Async.User -> Array Async.User -> V ValidationErrors (Array Async.User)
+validateUserDependence
+  :: Array Async.User
+  -> Array Async.User
+  -> V CV.ValidationErrors (Array Async.User)
 validateUserDependence users1 users2 =
-  validateDependence
+  CV.validateDependence
     (\u1 u2 -> Array.length u1 + (Array.length u2) > 4)
     users1
     users2
@@ -258,14 +244,14 @@ validateUserDependence users1 users2 =
 validateEmail :: String -> V FormErrors Email
 validateEmail email =
   Bifunctor.bimap (toMap FailEmail) Email
-  $  validateNonEmptyStr "Email cannot be empty" email
-  *> validateStrIsEmail "Must be a valid email" email
+  $  CV.validateNonEmptyStr email
+  *> CV.validateStrIsEmail "Must be a valid email" email
 
 validateUsername :: String -> V FormErrors Username
 validateUsername uname =
   Bifunctor.bimap (toMap FailUsername) (Username <<< String.Utils.fromCharArray)
-  $  validateNonEmptyStr "Username cannot be empty" uname
-  *> validateMinLength 8 "Username must be longer than 8 characters" (String.Utils.toCharArray uname)
+  $  CV.validateNonEmptyStr uname
+  *> CV.validateMinLength 8 "Username must be longer than 8 characters" (String.Utils.toCharArray uname)
 
 -----
 -- Specialized types
@@ -291,9 +277,9 @@ derive instance genericFormErrorKey :: Generic.Generic (FormErrorKey) _
 instance showFormErrorF :: Show (FormErrorKey) where
   show = Generic.Show.genericShow
 
-type FormErrors = Map.Map FormErrorKey ValidationErrors
+type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
 
-toMap :: FormErrorKey -> ValidationErrors -> FormErrors
+toMap :: FormErrorKey -> CV.ValidationErrors -> FormErrors
 toMap key errors = Map.fromFoldable $ Array.singleton $ Tuple key errors
 ----------
 -- Rendering
