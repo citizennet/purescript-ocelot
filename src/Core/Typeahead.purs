@@ -6,15 +6,18 @@ import Network.RemoteData (RemoteData(Success, Failure, Loading))
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import Control.Monad.Aff.Class (class MonadAff)
-
+import Data.Newtype (unwrap)
+import Data.StrMap (StrMap)
+import Data.Fuzzy as Fuzz
+import Data.Fuzzy (Fuzzy(..))
 import DOM (DOM)
-import Data.Maybe (Maybe(..), fromMaybe)
-import Data.String (Pattern(Pattern), contains, toLower)
+import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
 import Data.Tuple (Tuple(..))
-import Data.Array (filter, length, (:), difference)
+import Data.Array (difference, filter, length, sort, (:))
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Time.Duration (Milliseconds)
+import Data.Rational ((%))
 
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
@@ -36,7 +39,7 @@ import Select.Primitives.State (getState)
 type State o item source err eff m =
   Store
     (TypeaheadState item source err)
-    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m)
+    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
 
 -- Items are wrapped in `SyncMethod` to account for failure and loading cases
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
@@ -55,10 +58,11 @@ type TypeaheadInput o item source err eff m =
   , initialSelection :: SelectionType item
   , render
     :: TypeaheadState item source err
-    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o item eff) ChildSlot m
+    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
   , config :: Config item
   }
 
+-- `item` is wrapped in `Fuzzy` to support highlighting in render functions
 -- `HandleContainer` & `HandleSearch`: Manage routing for child messages
 -- `Remove`: The user has removed a currently-selected item.
 -- `Selections`: The parent wants to know the current selections.
@@ -66,8 +70,8 @@ type TypeaheadInput o item source err eff m =
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data TypeaheadQuery o item source err eff m a
-  = HandleContainer (C.Message o item) a
-  | HandleSearch (S.Message o item) a
+  = HandleContainer (C.Message o (Fuzzy item)) a
+  | HandleSearch (S.Message o (Fuzzy item)) a
   | Remove item a
   | Selections (SelectionType item -> a)
   | FulfillRequest (SyncMethod source err (Array item)) a
@@ -107,16 +111,17 @@ derive instance ordPrimitiveSlot :: Ord Slot
 -- Data modeling
 
 type Config item =
-  { filterType  :: FilterType item
-  , insertable  :: Insertable item
-  , keepOpen    :: Boolean
+  { filterType :: FilterType item
+  , insertable :: Insertable item
+  , keepOpen   :: Boolean
+  , toStrMap   :: item -> StrMap String
   }
 
 data FilterType item
   = NoFilter
-  | Exact
-  | CaseInsensitive
+  | FuzzyMatch
   | CustomMatch (String -> item -> Boolean)
+
 
 -- If an item is meant to be insertable, you must provide a function
 -- describing how to move from a search string to an item. Note: this
@@ -158,19 +163,6 @@ data SelectionType item
   | Many (Array item)
 derive instance functorSelectionType :: Functor SelectionType
 
--- A type class that guarantees your item type can be compared to a user search
--- string for filtering purposes. You can rely on a default Show instance with:
---
--- ```
--- instance compareToStringX :: CompareToString X where
---   compareToString = show
--- ```
-class CompareToString a where
-  compareToString :: a -> String
-
-instance compareToStringString :: CompareToString String where
-  compareToString = id
-
 
 ----------
 -- Component
@@ -207,7 +199,6 @@ type Effects eff = ( dom :: DOM, avar :: AVAR, console :: CONSOLE | eff )
 -- by applying them in synonyms. Only use them in function signatures where it is necessary.
 component :: ∀ o item source err eff m
   . MonadAff (Effects eff) m
- => CompareToString item
  => Eq item
  => Show err
  => H.Component
@@ -241,7 +232,7 @@ component =
       ~> H.ParentDSL
           (State o item source err (Effects eff) m)
           (TypeaheadQuery o item source err (Effects eff) m)
-          (ChildQuery o item (Effects eff))
+          (ChildQuery o (Fuzzy item) (Effects eff))
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m
@@ -253,18 +244,14 @@ component =
 
         -- Select an item, removing it from the list of available items in the container.
         -- Does not remove the item from the parent state.
-        C.ItemSelected item -> do
+        C.ItemSelected (Fuzzy { original: item }) -> do
           (Tuple _ st) <- getState
-          let selections = selectItem item st.items st.selections
-          H.modify $ seeks _ { selections = selections }
-          _ <- H.query' CP.cp1 ContainerSlot
-             $ H.action
-             $ C.ReplaceItems (diffItemsSelections st.items selections)
+          H.modify $ seeks _ { selections = selectItem item st.items st.selections }
           _ <- if st.config.keepOpen
                then pure Nothing
                else H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
           H.raise $ ItemSelected item
-          pure a
+          eval (FulfillRequest st.items a)
 
       HandleSearch message a -> case message of
         S.Emit query -> H.raise (Emit query) *> pure a
@@ -273,14 +260,10 @@ component =
         -- Perform a new search, fetching data if ContinuousAsync.
         S.NewSearch text -> do
           H.modify $ seeks _ { search = text }
+          H.raise $ NewSearch text
+
           (Tuple _ st) <- getState
-
-          let applyI = applyInsertable st.config.insertable text
-              applyF = applyFilter st.config.filterType text
-
-          newItems <- case st.items of
-            Sync i -> pure $ Sync $ (applyI <<< applyF) i
-            Async src i -> pure $ Async src $ (applyI <<< applyF) <$> i
+          case st.items of
             ContinuousAsync db _ src _ -> do
               -- ContinuousAsync may take some time to complete. Set status
               -- to Loading and request the data. When the data is fulfilled,
@@ -288,23 +271,16 @@ component =
               let cont = ContinuousAsync db text src Loading
               H.modify $ seeks $ _ { items = cont }
               H.raise $ RequestData cont
-              pure cont
-
-          _ <- updateContainer newItems st.selections
-
-          H.raise $ NewSearch text
-          pure a
+              pure a
+            _ -> eval (FulfillRequest st.items a)
 
       -- Remove a currently-selected item.
       Remove item a -> do
         (Tuple _ st) <- getState
         let selections = removeItem item st.items st.selections
         H.modify $ seeks _ { selections = selections }
-        _ <- H.query' CP.cp1 ContainerSlot
-           $ H.action
-           $ C.ReplaceItems (diffItemsSelections st.items selections)
         H.raise $ ItemRemoved item
-        pure a
+        eval (FulfillRequest st.items a)
 
       -- Tell the parent what the current state of the Selections list is.
       Selections reply -> do
@@ -314,15 +290,9 @@ component =
       -- The callback: when the parent has fetched data, they'll call this to update
       -- the typeahead with that data.
       FulfillRequest items a -> do
-        (Tuple _ st) <- getState
         H.modify $ seeks $ _ { items = items }
-
-        let applyI = applyInsertable st.config.insertable st.search
-            applyF = applyFilter st.config.filterType st.search
-            newItems = (applyI <<< applyF) <$> items
-
-        _ <- updateContainer newItems st.selections
-
+        (Tuple _ st) <- getState
+        _ <- updateContainer (getNewItems st)
         pure a
 
       -- If synchronous, do nothing; if not, request the data for the component.
@@ -330,7 +300,9 @@ component =
         (Tuple _ st) <- getState
 
         case st.items of
-          Sync _ -> pure a
+          (Sync xs) -> eval (FulfillRequest st.items a)
+          -- TODO: Move into its own query so this can be regularly triggered
+          -- by the parent
           Async src _ -> do
             let async = Async src Loading
             H.modify $ seeks $ _ { items = async }
@@ -346,58 +318,65 @@ component =
         H.put (initialState input)
         pure a
 
-
-    -- Helper function to determine how to update the container based on the item
-    -- type.
-    updateContainer (Sync i) = updateContainerWith (Success i)
-    updateContainer (Async _ i) = updateContainerWith i
-    updateContainer (ContinuousAsync _ _ _ i) = updateContainerWith i
-
-    -- On failure, clear the items in the container and toggle it closed. We can
-    -- display an error or some other information, but not using the container.
-    updateContainerWith (Failure e) _ = do
-      _ <- H.query' CP.cp1 ContainerSlot
-         $ H.action
-         $ C.Visibility C.Off
-      _ <- H.query' CP.cp1 ContainerSlot
-         $ H.action
-         $ C.ReplaceItems []
-      H.liftAff $ logShow e
-    -- On success, replace the items in the container.
-    updateContainerWith i@(Success _) selections = do
-      let mock = Async "" i
-      _ <- H.query' CP.cp1 ContainerSlot
-         $ H.action
-         $ C.ReplaceItems (diffItemsSelections mock selections)
+    -- If there is new data to send, then send it;
+    -- if not, empty and close the container.
+    updateContainer
+      :: SyncMethod source err (Array (Fuzzy item))
+      -> H.ParentDSL
+          (State o item source err (Effects eff) m)
+          (TypeaheadQuery o item source err (Effects eff) m)
+          (ChildQuery o (Fuzzy item) (Effects eff))
+          (ChildSlot)
+          (TypeaheadMessage o item source err)
+          m
+          Unit
+    updateContainer (Sync items) = do
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
       pure unit
-    -- On NotAsked or Loading, do nothing. The container doesn't yet need to update.
-    updateContainerWith _ _ = pure unit
+    updateContainer (Async _ (Success items)) = do
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
+      pure unit
+    updateContainer (Async _ (Failure e)) = do
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems []
+      H.liftAff $ logShow e
+      pure unit
+    updateContainer (ContinuousAsync _ _ _ (Success items)) = do
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
+      pure unit
+    updateContainer (ContinuousAsync _ _ _ (Failure e)) = do
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
+      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems []
+      H.liftAff $ logShow e
+      pure unit
+    updateContainer _ = pure unit
 
 
 
 ----------
--- Helpers
+-- Internal helpers
 
 -- Filter items dependent on the filterable configuration.
-applyFilter :: ∀ item. CompareToString item => FilterType item -> String -> Array item -> Array item
+-- NOTE: Min Ratio threshold is hardcoded for now.
+applyFilter :: ∀ item. FilterType item -> String -> Array (Fuzzy item) -> Array (Fuzzy item)
 applyFilter filterType text items = case filterType of
   NoFilter -> items
-  Exact -> filter (\item -> contains (Pattern text) (compareToString item)) items
-  CaseInsensitive ->
-    filter (\item -> contains (Pattern $ toLower text) (toLower $ compareToString item)) items
-  CustomMatch match -> filter (\item -> match text item) items
+  CustomMatch match -> filter (\item -> match text $ (_.original <<< unwrap) item) items
+  FuzzyMatch -> filter (\(Fuzzy { ratio }) -> ratio > (2 % 3)) items
 
--- Update items dependent on the insertable configuration.
-applyInsertable :: ∀ item. CompareToString item => Insertable item -> String -> Array item -> Array item
-applyInsertable insertable text items = case insertable of
+-- Update items dependent on the insertable configuration. Only provide insertable if there is an exact match.
+-- Fuzzy is always run over the container items so this match is available.
+applyInsertable :: ∀ item. (item -> Fuzzy item) -> Insertable item -> String -> Array (Fuzzy item) -> Array (Fuzzy item)
+applyInsertable match insertable text items = case insertable of
   NotInsertable -> items
-  Insertable mkItem | length items > 0 -> items
-                    | otherwise -> (mkItem text) : items
+  Insertable mkItem | length (filter isExactMatch items) > 0 -> items
+                    | otherwise -> (match $ mkItem text) : items
+    where
+      isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
 
 -- Remove an item from the selections and place it in the items list.
 removeItem :: ∀ item source err
-  . CompareToString item
- => Eq item
+  . Eq item
  => item
  -> SyncMethod source err (Array item)
  -> SelectionType item
@@ -409,8 +388,7 @@ removeItem item items selections = case selections of
 
 -- Remove an item from the items and place it in the selections list.
 selectItem :: ∀ item source err
-  . CompareToString item
- => Eq item
+  . Eq item
  => item
  -> SyncMethod source err (Array item)
  -> SelectionType item
@@ -420,20 +398,57 @@ selectItem item items selections = case selections of
   Many xs -> Many $ item : xs
   Limit n xs -> if length xs >= n then selections else Limit n $ item : xs
 
-diffItemsSelections :: ∀ item source err
-  . CompareToString item
- => Eq item
+--  Construct new array of fuzzy items to send to the container by diffing the
+--  original items & current selections
+removeSelections :: ∀ item source err
+  . Eq item
  => SyncMethod source err (Array item)
  -> SelectionType item
- -> Array item
-diffItemsSelections items selections = difference (unpackItems items) (unpackSelections selections)
+ -> SyncMethod source err (Array item)
+removeSelections items selections = case items of
+  (Sync _) -> Sync getDiff
+  (Async src d) -> Async src (const getDiff <$> d)
+  (ContinuousAsync ms sch src d) -> ContinuousAsync ms sch src (const getDiff <$> d)
   where
-    unpackSelections (One Nothing) = []
-    unpackSelections (One (Just i)) = [i]
-    unpackSelections (Limit _ xs) = xs
-    unpackSelections (Many xs) = xs
+    getDiff = difference (fromMaybe [] $ maybeUnpackItems items) (unpackSelections selections)
 
-    unpackItems (Sync xs) = xs
-    unpackItems (Async _ (Success xs)) = xs
-    unpackItems (ContinuousAsync _ _ _ (Success xs)) = xs
-    unpackItems _ = []
+-- Attempt to match new items against the user's search.
+getNewItems :: ∀ item source err. Eq item => TypeaheadState item source err -> SyncMethod source err (Array (Fuzzy item))
+getNewItems st = (sort <<< applyF <<< applyI) <$> (fuzzyItems <<< removeSelections st.items) st.selections
+  where
+    matcher :: item -> Fuzzy item
+    matcher = Fuzz.match true st.config.toStrMap st.search
+
+    fuzzyItems :: SyncMethod source err (Array item) -> SyncMethod source err (Array (Fuzzy item))
+    fuzzyItems = (map <<< map) matcher
+
+    applyI :: Array (Fuzzy item) -> Array (Fuzzy item)
+    applyI = applyInsertable matcher st.config.insertable st.search
+
+    applyF :: Array (Fuzzy item) -> Array (Fuzzy item)
+    applyF = applyFilter st.config.filterType st.search
+
+
+----------
+-- External Helpers
+
+unpackSelections :: ∀ item. SelectionType item -> Array item
+unpackSelections (One Nothing) = []
+unpackSelections (One (Just i)) = [i]
+unpackSelections (Limit _ xs) = xs
+unpackSelections (Many xs) = xs
+
+maybeUnpackItems :: ∀ source err item. SyncMethod source err (Array item) -> Maybe (Array item)
+maybeUnpackItems (Sync xs) = Just xs
+maybeUnpackItems (Async _ (Success xs)) = Just xs
+maybeUnpackItems (ContinuousAsync _ _ _ (Success xs)) = Just xs
+maybeUnpackItems _ = Nothing
+
+maybeReplaceItems :: ∀ source err item
+  . RemoteData err (Array item)
+ -> SyncMethod source err (Array item)
+ -> Maybe (SyncMethod source err (Array item))
+maybeReplaceItems _ (Sync _) = Nothing
+maybeReplaceItems xs (Async src _) = Just $ Async src xs
+maybeReplaceItems xs (ContinuousAsync time search src _)
+  = Just $ ContinuousAsync time search src xs

@@ -10,11 +10,12 @@ import UIGuide.Components.Card as Card
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Tab as Tab
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Validation as Validation
 
 ----------
 -- Routes
 
-groups = 
+groups =
   [ Components
   , FormElements
   ]

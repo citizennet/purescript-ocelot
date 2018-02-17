@@ -3,27 +3,28 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Components.Typeahead (defaultMulti', defaultAsyncMulti', defaultContAsyncMulti') as Typeahead
-import CN.UI.Core.Typeahead (SyncMethod(..), TypeaheadMessage(..), TypeaheadSyncMessage, TypeaheadQuery(..), component) as Typeahead
+import CN.UI.Components.Typeahead as Typeahead
+import CN.UI.Core.Typeahead as Typeahead
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (log, logShow, CONSOLE)
+import Control.Monad.Aff.Console (CONSOLE, logShow)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import DOM.Event.Types (MouseEvent)
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
+import Data.StrMap (StrMap)
+import Data.StrMap as StrMap
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import UIGuide.Utilities.Async as Async
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation (documentation)
+import UIGuide.Utilities.Async as Async
 
 ----------
 -- Component Types
@@ -34,30 +35,20 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead TypeaheadSlot (Typeahead.TypeaheadMessage Query Async.Item (Async.Source Async.Item) Async.Err) a
+  | HandleTypeahead Unit (Typeahead.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 ----------
 -- Child paths
 
-type ChildSlot = Either3 TypeaheadSlot Unit SyncTypeaheadSlot
+type ChildSlot = Either3 Unit Unit Unit
 type ChildQuery eff m =
   Coproduct3
-    (Typeahead.TypeaheadQuery Query Async.Item (Async.Source Async.Item) Async.Err eff m)
+    (Typeahead.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
     (Dropdown.Query TestRecord)
     (Typeahead.TypeaheadQuery Query String Void Void eff m)
 
-data SyncTypeaheadSlot
-  = SyncTypeaheadStrings
-derive instance eqSyncTypeaheadSlot :: Eq SyncTypeaheadSlot
-derive instance ordSyncTypeaheadSlot :: Ord SyncTypeaheadSlot
-
-data TypeaheadSlot
-  = TypeaheadTodos
-  | TypeaheadUsers
-derive instance eqTypeaheadSlot :: Eq TypeaheadSlot
-derive instance ordTypeaheadSlot :: Ord TypeaheadSlot
 
 ----------
 -- Component definition
@@ -90,10 +81,14 @@ component =
     -- Responsible for fetching data based on source and returning it to the component.
     -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
-      Typeahead.RequestData source -> do
+      Typeahead.RequestData syncMethod -> do
         _ <- H.fork do
-          res <- H.liftAff $ Async.load source
-          H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest $ replaceItems res source
+          res <- H.liftAff $ Async.load syncMethod
+          case Typeahead.maybeReplaceItems res syncMethod of
+            Nothing -> pure next
+            (Just newSync) -> do
+              _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest newSync
+              pure next
         pure next
 
       -- Ignore other messages
@@ -104,14 +99,6 @@ component =
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
       Dropdown.ItemSelected item ->
         H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
-
-    -- Helper to replace items dependent on sync types
-    replaceItems Nothing v = v
-    replaceItems (Just _) s@(Typeahead.Sync _) = s
-    replaceItems (Just d) (Typeahead.Async src _) = Typeahead.Async src d
-    replaceItems (Just d) (Typeahead.ContinuousAsync db srch src _) = Typeahead.ContinuousAsync db srch src d
-
-
 
 
 ----------
@@ -139,7 +126,19 @@ containerData :: Array String
 containerData =
   [ "Instagram"
   , "Facebook"
-  , "Twitter" ]
+  , "Twitter"
+  , "Pinterest"
+  , "Snapchat"
+  , "YouTube"
+  , "Reddit"
+  , "Voat"
+  , "Discord"
+  , "4Chan"
+  , "8Chan"
+  , "Digg"
+  , "Myspace"
+  , "Friendster"
+  ]
 
 ----------
 -- HTML
@@ -150,7 +149,6 @@ css = HP.class_ <<< HH.ClassName
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
   typeaheadBlockStrings
-  <> typeaheadBlockUsers
   <> typeaheadBlockTodos
   <> dropdownBlock
 
@@ -165,9 +163,14 @@ typeaheadBlockStrings = documentationBlock
     slot =
       HH.slot'
         CP.cp3
-        SyncTypeaheadStrings
+        unit
         Typeahead.component
-        ( Typeahead.defaultMulti' containerData )
+        ( Typeahead.defaultMulti
+            containerData
+            (StrMap.singleton "id")
+            (Typeahead.defaultContainerRow $ Typeahead.boldMatches "id")
+            (Typeahead.defaultSelectionRow $ HH.text)
+        )
         (HE.input $ HandleSyncTypeahead )
 
 typeaheadBlockTodos :: ∀ eff m
@@ -181,26 +184,15 @@ typeaheadBlockTodos = documentationBlock
     slot =
       HH.slot'
         CP.cp1
-        TypeaheadTodos
+        unit
         Typeahead.component
-        ( Typeahead.defaultContAsyncMulti' Async.todos )
-        (HE.input $ HandleTypeahead TypeaheadTodos)
-
-typeaheadBlockUsers :: ∀ eff m
-  . MonadAff (Effects eff) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-typeaheadBlockUsers = documentationBlock
-  "Typeahead"
-  "Uses string input to search pre-determined entries."
-  ( componentBlock "Set to default sync." slot )
-  where
-    slot =
-      HH.slot'
-        CP.cp1
-        TypeaheadUsers
-        Typeahead.component
-        ( Typeahead.defaultAsyncMulti' Async.users )
-        (HE.input $ HandleTypeahead TypeaheadUsers)
+        ( Typeahead.defaultContAsyncMulti
+            Async.todos
+            Async.todoToStrMap
+            Async.todoRenderFuzzy
+            Async.todoRenderItem
+        )
+        (HE.input $ HandleTypeahead unit)
 
 dropdownBlock :: ∀ eff m
   . MonadAff ( Effects eff ) m
