@@ -2,24 +2,25 @@ module CN.UI.Components.Typeahead where
 
 import Prelude
 
-import CN.UI.Block.Input as Input
-import CN.UI.Core.Typeahead as TA
-import Control.Monad.Aff.Class (class MonadAff)
-import Data.Array (mapWithIndex)
 import Data.Either (Either(..))
 import Data.Fuzzy (Fuzzy(..))
-import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.StrMap (StrMap, lookup)
+import CN.UI.Core.Typeahead as TA
+import Control.Monad.Aff.Class (class MonadAff)
+import Data.Array (dropEnd, mapWithIndex, takeEnd)
+import Data.Foldable (foldr)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.RemoteData (RemoteData(NotAsked))
+import Network.RemoteData (RemoteData(..), withDefault)
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
+import CN.UI.Block.Input as Input
 
 ----------
 -- Default typeahead configurations
@@ -76,6 +77,24 @@ defaultMulti xs toStrMap renderFuzzy renderItem =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
+  }
+
+-- A default async single select using the default render function
+defaultAsyncSingle :: ∀ o item source err eff m
+  . MonadAff (TA.Effects eff) m
+  => Eq item
+  => Show err
+  => source
+  -> (item -> StrMap String)
+  -> RenderContainerRow o item
+  -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
+  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultAsyncSingle source toStrMap renderFuzzy renderItem =
+  { items: TA.Async source NotAsked
+  , search: Nothing
+  , initialSelection: TA.One Nothing
   , render: renderTA renderFuzzy renderItem
   , config: defaultConfig toStrMap
   }
@@ -171,8 +190,9 @@ renderTA :: ∀ o item source err eff m
  -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadState item source err
  -> TAParentHTML o item source err (TA.Effects eff) m
-renderTA renderFuzzy renderSelection st = HH.span
-  [ HP.class_ $ HH.ClassName "w-full" ]
+renderTA renderFuzzy renderSelection st =
+  HH.div
+  [ HP.class_ $ HH.ClassName "w-full px-3" ]
   [ renderSelections
   , HH.slot'
       CP.cp2
@@ -214,7 +234,7 @@ renderTA renderFuzzy renderSelection st = HH.span
           ]
         (TA.Limit _ xs) -> HH.div_
           [ HH.div
-            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
+            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter z-50" ]
             [ HH.ul
               [ HP.class_ $ HH.ClassName "list-reset" ]
               $ renderSelection <$> xs
@@ -226,7 +246,7 @@ renderTA renderFuzzy renderSelection st = HH.span
         then []
         else [ HH.div
           ( C.getContainerProps
-            [ HP.class_ $ HH.ClassName "absolute bg-white shadow max-h-80 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
+            [ HP.class_ $ HH.ClassName "absolute bg-white shadow max-h-80 overflow-y-scroll rounded-sm pin-t pin-l w-full z-50" ]
           )
           [ HH.ul
             [ HP.class_ $ HH.ClassName "list-reset" ]

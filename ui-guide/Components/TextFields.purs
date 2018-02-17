@@ -2,7 +2,6 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead as Typeahead
 import CN.UI.Core.Typeahead as Typeahead
@@ -141,20 +140,6 @@ containerData =
   , "Friendster"
   ]
 
-tabs :: Array (NavigationTab.Tab Boolean)
-tabs =
-  [ { name: "Accounts & Spend", link: "#", page: true }
-  , { name: "Automatic Optimization", link: "#", page: false }
-  , { name: "Creative", link: "#", page: false }
-  ]
-
-tabConfig :: NavigationTab.TabConfig Boolean
-tabConfig =
-  { tabs: tabs
-  , activePage: true
-  }
-
-
 ----------
 -- HTML
 
@@ -163,25 +148,9 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  tabsBlock
-  <> typeaheadBlockStrings
+  typeaheadBlockStrings
   <> typeaheadBlockTodos
   <> dropdownBlock
-
-tabsBlock
-  :: ∀ eff m
-  . MonadAff (Effects eff) m
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-tabsBlock =
-  [ documentation
-      { header: "Tabs"
-      , subheader: "Tabs for navigating, eg. between form pages"
-      }
-      [ Component.component
-          { title: "Tabs" }
-          [ NavigationTab.navigationTabs tabConfig ]
-      ]
-  ]
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m
