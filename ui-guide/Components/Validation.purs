@@ -41,7 +41,7 @@ import UIGuide.Utilities.Async as Async
 
 type State =
   { raw :: UnvalidatedForm
-  , validation :: FormErrors
+  , errors :: FormErrors
   }
 
 
@@ -51,6 +51,7 @@ data Query a
   | HandleB (TA.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleC (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
   | HandleD (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
+  | Validate FormErrorKey FormVKey a
   | FormSubmit a
 
 
@@ -95,7 +96,7 @@ component =
         , users2: []
         , email: ""
         , username: "" }
-      , validation: Map.empty }
+      , errors: Map.empty }
   , render
   , eval
   , receiver: const Nothing
@@ -129,6 +130,13 @@ component =
       2 -> H.modify (_ { raw { username = str }}) *> pure next
       _ -> pure next
 
+    eval (Validate eKey vKey next) = do
+      st <- H.get
+      let v = validateField vKey
+      let errors = unV (flip Map.union st.errors) (const $ Map.delete eKey st.errors) v
+      H.modify (_ { errors = errors })
+      pure next
+
     eval (FormSubmit next) = do
       -- Collect data from components
       devs   <- H.query' CP.cp1 unit (H.request TA.Selections)
@@ -147,8 +155,8 @@ component =
       -- Validate data
       st <- H.get
       let validation = runValidation st.raw
-      let formErrors = unV id (const Map.empty) validation
-      H.modify (_ { validation = formErrors })
+      let errors = unV id (const Map.empty) validation
+      H.modify (_ { errors = errors })
       pure next
 
 
@@ -281,6 +289,29 @@ type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
 
 toMap :: FormErrorKey -> CV.ValidationErrors -> FormErrors
 toMap key errors = Map.fromFoldable $ Array.singleton $ Tuple key errors
+
+-----
+-- Additional function for validating any arbitrary field
+-- An extra sum type is required here in order to unify all of the field types
+-- So they can get picked up and validated with a single Validate Query handler
+
+data FormVKey
+  = DevelopersV (Array TestRecord)
+  | TodosV (Array Async.Todo)
+  | Users1V (Tuple (Array Async.User) (Array Async.User))
+  | Users2V (Tuple (Array Async.User) (Array Async.User))
+  | EmailV String
+  | UsernameV String
+
+validateField :: FormVKey -> V FormErrors Unit
+validateField (DevelopersV devs) = const unit <$> validateDevelopers devs
+validateField (TodosV todos) = const unit <$> validateTodos todos
+validateField (Users1V (Tuple u1 u2)) = const unit <$> validateUsers1 u1 u2
+validateField (Users2V (Tuple u2 u1)) = const unit <$> validateUsers2 u2 u1
+validateField (EmailV email) = const unit <$> validateEmail email
+validateField (UsernameV username) = const unit <$> validateUsername username
+
+
 ----------
 -- Rendering
 
@@ -300,42 +331,44 @@ renderForm st =
         [ FormControl.formControl
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
-          , valid: Map.lookup FailDevelopers st.validation
+          , valid: Map.lookup FailDevelopers st.errors
           }
           ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testFuzzyConfig testRecords) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
-          , valid: Map.lookup FailTodos st.validation
+          , valid: Map.lookup FailTodos st.errors
           }
           ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todoFuzzyConfig Async.todos) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
-          , valid: Map.lookup FailUsers1 st.validation
+          , valid: Map.lookup FailUsers1 st.errors
           }
           ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
-          , valid: Map.lookup FailUsers2 st.validation
+          , valid: Map.lookup FailUsers2 st.errors
           }
           ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
-          , valid: Map.lookup FailEmail st.validation
+          , valid: Map.lookup FailEmail st.errors
           }
           ( Input.input
             [ HP.placeholder "davelovesgangoffour@gmail.com"
+            , HE.onBlur (HE.input_ $ Validate FailEmail (EmailV st.raw.email))
             , HE.onValueInput (HE.input $ UpdateTextField 1) ] )
         , FormControl.formControl
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
-          , valid: Map.lookup FailUsername st.validation
+          , valid: Map.lookup FailUsername st.errors
           }
           ( Input.input
             [ HP.placeholder "Placehold me"
+            , HE.onBlur (HE.input_ $ Validate FailUsername (UsernameV st.raw.username))
             , HE.onValueInput (HE.input $ UpdateTextField 2) ] )
         , Button.button
             { type_: Button.Primary }
