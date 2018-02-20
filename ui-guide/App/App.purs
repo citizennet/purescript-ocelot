@@ -6,6 +6,8 @@
 module UIGuide.App
   ( Stories
   , StoryQuery
+  , Page(..)
+  , Group(..)
   , runStorybook
   , module Halogen.Storybook.Proxy
   ) where
@@ -14,10 +16,11 @@ import Prelude
 
 import Control.Monad.Aff (Aff, launchAff_)
 
+import Data.Tuple (Tuple(..))
 import Data.Const (Const)
 import Data.Functor (mapFlipped)
 import Data.Maybe (Maybe(..))
-import Data.StrMap as SM
+import Data.Map as M
 import DOM.HTML.Types (HTMLElement)
 
 import Global (decodeURI, encodeURI)
@@ -34,21 +37,34 @@ import Routing (hashes)
 data Query a
   = RouteChange String a
 
-type State =
+type State m =
   { route :: String
+  , stories :: Stories m
+  , partitions :: M.Map Group (Stories m)
   }
 
 type StoryQuery = ProxyS (Const Void) Unit
 
--- | Stories config, each story consists of a story name and a component.
--- | Note the component needs to be proxied explicitly.
--- |
--- | ```
--- | stories :: forall m. Stories m
--- | stories = SM.fromFoldable
--- |   [ Tuple "count" $ proxy $ ExpCount.component
--- | ```
-type Stories m = SM.StrMap (H.Component HH.HTML StoryQuery Unit Void m)
+type Stories m = M.Map String (Page m)
+
+type Page m =
+  { anchor :: String
+  , component :: H.Component HH.HTML StoryQuery Unit Void m
+  , group :: Group
+  }
+
+data Group
+  = FormElements
+  | Components
+  | Behaviors
+
+derive instance eqGroup :: Eq Group
+derive instance ordGroup :: Ord Group
+instance showGroup :: Show Group where
+  show FormElements = "Form Elements"
+  show Components = "Components"
+  show Behaviors = "Behaviors"
+
 
 type Slot = String
 
@@ -56,30 +72,35 @@ type HTML m = H.ParentHTML Query StoryQuery Slot m
 
 
 -- | Takes stories config and mount element, and renders the storybook.
-runStorybook
-  :: forall eff. Stories (Aff (HalogenEffects eff))
-  -> HTMLElement
-  -> Aff (HalogenEffects eff) Unit
-runStorybook stories body = do
-  app' <- runUI (app stories) unit body
+runStorybook :: ∀ eff
+  . Stories (Aff (HalogenEffects eff))
+ -> Array Group
+ -> HTMLElement
+ -> Aff (HalogenEffects eff) Unit
+runStorybook stories groups body = do
+  app' <- runUI app { stories, groups } body
   H.liftEff $ hashes $ \_ next ->
     launchAff_ $ app'.query (H.action $ RouteChange $ decodeURI next)
 
+type Input m =
+  { stories :: Stories m
+  , groups :: Array Group
+  }
 
-app :: forall m. Stories m -> H.Component HH.HTML Query Unit Void m
-app stories =
+app :: ∀ m. H.Component HH.HTML Query (Input m) Void m
+app =
   H.parentComponent
-    { initialState: const initialState
+    { initialState
     , render
     , eval
     , receiver: const Nothing
     }
   where
 
-  initialState :: State
-  initialState = { route: "" }
+  initialState :: Input m -> State m
+  initialState i = { route: "", stories: i.stories, partitions: M.fromFoldable $ flip partitionByGroup i.stories <$> i.groups }
 
-  render :: State -> HTML m
+  render :: State m -> HTML m
   render state =
     HH.body
     [ HP.class_ $ HH.ClassName "font-sans font-normal text-black leading-normal" ]
@@ -90,7 +111,7 @@ app stories =
       ]
     ]
 
-  renderContainer :: State -> HTML m
+  renderContainer :: State m -> HTML m
   renderContainer state =
     HH.div
     [ HP.class_ $ HH.ClassName "md:ml-80" ]
@@ -109,14 +130,14 @@ app stories =
       [ renderSlot state ]
     ]
 
-  renderSlot :: State -> HTML m
+  renderSlot :: State m -> HTML m
   renderSlot state =
-    case SM.lookup state.route stories of
-      Just cmp -> HH.slot state.route cmp unit absurd
+    case M.lookup state.route state.stories of
+      Just { component } -> HH.slot state.route component unit absurd
       -- TODO: Fill in a home page HTML renderer
       _ -> HH.div_ []
 
-  renderSidebar :: State -> HTML m
+  renderSidebar :: State m -> HTML m
   renderSidebar state =
     HH.div
     [ HP.id_ "sidebar"
@@ -125,30 +146,49 @@ app stories =
       [ HP.class_ $ HH.ClassName "p-8 flex-1 overflow-y-scroll" ]
       [ HH.nav
         [ HP.class_ $ HH.ClassName "text-base overflow-y-scroll" ]
-        [ renderNavs state ]
+        (renderGroups state)
       ]
     ]
 
-  renderNavs :: State -> HTML m
-  renderNavs { route } =
+  renderGroups :: State m -> Array (HTML m)
+  renderGroups state =
+    mapFlipped (M.toUnfoldable state.partitions) $ \(Tuple group stories) ->
+      HH.div
+      [ HP.class_ $ HH.ClassName "my-4" ]
+      [ HH.p
+        [ HP.class_ $ HH.ClassName "uppercase text-grey-darker font-bold text-xs tracking-wide" ]
+        [ HH.text $ show group ]
+      , renderGroup state.route stories
+      ]
+
+  renderGroup :: String -> Stories m -> HTML m
+  renderGroup route stories =
     HH.ul [ HP.class_ $ HH.ClassName "list-reset" ] $
-      mapFlipped (SM.keys stories) $ \name ->
+      mapFlipped (M.toUnfoldable stories) $ \(Tuple href { anchor }) ->
         HH.li
-        [ HP.class_ $ HH.ClassName "mb-3" ]
+        [ HP.class_ $ HH.ClassName "my-1" ]
         [ HH.a
-          [ HP.class_ $ HH.ClassName $ if route == name then linkActiveClass else linkClass
-          , HP.href $ "#" <> encodeURI name
+          [ HP.class_ $ HH.ClassName $ if route == href then linkActiveClass else linkClass
+          , HP.href $ "#" <> encodeURI href
           ]
-          [ HH.text name ]
+          [ HH.text anchor ]
         ]
     where
       linkClass = "hover:underline text-grey-darkest"
-      linkActiveClass = linkClass <> " font-bold text-black"
+      linkActiveClass = linkClass <> " hover:underline font-bold text-black"
 
 
-  eval :: Query ~> H.ParentDSL State Query StoryQuery Slot Void m
+  eval :: Query ~> H.ParentDSL (State m) Query StoryQuery Slot Void m
   eval (RouteChange route next) = do
     H.modify (\state -> state { route = route })
     pure next
 
 
+
+
+
+----------
+-- Helpers
+
+partitionByGroup :: ∀ m. Group -> Stories m -> Tuple Group (Stories m)
+partitionByGroup g = Tuple g <<< M.filter (\{ group } -> group == g)

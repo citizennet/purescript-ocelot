@@ -4,43 +4,42 @@ import Prelude
 
 import Data.Either (Either(..))
 import Data.Fuzzy (Fuzzy(..))
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.StrMap (StrMap, lookup)
 import Control.Monad.Aff.Class (class MonadAff)
-import Network.RemoteData (RemoteData(NotAsked))
 import Data.Array (mapWithIndex)
-import Data.StrMap (lookup)
-import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
+import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Halogen.Component.ChildPath as CP
-
+import Network.RemoteData (RemoteData(..))
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Core.Typeahead as TA
 import CN.UI.Block.Input as Input
 
-
 ----------
 -- Default typeahead configurations
 
--- A default single-select that is provided with a renderItem function.
+-- A default single-select that is provided with a renderFuzzy and renderItem function.
 defaultSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => Array item
- -> TA.FuzzyConfig item
- -> (String -> (Maybe Int) -> Int -> (Fuzzy item) -> H.HTML Void (C.ContainerQuery o (Fuzzy item)))
+ -> (item -> StrMap String)
+ -> RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultSingle xs fuzzyConfig renderItem =
+defaultSingle xs toStrMap renderFuzzy renderItem =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA renderItem
-  , config: defaultConfig fuzzyConfig
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
   }
 
 -- A default multi-select limited to N total possible selections.
@@ -50,82 +49,90 @@ defaultLimit :: ∀ o item source err eff m
  => Show err
  => Int
  -> Array item
- -> TA.FuzzyConfig item
- -> (String -> (Maybe Int) -> Int -> (Fuzzy item) -> H.HTML Void (C.ContainerQuery o (Fuzzy item)))
+ -> (item -> StrMap String)
+ -> RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultLimit n xs fuzzyConfig renderItem =
+defaultLimit n xs toStrMap renderFuzzy renderItem =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Limit n []
-  , render: renderTA renderItem
-  , config: defaultConfig fuzzyConfig
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
   }
 
--- A default multi-select that is provided with a renderItem function to determine
+-- A default multi-select that is provided with a renderFuzzy and renderItem function to determine
 -- rendering a specific item in the container
 defaultMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => Array item
- -> TA.FuzzyConfig item
- -> (String -> (Maybe Int) -> Int -> (Fuzzy item) -> H.HTML Void (C.ContainerQuery o (Fuzzy item)))
+ -> (item -> StrMap String)
+ -> RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultMulti xs fuzzyConfig renderItem =
+defaultMulti xs toStrMap renderFuzzy renderItem =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA renderItem
-  , config: defaultConfig fuzzyConfig
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
   }
 
--- A default multi-select using the default render item function
-defaultMulti' :: ∀ o item source err eff m
+-- A default async single select using the default render function
+defaultAsyncSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
   => Eq item
   => Show err
-  => TA.FuzzyConfig item
-  -> Array item
+  => source
+  -> (item -> StrMap String)
+  -> RenderContainerRow o item
+  -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultMulti' fuzzyConfig xs =
-  { items: TA.Sync xs
+defaultAsyncSingle source toStrMap renderFuzzy renderItem =
+  { items: TA.Async source NotAsked
   , search: Nothing
-  , initialSelection: TA.Many []
-  , render: renderTA defaultRenderItem
-  , config: defaultFuzzyConfig fuzzyConfig
+  , initialSelection: TA.One Nothing
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
   }
 
 -- A default multi-select using the default render item function
-defaultAsyncMulti' :: ∀ o item source err eff m
+defaultAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
-  => Eq item
-  => Show err
-  => TA.FuzzyConfig item
-  -> source
-  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultAsyncMulti' fuzzyConfig source =
+ => Eq item
+ => Show err
+ => source
+ -> (item -> StrMap String)
+ -> RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
+ -> TA.TypeaheadInput o item source err (TA.Effects eff) m
+defaultAsyncMulti source toStrMap renderFuzzy renderItem =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA defaultRenderItem
-  , config: defaultConfig fuzzyConfig
+  , render: renderTA renderFuzzy renderItem
+  , config: defaultConfig toStrMap
   }
 
 -- A continuous asynchronous typeahead, reasonably debounced and
 -- not filtered.
-defaultContAsyncMulti' :: ∀ o item source err eff m
+defaultContAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => TA.FuzzyConfig item
- -> source
+ => source
+ -> (item -> StrMap String)
+ -> RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultContAsyncMulti' fuzzyConfig source =
+defaultContAsyncMulti source toStrMap renderFuzzy renderItem =
   { items: TA.ContinuousAsync (Milliseconds 500.0) "" source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA defaultRenderItem
-  , config: contAsyncConfig fuzzyConfig
+  , render: renderTA renderFuzzy renderItem
+  , config: contAsyncConfig toStrMap
   }
 
 
@@ -134,13 +141,13 @@ defaultContAsyncMulti' fuzzyConfig source =
 
 defaultConfig :: ∀ item
   . Eq item
- => TA.FuzzyConfig item
+ => (item -> StrMap String)
  -> TA.Config item
-defaultConfig fuzzyConfig =
+defaultConfig toStrMap =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , keepOpen: true
-  , fuzzyConfig
+  , toStrMap
   }
 
 -- toStrMap should take an item and produce a string map
@@ -148,26 +155,29 @@ defaultConfig fuzzyConfig =
 -- https://github.com/citizennet/purescript-fuzzy/blob/develop/test/Main.purs
 defaultFuzzyConfig :: ∀ item
   . Eq item
- => TA.FuzzyConfig item
+ => (item -> StrMap String)
  -> TA.Config item
-defaultFuzzyConfig fuzzyConfig =
+defaultFuzzyConfig toStrMap =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , keepOpen: true
-  , fuzzyConfig
+  , toStrMap
   }
 
 contAsyncConfig :: ∀ item
   . Eq item
- => TA.FuzzyConfig item
+ => (item -> StrMap String)
  -> TA.Config item
-contAsyncConfig fuzzyConfig =
+contAsyncConfig toStrMap =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , keepOpen: true
-  , fuzzyConfig
+  , toStrMap
   }
 
+
+type TAParentHTML o item source err eff m
+  = H.ParentHTML (TA.TypeaheadQuery o item source err eff m) (TA.ChildQuery o (Fuzzy item) eff) TA.ChildSlot m
 
 ----------
 -- Render functions
@@ -175,11 +185,13 @@ contAsyncConfig fuzzyConfig =
 renderTA :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
- => (String -> (Maybe Int) -> Int -> (Fuzzy item) -> H.HTML Void (C.ContainerQuery o (Fuzzy item)))
+ => RenderContainerRow o item
+ -> (item -> TAParentHTML o item source err (TA.Effects eff) m)
  -> TA.TypeaheadState item source err
- -> H.ParentHTML (TA.TypeaheadQuery o item source err (TA.Effects eff) m) (TA.ChildQuery o (Fuzzy item) (TA.Effects eff)) TA.ChildSlot m
-renderTA renderItem st = HH.span
-  [ HP.class_ $ HH.ClassName "w-full" ]
+ -> TAParentHTML o item source err (TA.Effects eff) m
+renderTA renderFuzzy renderSelection st =
+  HH.div
+  [ HP.class_ $ HH.ClassName "w-full px-3" ]
   [ renderSelections
   , HH.slot'
       CP.cp2
@@ -196,7 +208,7 @@ renderTA renderItem st = HH.span
       CP.cp1
       TA.ContainerSlot
       C.component
-      { render: renderContainer st, items: ([] :: Array (Fuzzy item)) }
+      { render: renderContainer st, items: [] }
       (HE.input TA.HandleContainer)
   ]
   where
@@ -221,22 +233,11 @@ renderTA renderItem st = HH.span
           ]
         (TA.Limit _ xs) -> HH.div_
           [ HH.div
-            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter" ]
+            [ HP.class_ $ HH.ClassName "bg-white rounded-sm w-full text-grey-darkest border-b border-grey-lighter z-50" ]
             [ HH.ul
               [ HP.class_ $ HH.ClassName "list-reset" ]
               $ renderSelection <$> xs
             ]
-          ]
-      where
-        renderSelection item =
-          HH.li
-          [ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
-          [ HH.span_
-          [ HH.text $ "not properly implemented...maybe a show instance?" ] -- TODO: show $ (_.original <<< unwrap) item ]
-          , HH.span
-            [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
-            , HE.onClick (HE.input_ (TA.Remove item)) ]
-            [ HH.text "×" ]
           ]
 
     renderContainer parentSt containerState = HH.div [ HP.class_ $ HH.ClassName "relative" ]
@@ -244,11 +245,11 @@ renderTA renderItem st = HH.span
         then []
         else [ HH.div
           ( C.getContainerProps
-            [ HP.class_ $ HH.ClassName "absolute bg-white shadow max-h-80 overflow-y-scroll rounded-sm pin-t pin-l w-full" ]
+            [ HP.class_ $ HH.ClassName "absolute bg-white shadow max-h-80 overflow-y-scroll rounded-sm pin-t pin-l w-full z-50" ]
           )
           [ HH.ul
             [ HP.class_ $ HH.ClassName "list-reset" ]
-            $ renderItem parentSt.config.fuzzyConfig.renderKey containerState.highlightedIndex `mapWithIndex` containerState.items
+            ( renderFuzzy containerState.highlightedIndex `mapWithIndex` containerState.items )
           ]
         ]
 
@@ -263,12 +264,35 @@ renderTA renderItem st = HH.span
           )
         ]
 
-defaultRenderItem :: ∀ o item. String -> Maybe Int -> Int -> Fuzzy item -> H.HTML Void (C.ContainerQuery o (Fuzzy item))
-defaultRenderItem key highlightIndex itemIndex item = HH.li
-  ( C.getItemProps itemIndex
-    [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
-  )
-  ( boldMatches key item )
+defaultSelectionRow :: ∀ o item source err eff m
+   . (item -> TAParentHTML o item source err eff m)
+  -> item
+  -> TAParentHTML o item source err eff m
+defaultSelectionRow renderItem item =
+  HH.li
+    [ HP.class_ $ HH.ClassName "px-4 py-1 hover:bg-grey-lighter relative" ]
+    [ HH.span_ $ [ renderItem item ]
+    , HH.span
+      [ HP.class_ $ HH.ClassName "absolute pin-t pin-b pin-r p-1 mx-3 cursor-pointer"
+      , HE.onClick (HE.input_ (TA.Remove item)) ]
+      [ HH.text "×" ]
+    ]
+
+type RenderContainerRow o item
+   = Maybe Int
+  -> Int
+  -> Fuzzy item
+  -> H.HTML Void (C.ContainerQuery o (Fuzzy item))
+
+defaultContainerRow :: ∀ o item
+   . (Fuzzy item -> Array (H.HTML Void (C.ContainerQuery o (Fuzzy item))))
+  -> RenderContainerRow o item
+defaultContainerRow renderFuzzy highlightIndex itemIndex item =
+  HH.li
+    ( C.getItemProps itemIndex
+      [ HP.class_ $ HH.ClassName $ "px-4 py-1 text-grey-darkest" <> hover ]
+    )
+    ( renderFuzzy item )
   where
     hover = if highlightIndex == Just itemIndex then " bg-grey-lighter" else ""
 

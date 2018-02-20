@@ -21,7 +21,7 @@ import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Newtype (class Newtype)
+import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
 import Data.String.Utils as String.Utils
 import Data.Tuple (Tuple(..))
@@ -193,6 +193,8 @@ runValidation f =
   <*> validateUsers2 f.users2 f.users1
   <*> validateEmail f.email
   <*> validateUsername f.username
+
+
 -----
 -- Top level form types
 
@@ -333,25 +335,25 @@ renderForm st =
           , helpText: Just "There are lots of developers to choose from."
           , valid: Map.lookup FailDevelopers st.errors
           }
-          ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti' testFuzzyConfig testRecords) (HE.input HandleA) )
+          ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti testRecords testToStrMap renderFuzzy renderItem) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
           , valid: Map.lookup FailTodos st.errors
           }
-          ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti' Async.todoFuzzyConfig Async.todos) (HE.input HandleB) )
+          ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti Async.todos Async.todoToStrMap Async.todoRenderFuzzy Async.todoRenderItem) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           , valid: Map.lookup FailUsers1 st.errors
           }
-          ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleC) )
+          ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti Async.users Async.userToStrMap Async.userRenderFuzzy Async.userRenderItem) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           , valid: Map.lookup FailUsers2 st.errors
           }
-          ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti' Async.userFuzzyConfig Async.users) (HE.input HandleD) )
+          ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti Async.users Async.userToStrMap Async.userRenderFuzzy Async.userRenderItem) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
@@ -400,8 +402,13 @@ testRecords =
   , TestRecord { name: "Forest", id: 3 }
   ]
 
-testFuzzyConfig :: { renderKey :: String, toStrMap :: TestRecord -> StrMap String }
-testFuzzyConfig =
-  { renderKey: "name"
-  , toStrMap: \(TestRecord { name, id }) -> fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
-  }
+testToStrMap :: TestRecord -> StrMap String
+testToStrMap (TestRecord { name, id }) =
+  fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
+
+renderFuzzy :: ∀ o. TAInput.RenderContainerRow o TestRecord
+renderFuzzy = TAInput.defaultContainerRow (TAInput.boldMatches "name")
+
+renderItem :: ∀ o source err eff m
+  . TestRecord -> TAInput.TAParentHTML o TestRecord source err eff m
+renderItem = TAInput.defaultSelectionRow $ HH.text <<< _.name <<< unwrap

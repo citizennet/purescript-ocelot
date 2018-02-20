@@ -13,7 +13,8 @@ formControlClasses = HH.ClassName <$>
 
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = HH.ClassName <$>
-  [ "leading-loose"
+  [ "block"
+  , "leading-loose"
   , "text-grey-darker"
   , "text-sm"
   ]
@@ -28,7 +29,8 @@ errorTextClasses = HH.ClassName <$>
 
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
-  [ "font-bold"
+  [ "block"
+  , "font-bold"
   , "leading-loose"
   , "text-black"
   , "text-sm"
@@ -51,7 +53,9 @@ formControl props html =
     [ HH.label
       [ HP.class_ (HH.ClassName "w-full") ]
       [ label props.label
-      , html
+      , HH.div
+          [ HP.class_ (HH.ClassName "my-1") ]
+          [ html ]
       , helpText props.valid props.helpText
       ]
     ]

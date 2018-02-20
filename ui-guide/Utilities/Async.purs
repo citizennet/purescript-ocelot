@@ -2,16 +2,18 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
+import CN.UI.Components.Typeahead as TA
 import CN.UI.Core.Typeahead (SyncMethod(..))
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Argonaut (Json, decodeJson, (.?))
 import Data.Either (Either)
-import Data.Maybe (Maybe(..))
+import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
+import Halogen.HTML as HH
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData(..), fromEither)
 
@@ -92,6 +94,7 @@ newtype Todo = Todo
   { title :: String
   , completed :: Boolean }
 
+derive instance newtypeTodo :: Newtype Todo _
 derive instance eqTodo :: Eq Todo
 
 instance showTodo :: Show Todo where
@@ -104,20 +107,26 @@ decodeTodo json = do
   completed <- obj .? "completed"
   pure $ Todo { title, completed }
 
-todoFuzzyConfig :: { renderKey :: String, toStrMap :: Todo -> StrMap String }
-todoFuzzyConfig =
-  { renderKey: "title"
-  , toStrMap: \(Todo { title, completed }) -> fromFoldable
+todoToStrMap :: Todo -> StrMap String
+todoToStrMap (Todo { title, completed }) =
+  fromFoldable
     [ Tuple "title" title
     , Tuple "completed" (if completed then "completed" else "")
     ]
-   }
+
+todoRenderFuzzy :: ∀ o. TA.RenderContainerRow o Todo
+todoRenderFuzzy = TA.defaultContainerRow $ TA.boldMatches "title"
+
+todoRenderItem :: ∀ o source err eff m
+  . Todo -> TA.TAParentHTML o Todo source err eff m
+todoRenderItem = TA.defaultSelectionRow $ HH.text <<< _.title <<< unwrap
 
 newtype User = User
   { id :: Int
   , name :: String
   , city :: String }
 
+derive instance newtypeUser :: Newtype User _
 derive instance eqUser :: Eq User
 instance showUser :: Show User where
   show (User { id, name }) = show id <> ": " <> name
@@ -132,13 +141,17 @@ decodeUser json = do
 
   pure $ User { id, name, city }
 
-userFuzzyConfig :: { renderKey :: String, toStrMap :: User -> StrMap String }
-userFuzzyConfig =
-  { renderKey: "name"
-  , toStrMap: \(User { id, name, city }) -> fromFoldable
+userToStrMap :: User -> StrMap String
+userToStrMap (User { id, name, city }) =
+  fromFoldable
     [ Tuple "id" (show id)
     , Tuple "name" name
     , Tuple "city" city
     ]
-  }
 
+userRenderFuzzy :: ∀ o. TA.RenderContainerRow o User
+userRenderFuzzy = TA.defaultContainerRow $ TA.boldMatches "name"
+
+userRenderItem :: ∀ o source err eff m
+  . User -> TA.TAParentHTML o User source err eff m
+userRenderItem = TA.defaultSelectionRow $ HH.text <<< _.name <<< unwrap
