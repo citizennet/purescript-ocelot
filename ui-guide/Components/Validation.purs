@@ -219,24 +219,24 @@ type ValidatedForm =
 
 validateDevelopers :: Array TestRecord -> V FormErrors (ValidatedArray TestRecord)
 validateDevelopers xs =
-  Bifunctor.bimap (toMap FailDevelopers) ValidatedArray
+  Bifunctor.bimap (Map.singleton FailDevelopers) ValidatedArray
   $ CV.validateMinLength 2 "Must select more than one developer" xs
 
 validateTodos :: Array Async.Todo -> V FormErrors (ValidatedArray Async.Todo)
 validateTodos xs =
-  Bifunctor.bimap (toMap FailTodos) ValidatedArray
+  Bifunctor.bimap (Map.singleton FailTodos) ValidatedArray
   $ CV.validateNonEmptyArr xs
 
 validateUsers1 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
 validateUsers1 users1 users2 =
-  Bifunctor.bimap (toMap FailUsers1) ValidatedArray
+  Bifunctor.bimap (Map.singleton FailUsers1) ValidatedArray
   $ CV.validateNonEmptyArr users1
   *> CV.validateMinLength 2 "Must select more than one user" users1
   *> validateUserDependence users2 users2
 
 validateUsers2 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
 validateUsers2 users2 users1 =
-  Bifunctor.bimap (toMap FailUsers2) ValidatedArray
+  Bifunctor.bimap (Map.singleton FailUsers2) ValidatedArray
   $ CV.validateNonEmptyArr users2
   *> validateUserDependence users2 users1
 
@@ -253,13 +253,13 @@ validateUserDependence users1 users2 =
 
 validateEmail :: String -> V FormErrors Email
 validateEmail email =
-  Bifunctor.bimap (toMap FailEmail) Email
+  Bifunctor.bimap (Map.singleton FailEmail) Email
   $  CV.validateNonEmptyStr email
   *> CV.validateStrIsEmail "Must be a valid email" email
 
 validateUsername :: String -> V FormErrors Username
 validateUsername uname =
-  Bifunctor.bimap (toMap FailUsername) (Username <<< String.Utils.fromCharArray)
+  Bifunctor.bimap (Map.singleton FailUsername) (Username <<< String.Utils.fromCharArray)
   $  CV.validateNonEmptyStr uname
   *> CV.validateMinLength 8 "Username must be longer than 8 characters" (String.Utils.toCharArray uname)
 
@@ -288,9 +288,6 @@ instance showFormErrorKey :: Show (FormErrorKey) where
   show = Generic.Show.genericShow
 
 type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
-
-toMap :: FormErrorKey -> CV.ValidationErrors -> FormErrors
-toMap key errors = Map.singleton key errors
 
 -----
 -- Additional function for validating any arbitrary field
