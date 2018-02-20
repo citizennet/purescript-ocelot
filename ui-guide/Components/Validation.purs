@@ -284,13 +284,13 @@ data FormErrorKey
 derive instance eqFormErrorKey :: Eq FormErrorKey
 derive instance ordFormErrorKey :: Ord FormErrorKey
 derive instance genericFormErrorKey :: Generic.Generic (FormErrorKey) _
-instance showFormErrorF :: Show (FormErrorKey) where
+instance showFormErrorKey :: Show (FormErrorKey) where
   show = Generic.Show.genericShow
 
 type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
 
 toMap :: FormErrorKey -> CV.ValidationErrors -> FormErrors
-toMap key errors = Map.fromFoldable $ Array.singleton $ Tuple key errors
+toMap key errors = Map.singleton key errors
 
 -----
 -- Additional function for validating any arbitrary field
