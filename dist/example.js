@@ -10544,6 +10544,7 @@ var PS = {};
   var Data_Generic_Rep = PS["Data.Generic.Rep"];
   var Data_Generic_Rep_Eq = PS["Data.Generic.Rep.Eq"];
   var Data_Generic_Rep_Show = PS["Data.Generic.Rep.Show"];
+  var Data_HeytingAlgebra = PS["Data.HeytingAlgebra"];
   var Data_Ord = PS["Data.Ord"];
   var Data_Semigroup = PS["Data.Semigroup"];
   var Data_Semiring = PS["Data.Semiring"];
@@ -10584,6 +10585,15 @@ var PS = {};
       };
       return UnderMinLength;
   })();
+  var OutOfRange = (function () {
+      function OutOfRange(value0) {
+          this.value0 = value0;
+      };
+      OutOfRange.create = function (value0) {
+          return new OutOfRange(value0);
+      };
+      return OutOfRange;
+  })();
   var Dependency = (function () {
       function Dependency(value0) {
           this.value0 = value0;
@@ -10601,7 +10611,7 @@ var PS = {};
           if (Data_Boolean.otherwise) {
               return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new InvalidEmail(msg)));
           };
-          throw new Error("Failed pattern match at CN.UI.Core.Validation line 46, column 1 - line 46, column 68: " + [ msg.constructor.name, email.constructor.name ]);
+          throw new Error("Failed pattern match at CN.UI.Core.Validation line 47, column 1 - line 47, column 68: " + [ msg.constructor.name, email.constructor.name ]);
       };
   };
   var validateNonEmptyStr = function (str) {
@@ -10611,7 +10621,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(str);
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 37, column 1 - line 37, column 59: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 38, column 1 - line 38, column 59: " + [ str.constructor.name ]);
   };
   var validateNonEmptyArr = function (v) {
       if (v.length === 0) {
@@ -10629,7 +10639,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new UnderMinLength(n, msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 51, column 1 - line 51, column 91: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 52, column 1 - line 52, column 91: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
               };
           };
       };
@@ -10644,7 +10654,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new Dependency(msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 56, column 1 - line 56, column 93: " + [ f.constructor.name, item1.constructor.name, item2.constructor.name, msg.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 62, column 1 - line 62, column 93: " + [ f.constructor.name, item1.constructor.name, item2.constructor.name, msg.constructor.name ]);
               };
           };
       };
@@ -10662,25 +10672,29 @@ var PS = {};
       if (v instanceof Dependency) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 65, column 1 - line 65, column 35: " + [ v.constructor.name ]);
+      if (v instanceof OutOfRange) {
+          return v.value0;
+      };
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 71, column 1 - line 71, column 35: " + [ v.constructor.name ]);
   };
   var htmlE = function (es) {
       if (Data_Foldable.length(Data_Foldable.foldableArray)(Data_Semiring.semiringInt)(es) === 1) {
-          return Data_Functor.map(Data_Functor.functorArray)(function ($42) {
-              return Halogen_HTML_Core.text(showE($42));
+          return Data_Functor.map(Data_Functor.functorArray)(function ($55) {
+              return Halogen_HTML_Core.text(showE($55));
           })(es);
       };
       if (Data_Boolean.otherwise) {
-          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($43) {
-              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($43))));
+          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($56) {
+              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($56))));
           })(es)) ];
           return toHTML;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 71, column 1 - line 71, column 48: " + [ es.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 78, column 1 - line 78, column 48: " + [ es.constructor.name ]);
   };
   exports["EmptyField"] = EmptyField;
   exports["InvalidEmail"] = InvalidEmail;
   exports["UnderMinLength"] = UnderMinLength;
+  exports["OutOfRange"] = OutOfRange;
   exports["Dependency"] = Dependency;
   exports["validateNonEmptyStr"] = validateNonEmptyStr;
   exports["validateNonEmptyArr"] = validateNonEmptyArr;
