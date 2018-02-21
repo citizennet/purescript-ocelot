@@ -2,14 +2,13 @@ module UIGuide.Components.Tab where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
 import CN.UI.Block.NavigationTab as NavigationTab
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import UIGuide.Block.Component as Component
-import UIGuide.Block.Documentation as Documentation 
+import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
@@ -32,7 +31,7 @@ component =
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of
       NoOp a -> do
-        pure a 
+        pure a
 
     render :: State -> H.ComponentHTML Query
     render _ =

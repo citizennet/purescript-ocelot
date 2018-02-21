@@ -2,9 +2,10 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
+import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Components.Dropdown as Dropdown
 import CN.UI.Components.Typeahead as Typeahead
-import CN.UI.Core.Typeahead as Typeahead
+import CN.UI.Core.Typeahead as TypeaheadCore
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, logShow)
@@ -35,8 +36,8 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead Unit (Typeahead.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
-  | HandleSyncTypeahead (Typeahead.TypeaheadSyncMessage Query String) a
+  | HandleTypeahead Unit (TypeaheadCore.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
+  | HandleSyncTypeahead (TypeaheadCore.TypeaheadSyncMessage Query String) a
   | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 ----------
@@ -45,9 +46,9 @@ data Query a
 type ChildSlot = Either3 Unit Unit Unit
 type ChildQuery eff m =
   Coproduct3
-    (Typeahead.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
+    (TypeaheadCore.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
     (Dropdown.Query TestRecord)
-    (Typeahead.TypeaheadQuery Query String Void Void eff m)
+    (TypeaheadCore.TypeaheadQuery Query String Void Void eff m)
 
 
 ----------
@@ -81,13 +82,13 @@ component =
     -- Responsible for fetching data based on source and returning it to the component.
     -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
-      Typeahead.RequestData syncMethod -> do
+      TypeaheadCore.RequestData syncMethod -> do
         _ <- H.fork do
           res <- H.liftAff $ Async.load syncMethod
-          case Typeahead.maybeReplaceItems res syncMethod of
+          case TypeaheadCore.maybeReplaceItems res syncMethod of
             Nothing -> pure next
             (Just newSync) -> do
-              _ <- H.query' CP.cp1 slot $ H.action $ Typeahead.FulfillRequest newSync
+              _ <- H.query' CP.cp1 slot $ H.action $ TypeaheadCore.FulfillRequest newSync
               pure next
         pure next
 
@@ -140,6 +141,13 @@ containerData =
   , "Friendster"
   ]
 
+tabs :: Array (NavigationTab.Tab Boolean)
+tabs =
+  [ { name: "Accounts & Spend", link: "#", page: true }
+  , { name: "Automatic Optimization", link: "#", page: false }
+  , { name: "Creative", link: "#", page: false }
+  ]
+
 ----------
 -- HTML
 
@@ -148,9 +156,25 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  typeaheadBlockStrings
+  tabsBlock
+  <> typeaheadBlockStrings
   <> typeaheadBlockTodos
   <> dropdownBlock
+
+tabsBlock
+  :: ∀ eff m
+  . MonadAff (Effects eff) m
+  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+tabsBlock =
+  [ documentation
+      { header: "Tabs"
+      , subheader: "Tabs for navigating, eg. between form pages"
+      }
+      [ Component.component
+          { title: "Tabs" }
+          [ NavigationTab.navigationTabs { tabs, activePage: true } ]
+      ]
+  ]
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -164,7 +188,7 @@ typeaheadBlockStrings = documentationBlock
       HH.slot'
         CP.cp3
         unit
-        Typeahead.component
+        TypeaheadCore.component
         ( Typeahead.defaultMulti
             containerData
             (StrMap.singleton "id")
@@ -172,6 +196,9 @@ typeaheadBlockStrings = documentationBlock
             (Typeahead.defaultSelectionRow $ HH.text)
         )
         (HE.input $ HandleSyncTypeahead )
+
+    fuzzyConfig :: { renderKey :: String, toStrMap :: String -> StrMap String }
+    fuzzyConfig = { renderKey: "id", toStrMap: StrMap.singleton "value" }
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -185,7 +212,7 @@ typeaheadBlockTodos = documentationBlock
       HH.slot'
         CP.cp1
         unit
-        Typeahead.component
+        TypeaheadCore.component
         ( Typeahead.defaultContAsyncMulti
             Async.todos
             Async.todoToStrMap

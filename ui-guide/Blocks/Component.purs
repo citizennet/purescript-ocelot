@@ -31,6 +31,7 @@ titleClasses = HH.ClassName <$>
   , "uppercase"
   ]
 
+contentClasses :: Array HH.ClassName
 contentClasses = HH.ClassName <$>
   [ "flex"
   , "flex-col"
@@ -50,7 +51,7 @@ component props html =
         [ HP.classes titleClasses ]
         [ HH.text props.title ]
     , HH.div
-        [ HP.classes contentClasses ] 
+        [ HP.classes contentClasses ]
         html
     ]
 

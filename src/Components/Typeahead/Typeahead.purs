@@ -6,20 +6,19 @@ import Data.Either (Either(..))
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.StrMap (StrMap, lookup)
-import CN.UI.Core.Typeahead as TA
 import Control.Monad.Aff.Class (class MonadAff)
-import Data.Array (dropEnd, mapWithIndex, takeEnd)
-import Data.Foldable (foldr)
+import Data.Array (mapWithIndex)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.RemoteData (RemoteData(..), withDefault)
+import Network.RemoteData (RemoteData(..))
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
+import CN.UI.Core.Typeahead as TA
 import CN.UI.Block.Input as Input
 
 ----------
