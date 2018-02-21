@@ -107,7 +107,7 @@ selectionGroup f props item =
 		[ HH.fromPlainHTML (f item)
 		, HH.button
 			[ HP.classes buttonClasses ]
-			[ HH.text "x" ]
+			[ HH.text "×" ]
 		]
 
 
