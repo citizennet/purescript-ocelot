@@ -19,8 +19,9 @@ type ValidationErrors = Array ValidationError
 
 data ValidationError
   = EmptyField
-  | InvalidEmail String
+  | InvalidEmail
   | UnderMinLength Int String
+  | OutOfRange String
   | Dependency String
 
 derive instance genericValidationError :: Generic ValidationError _
@@ -30,6 +31,8 @@ instance eqValidationError :: Eq ValidationError where
 
 instance showValidationError :: Show ValidationError where
   show = genericShow
+
+type ErrorMessage = String
 
 -----
 -- Possible validations to run on any field
@@ -43,18 +46,23 @@ validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
 validateNonEmptyArr [] = invalid $ pure EmptyField
 validateNonEmptyArr xs = pure xs
 
-validateStrIsEmail :: String -> String -> V ValidationErrors String
-validateStrIsEmail msg email
+validateStrIsEmail :: String -> V ValidationErrors String
+validateStrIsEmail email
   | isValid email = pure email
-  | otherwise = invalid $ pure (InvalidEmail msg)
+  | otherwise = invalid $ pure InvalidEmail
 
-validateMinLength :: ∀ f a. Foldable f => Int -> String -> f a -> V ValidationErrors (f a)
+validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
 validateMinLength n msg f
   | length f >= n = pure f
   | otherwise = invalid $ pure (UnderMinLength n msg)
 
-validateDependence :: ∀ a b. (a -> b -> Boolean) -> a -> b -> String -> V ValidationErrors a
-validateDependence f item1 item2 msg
+validateInRange :: ∀ a. Ord a => a -> a -> ErrorMessage -> a -> V ValidationErrors a
+validateInRange low high msg num
+  | low <= num && num <= high = pure num
+  | otherwise = invalid $ pure (OutOfRange msg)
+
+validateDependence :: ∀ a b. (a -> b -> Boolean) -> ErrorMessage -> a -> b -> V ValidationErrors a
+validateDependence f msg item1 item2
   | f item1 item2 = pure item1
   | otherwise = invalid $ pure (Dependency msg)
 
@@ -64,9 +72,10 @@ validateDependence f item1 item2 msg
 
 showE :: ValidationError -> String
 showE EmptyField = "Required"
-showE (InvalidEmail msg) = msg
+showE InvalidEmail = "Must be a valid email"
 showE (UnderMinLength _ msg) = msg
 showE (Dependency msg) = msg
+showE (OutOfRange msg) = msg
 
 htmlE :: ValidationErrors -> Array HH.PlainHTML
 htmlE es | length es == 1 = HH.text <<< showE <$> es
