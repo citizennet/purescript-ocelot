@@ -21,6 +21,7 @@ data ValidationError
   = EmptyField
   | InvalidEmail String
   | UnderMinLength Int String
+  | OutOfRange String
   | Dependency String
 
 derive instance genericValidationError :: Generic ValidationError _
@@ -53,6 +54,11 @@ validateMinLength n msg f
   | length f >= n = pure f
   | otherwise = invalid $ pure (UnderMinLength n msg)
 
+validateInRange :: ∀ a. Ord a => a -> a -> a -> String -> V ValidationErrors a
+validateInRange low high num msg
+  | low <= num && num <= high = pure num
+  | otherwise = invalid $ pure (OutOfRange msg)
+
 validateDependence :: ∀ a b. (a -> b -> Boolean) -> a -> b -> String -> V ValidationErrors a
 validateDependence f item1 item2 msg
   | f item1 item2 = pure item1
@@ -67,6 +73,7 @@ showE EmptyField = "Required"
 showE (InvalidEmail msg) = msg
 showE (UnderMinLength _ msg) = msg
 showE (Dependency msg) = msg
+showE (OutOfRange msg) = msg
 
 htmlE :: ValidationErrors -> Array HH.PlainHTML
 htmlE es | length es == 1 = HH.text <<< showE <$> es
