@@ -2,6 +2,7 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
+import CN.UI.Block.ItemContainer as ItemContainer
 import CN.UI.Components.Typeahead as TA
 import CN.UI.Core.Typeahead (SyncMethod(..))
 import Control.Monad.Aff (Aff)
@@ -111,15 +112,16 @@ todoToStrMap :: Todo -> StrMap String
 todoToStrMap (Todo { title, completed }) =
   fromFoldable
     [ Tuple "title" title
-    , Tuple "completed" (if completed then "completed" else "")
+    , Tuple "completed" (if completed then "Completed" else "")
     ]
 
-todoRenderFuzzy :: ∀ o. TA.RenderContainerRow o Todo
-todoRenderFuzzy = TA.defaultContainerRow $ TA.boldMatches "title"
+renderItemTodo :: TA.RenderTypeaheadItem Todo
+renderItemTodo =
+  { toStrMap: todoToStrMap
+  , renderItem: HH.text <<< _.title <<< unwrap
+  , renderFuzzy: HH.span_ <<< ItemContainer.boldMatches "title"
+  }
 
-todoRenderItem :: ∀ o source err eff m
-  . Todo -> TA.TAParentHTML o Todo source err eff m
-todoRenderItem = TA.defaultSelectionRow $ HH.text <<< _.title <<< unwrap
 
 newtype User = User
   { id :: Int
@@ -141,6 +143,13 @@ decodeUser json = do
 
   pure $ User { id, name, city }
 
+renderItemUser :: TA.RenderTypeaheadItem User
+renderItemUser =
+  { toStrMap: userToStrMap
+  , renderItem: TA.defRenderItem <<< unwrap
+  , renderFuzzy: TA.defRenderFuzzy
+  }
+
 userToStrMap :: User -> StrMap String
 userToStrMap (User { id, name, city }) =
   fromFoldable
@@ -148,10 +157,3 @@ userToStrMap (User { id, name, city }) =
     , Tuple "name" name
     , Tuple "city" city
     ]
-
-userRenderFuzzy :: ∀ o. TA.RenderContainerRow o User
-userRenderFuzzy = TA.defaultContainerRow $ TA.boldMatches "name"
-
-userRenderItem :: ∀ o source err eff m
-  . User -> TA.TAParentHTML o User source err eff m
-userRenderItem = TA.defaultSelectionRow $ HH.text <<< _.name <<< unwrap

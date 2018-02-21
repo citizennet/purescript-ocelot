@@ -3,8 +3,9 @@ module CN.UI.Components.Typeahead where
 import Prelude
 
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe(Nothing, Just))
-import Data.StrMap (StrMap)
+import Data.Maybe (Maybe(..))
+import Data.StrMap (StrMap, fromFoldable, singleton)
+import Data.Tuple (Tuple(..))
 import Control.Monad.Aff.Class (class MonadAff)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
@@ -21,113 +22,132 @@ import CN.UI.Block.ItemContainer as ItemContainer
 import CN.UI.Core.Typeahead as TA
 import CN.UI.Block.Input as Input
 
+
+----------
+-- Input types expected. This needs to be defined for each 'item' type we have.
+
+type RenderTypeaheadItem item
+  = { toStrMap :: item -> StrMap String
+    , renderFuzzy :: Fuzzy item -> HH.PlainHTML
+    , renderItem :: item -> HH.PlainHTML }
+
+renderItemString :: RenderTypeaheadItem String
+renderItemString =
+  { toStrMap: singleton "name"
+  , renderFuzzy: defRenderFuzzy
+  , renderItem: HH.text }
+
+
+----------
+-- Default rendering
+
+defToStrMap :: ∀ r. { name :: String | r } -> StrMap String
+defToStrMap { name } = fromFoldable [ Tuple "name" name ]
+
+-- WARNING: This expects you to have a string map with the "name"
+-- key present or else it will not work but will compile!
+defRenderFuzzy :: ∀ item. Fuzzy item -> HH.PlainHTML
+defRenderFuzzy = HH.span_ <<< ItemContainer.boldMatches "name"
+
+defRenderItem :: ∀ r. { name :: String | r } -> HH.PlainHTML
+defRenderItem { name } = HH.text name
+
+
 ----------
 -- Default typeahead configurations
 
--- A default single-select that is provided with a renderFuzzy and renderItem function.
-defaultSingle :: ∀ o item source err eff m
+-- A def single-select that is provided with a renderFuzzy and renderItem function.
+defSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => Array item
- -> (item -> StrMap String)
- -> (Fuzzy item -> HH.PlainHTML)
- -> (item -> HH.PlainHTML)
+ -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultSingle xs toStrMap renderFuzzy renderItem =
+defSingle xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA renderFuzzy renderItem
-  , config: defaultConfig toStrMap
+  , config: defConfig toStrMap
   }
 
--- A default multi-select limited to N total possible selections.
-defaultLimit :: ∀ o item source err eff m
+-- A def multi-select limited to N total possible selections.
+defLimit :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => Int
  -> Array item
- -> (item -> StrMap String)
- -> (Fuzzy item -> HH.PlainHTML)
- -> (item -> HH.PlainHTML)
+ -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultLimit n xs toStrMap renderFuzzy renderItem =
+defLimit n xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Limit n []
   , render: renderTA renderFuzzy renderItem
-  , config: defaultConfig toStrMap
+  , config: defConfig toStrMap
   }
 
--- A default multi-select that is provided with a renderFuzzy and renderItem function to determine
+-- A def multi-select that is provided with a renderFuzzy and renderItem function to determine
 -- rendering a specific item in the container
-defaultMulti :: ∀ o item source err eff m
+defMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => Array item
- -> (item -> StrMap String)
- -> (Fuzzy item -> HH.PlainHTML)
- -> (item -> HH.PlainHTML)
+ -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultMulti xs toStrMap renderFuzzy renderItem =
+defMulti xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA renderFuzzy renderItem
-  , config: defaultConfig toStrMap
+  , config: defConfig toStrMap
   }
 
--- A default async single select using the default render function
-defaultAsyncSingle :: ∀ o item source err eff m
+-- A def async single select using the default render function
+defAsyncSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
   => Eq item
   => Show err
   => source
-  -> (item -> StrMap String)
-  -> (Fuzzy item -> HH.PlainHTML)
-  -> (item -> HH.PlainHTML)
+  -> RenderTypeaheadItem item
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultAsyncSingle source toStrMap renderFuzzy renderItem =
+defAsyncSingle source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA renderFuzzy renderItem
-  , config: defaultConfig toStrMap
+  , config: defConfig toStrMap
   }
 
--- A default multi-select using the default render item function
-defaultAsyncMulti :: ∀ o item source err eff m
+-- A def multi-select using the default render item function
+defAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => source
- -> (item -> StrMap String)
- -> (Fuzzy item -> HH.PlainHTML)
- -> (item -> HH.PlainHTML)
+ -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultAsyncMulti source toStrMap renderFuzzy renderItem =
+defAsyncMulti source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA renderFuzzy renderItem
-  , config: defaultConfig toStrMap
+  , config: defConfig toStrMap
   }
 
 -- A continuous asynchronous typeahead, reasonably debounced and
 -- not filtered.
-defaultContAsyncMulti :: ∀ o item source err eff m
+defContAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
  => source
- -> (item -> StrMap String)
- -> (Fuzzy item -> HH.PlainHTML)
- -> (item -> HH.PlainHTML)
+ -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defaultContAsyncMulti source toStrMap renderFuzzy renderItem =
+defContAsyncMulti source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.ContinuousAsync (Milliseconds 500.0) "" source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
@@ -139,25 +159,11 @@ defaultContAsyncMulti source toStrMap renderFuzzy renderItem =
 ----------
 -- Default Configuration
 
-defaultConfig :: ∀ item
+defConfig :: ∀ item
   . Eq item
  => (item -> StrMap String)
  -> TA.Config item
-defaultConfig toStrMap =
-  { insertable: TA.NotInsertable
-  , filterType: TA.FuzzyMatch
-  , keepOpen: true
-  , toStrMap
-  }
-
--- toStrMap should take an item and produce a string map
--- include the keys / values you want to filter against
--- https://github.com/citizennet/purescript-fuzzy/blob/develop/test/Main.purs
-defaultFuzzyConfig :: ∀ item
-  . Eq item
- => (item -> StrMap String)
- -> TA.Config item
-defaultFuzzyConfig toStrMap =
+defConfig toStrMap =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , keepOpen: true
@@ -176,11 +182,11 @@ contAsyncConfig toStrMap =
   }
 
 
+----------
+-- Render function
+
 type TAParentHTML o item source err eff m
   = H.ParentHTML (TA.TypeaheadQuery o item source err eff m) (TA.ChildQuery o (Fuzzy item) eff) TA.ChildSlot m
-
-----------
--- Render functions
 
 renderTA :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
@@ -190,8 +196,7 @@ renderTA :: ∀ o item source err eff m
  -> TA.TypeaheadState item source err
  -> TAParentHTML o item source err (TA.Effects eff) m
 renderTA renderFuzzy renderSelection st =
-  HH.div
-  [ HP.class_ $ HH.ClassName "w-full px-3" ]
+  HH.div_
   [ renderSelections
   , HH.slot'
       CP.cp2
@@ -226,13 +231,9 @@ renderTA renderFuzzy renderSelection st =
         then []
         else [ ItemContainer.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) ]
 
-    renderSearch sst =
-      HH.div_
-        [ Input.input
-          ( S.getInputProps
-            [ HP.placeholder "Type to search..."
-            , HP.value sst.search
-            ]
-          )
-        ]
-
+    renderSearch sst = HH.div_
+      [ Input.input
+        ( S.getInputProps
+          [ HP.placeholder "Type to search...", HP.value sst.search ]
+        )
+      ]

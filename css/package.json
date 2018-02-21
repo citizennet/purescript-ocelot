@@ -8,9 +8,8 @@
     "webpack"
   ],
   "scripts": {
-    "build-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=webpack.dev.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=webpack.dev.config.js",
-    "build-prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=webpack.prod.config.js"
+    "build-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --config=webpack.dev.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.css",
+    "build-prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=webpack.prod.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.min.css"
   },
   "devDependencies": {
     "cross-env": "^5.1",

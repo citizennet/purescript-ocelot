@@ -15,8 +15,6 @@ import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
-import Data.StrMap (StrMap)
-import Data.StrMap as StrMap
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -27,12 +25,12 @@ import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation (documentation)
 import UIGuide.Utilities.Async as Async
 
+
 ----------
 -- Component Types
 
 type State
   = Unit
-
 
 data Query a
   = NoOp a
@@ -189,16 +187,11 @@ typeaheadBlockStrings = documentationBlock
         CP.cp3
         unit
         TypeaheadCore.component
-        ( Typeahead.defaultMulti
+        ( Typeahead.defMulti
             containerData
-            (StrMap.singleton "id")
-            (Typeahead.defaultContainerRow $ Typeahead.boldMatches "id")
-            (Typeahead.defaultSelectionRow $ HH.text)
+            Typeahead.renderItemString
         )
         (HE.input $ HandleSyncTypeahead )
-
-    fuzzyConfig :: { renderKey :: String, toStrMap :: String -> StrMap String }
-    fuzzyConfig = { renderKey: "id", toStrMap: StrMap.singleton "value" }
 
 typeaheadBlockTodos :: ∀ eff m
   . MonadAff (Effects eff) m
@@ -213,13 +206,9 @@ typeaheadBlockTodos = documentationBlock
         CP.cp1
         unit
         TypeaheadCore.component
-        ( Typeahead.defaultContAsyncMulti
-            Async.todos
-            Async.todoToStrMap
-            Async.todoRenderFuzzy
-            Async.todoRenderItem
-        )
+        (Typeahead.defContAsyncMulti Async.todos Async.renderItemTodo)
         (HE.input $ HandleTypeahead unit)
+
 
 dropdownBlock :: ∀ eff m
   . MonadAff ( Effects eff ) m

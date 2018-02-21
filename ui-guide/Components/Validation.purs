@@ -332,25 +332,25 @@ renderForm st =
           , helpText: Just "There are lots of developers to choose from."
           , valid: Map.lookup FailDevelopers st.errors
           }
-          ( HH.slot' CP.cp1 unit TA.component (TAInput.defaultMulti testRecords testToStrMap renderFuzzy renderItem) (HE.input HandleA) )
+          ( HH.slot' CP.cp1 unit TA.component (TAInput.defMulti testRecords renderItemTestRecord) (HE.input HandleA) )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
           , valid: Map.lookup FailTodos st.errors
           }
-          ( HH.slot' CP.cp2 unit TA.component (TAInput.defaultAsyncMulti Async.todos Async.todoToStrMap Async.todoRenderFuzzy Async.todoRenderItem) (HE.input HandleB) )
+          ( HH.slot' CP.cp2 unit TA.component (TAInput.defAsyncMulti Async.todos Async.renderItemTodo) (HE.input HandleB) )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           , valid: Map.lookup FailUsers1 st.errors
           }
-          ( HH.slot' CP.cp3 unit TA.component (TAInput.defaultContAsyncMulti Async.users Async.userToStrMap Async.userRenderFuzzy Async.userRenderItem) (HE.input HandleC) )
+          ( HH.slot' CP.cp3 unit TA.component (TAInput.defContAsyncMulti Async.users Async.renderItemUser) (HE.input HandleC) )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           , valid: Map.lookup FailUsers2 st.errors
           }
-          ( HH.slot' CP.cp4 unit TA.component (TAInput.defaultAsyncMulti Async.users Async.userToStrMap Async.userRenderFuzzy Async.userRenderItem) (HE.input HandleD) )
+          ( HH.slot' CP.cp4 unit TA.component (TAInput.defAsyncMulti Async.users Async.renderItemUser) (HE.input HandleD) )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
@@ -391,6 +391,17 @@ instance eqTestRecord :: Eq TestRecord where
 
 derive instance newtypeTestRecord :: Newtype TestRecord _
 
+renderItemTestRecord :: TAInput.RenderTypeaheadItem TestRecord
+renderItemTestRecord =
+  { toStrMap: testToStrMap
+  , renderFuzzy: TAInput.defRenderFuzzy
+  , renderItem: (TAInput.defRenderItem <<< unwrap)
+  }
+
+testToStrMap :: TestRecord -> StrMap String
+testToStrMap (TestRecord { name, id }) =
+  fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
+
 testRecords :: Array TestRecord
 testRecords =
   [ TestRecord { name: "Chris", id: 0 }
@@ -399,13 +410,3 @@ testRecords =
   , TestRecord { name: "Forest", id: 3 }
   ]
 
-testToStrMap :: TestRecord -> StrMap String
-testToStrMap (TestRecord { name, id }) =
-  fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
-
-renderFuzzy :: ∀ o. TAInput.RenderContainerRow o TestRecord
-renderFuzzy = TAInput.defaultContainerRow (TAInput.boldMatches "name")
-
-renderItem :: ∀ o source err eff m
-  . TestRecord -> TAInput.TAParentHTML o TestRecord source err eff m
-renderItem = TAInput.defaultSelectionRow $ HH.text <<< _.name <<< unwrap

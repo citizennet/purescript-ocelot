@@ -8,7 +8,6 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.StrMap (lookup)
 import Data.Monoid (mempty)
 import Data.Either (Either(..))
-import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Select.Primitives.Container as C
@@ -44,15 +43,13 @@ ulClasses :: Array HH.ClassName
 ulClasses = HH.ClassName <$> [ "list-reset" ]
 
 liClasses :: Array HH.ClassName
-liClasses = HH.ClassName <$> [ "p-1" ]
+liClasses = HH.ClassName <$> [ "px-3", "py-1" ]
 
 groupClasses :: Array HH.ClassName
 groupClasses = HH.ClassName <$>
   [ "group"
   , "leading-normal"
   , "hover:bg-grey-lightest"
-  , "px-3"
-  , "py-1"
   ]
 
 buttonClasses :: Array HH.ClassName
@@ -117,7 +114,7 @@ selectionGroup f props item =
 -- Takes a key to the segment that you want to display highlighted.
 -- WARN: If the key you provided does not exist in the map, your item will not be
 -- rendered!
-boldMatches :: ∀ item i p. String -> Fuzzy item -> Array (H.HTML i p)
+boldMatches :: ∀ item i p. String -> Fuzzy item -> Array (HH.HTML i p)
 boldMatches key (Fuzzy { segments }) = boldMatch <$> (fromMaybe [ Left key ] $ lookup key segments)
   where
     boldMatch (Left str) = HH.text str
