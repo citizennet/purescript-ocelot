@@ -10565,12 +10565,10 @@ var PS = {};
       return EmptyField;
   })();
   var InvalidEmail = (function () {
-      function InvalidEmail(value0) {
-          this.value0 = value0;
+      function InvalidEmail() {
+
       };
-      InvalidEmail.create = function (value0) {
-          return new InvalidEmail(value0);
-      };
+      InvalidEmail.value = new InvalidEmail();
       return InvalidEmail;
   })();
   var UnderMinLength = (function () {
@@ -10603,16 +10601,14 @@ var PS = {};
       };
       return Dependency;
   })();
-  var validateStrIsEmail = function (msg) {
-      return function (email) {
-          if (Text_Email_Validate.isValid(email)) {
-              return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(email);
-          };
-          if (Data_Boolean.otherwise) {
-              return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new InvalidEmail(msg)));
-          };
-          throw new Error("Failed pattern match at CN.UI.Core.Validation line 47, column 1 - line 47, column 68: " + [ msg.constructor.name, email.constructor.name ]);
+  var validateStrIsEmail = function (email) {
+      if (Text_Email_Validate.isValid(email)) {
+          return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(email);
       };
+      if (Data_Boolean.otherwise) {
+          return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(InvalidEmail.value));
+      };
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 49, column 1 - line 49, column 58: " + [ email.constructor.name ]);
   };
   var validateNonEmptyStr = function (str) {
       if (Data_String["null"](str)) {
@@ -10621,7 +10617,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(str);
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 38, column 1 - line 38, column 59: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 40, column 1 - line 40, column 59: " + [ str.constructor.name ]);
   };
   var validateNonEmptyArr = function (v) {
       if (v.length === 0) {
@@ -10639,22 +10635,22 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new UnderMinLength(n, msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 52, column 1 - line 52, column 91: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 54, column 1 - line 54, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
               };
           };
       };
   };
   var validateDependence = function (f) {
-      return function (item1) {
-          return function (item2) {
-              return function (msg) {
+      return function (msg) {
+          return function (item1) {
+              return function (item2) {
                   if (f(item1)(item2)) {
                       return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(item1);
                   };
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new Dependency(msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 62, column 1 - line 62, column 93: " + [ f.constructor.name, item1.constructor.name, item2.constructor.name, msg.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 64, column 1 - line 64, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
               };
           };
       };
@@ -10664,7 +10660,7 @@ var PS = {};
           return "Required";
       };
       if (v instanceof InvalidEmail) {
-          return v.value0;
+          return "Must be a valid email";
       };
       if (v instanceof UnderMinLength) {
           return v.value1;
@@ -10675,21 +10671,21 @@ var PS = {};
       if (v instanceof OutOfRange) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 71, column 1 - line 71, column 35: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 73, column 1 - line 73, column 35: " + [ v.constructor.name ]);
   };
   var htmlE = function (es) {
       if (Data_Foldable.length(Data_Foldable.foldableArray)(Data_Semiring.semiringInt)(es) === 1) {
-          return Data_Functor.map(Data_Functor.functorArray)(function ($55) {
-              return Halogen_HTML_Core.text(showE($55));
+          return Data_Functor.map(Data_Functor.functorArray)(function ($51) {
+              return Halogen_HTML_Core.text(showE($51));
           })(es);
       };
       if (Data_Boolean.otherwise) {
-          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($56) {
-              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($56))));
+          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($52) {
+              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($52))));
           })(es)) ];
           return toHTML;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 78, column 1 - line 78, column 48: " + [ es.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 80, column 1 - line 80, column 48: " + [ es.constructor.name ]);
   };
   exports["EmptyField"] = EmptyField;
   exports["InvalidEmail"] = InvalidEmail;
@@ -19258,7 +19254,7 @@ var PS = {};
               return function (u2) {
                   return (Data_Array.length(u1) + Data_Array.length(u2) | 0) > 4;
               };
-          })(users1)(users2)("Users 1 and 2 must combine to 5 or more");
+          })("Users 1 and 2 must combine to 5 or more")(users1)(users2);
       };
   };
   var validateUsers1 = function (users1) {
@@ -19275,7 +19271,7 @@ var PS = {};
       return Data_Bifunctor.bimap(Data_Validation_Semigroup.bifunctorV)(Data_Map.singleton(FailTodos.value))(ValidatedArray)(CN_UI_Core_Validation.validateNonEmptyArr(xs));
   };
   var validateEmail = function (email) {
-      return Data_Bifunctor.bimap(Data_Validation_Semigroup.bifunctorV)(Data_Map.singleton(FailEmail.value))(Email)(Control_Apply.applySecond(Data_Validation_Semigroup.applyV(Data_Semigroup.semigroupArray))(CN_UI_Core_Validation.validateNonEmptyStr(email))(CN_UI_Core_Validation.validateStrIsEmail("Must be a valid email")(email)));
+      return Data_Bifunctor.bimap(Data_Validation_Semigroup.bifunctorV)(Data_Map.singleton(FailEmail.value))(Email)(Control_Apply.applySecond(Data_Validation_Semigroup.applyV(Data_Semigroup.semigroupArray))(CN_UI_Core_Validation.validateNonEmptyStr(email))(CN_UI_Core_Validation.validateStrIsEmail(email)));
   };
   var validateDevelopers = function (xs) {
       return Data_Bifunctor.bimap(Data_Validation_Semigroup.bifunctorV)(Data_Map.singleton(FailDevelopers.value))(ValidatedArray)(CN_UI_Core_Validation.validateMinLength(Data_Foldable.foldableArray)(2)("Must select more than one developer")(xs));
