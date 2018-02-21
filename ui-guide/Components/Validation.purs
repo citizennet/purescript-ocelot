@@ -247,15 +247,15 @@ validateUserDependence
 validateUserDependence users1 users2 =
   CV.validateDependence
     (\u1 u2 -> Array.length u1 + (Array.length u2) > 4)
+    "Users 1 and 2 must combine to 5 or more"
     users1
     users2
-    "Users 1 and 2 must combine to 5 or more"
 
 validateEmail :: String -> V FormErrors Email
 validateEmail email =
   Bifunctor.bimap (Map.singleton FailEmail) Email
   $  CV.validateNonEmptyStr email
-  *> CV.validateStrIsEmail "Must be a valid email" email
+  *> CV.validateStrIsEmail email
 
 validateUsername :: String -> V FormErrors Username
 validateUsername uname =
