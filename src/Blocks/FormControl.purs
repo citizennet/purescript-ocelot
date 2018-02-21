@@ -2,6 +2,7 @@ module CN.UI.Block.FormControl (formControl) where
 
 import Prelude
 
+import CN.UI.Core.Validation (ValidationErrors, htmlE)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -18,6 +19,14 @@ helpTextClasses = HH.ClassName <$>
   , "text-sm"
   ]
 
+errorTextClasses :: Array HH.ClassName
+errorTextClasses = HH.ClassName <$>
+  [ "leading-loose"
+  , "text-red"
+  , "text-sm"
+  , "font-bold"
+  ]
+
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "block"
@@ -30,11 +39,12 @@ labelClasses = HH.ClassName <$>
 type FormControlProps =
   { helpText :: Maybe String
   , label :: String
+  , valid :: Maybe ValidationErrors
   }
 
 formControl
   :: ∀ p i
-   . FormControlProps
+  . FormControlProps
   -> HH.HTML p i
   -> HH.HTML p i
 formControl props html =
@@ -44,17 +54,21 @@ formControl props html =
       [ HP.class_ (HH.ClassName "w-full") ]
       [ label props.label
       , HH.div
-          [ HP.class_ (HH.ClassName "my-1") ] 
+          [ HP.class_ (HH.ClassName "my-1") ]
           [ html ]
-      , helpText props.helpText
+      , helpText props.valid props.helpText
       ]
     ]
   where
-    helpText Nothing = HH.text ""
-    helpText (Just x) =
+    helpText (Just errors) _ =
+        HH.span
+          [ HP.classes errorTextClasses ]
+          (HH.fromPlainHTML <$> htmlE errors)
+    helpText Nothing (Just x) =
       HH.span
         [ HP.classes helpTextClasses ]
         [ HH.text x ]
+    helpText Nothing Nothing = HH.text ""
 
     label x =
       HH.span

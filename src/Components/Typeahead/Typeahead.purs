@@ -5,7 +5,6 @@ import Prelude
 import Data.Fuzzy (Fuzzy)
 import Data.Maybe (Maybe(Nothing, Just))
 import Data.StrMap (StrMap)
-import CN.UI.Core.Typeahead as TA
 import Control.Monad.Aff.Class (class MonadAff)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
@@ -18,6 +17,8 @@ import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Block.ItemContainer as ItemContainer
+
+import CN.UI.Core.Typeahead as TA
 import CN.UI.Block.Input as Input
 
 ----------

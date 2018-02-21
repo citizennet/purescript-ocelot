@@ -9,18 +9,18 @@ import CN.UI.Block.Radio as Radio
 import CN.UI.Block.Toggle as Toggle
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
-import Data.Maybe (Maybe(..))
 import DOM.Event.Types (MouseEvent)
+import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import UIGuide.Block.Component as Component
-import UIGuide.Block.Documentation as Documentation 
+import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a 
+data Query a
   = NoOp a
   | HandleFormHeaderClick MouseEvent a
 
@@ -42,7 +42,7 @@ component =
     eval :: Query ~> H.ComponentDSL State Query Message (Aff (Effects eff))
     eval = case _ of
       NoOp a -> do
-        pure a 
+        pure a
 
       HandleFormHeaderClick _ a -> do
         H.liftAff (log "submit form")
@@ -57,20 +57,20 @@ component =
           }
           [ Component.component
               { title: "Form Header" }
-              [ FormHeader.formHeader 
+              [ FormHeader.formHeader
                   { name: "Campaign Group"
                   , onClick: HE.input HandleFormHeaderClick
                   , title: "New"
                   }
               ]
           ]
-      , Documentation.documentation 
+      , Documentation.documentation
           { header: "Input"
           , subheader: "Inputing very important text"
           }
           [ Component.component
               { title: "Input" }
-              [ Input.input 
+              [ Input.input
                   [ HP.placeholder "davelovesdesignpatterns@gmail.com" ]
               ]
           , Component.component
@@ -78,11 +78,12 @@ component =
               [ FormControl.formControl
                 { label: "Email"
                 , helpText: Just "Dave will spam your email with gang of four patterns"
+                , valid: Nothing
                 }
                 ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
               ]
           ]
-      , Documentation.documentation 
+      , Documentation.documentation
           { header: "Toggle"
           , subheader: "Enable or disable something" }
           [ Component.component
@@ -93,6 +94,7 @@ component =
               [ FormControl.formControl
                 { label: "Dave's OO Emails"
                 , helpText: Just "Once enabled, you can never unsubscribe."
+                , valid: Nothing
                 }
                 ( Toggle.toggle [] )
               ]
@@ -121,6 +123,7 @@ component =
               [ FormControl.formControl
                   { label: "Platform"
                   , helpText: Just "Where do you want your ad to appear?"
+                  , valid: Nothing
                   }
                   ( HH.div_
                     [ Radio.radio
@@ -135,5 +138,5 @@ component =
                     ]
                   )
               ]
-          ]    
+          ]
       ]

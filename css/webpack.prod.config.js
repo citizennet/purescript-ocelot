@@ -5,7 +5,6 @@ const glob = require('glob-all')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
-
 // Custom PurgeCSS extractor for Tailwind that allows special characters in
 // class names.
 // https://github.com/FullHuman/purgecss#extractor
