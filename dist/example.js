@@ -10750,7 +10750,7 @@ var PS = {};
                   throw new Error("Failed pattern match at CN.UI.Block.FormControl line 63, column 5 - line 66, column 46: " + [ v.constructor.name, v1.constructor.name ]);
               };
           };
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("w-full") ])([ label(props.label), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("my-1") ])([ html ]), helpText(props.valid)(props.helpText) ]) ]);
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("w-full") ])([ label(props.label), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("my-1") ])([ html ]), helpText(props.valid)(props.helpText) ]) ]);
       };
   };
   exports["formControl"] = formControl;
