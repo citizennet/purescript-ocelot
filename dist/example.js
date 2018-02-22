@@ -9390,7 +9390,8 @@ var PS = {};
   var placeholder = prop(Halogen_HTML_Core.stringIsProp)("placeholder");
   var name = prop(Halogen_HTML_Core.stringIsProp)("name"); 
   var id_ = prop(Halogen_HTML_Core.stringIsProp)("id");
-  var href = prop(Halogen_HTML_Core.stringIsProp)("href");   
+  var href = prop(Halogen_HTML_Core.stringIsProp)("href");
+  var $$for = prop(Halogen_HTML_Core.stringIsProp)("htmlFor");
   var classes = function ($12) {
       return prop(Halogen_HTML_Core.stringIsProp)("className")(Data_String.joinWith(" ")(Data_Functor.map(Data_Functor.functorArray)(Data_Newtype.unwrap(Halogen_HTML_Core.newtypeClassName))($12)));
   };
@@ -9401,6 +9402,7 @@ var PS = {};
   exports["prop"] = prop;
   exports["class_"] = class_;
   exports["classes"] = classes;
+  exports["for"] = $$for;
   exports["href"] = href;
   exports["id_"] = id_;
   exports["name"] = name;
@@ -10561,6 +10563,7 @@ var PS = {};
   var Data_Generic_Rep_Eq = PS["Data.Generic.Rep.Eq"];
   var Data_Generic_Rep_Show = PS["Data.Generic.Rep.Show"];
   var Data_HeytingAlgebra = PS["Data.HeytingAlgebra"];
+  var Data_Maybe = PS["Data.Maybe"];
   var Data_Ord = PS["Data.Ord"];
   var Data_Semigroup = PS["Data.Semigroup"];
   var Data_Semiring = PS["Data.Semiring"];
@@ -10608,6 +10611,24 @@ var PS = {};
       };
       return OutOfRange;
   })();
+  var NotGreaterThan = (function () {
+      function NotGreaterThan(value0) {
+          this.value0 = value0;
+      };
+      NotGreaterThan.create = function (value0) {
+          return new NotGreaterThan(value0);
+      };
+      return NotGreaterThan;
+  })();
+  var NotLessThan = (function () {
+      function NotLessThan(value0) {
+          this.value0 = value0;
+      };
+      NotLessThan.create = function (value0) {
+          return new NotLessThan(value0);
+      };
+      return NotLessThan;
+  })();
   var Dependency = (function () {
       function Dependency(value0) {
           this.value0 = value0;
@@ -10624,7 +10645,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(InvalidEmail.value));
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 49, column 1 - line 49, column 58: " + [ email.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 56, column 1 - line 56, column 58: " + [ email.constructor.name ]);
   };
   var validateNonEmptyStr = function (str) {
       if (Data_String["null"](str)) {
@@ -10633,7 +10654,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(str);
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 40, column 1 - line 40, column 59: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 43, column 1 - line 43, column 59: " + [ str.constructor.name ]);
   };
   var validateNonEmptyArr = function (v) {
       if (v.length === 0) {
@@ -10651,7 +10672,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new UnderMinLength(n, msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 54, column 1 - line 54, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 61, column 1 - line 61, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
               };
           };
       };
@@ -10666,7 +10687,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new Dependency(msg)));
                   };
-                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 64, column 1 - line 64, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
+                  throw new Error("Failed pattern match at CN.UI.Core.Validation line 81, column 1 - line 81, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
               };
           };
       };
@@ -10681,32 +10702,40 @@ var PS = {};
       if (v instanceof UnderMinLength) {
           return v.value1;
       };
-      if (v instanceof Dependency) {
-          return v.value0;
-      };
       if (v instanceof OutOfRange) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 73, column 1 - line 73, column 35: " + [ v.constructor.name ]);
+      if (v instanceof NotGreaterThan) {
+          return v.value0;
+      };
+      if (v instanceof NotLessThan) {
+          return v.value0;
+      };
+      if (v instanceof Dependency) {
+          return v.value0;
+      };
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 90, column 1 - line 90, column 35: " + [ v.constructor.name ]);
   };
   var htmlE = function (es) {
       if (Data_Foldable.length(Data_Foldable.foldableArray)(Data_Semiring.semiringInt)(es) === 1) {
-          return Data_Functor.map(Data_Functor.functorArray)(function ($51) {
-              return Halogen_HTML_Core.text(showE($51));
+          return Data_Functor.map(Data_Functor.functorArray)(function ($81) {
+              return Halogen_HTML_Core.text(showE($81));
           })(es);
       };
       if (Data_Boolean.otherwise) {
-          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($52) {
-              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($52))));
+          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($82) {
+              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($82))));
           })(es)) ];
           return toHTML;
       };
-      throw new Error("Failed pattern match at CN.UI.Core.Validation line 80, column 1 - line 80, column 48: " + [ es.constructor.name ]);
+      throw new Error("Failed pattern match at CN.UI.Core.Validation line 99, column 1 - line 99, column 48: " + [ es.constructor.name ]);
   };
   exports["EmptyField"] = EmptyField;
   exports["InvalidEmail"] = InvalidEmail;
   exports["UnderMinLength"] = UnderMinLength;
   exports["OutOfRange"] = OutOfRange;
+  exports["NotGreaterThan"] = NotGreaterThan;
+  exports["NotLessThan"] = NotLessThan;
   exports["Dependency"] = Dependency;
   exports["validateNonEmptyStr"] = validateNonEmptyStr;
   exports["validateNonEmptyArr"] = validateNonEmptyArr;
@@ -10750,7 +10779,7 @@ var PS = {};
                   throw new Error("Failed pattern match at CN.UI.Block.FormControl line 63, column 5 - line 66, column 46: " + [ v.constructor.name, v1.constructor.name ]);
               };
           };
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("w-full") ])([ label(props.label), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("my-1") ])([ html ]), helpText(props.valid)(props.helpText) ]) ]);
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("w-full"), Halogen_HTML_Properties["for"](props.inputId) ])([ label(props.label) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("my-1") ])([ html ]), helpText(props.valid)(props.helpText) ]);
       };
   };
   exports["formControl"] = formControl;
@@ -15377,56 +15406,58 @@ var PS = {};
   var Select_Primitives_Search = PS["Select.Primitives.Search"];        
   var renderTA = function (dictMonadAff) {
       return function (dictEq) {
-          return function (renderFuzzy) {
-              return function (renderSelection) {
-                  return function (st) {
-                      var renderSelections = (function () {
-                          var props = function (item) {
-                              return [ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(CN_UI_Core_Typeahead.Remove.create(item))) ];
-                          };
-                          if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Nothing) {
-                              return Halogen_HTML_Elements.div_([  ]);
-                          };
-                          if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Just) {
-                              return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer([ CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(st.selections.value0.value0))(st.selections.value0.value0) ]) ]);
-                          };
-                          if (st.selections instanceof CN_UI_Core_Typeahead.Many) {
-                              return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
-                                  return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
-                              })(st.selections.value0)) ]);
-                          };
-                          if (st.selections instanceof CN_UI_Core_Typeahead.Limit) {
-                              return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
-                                  return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
-                              })(st.selections.value1)) ]);
-                          };
-                          throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 221, column 7 - line 225, column 146: " + [ st.selections.constructor.name ]);
-                      })();
-                      var renderSearch = function (sst) {
-                          return Halogen_HTML_Elements.div_([ CN_UI_Block_Input.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.value(sst.search) ])) ]);
-                      };
-                      var renderContainer = function (cst) {
-                          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])((function () {
-                              var $37 = !cst.open;
-                              if ($37) {
-                                  return [  ];
+          return function (inputId) {
+              return function (renderFuzzy) {
+                  return function (renderSelection) {
+                      return function (st) {
+                          var renderSelections = (function () {
+                              var props = function (item) {
+                                  return [ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(CN_UI_Core_Typeahead.Remove.create(item))) ];
                               };
-                              return [ CN_UI_Block_ItemContainer.itemContainer(cst.highlightedIndex)(Data_Functor.map(Data_Functor.functorArray)(renderFuzzy)(cst.items)) ];
-                          })());
-                      };
-                      return Halogen_HTML_Elements.div_([ renderSelections, Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(CN_UI_Core_Typeahead.SearchSlot.value)(Select_Primitives_Search.component(dictMonadAff))({
-                          render: renderSearch,
-                          search: Data_Maybe.Nothing.value,
-                          debounceTime: (function () {
-                              if (st.items instanceof CN_UI_Core_Typeahead.ContinuousAsync) {
-                                  return st.items.value0;
+                              if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Nothing) {
+                                  return Halogen_HTML_Elements.div_([  ]);
                               };
-                              return 0.0;
-                          })()
-                      })(Halogen_HTML_Events.input(CN_UI_Core_Typeahead.HandleSearch.create)), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(CN_UI_Core_Typeahead.ContainerSlot.value)(Select_Primitives_Container.component(dictMonadAff))({
-                          render: renderContainer,
-                          items: [  ]
-                      })(Halogen_HTML_Events.input(CN_UI_Core_Typeahead.HandleContainer.create)) ]);
+                              if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Just) {
+                                  return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer([ CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(st.selections.value0.value0))(st.selections.value0.value0) ]) ]);
+                              };
+                              if (st.selections instanceof CN_UI_Core_Typeahead.Many) {
+                                  return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
+                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
+                                  })(st.selections.value0)) ]);
+                              };
+                              if (st.selections instanceof CN_UI_Core_Typeahead.Limit) {
+                                  return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
+                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
+                                  })(st.selections.value1)) ]);
+                              };
+                              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 228, column 7 - line 232, column 146: " + [ st.selections.constructor.name ]);
+                          })();
+                          var renderSearch = function (sst) {
+                              return Halogen_HTML_Elements.div_([ CN_UI_Block_Input.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.id_(inputId), Halogen_HTML_Properties.value(sst.search) ])) ]);
+                          };
+                          var renderContainer = function (cst) {
+                              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])((function () {
+                                  var $37 = !cst.open;
+                                  if ($37) {
+                                      return [  ];
+                                  };
+                                  return [ CN_UI_Block_ItemContainer.itemContainer(cst.highlightedIndex)(Data_Functor.map(Data_Functor.functorArray)(renderFuzzy)(cst.items)) ];
+                              })());
+                          };
+                          return Halogen_HTML_Elements.div_([ renderSelections, Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(CN_UI_Core_Typeahead.SearchSlot.value)(Select_Primitives_Search.component(dictMonadAff))({
+                              render: renderSearch,
+                              search: Data_Maybe.Nothing.value,
+                              debounceTime: (function () {
+                                  if (st.items instanceof CN_UI_Core_Typeahead.ContinuousAsync) {
+                                      return st.items.value0;
+                                  };
+                                  return 0.0;
+                              })()
+                          })(Halogen_HTML_Events.input(CN_UI_Core_Typeahead.HandleSearch.create)), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(CN_UI_Core_Typeahead.ContainerSlot.value)(Select_Primitives_Container.component(dictMonadAff))({
+                              render: renderContainer,
+                              items: [  ]
+                          })(Halogen_HTML_Events.input(CN_UI_Core_Typeahead.HandleContainer.create)) ]);
+                      };
                   };
               };
           };
@@ -15435,8 +15466,8 @@ var PS = {};
   var defRenderItem = function (v) {
       return Halogen_HTML_Core.text(v.name);
   };
-  var defRenderFuzzy = function ($78) {
-      return Halogen_HTML_Elements.span_(CN_UI_Block_ItemContainer.boldMatches("name")($78));
+  var defRenderFuzzy = function ($84) {
+      return Halogen_HTML_Elements.span_(CN_UI_Block_ItemContainer.boldMatches("name")($84));
   };
   var renderItemString = {
       toStrMap: Data_StrMap.singleton("name"),
@@ -15456,14 +15487,16 @@ var PS = {};
   var defMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (xs) {
-                  return function (v) {
-                      return {
-                          items: new CN_UI_Core_Typeahead.Sync(xs),
-                          search: Data_Maybe.Nothing.value,
-                          initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                          render: renderTA(dictMonadAff)(dictEq)(v.renderFuzzy)(v.renderItem),
-                          config: defConfig(dictEq)(v.toStrMap)
+              return function (inputId) {
+                  return function (xs) {
+                      return function (v) {
+                          return {
+                              items: new CN_UI_Core_Typeahead.Sync(xs),
+                              search: Data_Maybe.Nothing.value,
+                              initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
+                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              config: defConfig(dictEq)(v.toStrMap)
+                          };
                       };
                   };
               };
@@ -15473,14 +15506,16 @@ var PS = {};
   var defAsyncMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (source) {
-                  return function (v) {
-                      return {
-                          items: new CN_UI_Core_Typeahead.Async(source, Network_RemoteData.NotAsked.value),
-                          search: Data_Maybe.Nothing.value,
-                          initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                          render: renderTA(dictMonadAff)(dictEq)(v.renderFuzzy)(v.renderItem),
-                          config: defConfig(dictEq)(v.toStrMap)
+              return function (inputId) {
+                  return function (source) {
+                      return function (v) {
+                          return {
+                              items: new CN_UI_Core_Typeahead.Async(source, Network_RemoteData.NotAsked.value),
+                              search: Data_Maybe.Nothing.value,
+                              initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
+                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              config: defConfig(dictEq)(v.toStrMap)
+                          };
                       };
                   };
               };
@@ -15500,14 +15535,16 @@ var PS = {};
   var defContAsyncMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (source) {
-                  return function (v) {
-                      return {
-                          items: new CN_UI_Core_Typeahead.ContinuousAsync(500.0, "", source, Network_RemoteData.NotAsked.value),
-                          search: Data_Maybe.Nothing.value,
-                          initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                          render: renderTA(dictMonadAff)(dictEq)(v.renderFuzzy)(v.renderItem),
-                          config: contAsyncConfig(dictEq)(v.toStrMap)
+              return function (inputId) {
+                  return function (source) {
+                      return function (v) {
+                          return {
+                              items: new CN_UI_Core_Typeahead.ContinuousAsync(500.0, "", source, Network_RemoteData.NotAsked.value),
+                              search: Data_Maybe.Nothing.value,
+                              initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
+                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              config: contAsyncConfig(dictEq)(v.toStrMap)
+                          };
                       };
                   };
               };
@@ -18455,8 +18492,9 @@ var PS = {};
           })([ CN_UI_Block_FormControl.formControl({
               label: "Email",
               helpText: new Data_Maybe.Just("Dave will spam your email with gang of four patterns"),
-              valid: Data_Maybe.Nothing.value
-          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesdesignpatterns@gmail.com") ])) ]) ]), UIGuide_Block_Documentation.documentation({
+              valid: Data_Maybe.Nothing.value,
+              inputId: "email"
+          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesdesignpatterns@gmail.com"), Halogen_HTML_Properties.id_("email") ])) ]) ]), UIGuide_Block_Documentation.documentation({
               header: "Toggle",
               subheader: "Enable or disable something"
           })([ UIGuide_Block_Component.component({
@@ -18466,8 +18504,9 @@ var PS = {};
           })([ CN_UI_Block_FormControl.formControl({
               label: "Dave's OO Emails",
               helpText: new Data_Maybe.Just("Once enabled, you can never unsubscribe."),
-              valid: Data_Maybe.Nothing.value
-          })(CN_UI_Block_Toggle.toggle([  ])) ]) ]), UIGuide_Block_Documentation.documentation({
+              valid: Data_Maybe.Nothing.value,
+              inputId: "toggle"
+          })(CN_UI_Block_Toggle.toggle([ Halogen_HTML_Properties.id_("toggle") ])) ]) ]), UIGuide_Block_Documentation.documentation({
               header: "Radio",
               subheader: "Select one option"
           })([ UIGuide_Block_Component.component({
@@ -18482,6 +18521,7 @@ var PS = {};
               title: "Radio with Form Control"
           })([ CN_UI_Block_FormControl.formControl({
               label: "Platform",
+              inputId: "radio",
               helpText: new Data_Maybe.Just("Where do you want your ad to appear?"),
               valid: Data_Maybe.Nothing.value
           })(Halogen_HTML_Elements.div_([ CN_UI_Block_Radio.radio({
@@ -18934,14 +18974,16 @@ var PS = {};
       })([ CN_UI_Block_FormControl.formControl({
           label: "Developers",
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
-          valid: Data_Maybe.Nothing.value
-      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid)(containerData)(CN_UI_Components_Typeahead.renderItemString))(Halogen_HTML_Events.input(HandleSyncTypeahead.create))) ]), UIGuide_Block_Component.component({
+          valid: Data_Maybe.Nothing.value,
+          inputId: "devs"
+      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid)("devs")(containerData)(CN_UI_Components_Typeahead.renderItemString))(Halogen_HTML_Events.input(HandleSyncTypeahead.create))) ]), UIGuide_Block_Component.component({
           title: "Continuous Asynchronous Typeahead"
       })([ CN_UI_Block_FormControl.formControl({
           label: "Developers",
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
-          valid: Data_Maybe.Nothing.value
-      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleTypeahead.create(Data_Unit.unit)))) ]) ]), UIGuide_Block_Documentation.documentation({
+          valid: Data_Maybe.Nothing.value,
+          inputId: "devs-async"
+      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)("devs-async")(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleTypeahead.create(Data_Unit.unit)))) ]) ]), UIGuide_Block_Documentation.documentation({
           header: "Dropdowns",
           subheader: "Select from pre-determined entries."
       })([ UIGuide_Block_Component.component({
@@ -18949,13 +18991,15 @@ var PS = {};
       })([ CN_UI_Block_FormControl.formControl({
           label: "Developers",
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
-          valid: Data_Maybe.Nothing.value
+          valid: Data_Maybe.Nothing.value,
+          inputId: ""
       })(dropdownSingleSlot(dictMonadAff)) ]), UIGuide_Block_Component.component({
           title: "Dropdown"
       })([ CN_UI_Block_FormControl.formControl({
           label: "Developers",
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
-          valid: Data_Maybe.Nothing.value
+          valid: Data_Maybe.Nothing.value,
+          inputId: ""
       })(dropdownMultiSlot(dictMonadAff)) ]) ]) ]);
   };
   var component = function (dictMonadAff) {
@@ -19454,28 +19498,34 @@ var PS = {};
           })([ CN_UI_Block_FormControl.formControl({
               label: "Developers",
               helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailDevelopers.value)(st.errors)
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(eqTestRecord)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(eqTestRecord)(Data_Void.showVoid)(testRecords)(renderItemTestRecord))(Halogen_HTML_Events.input(HandleA.create))), CN_UI_Block_FormControl.formControl({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailDevelopers.value)(st.errors),
+              inputId: "devs"
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(eqTestRecord)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(eqTestRecord)(Data_Void.showVoid)("devs")(testRecords)(renderItemTestRecord))(Halogen_HTML_Events.input(HandleA.create))), CN_UI_Block_FormControl.formControl({
               label: "Todos",
               helpText: new Data_Maybe.Just("Synchronous todo fetching like you've always wanted."),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailTodos.value)(st.errors)
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleB.create))), CN_UI_Block_FormControl.formControl({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailTodos.value)(st.errors),
+              inputId: "todos"
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)("todos")(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleB.create))), CN_UI_Block_FormControl.formControl({
               label: "Users",
               helpText: new Data_Maybe.Just("Oh, you REALLY need async, huh."),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailUsers1.value)(st.errors)
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleC.create))), CN_UI_Block_FormControl.formControl({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailUsers1.value)(st.errors),
+              inputId: "users1"
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)("users1")(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleC.create))), CN_UI_Block_FormControl.formControl({
               label: "Users 2",
               helpText: new Data_Maybe.Just("Honestly, this is just lazy."),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailUsers2.value)(st.errors)
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleD.create))), CN_UI_Block_FormControl.formControl({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailUsers2.value)(st.errors),
+              inputId: "users2"
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)("users2")(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleD.create))), CN_UI_Block_FormControl.formControl({
               label: "Email",
               helpText: new Data_Maybe.Just("Dave will spam your email with gang of four patterns"),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailEmail.value)(st.errors)
-          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesgangoffour@gmail.com"), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input_(Validate.create(FailEmail.value)(new EmailV(st.raw.email)))), Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(UpdateTextField.create(1))) ])), CN_UI_Block_FormControl.formControl({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailEmail.value)(st.errors),
+              inputId: "email"
+          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("davelovesgangoffour@gmail.com"), Halogen_HTML_Properties.id_("email"), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input_(Validate.create(FailEmail.value)(new EmailV(st.raw.email)))), Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(UpdateTextField.create(1))) ])), CN_UI_Block_FormControl.formControl({
               label: "Username",
               helpText: new Data_Maybe.Just("Put your name in and we'll spam you forever"),
-              valid: Data_Map.lookup(ordFormErrorKey)(FailUsername.value)(st.errors)
-          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("Placehold me"), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input_(Validate.create(FailUsername.value)(new UsernameV(st.raw.username)))), Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(UpdateTextField.create(2))) ])), CN_UI_Block_Button.button({
+              valid: Data_Map.lookup(ordFormErrorKey)(FailUsername.value)(st.errors),
+              inputId: "username"
+          })(CN_UI_Block_Input.input([ Halogen_HTML_Properties.placeholder("Placehold me"), Halogen_HTML_Properties.id_("username"), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input_(Validate.create(FailUsername.value)(new UsernameV(st.raw.username)))), Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(UpdateTextField.create(2))) ])), CN_UI_Block_Button.button({
               type_: CN_UI_Block_Button.Primary.value
           })([ Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonSubmit.value) ])([ Halogen_HTML_Core.text("Submit") ]) ]) ]) ]);
       };
