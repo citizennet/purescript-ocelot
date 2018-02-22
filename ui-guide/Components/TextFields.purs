@@ -21,8 +21,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
-import UIGuide.Block.Component as Component
-import UIGuide.Block.Documentation (documentation)
 import UIGuide.Utilities.Async as Async
 
 
@@ -154,25 +152,9 @@ css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
 cnDocumentationBlocks =
-  tabsBlock
-  <> typeaheadBlockStrings
+  typeaheadBlockStrings
   <> typeaheadBlockTodos
   <> dropdownBlock
-
-tabsBlock
-  :: ∀ eff m
-  . MonadAff (Effects eff) m
-  => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-tabsBlock =
-  [ documentation
-      { header: "Tabs"
-      , subheader: "Tabs for navigating, eg. between form pages"
-      }
-      [ Component.component
-          { title: "Tabs" }
-          [ NavigationTab.navigationTabs { tabs, activePage: true } ]
-      ]
-  ]
 
 typeaheadBlockStrings :: ∀ eff m
   . MonadAff (Effects eff) m
