@@ -15384,12 +15384,14 @@ var PS = {};
   var CN_UI_Core_Typeahead = PS["CN.UI.Core.Typeahead"];
   var Control_Monad_Aff_Class = PS["Control.Monad.Aff.Class"];
   var Control_Semigroupoid = PS["Control.Semigroupoid"];
+  var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
   var Data_Foldable = PS["Data.Foldable"];
   var Data_Function = PS["Data.Function"];
   var Data_Functor = PS["Data.Functor"];
   var Data_Fuzzy = PS["Data.Fuzzy"];
   var Data_HeytingAlgebra = PS["Data.HeytingAlgebra"];
   var Data_Maybe = PS["Data.Maybe"];
+  var Data_Semigroup = PS["Data.Semigroup"];
   var Data_StrMap = PS["Data.StrMap"];
   var Data_Time_Duration = PS["Data.Time.Duration"];
   var Data_Tuple = PS["Data.Tuple"];
@@ -15406,34 +15408,34 @@ var PS = {};
   var Select_Primitives_Search = PS["Select.Primitives.Search"];        
   var renderTA = function (dictMonadAff) {
       return function (dictEq) {
-          return function (inputId) {
+          return function (props) {
               return function (renderFuzzy) {
                   return function (renderSelection) {
                       return function (st) {
                           var renderSelections = (function () {
-                              var props = function (item) {
+                              var itemProps = function (item) {
                                   return [ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(CN_UI_Core_Typeahead.Remove.create(item))) ];
                               };
                               if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Nothing) {
                                   return Halogen_HTML_Elements.div_([  ]);
                               };
                               if (st.selections instanceof CN_UI_Core_Typeahead.One && st.selections.value0 instanceof Data_Maybe.Just) {
-                                  return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer([ CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(st.selections.value0.value0))(st.selections.value0.value0) ]) ]);
+                                  return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer([ CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(itemProps(st.selections.value0.value0))(st.selections.value0.value0) ]) ]);
                               };
                               if (st.selections instanceof CN_UI_Core_Typeahead.Many) {
                                   return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
-                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
+                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(itemProps(x))(x);
                                   })(st.selections.value0)) ]);
                               };
                               if (st.selections instanceof CN_UI_Core_Typeahead.Limit) {
                                   return Halogen_HTML_Elements.div_([ CN_UI_Block_ItemContainer.selectionContainer(Data_Functor.map(Data_Functor.functorArray)(function (x) {
-                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(props(x))(x);
+                                      return CN_UI_Block_ItemContainer.selectionGroup(renderSelection)(itemProps(x))(x);
                                   })(st.selections.value1)) ]);
                               };
-                              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 228, column 7 - line 232, column 146: " + [ st.selections.constructor.name ]);
+                              throw new Error("Failed pattern match at CN.UI.Components.Typeahead line 229, column 7 - line 245, column 12: " + [ st.selections.constructor.name ]);
                           })();
                           var renderSearch = function (sst) {
-                              return Halogen_HTML_Elements.div_([ CN_UI_Block_Input.input(Select_Primitives_Search.getInputProps([ Halogen_HTML_Properties.placeholder("Type to search..."), Halogen_HTML_Properties.id_(inputId), Halogen_HTML_Properties.value(sst.search) ])) ]);
+                              return Halogen_HTML_Elements.div_([ CN_UI_Block_Input.input(Select_Primitives_Search.getInputProps(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ Halogen_HTML_Properties.value(sst.search) ])(props))) ]);
                           };
                           var renderContainer = function (cst) {
                               return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])((function () {
@@ -15487,14 +15489,14 @@ var PS = {};
   var defMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (inputId) {
+              return function (props) {
                   return function (xs) {
                       return function (v) {
                           return {
                               items: new CN_UI_Core_Typeahead.Sync(xs),
                               search: Data_Maybe.Nothing.value,
                               initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              render: renderTA(dictMonadAff)(dictEq)(props)(v.renderFuzzy)(v.renderItem),
                               config: defConfig(dictEq)(v.toStrMap)
                           };
                       };
@@ -15506,14 +15508,14 @@ var PS = {};
   var defAsyncMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (inputId) {
+              return function (props) {
                   return function (source) {
                       return function (v) {
                           return {
                               items: new CN_UI_Core_Typeahead.Async(source, Network_RemoteData.NotAsked.value),
                               search: Data_Maybe.Nothing.value,
                               initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              render: renderTA(dictMonadAff)(dictEq)(props)(v.renderFuzzy)(v.renderItem),
                               config: defConfig(dictEq)(v.toStrMap)
                           };
                       };
@@ -15535,14 +15537,14 @@ var PS = {};
   var defContAsyncMulti = function (dictMonadAff) {
       return function (dictEq) {
           return function (dictShow) {
-              return function (inputId) {
+              return function (props) {
                   return function (source) {
                       return function (v) {
                           return {
                               items: new CN_UI_Core_Typeahead.ContinuousAsync(500.0, "", source, Network_RemoteData.NotAsked.value),
                               search: Data_Maybe.Nothing.value,
                               initialSelection: new CN_UI_Core_Typeahead.Many([  ]),
-                              render: renderTA(dictMonadAff)(dictEq)(inputId)(v.renderFuzzy)(v.renderItem),
+                              render: renderTA(dictMonadAff)(dictEq)(props)(v.renderFuzzy)(v.renderItem),
                               config: contAsyncConfig(dictEq)(v.toStrMap)
                           };
                       };
@@ -18976,14 +18978,14 @@ var PS = {};
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
           valid: Data_Maybe.Nothing.value,
           inputId: "devs"
-      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid)("devs")(containerData)(CN_UI_Components_Typeahead.renderItemString))(Halogen_HTML_Events.input(HandleSyncTypeahead.create))) ]), UIGuide_Block_Component.component({
+      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(Data_Eq.eqString)(Data_Void.showVoid)([ Halogen_HTML_Properties.placeholder("Search developers..."), Halogen_HTML_Properties.id_("devs") ])(containerData)(CN_UI_Components_Typeahead.renderItemString))(Halogen_HTML_Events.input(HandleSyncTypeahead.create))) ]), UIGuide_Block_Component.component({
           title: "Continuous Asynchronous Typeahead"
       })([ CN_UI_Block_FormControl.formControl({
           label: "Developers",
           helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
           valid: Data_Maybe.Nothing.value,
           inputId: "devs-async"
-      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)("devs-async")(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleTypeahead.create(Data_Unit.unit)))) ]) ]), UIGuide_Block_Documentation.documentation({
+      })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search developers asynchronously..."), Halogen_HTML_Properties.id_("devs-async") ])(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleTypeahead.create(Data_Unit.unit)))) ]) ]), UIGuide_Block_Documentation.documentation({
           header: "Dropdowns",
           subheader: "Select from pre-determined entries."
       })([ UIGuide_Block_Component.component({
@@ -19500,22 +19502,22 @@ var PS = {};
               helpText: new Data_Maybe.Just("There are lots of developers to choose from."),
               valid: Data_Map.lookup(ordFormErrorKey)(FailDevelopers.value)(st.errors),
               inputId: "devs"
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(eqTestRecord)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(eqTestRecord)(Data_Void.showVoid)("devs")(testRecords)(renderItemTestRecord))(Halogen_HTML_Events.input(HandleA.create))), CN_UI_Block_FormControl.formControl({
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(eqTestRecord)(Data_Void.showVoid))(CN_UI_Components_Typeahead.defMulti(dictMonadAff)(eqTestRecord)(Data_Void.showVoid)([ Halogen_HTML_Properties.placeholder("Search developers..."), Halogen_HTML_Properties.id_("devs") ])(testRecords)(renderItemTestRecord))(Halogen_HTML_Events.input(HandleA.create))), CN_UI_Block_FormControl.formControl({
               label: "Todos",
               helpText: new Data_Maybe.Just("Synchronous todo fetching like you've always wanted."),
               valid: Data_Map.lookup(ordFormErrorKey)(FailTodos.value)(st.errors),
               inputId: "todos"
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)("todos")(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleB.create))), CN_UI_Block_FormControl.formControl({
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqTodo)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search todos asynchronously..."), Halogen_HTML_Properties.id_("todos") ])(UIGuide_Utilities_Async.todos)(UIGuide_Utilities_Async.renderItemTodo))(Halogen_HTML_Events.input(HandleB.create))), CN_UI_Block_FormControl.formControl({
               label: "Users",
               helpText: new Data_Maybe.Just("Oh, you REALLY need async, huh."),
               valid: Data_Map.lookup(ordFormErrorKey)(FailUsers1.value)(st.errors),
               inputId: "users1"
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)("users1")(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleC.create))), CN_UI_Block_FormControl.formControl({
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defContAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users asynchronously"), Halogen_HTML_Properties.id_("users1") ])(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleC.create))), CN_UI_Block_FormControl.formControl({
               label: "Users 2",
               helpText: new Data_Maybe.Just("Honestly, this is just lazy."),
               valid: Data_Map.lookup(ordFormErrorKey)(FailUsers2.value)(st.errors),
               inputId: "users2"
-          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)("users2")(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleD.create))), CN_UI_Block_FormControl.formControl({
+          })(Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(Data_Unit.unit)(CN_UI_Core_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(CN_UI_Components_Typeahead.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search more users..."), Halogen_HTML_Properties.id_("users2") ])(UIGuide_Utilities_Async.users)(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleD.create))), CN_UI_Block_FormControl.formControl({
               label: "Email",
               helpText: new Data_Maybe.Just("Dave will spam your email with gang of four patterns"),
               valid: Data_Map.lookup(ordFormErrorKey)(FailEmail.value)(st.errors),
