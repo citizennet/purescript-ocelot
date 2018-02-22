@@ -159,8 +159,9 @@ cnDocumentationBlocks =
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Nothing
+          , inputId: "devs"
           }
-          ( HH.slot' CP.cp3 unit TypeaheadCore.component (Typeahead.defMulti containerData Typeahead.renderItemString) (HE.input HandleSyncTypeahead) )
+          ( HH.slot' CP.cp3 unit TypeaheadCore.component (Typeahead.defMulti "devs" containerData Typeahead.renderItemString) (HE.input HandleSyncTypeahead) )
         ]
       , Component.component
         { title: "Continuous Asynchronous Typeahead" }
@@ -168,8 +169,9 @@ cnDocumentationBlocks =
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Nothing
+          , inputId: "devs-async"
           }
-          ( HH.slot' CP.cp1 unit TypeaheadCore.component (Typeahead.defContAsyncMulti Async.todos Async.renderItemTodo) (HE.input $ HandleTypeahead unit) )
+          ( HH.slot' CP.cp1 unit TypeaheadCore.component (Typeahead.defContAsyncMulti "devs-async" Async.todos Async.renderItemTodo) (HE.input $ HandleTypeahead unit) )
         ]
       ]
   , Documentation.documentation
@@ -182,6 +184,7 @@ cnDocumentationBlocks =
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Nothing
+          , inputId: ""
           }
           dropdownSingleSlot
         ]
@@ -191,6 +194,7 @@ cnDocumentationBlocks =
           { label: "Developers"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Nothing
+          , inputId: ""
           }
           dropdownMultiSlot
         ]
