@@ -161,7 +161,13 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp3 unit TypeaheadCore.component (Typeahead.defMulti "devs" containerData Typeahead.renderItemString) (HE.input HandleSyncTypeahead) )
+          ( HH.slot' CP.cp3 unit TypeaheadCore.component
+              (Typeahead.defMulti
+                [ HP.placeholder "Search developers...", HP.id_ "devs" ]
+                containerData
+                Typeahead.renderItemString)
+              (HE.input HandleSyncTypeahead)
+          )
         ]
       , Component.component
         { title: "Continuous Asynchronous Typeahead" }
@@ -171,7 +177,13 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs-async"
           }
-          ( HH.slot' CP.cp1 unit TypeaheadCore.component (Typeahead.defContAsyncMulti "devs-async" Async.todos Async.renderItemTodo) (HE.input $ HandleTypeahead unit) )
+          ( HH.slot' CP.cp1 unit TypeaheadCore.component
+              (Typeahead.defContAsyncMulti
+                [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
+                Async.todos
+                Async.renderItemTodo)
+              (HE.input $ HandleTypeahead unit)
+          )
         ]
       ]
   , Documentation.documentation
