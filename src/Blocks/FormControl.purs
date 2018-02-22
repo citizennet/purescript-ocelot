@@ -53,12 +53,11 @@ formControl props html =
     [ HP.classes formControlClasses ]
     [ HH.label
       [ HP.class_ (HH.ClassName "w-full"), HP.for props.inputId ]
-      [ label props.label
-      , HH.div
-          [ HP.class_ (HH.ClassName "my-1") ]
-          [ html ]
-      , helpText props.valid props.helpText
-      ]
+      [ label props.label ]
+    , HH.div
+      [ HP.class_ (HH.ClassName "my-1") ]
+      [ html ]
+    , helpText props.valid props.helpText
     ]
   where
     helpText (Just errors) _ =
