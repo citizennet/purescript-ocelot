@@ -7,6 +7,7 @@ import Data.Foldable (class Foldable, length)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Eq (genericEq)
 import Data.Generic.Rep.Show (genericShow)
+import Data.Maybe (Maybe(..))
 import Data.String (null)
 import Data.Validation.Semigroup (V, invalid)
 import Halogen.HTML as HH
@@ -45,6 +46,10 @@ validateNonEmptyStr str
 validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
 validateNonEmptyArr [] = invalid $ pure EmptyField
 validateNonEmptyArr xs = pure xs
+
+validateNonEmptyMaybe :: ∀ a. Maybe a -> V ValidationErrors a
+validateNonEmptyMaybe (Just a) = pure a
+validateNonEmptyMaybe Nothing = invalid $ pure EmptyField
 
 validateStrIsEmail :: String -> V ValidationErrors String
 validateStrIsEmail email
