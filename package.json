@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build-all": "npm run build-ui && npm run build-css-dev",
+    "build-all": "npm run build-ui && npm run build-css-dev && npm run build-css-prod",
     "postinstall": "bower i --silent",
     "clean": "rm -rf output bower_components node_modules && cd css && rm -rf node_modules",
     "build-ui": "pulp build -I ui-guide --to dist/example.js",
