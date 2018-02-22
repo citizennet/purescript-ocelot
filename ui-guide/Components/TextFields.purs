@@ -2,8 +2,8 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Block.NavigationTab as NavigationTab
 import CN.UI.Components.Dropdown as Dropdown
+import CN.UI.Block.FormControl as FormControl
 import CN.UI.Components.Typeahead as Typeahead
 import CN.UI.Core.Typeahead as TypeaheadCore
 import Control.Monad.Aff.AVar (AVAR)
@@ -22,6 +22,8 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.Utilities.Async as Async
+import UIGuide.Block.Documentation as Documentation
+import UIGuide.Block.Component as Component
 
 
 ----------
@@ -67,7 +69,7 @@ component =
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_ cnDocumentationBlocks
+    render _ = cnDocumentationBlocks
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
@@ -79,14 +81,12 @@ component =
     -- Done asynchronously so data can load in the background.
     eval (HandleTypeahead slot m next) = case m of
       TypeaheadCore.RequestData syncMethod -> do
-        _ <- H.fork do
-          res <- H.liftAff $ Async.load syncMethod
-          case TypeaheadCore.maybeReplaceItems res syncMethod of
-            Nothing -> pure next
-            (Just newSync) -> do
-              _ <- H.query' CP.cp1 slot $ H.action $ TypeaheadCore.FulfillRequest newSync
-              pure next
-        pure next
+        res <- H.liftAff $ Async.load syncMethod
+        case TypeaheadCore.maybeReplaceItems res syncMethod of
+          Nothing -> pure next
+          (Just newSync) -> do
+            _ <- H.query' CP.cp1 slot $ H.action $ TypeaheadCore.FulfillRequest newSync
+            pure next
 
       -- Ignore other messages
       _ -> pure next
@@ -137,12 +137,6 @@ containerData =
   , "Friendster"
   ]
 
-tabs :: Array (NavigationTab.Tab Boolean)
-tabs =
-  [ { name: "Accounts & Spend", link: "#", page: true }
-  , { name: "Automatic Optimization", link: "#", page: false }
-  , { name: "Creative", link: "#", page: false }
-  ]
 
 ----------
 -- HTML
@@ -150,108 +144,86 @@ tabs =
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
 
-cnDocumentationBlocks :: ∀ eff m. MonadAff (Effects eff) m => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
+cnDocumentationBlocks :: ∀ eff m
+  . MonadAff (Effects eff) m
+ => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
 cnDocumentationBlocks =
-  typeaheadBlockStrings
-  <> typeaheadBlockTodos
-  <> dropdownBlock
-
-typeaheadBlockStrings :: ∀ eff m
-  . MonadAff (Effects eff) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-typeaheadBlockStrings = documentationBlock
-  "Synchronous Typeahead"
-  "Uses string input to search pre-determined entries."
-  ( componentBlock "Set to sync." slot )
-  where
-    slot =
-      HH.slot'
-        CP.cp3
-        unit
-        TypeaheadCore.component
-        ( Typeahead.defMulti
-            containerData
-            Typeahead.renderItemString
-        )
-        (HE.input $ HandleSyncTypeahead )
-
-typeaheadBlockTodos :: ∀ eff m
-  . MonadAff (Effects eff) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-typeaheadBlockTodos = documentationBlock
-  "Continuous Async Typeahead"
-  "Uses string input to search pre-determined entries; fetches data."
-  ( componentBlock "Set to continuous async." slot )
-  where
-    slot =
-      HH.slot'
-        CP.cp1
-        unit
-        TypeaheadCore.component
-        (Typeahead.defContAsyncMulti Async.todos Async.renderItemTodo)
-        (HE.input $ HandleTypeahead unit)
-
-
-dropdownBlock :: ∀ eff m
-  . MonadAff ( Effects eff ) m
- => Array (H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m)
-dropdownBlock = documentationBlock
-  "Dropdown"
-  "Select from a list."
-  $ HH.div_
-    [ componentBlock "Single select configuration." singleSlot
-    , componentBlock "Multi select configuration." multiSlot
-    ]
-  where
-    singleSlot =
-      ( HH.slot'
-          CP.cp2
-          unit
-          Dropdown.component
-          { items: dropdownData
-          , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-          , selection: Dropdown.Single Nothing
-          , placeholder: "Select a dev..."
-          , title: "Single Selection"
-          , helpText: "Some useful help text can go here."
+  HH.div_
+  [ Documentation.documentation
+      { header: "Typeaheads"
+      , subheader: "Use string input to search pre-determined entries."
+      }
+      [ Component.component
+        { title: "Synchronous Typeahead" }
+        [ FormControl.formControl
+          { label: "Developers"
+          , helpText: Just "There are lots of developers to choose from."
+          , valid: Nothing
           }
-          (HE.input HandleDropdown)
-      )
-    multiSlot =
-      ( HH.slot'
-          CP.cp2
-          unit
-          Dropdown.component
-          { items: dropdownData
-          , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-          , selection: Dropdown.Multi []
-          , placeholder: "Select some devs..."
-          , title: "Multi Selection"
-          , helpText: "Some useful help text can go here."
+          ( HH.slot' CP.cp3 unit TypeaheadCore.component (Typeahead.defMulti containerData Typeahead.renderItemString) (HE.input HandleSyncTypeahead) )
+        ]
+      , Component.component
+        { title: "Continuous Asynchronous Typeahead" }
+        [ FormControl.formControl
+          { label: "Developers"
+          , helpText: Just "There are lots of developers to choose from."
+          , valid: Nothing
           }
-          (HE.input HandleDropdown)
-      )
-
-documentationBlock :: ∀ i p
-  . String
- -> String
- -> H.HTML i p
- -> Array (H.HTML i p)
-documentationBlock title description block =
-  [ HH.h1_ [ HH.text title ]
-  , HH.div [ css "text-xl text-grey-dark mb-4" ] [ HH.text description ]
-  , block ]
-
-componentBlock :: ∀ i p
-  . String
- -> H.HTML i p
- -> H.HTML i p
-componentBlock config slot =
-  HH.div
-  [ css "rounded border-2 border-grey-light mb-8 bg-white" ]
-  [ HH.div [ css "border-b-2 border-grey-light p-4" ] [ mkConfig config ]
-  , HH.div [ css "p-4 pb-8 bg-grey-lightest" ] [ slot ]
+          ( HH.slot' CP.cp1 unit TypeaheadCore.component (Typeahead.defContAsyncMulti Async.todos Async.renderItemTodo) (HE.input $ HandleTypeahead unit) )
+        ]
+      ]
+  , Documentation.documentation
+      { header: "Dropdowns"
+      , subheader: "Select from pre-determined entries."
+      }
+      [ Component.component
+        { title: "Dropdown" }
+        [ FormControl.formControl
+          { label: "Developers"
+          , helpText: Just "There are lots of developers to choose from."
+          , valid: Nothing
+          }
+          dropdownSingleSlot
+        ]
+      , Component.component
+        { title: "Dropdown" }
+        [ FormControl.formControl
+          { label: "Developers"
+          , helpText: Just "There are lots of developers to choose from."
+          , valid: Nothing
+          }
+          dropdownMultiSlot
+        ]
+      ]
   ]
-  where
-    mkConfig :: String -> H.HTML i p
-    mkConfig str = HH.p_ [ HH.text str ]
+
+
+dropdownSingleSlot =
+  ( HH.slot'
+      CP.cp2
+      unit
+      Dropdown.component
+      { items: dropdownData
+      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
+      , selection: Dropdown.Single Nothing
+      , placeholder: "Select a dev..."
+      , title: "Single Selection"
+      , helpText: "Some useful help text can go here."
+      }
+      (HE.input HandleDropdown)
+  )
+
+dropdownMultiSlot =
+  ( HH.slot'
+      CP.cp2
+      unit
+      Dropdown.component
+      { items: dropdownData
+      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
+      , selection: Dropdown.Multi []
+      , placeholder: "Select some devs..."
+      , title: "Multi Selection"
+      , helpText: "Some useful help text can go here."
+      }
+      (HE.input HandleDropdown)
+  )
