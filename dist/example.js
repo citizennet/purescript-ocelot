@@ -18823,8 +18823,6 @@ var PS = {};
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
   var Network_HTTP_Affjax = PS["Network.HTTP.Affjax"];
   var Prelude = PS["Prelude"];
-  var UIGuide_Block_Component = PS["UIGuide.Block.Component"];
-  var UIGuide_Block_Documentation = PS["UIGuide.Block.Documentation"];
   var UIGuide_Utilities_Async = PS["UIGuide.Utilities.Async"];        
   var TestRecord = function (x) {
       return x;
@@ -18877,30 +18875,6 @@ var PS = {};
       };
       return HandleDropdown;
   })();
-  var tabs = [ {
-      name: "Accounts & Spend",
-      link: "#",
-      page: true
-  }, {
-      name: "Automatic Optimization",
-      link: "#",
-      page: false
-  }, {
-      name: "Creative",
-      link: "#",
-      page: false
-  } ];
-  var tabsBlock = function (dictMonadAff) {
-      return [ UIGuide_Block_Documentation.documentation({
-          header: "Tabs",
-          subheader: "Tabs for navigating, eg. between form pages"
-      })([ UIGuide_Block_Component.component({
-          title: "Tabs"
-      })([ CN_UI_Block_NavigationTab.navigationTabs(Data_Eq.eqBoolean)({
-          tabs: tabs,
-          activePage: true
-      }) ]) ]) ];
-  };
   var newtypeTestRecord = new Data_Newtype.Newtype(function (n) {
       return n;
   }, TestRecord);
@@ -18922,8 +18896,8 @@ var PS = {};
       name: "Forest",
       id: 3
   } ];
-  var css = function ($41) {
-      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($41));
+  var css = function ($40) {
+      return Halogen_HTML_Properties.class_(Halogen_HTML_Core.ClassName($40));
   };
   var documentationBlock = function (title) {
       return function (description) {
@@ -18977,7 +18951,7 @@ var PS = {};
       return documentationBlock("Continuous Async Typeahead")("Uses string input to search pre-determined entries; fetches data.")(componentBlock("Set to continuous async.")(slot));
   };
   var cnDocumentationBlocks = function (dictMonadAff) {
-      return Data_Semigroup.append(Data_Semigroup.semigroupArray)(tabsBlock(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockStrings(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockTodos(dictMonadAff))(dropdownBlock(dictMonadAff))));
+      return Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockStrings(dictMonadAff))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(typeaheadBlockTodos(dictMonadAff))(dropdownBlock(dictMonadAff)));
   };
   var component = function (dictMonadAff) {
       var render = function (st) {
@@ -19002,7 +18976,7 @@ var PS = {};
                               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value2);
                           });
                       };
-                      throw new Error("Failed pattern match at UIGuide.Components.TextFields line 86, column 11 - line 90, column 24: " + [ v2.constructor.name ]);
+                      throw new Error("Failed pattern match at UIGuide.Components.TextFields line 84, column 11 - line 88, column 24: " + [ v2.constructor.name ]);
                   })))(function (v1) {
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value2);
                   });
@@ -19021,10 +18995,10 @@ var PS = {};
                           return v1.name;
                       })(Data_Newtype.unwrap(newtypeTestRecord)(v.value0.value0)) + " was selected"));
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.TextFields line 96, column 49 - line 100, column 74: " + [ v.value0.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.TextFields line 94, column 49 - line 98, column 74: " + [ v.value0.constructor.name ]);
               })());
           };
-          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 74, column 5 - line 74, column 91: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.TextFields line 72, column 5 - line 72, column 91: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid))))({
           initialState: Data_Function["const"](Data_Unit.unit),
@@ -19041,10 +19015,8 @@ var PS = {};
   exports["TestRecord"] = TestRecord;
   exports["dropdownData"] = dropdownData;
   exports["containerData"] = containerData;
-  exports["tabs"] = tabs;
   exports["css"] = css;
   exports["cnDocumentationBlocks"] = cnDocumentationBlocks;
-  exports["tabsBlock"] = tabsBlock;
   exports["typeaheadBlockStrings"] = typeaheadBlockStrings;
   exports["typeaheadBlockTodos"] = typeaheadBlockTodos;
   exports["dropdownBlock"] = dropdownBlock;
