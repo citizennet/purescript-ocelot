@@ -50,7 +50,7 @@ formControl
 formControl props html =
   HH.div
     [ HP.classes formControlClasses ]
-    [ HH.label
+    [ HH.span
       [ HP.class_ (HH.ClassName "w-full") ]
       [ label props.label
       , HH.div
