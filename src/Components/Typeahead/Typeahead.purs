@@ -61,14 +61,15 @@ defSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => Array item
+ => String
+ -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defSingle xs { toStrMap, renderFuzzy, renderItem } =
+defSingle inputId xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -77,15 +78,16 @@ defLimit :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => Int
+ => String
+ -> Int
  -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defLimit n xs { toStrMap, renderFuzzy, renderItem } =
+defLimit inputId n xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Limit n []
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -95,14 +97,15 @@ defMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => Array item
+ => String
+ -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defMulti xs { toStrMap, renderFuzzy, renderItem } =
+defMulti inputId xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -111,14 +114,15 @@ defAsyncSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
   => Eq item
   => Show err
-  => source
+  => String
+  -> source
   -> RenderTypeaheadItem item
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defAsyncSingle source { toStrMap, renderFuzzy, renderItem } =
+defAsyncSingle inputId source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -127,14 +131,15 @@ defAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => source
+ => String
+ -> source
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defAsyncMulti source { toStrMap, renderFuzzy, renderItem } =
+defAsyncMulti inputId source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -144,14 +149,15 @@ defContAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => source
+ => String
+ -> source
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defContAsyncMulti source { toStrMap, renderFuzzy, renderItem } =
+defContAsyncMulti inputId source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.ContinuousAsync (Milliseconds 500.0) "" source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA renderFuzzy renderItem
+  , render: renderTA inputId renderFuzzy renderItem
   , config: contAsyncConfig toStrMap
   }
 
@@ -191,11 +197,12 @@ type TAParentHTML o item source err eff m
 renderTA :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
- => (Fuzzy item -> HH.PlainHTML)
+ => String
+ -> (Fuzzy item -> HH.PlainHTML)
  -> (item -> HH.PlainHTML)
  -> TA.TypeaheadState item source err
  -> TAParentHTML o item source err (TA.Effects eff) m
-renderTA renderFuzzy renderSelection st =
+renderTA inputId renderFuzzy renderSelection st =
   HH.div_
   [ renderSelections
   , HH.slot'
@@ -234,6 +241,8 @@ renderTA renderFuzzy renderSelection st =
     renderSearch sst = HH.div_
       [ Input.input
         ( S.getInputProps
-          [ HP.placeholder "Type to search...", HP.value sst.search ]
+          [ HP.placeholder "Type to search..."
+          , HP.id_ inputId
+          , HP.value sst.search ]
         )
       ]

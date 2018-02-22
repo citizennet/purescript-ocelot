@@ -79,8 +79,9 @@ component =
                 { label: "Email"
                 , helpText: Just "Dave will spam your email with gang of four patterns"
                 , valid: Nothing
+                , inputId: "email"
                 }
-                ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com" ] )
+                ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com", HP.id_ "email" ] )
               ]
           ]
       , Documentation.documentation
@@ -95,8 +96,9 @@ component =
                 { label: "Dave's OO Emails"
                 , helpText: Just "Once enabled, you can never unsubscribe."
                 , valid: Nothing
+                , inputId: "toggle"
                 }
-                ( Toggle.toggle [] )
+                ( Toggle.toggle [ HP.id_ "toggle" ] )
               ]
           ]
 
@@ -122,6 +124,7 @@ component =
               { title: "Radio with Form Control" }
               [ FormControl.formControl
                   { label: "Platform"
+                  , inputId: "radio"
                   , helpText: Just "Where do you want your ad to appear?"
                   , valid: Nothing
                   }

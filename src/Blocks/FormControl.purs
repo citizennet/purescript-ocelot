@@ -40,6 +40,7 @@ type FormControlProps =
   { helpText :: Maybe String
   , label :: String
   , valid :: Maybe ValidationErrors
+  , inputId :: String
   }
 
 formControl
@@ -50,14 +51,13 @@ formControl
 formControl props html =
   HH.div
     [ HP.classes formControlClasses ]
-    [ HH.span
-      [ HP.class_ (HH.ClassName "w-full") ]
-      [ label props.label
-      , HH.div
-          [ HP.class_ (HH.ClassName "my-1") ]
-          [ html ]
-      , helpText props.valid props.helpText
-      ]
+    [ HH.label
+      [ HP.class_ (HH.ClassName "w-full"), HP.for props.inputId ]
+      [ label props.label ]
+    , HH.div
+      [ HP.class_ (HH.ClassName "my-1") ]
+      [ html ]
+    , helpText props.valid props.helpText
     ]
   where
     helpText (Just errors) _ =
