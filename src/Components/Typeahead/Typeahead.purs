@@ -13,6 +13,7 @@ import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import DOM.HTML.Indexed (HTMLinput)
 import Network.RemoteData (RemoteData(NotAsked))
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
@@ -61,15 +62,15 @@ defSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defSingle inputId xs { toStrMap, renderFuzzy, renderItem } =
+defSingle props xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -78,16 +79,16 @@ defLimit :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> Int
  -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defLimit inputId n xs { toStrMap, renderFuzzy, renderItem } =
+defLimit props n xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Limit n []
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -97,15 +98,15 @@ defMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> Array item
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defMulti inputId xs { toStrMap, renderFuzzy, renderItem } =
+defMulti props xs { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Sync xs
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -114,15 +115,15 @@ defAsyncSingle :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
   => Eq item
   => Show err
-  => String
+  => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
   -> source
   -> RenderTypeaheadItem item
   -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defAsyncSingle inputId source { toStrMap, renderFuzzy, renderItem } =
+defAsyncSingle props source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -131,15 +132,15 @@ defAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> source
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defAsyncMulti inputId source { toStrMap, renderFuzzy, renderItem } =
+defAsyncMulti props source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.Async source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: defConfig toStrMap
   }
 
@@ -149,15 +150,15 @@ defContAsyncMulti :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Show err
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> source
  -> RenderTypeaheadItem item
  -> TA.TypeaheadInput o item source err (TA.Effects eff) m
-defContAsyncMulti inputId source { toStrMap, renderFuzzy, renderItem } =
+defContAsyncMulti props source { toStrMap, renderFuzzy, renderItem } =
   { items: TA.ContinuousAsync (Milliseconds 500.0) "" source NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA inputId renderFuzzy renderItem
+  , render: renderTA props renderFuzzy renderItem
   , config: contAsyncConfig toStrMap
   }
 
@@ -197,12 +198,12 @@ type TAParentHTML o item source err eff m
 renderTA :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
- => String
+ => Array (H.IProp HTMLinput (S.SearchQuery o (Fuzzy item) (TA.Effects eff)))
  -> (Fuzzy item -> HH.PlainHTML)
  -> (item -> HH.PlainHTML)
  -> TA.TypeaheadState item source err
  -> TAParentHTML o item source err (TA.Effects eff) m
-renderTA inputId renderFuzzy renderSelection st =
+renderTA props renderFuzzy renderSelection st =
   HH.div_
   [ renderSelections
   , HH.slot'
@@ -227,22 +228,28 @@ renderTA inputId renderFuzzy renderSelection st =
     renderSelections =
       case st.selections of
         (TA.One Nothing) -> HH.div_ []
-        (TA.One (Just x)) ->  HH.div_ [ ItemContainer.selectionContainer [ ItemContainer.selectionGroup renderSelection (props x) x ] ]
-        (TA.Many xs) -> HH.div_ [ ItemContainer.selectionContainer $ (\x -> ItemContainer.selectionGroup renderSelection (props x) x) <$> xs ]
-        (TA.Limit _ xs) -> HH.div_ [ ItemContainer.selectionContainer $ (\x -> ItemContainer.selectionGroup renderSelection (props x) x) <$> xs ]
+        (TA.One (Just x)) ->
+          HH.div_
+          [ ItemContainer.selectionContainer
+            [ ItemContainer.selectionGroup renderSelection (itemProps x) x ]
+          ]
+        (TA.Many xs) ->
+          HH.div_
+          [ ItemContainer.selectionContainer
+            $ (\x -> ItemContainer.selectionGroup renderSelection (itemProps x) x) <$> xs
+          ]
+        (TA.Limit _ xs) ->
+          HH.div_
+          [ ItemContainer.selectionContainer
+            $ (\x -> ItemContainer.selectionGroup renderSelection (itemProps x) x) <$> xs
+          ]
 			where
-				props item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
-
-    renderContainer cst = HH.div [ HP.class_ $ HH.ClassName "relative" ]
-      if not cst.open
-        then []
-        else [ ItemContainer.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) ]
+				itemProps item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
 
     renderSearch sst = HH.div_
-      [ Input.input
-        ( S.getInputProps
-          [ HP.placeholder "Type to search..."
-          , HP.id_ inputId
-          , HP.value sst.search ]
-        )
-      ]
+      [ Input.input ( S.getInputProps $ [ HP.value sst.search ] <> props ) ]
+
+    renderContainer cst = HH.div [ HP.class_ $ HH.ClassName "relative" ]
+      if not cst.open then []
+      else [ ItemContainer.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) ]
+

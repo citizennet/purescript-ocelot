@@ -333,28 +333,40 @@ renderForm st =
           , valid: Map.lookup FailDevelopers st.errors
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp1 unit TA.component (TAInput.defMulti "devs" testRecords renderItemTestRecord) (HE.input HandleA) )
+          ( HH.slot' CP.cp1 unit TA.component
+            (TAInput.defMulti [ HP.placeholder "Search developers...", HP.id_ "devs" ] testRecords renderItemTestRecord)
+            (HE.input HandleA)
+          )
         , FormControl.formControl
           { label: "Todos"
           , helpText: Just "Synchronous todo fetching like you've always wanted."
           , valid: Map.lookup FailTodos st.errors
           , inputId: "todos"
           }
-          ( HH.slot' CP.cp2 unit TA.component (TAInput.defAsyncMulti "todos" Async.todos Async.renderItemTodo) (HE.input HandleB) )
+          ( HH.slot' CP.cp2 unit TA.component
+            (TAInput.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] Async.todos Async.renderItemTodo)
+            (HE.input HandleB)
+          )
         , FormControl.formControl
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           , valid: Map.lookup FailUsers1 st.errors
           , inputId: "users1"
           }
-          ( HH.slot' CP.cp3 unit TA.component (TAInput.defContAsyncMulti "users1" Async.users Async.renderItemUser) (HE.input HandleC) )
+          ( HH.slot' CP.cp3 unit TA.component
+            (TAInput.defContAsyncMulti [ HP.placeholder "Search users asynchronously", HP.id_ "users1" ] Async.users Async.renderItemUser)
+            (HE.input HandleC)
+          )
         , FormControl.formControl
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           , valid: Map.lookup FailUsers2 st.errors
           , inputId: "users2"
           }
-          ( HH.slot' CP.cp4 unit TA.component (TAInput.defAsyncMulti "users2" Async.users Async.renderItemUser) (HE.input HandleD) )
+          ( HH.slot' CP.cp4 unit TA.component
+            (TAInput.defAsyncMulti [ HP.placeholder "Search more users...", HP.id_ "users2" ] Async.users Async.renderItemUser)
+            (HE.input HandleD)
+          )
         , FormControl.formControl
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
