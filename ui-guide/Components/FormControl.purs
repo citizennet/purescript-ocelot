@@ -4,12 +4,15 @@ import Prelude
 
 import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.FormHeader as FormHeader
+import CN.UI.Block.FormPanel as FormPanel
 import CN.UI.Block.Input as Input
 import CN.UI.Block.Radio as Radio
 import CN.UI.Block.Toggle as Toggle
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
+import DOM.HTML.HTMLElement (offsetHeight)
+import DOM.Node.Types (Document)
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -18,11 +21,13 @@ import Halogen.HTML.Properties as HP
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
 
-type State = Unit
+type State = 
+  { formPanelIsOpen :: Boolean }
 
 data Query a
   = NoOp a
   | HandleFormHeaderClick MouseEvent a
+  | ToggleFormPanel MouseEvent a
 
 type Input = Unit
 
@@ -33,7 +38,7 @@ type Effects eff = ( console :: CONSOLE | eff )
 component :: ∀ eff. H.Component HH.HTML Query Input Message (Aff (Effects eff))
 component =
   H.component
-    { initialState: const unit
+    { initialState: const { formPanelIsOpen: false }
     , render
     , eval
     , receiver: const Nothing
@@ -48,8 +53,13 @@ component =
         H.liftAff (log "submit form")
         pure a
 
+      ToggleFormPanel _ a -> do
+        state <- H.get
+        H.modify (_ { formPanelIsOpen = not state.formPanelIsOpen })
+        pure a
+
     render :: State -> H.ComponentHTML Query
-    render _ =
+    render state =
       HH.div_
       [ Documentation.documentation
           { header: "Form Header"
@@ -101,7 +111,6 @@ component =
                 ( Toggle.toggle [ HP.id_ "toggle" ] )
               ]
           ]
-
       , Documentation.documentation
           { header: "Radio"
           , subheader: "Select one option"
@@ -142,4 +151,30 @@ component =
                   )
               ]
           ]
+      , Documentation.documentation
+          { header: "Form Panel"
+          , subheader: "Collapse + Expand Form Controls"
+          }
+        [ Component.component
+            { title: "Form Panel" }
+            [ FormPanel.formPanel 
+                { isOpen: state.formPanelIsOpen
+                , renderToggle: 
+                  ( \isOpen -> 
+                      if isOpen
+                        then HH.text "Hide Advanced Options"
+                        else HH.text "Show Advanced Options"
+                  )
+                } 
+                [ HE.onClick (HE.input ToggleFormPanel) ] 
+                [ FormControl.formControl
+                    { label: "Email"
+                    , helpText: Just "Dave will spam your email with gang of four patterns"
+                    , valid: Nothing
+                    , inputId: "email'"
+                    }
+                    ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com", HP.id_ "email'" ] )
+                ]
+            ]
+        ]
       ]
