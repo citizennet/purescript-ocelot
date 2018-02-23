@@ -6,6 +6,7 @@ import CN.UI.Block.FormControl as FormControl
 import CN.UI.Block.FormHeader as FormHeader
 import CN.UI.Block.Input as Input
 import CN.UI.Block.Radio as Radio
+import CN.UI.Block.Range as Range
 import CN.UI.Block.Toggle as Toggle
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
@@ -140,6 +141,23 @@ component =
                         [ HP.name "platform" ]
                     ]
                   )
+              ]
+          ]
+      , Documentation.documentation
+          { header: "Range"
+          , subheader: "Select a numeric value between a min and max" }
+          [ Component.component
+              { title: "Range" }
+              [ Range.range "range_" 0.0 100.0 "Min Label" "Max Label" [] ]
+          , Component.component
+              { title: "Range with Form Control" }
+              [ FormControl.formControl
+                { label: "Dave's OO Emails"
+                , helpText: Just "How many do you want?"
+                , valid: Nothing
+                , inputId: "range"
+                }
+                ( Range.range "range" 0.0 100.0 "A lot" "All of Them" [] )
               ]
           ]
       ]
