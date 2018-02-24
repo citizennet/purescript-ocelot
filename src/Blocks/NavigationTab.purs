@@ -9,6 +9,7 @@ type Tab page =
   { name :: String
   , link :: String
   , page :: page
+  , errors :: Int
   }
 
 type TabConfig page =
@@ -21,8 +22,8 @@ type IsActive = Boolean
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "leading-normal"
-  , "mx-3"
   , "mt-4"
+  , "mr-3"
   , "no-underline"
   , "text-xs"
   , "tracking-wide"
@@ -44,28 +45,29 @@ inactiveTabClasses = HH.ClassName <$>
   , "text-grey-70"
   ]
 
-navigationTabs 
+navigationTabs
   :: ∀ p i page
-   . Eq page 
-  => TabConfig page 
+   . Eq page
+  => TabConfig page
   -> HH.HTML p i
 navigationTabs { tabs, activePage } =
   HH.div
     [ HP.class_ (HH.ClassName "flex w-full h-12 bg-black-10") ]
     $ navigationTab activePage <$> tabs
 
-navigationTab 
+navigationTab
   :: ∀ p i page
-   . Eq page 
-  => page 
-  -> Tab page 
+   . Eq page
+  => page
+  -> Tab page
   -> HH.HTML p i
 navigationTab activePage tab =
   HH.a
     [ HP.href tab.link
     , HP.classes $ tabClasses <> tabStyles (tab.page == activePage)
     ]
-    [ HH.text tab.name ]
+    $ (if tab.errors > 0 && tab.page /= activePage then [ HH.i [ HP.class_ $ HH.ClassName "mr-2"] [ HH.text "errors" ] ] else [])
+    <> [ HH.text tab.name ]
 
   where
     tabStyles :: IsActive -> Array HH.ClassName
