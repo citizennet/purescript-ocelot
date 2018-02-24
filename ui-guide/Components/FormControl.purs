@@ -148,7 +148,13 @@ component =
           , subheader: "Select a numeric value between a min and max" }
           [ Component.component
               { title: "Range" }
-              [ Range.range "range_" 0.0 100.0 "Min Label" "Max Label" [] ]
+              [ Range.range
+                { min: "Min Label", max: "Max Label" }
+                [ HP.id_ "range_"
+                , HP.min 0.0
+                , HP.max 100.0
+                ]
+              ]
           , Component.component
               { title: "Range with Form Control" }
               [ FormControl.formControl
@@ -157,7 +163,13 @@ component =
                 , valid: Nothing
                 , inputId: "range"
                 }
-                ( Range.range "range" 0.0 100.0 "A lot" "All of Them" [] )
+                ( Range.range
+                    { min: "A Lot", max: "All Of Them" }
+                    [ HP.id_ "range"
+                    , HP.min 0.0
+                    , HP.max 100.0
+                    ]
+                )
               ]
           ]
       ]
