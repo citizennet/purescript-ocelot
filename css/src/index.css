@@ -11,7 +11,7 @@
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
-.no-outline { outline: none; }
+.no-outline { outline: none !important; }
 .offscreen { @apply absolute; left: -999em; }
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
@@ -56,7 +56,7 @@
 .checked\:sibling\:before\:border-blue-88:checked + *:before { @apply .border-blue-88; }
 .checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
 .disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
-.focus\:no-outline:focus { @apply .no-outline; }
+.focus\:no-outline:focus { @apply .no-outline !important; }
 .not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
 .not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
 
