@@ -44,7 +44,7 @@ component =
               { title: "Tabs" }
               [ HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
-                  [ NavigationTab.navigationTabs (tabConfig tabs) ]
+                  [ NavigationTab.navigationTabs (tabConfig defaultTabs) ]
               ]
           , Component.component
               { title: "Tabs with Errors" }
@@ -55,8 +55,8 @@ component =
           ]
       ]
       where
-        tabs :: Array (NavigationTab.Tab Boolean)
-        tabs =
+        defaultTabs :: Array (NavigationTab.Tab Boolean)
+        defaultTabs =
           [ { name: "Accounts & Spend", link: "#", page: true, errors: 0 }
           , { name: "Automatic Optimization", link: "#", page: false, errors: 0 }
           , { name: "Creative", link: "#", page: false, errors: 0 }
