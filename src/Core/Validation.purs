@@ -3,13 +3,16 @@ module CN.UI.Core.Validation where
 import Prelude
 
 import Data.Array (singleton)
+import Data.Either (Either(..), either)
 import Data.Foldable (class Foldable, length)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Eq (genericEq)
 import Data.Generic.Rep.Show (genericShow)
-import Data.Maybe (Maybe(..))
+import Data.Int as Integer
+import Data.Maybe (Maybe(..), maybe)
+import Data.Number as Num
 import Data.String (null)
-import Data.Validation.Semigroup (V, invalid)
+import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
 import Text.Email.Validate (isValid)
 
@@ -21,6 +24,8 @@ type ValidationErrors = Array ValidationError
 data ValidationError
   = EmptyField
   | InvalidEmail
+  | InvalidNumber
+  | InvalidInteger
   | UnderMinLength Int String
   | OutOfRange String
   | NotGreaterThan String
@@ -58,6 +63,12 @@ validateStrIsEmail email
   | isValid email = pure email
   | otherwise = invalid $ pure InvalidEmail
 
+validateStrIsNumber :: String -> V ValidationErrors Number
+validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
+
+validateStrIsInt :: String -> V ValidationErrors Int
+validateStrIsInt = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString
+
 validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
 validateMinLength n msg f
   | length f >= n = pure f
@@ -90,6 +101,8 @@ validateDependence f msg item1 item2
 showE :: ValidationError -> String
 showE EmptyField = "Required"
 showE InvalidEmail = "Must be a valid email"
+showE InvalidNumber = "Must be a valid number"
+showE InvalidInteger = "Must be a valid integer"
 showE (UnderMinLength _ msg) = msg
 showE (OutOfRange msg) = msg
 showE (NotGreaterThan msg) = msg
@@ -105,3 +118,12 @@ htmlE es | length es == 1 = HH.text <<< showE <$> es
       , HH.ul_ $ HH.li_ <<< singleton <<< HH.text <<< showE <$> es
       ]
 
+-----
+-- Additional helpers for converting to and from Either
+-- Useful for combining monadic and applicative validation
+
+toEither :: ∀ err a. Semigroup err => V err a -> Either err a
+toEither = unV Left Right
+
+fromEither :: ∀ err a. Semigroup err => Either err a -> V err a
+fromEither = either invalid pure
