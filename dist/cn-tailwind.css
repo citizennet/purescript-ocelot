@@ -5494,7 +5494,7 @@ button,
 }
 
 .no-outline {
-  outline: none;
+  outline: none !important;
 }
 
 .offscreen {
@@ -5667,7 +5667,7 @@ button,
 }
 
 .focus\:no-outline:focus {
-  outline: none;
+  outline: none !important;
 }
 
 .not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after {

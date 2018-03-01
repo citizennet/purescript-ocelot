@@ -19,3 +19,5 @@ dist/*
 # IDE
 *.swo
 *.swp
+*.psc-ide-port
+*.vscode/
