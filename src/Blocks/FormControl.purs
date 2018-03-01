@@ -2,6 +2,7 @@ module CN.UI.Block.FormControl (formControl) where
 
 import Prelude
 
+import CN.UI.Block.Type as Type
 import CN.UI.Core.Validation (ValidationErrors, htmlE)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
@@ -12,18 +13,17 @@ formControlClasses = HH.ClassName <$>
   [ "w-full" ]
 
 helpTextClasses :: Array HH.ClassName
-helpTextClasses = HH.ClassName <$>
-  [ "block"
-  , "leading-loose"
-  , "text-grey-darker"
-  , "text-sm"
-  ]
+helpTextClasses = Type.mutedClasses <>
+  ( HH.ClassName <$>
+    [ "block"
+    , "leading-loose"
+    ]
+  )
 
 errorTextClasses :: Array HH.ClassName
 errorTextClasses = HH.ClassName <$>
   [ "leading-loose"
   , "text-red"
-  , "text-sm"
   , "font-bold"
   ]
 
@@ -33,7 +33,6 @@ labelClasses = HH.ClassName <$>
   , "font-bold"
   , "leading-loose"
   , "text-black"
-  , "text-sm"
   ]
 
 type FormControlProps =

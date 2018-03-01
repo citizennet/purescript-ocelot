@@ -12,7 +12,7 @@
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none; }
-.offscreen { @apply absolute; left: -999em; }
+.offscreen { @apply fixed; left: -9999%; top: -9999%; z-index: -9999; }
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
 .w-1260px { width: 1260px; }
@@ -60,7 +60,7 @@
 .not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
 .not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
 
-html { @apply .gotham; font-size: 16px; }
+html { @apply .gotham; font-size: 12px; }
 
 /* Add Gotham to font families */
 @font-face {

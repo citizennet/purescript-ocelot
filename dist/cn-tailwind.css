@@ -5498,8 +5498,10 @@ button,
 }
 
 .offscreen {
-  position: absolute;
-  left: -999em;
+  position: fixed;
+  left: -9999%;
+  top: -9999%;
+  z-index: -9999;
 }
 
 .scale-0 {
@@ -5678,7 +5680,7 @@ button,
 
 html {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 /* Add Gotham to font families */
@@ -5789,11 +5791,10 @@ input[type=range]::-moz-range-track {
 }
 
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 2px #00abd1;
-  border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
+  border: 2px solid #f0f1f2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
   background: #00bbe0;
   cursor: pointer;
 }

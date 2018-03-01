@@ -15,12 +15,14 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import DOM.HTML.Indexed (HTMLinput)
 import Network.RemoteData (RemoteData(NotAsked))
+import Select.Primitives.SearchContainer as SC
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Block.ItemContainer as ItemContainer
 
 import CN.UI.Core.Typeahead as TA
+import CN.UI.Block.Type as Type
 import CN.UI.Block.Input as Input
 
 
@@ -71,7 +73,7 @@ defSingle props xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderFuzzy renderItem
-  , config: defConfig toStrMap
+  , config: defSingleConfig toStrMap
   }
 
 -- A def multi-select limited to N total possible selections.
@@ -89,7 +91,7 @@ defLimit props n xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Limit n []
   , render: renderTA props renderFuzzy renderItem
-  , config: defConfig toStrMap
+  , config: defMultiConfig toStrMap
   }
 
 -- A def multi-select that is provided with a renderFuzzy and renderItem function to determine
@@ -107,7 +109,7 @@ defMulti props xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderFuzzy renderItem
-  , config: defConfig toStrMap
+  , config: defMultiConfig toStrMap
   }
 
 -- A def async single select using the default render function
@@ -124,7 +126,7 @@ defAsyncSingle props source { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderFuzzy renderItem
-  , config: defConfig toStrMap
+  , config: defSingleConfig toStrMap
   }
 
 -- A def multi-select using the default render item function
@@ -141,7 +143,7 @@ defAsyncMulti props source { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderFuzzy renderItem
-  , config: defConfig toStrMap
+  , config: defMultiConfig toStrMap
   }
 
 -- A continuous asynchronous typeahead, reasonably debounced and
@@ -166,11 +168,22 @@ defContAsyncMulti props source { toStrMap, renderFuzzy, renderItem } =
 ----------
 -- Default Configuration
 
-defConfig :: ∀ item
+defSingleConfig :: ∀ item
   . Eq item
  => (item -> StrMap String)
  -> TA.Config item
-defConfig toStrMap =
+defSingleConfig toStrMap =
+  { insertable: TA.NotInsertable
+  , filterType: TA.FuzzyMatch
+  , keepOpen: false
+  , toStrMap
+  }
+
+defMultiConfig :: ∀ item
+  . Eq item
+ => (item -> StrMap String)
+ -> TA.Config item
+defMultiConfig toStrMap =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , keepOpen: true
@@ -193,7 +206,7 @@ contAsyncConfig toStrMap =
 -- Render function
 
 type TAParentHTML o item source err eff m
-  = H.ParentHTML (TA.TypeaheadQuery o item source err eff m) (TA.ChildQuery o (Fuzzy item) eff) TA.ChildSlot m
+  = H.ParentHTML (TA.TypeaheadQuery o item source err eff m) (TA.ChildQuery o (Fuzzy item) eff m) TA.ChildSlot m
 
 renderTA :: ∀ o item source err eff m
   . MonadAff (TA.Effects eff) m
@@ -203,53 +216,63 @@ renderTA :: ∀ o item source err eff m
  -> (item -> HH.PlainHTML)
  -> TA.TypeaheadState item source err
  -> TAParentHTML o item source err (TA.Effects eff) m
-renderTA props renderFuzzy renderSelection st =
-  HH.div_
-  [ renderSelections
-  , HH.slot'
-      CP.cp2
-      TA.SearchSlot
-      S.component
-      { render: renderSearch
-      , search: Nothing
+renderTA props renderFuzzy renderSelectionItem st =
+  renderAll $
+    HH.slot
+      unit
+      SC.component
+      searchContainerInput
+      (HE.input TA.HandleSearchContainer)
+  where
+    searchContainerInput =
+      { search: Nothing
       , debounceTime: case st.items of
           (TA.ContinuousAsync db _ _ _) -> db
           _ -> Milliseconds 0.0
+      , items: []
+      , renderSearch
+      , renderContainer
+      , render: \search container -> HH.div_ [ search, container ]
       }
-      (HE.input TA.HandleSearch)
-  , HH.slot'
-      CP.cp1
-      TA.ContainerSlot
-      C.component
-      { render: renderContainer, items: [] }
-      (HE.input TA.HandleContainer)
-  ]
-  where
-    renderSelections =
+
+    itemProps item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
+
+    renderAll slot =
       case st.selections of
-        (TA.One Nothing) -> HH.div_ []
-        (TA.One (Just x)) ->
-          HH.div_
-          [ ItemContainer.selectionContainer
-            [ ItemContainer.selectionGroup renderSelection (itemProps x) x ]
-          ]
-        (TA.Many xs) ->
-          HH.div_
-          [ ItemContainer.selectionContainer
-            $ (\x -> ItemContainer.selectionGroup renderSelection (itemProps x) x) <$> xs
-          ]
-        (TA.Limit _ xs) ->
-          HH.div_
-          [ ItemContainer.selectionContainer
-            $ (\x -> ItemContainer.selectionGroup renderSelection (itemProps x) x) <$> xs
-          ]
-			where
-				itemProps item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
+        TA.One Nothing ->
+          HH.div_ [ slot ]
+        TA.One (Just x) ->
+          HH.span_ [ renderSelection x, slot ]
+        TA.Many xs ->
+          HH.div_ [ renderSelections xs, slot ]
+        TA.Limit _ xs ->
+          HH.div_ [ renderSelections xs, slot ]
 
-    renderSearch sst = HH.div_
-      [ Input.input ( S.getInputProps $ [ HP.value sst.search ] <> props ) ]
+    renderSelection x =
+      ItemContainer.selectionContainer
+        [ ItemContainer.selectionGroup renderSelectionItem (itemProps x) x ]
+    renderSelections [] =
+      HH.div_ []
+    renderSelections xs =
+      ItemContainer.selectionContainer
+        $ (\x -> ItemContainer.selectionGroup renderSelectionItem (itemProps x) x) <$> xs
 
-    renderContainer cst = HH.div [ HP.class_ $ HH.ClassName "relative" ]
-      if not cst.open then []
-      else [ ItemContainer.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) ]
+    renderSearch sst =
+      HH.label
+        [ HP.classes Input.inputOuterClasses ]
+        [ Input.input
+            ( S.getInputProps $
+              [ HP.value sst.search ]
+              <> props
+            )
+         , HH.span
+            [ HP.classes $ Input.inputRightClasses <> Type.linkClasses ]
+             [ HH.text "Browse" ]
+        ]
+
+    renderContainer cst =
+      HH.div
+        [ HP.class_ $ HH.ClassName "relative" ]
+        if not cst.open then []
+        else [ ItemContainer.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) ]
 
