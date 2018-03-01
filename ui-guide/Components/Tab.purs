@@ -44,20 +44,33 @@ component =
               { title: "Tabs" }
               [ HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
-                  [ NavigationTab.navigationTabs tabConfig ]
+                  [ NavigationTab.navigationTabs (tabConfig defaultTabs) ]
+              ]
+          , Component.component
+              { title: "Tabs with Errors" }
+              [ HH.div
+                  [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
+                  [ NavigationTab.navigationTabs (tabConfig errorTabs) ]
               ]
           ]
       ]
       where
-        tabs :: Array (NavigationTab.Tab Boolean)
-        tabs =
-          [ { name: "Accounts & Spend", link: "#", page: true }
-          , { name: "Automatic Optimization", link: "#", page: false }
-          , { name: "Creative", link: "#", page: false }
+        defaultTabs :: Array (NavigationTab.Tab Boolean)
+        defaultTabs =
+          [ { name: "Accounts & Spend", link: "#", page: true, errors: 0 }
+          , { name: "Automatic Optimization", link: "#", page: false, errors: 0 }
+          , { name: "Creative", link: "#", page: false, errors: 0 }
           ]
 
-        tabConfig :: NavigationTab.TabConfig Boolean
-        tabConfig =
+        errorTabs :: Array (NavigationTab.Tab Boolean)
+        errorTabs =
+          [ { name: "Accounts & Spend", link: "#", page: true, errors: 0 }
+          , { name: "Automatic Optimization", link: "#", page: false, errors: 1 }
+          , { name: "Creative", link: "#", page: false, errors: 0 }
+          ]
+
+        tabConfig :: Array (NavigationTab.Tab Boolean) -> NavigationTab.TabConfig Boolean
+        tabConfig tabs =
           { tabs: tabs
           , activePage: true
           }
