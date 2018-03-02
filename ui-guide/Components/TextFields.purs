@@ -193,8 +193,8 @@ cnDocumentationBlocks =
       [ Component.component
         { title: "Dropdown" }
         [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
+          { label: "Platforms"
+          , helpText: Just "There are lots of platforms to choose from."
           , valid: Nothing
           , inputId: ""
           }
@@ -203,8 +203,8 @@ cnDocumentationBlocks =
       , Component.component
         { title: "Dropdown" }
         [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
+          { label: "Lorem Ipsum"
+          , helpText: Just "Dolor sit amet consectectuer."
           , valid: Nothing
           , inputId: ""
           }

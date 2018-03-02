@@ -2,8 +2,9 @@ module CN.UI.Components.Dropdown where
 
 import Prelude
 
-import DOM (DOM)
 import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff.Console (CONSOLE)
+import DOM (DOM)
 import Data.Array (delete, difference, length, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
 import Data.Tuple (Tuple(Tuple))
@@ -75,7 +76,7 @@ type DropdownDSL item m =
 ----------
 -- Component definition
 component :: ∀ item eff m
-  . MonadAff ( dom :: DOM | eff ) m
+  . MonadAff ( dom :: DOM, console :: CONSOLE | eff ) m
  => Eq item
  => H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) m
 component =
@@ -254,9 +255,11 @@ component =
           _ <- case st.selection of
             Single _ -> H.query unit
               $ H.action
-              $ C.Visibility C.Off
+              $ C.SetVisibility C.Off
             Multi _ -> (pure <<< pure) unit
           H.raise $ ItemSelected item
+
+        otherwise -> pure a
 
 
 ----------

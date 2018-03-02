@@ -5498,8 +5498,10 @@ button,
 }
 
 .offscreen {
-  position: absolute;
-  left: -999em;
+  position: fixed;
+  left: -9999%;
+  top: -9999%;
+  z-index: -9999;
 }
 
 .scale-0 {
@@ -5678,7 +5680,7 @@ button,
 
 html {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 /* Add Gotham to font families */

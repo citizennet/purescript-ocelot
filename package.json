@@ -1,14 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "build-all": "npm run build-ui && npm run build-css-dev && npm run build-css-prod",
+    "build-all": "yarn run build-ui && yarn run build-css-dev && yarn run build-css-prod",
     "postinstall": "bower i --silent",
     "clean": "rm -rf output bower_components node_modules && cd css && rm -rf node_modules",
     "build-ui": "pulp build -I ui-guide --to dist/example.js",
-    "watch-ui": "pulp -w --then 'npm run build-css-dev' build -I ui-guide --to dist/example.js",
-    "install-css": "cd css && npm install",
-    "build-css-dev": "cd css && npm run build-dev",
-    "build-css-prod": "cd css && npm run build-prod"
+    "watch-ui": "pulp -w --then 'yarn run build-css-dev' build -I ui-guide --to dist/example.js",
+    "install-css": "cd css && yarn install",
+    "build-css-dev": "cd css && yarn run build-dev",
+    "build-css-prod": "cd css && yarn run build-prod"
   },
   "devDependencies": {
     "pulp": "^12.0.1",
