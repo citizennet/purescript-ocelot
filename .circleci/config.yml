@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/ui-guide
   docker:
-    - image: thomashoneyman/purescript:0.0.2
+    - image: thomashoneyman/purescript:0.0.3
 
 jobs:
   test:
@@ -13,9 +13,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v0.0-npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
-            - v0.0-npm-cache-{{ .Branch }}
-            - v0.0-npm-cache
+            - v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - v0.0-yarn-cache-{{ .Branch }}
+            - v0.0-yarn-cache
 
       - restore_cache:
           keys:
@@ -24,15 +24,15 @@ jobs:
             - v0.0-bower-cache
 
       - run:
-          name: Install Bower and NPM dependencies
-          command: npm install # postinstall runs Bower
+          name: Install Bower and Node dependencies
+          command: yarn # postinstall runs Bower
 
       - run:
           name: Verify the project and all components build successfully
-          command: npm run build-ui
+          command: yarn run build-ui
 
       - save_cache:
-          key: v0.0-npm-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/ui-guide/node_modules
 
@@ -78,8 +78,8 @@ jobs:
       - run:
           name: Build CSS
           command: |
-            npm run install-css
-            npm run build-css-prod
+            yarn run install-css
+            yarn run build-css-prod
 
       - save_cache:
           key: v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
