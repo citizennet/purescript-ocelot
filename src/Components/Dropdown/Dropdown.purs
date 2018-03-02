@@ -2,7 +2,7 @@ module Ocelot.Components.Dropdown where
 
 import Prelude
 
-import CN.UI.Core.Typeahead (SelectionChange(..))
+import Ocelot.Core.Typeahead (SelectionChange(..))
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import DOM (DOM)
