@@ -1,4 +1,4 @@
-module CN.UI.Block.NavigationTab where
+module Ocelot.Block.NavigationTab where
 
 import Prelude
 

@@ -1,4 +1,4 @@
-module CN.UI.Block.Range (range) where
+module Ocelot.Block.Range (range) where
 
 import Prelude
 

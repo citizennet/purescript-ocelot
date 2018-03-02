@@ -1,4 +1,4 @@
-module CN.UI.Block.Input where
+module Ocelot.Block.Input where
 
 import Prelude
 

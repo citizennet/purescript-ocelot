@@ -1,4 +1,4 @@
-module CN.UI.Components.Typeahead where
+module Ocelot.Components.Typeahead where
 
 import Prelude
 
@@ -17,11 +17,11 @@ import Network.RemoteData (RemoteData(NotAsked))
 import Select.Primitives.SearchContainer as SC
 import Select.Primitives.Search as S
 
-import CN.UI.Block.ItemContainer as ItemContainer
+import Ocelot.Block.ItemContainer as ItemContainer
 
-import CN.UI.Core.Typeahead as TA
-import CN.UI.Block.Type as Type
-import CN.UI.Block.Input as Input
+import Ocelot.Core.Typeahead as TA
+import Ocelot.Block.Type as Type
+import Ocelot.Block.Input as Input
 
 
 ----------

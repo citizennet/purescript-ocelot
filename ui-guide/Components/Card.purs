@@ -2,7 +2,7 @@ module UIGuide.Components.Card where
 
 import Prelude
 
-import CN.UI.Block.Card as Card
+import Ocelot.Block.Card as Card
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH

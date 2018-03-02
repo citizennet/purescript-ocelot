@@ -2,9 +2,9 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
-import CN.UI.Block.ItemContainer as ItemContainer
-import CN.UI.Components.Typeahead as TA
-import CN.UI.Core.Typeahead (SyncMethod(..))
+import Ocelot.Block.ItemContainer as ItemContainer
+import Ocelot.Components.Typeahead as TA
+import Ocelot.Core.Typeahead (SyncMethod(..))
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)

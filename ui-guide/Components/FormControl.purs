@@ -2,13 +2,13 @@ module UIGuide.Components.FormControl where
 
 import Prelude
 
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.FormHeader as FormHeader
-import CN.UI.Block.FormPanel as FormPanel
-import CN.UI.Block.Input as Input
-import CN.UI.Block.Radio as Radio
-import CN.UI.Block.Range as Range
-import CN.UI.Block.Toggle as Toggle
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.FormHeader as FormHeader
+import Ocelot.Block.FormPanel as FormPanel
+import Ocelot.Block.Input as Input
+import Ocelot.Block.Radio as Radio
+import Ocelot.Block.Range as Range
+import Ocelot.Block.Toggle as Toggle
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)

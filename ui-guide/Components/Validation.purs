@@ -2,12 +2,12 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.Input as Input
-import CN.UI.Components.Typeahead as TAInput
-import CN.UI.Core.Typeahead as TA
-import CN.UI.Core.Validation as CV
+import Ocelot.Block.Button as Button
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.Input as Input
+import Ocelot.Components.Typeahead as TAInput
+import Ocelot.Core.Typeahead as TA
+import Ocelot.Core.Validation as CV
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)

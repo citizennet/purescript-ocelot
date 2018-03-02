@@ -1,4 +1,4 @@
-module CN.UI.Block.Radio (radio) where
+module Ocelot.Block.Radio (radio) where
 
 import Prelude
 

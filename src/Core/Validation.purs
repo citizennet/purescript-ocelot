@@ -1,4 +1,4 @@
-module CN.UI.Core.Validation where
+module Ocelot.Core.Validation where
 
 import Prelude
 

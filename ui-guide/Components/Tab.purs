@@ -2,7 +2,7 @@ module UIGuide.Components.Tab where
 
 import Prelude
 
-import CN.UI.Block.NavigationTab as NavigationTab
+import Ocelot.Block.NavigationTab as NavigationTab
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
