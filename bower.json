@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "purescript-cn-ui",
+  "name": "purescript-ocelot",
   "ignore": [
     "**/.*",
     "node_modules",
