@@ -8,8 +8,8 @@
     "webpack"
   ],
   "scripts": {
-    "build-dev": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --config=webpack.dev.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.css",
-    "build-prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=webpack.prod.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.min.css"
+    "build-dev": "node_modules/webpack/bin/webpack.js --config=webpack.dev.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.css",
+    "build-prod": "node_modules/webpack/bin/webpack.js --config=webpack.prod.config.js && mv dist/cn-tailwind.css ../dist/cn-tailwind.min.css"
   },
   "devDependencies": {
     "cross-env": "^5.1",
