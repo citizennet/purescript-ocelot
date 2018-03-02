@@ -11,8 +11,6 @@ inputOuterClasses :: Array HH.ClassName
 inputOuterClasses = HH.ClassName <$>
   [ "bg-white"
   , "font-light"
-  -- , "border-b"
-  -- , "border-grey-lighter"
   , "rounded-sm"
   , "w-full"
   , "flex"
@@ -56,17 +54,3 @@ input
   -> HH.HTML p i
 input iprops =
   HH.input (iprops <> [ HP.classes inputClasses ])
-
--- inputGroup
-  -- :: ∀ p i
-   -- . Maybe (Array (HH.HTML p i))
-  -- -> Maybe (Array (HH.HTML p i))
-  -- -> Array (HH.IProp HTMLinput i)
-  -- -> HH.HTML p i
--- inputGroup l r iprops =
-  -- HH.label
-    -- [ HP.classes textFieldClasses ]
-    -- (  (maybe [] (pure <<< (HH.span [ HP.classes inputLeftClasses ])) l)
-    -- <> [ HH.input (iprops <> [ HP.classes inputClasses ]) ]
-    -- <> (maybe [] (pure <<< (HH.span [ HP.classes inputRightClasses ])) r)
-    -- )

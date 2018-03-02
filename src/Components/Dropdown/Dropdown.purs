@@ -4,7 +4,6 @@ import Prelude
 
 import Ocelot.Core.Typeahead (SelectionChange(..))
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
 import DOM (DOM)
 import Data.Array (delete, difference, length, mapWithIndex, snoc)
 import Data.Maybe (Maybe(..), maybe)
@@ -75,7 +74,7 @@ type DropdownDSL item m =
 ----------
 -- Component definition
 component :: ∀ item eff m
-  . MonadAff ( dom :: DOM, console :: CONSOLE | eff ) m
+  . MonadAff ( dom :: DOM | eff ) m
  => Eq item
  => H.Component HH.HTML (Query item) (DropdownInput item) (DropdownMessage item) m
 component =
