@@ -9,8 +9,6 @@ import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import DOM (DOM)
 import Data.Array (difference, filter, head, length, sort, (:))
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Fuzz
 import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
@@ -20,7 +18,6 @@ import Data.StrMap (StrMap)
 import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Network.RemoteData (RemoteData(Success, Failure, Loading))
 import Select.Primitives.Container as C
@@ -81,11 +78,15 @@ data TypeaheadQuery o item source err eff m a
 -- typeahead needs data; the parent is responsible for fetching it and using
 -- the `FulfillRequest` method to return the data.
 data TypeaheadMessage o item source err
-  = ItemSelected item
-  | ItemRemoved item
+  = SelectionsChanged SelectionChange item (SelectionType item)
   | NewSearch String
   | RequestData (SyncMethod source err (Array item))
   | Emit (o Unit)
+
+-- Selections change because something was added or removed.
+data SelectionChange
+  = ItemSelected
+  | ItemRemoved
 
 
 ----------
@@ -243,11 +244,12 @@ component =
           -- Does not remove the item from the parent state.
           C.ItemSelected (Fuzzy { original: item }) -> do
             (Tuple _ st) <- getState
-            H.modify $ seeks _ { selections = selectItem item st.items st.selections }
+            let newSelections = selectItem item st.items st.selections
+            H.modify $ seeks _ { selections = newSelections }
             _ <- if st.config.keepOpen
                  then pure Nothing
                  else H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
-            H.raise $ ItemSelected item
+            H.raise $ SelectionsChanged ItemSelected item newSelections
             eval (FulfillRequest st.items a)
 
           otherwise -> pure a
@@ -279,7 +281,7 @@ component =
         (Tuple _ st) <- getState
         let selections = removeItem item st.items st.selections
         H.modify $ seeks _ { selections = selections }
-        H.raise $ ItemRemoved item
+        H.raise $ SelectionsChanged ItemRemoved item selections
         eval (FulfillRequest st.items a)
 
       -- Tell the parent what the current state of the Selections list is.

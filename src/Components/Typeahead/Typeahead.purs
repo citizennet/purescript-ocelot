@@ -9,14 +9,12 @@ import Data.Tuple (Tuple(..))
 import Control.Monad.Aff.Class (class MonadAff)
 import Data.Time.Duration (Milliseconds(..))
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import DOM.HTML.Indexed (HTMLinput)
 import Network.RemoteData (RemoteData(NotAsked))
 import Select.Primitives.SearchContainer as SC
-import Select.Primitives.Container as C
 import Select.Primitives.Search as S
 
 import CN.UI.Block.ItemContainer as ItemContainer

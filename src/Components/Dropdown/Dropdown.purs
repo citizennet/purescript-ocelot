@@ -2,6 +2,7 @@ module CN.UI.Components.Dropdown where
 
 import Prelude
 
+import CN.UI.Core.Typeahead (SelectionChange(..))
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import DOM (DOM)
@@ -50,9 +51,7 @@ data Query item a
 type DropdownInput item = State item
 
 data DropdownMessage item
-  = ItemSelected item
-  | ItemRemoved item
-
+  = SelectionsChanged SelectionChange item (SelectionType item)
 
 -- Component child types
 type ChildQuery item = C.ContainerQuery (Query item) item
@@ -221,43 +220,37 @@ component =
 
       Removed item a -> a <$ do
         st <- H.get
+
         Tuple selection items <- pure $ case st.selection of
           Single _ -> Tuple (Single Nothing) st.items
           Multi items -> do
             let containerItems = delete item items
             Tuple (Multi containerItems) (difference st.items containerItems)
+
         H.modify (_ { selection = selection })
-        _ <- H.query unit
-          $ H.action
-          $ C.ContainerReceiver
-          $ { render: renderContainer st.itemHTML
-            , items
-            }
-        H.raise $ ItemRemoved item
+        _ <- H.query unit $ H.action $ C.ReplaceItems items
+
+        H.raise $ SelectionsChanged ItemRemoved item selection
 
       HandleContainer m a -> case m of
         C.Emit q -> eval q *> pure a
 
         C.ItemSelected item -> a <$ do
           st <- H.get
+
           Tuple selection items <- pure $ case st.selection of
             Single _ -> Tuple (Single $ Just item) (delete item st.items)
             Multi items -> do
               let containerItems = snoc items item
               Tuple (Multi containerItems) (difference st.items containerItems)
+
           H.modify (_ { selection = selection })
-          _ <- H.query unit
-            $ H.action
-            $ C.ContainerReceiver
-            $ { render: renderContainer st.itemHTML
-              , items
-              }
+
+          _ <- H.query unit $ H.action $ C.ReplaceItems items
           _ <- case st.selection of
-            Single _ -> H.query unit
-              $ H.action
-              $ C.SetVisibility C.Off
+            Single _ -> H.query unit $ H.action $ C.SetVisibility C.Off
             Multi _ -> (pure <<< pure) unit
-          H.raise $ ItemSelected item
+          H.raise $ SelectionsChanged ItemSelected item selection
 
         otherwise -> pure a
 

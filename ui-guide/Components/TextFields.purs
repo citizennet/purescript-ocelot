@@ -8,7 +8,7 @@ import CN.UI.Components.Typeahead as Typeahead
 import CN.UI.Core.Typeahead as TypeaheadCore
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE, logShow)
+import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Either.Nested (Either3)
@@ -91,11 +91,7 @@ component =
       -- Ignore other messages
       _ -> pure next
 
-    eval (HandleDropdown m next) = pure next <* case m of
-      Dropdown.ItemRemoved item ->
-        H.liftAff $ logShow ((unwrap >>> _.name) item <> " was removed")
-      Dropdown.ItemSelected item ->
-        H.liftAff $ logShow ((unwrap >>> _.name) item <> " was selected")
+    eval (HandleDropdown m next) = pure next
 
 
 ----------
