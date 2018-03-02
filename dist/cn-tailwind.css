@@ -534,12 +534,42 @@ ul {
  * Tailwind custom reset styles
  */
 
+/**
+ * Allow adding a border to an element by just adding a border-width.
+ *
+ * By default, the way the browser specifies that an element should have no
+ * border is by setting it's border-style to `none` in the user-agent
+ * stylesheet.
+ *
+ * In order to easily add borders to elements by just setting the `border-width`
+ * property, we change the default border-style for all elements to `solid`, and
+ * use border-width to hide them instead. This way our `border` utilities only
+ * need to set the `border-width` property instead of the entire `border`
+ * shorthand, making our border utilities much more straightforward to compose.
+ *
+ * https://github.com/tailwindcss/tailwindcss/pull/116
+ */
+
 *,
 *::before,
 *::after {
   border-width: 0;
   border-style: solid;
   border-color: #dae1e7;
+}
+
+/**
+ * Undo the `border-style: none` reset that Normalize applies to images so that
+ * our `border-{width}` utilities have the expected effect.
+ *
+ * The Normalize reset is unnecessary for us since we default the border-width
+ * to 0 on all elements.
+ *
+ * https://github.com/tailwindcss/tailwindcss/issues/362
+ */
+
+img {
+  border-style: solid;
 }
 
 /**
@@ -5498,8 +5528,10 @@ button,
 }
 
 .offscreen {
-  position: absolute;
-  left: -999em;
+  position: fixed;
+  left: -9999%;
+  top: -9999%;
+  z-index: -9999;
 }
 
 .scale-0 {
@@ -5678,7 +5710,7 @@ button,
 
 html {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 /* Add Gotham to font families */
@@ -5763,15 +5795,14 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 2px #00abd1;
-  border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
+  border: 2px solid #f0f1f2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
   background: #00bbe0;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -5.7px;
+  margin-top: -8.5px;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
@@ -5790,11 +5821,10 @@ input[type=range]::-moz-range-track {
 }
 
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 2px #00abd1;
-  border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
+  border: 2px solid #f0f1f2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
   background: #00bbe0;
   cursor: pointer;
 }

@@ -1,4 +1,4 @@
-module CN.UI.Block.ItemContainer (itemContainer, selectionContainer, selectionGroup, boldMatches) where
+module Ocelot.Block.ItemContainer where
 
 import Prelude
 
@@ -24,6 +24,8 @@ selectionContainerClasses = baseClasses <> names
     names = HH.ClassName <$>
       [ "border-b"
       , "border-grey-lighter"
+      , "px-1"
+      , "py-1"
       ]
 
 itemContainerClasses :: Array HH.ClassName
@@ -43,19 +45,19 @@ ulClasses :: Array HH.ClassName
 ulClasses = HH.ClassName <$> [ "list-reset" ]
 
 liClasses :: Array HH.ClassName
-liClasses = HH.ClassName <$> [ "px-3", "py-1" ]
-
-groupClasses :: Array HH.ClassName
-groupClasses = HH.ClassName <$>
-  [ "group"
+liClasses = HH.ClassName <$>
+  [ "px-3"
+  , "py-2"
+  , "rounded-sm"
+  , "text-grey-darkest"
+  , "group"
   , "leading-normal"
-  , "hover:bg-grey-lightest"
+  , "hover:bg-grey-lighter"
   ]
 
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
-  [ "text-grey-light"
-  , "float-right"
+  [ "float-right"
   , "leading-normal"
   , "invisible"
   , "group-hover:visible"
@@ -63,7 +65,11 @@ buttonClasses = HH.ClassName <$>
 
 -- Provided an array of items, renders them in a container.
 -- Items should have already been treated with `boldMatches` by this point.
-itemContainer :: ∀ t o item. Maybe Int -> Array HH.PlainHTML -> HH.HTML t (C.ContainerQuery o item Unit)
+itemContainer
+  :: ∀ t o item
+   . Maybe Int
+  -> Array HH.PlainHTML
+  -> HH.HTML t (C.ContainerQuery o item Unit)
 itemContainer highlightIndex html =
   HH.div
   (C.getContainerProps [ HP.classes itemContainerClasses ])
@@ -95,20 +101,25 @@ selectionContainer html =
     ( \h ->
         HH.li
           [ HP.classes liClasses ]
-					[ h ]
+          [ h ]
     )
   ]
 
 
-selectionGroup :: ∀ item i p. (item -> HH.PlainHTML) -> Array (HH.IProp _ p) -> item -> HH.HTML i p
+selectionGroup
+  :: ∀ item i p
+   . (item -> HH.PlainHTML)
+  -> Array (HH.IProp _ p)
+  -> item
+  -> HH.HTML i p
 selectionGroup f props item =
-	HH.div
-		( props <> [ HP.classes groupClasses ] )
-		[ HH.fromPlainHTML (f item)
-		, HH.button
-			[ HP.classes buttonClasses ]
-			[ HH.text "×" ]
-		]
+  HH.div
+    props
+    [ HH.fromPlainHTML (f item)
+    , HH.button
+      [ HP.classes buttonClasses ]
+      [ HH.text "✕" ]
+    ]
 
 
 -- Takes a key to the segment that you want to display highlighted.

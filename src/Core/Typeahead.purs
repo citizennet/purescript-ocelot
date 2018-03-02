@@ -1,33 +1,28 @@
-module CN.UI.Core.Typeahead where
+module Ocelot.Core.Typeahead where
 
 import Prelude
 
-import Network.RemoteData (RemoteData(Success, Failure, Loading))
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Console (logShow, CONSOLE)
-import Control.Monad.Aff.Class (class MonadAff)
-import Data.Newtype (unwrap)
-import Data.StrMap (StrMap)
-import Data.Fuzzy as Fuzz
-import Data.Fuzzy (Fuzzy(..))
-import DOM (DOM)
-import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
-import Data.Tuple (Tuple(..))
-import Data.Array (difference, filter, length, sort, (:))
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Time.Duration (Milliseconds)
-import Data.Rational ((%))
-
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
-
+import Control.Monad.Aff.AVar (AVAR)
+import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff.Console (logShow, CONSOLE)
+import DOM (DOM)
+import Data.Array (difference, filter, head, length, sort, (:))
+import Data.Fuzzy (Fuzzy(..))
+import Data.Fuzzy as Fuzz
+import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
+import Data.Newtype (unwrap)
+import Data.Rational ((%))
+import Data.StrMap (StrMap)
+import Data.Time.Duration (Milliseconds)
+import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.Component.ChildPath as CP
-
+import Network.RemoteData (RemoteData(Success, Failure, Loading))
 import Select.Primitives.Container as C
 import Select.Primitives.Search as S
+import Select.Primitives.SearchContainer as SC
 import Select.Primitives.State (getState)
 
 
@@ -39,7 +34,7 @@ import Select.Primitives.State (getState)
 type State o item source err eff m =
   Store
     (TypeaheadState item source err)
-    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
+    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff m) ChildSlot m)
 
 -- Items are wrapped in `SyncMethod` to account for failure and loading cases
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
@@ -58,7 +53,7 @@ type TypeaheadInput o item source err eff m =
   , initialSelection :: SelectionType item
   , render
     :: TypeaheadState item source err
-    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
+    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff m) ChildSlot m
   , config :: Config item
   }
 
@@ -70,8 +65,7 @@ type TypeaheadInput o item source err eff m =
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data TypeaheadQuery o item source err eff m a
-  = HandleContainer (C.Message o (Fuzzy item)) a
-  | HandleSearch (S.Message o (Fuzzy item)) a
+  = HandleSearchContainer (SC.Message o (Fuzzy item)) a
   | Remove item a
   | Selections (SelectionType item -> a)
   | FulfillRequest (SyncMethod source err (Array item)) a
@@ -84,21 +78,24 @@ data TypeaheadQuery o item source err eff m a
 -- typeahead needs data; the parent is responsible for fetching it and using
 -- the `FulfillRequest` method to return the data.
 data TypeaheadMessage o item source err
-  = ItemSelected item
-  | ItemRemoved item
+  = SelectionsChanged SelectionChange item (SelectionType item)
   | NewSearch String
   | RequestData (SyncMethod source err (Array item))
   | Emit (o Unit)
+
+-- Selections change because something was added or removed.
+data SelectionChange
+  = ItemSelected
+  | ItemRemoved
 
 
 ----------
 -- Child types
 
 -- The typeahead relies on the Search and Container primitives.
-type ChildQuery o item eff = Coproduct2
-  (C.ContainerQuery o item)
-  (S.SearchQuery    o item eff)
-type ChildSlot = Either2 Slot Slot
+type ChildSlot = Unit
+type ChildQuery o item eff m = SC.SearchContainerQuery o item eff m
+
 
 data Slot
   = ContainerSlot
@@ -232,54 +229,59 @@ component =
       ~> H.ParentDSL
           (State o item source err (Effects eff) m)
           (TypeaheadQuery o item source err (Effects eff) m)
-          (ChildQuery o (Fuzzy item) (Effects eff))
+          (ChildQuery o (Fuzzy item) (Effects eff) m)
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m
     eval = case _ of
-      HandleContainer message a -> case message of
-        C.Emit query -> do
-           H.raise (Emit query)
-           pure a
+      HandleSearchContainer message a -> case message of
+        SC.Emit query -> H.raise (Emit query) *> pure a
 
-        -- Select an item, removing it from the list of available items in the container.
-        -- Does not remove the item from the parent state.
-        C.ItemSelected (Fuzzy { original: item }) -> do
-          (Tuple _ st) <- getState
-          H.modify $ seeks _ { selections = selectItem item st.items st.selections }
-          _ <- if st.config.keepOpen
-               then pure Nothing
-               else H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
-          H.raise $ ItemSelected item
-          eval (FulfillRequest st.items a)
+        SC.ContainerMessage message' -> case message' of
 
-      HandleSearch message a -> case message of
-        S.Emit query -> H.raise (Emit query) *> pure a
-        S.ContainerQuery query -> H.query' CP.cp1 ContainerSlot query *> pure a
+          -- Select an item, removing it from the list of
+          -- available items in the container.
+          -- Does not remove the item from the parent state.
+          C.ItemSelected (Fuzzy { original: item }) -> do
+            (Tuple _ st) <- getState
+            let newSelections = selectItem item st.items st.selections
+            H.modify $ seeks _ { selections = newSelections }
+            _ <- if st.config.keepOpen
+                 then pure Nothing
+                 else H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
+            H.raise $ SelectionsChanged ItemSelected item newSelections
+            eval (FulfillRequest st.items a)
 
-        -- Perform a new search, fetching data if ContinuousAsync.
-        S.NewSearch text -> do
-          H.modify $ seeks _ { search = text }
-          H.raise $ NewSearch text
+          otherwise -> pure a
 
-          (Tuple _ st) <- getState
-          case st.items of
-            ContinuousAsync db _ src _ -> do
-              -- ContinuousAsync may take some time to complete. Set status
-              -- to Loading and request the data. When the data is fulfilled,
-              -- the status will change again.
-              let cont = ContinuousAsync db text src Loading
-              H.modify $ seeks $ _ { items = cont }
-              H.raise $ RequestData cont
-              pure a
-            _ -> eval (FulfillRequest st.items a)
+        SC.SearchMessage message' -> case message' of
+          -- S.ContainerQuery query -> H.query unit <<< SC.inContainer query *> pure a
+
+          -- Perform a new search, fetching data if ContinuousAsync.
+          S.NewSearch text -> do
+            H.modify $ seeks _ { search = text }
+            H.raise $ NewSearch text
+
+            (Tuple _ st) <- getState
+            case st.items of
+              ContinuousAsync db _ src _ -> do
+                -- ContinuousAsync may take some time to complete. Set status
+                -- to Loading and request the data. When the data is fulfilled,
+                -- the status will change again.
+                let cont = ContinuousAsync db text src Loading
+                H.modify $ seeks $ _ { items = cont }
+                H.raise $ RequestData cont
+                pure a
+              _ -> eval (FulfillRequest st.items a)
+
+          otherwise -> pure a
 
       -- Remove a currently-selected item.
       Remove item a -> do
         (Tuple _ st) <- getState
         let selections = removeItem item st.items st.selections
         H.modify $ seeks _ { selections = selections }
-        H.raise $ ItemRemoved item
+        H.raise $ SelectionsChanged ItemRemoved item selections
         eval (FulfillRequest st.items a)
 
       -- Tell the parent what the current state of the Selections list is.
@@ -325,28 +327,28 @@ component =
       -> H.ParentDSL
           (State o item source err (Effects eff) m)
           (TypeaheadQuery o item source err (Effects eff) m)
-          (ChildQuery o (Fuzzy item) (Effects eff))
+          (ChildQuery o (Fuzzy item) (Effects eff) m)
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m
           Unit
     updateContainer (Sync items) = do
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
+      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
       pure unit
     updateContainer (Async _ (Success items)) = do
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
+      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
       pure unit
     updateContainer (Async _ (Failure e)) = do
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems []
+      _ <- H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
+      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems []
       H.liftAff $ logShow e
       pure unit
     updateContainer (ContinuousAsync _ _ _ (Success items)) = do
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems items
+      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
       pure unit
     updateContainer (ContinuousAsync _ _ _ (Failure e)) = do
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.Visibility C.Off
-      _ <- H.query' CP.cp1 ContainerSlot $ H.action $ C.ReplaceItems []
+      _ <- H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
+      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems []
       H.liftAff $ logShow e
       pure unit
     updateContainer _ = pure unit
@@ -431,6 +433,11 @@ getNewItems st = (sort <<< applyF <<< applyI) <$> (fuzzyItems <<< removeSelectio
 
 ----------
 -- External Helpers
+
+unpackSelection :: ∀ item. SelectionType item -> Maybe item
+unpackSelection (One x) = x
+unpackSelection (Limit _ xs) = head xs
+unpackSelection (Many xs) = head xs
 
 unpackSelections :: ∀ item. SelectionType item -> Array item
 unpackSelections (One Nothing) = []

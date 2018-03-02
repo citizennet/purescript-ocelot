@@ -2,7 +2,7 @@ module UIGuide.Components.Button where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
+import Ocelot.Block.Button as Button
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH

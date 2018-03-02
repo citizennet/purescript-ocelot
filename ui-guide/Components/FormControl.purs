@@ -2,18 +2,16 @@ module UIGuide.Components.FormControl where
 
 import Prelude
 
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.FormHeader as FormHeader
-import CN.UI.Block.FormPanel as FormPanel
-import CN.UI.Block.Input as Input
-import CN.UI.Block.Radio as Radio
-import CN.UI.Block.Range as Range
-import CN.UI.Block.Toggle as Toggle
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.FormHeader as FormHeader
+import Ocelot.Block.FormPanel as FormPanel
+import Ocelot.Block.Input as Input
+import Ocelot.Block.Radio as Radio
+import Ocelot.Block.Range as Range
+import Ocelot.Block.Toggle as Toggle
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
-import DOM.HTML.HTMLElement (offsetHeight)
-import DOM.Node.Types (Document)
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -22,7 +20,7 @@ import Halogen.HTML.Properties as HP
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
 
-type State = 
+type State =
   { formPanelIsOpen :: Boolean }
 
 data Query a
@@ -157,7 +155,13 @@ component =
           , subheader: "Select a numeric value between a min and max" }
           [ Component.component
               { title: "Range" }
-              [ Range.range "range_" 0.0 100.0 "Min Label" "Max Label" [] ]
+              [ Range.range
+                { min: "Min Label", max: "Max Label" }
+                [ HP.id_ "range_"
+                , HP.min 0.0
+                , HP.max 100.0
+                ]
+              ]
           , Component.component
               { title: "Range with Form Control" }
               [ FormControl.formControl
@@ -166,7 +170,13 @@ component =
                 , valid: Nothing
                 , inputId: "range"
                 }
-                ( Range.range "range" 0.0 100.0 "A lot" "All of Them" [] )
+                ( Range.range
+                    { min: "A Lot", max: "All Of Them" }
+                    [ HP.id_ "range"
+                    , HP.min 0.0
+                    , HP.max 100.0
+                    ]
+                )
               ]
           ]
       , Documentation.documentation
@@ -175,16 +185,16 @@ component =
           }
           [ Component.component
             { title: "Form Panel" }
-            [ FormPanel.formPanel 
+            [ FormPanel.formPanel
                 { isOpen: state.formPanelIsOpen
-                , renderToggle: 
-                  ( \isOpen -> 
+                , renderToggle:
+                  ( \isOpen ->
                       if isOpen
                         then HH.text "Hide Advanced Options"
                         else HH.text "Show Advanced Options"
                   )
-                } 
-                [ HE.onClick (HE.input ToggleFormPanel) ] 
+                }
+                [ HE.onClick (HE.input ToggleFormPanel) ]
                 [ FormControl.formControl
                     { label: "Email"
                     , helpText: Just "Dave will spam your email with gang of four patterns"

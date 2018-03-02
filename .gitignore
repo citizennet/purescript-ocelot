@@ -8,6 +8,7 @@ node_modules
 output
 generated-docs
 package-lock.json
+yarn.lock
 
 # Allow the CSS file only; Circle CI will overwrite whatever you
 # put so feel free to handle merge conflicts however you want.
@@ -17,6 +18,7 @@ dist/*
 !dist/index.html
 
 # IDE
+*.log
 *.swo
 *.swp
 *.psc-ide-port

@@ -1,4 +1,4 @@
-module CN.UI.Block.Toggle (toggle) where
+module Ocelot.Block.Toggle (toggle) where
 
 import Prelude
 

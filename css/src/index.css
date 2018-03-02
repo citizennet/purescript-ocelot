@@ -12,7 +12,7 @@
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
-.offscreen { @apply absolute; left: -999em; }
+.offscreen { @apply fixed; left: -9999%; top: -9999%; z-index: -9999; }
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
 .w-1260px { width: 1260px; }
@@ -60,7 +60,7 @@
 .not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
 .not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
 
-html { @apply .gotham; font-size: 16px; }
+html { @apply .gotham; font-size: 12px; }
 
 /* Add Gotham to font families */
 @font-face {
@@ -139,15 +139,14 @@ input[type=range]::-webkit-slider-runnable-track {
   border: none;
 }
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 2px #00ABD1;
-  border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
+  border: 2px solid #F0F1F2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
   background: #00BBE0;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -5.7px;
+  margin-top: -8.5px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: rgba(102,113,128,0.3);
@@ -163,11 +162,10 @@ input[type=range]::-moz-range-track {
   border: none;
 }
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 2px #00ABD1;
-  border: none;
-  height: 14px;
-  width: 14px;
-  border-radius: 14px;
+  border: 2px solid #F0F1F2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
   background: #00BBE0;
   cursor: pointer;
 }

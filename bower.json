@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "purescript-cn-ui",
+  "name": "purescript-ocelot",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -12,13 +12,14 @@
   ],
   "dependencies": {
     "purescript-halogen": "^3.1.2",
-    "purescript-halogen-select": "^0.1.7",
+    "purescript-halogen-select": "^0.1.9",
     "purescript-fuzzy": "^0.1.2",
     "purescript-validation": "^3.2.0",
     "purescript-generics-rep": "^5.4.0",
     "purescript-aff": "^4.0.2",
     "purescript-remotedata": "^2.2.0",
-    "purescript-email-validate": "^2.0.0"
+    "purescript-email-validate": "^2.0.0",
+    "purescript-numbers": "^5.0.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",

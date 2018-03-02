@@ -2,12 +2,12 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Block.Input as Input
-import CN.UI.Components.Typeahead as TAInput
-import CN.UI.Core.Typeahead as TA
-import CN.UI.Core.Validation as CV
+import Ocelot.Block.Button as Button
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.Input as Input
+import Ocelot.Components.Typeahead as TAInput
+import Ocelot.Core.Typeahead as TA
+import Ocelot.Core.Validation as CV
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
@@ -90,7 +90,7 @@ component =
   H.parentComponent
   { initialState: const
       { raw:
-        { developers: []
+        { developers: Nothing
         , todos: []
         , users1: []
         , users2: []
@@ -146,10 +146,11 @@ component =
 
       H.modify
         (_ { raw
-              { developers = fromMaybe [] $ TA.unpackSelections <$> devs
-              , todos = fromMaybe [] $ TA.unpackSelections <$> todos
-              , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
-              , users2 = fromMaybe [] $ TA.unpackSelections <$> users2 }
+             { developers = TA.unpackSelection =<< devs
+             , todos = fromMaybe [] $ TA.unpackSelections <$> todos
+             , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
+             , users2 = fromMaybe [] $ TA.unpackSelections <$> users2
+             }
            })
 
       -- Validate data
@@ -199,7 +200,7 @@ runValidation f =
 -- Top level form types
 
 type UnvalidatedForm =
-  { developers :: Array TestRecord
+  { developers :: Maybe TestRecord
   , todos      :: Array Async.Todo
   , users1     :: Array Async.User
   , users2     :: Array Async.User
@@ -207,7 +208,7 @@ type UnvalidatedForm =
   , username   :: String }
 
 type ValidatedForm =
-  { developers :: ValidatedArray TestRecord
+  { developers :: TestRecord
   , todos      :: ValidatedArray Async.Todo
   , users1     :: ValidatedArray Async.User
   , users2     :: ValidatedArray Async.User
@@ -217,10 +218,12 @@ type ValidatedForm =
 -----
 -- Validation for form fields
 
-validateDevelopers :: Array TestRecord -> V FormErrors (ValidatedArray TestRecord)
-validateDevelopers xs =
-  Bifunctor.bimap (Map.singleton FailDevelopers) ValidatedArray
-  $ CV.validateMinLength 2 "Must select more than one developer" xs
+validateDevelopers
+  :: Maybe TestRecord
+  -> V FormErrors TestRecord
+validateDevelopers =
+  Bifunctor.lmap (Map.singleton FailDevelopers)
+  <<< CV.validateNonEmptyMaybe
 
 validateTodos :: Array Async.Todo -> V FormErrors (ValidatedArray Async.Todo)
 validateTodos xs =
@@ -295,7 +298,7 @@ type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
 -- So they can get picked up and validated with a single Validate Query handler
 
 data FormVKey
-  = DevelopersV (Array TestRecord)
+  = DevelopersV (Maybe TestRecord)
   | TodosV (Array Async.Todo)
   | Users1V (Tuple (Array Async.User) (Array Async.User))
   | Users2V (Tuple (Array Async.User) (Array Async.User))
@@ -328,13 +331,13 @@ renderForm st =
       [ Component.component
         { title: "Typeaheads" }
         [ FormControl.formControl
-          { label: "Developers"
+          { label: "Developer"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Map.lookup FailDevelopers st.errors
           , inputId: "devs"
           }
           ( HH.slot' CP.cp1 unit TA.component
-            (TAInput.defMulti [ HP.placeholder "Search developers...", HP.id_ "devs" ] testRecords renderItemTestRecord)
+            (TAInput.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] testRecords renderItemTestRecord)
             (HE.input HandleA)
           )
         , FormControl.formControl

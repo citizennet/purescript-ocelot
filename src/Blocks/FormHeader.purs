@@ -1,8 +1,8 @@
-module CN.UI.Block.FormHeader where
+module Ocelot.Block.FormHeader where
 
 import Prelude
 
-import CN.UI.Block.Button as Button
+import Ocelot.Block.Button as Button
 import Data.Maybe (Maybe)
 import DOM.Event.Types (MouseEvent)
 import Halogen.HTML as HH
