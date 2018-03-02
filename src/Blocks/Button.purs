@@ -1,4 +1,4 @@
-module CN.UI.Block.Button where
+module Ocelot.Block.Button where
 
 import Prelude
 

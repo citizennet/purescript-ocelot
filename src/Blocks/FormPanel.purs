@@ -1,4 +1,4 @@
-module CN.UI.Block.FormPanel where
+module Ocelot.Block.FormPanel where
   
 import Prelude
 

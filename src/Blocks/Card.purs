@@ -1,4 +1,4 @@
-module CN.UI.Block.Card (card) where
+module Ocelot.Block.Card (card) where
 
 import Prelude
 

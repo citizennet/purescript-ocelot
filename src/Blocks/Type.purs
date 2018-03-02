@@ -1,4 +1,4 @@
-module CN.UI.Block.Type
+module Ocelot.Block.Type
   ( linkClasses
   , mutedClasses
   ) where

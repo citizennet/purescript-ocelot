@@ -2,10 +2,10 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import CN.UI.Components.Dropdown as Dropdown
-import CN.UI.Block.FormControl as FormControl
-import CN.UI.Components.Typeahead as Typeahead
-import CN.UI.Core.Typeahead as TypeaheadCore
+import Ocelot.Components.Dropdown as Dropdown
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Components.Typeahead as Typeahead
+import Ocelot.Core.Typeahead as TypeaheadCore
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, logShow)

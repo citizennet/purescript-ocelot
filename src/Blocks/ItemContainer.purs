@@ -1,4 +1,4 @@
-module CN.UI.Block.ItemContainer where
+module Ocelot.Block.ItemContainer where
 
 import Prelude
 

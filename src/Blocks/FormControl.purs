@@ -1,9 +1,9 @@
-module CN.UI.Block.FormControl (formControl) where
+module Ocelot.Block.FormControl (formControl) where
 
 import Prelude
 
-import CN.UI.Block.Type as Type
-import CN.UI.Core.Validation (ValidationErrors, htmlE)
+import Ocelot.Block.Type as Type
+import Ocelot.Core.Validation (ValidationErrors, htmlE)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
