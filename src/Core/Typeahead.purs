@@ -21,7 +21,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Network.RemoteData (RemoteData(Success, Failure, Loading))
 import Select as Select
-import Select.Internal.State (getState)
+import Select.Internal.State (getState, updateStore)
 
 ----------
 -- Component types
@@ -303,7 +303,7 @@ component =
             pure a
 
       TypeaheadReceiver input a -> do
-        H.put (initialState input)
+        H.modify $ updateStore input.render id
         pure a
 
     -- If there is new data to send, then send it;
