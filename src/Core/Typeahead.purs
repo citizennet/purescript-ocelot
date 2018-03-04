@@ -67,6 +67,8 @@ data TypeaheadQuery o item source err eff m a
   | Selections (SelectionType item -> a)
   | FulfillRequest (SyncMethod source err (Array item)) a
   | Initialize a
+  | ReplaceSelections (SelectionType item) a
+  | ReplaceItems (SyncMethod source err (Array item)) a
   | TypeaheadReceiver (TypeaheadInput o item source err eff m) a
 
 -- The parent is notified when items are selected or removed and when a
@@ -276,6 +278,10 @@ component =
         (Tuple _ st) <- getState
         _ <- updateContainer (getNewItems st)
         pure a
+
+      ReplaceItems items a -> eval $ FulfillRequest items a
+
+      ReplaceSelections selections a -> (H.modify $ seeks _ { selections = selections }) *> pure a
 
       -- If synchronous, do nothing; if not, request the data for the component.
       Initialize a -> do
