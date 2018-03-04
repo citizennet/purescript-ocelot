@@ -2,7 +2,6 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import Ocelot.Components.Dropdown as Dropdown
 import Ocelot.Block.FormControl as FormControl
 import Ocelot.Components.Typeahead as Typeahead
 import Ocelot.Core.Typeahead as TypeaheadCore
@@ -11,8 +10,8 @@ import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import Data.Either.Nested (Either3)
-import Data.Functor.Coproduct.Nested (Coproduct3)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Halogen as H
@@ -36,16 +35,14 @@ data Query a
   = NoOp a
   | HandleTypeahead Unit (TypeaheadCore.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
   | HandleSyncTypeahead (TypeaheadCore.TypeaheadSyncMessage Query String) a
-  | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
 
 ----------
 -- Child paths
 
-type ChildSlot = Either3 Unit Unit Unit
+type ChildSlot = Either2 Unit Unit
 type ChildQuery eff m =
-  Coproduct3
+  Coproduct2
     (TypeaheadCore.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
-    (Dropdown.Query TestRecord)
     (TypeaheadCore.TypeaheadQuery Query String Void Void eff m)
 
 
@@ -90,8 +87,6 @@ component =
 
       -- Ignore other messages
       _ -> pure next
-
-    eval (HandleDropdown m next) = pure next
 
 
 ----------
@@ -157,7 +152,7 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp3 unit TypeaheadCore.component
+          ( HH.slot' CP.cp2 unit TypeaheadCore.component
               (Typeahead.defMulti
                 [ HP.placeholder "Search developers...", HP.id_ "devs" ]
                 containerData
@@ -182,60 +177,4 @@ cnDocumentationBlocks =
           )
         ]
       ]
-  , Documentation.documentation
-      { header: "Dropdowns"
-      , subheader: "Select from pre-determined entries."
-      }
-      [ Component.component
-        { title: "Dropdown" }
-        [ FormControl.formControl
-          { label: "Platforms"
-          , helpText: Just "There are lots of platforms to choose from."
-          , valid: Nothing
-          , inputId: ""
-          }
-          dropdownSingleSlot
-        ]
-      , Component.component
-        { title: "Dropdown" }
-        [ FormControl.formControl
-          { label: "Lorem Ipsum"
-          , helpText: Just "Dolor sit amet consectectuer."
-          , valid: Nothing
-          , inputId: ""
-          }
-          dropdownMultiSlot
-        ]
-      ]
   ]
-
-
-dropdownSingleSlot =
-  ( HH.slot'
-      CP.cp2
-      unit
-      Dropdown.component
-      { items: dropdownData
-      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-      , selection: Dropdown.Single Nothing
-      , placeholder: "Select a dev..."
-      , title: "Single Selection"
-      , helpText: "Some useful help text can go here."
-      }
-      (HE.input HandleDropdown)
-  )
-
-dropdownMultiSlot =
-  ( HH.slot'
-      CP.cp2
-      unit
-      Dropdown.component
-      { items: dropdownData
-      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-      , selection: Dropdown.Multi []
-      , placeholder: "Select some devs..."
-      , title: "Multi Selection"
-      , helpText: "Some useful help text can go here."
-      }
-      (HE.input HandleDropdown)
-  )

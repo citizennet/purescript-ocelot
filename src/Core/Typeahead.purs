@@ -20,11 +20,8 @@ import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Network.RemoteData (RemoteData(Success, Failure, Loading))
-import Select.Primitives.Container as C
-import Select.Primitives.Search as S
-import Select.Primitives.SearchContainer as SC
-import Select.Primitives.State (getState)
-
+import Select as Select
+import Select.Internal.State (getState)
 
 ----------
 -- Component types
@@ -34,7 +31,7 @@ import Select.Primitives.State (getState)
 type State o item source err eff m =
   Store
     (TypeaheadState item source err)
-    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff m) ChildSlot m)
+    (H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
 
 -- Items are wrapped in `SyncMethod` to account for failure and loading cases
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
@@ -53,7 +50,7 @@ type TypeaheadInput o item source err eff m =
   , initialSelection :: SelectionType item
   , render
     :: TypeaheadState item source err
-    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff m) ChildSlot m
+    -> H.ParentHTML (TypeaheadQuery o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
   , config :: Config item
   }
 
@@ -65,7 +62,7 @@ type TypeaheadInput o item source err eff m =
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data TypeaheadQuery o item source err eff m a
-  = HandleSearchContainer (SC.Message o (Fuzzy item)) a
+  = HandleSearchContainer (Select.Message o (Fuzzy item)) a
   | Remove item a
   | Selections (SelectionType item -> a)
   | FulfillRequest (SyncMethod source err (Array item)) a
@@ -94,14 +91,7 @@ data SelectionChange
 
 -- The typeahead relies on the Search and Container primitives.
 type ChildSlot = Unit
-type ChildQuery o item eff m = SC.SearchContainerQuery o item eff m
-
-
-data Slot
-  = ContainerSlot
-  | SearchSlot
-derive instance eqPrimitiveSlot :: Eq Slot
-derive instance ordPrimitiveSlot :: Ord Slot
+type ChildQuery o item eff = Select.Query o item eff
 
 
 ----------
@@ -229,52 +219,42 @@ component =
       ~> H.ParentDSL
           (State o item source err (Effects eff) m)
           (TypeaheadQuery o item source err (Effects eff) m)
-          (ChildQuery o (Fuzzy item) (Effects eff) m)
+          (ChildQuery o (Fuzzy item) (Effects eff))
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m
     eval = case _ of
       HandleSearchContainer message a -> case message of
-        SC.Emit query -> H.raise (Emit query) *> pure a
+        Select.Emit query -> H.raise (Emit query) *> pure a
 
-        SC.ContainerMessage message' -> case message' of
+        Select.Selected (Fuzzy { original: item }) -> do
+          (Tuple _ st) <- getState
+          let newSelections = selectItem item st.items st.selections
+          H.modify $ seeks _ { selections = newSelections }
+          _ <- if st.config.keepOpen
+               then pure Nothing
+               else H.query unit $ H.action $ Select.SetVisibility Select.Off
+          H.raise $ SelectionsChanged ItemSelected item newSelections
+          eval (FulfillRequest st.items a)
 
-          -- Select an item, removing it from the list of
-          -- available items in the container.
-          -- Does not remove the item from the parent state.
-          C.ItemSelected (Fuzzy { original: item }) -> do
-            (Tuple _ st) <- getState
-            let newSelections = selectItem item st.items st.selections
-            H.modify $ seeks _ { selections = newSelections }
-            _ <- if st.config.keepOpen
-                 then pure Nothing
-                 else H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
-            H.raise $ SelectionsChanged ItemSelected item newSelections
-            eval (FulfillRequest st.items a)
+        -- Perform a new search, fetching data if ContinuousAsync.
+        Select.Searched text -> do
+          H.modify $ seeks _ { search = text }
+          H.raise $ NewSearch text
 
-          otherwise -> pure a
+          (Tuple _ st) <- getState
+          case st.items of
+            ContinuousAsync db _ src _ -> do
+              -- ContinuousAsync may take some time to complete. Set status
+              -- to Loading and request the data. When the data is fulfilled,
+              -- the status will change again.
+              let cont = ContinuousAsync db text src Loading
+              H.modify $ seeks $ _ { items = cont }
+              H.raise $ RequestData cont
+              pure a
+            _ -> eval (FulfillRequest st.items a)
 
-        SC.SearchMessage message' -> case message' of
-          -- S.ContainerQuery query -> H.query unit <<< SC.inContainer query *> pure a
-
-          -- Perform a new search, fetching data if ContinuousAsync.
-          S.NewSearch text -> do
-            H.modify $ seeks _ { search = text }
-            H.raise $ NewSearch text
-
-            (Tuple _ st) <- getState
-            case st.items of
-              ContinuousAsync db _ src _ -> do
-                -- ContinuousAsync may take some time to complete. Set status
-                -- to Loading and request the data. When the data is fulfilled,
-                -- the status will change again.
-                let cont = ContinuousAsync db text src Loading
-                H.modify $ seeks $ _ { items = cont }
-                H.raise $ RequestData cont
-                pure a
-              _ -> eval (FulfillRequest st.items a)
-
-          otherwise -> pure a
+        otherwise -> pure a
 
       -- Remove a currently-selected item.
       Remove item a -> do
@@ -327,28 +307,28 @@ component =
       -> H.ParentDSL
           (State o item source err (Effects eff) m)
           (TypeaheadQuery o item source err (Effects eff) m)
-          (ChildQuery o (Fuzzy item) (Effects eff) m)
+          (ChildQuery o (Fuzzy item) (Effects eff))
           (ChildSlot)
           (TypeaheadMessage o item source err)
           m
           Unit
     updateContainer (Sync items) = do
-      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
+      _ <- H.query unit $ H.action $ Select.ReplaceItems items
       pure unit
     updateContainer (Async _ (Success items)) = do
-      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
+      _ <- H.query unit $ H.action $ Select.ReplaceItems items
       pure unit
     updateContainer (Async _ (Failure e)) = do
-      _ <- H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
-      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems []
+      _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
+      _ <- H.query unit $ H.action $ Select.ReplaceItems []
       H.liftAff $ logShow e
       pure unit
     updateContainer (ContinuousAsync _ _ _ (Success items)) = do
-      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems items
+      _ <- H.query unit $ H.action $ Select.ReplaceItems items
       pure unit
     updateContainer (ContinuousAsync _ _ _ (Failure e)) = do
-      _ <- H.query unit <<< SC.inContainer $ C.SetVisibility C.Off
-      _ <- H.query unit <<< SC.inContainer $ C.ReplaceItems []
+      _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
+      _ <- H.query unit $ H.action $ Select.ReplaceItems []
       H.liftAff $ logShow e
       pure unit
     updateContainer _ = pure unit
