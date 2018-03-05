@@ -4,6 +4,7 @@ const path = require('path')
 const glob = require('glob-all')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const postCssConfig = require('./postcss.config')
 
 // Custom PurgeCSS extractor for Tailwind that allows special characters in
 // class names.
@@ -14,23 +15,32 @@ class TailwindExtractor {
   }
 }
 
-module.exports = merge(dev, {
-  plugins: [
-		// Remove class names not used in any source files
-		new	PurgecssPlugin({
-			// Locations of any files to scan
-			paths: glob.sync([
-				path.join(__dirname, "../dist/**/*.js")
-			]),
-			extractors: [
-				{
-					extractor: TailwindExtractor,
-					extensions: [ "js" ]
-				}
-			]
-		}),
+module.exports = env => {
+  const dev_ = dev(env)
+  const merged = merge(dev_, {
+    output: {
+      filename: dev_.output.filename.replace(/\.css$/, '.min.css')
+    },
+    plugins: [
+      // Remove class names not used in any source files
+      new PurgecssPlugin({
+        // Locations of any files to scan
+        paths: glob.sync([
+          path.join(__dirname, "../dist/**/*.js")
+        ]),
+        whitelist: ['ocelot-localized'],
+        extractors: [
+          {
+            extractor: TailwindExtractor,
+            extensions: [ "js" ]
+          }
+        ]
+      }),
 
-		// Minify the CSS after processing
-		new OptimizeCssAssetsPlugin()
-	]
-})
+      // Minify the CSS after processing
+      new OptimizeCssAssetsPlugin()
+    ]
+  })
+  console.log('merged', merged)
+  return merged
+}
