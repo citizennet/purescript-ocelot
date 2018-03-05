@@ -1,12 +1,10 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
-/* @import "tailwindcss/css/preflight.css"; */
 
 /* CitizenNet core CSS ...
 
 /* Import utilities after our CSS to avoid overwriting them. */
 @tailwind utilities;
-/* @import "tailwindcss/css/utilities.css"; */
 
 /* cn utilities */
 .all-02s-ease { transition: all 0.2s ease; }
