@@ -20,6 +20,7 @@ import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
+import Network.RemoteData (RemoteData(..))
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
@@ -47,7 +48,7 @@ type State =
 
 data Query a
   = UpdateTextField Int String a
-  | HandleA (TACore.Message Query TestRecord) a
+  | HandleSync (TACore.Message Query TestRecord) a
   | HandleB (TACore.Message Query Async.Todo) a
   | HandleC (TACore.Message Query Async.User) a
   | HandleD (TACore.Message Query Async.User) a
@@ -104,7 +105,7 @@ component =
     eval
       :: Query
       ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
-    eval (HandleA message next) = case message of
+    eval (HandleSync message next) = case message of
       TACore.SelectionsChanged _ _ s -> do
          H.modify (_ { raw { developers = TACore.unpackSelection s } } )
          pure next
@@ -125,6 +126,8 @@ component =
     eval (HandleD message next) = case message of
       TACore.SelectionsChanged _ _ s -> do
          H.modify (_ { raw { users2 = TACore.unpackSelections s }})
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Chris", id: 0 })
          pure next
       _ -> pure next
 
@@ -308,8 +311,8 @@ renderForm st =
           , inputId: "devs"
           }
           ( HH.slot' CP.cp1 unit TACore.component
-            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] testRecords renderItemTestRecord)
-            (HE.input HandleA)
+            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
+            (HE.input HandleSync)
           )
         , FormControl.formControl
           { label: "Todos"
