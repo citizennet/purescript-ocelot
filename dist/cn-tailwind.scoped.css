@@ -612,8 +612,6 @@ menu {
   cursor: pointer;
 }
 
-/* @import "tailwindcss/css/preflight.css"; */
-
 /* CitizenNet core CSS ...
 
 /* Import utilities after our CSS to avoid overwriting them. */
@@ -5506,8 +5504,6 @@ menu {
 .ocelot-scoped .z-auto {
   z-index: auto;
 }
-
-/* @import "tailwindcss/css/utilities.css"; */
 
 /* cn utilities */
 
