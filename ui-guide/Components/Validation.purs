@@ -20,7 +20,6 @@ import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
-import Network.RemoteData (RemoteData(..))
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
@@ -126,8 +125,7 @@ component =
     eval (HandleD message next) = case message of
       TACore.SelectionsChanged _ _ s -> do
          H.modify (_ { raw { users2 = TACore.unpackSelections s }})
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Chris", id: 0 })
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.Reset
          pure next
       _ -> pure next
 

@@ -21,7 +21,7 @@ import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
-import Network.RemoteData (RemoteData(Failure, Success, Loading))
+import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
 
@@ -70,6 +70,7 @@ data Query o item err eff m a
   | GetSelections (SelectionType item -> a)
   | ReplaceSelections (SelectionType item) a
   | ReplaceItems (RemoteData err (Array item)) a
+  | Reset a
   | Receive (Input o item err eff m) a
 
 -- The parent is notified when items are selected or removed and when a
@@ -293,6 +294,17 @@ component =
 
       ReplaceSelections selections a -> do
         H.modify $ seeks _ { selections = selections }
+        eval $ Synchronize a
+
+      Reset a -> do
+        (Tuple _ st) <- getState
+
+        let selections = case st.selections of
+              One _ -> One Nothing
+              Limit n _ -> Limit n []
+              Many _ -> Many []
+
+        H.modify $ seeks _ { selections = selections, items = NotAsked }
         eval $ Synchronize a
 
       Receive input a -> do

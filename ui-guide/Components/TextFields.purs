@@ -71,22 +71,10 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
-    -- No messages necessary to handle, really.
     eval (HandleSyncTypeahead m next) = pure next
 
-    -- Responsible for fetching data based on source and returning it to the component.
-    -- Done asynchronously so data can load in the background.
-    eval (HandleTypeahead slot m next) = pure next -- case m of
-      --  TACore.RequestData syncMethod -> do
-      --    res <- H.liftAff $ Async.load syncMethod
-      --    case TACore.maybeReplaceItems res syncMethod of
-      --      Nothing -> pure next
-      --      (Just newSync) -> do
-      --        _ <- H.query' CP.cp1 slot $ H.action $ TACore.FulfillRequest newSync
-      --        pure next
-      --
-      --  -- Ignore other messages
-      --  _ -> pure next
+    -- No longer necessary to fetch data. Treat it just like a Sync typeahead.
+    eval (HandleTypeahead slot m next) = pure next
 
 
 ----------
