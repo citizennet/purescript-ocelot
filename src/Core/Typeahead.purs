@@ -30,30 +30,30 @@ import Select.Internal.State (getState, updateStore)
 
 -- The render function is provided outside the component, so we rely
 -- on the `Store` type here to make that possible.
-type State o item source err eff m =
+type StateStore o item err eff m =
   Store
-    (TypeaheadState item source err eff)
-    (H.ParentHTML (Query o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
+    (State item err eff)
+    (H.ParentHTML (Query o item err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
 
 -- Items are wrapped in `SyncMethod` to account for failure and loading cases
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
 -- account for various limits on what can be selected. The component is responsible
 -- for managing its items and selections.
-type TypeaheadState item source err eff =
+type State item err eff =
   { items :: RemoteData err (Array item)
   , selections :: SelectionType item
   , search :: String
-  , config :: Config item source err eff
+  , config :: Config item err eff
   }
 
-type TypeaheadInput o item source err eff m =
+type Input o item err eff m =
   { items :: RemoteData err (Array item)
   , search :: Maybe String
   , initialSelection :: SelectionType item
   , render
-      :: TypeaheadState item source err eff
-      -> H.ParentHTML (Query o item source err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
-  , config :: Config item source err eff
+      :: State item err eff
+      -> H.ParentHTML (Query o item err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
+  , config :: Config item err eff
   }
 
 -- `item` is wrapped in `Fuzzy` to support highlighting in render functions
@@ -63,14 +63,14 @@ type TypeaheadInput o item source err eff m =
 -- `FulfillRequest`: The parent has fetched data for an async typeahead.
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
-data Query o item source err eff m a
+data Query o item err eff m a
   = Remove item a
   | Synchronize a
   | HandleSelect (Select.Message o (Fuzzy item)) a
   | GetSelections (SelectionType item -> a)
   | ReplaceSelections (SelectionType item) a
   | ReplaceItems (RemoteData err (Array item)) a
-  | Receive (TypeaheadInput o item source err eff m) a
+  | Receive (Input o item err eff m) a
 
 -- The parent is notified when items are selected or removed and when a
 -- new search is performed, but does not need to take action. This is just
@@ -97,11 +97,11 @@ type ChildQuery o item eff = Select.Query o item eff
 ----------
 -- Data modeling
 
-type Config item source err eff =
+type Config item err eff =
   { filterType :: FilterType item
   , insertable :: Insertable item
   , keepOpen   :: Boolean
-  , syncMethod :: SyncMethod item source err eff
+  , syncMethod :: SyncMethod item err eff
   , toStrMap   :: item -> StrMap String
   }
 
@@ -127,14 +127,13 @@ data Insertable item
 --
 -- `source` is an arbitrary representation for data the parent needs to fetch.
 -- Typically this will be a record the parent can use to perform a request.
-data SyncMethod item source err eff
+data SyncMethod item err eff
   = Sync
-  | Async (AsyncConfig item source err eff)
+  | Async (AsyncConfig item err eff)
 
-type AsyncConfig item source err eff =
-  { debounce   :: Milliseconds
-  , source     :: source
-  , fetchItems :: source -> String -> Aff eff (RemoteData err (Array item))
+type AsyncConfig item err eff =
+  { debounceTime :: Milliseconds
+  , fetchItems   :: String -> Aff eff (RemoteData err (Array item))
   }
 
 -- How many items it is possible to select on the typeahead. NOTE: The limit
@@ -178,17 +177,17 @@ derive instance functorSelectionType :: Functor SelectionType
 -- used in context.
 type Effects eff = ( ajax :: AJAX, dom :: DOM, avar :: AVAR, console :: CONSOLE | eff )
 
--- The Query, TypeaheadInput, ChildQuery, and component types use the same effects,
+-- The Query, Input, ChildQuery, and component types use the same effects,
 -- so make sure to apply the Effects type to each. NOTE: Avoid prematurely applying effects
 -- by applying them in synonyms. Only use them in function signatures where it is necessary.
-component :: ∀ o item source err eff m
+component :: ∀ o item err eff m
   . MonadAff (Effects eff) m
   => Eq item
   => Show err
   => H.Component
       HH.HTML
-      (Query o item source err (Effects eff) m)
-      (TypeaheadInput o item source err (Effects eff) m)
+      (Query o item err (Effects eff) m)
+      (Input o item err (Effects eff) m)
       (Message o item)
       m
 component =
@@ -200,8 +199,8 @@ component =
     }
   where
     initialState
-      :: (TypeaheadInput o item source err (Effects eff) m)
-      -> State o item source err (Effects eff) m
+      :: Input o item err (Effects eff) m
+      -> StateStore o item err (Effects eff) m
     initialState i = store i.render
       { items: i.items
       , selections: i.initialSelection
@@ -210,10 +209,10 @@ component =
       }
 
     eval
-      :: (Query o item source err (Effects eff) m)
+      :: (Query o item err (Effects eff) m)
       ~> H.ParentDSL
-          (State o item source err (Effects eff) m)
-          (Query o item source err (Effects eff) m)
+          (StateStore o item err (Effects eff) m)
+          (Query o item err (Effects eff) m)
           (ChildQuery o (Fuzzy item) (Effects eff))
           (ChildSlot)
           (Message o item)
@@ -246,9 +245,9 @@ component =
 
           case st.config.syncMethod of
             Sync -> pure unit
-            Async { source, fetchItems } -> do
+            Async { fetchItems } -> do
               H.modify $ seeks $ _ { items = Loading }
-              newItems <- H.liftAff $ fetchItems source text
+              newItems <- H.liftAff $ fetchItems text
               H.modify $ seeks $ _ { items = newItems }
 
           eval $ Synchronize a
@@ -323,7 +322,7 @@ applyInsertable match insertable text items = case insertable of
       isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
 
 -- Attempt to match new items against the user's search.
-getNewItems :: ∀ item source err eff. Eq item => TypeaheadState item source err eff -> RemoteData err (Array (Fuzzy item))
+getNewItems :: ∀ item err eff. Eq item => State item err eff -> RemoteData err (Array (Fuzzy item))
 getNewItems st = sort <<< applyF <<< applyI <<< fuzzyItems <$> removeSelections st.items st.selections
   where
     removeSelections :: RemoteData err (Array item) -> SelectionType item -> RemoteData err (Array item)
