@@ -145,24 +145,6 @@ defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
   , config: asyncConfig (Milliseconds 100.0) f toStrMap
   }
 
--- A continuous asynchronous typeahead, reasonably debounced and
--- not filtered.
-defContAsyncMulti :: ∀ o item err eff m
-  . MonadAff (TA.Effects eff) m
- => Eq item
- => Show err
- => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
- -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
- -> RenderTypeaheadItem item
- -> TA.Input o item err (TA.Effects eff) m
-defContAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
-  { items: NotAsked
-  , search: Nothing
-  , initialSelection: TA.Many []
-  , render: renderTA props renderFuzzy renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap
-  }
-
 
 ----------
 -- Default Configuration

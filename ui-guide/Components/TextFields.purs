@@ -3,8 +3,8 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import Ocelot.Block.FormControl as FormControl
-import Ocelot.Components.Typeahead as Typeahead
-import Ocelot.Core.Typeahead as TypeaheadCore
+import Ocelot.Components.Typeahead as TA
+import Ocelot.Core.Typeahead as TACore
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
@@ -13,7 +13,7 @@ import DOM (DOM)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype, unwrap)
+import Data.Newtype (class Newtype)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -33,8 +33,8 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead Unit (TypeaheadCore.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
-  | HandleSyncTypeahead (TypeaheadCore.TypeaheadSyncMessage Query String) a
+  | HandleTypeahead Unit (TACore.Message Query Async.Todo) a
+  | HandleSyncTypeahead (TACore.Message Query String) a
 
 ----------
 -- Child paths
@@ -42,8 +42,8 @@ data Query a
 type ChildSlot = Either2 Unit Unit
 type ChildQuery eff m =
   Coproduct2
-    (TypeaheadCore.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
-    (TypeaheadCore.TypeaheadQuery Query String Void Void eff m)
+    (TACore.Query Query Async.Todo Async.Err eff m)
+    (TACore.Query Query String Void eff m)
 
 
 ----------
@@ -76,17 +76,17 @@ component =
 
     -- Responsible for fetching data based on source and returning it to the component.
     -- Done asynchronously so data can load in the background.
-    eval (HandleTypeahead slot m next) = case m of
-      TypeaheadCore.RequestData syncMethod -> do
-        res <- H.liftAff $ Async.load syncMethod
-        case TypeaheadCore.maybeReplaceItems res syncMethod of
-          Nothing -> pure next
-          (Just newSync) -> do
-            _ <- H.query' CP.cp1 slot $ H.action $ TypeaheadCore.FulfillRequest newSync
-            pure next
-
-      -- Ignore other messages
-      _ -> pure next
+    eval (HandleTypeahead slot m next) = pure next -- case m of
+      --  TACore.RequestData syncMethod -> do
+      --    res <- H.liftAff $ Async.load syncMethod
+      --    case TACore.maybeReplaceItems res syncMethod of
+      --      Nothing -> pure next
+      --      (Just newSync) -> do
+      --        _ <- H.query' CP.cp1 slot $ H.action $ TACore.FulfillRequest newSync
+      --        pure next
+      --
+      --  -- Ignore other messages
+      --  _ -> pure next
 
 
 ----------
@@ -152,11 +152,11 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp2 unit TypeaheadCore.component
-              (Typeahead.defMulti
+          ( HH.slot' CP.cp2 unit TACore.component
+              (TA.defMulti
                 [ HP.placeholder "Search developers...", HP.id_ "devs" ]
                 containerData
-                Typeahead.renderItemString)
+                TA.renderItemString)
               (HE.input HandleSyncTypeahead)
           )
         ]
@@ -168,10 +168,10 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs-async"
           }
-          ( HH.slot' CP.cp1 unit TypeaheadCore.component
-              (Typeahead.defContAsyncMulti
+          ( HH.slot' CP.cp1 unit TACore.component
+              (TA.defAsyncMulti
                 [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
-                Async.todos
+                (\_ -> Async.loadFromSource Async.todos)
                 Async.renderItemTodo)
               (HE.input $ HandleTypeahead unit)
           )
