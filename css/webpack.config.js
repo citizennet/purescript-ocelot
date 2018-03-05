@@ -18,9 +18,10 @@ class TailwindExtractor {
 module.exports = (env='') => {
   const prod = env.includes('prod')
   const scoped = env.includes('scoped')
+  const debug = env.includes('debug')
   const filename = `cn-tailwind${scoped?'.scoped':''}${prod?'.min':''}.css`
 
-  console.log(prod, scoped, filename)
+  if (debug) console.log(prod, scoped, filename)
 
   const config =
     { entry: './index.js'
@@ -74,10 +75,11 @@ module.exports = (env='') => {
           ]
         }
       )
-    console.log('config', merged)
+
+    if (debug) console.log('config', merged)
     return merged
   }
 
-  console.log('config', config)
+  if (debug) console.log('config', config)
   return config
 }
