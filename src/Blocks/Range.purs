@@ -20,7 +20,7 @@ range { min, max } iprops =
   HH.div
     [ HP.class_ $ HH.ClassName "flex items-center w-full" ]
     [ HH.span
-      [ HP.class_ $ HH.ClassName "flex-no-grow text-sm mr-4" ]
+      [ HP.class_ $ HH.ClassName "flex-no-grow mr-4" ]
       [ HH.text min ]
     , HH.input
       ( iprops <>
@@ -29,7 +29,7 @@ range { min, max } iprops =
         ]
       )
     , HH.span
-      [ HP.class_ $ HH.ClassName "flex-no-grow text-sm ml-4" ]
+      [ HP.class_ $ HH.ClassName "flex-no-grow ml-4" ]
       [ HH.text max ]
     ]
 

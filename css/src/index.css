@@ -12,7 +12,7 @@
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
-.offscreen { @apply fixed; left: -9999%; top: -9999%; z-index: -9999; }
+.offscreen { @apply .fixed; left: -9999%; top: -9999%; z-index: -9999; }
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
 .w-1260px { width: 1260px; }

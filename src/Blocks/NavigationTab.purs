@@ -25,7 +25,6 @@ tabClasses = HH.ClassName <$>
   , "mt-4"
   , "mr-3"
   , "no-underline"
-  , "text-xs"
   , "tracking-wide"
   , "uppercase"
   ]

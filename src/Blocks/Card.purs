@@ -26,7 +26,6 @@ titleClasses :: Array HH.ClassName
 titleClasses = HH.ClassName <$>
   [ "font-medium"
   , "text-black-20"
-  , "text-sm"
   ]
 
 card

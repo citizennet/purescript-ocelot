@@ -22,7 +22,6 @@ buttonClasses = HH.ClassName <$>
   , "py-2"
   , "rounded"
   , "shadow"
-  , "text-sm"
   ]
 
 buttonTypeClasses :: ButtonType -> Array HH.ClassName
