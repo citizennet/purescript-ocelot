@@ -1,10 +1,10 @@
-module.exports = env => {
-  if (env === 'localized') {
+module.exports = scoped => {
+  if (scoped) {
     return [
-      require('import-postcss'),
+      // require('import-postcss'),
       require('tailwindcss')('./src/tailwind.js'),
       require('postcss-prefix-selector')({
-        prefix: '.ocelot-localized',
+        prefix: '.ocelot-scoped',
         transform(prefix, selector, prefixedSelector) {
           if (selector === 'html') {
             return prefix + ', ' + prefix + ' *';
@@ -18,7 +18,7 @@ module.exports = env => {
     ]
   }
   return [
-    require('import-postcss'),
+    // require('import-postcss'),
     require('tailwindcss')('./src/tailwind.js'),
   ]
 }

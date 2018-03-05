@@ -8,8 +8,13 @@
     "webpack"
   ],
   "scripts": {
-    "build-dev": "npx webpack --config=webpack.dev.config.js && npx webpack --config=webpack.dev.config.js --env=localized",
-    "build-prod": "npx webpack --config=webpack.prod.config.js && npx webpack --config=webpack.prod.config.js --env=localized"
+    "build-all": "yarn run build-dev && yarn run build-prod",
+    "build-dev": "yarn run build-dev-global && yarn run build-dev-scoped",
+    "build-dev-global": "npx webpack",
+    "build-dev-scoped": "npx webpack --env=scoped",
+    "build-prod": "yarn run build-prod-global && yarn run build-prod-scoped",
+    "build-prod-global": "npx webpack --env=prod",
+    "build-prod-scoped": "npx webpack --env=prod,scoped"
   },
   "devDependencies": {
     "add": "^2.0.6",

@@ -100,7 +100,7 @@ component =
       HH.div
       [ HP.class_ $ HH.ClassName "w-full px-3" ]
       [ HH.label
-        [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" ]
+        [ HP.class_ $ HH.ClassName "block uppercase tracking-wide text-grey-darker text-sm font-bold mb-2" ]
         [ HH.text st.title ]
       , case st.selection of
           Single item ->
@@ -126,7 +126,7 @@ component =
                   ( HE.input HandleContainer )
               ]
       , HH.p
-        [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-xs" ]
+        [ HP.class_ $ HH.ClassName "mt-1 text-grey-dark text-sm" ]
         [ HH.text st.helpText ]
       ]
       where
@@ -135,7 +135,7 @@ component =
 
         browseButtonStyle :: String
         browseButtonStyle =
-          "font-medium text-blue-light border-l ml-1 px-3 text-sm cursor-pointer self-center"
+          "font-medium text-blue-light border-l ml-1 px-3 cursor-pointer self-center"
 
         browseButton :: DropdownHTML item m
         browseButton =
