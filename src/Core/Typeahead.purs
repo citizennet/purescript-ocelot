@@ -303,7 +303,6 @@ component =
               One _ -> One Nothing
               Limit n _ -> Limit n []
               Many _ -> Many []
-
         H.modify $ seeks _ { selections = selections, items = NotAsked }
         eval $ Synchronize a
 
