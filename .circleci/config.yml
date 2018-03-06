@@ -71,6 +71,37 @@ jobs:
 
       - restore_cache:
           keys:
+            - v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - v0.0-yarn-cache-{{ .Branch }}
+            - v0.0-yarn-cache
+
+      - restore_cache:
+          keys:
+            - v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+            - v0.0-bower-cache-{{ .Branch }}
+            - v0.0-bower-cache
+
+      - run:
+          name: Install Bower and Node dependencies
+          command: yarn # postinstall runs Bower
+
+      - run:
+          name: Verify the project and all components build successfully
+          command: yarn run build-ui
+
+      - save_cache:
+          key: v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/ui-guide/node_modules
+
+      - save_cache:
+          key: v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          paths:
+            - ~/ui-guide/bower_components
+            - ~/ui-guide/output
+
+      - restore_cache:
+          keys:
             - v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
             - v0.0-css-cache-{{ .Branch }}
             - v0.0-css-cache
