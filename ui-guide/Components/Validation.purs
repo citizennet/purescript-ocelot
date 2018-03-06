@@ -2,6 +2,7 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
+import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Button as Button
 import Ocelot.Block.FormControl as FormControl
 import Ocelot.Block.Input as Input
@@ -126,6 +127,8 @@ component =
       TACore.SelectionsChanged _ _ s -> do
          H.modify (_ { raw { users2 = TACore.unpackSelections s }})
          _ <- H.query' CP.cp1 unit $ H.action $ TACore.Reset
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Dave", id: 1 })
          pure next
       _ -> pure next
 
