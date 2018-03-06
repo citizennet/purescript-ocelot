@@ -21,7 +21,7 @@ import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(Just, Nothing))
 import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
 import Data.String.Utils as String.Utils
@@ -42,6 +42,7 @@ import UIGuide.Utilities.Async as Async
 
 type State =
   { raw :: UnvalidatedForm
+  , data_ :: { developers :: Array TestRecord }
   , errors :: FormErrors
   }
 
@@ -91,7 +92,10 @@ component =
         , users2: []
         , email: ""
         , username: "" }
-      , errors: Map.empty }
+      , errors: Map.empty
+      , data_:
+        { developers: testRecords }
+      }
   , render
   , eval
   , receiver: const Nothing
@@ -126,9 +130,10 @@ component =
     eval (HandleD message next) = case message of
       TACore.SelectionsChanged _ _ s -> do
          H.modify (_ { raw { users2 = TACore.unpackSelections s }})
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.Reset
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
          _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Dave", id: 1 })
+
+         st <- H.get
+         H.modify (_ { data_ { developers = Array.(:) (TestRecord { name: "THOMAS THE DANK ENGINE", id: (-1) }) st.data_.developers } })
          pure next
       _ -> pure next
 
@@ -312,7 +317,7 @@ renderForm st =
           , inputId: "devs"
           }
           ( HH.slot' CP.cp1 unit TACore.component
-            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
+            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] st.data_.developers { watchItems: true } renderItemTestRecord)
             (HE.input HandleSync)
           )
         , FormControl.formControl

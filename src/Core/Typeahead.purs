@@ -21,6 +21,7 @@ import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
 import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
@@ -129,8 +130,11 @@ data Insertable item
 -- `source` is an arbitrary representation for data the parent needs to fetch.
 -- Typically this will be a record the parent can use to perform a request.
 data SyncMethod item err eff
-  = Sync
+  = Sync SyncConfig
   | Async (AsyncConfig item err eff)
+
+type SyncConfig =
+  { watchItems :: Boolean }
 
 type AsyncConfig item err eff =
   { debounceTime :: Milliseconds
@@ -196,7 +200,7 @@ component =
     { initialState
     , render: extract
     , eval
-    , receiver: const Nothing
+    , receiver: HE.input Receive
     }
   where
     initialState
@@ -245,7 +249,7 @@ component =
           H.raise $ Searched text
 
           case st.config.syncMethod of
-            Sync -> pure unit
+            Sync _ -> pure unit
             Async { fetchItems } -> do
               H.modify $ seeks $ _ { items = Loading }
               newItems <- H.liftAff $ fetchItems text
@@ -276,17 +280,14 @@ component =
       -- Update the state of Select to be in sync.
       Synchronize a -> do
         (Tuple _ st) <- getState
-
-        _ <- case getNewItems st of
-          Success items -> do
+        case getNewItems st of
+          Success items -> a <$ do
             H.query unit $ H.action $ Select.ReplaceItems items
-          Failure err -> do
+          Failure err -> a <$ do
             H.liftAff $ logShow err
             _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
             H.query unit $ H.action $ Select.ReplaceItems []
-          _ -> pure (pure unit)
-
-        pure a
+          _ -> pure a
 
       ReplaceItems items a -> do
         H.modify $ seeks $ _ { items = items }
@@ -303,13 +304,17 @@ component =
               One _ -> One Nothing
               Limit n _ -> Limit n []
               Many _ -> Many []
+
         H.modify $ seeks _ { selections = selections, items = NotAsked }
         eval $ Synchronize a
 
-      Receive input a -> do
-        H.modify $ updateStore input.render id
-        pure a
-
+      Receive input a -> case input.config.syncMethod of
+        Sync { watchItems } | watchItems -> do
+          H.modify $ updateStore input.render (_ { items = input.items })
+          eval $ Synchronize a
+        _ -> do
+          H.modify $ updateStore input.render id
+          pure a
 
 ----------
 -- Internal helpers

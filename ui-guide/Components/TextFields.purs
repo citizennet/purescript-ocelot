@@ -28,8 +28,7 @@ import UIGuide.Block.Component as Component
 ----------
 -- Component Types
 
-type State
-  = Unit
+type State = { devs :: Array String }
 
 data Query a
   = NoOp a
@@ -57,7 +56,7 @@ component :: ∀ eff m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.parentComponent
-  { initialState: const unit
+  { initialState: \_ -> { devs: containerData }
   , render
   , eval
   , receiver: const Nothing
@@ -66,15 +65,61 @@ component =
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render _ = cnDocumentationBlocks
+    render st =
+      HH.div_
+      [ Documentation.documentation
+          { header: "Typeaheads"
+          , subheader: "Use string input to search pre-determined entries."
+          }
+          [ Component.component
+            { title: "Synchronous Typeahead" }
+            [ FormControl.formControl
+              { label: "Developers"
+              , helpText: Just "There are lots of developers to choose from."
+              , valid: Nothing
+              , inputId: "devs"
+              }
+              ( HH.slot' CP.cp2 unit TACore.component
+                (TA.defMulti
+                  [ HP.placeholder "Search developers...", HP.id_ "devs" ]
+                  st.devs
+                  { watchItems: true }
+                  TA.renderItemString)
+                (HE.input HandleSyncTypeahead)
+              )
+            ]
+          , Component.component
+            { title: "Continuous Asynchronous Typeahead" }
+            [ FormControl.formControl
+              { label: "Developers"
+              , helpText: Just "There are lots of developers to choose from."
+              , valid: Nothing
+              , inputId: "devs-async"
+              }
+              ( HH.slot' CP.cp1 unit TACore.component
+                  (TA.defAsyncMulti
+                    [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
+                    (\_ -> Async.loadFromSource Async.todos)
+                    Async.renderItemTodo)
+                  (HE.input $ HandleTypeahead unit)
+              )
+            ]
+          ]
+      ]
 
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
-    eval (HandleSyncTypeahead m next) = pure next
+    eval (HandleSyncTypeahead m next) = next <$ case m of
+      TACore.SelectionsChanged _ _ s -> do
+         H.modify $ _ { devs = [ "goodbye" ] }
+         pure next
+      _ -> pure next
 
     -- No longer necessary to fetch data. Treat it just like a Sync typeahead.
-    eval (HandleTypeahead slot m next) = pure next
+    eval (HandleTypeahead slot m next) = next <$ case m of
+      TACore.SelectionsChanged _ _ s -> H.modify _ { devs = [ "goodbye" ] }
+      _ -> pure unit
 
 
 ----------
@@ -118,51 +163,7 @@ containerData =
 
 
 ----------
--- HTML
+-- HTML Helpers
 
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
-
-cnDocumentationBlocks :: ∀ eff m
-  . MonadAff (Effects eff) m
- => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-cnDocumentationBlocks =
-  HH.div_
-  [ Documentation.documentation
-      { header: "Typeaheads"
-      , subheader: "Use string input to search pre-determined entries."
-      }
-      [ Component.component
-        { title: "Synchronous Typeahead" }
-        [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
-          , valid: Nothing
-          , inputId: "devs"
-          }
-          ( HH.slot' CP.cp2 unit TACore.component
-              (TA.defMulti
-                [ HP.placeholder "Search developers...", HP.id_ "devs" ]
-                containerData
-                TA.renderItemString)
-              (HE.input HandleSyncTypeahead)
-          )
-        ]
-      , Component.component
-        { title: "Continuous Asynchronous Typeahead" }
-        [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
-          , valid: Nothing
-          , inputId: "devs-async"
-          }
-          ( HH.slot' CP.cp1 unit TACore.component
-              (TA.defAsyncMulti
-                [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
-                (\_ -> Async.loadFromSource Async.todos)
-                Async.renderItemTodo)
-              (HE.input $ HandleTypeahead unit)
-          )
-        ]
-      ]
-  ]
