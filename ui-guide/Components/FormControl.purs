@@ -156,7 +156,6 @@ component =
           [ Component.component
               { title: "Range" }
               [ Range.range
-                { min: "Min Label", max: "Max Label" }
                 [ HP.id_ "range_"
                 , HP.min 0.0
                 , HP.max 100.0
@@ -171,7 +170,6 @@ component =
                 , inputId: "range"
                 }
                 ( Range.range
-                    { min: "A Lot", max: "All Of Them" }
                     [ HP.id_ "range"
                     , HP.min 0.0
                     , HP.max 100.0
