@@ -16239,10 +16239,8 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var range = function (v) {
-      return function (iprops) {
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex items-center w-full") ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("flex-no-grow text-sm mr-4") ])([ Halogen_HTML_Core.text(v.min) ]), Halogen_HTML_Elements.input(Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputRange.value), Halogen_HTML_Properties.class_("bg-transparent flex-1") ])), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("flex-no-grow text-sm ml-4") ])([ Halogen_HTML_Core.text(v.max) ]) ]);
-      };
+  var range = function (iprops) {
+      return Halogen_HTML_Elements.input(Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputRange.value) ]));
   };
   exports["range"] = range;
 })(PS["Ocelot.Block.Range"] = PS["Ocelot.Block.Range"] || {});
@@ -16396,20 +16394,14 @@ var PS = {};
               subheader: "Select a numeric value between a min and max"
           })([ UIGuide_Block_Component.component({
               title: "Range"
-          })([ Ocelot_Block_Range.range({
-              min: "Min Label",
-              max: "Max Label"
-          })([ Halogen_HTML_Properties.id_("range_"), Halogen_HTML_Properties.min(0.0), Halogen_HTML_Properties.max(100.0) ]) ]), UIGuide_Block_Component.component({
+          })([ Ocelot_Block_Range.range([ Halogen_HTML_Properties.id_("range_"), Halogen_HTML_Properties.min(0.0), Halogen_HTML_Properties.max(100.0) ]) ]), UIGuide_Block_Component.component({
               title: "Range with Form Control"
           })([ Ocelot_Block_FormControl.formControl({
               label: "Dave's OO Emails",
               helpText: new Data_Maybe.Just("How many do you want?"),
               valid: Data_Maybe.Nothing.value,
               inputId: "range"
-          })(Ocelot_Block_Range.range({
-              min: "A Lot",
-              max: "All Of Them"
-          })([ Halogen_HTML_Properties.id_("range"), Halogen_HTML_Properties.min(0.0), Halogen_HTML_Properties.max(100.0) ])) ]) ]), UIGuide_Block_Documentation.documentation({
+          })(Ocelot_Block_Range.range([ Halogen_HTML_Properties.id_("range"), Halogen_HTML_Properties.min(0.0), Halogen_HTML_Properties.max(100.0) ])) ]) ]), UIGuide_Block_Documentation.documentation({
               header: "Form Panel",
               subheader: "Collapse + Expand Form Controls"
           })([ UIGuide_Block_Component.component({
