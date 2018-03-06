@@ -19,14 +19,30 @@ type TabConfig page =
 
 type IsActive = Boolean
 
+navClasses :: Array HH.ClassName
+navClasses = HH.ClassName <$>
+  [ "bg-black-10"
+  , "px-8"
+  , "w-full"
+  ]
+
+innerClasses :: Array HH.ClassName
+innerClasses = HH.ClassName <$>
+  [ "container"
+  , "m-auto"
+  , "flex"
+  , "px-20"
+  ]
+
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "leading-normal"
-  , "mt-4"
-  , "mr-3"
+  , "py-6"
+  , "inline-block"
   , "no-underline"
   , "tracking-wide"
   , "uppercase"
+  , "text-sm"
   ]
 
 activeTabClasses :: Array HH.ClassName
@@ -51,8 +67,11 @@ navigationTabs
   -> HH.HTML p i
 navigationTabs { tabs, activePage } =
   HH.div
-    [ HP.class_ (HH.ClassName "flex w-full h-12 bg-black-10") ]
-    $ navigationTab activePage <$> tabs
+    [ HP.classes navClasses ]
+    [ HH.ul
+      [ HP.classes innerClasses ]
+      $ navigationTab activePage <$> tabs
+    ]
 
 navigationTab
   :: ∀ p i page
@@ -61,12 +80,15 @@ navigationTab
   -> Tab page
   -> HH.HTML p i
 navigationTab activePage tab =
-  HH.a
-    [ HP.href tab.link
-    , HP.classes $ tabClasses <> tabStyles (tab.page == activePage)
+  HH.li
+    [ HP.class_ $ HH.ClassName "mr-12" ]
+    [ HH.a
+      [ HP.href tab.link
+      , HP.classes $ tabClasses <> tabStyles (tab.page == activePage)
+      ]
+      $ (if tab.errors > 0 && tab.page /= activePage then [ HH.i [ HP.class_ $ HH.ClassName "mr-2"] [ HH.text "errors" ] ] else [])
+      <> [ HH.text tab.name ]
     ]
-    $ (if tab.errors > 0 && tab.page /= activePage then [ HH.i [ HP.class_ $ HH.ClassName "mr-2"] [ HH.text "errors" ] ] else [])
-    <> [ HH.text tab.name ]
 
   where
     tabStyles :: IsActive -> Array HH.ClassName

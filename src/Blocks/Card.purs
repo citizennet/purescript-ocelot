@@ -12,7 +12,7 @@ cardClasses :: Array HH.ClassName
 cardClasses = HH.ClassName <$>
   [ "bg-white"
   , "h-auto"
-  , "max-w-sm"
+  , "w-full"
   , "p-6"
   , "shadow"
   , "w-auto"
@@ -26,6 +26,7 @@ titleClasses :: Array HH.ClassName
 titleClasses = HH.ClassName <$>
   [ "font-medium"
   , "text-black-20"
+  , "text-lg"
   ]
 
 card
@@ -38,7 +39,7 @@ card props html =
     [ HP.classes cardClasses ]
     [ HH.header
         [ HP.classes headerClasses ]
-        [ HH.h1
+        [ HH.h3
             [ HP.classes titleClasses ]
             [ HH.text props.title ]
         ]

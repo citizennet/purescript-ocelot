@@ -11,7 +11,7 @@
  *    IE on Windows Phone and in iOS.
  */
 
-.ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped, .ocelot-scoped * {
   line-height: 1.15; /* 1 */
       -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -24,7 +24,7 @@
  * Remove the margin in all browsers (opinionated).
  */
 
-body.ocelot-scoped {
+body .ocelot-scoped {
   margin: 0;
 }
 
@@ -465,7 +465,7 @@ menu {
  * 2. Change the default font family in all browsers (opinionated)
  */
 
-.ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped, .ocelot-scoped * {
   box-sizing: border-box; /* 1 */
   font-family: sans-serif; /* 2 */
 }
@@ -3411,6 +3411,10 @@ menu {
   max-width: 100%;
 }
 
+.ocelot-scoped .max-w-6xl {
+  max-width: 110rem;
+}
+
 .ocelot-scoped .min-h-0 {
   min-height: 0;
 }
@@ -5401,6 +5405,10 @@ menu {
   width: 4rem;
 }
 
+.ocelot-scoped .w-20 {
+  width: 5rem;
+}
+
 .ocelot-scoped .w-24 {
   width: 6rem;
 }
@@ -5708,7 +5716,7 @@ menu {
   transform: scale(0);
 }
 
-.ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped, .ocelot-scoped * {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }
@@ -8640,6 +8648,10 @@ menu {
     max-width: 100%;
   }
 
+  .ocelot-scoped .sm\:max-w-6xl {
+    max-width: 110rem;
+  }
+
   .ocelot-scoped .sm\:min-h-0 {
     min-height: 0;
   }
@@ -10620,6 +10632,10 @@ menu {
 
   .ocelot-scoped .sm\:w-16 {
     width: 4rem;
+  }
+
+  .ocelot-scoped .sm\:w-20 {
+    width: 5rem;
   }
 
   .ocelot-scoped .sm\:w-24 {
@@ -13495,6 +13511,10 @@ menu {
     max-width: 100%;
   }
 
+  .ocelot-scoped .md\:max-w-6xl {
+    max-width: 110rem;
+  }
+
   .ocelot-scoped .md\:min-h-0 {
     min-height: 0;
   }
@@ -15475,6 +15495,10 @@ menu {
 
   .ocelot-scoped .md\:w-16 {
     width: 4rem;
+  }
+
+  .ocelot-scoped .md\:w-20 {
+    width: 5rem;
   }
 
   .ocelot-scoped .md\:w-24 {
@@ -18350,6 +18374,10 @@ menu {
     max-width: 100%;
   }
 
+  .ocelot-scoped .lg\:max-w-6xl {
+    max-width: 110rem;
+  }
+
   .ocelot-scoped .lg\:min-h-0 {
     min-height: 0;
   }
@@ -20330,6 +20358,10 @@ menu {
 
   .ocelot-scoped .lg\:w-16 {
     width: 4rem;
+  }
+
+  .ocelot-scoped .lg\:w-20 {
+    width: 5rem;
   }
 
   .ocelot-scoped .lg\:w-24 {
@@ -23205,6 +23237,10 @@ menu {
     max-width: 100%;
   }
 
+  .ocelot-scoped .xl\:max-w-6xl {
+    max-width: 110rem;
+  }
+
   .ocelot-scoped .xl\:min-h-0 {
     min-height: 0;
   }
@@ -25185,6 +25221,10 @@ menu {
 
   .ocelot-scoped .xl\:w-16 {
     width: 4rem;
+  }
+
+  .ocelot-scoped .xl\:w-20 {
+    width: 5rem;
   }
 
   .ocelot-scoped .xl\:w-24 {
