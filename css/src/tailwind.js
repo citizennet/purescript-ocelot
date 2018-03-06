@@ -6,13 +6,16 @@ config.height = Object.assign(config.height, {
   '5': '1.25rem',
   '7': '1.75rem',
   '9': '2.25rem',
+  '20': '5rem',
+  '40': '10rem',
 })
 
 config.width = Object.assign(config.width, {
   '5': '1.25rem',
   '7': '1.75rem',
   '9': '2.25rem',
-  '20': '5rem'
+  '20': '5rem',
+  '40': '10rem',
 })
 
 // Additional padding and margin sizes
@@ -67,6 +70,10 @@ config.borderColors = Object.assign(
   { 'default': config.colors['grey-light'] },
   config.colors
 )
+
+config.borderWidths = Object.assign(config.borderWidths, {
+  '3': '3px'
+})
 
 config.modules = Object.assign(config.modules, {
   'borderWidths': ['responsive', 'hover'],

@@ -1,8 +1,17 @@
-module Ocelot.Block.FormLayout where
+module Ocelot.Block.Layout where
 
 import Prelude
 
 import Halogen.HTML as HH
+
+headerClasses :: Array HH.ClassName
+headerClasses = HH.ClassName <$>
+  [ "fixed"
+  , "pin-t"
+  , "pin-x"
+  , "w-full"
+  , "shadow-md"
+  ]
 
 containerClasses :: Array HH.ClassName
 containerClasses = HH.ClassName <$>

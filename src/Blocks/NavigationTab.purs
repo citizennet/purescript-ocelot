@@ -19,19 +19,20 @@ type TabConfig page =
 
 type IsActive = Boolean
 
-navClasses :: Array HH.ClassName
-navClasses = HH.ClassName <$>
+outerClasses :: Array HH.ClassName
+outerClasses = HH.ClassName <$>
   [ "bg-black-10"
-  , "px-8"
-  , "w-full"
   ]
 
 innerClasses :: Array HH.ClassName
 innerClasses = HH.ClassName <$>
   [ "container"
-  , "m-auto"
+  , "items-end"
+  , "mx-auto"
   , "flex"
   , "px-20"
+  , "h-20"
+  , "list-reset"
   ]
 
 tabClasses :: Array HH.ClassName
@@ -54,7 +55,8 @@ activeTabClasses = HH.ClassName <$>
 
 inactiveTabClasses :: Array HH.ClassName
 inactiveTabClasses = HH.ClassName <$>
-  [ "hover:border-b-2"
+  [ "border-b-2"
+  , "border-black-10"
   , "hover:border-blue-88"
   , "hover:text-white"
   , "text-grey-70"
@@ -67,7 +69,7 @@ navigationTabs
   -> HH.HTML p i
 navigationTabs { tabs, activePage } =
   HH.div
-    [ HP.classes navClasses ]
+    [ HP.classes outerClasses ]
     [ HH.ul
       [ HP.classes innerClasses ]
       $ navigationTab activePage <$> tabs

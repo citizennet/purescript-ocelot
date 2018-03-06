@@ -534,12 +534,42 @@ ul {
  * Tailwind custom reset styles
  */
 
+/**
+ * Allow adding a border to an element by just adding a border-width.
+ *
+ * By default, the way the browser specifies that an element should have no
+ * border is by setting it's border-style to `none` in the user-agent
+ * stylesheet.
+ *
+ * In order to easily add borders to elements by just setting the `border-width`
+ * property, we change the default border-style for all elements to `solid`, and
+ * use border-width to hide them instead. This way our `border` utilities only
+ * need to set the `border-width` property instead of the entire `border`
+ * shorthand, making our border utilities much more straightforward to compose.
+ *
+ * https://github.com/tailwindcss/tailwindcss/pull/116
+ */
+
 *,
 *::before,
 *::after {
   border-width: 0;
   border-style: solid;
   border-color: #dae1e7;
+}
+
+/**
+ * Undo the `border-style: none` reset that Normalize applies to images so that
+ * our `border-{width}` utilities have the expected effect.
+ *
+ * The Normalize reset is unnecessary for us since we default the border-width
+ * to 0 on all elements.
+ *
+ * https://github.com/tailwindcss/tailwindcss/issues/362
+ */
+
+img {
+  border-style: solid;
 }
 
 /**
@@ -2311,6 +2341,10 @@ button,
   border-width: 2px;
 }
 
+.border-3 {
+  border-width: 3px;
+}
+
 .border-4 {
   border-width: 4px;
 }
@@ -2353,6 +2387,22 @@ button,
 
 .border-l-2 {
   border-left-width: 2px;
+}
+
+.border-t-3 {
+  border-top-width: 3px;
+}
+
+.border-r-3 {
+  border-right-width: 3px;
+}
+
+.border-b-3 {
+  border-bottom-width: 3px;
+}
+
+.border-l-3 {
+  border-left-width: 3px;
 }
 
 .border-t-4 {
@@ -2411,6 +2461,10 @@ button,
   border-width: 2px;
 }
 
+.hover\:border-3:hover {
+  border-width: 3px;
+}
+
 .hover\:border-4:hover {
   border-width: 4px;
 }
@@ -2453,6 +2507,22 @@ button,
 
 .hover\:border-l-2:hover {
   border-left-width: 2px;
+}
+
+.hover\:border-t-3:hover {
+  border-top-width: 3px;
+}
+
+.hover\:border-r-3:hover {
+  border-right-width: 3px;
+}
+
+.hover\:border-b-3:hover {
+  border-bottom-width: 3px;
+}
+
+.hover\:border-l-3:hover {
+  border-left-width: 3px;
 }
 
 .hover\:border-t-4:hover {
@@ -2845,12 +2915,20 @@ button,
   height: 4rem;
 }
 
+.h-20 {
+  height: 5rem;
+}
+
 .h-24 {
   height: 6rem;
 }
 
 .h-32 {
   height: 8rem;
+}
+
+.h-40 {
+  height: 10rem;
 }
 
 .h-48 {
@@ -5387,6 +5465,10 @@ button,
   width: 8rem;
 }
 
+.w-40 {
+  width: 10rem;
+}
+
 .w-48 {
   width: 12rem;
 }
@@ -7549,6 +7631,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .sm\:border-3 {
+    border-width: 3px;
+  }
+
   .sm\:border-4 {
     border-width: 4px;
   }
@@ -7591,6 +7677,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .sm\:border-l-2 {
     border-left-width: 2px;
+  }
+
+  .sm\:border-t-3 {
+    border-top-width: 3px;
+  }
+
+  .sm\:border-r-3 {
+    border-right-width: 3px;
+  }
+
+  .sm\:border-b-3 {
+    border-bottom-width: 3px;
+  }
+
+  .sm\:border-l-3 {
+    border-left-width: 3px;
   }
 
   .sm\:border-t-4 {
@@ -7649,6 +7751,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .sm\:hover\:border-3:hover {
+    border-width: 3px;
+  }
+
   .sm\:hover\:border-4:hover {
     border-width: 4px;
   }
@@ -7691,6 +7797,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .sm\:hover\:border-l-2:hover {
     border-left-width: 2px;
+  }
+
+  .sm\:hover\:border-t-3:hover {
+    border-top-width: 3px;
+  }
+
+  .sm\:hover\:border-r-3:hover {
+    border-right-width: 3px;
+  }
+
+  .sm\:hover\:border-b-3:hover {
+    border-bottom-width: 3px;
+  }
+
+  .sm\:hover\:border-l-3:hover {
+    border-left-width: 3px;
   }
 
   .sm\:hover\:border-t-4:hover {
@@ -8083,12 +8205,20 @@ input[type=range]:focus::-ms-fill-upper {
     height: 4rem;
   }
 
+  .sm\:h-20 {
+    height: 5rem;
+  }
+
   .sm\:h-24 {
     height: 6rem;
   }
 
   .sm\:h-32 {
     height: 8rem;
+  }
+
+  .sm\:h-40 {
+    height: 10rem;
   }
 
   .sm\:h-48 {
@@ -10617,6 +10747,10 @@ input[type=range]:focus::-ms-fill-upper {
     width: 8rem;
   }
 
+  .sm\:w-40 {
+    width: 10rem;
+  }
+
   .sm\:w-48 {
     width: 12rem;
   }
@@ -12412,6 +12546,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .md\:border-3 {
+    border-width: 3px;
+  }
+
   .md\:border-4 {
     border-width: 4px;
   }
@@ -12454,6 +12592,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .md\:border-l-2 {
     border-left-width: 2px;
+  }
+
+  .md\:border-t-3 {
+    border-top-width: 3px;
+  }
+
+  .md\:border-r-3 {
+    border-right-width: 3px;
+  }
+
+  .md\:border-b-3 {
+    border-bottom-width: 3px;
+  }
+
+  .md\:border-l-3 {
+    border-left-width: 3px;
   }
 
   .md\:border-t-4 {
@@ -12512,6 +12666,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .md\:hover\:border-3:hover {
+    border-width: 3px;
+  }
+
   .md\:hover\:border-4:hover {
     border-width: 4px;
   }
@@ -12554,6 +12712,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .md\:hover\:border-l-2:hover {
     border-left-width: 2px;
+  }
+
+  .md\:hover\:border-t-3:hover {
+    border-top-width: 3px;
+  }
+
+  .md\:hover\:border-r-3:hover {
+    border-right-width: 3px;
+  }
+
+  .md\:hover\:border-b-3:hover {
+    border-bottom-width: 3px;
+  }
+
+  .md\:hover\:border-l-3:hover {
+    border-left-width: 3px;
   }
 
   .md\:hover\:border-t-4:hover {
@@ -12946,12 +13120,20 @@ input[type=range]:focus::-ms-fill-upper {
     height: 4rem;
   }
 
+  .md\:h-20 {
+    height: 5rem;
+  }
+
   .md\:h-24 {
     height: 6rem;
   }
 
   .md\:h-32 {
     height: 8rem;
+  }
+
+  .md\:h-40 {
+    height: 10rem;
   }
 
   .md\:h-48 {
@@ -15480,6 +15662,10 @@ input[type=range]:focus::-ms-fill-upper {
     width: 8rem;
   }
 
+  .md\:w-40 {
+    width: 10rem;
+  }
+
   .md\:w-48 {
     width: 12rem;
   }
@@ -17275,6 +17461,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .lg\:border-3 {
+    border-width: 3px;
+  }
+
   .lg\:border-4 {
     border-width: 4px;
   }
@@ -17317,6 +17507,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .lg\:border-l-2 {
     border-left-width: 2px;
+  }
+
+  .lg\:border-t-3 {
+    border-top-width: 3px;
+  }
+
+  .lg\:border-r-3 {
+    border-right-width: 3px;
+  }
+
+  .lg\:border-b-3 {
+    border-bottom-width: 3px;
+  }
+
+  .lg\:border-l-3 {
+    border-left-width: 3px;
   }
 
   .lg\:border-t-4 {
@@ -17375,6 +17581,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .lg\:hover\:border-3:hover {
+    border-width: 3px;
+  }
+
   .lg\:hover\:border-4:hover {
     border-width: 4px;
   }
@@ -17417,6 +17627,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .lg\:hover\:border-l-2:hover {
     border-left-width: 2px;
+  }
+
+  .lg\:hover\:border-t-3:hover {
+    border-top-width: 3px;
+  }
+
+  .lg\:hover\:border-r-3:hover {
+    border-right-width: 3px;
+  }
+
+  .lg\:hover\:border-b-3:hover {
+    border-bottom-width: 3px;
+  }
+
+  .lg\:hover\:border-l-3:hover {
+    border-left-width: 3px;
   }
 
   .lg\:hover\:border-t-4:hover {
@@ -17809,12 +18035,20 @@ input[type=range]:focus::-ms-fill-upper {
     height: 4rem;
   }
 
+  .lg\:h-20 {
+    height: 5rem;
+  }
+
   .lg\:h-24 {
     height: 6rem;
   }
 
   .lg\:h-32 {
     height: 8rem;
+  }
+
+  .lg\:h-40 {
+    height: 10rem;
   }
 
   .lg\:h-48 {
@@ -20343,6 +20577,10 @@ input[type=range]:focus::-ms-fill-upper {
     width: 8rem;
   }
 
+  .lg\:w-40 {
+    width: 10rem;
+  }
+
   .lg\:w-48 {
     width: 12rem;
   }
@@ -22138,6 +22376,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .xl\:border-3 {
+    border-width: 3px;
+  }
+
   .xl\:border-4 {
     border-width: 4px;
   }
@@ -22180,6 +22422,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .xl\:border-l-2 {
     border-left-width: 2px;
+  }
+
+  .xl\:border-t-3 {
+    border-top-width: 3px;
+  }
+
+  .xl\:border-r-3 {
+    border-right-width: 3px;
+  }
+
+  .xl\:border-b-3 {
+    border-bottom-width: 3px;
+  }
+
+  .xl\:border-l-3 {
+    border-left-width: 3px;
   }
 
   .xl\:border-t-4 {
@@ -22238,6 +22496,10 @@ input[type=range]:focus::-ms-fill-upper {
     border-width: 2px;
   }
 
+  .xl\:hover\:border-3:hover {
+    border-width: 3px;
+  }
+
   .xl\:hover\:border-4:hover {
     border-width: 4px;
   }
@@ -22280,6 +22542,22 @@ input[type=range]:focus::-ms-fill-upper {
 
   .xl\:hover\:border-l-2:hover {
     border-left-width: 2px;
+  }
+
+  .xl\:hover\:border-t-3:hover {
+    border-top-width: 3px;
+  }
+
+  .xl\:hover\:border-r-3:hover {
+    border-right-width: 3px;
+  }
+
+  .xl\:hover\:border-b-3:hover {
+    border-bottom-width: 3px;
+  }
+
+  .xl\:hover\:border-l-3:hover {
+    border-left-width: 3px;
   }
 
   .xl\:hover\:border-t-4:hover {
@@ -22672,12 +22950,20 @@ input[type=range]:focus::-ms-fill-upper {
     height: 4rem;
   }
 
+  .xl\:h-20 {
+    height: 5rem;
+  }
+
   .xl\:h-24 {
     height: 6rem;
   }
 
   .xl\:h-32 {
     height: 8rem;
+  }
+
+  .xl\:h-40 {
+    height: 10rem;
   }
 
   .xl\:h-48 {
@@ -25204,6 +25490,10 @@ input[type=range]:focus::-ms-fill-upper {
 
   .xl\:w-32 {
     width: 8rem;
+  }
+
+  .xl\:w-40 {
+    width: 10rem;
   }
 
   .xl\:w-48 {
