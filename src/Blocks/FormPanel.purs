@@ -1,5 +1,5 @@
 module Ocelot.Block.FormPanel where
-  
+
 import Prelude
 
 import DOM.HTML.Indexed (HTMLbutton)
@@ -16,7 +16,6 @@ buttonClasses = HH.ClassName <$>
   [ "font-medium"
   , "no-outline"
   , "text-blue-82"
-  , "text-xs"
   ]
 
 formPanel
@@ -36,7 +35,7 @@ formPanel props iprops html =
         [ (HH.fromPlainHTML (props.renderToggle props.isOpen)) ]
     ]
   where
-    contentClasses = 
+    contentClasses =
       if props.isOpen
         then [ HH.ClassName "mb-6" ]
         else [ HH.ClassName "hidden" ]

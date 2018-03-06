@@ -32,4 +32,3 @@ range { min, max } iprops =
       [ HP.class_ $ HH.ClassName "flex-no-grow text-sm ml-4" ]
       [ HH.text max ]
     ]
-
