@@ -8,9 +8,12 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.StrMap (lookup)
 import Data.Monoid (mempty)
 import Data.Either (Either(..))
+import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Select.Primitives.Container as C
+
+import Select as Select
+import Select.Utils.Setters as Setters
 
 baseClasses :: Array HH.ClassName
 baseClasses = HH.ClassName <$>
@@ -66,19 +69,19 @@ buttonClasses = HH.ClassName <$>
 -- Provided an array of items, renders them in a container.
 -- Items should have already been treated with `boldMatches` by this point.
 itemContainer
-  :: ∀ t o item
+  :: ∀ t o item eff
    . Maybe Int
   -> Array HH.PlainHTML
-  -> HH.HTML t (C.ContainerQuery o item Unit)
+  -> H.HTML t (Select.Query o item eff)
 itemContainer highlightIndex html =
   HH.div
-  (C.getContainerProps [ HP.classes itemContainerClasses ])
+  (Setters.setContainerProps [ HP.classes itemContainerClasses ])
   [ HH.ul
     [ HP.classes ulClasses ]
     $ mapWithIndex
       ( \i h ->
           HH.li
-            ( C.getItemProps i
+            ( Setters.setItemProps i
               [ HP.classes (liClasses <> hover i) ]
             )
             [ HH.fromPlainHTML h ]
