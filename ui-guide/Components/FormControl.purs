@@ -70,6 +70,7 @@ component =
                   { name: "Campaign Group"
                   , onClick: HE.input HandleFormHeaderClick
                   , title: "New"
+                  , brand: Nothing
                   }
               ]
           ]
