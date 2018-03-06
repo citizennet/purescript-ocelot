@@ -13571,7 +13571,8 @@ var PS = {};
   var Unsafe_Coerce = PS["Unsafe.Coerce"];
   var prop = function (dictIsProp) {
       return Halogen_HTML_Core.prop(dictIsProp);
-  };                                                         
+  };                                                                   
+  var src = prop(Halogen_HTML_Core.stringIsProp)("src");     
   var tabIndex = prop(Halogen_HTML_Core.intIsProp)("tabIndex");
   var type_ = function (dictIsProp) {
       return prop(dictIsProp)("type");
@@ -13597,6 +13598,7 @@ var PS = {};
   exports["href"] = href;
   exports["id_"] = id_;
   exports["name"] = name;
+  exports["src"] = src;
   exports["type_"] = type_;
   exports["min"] = min;
   exports["max"] = max;
@@ -13627,6 +13629,9 @@ var PS = {};
   var h3 = element("h3");
   var header = element("header");
   var i = element("i");
+  var img = function (props) {
+      return element("img")(props)([  ]);
+  };
   var input = function (props) {
       return element("input")(props)([  ]);
   };                   
@@ -13665,6 +13670,7 @@ var PS = {};
   exports["h3"] = h3;
   exports["header"] = header;
   exports["i"] = i;
+  exports["img"] = img;
   exports["input"] = input;
   exports["label"] = label;
   exports["li"] = li;
@@ -15123,11 +15129,11 @@ var PS = {};
           if (v instanceof Transparent) {
               return [ "bg-transparent", "text-grey-70" ];
           };
-          throw new Error("Failed pattern match at Ocelot.Block.Button line 31, column 5 - line 35, column 8: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Block.Button line 30, column 5 - line 34, column 8: " + [ v.constructor.name ]);
       };
       return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(classNames(type_));
   };
-  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "px-3", "py-2", "rounded", "shadow", "text-sm" ]);
+  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "px-4", "py-3", "rounded", "shadow" ]);
   var button_ = function (v) {
       return Halogen_HTML_Elements.button([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonTypeClasses(v.type_))(buttonClasses)) ]);
   };
@@ -15241,12 +15247,12 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var titleClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-medium", "text-black-20", "text-sm" ]);
+  var titleClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-medium", "text-black-20", "text-lg" ]);
   var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mb-4" ]);
-  var cardClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "h-auto", "max-w-sm", "p-6", "shadow", "w-auto" ]);
+  var cardClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "h-auto", "w-full", "p-6", "shadow", "w-auto" ]);
   var card = function (props) {
       return function (html) {
-          return Halogen_HTML_Elements.aside([ Halogen_HTML_Properties.classes(cardClasses) ])([ Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.h1([ Halogen_HTML_Properties.classes(titleClasses) ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.div_(html) ]);
+          return Halogen_HTML_Elements.aside([ Halogen_HTML_Properties.classes(cardClasses) ])([ Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(titleClasses) ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.div_(html) ]);
       };
   };
   exports["card"] = card;
@@ -16087,7 +16093,7 @@ var PS = {};
   var Prelude = PS["Prelude"];        
   var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "block", "font-bold", "leading-loose", "text-black" ]);
   var helpTextClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Type.mutedClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "block", "leading-loose" ]));
-  var formControlClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full" ]);
+  var formControlClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full", "mb-10" ]);
   var errorTextClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-loose", "text-red", "font-bold" ]);
   var formControl = function (props) {
       return function (html) {
@@ -16105,7 +16111,7 @@ var PS = {};
                   if (v instanceof Data_Maybe.Nothing && v1 instanceof Data_Maybe.Nothing) {
                       return Halogen_HTML_Core.text("");
                   };
-                  throw new Error("Failed pattern match at Ocelot.Block.FormControl line 62, column 5 - line 65, column 46: " + [ v.constructor.name, v1.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Block.FormControl line 64, column 5 - line 67, column 46: " + [ v.constructor.name, v1.constructor.name ]);
               };
           };
           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(formControlClasses) ])([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.class_("w-full"), Halogen_HTML_Properties["for"](props.inputId) ])([ label(props.label) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("my-1") ])([ html ]), helpText(props.valid)(props.helpText) ]);
@@ -16119,6 +16125,7 @@ var PS = {};
   var DOM_Event_Types = PS["DOM.Event.Types"];
   var Data_Functor = PS["Data.Functor"];
   var Data_Maybe = PS["Data.Maybe"];
+  var Data_Semigroup = PS["Data.Semigroup"];
   var Halogen_HTML = PS["Halogen.HTML"];
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
@@ -16126,15 +16133,22 @@ var PS = {};
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
   var Prelude = PS["Prelude"];        
-  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-black-10", "flex", "items-center", "h-16", "p-4", "text-base", "w-full" ]);
+  var innerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "container", "items-center", "mx-auto", "flex" ]);
+  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-black-10", "min-h-16", "p-8", "text-base", "w-full" ]);
   var formHeader = function (props) {
-      return Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-grey-70 mr-4") ])([ Halogen_HTML_Core.text(props.name) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-white") ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("mr-2") ])([ Ocelot_Block_Button.button({
+      return Halogen_HTML_Elements.header([ Halogen_HTML_Properties.classes(headerClasses) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(innerClasses) ])(Data_Semigroup.append(Data_Semigroup.semigroupArray)((function () {
+          if (props.brand instanceof Data_Maybe.Just) {
+              return [ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("w-20") ])([ Halogen_HTML_Elements.img([ Halogen_HTML_Properties.src(props.brand.value0) ]) ]) ];
+          };
+          return [  ];
+      })())([ Halogen_HTML_Elements.h2([ Halogen_HTML_Properties.class_("flex-1 font-medium") ])([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-lg text-grey-70 mr-4") ])([ Halogen_HTML_Core.text(props.name) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("text-lg text-white") ])([ Halogen_HTML_Core.text(props.title) ]) ]), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("mr-2") ])([ Ocelot_Block_Button.button({
           type_: Ocelot_Block_Button.Transparent.value
       })([  ])([ Halogen_HTML_Core.text("Cancel") ]) ]), Ocelot_Block_Button.button({
           type_: Ocelot_Block_Button.Primary.value
-      })([ Halogen_HTML_Events.onClick(props.onClick) ])([ Halogen_HTML_Core.text("Create") ]) ]);
+      })([ Halogen_HTML_Events.onClick(props.onClick) ])([ Halogen_HTML_Core.text("Create") ]) ])) ]);
   };
   exports["headerClasses"] = headerClasses;
+  exports["innerClasses"] = innerClasses;
   exports["formHeader"] = formHeader;
 })(PS["Ocelot.Block.FormHeader"] = PS["Ocelot.Block.FormHeader"] || {});
 (function(exports) {
@@ -16148,7 +16162,7 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-medium", "no-outline", "text-blue-82", "text-xs" ]);
+  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "font-medium", "no-outline", "text-blue-82" ]);
   var formPanel = function (props) {
       return function (iprops) {
           return function (html) {
@@ -16327,7 +16341,8 @@ var PS = {};
           })([ Ocelot_Block_FormHeader.formHeader({
               name: "Campaign Group",
               onClick: Halogen_HTML_Events.input(HandleFormHeaderClick.create),
-              title: "New"
+              title: "New",
+              brand: Data_Maybe.Nothing.value
           }) ]) ]), UIGuide_Block_Documentation.documentation({
               header: "Input",
               subheader: "Inputing very important text"
@@ -16469,7 +16484,9 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "mt-4", "mr-3", "no-underline", "text-xs", "tracking-wide", "uppercase" ]);
+  var tabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "leading-normal", "py-6", "inline-block", "no-underline", "tracking-wide", "uppercase", "text-sm" ]);
+  var navClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-black-10", "px-8", "w-full" ]);
+  var innerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "container", "m-auto", "flex", "px-20" ]);
   var inactiveTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "hover:border-b-2", "hover:border-blue-88", "hover:text-white", "text-grey-70" ]);
   var activeTabClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-b-2", "border-blue-88", "text-white" ]);
   var navigationTab = function (dictEq) {
@@ -16482,23 +16499,25 @@ var PS = {};
                   if (!v) {
                       return inactiveTabClasses;
                   };
-                  throw new Error("Failed pattern match at Ocelot.Block.NavigationTab line 73, column 5 - line 73, column 48: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Block.NavigationTab line 94, column 5 - line 94, column 48: " + [ v.constructor.name ]);
               };
-              return Halogen_HTML_Elements.a([ Halogen_HTML_Properties.href(tab.link), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(tabClasses)(tabStyles(Data_Eq.eq(dictEq)(tab.page)(activePage)))) ])(Data_Semigroup.append(Data_Semigroup.semigroupArray)((function () {
+              return Halogen_HTML_Elements.li([ Halogen_HTML_Properties.class_("mr-12") ])([ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.href(tab.link), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(tabClasses)(tabStyles(Data_Eq.eq(dictEq)(tab.page)(activePage)))) ])(Data_Semigroup.append(Data_Semigroup.semigroupArray)((function () {
                   var $5 = tab.errors > 0 && Data_Eq.notEq(dictEq)(tab.page)(activePage);
                   if ($5) {
                       return [ Halogen_HTML_Elements.i([ Halogen_HTML_Properties.class_("mr-2") ])([ Halogen_HTML_Core.text("errors") ]) ];
                   };
                   return [  ];
-              })())([ Halogen_HTML_Core.text(tab.name) ]));
+              })())([ Halogen_HTML_Core.text(tab.name) ])) ]);
           };
       };
   };
   var navigationTabs = function (dictEq) {
       return function (v) {
-          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex w-full h-12 bg-black-10") ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs));
+          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(navClasses) ])([ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.classes(innerClasses) ])(Data_Functor.map(Data_Functor.functorArray)(navigationTab(dictEq)(v.activePage))(v.tabs)) ]);
       };
   };
+  exports["navClasses"] = navClasses;
+  exports["innerClasses"] = innerClasses;
   exports["tabClasses"] = tabClasses;
   exports["activeTabClasses"] = activeTabClasses;
   exports["inactiveTabClasses"] = inactiveTabClasses;
@@ -17768,7 +17787,7 @@ var PS = {};
       if (v instanceof Many) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 364, column 1 - line 364, column 61: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 363, column 1 - line 363, column 61: " + [ v.constructor.name ]);
   };
   var unpackSelection = function (v) {
       if (v instanceof One) {
@@ -17780,7 +17799,7 @@ var PS = {};
       if (v instanceof Many) {
           return Data_Array.head(v.value0);
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 359, column 1 - line 359, column 60: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 358, column 1 - line 358, column 60: " + [ v.constructor.name ]);
   }; 
   var applyInsertable = function (match) {
       return function (insertable) {
@@ -17800,7 +17819,7 @@ var PS = {};
                           return Data_Array.cons(match(insertable.value0(text)))(items);
                       };
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 329, column 47 - line 332, column 65: " + [ insertable.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 328, column 47 - line 331, column 65: " + [ insertable.constructor.name ]);
               };
           };
       };
@@ -17823,7 +17842,7 @@ var PS = {};
                       return Data_Ord.greaterThan(Data_Ratio.ordRatio(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt))(v.ratio)(Data_Ratio.reduce(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt)(2)(3));
                   })(items);
               };
-              throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 321, column 37 - line 324, column 69: " + [ filterType.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 320, column 37 - line 323, column 69: " + [ filterType.constructor.name ]);
           };
       };
   };
@@ -18074,7 +18093,7 @@ var PS = {};
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                       });
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 221, column 12 - line 312, column 15: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Typeahead line 221, column 12 - line 311, column 15: " + [ v.constructor.name ]);
               };
               return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
                   initialState: initialState,
