@@ -2,19 +2,18 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import Ocelot.Components.Dropdown as Dropdown
 import Ocelot.Block.FormControl as FormControl
-import Ocelot.Components.Typeahead as Typeahead
-import Ocelot.Core.Typeahead as TypeaheadCore
+import Ocelot.Components.Typeahead as TA
+import Ocelot.Core.Typeahead as TACore
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
-import Data.Either.Nested (Either3)
-import Data.Functor.Coproduct.Nested (Coproduct3)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype, unwrap)
+import Data.Newtype (class Newtype)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -34,19 +33,17 @@ type State
 
 data Query a
   = NoOp a
-  | HandleTypeahead Unit (TypeaheadCore.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
-  | HandleSyncTypeahead (TypeaheadCore.TypeaheadSyncMessage Query String) a
-  | HandleDropdown (Dropdown.DropdownMessage TestRecord) a
+  | HandleTypeahead Unit (TACore.Message Query Async.Todo) a
+  | HandleSyncTypeahead (TACore.Message Query String) a
 
 ----------
 -- Child paths
 
-type ChildSlot = Either3 Unit Unit Unit
+type ChildSlot = Either2 Unit Unit
 type ChildQuery eff m =
-  Coproduct3
-    (TypeaheadCore.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
-    (Dropdown.Query TestRecord)
-    (TypeaheadCore.TypeaheadQuery Query String Void Void eff m)
+  Coproduct2
+    (TACore.Query Query Async.Todo Async.Err eff m)
+    (TACore.Query Query String Void eff m)
 
 
 ----------
@@ -74,24 +71,10 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
     eval (NoOp next) = pure next
 
-    -- No messages necessary to handle, really.
     eval (HandleSyncTypeahead m next) = pure next
 
-    -- Responsible for fetching data based on source and returning it to the component.
-    -- Done asynchronously so data can load in the background.
-    eval (HandleTypeahead slot m next) = case m of
-      TypeaheadCore.RequestData syncMethod -> do
-        res <- H.liftAff $ Async.load syncMethod
-        case TypeaheadCore.maybeReplaceItems res syncMethod of
-          Nothing -> pure next
-          (Just newSync) -> do
-            _ <- H.query' CP.cp1 slot $ H.action $ TypeaheadCore.FulfillRequest newSync
-            pure next
-
-      -- Ignore other messages
-      _ -> pure next
-
-    eval (HandleDropdown m next) = pure next
+    -- No longer necessary to fetch data. Treat it just like a Sync typeahead.
+    eval (HandleTypeahead slot m next) = pure next
 
 
 ----------
@@ -157,11 +140,11 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp3 unit TypeaheadCore.component
-              (Typeahead.defMulti
+          ( HH.slot' CP.cp2 unit TACore.component
+              (TA.defMulti
                 [ HP.placeholder "Search developers...", HP.id_ "devs" ]
                 containerData
-                Typeahead.renderItemString)
+                TA.renderItemString)
               (HE.input HandleSyncTypeahead)
           )
         ]
@@ -173,69 +156,13 @@ cnDocumentationBlocks =
           , valid: Nothing
           , inputId: "devs-async"
           }
-          ( HH.slot' CP.cp1 unit TypeaheadCore.component
-              (Typeahead.defContAsyncMulti
+          ( HH.slot' CP.cp1 unit TACore.component
+              (TA.defAsyncMulti
                 [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
-                Async.todos
+                (\_ -> Async.loadFromSource Async.todos)
                 Async.renderItemTodo)
               (HE.input $ HandleTypeahead unit)
           )
         ]
       ]
-  , Documentation.documentation
-      { header: "Dropdowns"
-      , subheader: "Select from pre-determined entries."
-      }
-      [ Component.component
-        { title: "Dropdown" }
-        [ FormControl.formControl
-          { label: "Platforms"
-          , helpText: Just "There are lots of platforms to choose from."
-          , valid: Nothing
-          , inputId: ""
-          }
-          dropdownSingleSlot
-        ]
-      , Component.component
-        { title: "Dropdown" }
-        [ FormControl.formControl
-          { label: "Lorem Ipsum"
-          , helpText: Just "Dolor sit amet consectectuer."
-          , valid: Nothing
-          , inputId: ""
-          }
-          dropdownMultiSlot
-        ]
-      ]
   ]
-
-
-dropdownSingleSlot =
-  ( HH.slot'
-      CP.cp2
-      unit
-      Dropdown.component
-      { items: dropdownData
-      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-      , selection: Dropdown.Single Nothing
-      , placeholder: "Select a dev..."
-      , title: "Single Selection"
-      , helpText: "Some useful help text can go here."
-      }
-      (HE.input HandleDropdown)
-  )
-
-dropdownMultiSlot =
-  ( HH.slot'
-      CP.cp2
-      unit
-      Dropdown.component
-      { items: dropdownData
-      , itemHTML: \i -> [ HH.text $ (_.name <<< unwrap) i ]
-      , selection: Dropdown.Multi []
-      , placeholder: "Select some devs..."
-      , title: "Multi Selection"
-      , helpText: "Some useful help text can go here."
-      }
-      (HE.input HandleDropdown)
-  )

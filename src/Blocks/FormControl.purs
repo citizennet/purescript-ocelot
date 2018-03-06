@@ -10,7 +10,9 @@ import Halogen.HTML.Properties as HP
 
 formControlClasses :: Array HH.ClassName
 formControlClasses = HH.ClassName <$>
-  [ "w-full" ]
+  [ "w-full"
+  , "mb-10"
+  ]
 
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = Type.mutedClasses <>
