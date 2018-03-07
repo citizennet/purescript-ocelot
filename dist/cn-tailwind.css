@@ -5837,22 +5837,14 @@ button,
   transform: scale(1);
 }
 
-.w-1260px {
-  width: 1260px;
+.content-box {
+  box-sizing: content-box;
 }
 
 /* pseudo utilities */
 
-.after\:absolute:after {
-  position: absolute;
-}
-
 .after\:all-02s-ease:after {
   transition: all .2s ease;
-}
-
-.after\:bg-blue-88:after {
-  background-color: #00bbe0;
 }
 
 .after\:bg-blue-88:after {
@@ -5863,104 +5855,32 @@ button,
   background-color: #fff;
 }
 
-.after\:block:after {
-  display: block;
+.after\:h-full:after {
+  height: 100%;
 }
 
-.after\:h-3:after {
-  height: .75rem;
-}
-
-.after\:h-4:after {
-  height: 1rem;
-}
-
-.after\:left-2px:after {
-  left: 2px;
-}
-
-.after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
-}
-
-.after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
+.after\:w-full:after {
+  width: 100%;
 }
 
 .after\:no-content:after {
   content: '';
 }
 
-.after\:pin-l:after {
-  left: 0;
-}
-
 .after\:rounded-full:after {
   border-radius: 9999px;
-}
-
-.after\:rounded-lg:after {
-  border-radius: .5rem;
 }
 
 .after\:shadow:after {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.after\:top-w-6\/2--w-4\/2:after {
-  top: calc((1.5rem / 2) - (.75rem / 2));
+.checked\:sibling\:pr-4:checked + * {
+  padding-right: 1rem;
 }
 
-.after\:w-3:after {
-  width: .75rem;
-}
-
-.after\:w-4:after {
-  width: 1rem;
-}
-
-.before\:absolute:before {
-  position: absolute;
-}
-
-.before\:all-02s-ease:before {
-  transition: all .2s ease;
-}
-
-.before\:bg-blue-88:before {
-  background-color: #00bbe0;
-}
-
-.before\:border-solid:before {
-  border-style: solid;
-}
-
-.before\:border:before {
-  border-width: 1px;
-}
-
-.before\:h-6:before {
-  height: 1.5rem;
-}
-
-.before\:no-content:before {
-  content: '';
-}
-
-.before\:pin-l:before {
-  left: 0;
-}
-
-.before\:pin-t:before {
-  top: 0;
-}
-
-.before\:rounded-full:before {
-  border-radius: 9999px;
-}
-
-.before\:w-6:before {
-  width: 1.5rem;
+.not\:checked\:sibling\:pl-4:not(:checked) + * {
+  padding-left: 1rem;
 }
 
 .checked\:sibling\:after\:opacity-100:checked + *:after {
@@ -5971,15 +5891,19 @@ button,
   transform: scale(1);
 }
 
-.checked\:sibling\:after\:transform-w-4--4px:checked + *:after {
-  transform: translate(calc(1rem - 4px), 0);
-}
-
-.checked\:sibling\:before\:bg-blue-88:checked + *:before {
+.checked\:sibling\:bg-blue-88:checked + * {
   background-color: #00bbe0;
 }
 
-.checked\:sibling\:before\:border-blue-88:checked + *:before {
+.not\:checked\:sibling\:bg-grey-light:not(:checked) + * {
+  background-color: #dae1e7;
+}
+
+.not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * {
+  border-color: rgba(143, 158, 179, .4);
+}
+
+.checked\:sibling\:border-blue-88:checked + * {
   border-color: #00bbe0;
 }
 
@@ -6007,8 +5931,6 @@ html {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }
-
-/* Add Gotham to font families */
 
 /* Styles for range sliders */
 

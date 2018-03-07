@@ -5837,22 +5837,14 @@ html, .ocelot-scoped, .ocelot-scoped * {
   transform: scale(1);
 }
 
-.ocelot-scoped .w-1260px {
-  width: 1260px;
+.ocelot-scoped .content-box {
+  box-sizing: content-box;
 }
 
 /* pseudo utilities */
 
-.ocelot-scoped .after\:absolute:after {
-  position: absolute;
-}
-
 .ocelot-scoped .after\:all-02s-ease:after {
   transition: all .2s ease;
-}
-
-.ocelot-scoped .after\:bg-blue-88:after {
-  background-color: #00bbe0;
 }
 
 .ocelot-scoped .after\:bg-blue-88:after {
@@ -5863,104 +5855,32 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #fff;
 }
 
-.ocelot-scoped .after\:block:after {
-  display: block;
+.ocelot-scoped .after\:h-full:after {
+  height: 100%;
 }
 
-.ocelot-scoped .after\:h-3:after {
-  height: .75rem;
-}
-
-.ocelot-scoped .after\:h-4:after {
-  height: 1rem;
-}
-
-.ocelot-scoped .after\:left-2px:after {
-  left: 2px;
-}
-
-.ocelot-scoped .after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
-}
-
-.ocelot-scoped .after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
+.ocelot-scoped .after\:w-full:after {
+  width: 100%;
 }
 
 .ocelot-scoped .after\:no-content:after {
   content: '';
 }
 
-.ocelot-scoped .after\:pin-l:after {
-  left: 0;
-}
-
 .ocelot-scoped .after\:rounded-full:after {
   border-radius: 9999px;
-}
-
-.ocelot-scoped .after\:rounded-lg:after {
-  border-radius: .5rem;
 }
 
 .ocelot-scoped .after\:shadow:after {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.ocelot-scoped .after\:top-w-6\/2--w-4\/2:after {
-  top: calc((1.5rem / 2) - (.75rem / 2));
+.ocelot-scoped .checked\:sibling\:pr-4:checked + * {
+  padding-right: 1rem;
 }
 
-.ocelot-scoped .after\:w-3:after {
-  width: .75rem;
-}
-
-.ocelot-scoped .after\:w-4:after {
-  width: 1rem;
-}
-
-.ocelot-scoped .before\:absolute:before {
-  position: absolute;
-}
-
-.ocelot-scoped .before\:all-02s-ease:before {
-  transition: all .2s ease;
-}
-
-.ocelot-scoped .before\:bg-blue-88:before {
-  background-color: #00bbe0;
-}
-
-.ocelot-scoped .before\:border-solid:before {
-  border-style: solid;
-}
-
-.ocelot-scoped .before\:border:before {
-  border-width: 1px;
-}
-
-.ocelot-scoped .before\:h-6:before {
-  height: 1.5rem;
-}
-
-.ocelot-scoped .before\:no-content:before {
-  content: '';
-}
-
-.ocelot-scoped .before\:pin-l:before {
-  left: 0;
-}
-
-.ocelot-scoped .before\:pin-t:before {
-  top: 0;
-}
-
-.ocelot-scoped .before\:rounded-full:before {
-  border-radius: 9999px;
-}
-
-.ocelot-scoped .before\:w-6:before {
-  width: 1.5rem;
+.ocelot-scoped .not\:checked\:sibling\:pl-4:not(:checked) + * {
+  padding-left: 1rem;
 }
 
 .ocelot-scoped .checked\:sibling\:after\:opacity-100:checked + *:after {
@@ -5971,15 +5891,19 @@ html, .ocelot-scoped, .ocelot-scoped * {
   transform: scale(1);
 }
 
-.ocelot-scoped .checked\:sibling\:after\:transform-w-4--4px:checked + *:after {
-  transform: translate(calc(1rem - 4px), 0);
-}
-
-.ocelot-scoped .checked\:sibling\:before\:bg-blue-88:checked + *:before {
+.ocelot-scoped .checked\:sibling\:bg-blue-88:checked + * {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .checked\:sibling\:before\:border-blue-88:checked + *:before {
+.ocelot-scoped .not\:checked\:sibling\:bg-grey-light:not(:checked) + * {
+  background-color: #dae1e7;
+}
+
+.ocelot-scoped .not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * {
+  border-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .checked\:sibling\:border-blue-88:checked + * {
   border-color: #00bbe0;
 }
 
@@ -6007,8 +5931,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }
-
-/* Add Gotham to font families */
 
 /* Styles for range sliders */
 
