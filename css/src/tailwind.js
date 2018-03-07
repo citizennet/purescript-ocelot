@@ -26,6 +26,10 @@ config.minWidth = Object.assign(config.minWidth, {
   '20': '5rem'
 })
 
+config.zIndex = Object.assign(config.zIndex, {
+  '60': '60'
+})
+
 
 // Additional padding and margin sizes
 config.padding = Object.assign(config.padding, {

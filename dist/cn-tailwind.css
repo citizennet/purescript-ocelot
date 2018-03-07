@@ -5796,6 +5796,10 @@ button,
   z-index: 50;
 }
 
+.z-60 {
+  z-index: 60;
+}
+
 .z-auto {
   z-index: auto;
 }
@@ -11108,6 +11112,10 @@ input[type=range]::-ms-thumb {
     z-index: 50;
   }
 
+  .sm\:z-60 {
+    z-index: 60;
+  }
+
   .sm\:z-auto {
     z-index: auto;
   }
@@ -16131,6 +16139,10 @@ input[type=range]::-ms-thumb {
 
   .md\:z-50 {
     z-index: 50;
+  }
+
+  .md\:z-60 {
+    z-index: 60;
   }
 
   .md\:z-auto {
@@ -21158,6 +21170,10 @@ input[type=range]::-ms-thumb {
     z-index: 50;
   }
 
+  .lg\:z-60 {
+    z-index: 60;
+  }
+
   .lg\:z-auto {
     z-index: auto;
   }
@@ -26181,6 +26197,10 @@ input[type=range]::-ms-thumb {
 
   .xl\:z-50 {
     z-index: 50;
+  }
+
+  .xl\:z-60 {
+    z-index: 60;
   }
 
   .xl\:z-auto {

@@ -5796,6 +5796,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   z-index: 50;
 }
 
+.ocelot-scoped .z-60 {
+  z-index: 60;
+}
+
 .ocelot-scoped .z-auto {
   z-index: auto;
 }
@@ -11108,6 +11112,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     z-index: 50;
   }
 
+  .ocelot-scoped .sm\:z-60 {
+    z-index: 60;
+  }
+
   .ocelot-scoped .sm\:z-auto {
     z-index: auto;
   }
@@ -16131,6 +16139,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:z-50 {
     z-index: 50;
+  }
+
+  .ocelot-scoped .md\:z-60 {
+    z-index: 60;
   }
 
   .ocelot-scoped .md\:z-auto {
@@ -21158,6 +21170,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     z-index: 50;
   }
 
+  .ocelot-scoped .lg\:z-60 {
+    z-index: 60;
+  }
+
   .ocelot-scoped .lg\:z-auto {
     z-index: auto;
   }
@@ -26181,6 +26197,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:z-50 {
     z-index: 50;
+  }
+
+  .ocelot-scoped .xl\:z-60 {
+    z-index: 60;
   }
 
   .ocelot-scoped .xl\:z-auto {
