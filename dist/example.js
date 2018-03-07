@@ -12031,8 +12031,7 @@ var PS = {};
   };
   var propFromString = Unsafe_Coerce.unsafeCoerce;
   var propFromNumber = Unsafe_Coerce.unsafeCoerce;
-  var propFromInt = Unsafe_Coerce.unsafeCoerce;
-  var propFromBoolean = Unsafe_Coerce.unsafeCoerce;
+  var propFromInt = Unsafe_Coerce.unsafeCoerce;    
   var functorProp = new Data_Functor.Functor(function (f) {
       return function (v) {
           if (v instanceof Handler) {
@@ -12189,7 +12188,6 @@ var PS = {};
   exports["Created"] = Created;
   exports["Removed"] = Removed;
   exports["propFromString"] = propFromString;
-  exports["propFromBoolean"] = propFromBoolean;
   exports["propFromInt"] = propFromInt;
   exports["propFromNumber"] = propFromNumber;
   exports["buildProp"] = buildProp;
@@ -12280,8 +12278,7 @@ var PS = {};
   }; 
   var buttonTypeIsProp = new IsProp(function ($71) {
       return Halogen_VDom_DOM_Prop.propFromString(DOM_HTML_Indexed_ButtonType.renderButtonType($71));
-  });
-  var booleanIsProp = new IsProp(Halogen_VDom_DOM_Prop.propFromBoolean);
+  });                                                                   
   var bifunctorHTML = new Data_Bifunctor.Bifunctor(function (f) {
       return function (g) {
           return function (v) {
@@ -12308,7 +12305,6 @@ var PS = {};
   exports["stringIsProp"] = stringIsProp;
   exports["intIsProp"] = intIsProp;
   exports["numberIsProp"] = numberIsProp;
-  exports["booleanIsProp"] = booleanIsProp;
   exports["buttonTypeIsProp"] = buttonTypeIsProp;
   exports["inputTypeIsProp"] = inputTypeIsProp;
   exports["newtypeClassName"] = newtypeClassName;
@@ -13658,7 +13654,6 @@ var PS = {};
   var class_ = function ($13) {
       return prop(Halogen_HTML_Core.stringIsProp)("className")(Data_Newtype.unwrap(Halogen_HTML_Core.newtypeClassName)($13));
   };
-  var checked = prop(Halogen_HTML_Core.booleanIsProp)("checked");
   var attr = Halogen_HTML_Core.attr(Data_Maybe.Nothing.value);
   exports["prop"] = prop;
   exports["attr"] = attr;
@@ -13673,7 +13668,6 @@ var PS = {};
   exports["value"] = value;
   exports["min"] = min;
   exports["max"] = max;
-  exports["checked"] = checked;
   exports["placeholder"] = placeholder;
   exports["tabIndex"] = tabIndex;
 })(PS["Halogen.HTML.Properties"] = PS["Halogen.HTML.Properties"] || {});
@@ -16490,13 +16484,13 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:bg-blue-88", "after:all-02s-ease", "after:h-3", "after:left-w-6/2--w-4/2", "after:no-content", "after:rounded-full", "after:top-w-6/2--w-4/2", "after:w-3", "before:absolute", "before:border", "before:border-color-grey", "before:border-solid", "before:h-6", "before:no-content", "before:pin-l", "before:pin-t", "before:rounded-full", "before:w-6", "cursor-pointer", "leading-normal", "pl-8", "relative", "text-black" ]);
-  var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "flex-col", "inline-block", "py-1" ]);
-  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "checked:sibling:after:opacity-100", "checked:sibling:after:scale-1", "checked:sibling:before:border-blue-88", "not:checked:sibling:after:opacity-0", "not:checked:sibling:after:scale-0", "opacity-0" ]);
+  var radioClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "inline-flex", "justify-center", "items-center", "content-box", "border-2", "border-solid", "h-3", "w-3", "p-1", "no-content", "rounded-full", "mr-3", "after:all-02s-ease", "after:h-full", "after:w-full", "after:bg-blue-88", "after:no-content", "after:rounded-full", "after:shadow" ]);
+  var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "flex-row", "items-center", "inline-block", "py-1", "cursor-pointer", "leading-loose", "text-black" ]);
+  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:after:opacity-100", "checked:sibling:after:scale-1", "checked:sibling:border-blue-88", "not:checked:sibling:after:opacity-0", "not:checked:sibling:after:scale-0", "not:checked:sibling:border-grey-70-a40", "offscreen" ]);
   var radio = function (props) {
       return function (iprops) {
-          var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputRadio.value), Halogen_HTML_Properties.classes(inputClasses) ]);
-          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(spanClasses) ])([ Halogen_HTML_Core.text(props.label) ]) ]);
+          var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.classes(inputClasses), Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputRadio.value) ]);
+          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(radioClasses) ])([  ]), Halogen_HTML_Core.text(props.label) ]);
       };
   };
   exports["radio"] = radio;
@@ -16530,12 +16524,14 @@ var PS = {};
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Prelude = PS["Prelude"];        
-  var spanClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "after:absolute", "after:all-02s-ease", "after:bg-white", "after:block", "after:h-4", "after:left-2px", "after:no-content", "after:rounded-lg", "after:shadow", "after:w-4", "before:absolute", "before:no-content", "all-02s-ease", "bg-grey-light", "items-center", "flex", "h-5", "relative", "rounded-full", "w-8" ]);
-  var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "cursor-pointer", "select-none" ]);
-  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-blue-88", "checked:sibling:after:transform-w-4--4px", "offscreen" ]);
-  var toggle = function (iprops) {
-      var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.classes(inputClasses), Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputCheckbox.value), Halogen_HTML_Properties.checked(false) ]);
-      return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(spanClasses) ])([  ]) ]);
+  var toggleClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "all-02s-ease", "inline-flex", "justify-center", "items-center", "content-box", "h-4", "w-4", "p-1", "rounded-full", "mr-3", "after:bg-white", "after:h-full", "after:w-full", "after:rounded-full", "after:no-content", "after:shadow" ]);
+  var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "flex-row", "items-center", "inline-block", "py-1", "cursor-pointer", "leading-loose", "text-black" ]);
+  var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "checked:sibling:bg-blue-88", "checked:sibling:pr-4", "not:checked:sibling:bg-grey-light", "not:checked:sibling:pl-4", "offscreen" ]);
+  var toggle = function (props) {
+      return function (iprops) {
+          var iprops$prime = Data_Semigroup.append(Data_Semigroup.semigroupArray)(iprops)([ Halogen_HTML_Properties.classes(inputClasses), Halogen_HTML_Properties.type_(Halogen_HTML_Core.inputTypeIsProp)(DOM_HTML_Indexed_InputType.InputCheckbox.value) ]);
+          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Elements.input(iprops$prime), Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(toggleClasses) ])([  ]), Halogen_HTML_Core.text(props.label) ]);
+      };
   };
   exports["toggle"] = toggle;
 })(PS["Ocelot.Block.Toggle"] = PS["Ocelot.Block.Toggle"] || {});
@@ -16632,14 +16628,22 @@ var PS = {};
               subheader: "Enable or disable something"
           })([ UIGuide_Block_Component.component({
               title: "Toggle"
-          })([ Ocelot_Block_Toggle.toggle([  ]) ]), UIGuide_Block_Component.component({
+          })([ Halogen_HTML_Elements.div_([ Ocelot_Block_Toggle.toggle({
+              label: "Something"
+          })([  ]), Ocelot_Block_Toggle.toggle({
+              label: "Something Else"
+          })([  ]), Ocelot_Block_Toggle.toggle({
+              label: "A Third Optional Thing"
+          })([  ]) ]) ]), UIGuide_Block_Component.component({
               title: "Toggle with Form Control"
           })([ Ocelot_Block_FormControl.formControl({
               label: "Dave's OO Emails",
               helpText: new Data_Maybe.Just("Once enabled, you can never unsubscribe."),
               valid: Data_Maybe.Nothing.value,
               inputId: "toggle"
-          })(Ocelot_Block_Toggle.toggle([ Halogen_HTML_Properties.id_("toggle") ])) ]) ]), UIGuide_Block_Documentation.documentation({
+          })(Ocelot_Block_Toggle.toggle({
+              label: "Opt-in"
+          })([ Halogen_HTML_Properties.id_("toggle") ])) ]) ]), UIGuide_Block_Documentation.documentation({
               header: "Radio",
               subheader: "Select one option"
           })([ UIGuide_Block_Component.component({
