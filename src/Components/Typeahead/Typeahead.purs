@@ -72,7 +72,7 @@ defSingle props xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderFuzzy renderItem
-  , config: syncConfig toStrMap
+  , config: syncConfig toStrMap false
   }
 
 -- A def multi-select limited to N total possible selections.
@@ -90,7 +90,7 @@ defLimit props n xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Limit n []
   , render: renderTA props renderFuzzy renderItem
-  , config: syncConfig toStrMap
+  , config: syncConfig toStrMap true
   }
 
 -- A def multi-select that is provided with a renderFuzzy and renderItem function to determine
@@ -108,7 +108,7 @@ defMulti props xs { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderFuzzy renderItem
-  , config: syncConfig toStrMap
+  , config: syncConfig toStrMap true
   }
 
 -- A def async single select using the default render function
@@ -125,7 +125,7 @@ defAsyncSingle props f { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderFuzzy renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap
+  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
   }
 
 -- A def multi-select using the default render item function
@@ -142,7 +142,7 @@ defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderFuzzy renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap
+  , config: asyncConfig (Milliseconds 100.0) f toStrMap false
   }
 
 
@@ -152,13 +152,14 @@ defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
 syncConfig :: ∀ item err eff
   . Eq item
  => (item -> StrMap String)
+ -> Boolean
  -> TA.Config item err (TA.Effects eff)
-syncConfig toStrMap =
+syncConfig toStrMap keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
-  , keepOpen: true
   , syncMethod: TA.Sync
   , toStrMap
+  , keepOpen
   }
 
 asyncConfig :: ∀ item err eff
@@ -166,13 +167,14 @@ asyncConfig :: ∀ item err eff
  => Milliseconds
  -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
  -> (item -> StrMap String)
+ -> Boolean
  -> TA.Config item err (TA.Effects eff)
-asyncConfig ms f toStrMap =
+asyncConfig ms f toStrMap keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
-  , keepOpen: true
-  , toStrMap
   , syncMethod: TA.Async { debounceTime: ms, fetchItems: f }
+  , toStrMap
+  , keepOpen
   }
 
 
@@ -234,10 +236,10 @@ renderTA props renderFuzzy renderSelectionItem st =
       HH.label
         [ HP.classes Input.inputOuterClasses ]
         [ Input.input
-            ( Setters.setInputProps props )
-         , HH.span
-            [ HP.classes $ Input.inputRightClasses <> Type.linkClasses ]
-             [ HH.text "Browse" ]
+          ( Setters.setInputProps props )
+        , HH.span
+          [ HP.classes $ Input.inputRightBorderClasses <> Type.linkClasses ]
+          [ HH.text "Browse" ]
         ]
 
     renderContainer selectState =
