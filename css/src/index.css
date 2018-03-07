@@ -19,46 +19,34 @@
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
 .w-1260px { width: 1260px; }
+.content-box { box-sizing: content-box; }
 
 /* pseudo utilities */
 
-.after\:absolute:after { @apply .absolute; }
 .after\:all-02s-ease:after { @apply .all-02s-ease; }
 .after\:bg-blue-88:after { @apply .bg-blue-88; }
 .after\:bg-white:after { @apply .bg-white; }
 .after\:block:after { @apply .block; }
-.after\:h-3:after { @apply .h-3; }
+.after\:h-full:after { @apply .h-full; }
 .after\:h-4:after { @apply .h-4; }
-.after\:left-2px:after { left: 2px; }
-.after\:left-w-8\/2--w-4\/2:after { left: calc((config('width.8') / 2) - (config('width.4') / 2)); }
-.after\:no-content:after { @apply .no-content; }
-.after\:pin-l:after { @apply .pin-l; }
-.after\:rounded-full:after { @apply .rounded-full; }
-.after\:rounded-lg:after { @apply .rounded-lg; }
-.after\:shadow:after { @apply .shadow; }
-.after\:top-w-8\/2--w-4\/2:after { top: calc((config('width.8') / 2) - (config('width.4') / 2)); }
-.after\:w-3:after { @apply .w-3; }
+.after\:w-full:after { @apply .w-full; }
 .after\:w-4:after { @apply .w-4; }
+.after\:left-2px:after { left: 2px; }
+.after\:no-content:after { @apply .no-content; }
+.after\:rounded-lg:after { @apply .rounded-lg; }
+.after\:rounded-full:after { @apply .rounded-full; }
+.after\:shadow:after { @apply .shadow; }
 .before\:absolute:before { @apply .absolute; }
-.before\:all-02s-ease:before{ @apply .all-02s-ease; }
-.before\:bg-blue-88:before { @apply .bg-blue-88; }
-.before\:border-grey-70-a40:before { @apply .border-grey-70-a40; }
-.before\:border-solid:before { @apply .border-solid; }
-.before\:border:before { @apply .border; }
-.before\:border-2:before { @apply .border-2; }
-.before\:h-6:before { @apply .h-6; }
-.before\:h-8:before { @apply .h-8; }
 .before\:no-content:before { @apply .no-content; }
-.before\:pin-l:before { @apply .pin-l; }
-.before\:pin-t:before { @apply .pin-t; }
-.before\:rounded-full:before { @apply .rounded-full; }
-.before\:w-6:before { @apply .w-6; }
-.before\:w-8:before { @apply .w-8; }
+.checked\:sibling\:pr-4:checked + * { @apply .pr-4; }
+.not\:checked\:sibling\:pl-4:not(:checked) + * { @apply .pl-4; }
 .checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
 .checked\:sibling\:after\:transform-w-4--4px:checked + *:after { transform: translate(calc(config('width.4') - 4px), 0); }
-.checked\:sibling\:before\:bg-blue-88:checked + *:before { @apply .bg-blue-88; }
-.checked\:sibling\:before\:border-blue-88:checked + *:before { @apply .border-blue-88; }
+.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
+.not\:checked\:sibling\:bg-grey-light:not(:checked) + * { @apply .bg-grey-light; }
+.not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * { @apply .border-grey-70-a40; }
+.checked\:sibling\:border-blue-88:checked + * { @apply .border-blue-88; }
 .checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
 .disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
 .focus\:no-outline:focus { @apply .no-outline !important; }

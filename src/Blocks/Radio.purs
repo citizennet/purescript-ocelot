@@ -13,48 +13,47 @@ type RadioProps =
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "flex"
-  , "flex-col"
+  , "flex-row"
+  , "items-center"
   , "inline-block"
   , "py-1"
+  , "cursor-pointer"
+  , "leading-loose"
+  , "text-black"
   ]
 
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
-  [ "absolute"
-  , "checked:sibling:after:opacity-100"
+  [ "checked:sibling:after:opacity-100"
   , "checked:sibling:after:scale-1"
-  , "checked:sibling:before:border-blue-88"
+  , "checked:sibling:border-blue-88"
   , "not:checked:sibling:after:opacity-0"
   , "not:checked:sibling:after:scale-0"
-  , "opacity-0"
+  , "not:checked:sibling:border-grey-70-a40"
+  , "offscreen"
   ]
 
-spanClasses :: Array HH.ClassName
-spanClasses = HH.ClassName <$>
-  [ "after:absolute"
-  , "after:bg-blue-88"
+radioClasses :: Array HH.ClassName
+radioClasses = HH.ClassName <$>
+  [ "inline-flex"
+  , "justify-center"
+  , "items-center"
+  , "content-box"
+  , "border-2"
+  , "border-solid"
+  , "h-3"
+  , "w-3"
+  , "p-1"
+  , "no-content"
+  , "rounded-full"
+  , "mr-3"
   , "after:all-02s-ease"
-  , "after:h-4"
-  , "after:left-w-8/2--w-4/2"
+  , "after:h-full"
+  , "after:w-full"
+  , "after:bg-blue-88"
   , "after:no-content"
   , "after:rounded-full"
-  , "after:top-w-8/2--w-4/2"
-  , "after:w-4"
-  , "before:absolute"
-  , "before:border-2"
-  , "before:border-grey-70-a40"
-  , "before:border-solid"
-  , "before:h-8"
-  , "before:no-content"
-  , "before:pin-l"
-  , "before:pin-t"
-  , "before:rounded-full"
-  , "before:w-8"
-  , "cursor-pointer"
-  , "leading-loose"
-  , "pl-10"
-  , "relative"
-  , "text-black"
+  , "after:shadow"
   ]
 
 radio
@@ -66,10 +65,11 @@ radio props iprops =
   HH.label
     [ HP.classes labelClasses ]
     [ HH.input iprops'
-    , HH.span
-      [ HP.classes spanClasses ]
-      [ HH.text props.label ]
+    , HH.span [ HP.classes radioClasses ] []
+    , HH.text props.label
     ]
-    where 
-     iprops' = 
-       iprops <> [ HP.type_ InputRadio, HP.classes inputClasses ]
+    where
+     iprops' = iprops <>
+       [ HP.classes inputClasses
+       , HP.type_ InputRadio
+       ]
