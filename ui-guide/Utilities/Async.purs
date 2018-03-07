@@ -4,7 +4,6 @@ import Prelude
 
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead (SyncMethod(..))
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
@@ -16,7 +15,7 @@ import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
 import Network.HTTP.Affjax (get, AJAX)
-import Network.RemoteData (RemoteData(..), fromEither)
+import Network.RemoteData (RemoteData, fromEither)
 
 
 ----------
@@ -64,14 +63,6 @@ fail = users
 ----------
 -- Functions
 
--- Not yet using 'search'
-load :: ∀ eff item
-  . SyncMethod (Source item) Err (Array item)
- -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
-load (Sync xs) = pure $ Success xs
-load (Async src _) = loadFromSource src
-load (ContinuousAsync _ search src _) = loadFromSource src
-
 -- Given a source, load the resulting data.
 loadFromSource :: ∀ eff item
   . Source item
@@ -83,7 +74,6 @@ loadFromSource (Source { root, path, speed, decoder }) = case speed of
     _ <- liftEff $ setTimeout 5000 (pure unit)
     res <- get (root <> path)
     pure $ decoder res.response
-
 
 ----------
 -- Types for the JSON API

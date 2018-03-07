@@ -15,6 +15,8 @@ yarn.lock
 dist/*
 !dist/cn-tailwind.css
 !dist/cn-tailwind.min.css
+!dist/cn-tailwind.scoped.css
+!dist/cn-tailwind.scoped.min.css
 !dist/index.html
 
 # IDE

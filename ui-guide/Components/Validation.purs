@@ -2,11 +2,12 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
+import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Button as Button
 import Ocelot.Block.FormControl as FormControl
 import Ocelot.Block.Input as Input
-import Ocelot.Components.Typeahead as TAInput
-import Ocelot.Core.Typeahead as TA
+import Ocelot.Components.Typeahead as TA
+import Ocelot.Core.Typeahead as TACore
 import Ocelot.Core.Validation as CV
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
@@ -20,7 +21,7 @@ import Data.Functor.Coproduct.Nested (Coproduct4)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
 import Data.String.Utils as String.Utils
@@ -47,10 +48,10 @@ type State =
 
 data Query a
   = UpdateTextField Int String a
-  | HandleA (TA.TypeaheadMessage Query TestRecord Void Void) a
-  | HandleB (TA.TypeaheadMessage Query Async.Todo (Async.Source Async.Todo) Async.Err) a
-  | HandleC (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
-  | HandleD (TA.TypeaheadMessage Query Async.User (Async.Source Async.User) Async.Err) a
+  | HandleSync (TACore.Message Query TestRecord) a
+  | HandleB (TACore.Message Query Async.Todo) a
+  | HandleC (TACore.Message Query Async.User) a
+  | HandleD (TACore.Message Query Async.User) a
   | Validate FormErrorKey FormVKey a
   | FormSubmit a
 
@@ -60,17 +61,11 @@ data Query a
 
 type ChildSlot = Either4 Unit Unit Unit Unit
 type ChildQuery eff m = Coproduct4
-  (TA.TypeaheadQuery Query TestRecord Void Void eff m)
-  (TA.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m)
-  (TA.TypeaheadQuery Query Async.User (Async.Source Async.User) Async.Err eff m)
-  (TA.TypeaheadQuery Query Async.User (Async.Source Async.User) Async.Err eff m)
+  (TACore.Query Query TestRecord Void eff m)
+  (TACore.Query Query Async.Todo Async.Err eff m)
+  (TACore.Query Query Async.User Async.Err eff m)
+  (TACore.Query Query Async.User Async.Err eff m)
 
-
-cp1 :: ∀ eff m. CP.ChildPath (TA.TypeaheadQuery Query TestRecord Void Void eff m) (ChildQuery eff m) Unit ChildSlot
-cp1 = CP.cp1
-
-cp2 :: ∀ eff m. CP.ChildPath (TA.TypeaheadQuery Query Async.Todo (Async.Source Async.Todo) Async.Err eff m) (ChildQuery eff m) Unit ChildSlot
-cp2 = CP.cp2
 
 ----------
 -- Component definition
@@ -110,19 +105,31 @@ component =
     eval
       :: Query
       ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
-    eval (HandleA message next) = case message of
+    eval (HandleSync message next) = case message of
+      TACore.SelectionsChanged _ _ s -> do
+         H.modify (_ { raw { developers = TACore.unpackSelection s } } )
+         pure next
       _ -> pure next
 
     eval (HandleB message next) = case message of
-      TA.RequestData syncMethod -> load CP.cp2 syncMethod *> pure next
+      TACore.SelectionsChanged _ _ s -> do
+        H.modify (_ { raw { todos = TACore.unpackSelections s }})
+        pure next
       _ -> pure next
 
     eval (HandleC message next) = case message of
-      TA.RequestData syncMethod -> load CP.cp3 syncMethod *> pure next
+      TACore.SelectionsChanged _ _ s -> do
+         H.modify (_ { raw { users1 = TACore.unpackSelections s }})
+         pure next
       _ -> pure next
 
     eval (HandleD message next) = case message of
-      TA.RequestData syncMethod -> load CP.cp4 syncMethod *> pure next
+      TACore.SelectionsChanged _ _ s -> do
+         H.modify (_ { raw { users2 = TACore.unpackSelections s }})
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.Reset
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
+         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Dave", id: 1 })
+         pure next
       _ -> pure next
 
     eval (UpdateTextField i str next) = case i of
@@ -138,44 +145,12 @@ component =
       pure next
 
     eval (FormSubmit next) = do
-      -- Collect data from components
-      devs   <- H.query' CP.cp1 unit (H.request TA.Selections)
-      todos  <- H.query' CP.cp2 unit (H.request TA.Selections)
-      users1 <- H.query' CP.cp3 unit (H.request TA.Selections)
-      users2 <- H.query' CP.cp4 unit (H.request TA.Selections)
-
-      H.modify
-        (_ { raw
-             { developers = TA.unpackSelection =<< devs
-             , todos = fromMaybe [] $ TA.unpackSelections <$> todos
-             , users1 = fromMaybe [] $ TA.unpackSelections <$> users1
-             , users2 = fromMaybe [] $ TA.unpackSelections <$> users2
-             }
-           })
-
-      -- Validate data
       st <- H.get
       let validation = runValidation st.raw
       let errors = unV id (const Map.empty) validation
       H.modify (_ { errors = errors })
       pure next
 
-
-    load :: ∀ item
-      . CP.ChildPath (TA.TypeaheadQuery Query item (Async.Source item) Async.Err (Effects eff) m) (ChildQuery (Effects eff) m) Unit ChildSlot
-     -> TA.SyncMethod (Async.Source item) Async.Err (Array item)
-     -> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m Unit
-    load cp m = do
-      res <- H.liftAff $ Async.load m
-      case TA.maybeReplaceItems res m of
-        Nothing -> pure unit
-        (Just newSync) -> do
-           _ <- H.query' cp unit $ H.action $ TA.FulfillRequest newSync
-           pure unit
-
-
-----------
--- Validation
 
 -----
 -- Run validation
@@ -336,9 +311,9 @@ renderForm st =
           , valid: Map.lookup FailDevelopers st.errors
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp1 unit TA.component
-            (TAInput.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] testRecords renderItemTestRecord)
-            (HE.input HandleA)
+          ( HH.slot' CP.cp1 unit TACore.component
+            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
+            (HE.input HandleSync)
           )
         , FormControl.formControl
           { label: "Todos"
@@ -346,8 +321,8 @@ renderForm st =
           , valid: Map.lookup FailTodos st.errors
           , inputId: "todos"
           }
-          ( HH.slot' CP.cp2 unit TA.component
-            (TAInput.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] Async.todos Async.renderItemTodo)
+          ( HH.slot' CP.cp2 unit TACore.component
+            (TA.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] (\_ -> Async.loadFromSource Async.todos) Async.renderItemTodo)
             (HE.input HandleB)
           )
         , FormControl.formControl
@@ -356,8 +331,8 @@ renderForm st =
           , valid: Map.lookup FailUsers1 st.errors
           , inputId: "users1"
           }
-          ( HH.slot' CP.cp3 unit TA.component
-            (TAInput.defContAsyncMulti [ HP.placeholder "Search users asynchronously", HP.id_ "users1" ] Async.users Async.renderItemUser)
+          ( HH.slot' CP.cp3 unit TACore.component
+            (TA.defAsyncMulti [ HP.placeholder "Search users asynchronously", HP.id_ "users1" ] (\_ -> Async.loadFromSource Async.users) Async.renderItemUser)
             (HE.input HandleC)
           )
         , FormControl.formControl
@@ -366,8 +341,8 @@ renderForm st =
           , valid: Map.lookup FailUsers2 st.errors
           , inputId: "users2"
           }
-          ( HH.slot' CP.cp4 unit TA.component
-            (TAInput.defAsyncMulti [ HP.placeholder "Search more users...", HP.id_ "users2" ] Async.users Async.renderItemUser)
+          ( HH.slot' CP.cp4 unit TACore.component
+            (TA.defAsyncMulti [ HP.placeholder "Search more users...", HP.id_ "users2" ] (\_ -> Async.loadFromSource Async.users) Async.renderItemUser)
             (HE.input HandleD)
           )
         , FormControl.formControl
@@ -414,11 +389,11 @@ instance eqTestRecord :: Eq TestRecord where
 
 derive instance newtypeTestRecord :: Newtype TestRecord _
 
-renderItemTestRecord :: TAInput.RenderTypeaheadItem TestRecord
+renderItemTestRecord :: TA.RenderTypeaheadItem TestRecord
 renderItemTestRecord =
   { toStrMap: testToStrMap
-  , renderFuzzy: TAInput.defRenderFuzzy
-  , renderItem: (TAInput.defRenderItem <<< unwrap)
+  , renderFuzzy: TA.defRenderFuzzy
+  , renderItem: (TA.defRenderItem <<< unwrap)
   }
 
 testToStrMap :: TestRecord -> StrMap String

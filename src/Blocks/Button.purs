@@ -18,11 +18,10 @@ type ButtonProps =
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "no-outline"
-  , "px-3"
-  , "py-2"
+  , "px-4"
+  , "py-3"
   , "rounded"
   , "shadow"
-  , "text-sm"
   ]
 
 buttonTypeClasses :: ButtonType -> Array HH.ClassName

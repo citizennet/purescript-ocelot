@@ -79,7 +79,7 @@ jobs:
           name: Build CSS
           command: |
             yarn run install-css
-            yarn run build-css-prod
+            yarn run build-css
 
       - save_cache:
           key: v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}

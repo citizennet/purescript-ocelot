@@ -5,13 +5,14 @@ var config = require('tailwindcss/defaultConfig')()
 config.height = Object.assign(config.height, {
   '5': '1.25rem',
   '7': '1.75rem',
-  '9': '2.25rem'
+  '9': '2.25rem',
 })
 
 config.width = Object.assign(config.width, {
   '5': '1.25rem',
   '7': '1.75rem',
-  '9': '2.25rem'
+  '9': '2.25rem',
+  '20': '5rem'
 })
 
 // Additional padding and margin sizes
@@ -39,6 +40,10 @@ config.maxHeight = Object.assign(config.maxHeight, {
   '16': '4rem',
   '20': '5rem',
   '80': '20rem',
+})
+
+config.maxWidth = Object.assign(config.maxWidth, {
+  '6xl': '110rem',
 })
 
 config.colors = Object.assign(config.colors, {
