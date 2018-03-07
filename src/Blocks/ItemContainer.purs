@@ -2,16 +2,16 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLdiv)
+import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.StrMap (lookup)
 import Data.Monoid (mempty)
-import Data.Either (Either(..))
+import Data.StrMap (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-
 import Select as Select
 import Select.Utils.Setters as Setters
 
@@ -61,7 +61,6 @@ liClasses = HH.ClassName <$>
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "float-right"
-  , "leading-normal"
   , "invisible"
   , "group-hover:visible"
   ]
@@ -112,7 +111,7 @@ selectionContainer html =
 selectionGroup
   :: ∀ item i p
    . (item -> HH.PlainHTML)
-  -> Array (HH.IProp _ p)
+  -> Array (HH.IProp HTMLdiv p)
   -> item
   -> HH.HTML i p
 selectionGroup f props item =

@@ -2,8 +2,10 @@ module Ocelot.Block.NavigationTab where
 
 import Prelude
 
+import Data.Array ((:))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Icon (info)
 
 type Tab page =
   { name :: String
@@ -19,30 +21,30 @@ type TabConfig page =
 
 type IsActive = Boolean
 
-navClasses :: Array HH.ClassName
-navClasses = HH.ClassName <$>
+outerClasses :: Array HH.ClassName
+outerClasses = HH.ClassName <$>
   [ "bg-black-10"
-  , "px-8"
   , "w-full"
+  , "px-6"
   ]
 
 innerClasses :: Array HH.ClassName
 innerClasses = HH.ClassName <$>
   [ "container"
-  , "m-auto"
+  , "items-end"
+  , "mx-auto"
   , "flex"
   , "px-20"
+  , "h-16"
+  , "list-reset"
   ]
 
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
-  [ "leading-normal"
-  , "py-6"
+  [ "pt-5"
+  , "pb-6"
   , "inline-block"
   , "no-underline"
-  , "tracking-wide"
-  , "uppercase"
-  , "text-sm"
   ]
 
 activeTabClasses :: Array HH.ClassName
@@ -54,10 +56,29 @@ activeTabClasses = HH.ClassName <$>
 
 inactiveTabClasses :: Array HH.ClassName
 inactiveTabClasses = HH.ClassName <$>
-  [ "hover:border-b-2"
+  [ "border-b-2"
+  , "border-black-10"
   , "hover:border-blue-88"
   , "hover:text-white"
   , "text-grey-70"
+  ]
+
+tabTextClasses :: Array HH.ClassName
+tabTextClasses = HH.ClassName <$>
+  [ "text-sm"
+  , "tracking-wide"
+  , "uppercase"
+  , "bold"
+  , "inline-flex"
+  ]
+
+errorIconClasses :: Array HH.ClassName
+errorIconClasses = HH.ClassName <$>
+  [ "text-2xl"
+  , "text-red"
+  , "mr-4"
+  , "inline-flex"
+  , "align-bottom"
   ]
 
 navigationTabs
@@ -67,7 +88,7 @@ navigationTabs
   -> HH.HTML p i
 navigationTabs { tabs, activePage } =
   HH.div
-    [ HP.classes navClasses ]
+    [ HP.classes outerClasses ]
     [ HH.ul
       [ HP.classes innerClasses ]
       $ navigationTab activePage <$> tabs
@@ -84,13 +105,24 @@ navigationTab activePage tab =
     [ HP.class_ $ HH.ClassName "mr-12" ]
     [ HH.a
       [ HP.href tab.link
-      , HP.classes $ tabClasses <> tabStyles (tab.page == activePage)
+      , HP.classes $ tabClasses <> conditionalTabClasses isActive
       ]
-      $ (if tab.errors > 0 && tab.page /= activePage then [ HH.i [ HP.class_ $ HH.ClassName "mr-2"] [ HH.text "errors" ] ] else [])
-      <> [ HH.text tab.name ]
+      [ info
+        [ HP.classes $ conditionalIconClasses isActive tab.errors ]
+      , HH.span
+        [ HP.classes tabTextClasses ]
+        [ HH.text tab.name ]
+      ]
     ]
-
   where
-    tabStyles :: IsActive -> Array HH.ClassName
-    tabStyles true = activeTabClasses
-    tabStyles false = inactiveTabClasses
+    isActive :: Boolean
+    isActive = tab.page == activePage
+
+    conditionalTabClasses :: IsActive -> Array HH.ClassName
+    conditionalTabClasses true = activeTabClasses
+    conditionalTabClasses false = inactiveTabClasses
+
+    conditionalIconClasses :: IsActive -> Int -> Array HH.ClassName
+    conditionalIconClasses active errors
+      | errors > 0 && active == false = errorIconClasses
+      | otherwise = HH.ClassName "hidden" : errorIconClasses
