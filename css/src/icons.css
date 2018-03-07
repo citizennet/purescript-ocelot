@@ -1,0 +1,85 @@
+@font-face {
+  font-family: ocelot-icon;
+  src: url(data:application/x-font-woff;base64,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
+);
+  font-weight: normal;
+  font-style: normal;
+}
+
+[data-icon]:before {
+  font-family: "ocelot-icon" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "ocelot-icon" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-timeline:before {
+  content: "\e000";
+}
+.icon-share:before {
+  content: "\e001";
+}
+.icon-settings:before {
+  content: "\e002";
+}
+.icon-search:before {
+  content: "\e003";
+}
+.icon-back:before {
+  content: "\e004";
+}
+.icon-carat-down:before {
+  content: "\e005";
+}
+.icon-carat-right:before {
+  content: "\e006";
+}
+.icon-close:before {
+  content: "\e008";
+}
+.icon-collapse:before {
+  content: "\e009";
+}
+.icon-data-sources:before {
+  content: "\e010";
+}
+.icon-download:before {
+  content: "\e011";
+}
+.icon-expand:before {
+  content: "\e012";
+}
+.icon-info:before {
+  content: "\e013";
+}
+.icon-menu:before {
+  content: "\e014";
+}
+.icon-options:before {
+  content: "\e015";
+}
+.icon-refresh:before {
+  content: "\e016";
+}
+.icon-carat-up:before {
+  content: "\e017";
+}

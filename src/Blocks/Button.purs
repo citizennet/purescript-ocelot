@@ -27,7 +27,7 @@ buttonClasses = HH.ClassName <$>
 buttonTypeClasses :: ButtonType -> Array HH.ClassName
 buttonTypeClasses type_ = HH.ClassName <$> classNames type_
   where
-    classNames Default = 
+    classNames Default =
       [ "bg-grey-50-a20"
       , "hover:bg-grey-50-a30"
       , "text-black-20"
@@ -36,7 +36,7 @@ buttonTypeClasses type_ = HH.ClassName <$> classNames type_
     classNames Primary =
       [ "bg-blue-88"
       , "hover:bg-blue-82"
-      , "text-white" 
+      , "text-white"
       ]
 
     classNames Secondary =

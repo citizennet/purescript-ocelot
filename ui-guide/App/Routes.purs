@@ -20,6 +20,7 @@ import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
 import UIGuide.Components.Card as Card
 import UIGuide.Components.FormControl as FormControl
+import UIGuide.Components.Icon as Icon
 import UIGuide.Components.Tab as Tab
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Validation as Validation
@@ -63,4 +64,6 @@ routes = fromFoldable
       { anchor: "Form Controls", component: proxy FormControl.component, group: FormElements }
   , Tuple "validation"
       { anchor: "Validation", component: proxy Validation.component, group: Behaviors }
+  , Tuple "icon"
+      { anchor: "Icon", component: proxy Icon.icon, group: FormElements }
   ]
