@@ -2,8 +2,7 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLinput, HTMLlabel)
-import Data.Maybe (Maybe, maybe)
+import DOM.HTML.Indexed (HTMLinput)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 
@@ -21,7 +20,6 @@ inputInnerClasses = HH.ClassName <$>
   [ "cc-blue-88"
   , "disabled:bg-grey-light"
   , "focus:no-outline"
-  , "px-4"
   , "py-3"
   , "rounded-sm"
   , "flex-auto"
@@ -30,22 +28,47 @@ inputInnerClasses = HH.ClassName <$>
 inputClasses :: Array HH.ClassName
 inputClasses = inputOuterClasses <> inputInnerClasses
 
+inputCenterClasses :: Array HH.ClassName
+inputCenterClasses = HH.ClassName <$>
+  [ "px-4"
+  , "self-center"
+  ]
+
 inputLeftClasses :: Array HH.ClassName
 inputLeftClasses = HH.ClassName <$>
+  [ "pl-4"
+  , "pr-1"
+  , "self-center"
+  ]
+
+inputLeftBorderClasses :: Array HH.ClassName
+inputLeftBorderClasses = HH.ClassName <$>
   [ "border-r"
-  , "ml-r"
-  , "px-3"
-  , "cursor-pointer"
+  , "px-4"
   , "self-center"
   ]
 
 inputRightClasses :: Array HH.ClassName
 inputRightClasses = HH.ClassName <$>
-  [ "border-l"
-  , "ml-1"
-  , "px-3"
-  , "cursor-pointer"
+  [ "pr-4"
+  , "pl-1"
   , "self-center"
+  ]
+
+inputRightBorderClasses :: Array HH.ClassName
+inputRightBorderClasses = HH.ClassName <$>
+  [ "border-l"
+  , "self-center"
+  , "px-4"
+  ]
+
+addonClasses :: Array HH.ClassName
+addonClasses = HH.ClassName <$>
+  [ "text-grey"
+  , "cursor-pointer"
+  , "py-3"
+  , "bg-white"
+  , "rounded-sm"
   ]
 
 input
@@ -53,4 +76,17 @@ input
    . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 input iprops =
-  HH.input (iprops <> [ HP.classes inputClasses ])
+  HH.input (iprops <> [ HP.classes $ inputClasses <> inputCenterClasses ])
+
+percentage
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+percentage iprops =
+  HH.label
+  [ HP.class_ $ HH.ClassName "flex" ]
+  [ HH.input (iprops <> [ HP.classes $ inputClasses <> inputLeftClasses ])
+  , HH.span
+    [ HP.classes $ addonClasses <> inputRightClasses ]
+    [ HH.text "%" ]
+  ]

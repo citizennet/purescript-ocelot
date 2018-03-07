@@ -234,10 +234,10 @@ renderTA props renderFuzzy renderSelectionItem st =
       HH.label
         [ HP.classes Input.inputOuterClasses ]
         [ Input.input
-            ( Setters.setInputProps props )
-         , HH.span
-            [ HP.classes $ Input.inputRightClasses <> Type.linkClasses ]
-             [ HH.text "Browse" ]
+          ( Setters.setInputProps props )
+        , HH.span
+          [ HP.classes $ Input.inputRightBorderClasses <> Type.linkClasses ]
+          [ HH.text "Browse" ]
         ]
 
     renderContainer selectState =
