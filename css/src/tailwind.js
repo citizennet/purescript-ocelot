@@ -18,6 +18,15 @@ config.width = Object.assign(config.width, {
   '40': '10rem',
 })
 
+config.minWidth = Object.assign(config.minWidth, {
+  '5': '1.25rem',
+  '7': '1.75rem',
+  '9': '2.25rem',
+  '12': '3rem',
+  '20': '5rem'
+})
+
+
 // Additional padding and margin sizes
 config.padding = Object.assign(config.padding, {
   '5': '1.25rem',
