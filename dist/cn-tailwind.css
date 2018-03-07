@@ -534,42 +534,12 @@ ul {
  * Tailwind custom reset styles
  */
 
-/**
- * Allow adding a border to an element by just adding a border-width.
- *
- * By default, the way the browser specifies that an element should have no
- * border is by setting it's border-style to `none` in the user-agent
- * stylesheet.
- *
- * In order to easily add borders to elements by just setting the `border-width`
- * property, we change the default border-style for all elements to `solid`, and
- * use border-width to hide them instead. This way our `border` utilities only
- * need to set the `border-width` property instead of the entire `border`
- * shorthand, making our border utilities much more straightforward to compose.
- *
- * https://github.com/tailwindcss/tailwindcss/pull/116
- */
-
 *,
 *::before,
 *::after {
   border-width: 0;
   border-style: solid;
   border-color: #dae1e7;
-}
-
-/**
- * Undo the `border-style: none` reset that Normalize applies to images so that
- * our `border-{width}` utilities have the expected effect.
- *
- * The Normalize reset is unnecessary for us since we default the border-width
- * to 0 on all elements.
- *
- * https://github.com/tailwindcss/tailwindcss/issues/362
- */
-
-img {
-  border-style: solid;
 }
 
 /**
@@ -3479,6 +3449,26 @@ button,
   min-width: 0;
 }
 
+.min-w-5 {
+  min-width: 1.25rem;
+}
+
+.min-w-7 {
+  min-width: 1.75rem;
+}
+
+.min-w-9 {
+  min-width: 2.25rem;
+}
+
+.min-w-12 {
+  min-width: 3rem;
+}
+
+.min-w-20 {
+  min-width: 5rem;
+}
+
 .min-w-full {
   min-width: 100%;
 }
@@ -5836,7 +5826,6 @@ html {
 input[type=range] {
   -webkit-appearance: none;
   background: transparent;
-  margin: 18px 0;
   width: 100%;
 }
 
@@ -5892,45 +5881,22 @@ input[type=range]::-moz-range-thumb {
 
 input[type=range]::-ms-track {
   width: 100%;
-  height: 8.4px;
+  height: 3px;
   cursor: pointer;
   animate: .2s;
-  background: transparent;
-  border-color: transparent;
-  border-width: 16px 0;
-  color: transparent;
-}
-
-input[type=range]::-ms-fill-lower {
-  background: #2a6495;
-  border: .2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
-}
-
-input[type=range]::-ms-fill-upper {
-  background: #3071a9;
-  border: .2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
+  box-shadow: none;
+  background: rgba(102, 113, 128, .3);
+  border-radius: 1.3px;
+  border: none;
 }
 
 input[type=range]::-ms-thumb {
-  box-shadow: 1px 1px 1px #000, 0 0 1px #0d0d0d;
-  border: 1px solid #000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #fff;
+  border: 2px solid #f0f1f2;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  background: #00bbe0;
   cursor: pointer;
-}
-
-input[type=range]:focus::-ms-fill-lower {
-  background: #3071a9;
-}
-
-input[type=range]:focus::-ms-fill-upper {
-  background: #367ebd;
 }
 
 @media (min-width: 576px) {
@@ -8767,6 +8733,26 @@ input[type=range]:focus::-ms-fill-upper {
 
   .sm\:min-w-0 {
     min-width: 0;
+  }
+
+  .sm\:min-w-5 {
+    min-width: 1.25rem;
+  }
+
+  .sm\:min-w-7 {
+    min-width: 1.75rem;
+  }
+
+  .sm\:min-w-9 {
+    min-width: 2.25rem;
+  }
+
+  .sm\:min-w-12 {
+    min-width: 3rem;
+  }
+
+  .sm\:min-w-20 {
+    min-width: 5rem;
   }
 
   .sm\:min-w-full {
@@ -13684,6 +13670,26 @@ input[type=range]:focus::-ms-fill-upper {
     min-width: 0;
   }
 
+  .md\:min-w-5 {
+    min-width: 1.25rem;
+  }
+
+  .md\:min-w-7 {
+    min-width: 1.75rem;
+  }
+
+  .md\:min-w-9 {
+    min-width: 2.25rem;
+  }
+
+  .md\:min-w-12 {
+    min-width: 3rem;
+  }
+
+  .md\:min-w-20 {
+    min-width: 5rem;
+  }
+
   .md\:min-w-full {
     min-width: 100%;
   }
@@ -18599,6 +18605,26 @@ input[type=range]:focus::-ms-fill-upper {
     min-width: 0;
   }
 
+  .lg\:min-w-5 {
+    min-width: 1.25rem;
+  }
+
+  .lg\:min-w-7 {
+    min-width: 1.75rem;
+  }
+
+  .lg\:min-w-9 {
+    min-width: 2.25rem;
+  }
+
+  .lg\:min-w-12 {
+    min-width: 3rem;
+  }
+
+  .lg\:min-w-20 {
+    min-width: 5rem;
+  }
+
   .lg\:min-w-full {
     min-width: 100%;
   }
@@ -23512,6 +23538,26 @@ input[type=range]:focus::-ms-fill-upper {
 
   .xl\:min-w-0 {
     min-width: 0;
+  }
+
+  .xl\:min-w-5 {
+    min-width: 1.25rem;
+  }
+
+  .xl\:min-w-7 {
+    min-width: 1.75rem;
+  }
+
+  .xl\:min-w-9 {
+    min-width: 2.25rem;
+  }
+
+  .xl\:min-w-12 {
+    min-width: 3rem;
+  }
+
+  .xl\:min-w-20 {
+    min-width: 5rem;
   }
 
   .xl\:min-w-full {
