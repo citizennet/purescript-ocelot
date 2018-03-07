@@ -99,7 +99,12 @@ component =
           , subheader: "Enable or disable something" }
           [ Component.component
               { title: "Toggle" }
-              [ Toggle.toggle [] ]
+              [ HH.div_
+                [ Toggle.toggle { label: "Something" } []
+                , Toggle.toggle { label: "Something Else" } []
+                , Toggle.toggle { label: "A Third Optional Thing" } []
+                ]
+              ]
           , Component.component
               { title: "Toggle with Form Control" }
               [ FormControl.formControl
@@ -108,7 +113,7 @@ component =
                 , valid: Nothing
                 , inputId: "toggle"
                 }
-                ( Toggle.toggle [ HP.id_ "toggle" ] )
+                ( Toggle.toggle { label: "Opt-in" } [ HP.id_ "toggle" ] )
               ]
           ]
       , Documentation.documentation
@@ -118,16 +123,10 @@ component =
           [ Component.component
               { title: "Radio" }
               [ HH.div_
-                  [ Radio.radio
-                      { label: "Apples" }
-                      [ HP.name "fruit" ]
-                  , Radio.radio
-                      { label: "Bananas" }
-                      [ HP.name "fruit" ]
-                  , Radio.radio
-                      { label: "Oranges" }
-                      [ HP.name "fruit" ]
-                  ]
+                [ Radio.radio { label: "Apples" } [ HP.name "fruit" ]
+                , Radio.radio { label: "Bananas" } [ HP.name "fruit" ]
+                , Radio.radio { label: "Oranges" } [ HP.name "fruit" ]
+                ]
               ]
           , Component.component
               { title: "Radio with Form Control" }

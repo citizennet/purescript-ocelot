@@ -7,56 +7,65 @@ import DOM.HTML.Indexed.InputType (InputType(InputCheckbox))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 
+type ToggleProps =
+  { label :: String }
+
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
-  [ "cursor-pointer"
-  , "select-none"
+  [ "flex"
+  , "flex-row"
+  , "items-center"
+  , "inline-block"
+  , "py-1"
+  , "cursor-pointer"
+  , "leading-loose"
+  , "text-black"
   ]
 
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
   [ "checked:sibling:bg-blue-88"
-  , "checked:sibling:after:transform-w-4--4px"
+  , "checked:sibling:pr-4"
+  , "not:checked:sibling:bg-grey-light"
+  , "not:checked:sibling:pl-4"
   , "offscreen"
   ]
 
-spanClasses :: Array HH.ClassName
-spanClasses = HH.ClassName <$>
-  [ "after:absolute"
-  , "after:all-02s-ease"
-  , "after:bg-white"
-  , "after:block"
-  , "after:h-4"
-  , "after:left-2px"
-  , "after:no-content"
-  , "after:rounded-lg"
-  , "after:shadow"
-  , "after:w-4"
-  , "before:absolute"
-  , "before:no-content"
-  , "all-02s-ease"
-  , "bg-grey-light"
+toggleClasses :: Array HH.ClassName
+toggleClasses = HH.ClassName <$>
+  [ "all-02s-ease"
+  , "inline-flex"
+  , "justify-center"
   , "items-center"
-  , "flex"
-  , "h-5"
-  , "relative"
+  , "content-box"
+  , "h-4"
+  , "w-4"
+  , "p-1"
   , "rounded-full"
-  , "w-8"
+  , "mr-3"
+  , "after:bg-white"
+  , "after:h-full"
+  , "after:w-full"
+  , "after:rounded-full"
+  , "after:no-content"
+  , "after:shadow"
   ]
 
 toggle
   :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
+   . ToggleProps
+  -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
-toggle iprops =
+toggle props iprops =
   HH.label
     [ HP.classes labelClasses ]
-    [ HH.input iprops' 
-    , HH.span 
-      [ HP.classes spanClasses ] 
-      []
+    [ HH.input iprops'
+    , HH.span [ HP.classes toggleClasses ] []
+    , HH.text props.label
     ]
     where
-      iprops' = 
-        iprops <> [ HP.classes inputClasses , HP.type_ InputCheckbox , HP.checked false ]
+      iprops' = iprops <>
+        [ HP.classes inputClasses
+        , HP.type_ InputCheckbox
+        ]
 
