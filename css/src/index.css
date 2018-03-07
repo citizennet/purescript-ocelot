@@ -18,7 +18,6 @@
 .offscreen { @apply .fixed; left: -9999%; top: -9999%; z-index: -9999; }
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
-.w-1260px { width: 1260px; }
 .content-box { box-sizing: content-box; }
 
 /* pseudo utilities */
@@ -26,23 +25,15 @@
 .after\:all-02s-ease:after { @apply .all-02s-ease; }
 .after\:bg-blue-88:after { @apply .bg-blue-88; }
 .after\:bg-white:after { @apply .bg-white; }
-.after\:block:after { @apply .block; }
 .after\:h-full:after { @apply .h-full; }
-.after\:h-4:after { @apply .h-4; }
 .after\:w-full:after { @apply .w-full; }
-.after\:w-4:after { @apply .w-4; }
-.after\:left-2px:after { left: 2px; }
 .after\:no-content:after { @apply .no-content; }
-.after\:rounded-lg:after { @apply .rounded-lg; }
 .after\:rounded-full:after { @apply .rounded-full; }
 .after\:shadow:after { @apply .shadow; }
-.before\:absolute:before { @apply .absolute; }
-.before\:no-content:before { @apply .no-content; }
 .checked\:sibling\:pr-4:checked + * { @apply .pr-4; }
 .not\:checked\:sibling\:pl-4:not(:checked) + * { @apply .pl-4; }
 .checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
-.checked\:sibling\:after\:transform-w-4--4px:checked + *:after { transform: translate(calc(config('width.4') - 4px), 0); }
 .checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
 .not\:checked\:sibling\:bg-grey-light:not(:checked) + * { @apply .bg-grey-light; }
 .not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * { @apply .border-grey-70-a40; }

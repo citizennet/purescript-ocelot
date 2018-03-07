@@ -5705,10 +5705,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
   transform: scale(1);
 }
 
-.ocelot-scoped .w-1260px {
-  width: 1260px;
-}
-
 .ocelot-scoped .content-box {
   box-sizing: content-box;
 }
@@ -5727,36 +5723,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #fff;
 }
 
-.ocelot-scoped .after\:block:after {
-  display: block;
-}
-
 .ocelot-scoped .after\:h-full:after {
   height: 100%;
-}
-
-.ocelot-scoped .after\:h-4:after {
-  height: 1rem;
 }
 
 .ocelot-scoped .after\:w-full:after {
   width: 100%;
 }
 
-.ocelot-scoped .after\:w-4:after {
-  width: 1rem;
-}
-
-.ocelot-scoped .after\:left-2px:after {
-  left: 2px;
-}
-
 .ocelot-scoped .after\:no-content:after {
   content: '';
-}
-
-.ocelot-scoped .after\:rounded-lg:after {
-  border-radius: .5rem;
 }
 
 .ocelot-scoped .after\:rounded-full:after {
@@ -5765,14 +5741,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .after\:shadow:after {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
-}
-
-.ocelot-scoped .before\:absolute:before {
-  position: absolute;
-}
-
-.ocelot-scoped .before\:no-content:before {
-  content: '';
 }
 
 .ocelot-scoped .checked\:sibling\:pr-4:checked + * {
@@ -5789,10 +5757,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .checked\:sibling\:after\:scale-1:checked + *:after {
   transform: scale(1);
-}
-
-.ocelot-scoped .checked\:sibling\:after\:transform-w-4--4px:checked + *:after {
-  transform: translate(calc(1rem - 4px), 0);
 }
 
 .ocelot-scoped .checked\:sibling\:bg-blue-88:checked + * {
