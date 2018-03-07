@@ -2991,6 +2991,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   margin: 1rem;
 }
 
+.ocelot-scoped .m-5 {
+  margin: 1.25rem;
+}
+
 .ocelot-scoped .m-6 {
   margin: 1.5rem;
 }
@@ -3075,6 +3079,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
 .ocelot-scoped .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+.ocelot-scoped .my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.ocelot-scoped .mx-5 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
 }
 
 .ocelot-scoped .my-6 {
@@ -3245,6 +3259,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .ml-4 {
   margin-left: 1rem;
+}
+
+.ocelot-scoped .mt-5 {
+  margin-top: 1.25rem;
+}
+
+.ocelot-scoped .mr-5 {
+  margin-right: 1.25rem;
+}
+
+.ocelot-scoped .mb-5 {
+  margin-bottom: 1.25rem;
+}
+
+.ocelot-scoped .ml-5 {
+  margin-left: 1.25rem;
 }
 
 .ocelot-scoped .mt-6 {
@@ -3503,6 +3533,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   margin: -1rem;
 }
 
+.ocelot-scoped .-m-5 {
+  margin: -1.25rem;
+}
+
 .ocelot-scoped .-m-6 {
   margin: -1.5rem;
 }
@@ -3587,6 +3621,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
 .ocelot-scoped .-mx-4 {
   margin-left: -1rem;
   margin-right: -1rem;
+}
+
+.ocelot-scoped .-my-5 {
+  margin-top: -1.25rem;
+  margin-bottom: -1.25rem;
+}
+
+.ocelot-scoped .-mx-5 {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
 }
 
 .ocelot-scoped .-my-6 {
@@ -3757,6 +3801,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .-ml-4 {
   margin-left: -1rem;
+}
+
+.ocelot-scoped .-mt-5 {
+  margin-top: -1.25rem;
+}
+
+.ocelot-scoped .-mr-5 {
+  margin-right: -1.25rem;
+}
+
+.ocelot-scoped .-mb-5 {
+  margin-bottom: -1.25rem;
+}
+
+.ocelot-scoped .-ml-5 {
+  margin-left: -1.25rem;
 }
 
 .ocelot-scoped .-mt-6 {
@@ -3977,6 +4037,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   padding: 1rem;
 }
 
+.ocelot-scoped .p-5 {
+  padding: 1.25rem;
+}
+
 .ocelot-scoped .p-6 {
   padding: 1.5rem;
 }
@@ -4057,6 +4121,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
 .ocelot-scoped .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.ocelot-scoped .py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.ocelot-scoped .px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .ocelot-scoped .py-6 {
@@ -4217,6 +4291,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .pl-4 {
   padding-left: 1rem;
+}
+
+.ocelot-scoped .pt-5 {
+  padding-top: 1.25rem;
+}
+
+.ocelot-scoped .pr-5 {
+  padding-right: 1.25rem;
+}
+
+.ocelot-scoped .pb-5 {
+  padding-bottom: 1.25rem;
+}
+
+.ocelot-scoped .pl-5 {
+  padding-left: 1.25rem;
 }
 
 .ocelot-scoped .pt-6 {
@@ -8281,6 +8371,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: 1rem;
   }
 
+  .ocelot-scoped .sm\:m-5 {
+    margin: 1.25rem;
+  }
+
   .ocelot-scoped .sm\:m-6 {
     margin: 1.5rem;
   }
@@ -8365,6 +8459,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .sm\:mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .ocelot-scoped .sm\:my-5 {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:mx-5 {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 
   .ocelot-scoped .sm\:my-6 {
@@ -8535,6 +8639,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .sm\:ml-4 {
     margin-left: 1rem;
+  }
+
+  .ocelot-scoped .sm\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:ml-5 {
+    margin-left: 1.25rem;
   }
 
   .ocelot-scoped .sm\:mt-6 {
@@ -8793,6 +8913,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: -1rem;
   }
 
+  .ocelot-scoped .sm\:-m-5 {
+    margin: -1.25rem;
+  }
+
   .ocelot-scoped .sm\:-m-6 {
     margin: -1.5rem;
   }
@@ -8877,6 +9001,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .sm\:-mx-4 {
     margin-left: -1rem;
     margin-right: -1rem;
+  }
+
+  .ocelot-scoped .sm\:-my-5 {
+    margin-top: -1.25rem;
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mx-5 {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
   }
 
   .ocelot-scoped .sm\:-my-6 {
@@ -9047,6 +9181,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .sm\:-ml-4 {
     margin-left: -1rem;
+  }
+
+  .ocelot-scoped .sm\:-mt-5 {
+    margin-top: -1.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mr-5 {
+    margin-right: -1.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mb-5 {
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .sm\:-ml-5 {
+    margin-left: -1.25rem;
   }
 
   .ocelot-scoped .sm\:-mt-6 {
@@ -9267,6 +9417,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     padding: 1rem;
   }
 
+  .ocelot-scoped .sm\:p-5 {
+    padding: 1.25rem;
+  }
+
   .ocelot-scoped .sm\:p-6 {
     padding: 1.5rem;
   }
@@ -9347,6 +9501,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .sm\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .ocelot-scoped .sm\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .ocelot-scoped .sm\:py-6 {
@@ -9507,6 +9671,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .sm\:pl-4 {
     padding-left: 1rem;
+  }
+
+  .ocelot-scoped .sm\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:pr-5 {
+    padding-right: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:pl-5 {
+    padding-left: 1.25rem;
   }
 
   .ocelot-scoped .sm\:pt-6 {
@@ -13196,6 +13376,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: 1rem;
   }
 
+  .ocelot-scoped .md\:m-5 {
+    margin: 1.25rem;
+  }
+
   .ocelot-scoped .md\:m-6 {
     margin: 1.5rem;
   }
@@ -13280,6 +13464,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .md\:mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .ocelot-scoped .md\:my-5 {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:mx-5 {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 
   .ocelot-scoped .md\:my-6 {
@@ -13450,6 +13644,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:ml-4 {
     margin-left: 1rem;
+  }
+
+  .ocelot-scoped .md\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:ml-5 {
+    margin-left: 1.25rem;
   }
 
   .ocelot-scoped .md\:mt-6 {
@@ -13708,6 +13918,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: -1rem;
   }
 
+  .ocelot-scoped .md\:-m-5 {
+    margin: -1.25rem;
+  }
+
   .ocelot-scoped .md\:-m-6 {
     margin: -1.5rem;
   }
@@ -13792,6 +14006,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .md\:-mx-4 {
     margin-left: -1rem;
     margin-right: -1rem;
+  }
+
+  .ocelot-scoped .md\:-my-5 {
+    margin-top: -1.25rem;
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .md\:-mx-5 {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
   }
 
   .ocelot-scoped .md\:-my-6 {
@@ -13962,6 +14186,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:-ml-4 {
     margin-left: -1rem;
+  }
+
+  .ocelot-scoped .md\:-mt-5 {
+    margin-top: -1.25rem;
+  }
+
+  .ocelot-scoped .md\:-mr-5 {
+    margin-right: -1.25rem;
+  }
+
+  .ocelot-scoped .md\:-mb-5 {
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .md\:-ml-5 {
+    margin-left: -1.25rem;
   }
 
   .ocelot-scoped .md\:-mt-6 {
@@ -14182,6 +14422,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     padding: 1rem;
   }
 
+  .ocelot-scoped .md\:p-5 {
+    padding: 1.25rem;
+  }
+
   .ocelot-scoped .md\:p-6 {
     padding: 1.5rem;
   }
@@ -14262,6 +14506,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .md\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .ocelot-scoped .md\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .ocelot-scoped .md\:py-6 {
@@ -14422,6 +14676,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:pl-4 {
     padding-left: 1rem;
+  }
+
+  .ocelot-scoped .md\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:pr-5 {
+    padding-right: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:pl-5 {
+    padding-left: 1.25rem;
   }
 
   .ocelot-scoped .md\:pt-6 {
@@ -18111,6 +18381,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: 1rem;
   }
 
+  .ocelot-scoped .lg\:m-5 {
+    margin: 1.25rem;
+  }
+
   .ocelot-scoped .lg\:m-6 {
     margin: 1.5rem;
   }
@@ -18195,6 +18469,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .lg\:mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .ocelot-scoped .lg\:my-5 {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:mx-5 {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 
   .ocelot-scoped .lg\:my-6 {
@@ -18365,6 +18649,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .lg\:ml-4 {
     margin-left: 1rem;
+  }
+
+  .ocelot-scoped .lg\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:ml-5 {
+    margin-left: 1.25rem;
   }
 
   .ocelot-scoped .lg\:mt-6 {
@@ -18623,6 +18923,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: -1rem;
   }
 
+  .ocelot-scoped .lg\:-m-5 {
+    margin: -1.25rem;
+  }
+
   .ocelot-scoped .lg\:-m-6 {
     margin: -1.5rem;
   }
@@ -18707,6 +19011,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .lg\:-mx-4 {
     margin-left: -1rem;
     margin-right: -1rem;
+  }
+
+  .ocelot-scoped .lg\:-my-5 {
+    margin-top: -1.25rem;
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mx-5 {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
   }
 
   .ocelot-scoped .lg\:-my-6 {
@@ -18877,6 +19191,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .lg\:-ml-4 {
     margin-left: -1rem;
+  }
+
+  .ocelot-scoped .lg\:-mt-5 {
+    margin-top: -1.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mr-5 {
+    margin-right: -1.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mb-5 {
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .lg\:-ml-5 {
+    margin-left: -1.25rem;
   }
 
   .ocelot-scoped .lg\:-mt-6 {
@@ -19097,6 +19427,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     padding: 1rem;
   }
 
+  .ocelot-scoped .lg\:p-5 {
+    padding: 1.25rem;
+  }
+
   .ocelot-scoped .lg\:p-6 {
     padding: 1.5rem;
   }
@@ -19177,6 +19511,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .lg\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .ocelot-scoped .lg\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .ocelot-scoped .lg\:py-6 {
@@ -19337,6 +19681,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .lg\:pl-4 {
     padding-left: 1rem;
+  }
+
+  .ocelot-scoped .lg\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:pr-5 {
+    padding-right: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:pl-5 {
+    padding-left: 1.25rem;
   }
 
   .ocelot-scoped .lg\:pt-6 {
@@ -23026,6 +23386,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: 1rem;
   }
 
+  .ocelot-scoped .xl\:m-5 {
+    margin: 1.25rem;
+  }
+
   .ocelot-scoped .xl\:m-6 {
     margin: 1.5rem;
   }
@@ -23110,6 +23474,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .xl\:mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
+  }
+
+  .ocelot-scoped .xl\:my-5 {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:mx-5 {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
   }
 
   .ocelot-scoped .xl\:my-6 {
@@ -23280,6 +23654,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:ml-4 {
     margin-left: 1rem;
+  }
+
+  .ocelot-scoped .xl\:mt-5 {
+    margin-top: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:mr-5 {
+    margin-right: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:mb-5 {
+    margin-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:ml-5 {
+    margin-left: 1.25rem;
   }
 
   .ocelot-scoped .xl\:mt-6 {
@@ -23538,6 +23928,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     margin: -1rem;
   }
 
+  .ocelot-scoped .xl\:-m-5 {
+    margin: -1.25rem;
+  }
+
   .ocelot-scoped .xl\:-m-6 {
     margin: -1.5rem;
   }
@@ -23622,6 +24016,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .xl\:-mx-4 {
     margin-left: -1rem;
     margin-right: -1rem;
+  }
+
+  .ocelot-scoped .xl\:-my-5 {
+    margin-top: -1.25rem;
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mx-5 {
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
   }
 
   .ocelot-scoped .xl\:-my-6 {
@@ -23792,6 +24196,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:-ml-4 {
     margin-left: -1rem;
+  }
+
+  .ocelot-scoped .xl\:-mt-5 {
+    margin-top: -1.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mr-5 {
+    margin-right: -1.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mb-5 {
+    margin-bottom: -1.25rem;
+  }
+
+  .ocelot-scoped .xl\:-ml-5 {
+    margin-left: -1.25rem;
   }
 
   .ocelot-scoped .xl\:-mt-6 {
@@ -24012,6 +24432,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     padding: 1rem;
   }
 
+  .ocelot-scoped .xl\:p-5 {
+    padding: 1.25rem;
+  }
+
   .ocelot-scoped .xl\:p-6 {
     padding: 1.5rem;
   }
@@ -24092,6 +24516,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   .ocelot-scoped .xl\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .ocelot-scoped .xl\:py-5 {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:px-5 {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
   }
 
   .ocelot-scoped .xl\:py-6 {
@@ -24252,6 +24686,22 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:pl-4 {
     padding-left: 1rem;
+  }
+
+  .ocelot-scoped .xl\:pt-5 {
+    padding-top: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:pr-5 {
+    padding-right: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:pb-5 {
+    padding-bottom: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:pl-5 {
+    padding-left: 1.25rem;
   }
 
   .ocelot-scoped .xl\:pt-6 {

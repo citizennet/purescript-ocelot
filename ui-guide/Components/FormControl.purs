@@ -66,7 +66,7 @@ component =
           }
           [ Component.component
               { title: "Form Header" }
-              [ FormHeader.formHeader_
+              [ FormHeader.formHeader
                   { name: "Campaign Group"
                   , onClick: HE.input HandleFormHeaderClick
                   , title: "New"

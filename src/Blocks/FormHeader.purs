@@ -21,6 +21,8 @@ type FormHeaderProps i =
 outerClasses :: Array HH.ClassName
 outerClasses = HH.ClassName <$>
   [ "bg-black-10"
+  , "w-full"
+  , "px-6"
   ]
 
 innerClasses :: Array HH.ClassName
@@ -29,36 +31,36 @@ innerClasses = HH.ClassName <$>
   , "items-center"
   , "mx-auto"
   , "flex"
-  , "h-20"
+  , "h-24"
   ]
 
-formHeader
+stickyHeader
   :: ∀ p i page
    . Eq page
   => FormHeaderProps i
   -> NavigationTab.TabConfig page
   -> HH.HTML p i
-formHeader props config =
+stickyHeader props config =
   HH.div
     [ HP.class_ $ HH.ClassName "h-40" ]
     [ HH.div
-      [ HP.classes Layout.headerClasses ]
-      [ formHeaderInner props
+      [ HP.classes Layout.stickyClasses ]
+      [ formHeader props
       , NavigationTab.navigationTabs config
       ]
     ]
 
-formHeader_ :: ∀ p i. FormHeaderProps i -> HH.HTML p i
-formHeader_ props =
+stickyHeader_ :: ∀ p i. FormHeaderProps i -> HH.HTML p i
+stickyHeader_ props =
   HH.div
     [ HP.class_ $ HH.ClassName "h-20" ]
     [ HH.div
-      [ HP.classes Layout.headerClasses ]
-      [ formHeaderInner props ]
+      [ HP.classes Layout.stickyClasses ]
+      [ formHeader props ]
     ]
 
-formHeaderInner :: ∀ p i. FormHeaderProps i -> HH.HTML p i
-formHeaderInner props =
+formHeader :: ∀ p i. FormHeaderProps i -> HH.HTML p i
+formHeader props =
   HH.header
     [ HP.classes outerClasses ]
     [ HH.div

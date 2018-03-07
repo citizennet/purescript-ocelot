@@ -22,6 +22,8 @@ type IsActive = Boolean
 outerClasses :: Array HH.ClassName
 outerClasses = HH.ClassName <$>
   [ "bg-black-10"
+  , "w-full"
+  , "px-6"
   ]
 
 innerClasses :: Array HH.ClassName
@@ -31,14 +33,15 @@ innerClasses = HH.ClassName <$>
   , "mx-auto"
   , "flex"
   , "px-20"
-  , "h-20"
+  , "h-16"
   , "list-reset"
   ]
 
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "leading-normal"
-  , "py-6"
+  , "pt-5"
+  , "pb-6"
   , "inline-block"
   , "no-underline"
   , "tracking-wide"

@@ -4,8 +4,8 @@ import Prelude
 
 import Halogen.HTML as HH
 
-headerClasses :: Array HH.ClassName
-headerClasses = HH.ClassName <$>
+stickyClasses :: Array HH.ClassName
+stickyClasses = HH.ClassName <$>
   [ "fixed"
   , "pin-t"
   , "pin-x"

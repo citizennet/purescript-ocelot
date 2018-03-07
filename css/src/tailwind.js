@@ -20,6 +20,7 @@ config.width = Object.assign(config.width, {
 
 // Additional padding and margin sizes
 config.padding = Object.assign(config.padding, {
+  '5': '1.25rem',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',
@@ -28,6 +29,7 @@ config.padding = Object.assign(config.padding, {
 })
 
 config.margin = Object.assign(config.margin, {
+  '5': '1.25rem',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',
