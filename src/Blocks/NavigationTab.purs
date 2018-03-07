@@ -2,8 +2,10 @@ module Ocelot.Block.NavigationTab where
 
 import Prelude
 
+import Data.Array ((:))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Icon (info)
 
 type Tab page =
   { name :: String
@@ -39,14 +41,10 @@ innerClasses = HH.ClassName <$>
 
 tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
-  [ "leading-normal"
-  , "pt-5"
+  [ "pt-5"
   , "pb-6"
   , "inline-block"
   , "no-underline"
-  , "tracking-wide"
-  , "uppercase"
-  , "text-sm"
   ]
 
 activeTabClasses :: Array HH.ClassName
@@ -63,6 +61,24 @@ inactiveTabClasses = HH.ClassName <$>
   , "hover:border-blue-88"
   , "hover:text-white"
   , "text-grey-70"
+  ]
+
+tabTextClasses :: Array HH.ClassName
+tabTextClasses = HH.ClassName <$>
+  [ "text-sm"
+  , "tracking-wide"
+  , "uppercase"
+  , "bold"
+  , "inline-flex"
+  ]
+
+errorIconClasses :: Array HH.ClassName
+errorIconClasses = HH.ClassName <$>
+  [ "text-2xl"
+  , "text-red"
+  , "mr-4"
+  , "inline-flex"
+  , "align-bottom"
   ]
 
 navigationTabs
@@ -89,13 +105,24 @@ navigationTab activePage tab =
     [ HP.class_ $ HH.ClassName "mr-12" ]
     [ HH.a
       [ HP.href tab.link
-      , HP.classes $ tabClasses <> tabStyles (tab.page == activePage)
+      , HP.classes $ tabClasses <> conditionalTabClasses isActive
       ]
-      $ (if tab.errors > 0 && tab.page /= activePage then [ HH.i [ HP.class_ $ HH.ClassName "mr-2"] [ HH.text "errors" ] ] else [])
-      <> [ HH.text tab.name ]
+      [ info
+        [ HP.classes $ conditionalIconClasses isActive tab.errors ]
+      , HH.span
+        [ HP.classes tabTextClasses ]
+        [ HH.text tab.name ]
+      ]
     ]
-
   where
-    tabStyles :: IsActive -> Array HH.ClassName
-    tabStyles true = activeTabClasses
-    tabStyles false = inactiveTabClasses
+    isActive :: Boolean
+    isActive = tab.page == activePage
+
+    conditionalTabClasses :: IsActive -> Array HH.ClassName
+    conditionalTabClasses true = activeTabClasses
+    conditionalTabClasses false = inactiveTabClasses
+
+    conditionalIconClasses :: IsActive -> Int -> Array HH.ClassName
+    conditionalIconClasses active errors
+      | errors > 0 && active == false = errorIconClasses
+      | otherwise = HH.ClassName "hidden" : errorIconClasses

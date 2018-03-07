@@ -74,7 +74,8 @@ config.colors = Object.assign(config.colors, {
   'blue-75': '#F0F1F2',
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
-  'blue-100': '#E6F0FF'
+  'blue-100': '#E6F0FF',
+  'red': '#FF5471'
 })
 
 config.borderColors = Object.assign(

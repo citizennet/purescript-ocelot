@@ -843,7 +843,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .bg-red {
-  background-color: #e3342f;
+  background-color: #ff5471;
 }
 
 .ocelot-scoped .bg-red-light {
@@ -1191,7 +1191,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:bg-red:hover {
-  background-color: #e3342f;
+  background-color: #ff5471;
 }
 
 .ocelot-scoped .hover\:bg-red-light:hover {
@@ -1599,7 +1599,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .border-red {
-  border-color: #e3342f;
+  border-color: #ff5471;
 }
 
 .ocelot-scoped .border-red-light {
@@ -1947,7 +1947,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:border-red:hover {
-  border-color: #e3342f;
+  border-color: #ff5471;
 }
 
 .ocelot-scoped .hover\:border-red-light:hover {
@@ -4759,7 +4759,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .text-red {
-  color: #e3342f;
+  color: #ff5471;
 }
 
 .ocelot-scoped .text-red-light {
@@ -5107,7 +5107,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:text-red:hover {
-  color: #e3342f;
+  color: #ff5471;
 }
 
 .ocelot-scoped .hover\:text-red-light:hover {
@@ -6163,7 +6163,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:bg-red {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .sm\:bg-red-light {
@@ -6511,7 +6511,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:bg-red:hover {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .sm\:hover\:bg-red-light:hover {
@@ -6919,7 +6919,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:border-red {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .sm\:border-red-light {
@@ -7267,7 +7267,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:border-red:hover {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .sm\:hover\:border-red-light:hover {
@@ -10071,7 +10071,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:text-red {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .sm\:text-red-light {
@@ -10419,7 +10419,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:text-red:hover {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .sm\:hover\:text-red-light:hover {
@@ -11188,7 +11188,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:bg-red {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .md\:bg-red-light {
@@ -11536,7 +11536,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:bg-red:hover {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .md\:hover\:bg-red-light:hover {
@@ -11944,7 +11944,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:border-red {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .md\:border-red-light {
@@ -12292,7 +12292,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:border-red:hover {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .md\:hover\:border-red-light:hover {
@@ -15096,7 +15096,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:text-red {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .md\:text-red-light {
@@ -15444,7 +15444,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:text-red:hover {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .md\:hover\:text-red-light:hover {
@@ -16213,7 +16213,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:bg-red {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .lg\:bg-red-light {
@@ -16561,7 +16561,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:bg-red:hover {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .lg\:hover\:bg-red-light:hover {
@@ -16969,7 +16969,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:border-red {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .lg\:border-red-light {
@@ -17317,7 +17317,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:border-red:hover {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .lg\:hover\:border-red-light:hover {
@@ -20121,7 +20121,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:text-red {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .lg\:text-red-light {
@@ -20469,7 +20469,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:text-red:hover {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .lg\:hover\:text-red-light:hover {
@@ -21238,7 +21238,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:bg-red {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .xl\:bg-red-light {
@@ -21586,7 +21586,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:bg-red:hover {
-    background-color: #e3342f;
+    background-color: #ff5471;
   }
 
   .ocelot-scoped .xl\:hover\:bg-red-light:hover {
@@ -21994,7 +21994,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:border-red {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .xl\:border-red-light {
@@ -22342,7 +22342,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:border-red:hover {
-    border-color: #e3342f;
+    border-color: #ff5471;
   }
 
   .ocelot-scoped .xl\:hover\:border-red-light:hover {
@@ -25146,7 +25146,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:text-red {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .xl\:text-red-light {
@@ -25494,7 +25494,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:text-red:hover {
-    color: #e3342f;
+    color: #ff5471;
   }
 
   .ocelot-scoped .xl\:hover\:text-red-light:hover {
