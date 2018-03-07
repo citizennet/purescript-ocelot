@@ -41,14 +41,16 @@ component =
           }
           [ Component.component
               { title: "Default" }
-              [ Button.button_
+              [ Button.button
                   { type_: Button.Default }
+                  [ HP.classes [HH.ClassName "bg-pink", HH.ClassName "text-xl" ] ]
                   [ HH.text "Cancel" ]
               ]
           , Component.component
               { title: "Primary" }
-              [ Button.button_
+              [ Button.button
                   { type_: Button.Primary }
+                  []
                   [ HH.text "Submit" ]
               ]
           , Component.component
