@@ -5723,10 +5723,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .after\:bg-blue-88:after {
-  background-color: #00bbe0;
-}
-
 .ocelot-scoped .after\:bg-white:after {
   background-color: #fff;
 }
@@ -5747,12 +5743,8 @@ html, .ocelot-scoped, .ocelot-scoped * {
   left: 2px;
 }
 
-.ocelot-scoped .after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
-}
-
-.ocelot-scoped .after\:left-w-6\/2--w-4\/2:after {
-  left: calc((1.5rem / 2) - (.75rem / 2));
+.ocelot-scoped .after\:left-w-8\/2--w-4\/2:after {
+  left: calc((2rem / 2) - (1rem / 2));
 }
 
 .ocelot-scoped .after\:no-content:after {
@@ -5775,8 +5767,8 @@ html, .ocelot-scoped, .ocelot-scoped * {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.ocelot-scoped .after\:top-w-6\/2--w-4\/2:after {
-  top: calc((1.5rem / 2) - (.75rem / 2));
+.ocelot-scoped .after\:top-w-8\/2--w-4\/2:after {
+  top: calc((2rem / 2) - (1rem / 2));
 }
 
 .ocelot-scoped .after\:w-3:after {
@@ -5799,6 +5791,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .before\:border-grey-70-a40:before {
+  border-color: rgba(143, 158, 179, .4);
+}
+
 .ocelot-scoped .before\:border-solid:before {
   border-style: solid;
 }
@@ -5807,8 +5803,16 @@ html, .ocelot-scoped, .ocelot-scoped * {
   border-width: 1px;
 }
 
+.ocelot-scoped .before\:border-2:before {
+  border-width: 2px;
+}
+
 .ocelot-scoped .before\:h-6:before {
   height: 1.5rem;
+}
+
+.ocelot-scoped .before\:h-8:before {
+  height: 2rem;
 }
 
 .ocelot-scoped .before\:no-content:before {
@@ -5829,6 +5833,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .before\:w-6:before {
   width: 1.5rem;
+}
+
+.ocelot-scoped .before\:w-8:before {
+  width: 2rem;
 }
 
 .ocelot-scoped .checked\:sibling\:after\:opacity-100:checked + *:after {
@@ -5875,8 +5883,6 @@ html, .ocelot-scoped, .ocelot-scoped * {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }
-
-/* Add Gotham to font families */
 
 /* Styles for range sliders */
 
