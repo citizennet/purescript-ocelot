@@ -45,7 +45,7 @@ icon =
               { title: "Icons" }
                 [ HH.div
                     [ HP.class_ (HH.ClassName "flex justify-between space-between text-3xl w-full") ]
-                    [ Icon.back_
+                    [ Icon.back [ HP.class_ (HH.ClassName "text-blue-88") ]
                     , Icon.caratDown_
                     , Icon.caratRight_
                     , Icon.caratUp_
