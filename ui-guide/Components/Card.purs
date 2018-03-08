@@ -18,7 +18,7 @@ type Input = Unit
 
 type Message = Void
 
-card 
+card
   :: ∀ m
   . H.Component HH.HTML Query Input Message m
 card =
@@ -32,7 +32,7 @@ card =
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of
       NoOp a -> do
-        pure a 
+        pure a
 
     render :: State -> H.ComponentHTML Query
     render _ =
@@ -43,8 +43,8 @@ card =
           }
           [ Component.component
               { title: "Card" }
-                [ Card.card
-                  [ Card.header
+                [ Card.card_
+                  [ Card.header_
                     [ HH.text "Summary" ]
                   , meta
                   ]
