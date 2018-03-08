@@ -2,9 +2,12 @@ module UIGuide.Components.FormControl where
 
 import Prelude
 
+import Ocelot.Block.Button as Button
+import Ocelot.Block.Card as Card
 import Ocelot.Block.FormControl as FormControl
 import Ocelot.Block.FormHeader as FormHeader
 import Ocelot.Block.FormPanel as FormPanel
+import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Radio as Radio
 import Ocelot.Block.Range as Range
@@ -65,14 +68,26 @@ component =
           , subheader: "The header used on forms"
           }
           [ Component.component
-              { title: "Form Header" }
-              [ FormHeader.formHeader
-                  { name: "Campaign Group"
-                  , onClick: HE.input HandleFormHeaderClick
-                  , title: "New"
-                  , brand: Nothing
-                  }
-              ]
+            { title: "Form Header" }
+            [ FormHeader.formHeader
+              { name: [ HH.text "Campaign Group" ]
+              , title: [ HH.text "New" ]
+              , brand: Nothing
+              , buttons:
+                [ HH.span
+                  [ HP.class_ $ HH.ClassName "mr-2" ]
+                  [ Button.button
+                      { type_: Button.Transparent }
+                      []
+                      [ HH.text "Cancel" ]
+                  ]
+                , Button.button
+                  { type_: Button.Primary }
+                  [ HE.onClick $ HE.input HandleFormHeaderClick ]
+                  [ HH.text "Create" ]
+                ]
+              }
+            ]
           ]
       , Documentation.documentation
           { header: "Input"
@@ -122,24 +137,20 @@ component =
               ]
           , Component.component
               { title: "Radio with Form Control" }
-              [ FormControl.formControl
-                  { label: "Platform"
-                  , inputId: "radio"
-                  , helpText: Just "Where do you want your ad to appear?"
-                  , valid: Nothing
-                  }
-                  ( HH.div_
-                    [ Radio.radio
-                        { label: "Facebook" }
-                        [ HP.name "platform" ]
-                    , Radio.radio
-                        { label: "Instagram" }
-                        [ HP.name "platform" ]
-                    , Radio.radio
-                        { label: "Twitter" }
-                        [ HP.name "platform" ]
-                    ]
-                  )
+              [ Card.card
+                [ Card.header
+                  [ Icon.tip
+                    [ HP.class_ $ HH.ClassName "text-yellow text-2xl" ]
+                  , HH.text "Accessibility Note"
+                  ]
+                , HH.p_
+                  [ HH.text "Make sure to use "
+                  , HH.code_ [ HH.text "FormControl.fieldset" ]
+                  , HH.text " instead of "
+                  , HH.code_ [ HH.text "FormControl.formControl" ]
+                  , HH.text " with groups of radios and checkboxes."
+                  ]
+                ]
               , FormControl.fieldset
                   { label: "Platform"
                   , inputId: "radio"

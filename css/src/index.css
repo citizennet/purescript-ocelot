@@ -1,6 +1,20 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
 
+/* Temp overrides */
+
+fieldset legend {
+  position: unset;
+  top: 0;
+}
+legend {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  border: 0;
+  text-transform: inherit;
+}
+
 /* CitizenNet core CSS ... */
 
 @import "fonts.css";

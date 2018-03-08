@@ -79,7 +79,11 @@ config.colors = Object.assign(config.colors, {
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
   'blue-100': '#E6F0FF',
-  'red': '#FF5471'
+  'fb-blue': '#3B5998',
+  'tw-blue': '#00ACED',
+  'ig-brown': '#675144',
+  'red': '#FF5471',
+  'yellow': '#FFC859',
 })
 
 config.borderColors = Object.assign(
