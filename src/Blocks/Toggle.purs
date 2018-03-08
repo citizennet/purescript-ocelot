@@ -53,19 +53,16 @@ toggleClasses = HH.ClassName <$>
 
 toggle
   :: ∀ p i
-   . ToggleProps
-  -> Array (HH.IProp HTMLinput i)
+   . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
-toggle props iprops =
+toggle iprops =
   HH.label
     [ HP.classes labelClasses ]
     [ HH.input iprops'
     , HH.span [ HP.classes toggleClasses ] []
-    , HH.text props.label
     ]
     where
       iprops' = iprops <>
         [ HP.classes inputClasses
         , HP.type_ InputCheckbox
         ]
-

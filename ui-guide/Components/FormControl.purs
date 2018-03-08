@@ -98,14 +98,6 @@ component =
           { header: "Toggle"
           , subheader: "Enable or disable something" }
           [ Component.component
-              { title: "Toggle" }
-              [ HH.div_
-                [ Toggle.toggle { label: "Something" } []
-                , Toggle.toggle { label: "Something Else" } []
-                , Toggle.toggle { label: "A Third Optional Thing" } []
-                ]
-              ]
-          , Component.component
               { title: "Toggle with Form Control" }
               [ FormControl.formControl
                 { label: "Dave's OO Emails"
@@ -113,7 +105,7 @@ component =
                 , valid: Nothing
                 , inputId: "toggle"
                 }
-                ( Toggle.toggle { label: "Opt-in" } [ HP.id_ "toggle" ] )
+                ( Toggle.toggle [ HP.id_ "toggle" ] )
               ]
           ]
       , Documentation.documentation
@@ -131,6 +123,24 @@ component =
           , Component.component
               { title: "Radio with Form Control" }
               [ FormControl.formControl
+                  { label: "Platform"
+                  , inputId: "radio"
+                  , helpText: Just "Where do you want your ad to appear?"
+                  , valid: Nothing
+                  }
+                  ( HH.div_
+                    [ Radio.radio
+                        { label: "Facebook" }
+                        [ HP.name "platform" ]
+                    , Radio.radio
+                        { label: "Instagram" }
+                        [ HP.name "platform" ]
+                    , Radio.radio
+                        { label: "Twitter" }
+                        [ HP.name "platform" ]
+                    ]
+                  )
+              , FormControl.fieldset
                   { label: "Platform"
                   , inputId: "radio"
                   , helpText: Just "Where do you want your ad to appear?"
