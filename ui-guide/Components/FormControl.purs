@@ -134,8 +134,8 @@ component =
               ]
           , Component.component
               { title: "Radio with Form Control" }
-              [ Card.card
-                [ Card.header
+              [ Card.card_
+                [ Card.header_
                   [ Icon.tip
                     [ HP.class_ $ HH.ClassName "text-yellow text-2xl" ]
                   , HH.text "Accessibility Note"

@@ -6036,12 +6036,12 @@ legend {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.checked\:sibling\:pr-4:checked + * {
-  padding-right: 1rem;
+.checked\:sibling\:pl-4:checked + * {
+  padding-left: 1rem;
 }
 
-.not\:checked\:sibling\:pl-4:not(:checked) + * {
-  padding-left: 1rem;
+.not\:checked\:sibling\:pr-4:not(:checked) + * {
+  padding-right: 1rem;
 }
 
 .checked\:sibling\:after\:opacity-100:checked + *:after {

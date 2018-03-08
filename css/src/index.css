@@ -44,8 +44,8 @@ legend {
 .after\:no-content:after { @apply .no-content; }
 .after\:rounded-full:after { @apply .rounded-full; }
 .after\:shadow:after { @apply .shadow; }
-.checked\:sibling\:pr-4:checked + * { @apply .pr-4; }
-.not\:checked\:sibling\:pl-4:not(:checked) + * { @apply .pl-4; }
+.checked\:sibling\:pl-4:checked + * { @apply .pl-4; }
+.not\:checked\:sibling\:pr-4:not(:checked) + * { @apply .pr-4; }
 .checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
 .checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }

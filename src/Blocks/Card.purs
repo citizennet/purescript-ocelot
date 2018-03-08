@@ -2,8 +2,10 @@ module Ocelot.Block.Card where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLaside, HTMLh3)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 
 cardClasses :: Array HH.ClassName
 cardClasses = HH.ClassName <$>
@@ -28,20 +30,34 @@ headerClasses = HH.ClassName <$>
 
 card
   :: ∀ p i
-   . Array (HH.HTML p i)
+   . Array (HH.IProp HTMLaside i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-card html =
+card iprops html =
   HH.aside
-    [ HP.classes cardClasses ]
+    ( [ HP.classes cardClasses ] <&> iprops )
     html
 
-header
+card_
   :: ∀ p i
    . Array (HH.HTML p i)
   -> HH.HTML p i
-header html =
+card_ = card []
+
+header
+  :: ∀ p i
+   . Array (HH.IProp HTMLh3 i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+header iprops html =
   HH.header_
     [ HH.h3
-      [ HP.classes headerClasses ]
+      ( [ HP.classes headerClasses ] <&> iprops )
       html
     ]
+
+header_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+header_ = header []

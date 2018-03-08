@@ -6036,12 +6036,12 @@ html, .ocelot-scoped, .ocelot-scoped * {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.ocelot-scoped .checked\:sibling\:pr-4:checked + * {
-  padding-right: 1rem;
+.ocelot-scoped .checked\:sibling\:pl-4:checked + * {
+  padding-left: 1rem;
 }
 
-.ocelot-scoped .not\:checked\:sibling\:pl-4:not(:checked) + * {
-  padding-left: 1rem;
+.ocelot-scoped .not\:checked\:sibling\:pr-4:not(:checked) + * {
+  padding-right: 1rem;
 }
 
 .ocelot-scoped .checked\:sibling\:after\:opacity-100:checked + *:after {
