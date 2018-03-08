@@ -21,6 +21,7 @@ import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
 import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
@@ -193,11 +194,13 @@ component :: ∀ o item err eff m
       (Message o item)
       m
 component =
-  H.parentComponent
+  H.lifecycleParentComponent
     { initialState
     , render: extract
     , eval
-    , receiver: const Nothing
+    , receiver: HE.input Receive
+    , initializer: Just $ H.action $ Synchronize
+    , finalizer: Nothing
     }
   where
     initialState
@@ -243,7 +246,6 @@ component =
         Select.Searched text -> do
           (Tuple _ st) <- getState
           H.modify $ seeks _ { search = text }
-          H.raise $ Searched text
 
           case st.config.syncMethod of
             Sync -> pure unit
@@ -252,6 +254,7 @@ component =
               newItems <- H.liftAff $ fetchItems text
               H.modify $ seeks $ _ { items = newItems }
 
+          H.raise $ Searched text
           eval $ Synchronize a
 
         Select.VisibilityChanged visibility -> do
