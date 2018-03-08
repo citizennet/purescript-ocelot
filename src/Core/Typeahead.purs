@@ -81,6 +81,7 @@ data Query o item err eff m a
 data Message o item
   = Searched String
   | SelectionsChanged SelectionChange item (SelectionType item)
+  | VisibilityChanged Select.Visibility
   | Emit (o Unit)
 
 -- Selections change because something was added or removed.
@@ -253,7 +254,9 @@ component =
 
           eval $ Synchronize a
 
-        Select.VisibilityChanged _ -> pure a
+        Select.VisibilityChanged visibility -> do
+          H.raise $ VisibilityChanged visibility
+          pure a
 
       -- Remove a currently-selected item.
       Remove item a -> do
