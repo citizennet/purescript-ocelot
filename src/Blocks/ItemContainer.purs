@@ -12,6 +12,7 @@ import Data.StrMap (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 
@@ -53,16 +54,23 @@ liClasses = HH.ClassName <$>
   , "py-2"
   , "rounded-sm"
   , "text-grey-darkest"
-  , "group"
   , "leading-normal"
+  , "group"
   , "hover:bg-grey-lighter"
+  ]
+
+selectionGroupClasses :: Array HH.ClassName
+selectionGroupClasses = HH.ClassName <$>
+  [ "flex"
+  , "items-center"
+  , "justify-between"
   ]
 
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
-  [ "float-right"
-  , "invisible"
+  [ "invisible"
   , "group-hover:visible"
+  , "text-grey"
   ]
 
 -- Provided an array of items, renders them in a container.
@@ -116,7 +124,7 @@ selectionGroup
   -> HH.HTML i p
 selectionGroup f props item =
   HH.div
-    props
+    ( [ HP.classes $ selectionGroupClasses ] <&> props )
     [ HH.fromPlainHTML (f item)
     , HH.button
       [ HP.classes buttonClasses ]

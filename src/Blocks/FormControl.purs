@@ -23,6 +23,7 @@ helpTextClasses = Type.mutedClasses <>
   ( HH.ClassName <$>
     [ "block"
     , "leading-loose"
+    , "pt-3"
     ]
   )
 

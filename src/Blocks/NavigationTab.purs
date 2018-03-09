@@ -5,7 +5,7 @@ import Prelude
 import Data.Array ((:))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Icon (info)
+import Ocelot.Block.Icon as Icon
 
 type Tab page =
   { name :: String
@@ -76,7 +76,7 @@ errorIconClasses :: Array HH.ClassName
 errorIconClasses = HH.ClassName <$>
   [ "text-2xl"
   , "text-red"
-  , "mr-4"
+  , "mr-1"
   , "inline-flex"
   , "align-bottom"
   ]
@@ -107,22 +107,26 @@ navigationTab activePage tab =
       [ HP.href tab.link
       , HP.classes $ tabClasses <> conditionalTabClasses isActive
       ]
-      [ info
-        [ HP.classes $ conditionalIconClasses isActive tab.errors ]
-      , HH.span
-        [ HP.classes tabTextClasses ]
-        [ HH.text tab.name ]
-      ]
+      ( errorIcon
+        <>
+        [ HH.span
+          [ HP.classes tabTextClasses ]
+          [ HH.text tab.name ]
+        ]
+      )
     ]
   where
     isActive :: Boolean
     isActive = tab.page == activePage
 
+    errorIcon :: Array (HH.HTML p i)
+    errorIcon
+      | tab.errors > 0 && isActive == false =
+        [ Icon.error
+          [ HP.classes $ errorIconClasses ]
+        ]
+      | otherwise = []
+
     conditionalTabClasses :: IsActive -> Array HH.ClassName
     conditionalTabClasses true = activeTabClasses
     conditionalTabClasses false = inactiveTabClasses
-
-    conditionalIconClasses :: IsActive -> Int -> Array HH.ClassName
-    conditionalIconClasses active errors
-      | errors > 0 && active == false = errorIconClasses
-      | otherwise = HH.ClassName "hidden" : errorIconClasses
