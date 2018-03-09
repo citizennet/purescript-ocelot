@@ -57,18 +57,21 @@ liClasses = HH.ClassName <$>
   , "leading-normal"
   , "group"
   , "hover:bg-grey-lighter"
+  , "cursor-pointer"
   ]
 
 selectionGroupClasses :: Array HH.ClassName
 selectionGroupClasses = HH.ClassName <$>
   [ "flex"
-  , "items-center"
+  , "items-start"
   , "justify-between"
   ]
 
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "invisible"
+  , "leading-normal"
+  , "text-grey"
   , "group-hover:visible"
   , "text-grey"
   ]
