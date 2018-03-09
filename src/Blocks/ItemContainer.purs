@@ -62,6 +62,8 @@ buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "float-right"
   , "invisible"
+  , "leading-normal"
+  , "text-grey"
   , "group-hover:visible"
   ]
 
