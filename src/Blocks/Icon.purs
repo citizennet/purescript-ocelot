@@ -46,8 +46,7 @@ icon className iprops =
   HH.span
     [ HA.label className
     , HP.classes $ HH.ClassName <$>
-      [ "pt-1"
-      , "pr-2"
+      [ "pr-2"
       , "inline-block"
       ]
     ]
@@ -56,7 +55,6 @@ icon className iprops =
           [ HA.hidden "true"
           , HP.classes $ HH.ClassName <$>
             [ className
-            , "align-text-top"
             ]
           ]
         )

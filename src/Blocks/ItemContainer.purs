@@ -54,7 +54,6 @@ liClasses = HH.ClassName <$>
   , "py-2"
   , "rounded-sm"
   , "text-grey-darkest"
-  , "leading-normal"
   , "group"
   , "hover:bg-grey-lighter"
   , "cursor-pointer"
@@ -70,7 +69,6 @@ selectionGroupClasses = HH.ClassName <$>
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "invisible"
-  , "leading-normal"
   , "text-grey"
   , "group-hover:visible"
   , "text-grey"
