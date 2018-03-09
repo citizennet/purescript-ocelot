@@ -43,7 +43,7 @@ tabClasses :: Array HH.ClassName
 tabClasses = HH.ClassName <$>
   [ "pt-5"
   , "pb-6"
-  , "inline-block"
+  , "inline-flex"
   , "no-underline"
   ]
 
@@ -70,6 +70,7 @@ tabTextClasses = HH.ClassName <$>
   , "uppercase"
   , "bold"
   , "inline-flex"
+  , "self-end"
   ]
 
 errorIconClasses :: Array HH.ClassName
