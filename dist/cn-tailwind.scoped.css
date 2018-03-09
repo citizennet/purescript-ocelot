@@ -206,7 +206,7 @@
  *    IE on Windows Phone and in iOS.
  */
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   line-height: 1.15; /* 1 */
       -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -660,7 +660,7 @@ menu {
  * 2. Change the default font family in all browsers (opinionated)
  */
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   box-sizing: border-box; /* 1 */
   font-family: sans-serif; /* 2 */
 }
@@ -809,6 +809,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 /* Temp overrides */
 
+.ocelot-scoped * {
+  font-size: inherit;
+}
+
 .ocelot-scoped fieldset legend {
   position: unset;
   top: 0;
@@ -818,8 +822,12 @@ html, .ocelot-scoped, .ocelot-scoped * {
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
-  border: 0;
+  border: unset;
   text-transform: inherit;
+}
+
+.ocelot-scoped label {
+  margin-bottom: unset;
 }
 
 /* CitizenNet core CSS ... */
@@ -6088,7 +6096,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   transform: scale(0);
 }
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }

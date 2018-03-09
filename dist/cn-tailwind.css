@@ -809,6 +809,10 @@ button,
 
 /* Temp overrides */
 
+* {
+  font-size: inherit;
+}
+
 fieldset legend {
   position: unset;
   top: 0;
@@ -818,8 +822,12 @@ legend {
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
-  border: 0;
+  border: unset;
   text-transform: inherit;
+}
+
+label {
+  margin-bottom: unset;
 }
 
 /* CitizenNet core CSS ... */

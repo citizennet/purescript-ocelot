@@ -6,7 +6,7 @@ module.exports = scoped => {
         prefix: '.ocelot-scoped',
         transform(prefix, selector, prefixedSelector) {
           if (selector === 'html') {
-            return `html, ${prefix}, ${prefix} *`
+            return `html, ${prefix}`
           }
           if (selector === 'body') {
             return `body ${prefix}`
