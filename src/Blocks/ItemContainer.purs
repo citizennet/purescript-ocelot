@@ -56,6 +56,7 @@ liClasses = HH.ClassName <$>
   , "group"
   , "leading-normal"
   , "hover:bg-grey-lighter"
+  , "cursor-pointer"
   ]
 
 buttonClasses :: Array HH.ClassName
