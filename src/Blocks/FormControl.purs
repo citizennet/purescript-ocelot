@@ -20,18 +20,14 @@ formControlClasses = HH.ClassName <$>
 
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = Type.mutedClasses <>
-  ( HH.ClassName <$>
-    [ "block"
-    , "leading-loose"
-    , "pt-3"
-    ]
-  )
+  ( HH.ClassName <$> [ "block", "pt-2" ] )
 
 errorTextClasses :: Array HH.ClassName
 errorTextClasses = HH.ClassName <$>
-  [ "leading-loose"
+  [ "block"
   , "text-red"
   , "font-bold"
+  , "pt-2"
   ]
 
 labelClasses :: Array HH.ClassName
@@ -92,18 +88,21 @@ label x =
     [ HP.classes labelClasses ]
     [ HH.text x ]
 
-
 helpText
   :: ∀ p i
    . Maybe ValidationErrors
   -> Maybe String
   -> HH.HTML p i
-helpText (Just errors) _ =
-  HH.span
-    [ HP.classes errorTextClasses ]
-    ( HH.fromPlainHTML <$> htmlE errors )
-helpText Nothing (Just x) =
-  HH.span
-    [ HP.classes helpTextClasses ]
-    [ HH.text x ]
-helpText Nothing Nothing = HH.text ""
+helpText errors help =
+  HH.div_
+  [ case errors of
+      Just e  -> HH.span
+        [ HP.classes errorTextClasses ]
+        ( HH.fromPlainHTML <$> htmlE e )
+      Nothing -> HH.text ""
+  , case help of
+      Just t -> HH.span
+        [ HP.classes helpTextClasses ]
+        [ HH.text t ]
+      Nothing -> HH.text ""
+  ]
