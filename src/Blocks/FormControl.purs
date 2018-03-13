@@ -1,4 +1,8 @@
-module Ocelot.Block.FormControl (formControl) where
+module Ocelot.Block.FormControl
+  ( formControl
+  , fieldset
+  , helpText
+  ) where
 
 import Prelude
 
@@ -16,17 +20,14 @@ formControlClasses = HH.ClassName <$>
 
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = Type.mutedClasses <>
-  ( HH.ClassName <$>
-    [ "block"
-    , "leading-loose"
-    ]
-  )
+  ( HH.ClassName <$> [ "block", "pt-2" ] )
 
 errorTextClasses :: Array HH.ClassName
 errorTextClasses = HH.ClassName <$>
-  [ "leading-loose"
+  [ "block"
   , "text-red"
   , "font-bold"
+  , "pt-2"
   ]
 
 labelClasses :: Array HH.ClassName
@@ -46,7 +47,7 @@ type FormControlProps =
 
 formControl
   :: ∀ p i
-  . FormControlProps
+   . FormControlProps
   -> HH.HTML p i
   -> HH.HTML p i
 formControl props html =
@@ -60,18 +61,48 @@ formControl props html =
       [ html ]
     , helpText props.valid props.helpText
     ]
-  where
-    helpText (Just errors) _ =
-        HH.span
-          [ HP.classes errorTextClasses ]
-          (HH.fromPlainHTML <$> htmlE errors)
-    helpText Nothing (Just x) =
-      HH.span
-        [ HP.classes helpTextClasses ]
-        [ HH.text x ]
-    helpText Nothing Nothing = HH.text ""
 
-    label x =
-      HH.span
-        [ HP.classes labelClasses ]
-        [ HH.text x ]
+fieldset
+  :: ∀ p i
+   . FormControlProps
+  -> HH.HTML p i
+  -> HH.HTML p i
+fieldset props html =
+  HH.div
+    [ HP.classes formControlClasses ]
+    [ HH.fieldset
+      []
+      [ HH.legend
+        [ HP.class_ (HH.ClassName "w-full") ]
+        [ label props.label ]
+      , HH.div
+        [ HP.class_ (HH.ClassName "my-1") ]
+        [ html ]
+      , helpText props.valid props.helpText
+      ]
+    ]
+
+label :: ∀ p i. String -> HH.HTML p i
+label x =
+  HH.span
+    [ HP.classes labelClasses ]
+    [ HH.text x ]
+
+helpText
+  :: ∀ p i
+   . Maybe ValidationErrors
+  -> Maybe String
+  -> HH.HTML p i
+helpText errors help =
+  HH.div_
+  [ case errors of
+      Just e  -> HH.span
+        [ HP.classes errorTextClasses ]
+        ( HH.fromPlainHTML <$> htmlE e )
+      Nothing -> HH.text ""
+  , case help of
+      Just t -> HH.span
+        [ HP.classes helpTextClasses ]
+        [ HH.text t ]
+      Nothing -> HH.text ""
+  ]

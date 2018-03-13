@@ -11,6 +11,7 @@ stickyClasses = HH.ClassName <$>
   , "pin-x"
   , "w-full"
   , "shadow-md"
+  , "z-60"
   ]
 
 containerClasses :: Array HH.ClassName

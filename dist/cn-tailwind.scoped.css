@@ -55,7 +55,7 @@
 }
 @font-face {
   font-family: ocelot-icon;
-  src: url(data:application/x-font-woff;base64,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);
+  src: url(data:application/font-woff;base64,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);
   font-weight: normal;
   font-style: normal;
 }
@@ -86,22 +86,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.ocelot-scoped .icon-timeline:before {
-  content: "\E000";
-}
-
-.ocelot-scoped .icon-share:before {
-  content: "\E001";
-}
-
-.ocelot-scoped .icon-settings:before {
-  content: "\E002";
-}
-
-.ocelot-scoped .icon-search:before {
-  content: "\E003";
-}
-
 .ocelot-scoped .icon-back:before {
   content: "\E004";
 }
@@ -110,8 +94,16 @@
   content: "\E005";
 }
 
+.ocelot-scoped .icon-carat-left:before {
+  content: "\E019";
+}
+
 .ocelot-scoped .icon-carat-right:before {
   content: "\E006";
+}
+
+.ocelot-scoped .icon-carat-up:before {
+  content: "\E017";
 }
 
 .ocelot-scoped .icon-close:before {
@@ -126,20 +118,44 @@
   content: "\E010";
 }
 
+.ocelot-scoped .icon-delete:before {
+  content: "\E027";
+}
+
+.ocelot-scoped .icon-delete-circle:before {
+  content: "\E022";
+}
+
 .ocelot-scoped .icon-download:before {
   content: "\E011";
+}
+
+.ocelot-scoped .icon-error:before {
+  content: "\E025";
 }
 
 .ocelot-scoped .icon-expand:before {
   content: "\E012";
 }
 
+.ocelot-scoped .icon-facebook:before {
+  content: "\E018";
+}
+
 .ocelot-scoped .icon-info:before {
   content: "\E013";
 }
 
+.ocelot-scoped .icon-instagram:before {
+  content: "\E021";
+}
+
 .ocelot-scoped .icon-menu:before {
   content: "\E014";
+}
+
+.ocelot-scoped .icon-navigate:before {
+  content: "\E024";
 }
 
 .ocelot-scoped .icon-options:before {
@@ -150,8 +166,32 @@
   content: "\E016";
 }
 
-.ocelot-scoped .icon-carat-up:before {
-  content: "\E017";
+.ocelot-scoped .icon-search:before {
+  content: "\E003";
+}
+
+.ocelot-scoped .icon-settings:before {
+  content: "\E002";
+}
+
+.ocelot-scoped .icon-share:before {
+  content: "\E001";
+}
+
+.ocelot-scoped .icon-success:before {
+  content: "\E023";
+}
+
+.ocelot-scoped .icon-timeline:before {
+  content: "\E000";
+}
+
+.ocelot-scoped .icon-tip:before {
+  content: "\E026";
+}
+
+.ocelot-scoped .icon-twitter:before {
+  content: "\E020";
 }
 /* Import preflight before any of our CSS so we can override it. */
 
@@ -166,7 +206,7 @@
  *    IE on Windows Phone and in iOS.
  */
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   line-height: 1.15; /* 1 */
       -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
@@ -620,7 +660,7 @@ menu {
  * 2. Change the default font family in all browsers (opinionated)
  */
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   box-sizing: border-box; /* 1 */
   font-family: sans-serif; /* 2 */
 }
@@ -689,42 +729,12 @@ html, .ocelot-scoped, .ocelot-scoped * {
  * Tailwind custom reset styles
  */
 
-/**
- * Allow adding a border to an element by just adding a border-width.
- *
- * By default, the way the browser specifies that an element should have no
- * border is by setting it's border-style to `none` in the user-agent
- * stylesheet.
- *
- * In order to easily add borders to elements by just setting the `border-width`
- * property, we change the default border-style for all elements to `solid`, and
- * use border-width to hide them instead. This way our `border` utilities only
- * need to set the `border-width` property instead of the entire `border`
- * shorthand, making our border utilities much more straightforward to compose.
- *
- * https://github.com/tailwindcss/tailwindcss/pull/116
- */
-
 .ocelot-scoped *,
 .ocelot-scoped *::before,
 .ocelot-scoped *::after {
   border-width: 0;
   border-style: solid;
   border-color: #dae1e7;
-}
-
-/**
- * Undo the `border-style: none` reset that Normalize applies to images so that
- * our `border-{width}` utilities have the expected effect.
- *
- * The Normalize reset is unnecessary for us since we default the border-width
- * to 0 on all elements.
- *
- * https://github.com/tailwindcss/tailwindcss/issues/362
- */
-
-.ocelot-scoped img {
-  border-style: solid;
 }
 
 /**
@@ -765,6 +775,29 @@ html, .ocelot-scoped, .ocelot-scoped * {
 .ocelot-scoped button,
 .ocelot-scoped [role=button] {
   cursor: pointer;
+}
+
+/* Temp overrides */
+
+.ocelot-scoped * {
+  font-size: inherit;
+}
+
+.ocelot-scoped fieldset legend {
+  position: unset;
+  top: 0;
+}
+
+.ocelot-scoped legend {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  border: unset;
+  text-transform: inherit;
+}
+
+.ocelot-scoped label {
+  margin-bottom: unset;
 }
 
 /* CitizenNet core CSS ... */
@@ -929,7 +962,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .bg-yellow {
-  background-color: #ffed4a;
+  background-color: #ffc859;
 }
 
 .ocelot-scoped .bg-yellow-light {
@@ -1168,6 +1201,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #e6f0ff;
 }
 
+.ocelot-scoped .bg-fb-blue {
+  background-color: #3b5998;
+}
+
+.ocelot-scoped .bg-tw-blue {
+  background-color: #00aced;
+}
+
+.ocelot-scoped .bg-ig-brown {
+  background-color: #675144;
+}
+
 .ocelot-scoped .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -1277,7 +1322,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:bg-yellow:hover {
-  background-color: #ffed4a;
+  background-color: #ffc859;
 }
 
 .ocelot-scoped .hover\:bg-yellow-light:hover {
@@ -1516,6 +1561,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
   background-color: #e6f0ff;
 }
 
+.ocelot-scoped .hover\:bg-fb-blue:hover {
+  background-color: #3b5998;
+}
+
+.ocelot-scoped .hover\:bg-tw-blue:hover {
+  background-color: #00aced;
+}
+
+.ocelot-scoped .hover\:bg-ig-brown:hover {
+  background-color: #675144;
+}
+
 .ocelot-scoped .bg-bottom {
   background-position: bottom;
 }
@@ -1685,7 +1742,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .border-yellow {
-  border-color: #ffed4a;
+  border-color: #ffc859;
 }
 
 .ocelot-scoped .border-yellow-light {
@@ -1924,6 +1981,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
   border-color: #e6f0ff;
 }
 
+.ocelot-scoped .border-fb-blue {
+  border-color: #3b5998;
+}
+
+.ocelot-scoped .border-tw-blue {
+  border-color: #00aced;
+}
+
+.ocelot-scoped .border-ig-brown {
+  border-color: #675144;
+}
+
 .ocelot-scoped .hover\:border-transparent:hover {
   border-color: transparent;
 }
@@ -2033,7 +2102,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:border-yellow:hover {
-  border-color: #ffed4a;
+  border-color: #ffc859;
 }
 
 .ocelot-scoped .hover\:border-yellow-light:hover {
@@ -2270,6 +2339,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .hover\:border-blue-100:hover {
   border-color: #e6f0ff;
+}
+
+.ocelot-scoped .hover\:border-fb-blue:hover {
+  border-color: #3b5998;
+}
+
+.ocelot-scoped .hover\:border-tw-blue:hover {
+  border-color: #00aced;
+}
+
+.ocelot-scoped .hover\:border-ig-brown:hover {
+  border-color: #675144;
 }
 
 .ocelot-scoped .rounded-none {
@@ -4845,7 +4926,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .text-yellow {
-  color: #ffed4a;
+  color: #ffc859;
 }
 
 .ocelot-scoped .text-yellow-light {
@@ -5084,6 +5165,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
   color: #e6f0ff;
 }
 
+.ocelot-scoped .text-fb-blue {
+  color: #3b5998;
+}
+
+.ocelot-scoped .text-tw-blue {
+  color: #00aced;
+}
+
+.ocelot-scoped .text-ig-brown {
+  color: #675144;
+}
+
 .ocelot-scoped .hover\:text-transparent:hover {
   color: transparent;
 }
@@ -5193,7 +5286,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
 }
 
 .ocelot-scoped .hover\:text-yellow:hover {
-  color: #ffed4a;
+  color: #ffc859;
 }
 
 .ocelot-scoped .hover\:text-yellow-light:hover {
@@ -5430,6 +5523,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
 .ocelot-scoped .hover\:text-blue-100:hover {
   color: #e6f0ff;
+}
+
+.ocelot-scoped .hover\:text-fb-blue:hover {
+  color: #3b5998;
+}
+
+.ocelot-scoped .hover\:text-tw-blue:hover {
+  color: #00aced;
+}
+
+.ocelot-scoped .hover\:text-ig-brown:hover {
+  color: #675144;
 }
 
 .ocelot-scoped .text-xs {
@@ -5826,6 +5931,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
   z-index: 50;
 }
 
+.ocelot-scoped .z-60 {
+  z-index: 60;
+}
+
 .ocelot-scoped .z-auto {
   z-index: auto;
 }
@@ -5905,12 +6014,12 @@ html, .ocelot-scoped, .ocelot-scoped * {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.ocelot-scoped .checked\:sibling\:pr-4:checked + * {
-  padding-right: 1rem;
+.ocelot-scoped .checked\:sibling\:pl-4:checked + * {
+  padding-left: 1rem;
 }
 
-.ocelot-scoped .not\:checked\:sibling\:pl-4:not(:checked) + * {
-  padding-left: 1rem;
+.ocelot-scoped .not\:checked\:sibling\:pr-4:not(:checked) + * {
+  padding-right: 1rem;
 }
 
 .ocelot-scoped .checked\:sibling\:after\:opacity-100:checked + *:after {
@@ -5957,7 +6066,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   transform: scale(0);
 }
 
-html, .ocelot-scoped, .ocelot-scoped * {
+html, .ocelot-scoped {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-size: 12px;
 }
@@ -6171,7 +6280,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:bg-yellow {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .sm\:bg-yellow-light {
@@ -6410,6 +6519,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .sm\:bg-fb-blue {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:bg-tw-blue {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:bg-ig-brown {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -6519,7 +6640,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:bg-yellow:hover {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .sm\:hover\:bg-yellow-light:hover {
@@ -6758,6 +6879,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .sm\:hover\:bg-fb-blue:hover {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-tw-blue:hover {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-ig-brown:hover {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .sm\:bg-bottom {
     background-position: bottom;
   }
@@ -6927,7 +7060,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:border-yellow {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .sm\:border-yellow-light {
@@ -7166,6 +7299,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     border-color: #e6f0ff;
   }
 
+  .ocelot-scoped .sm\:border-fb-blue {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:border-tw-blue {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:border-ig-brown {
+    border-color: #675144;
+  }
+
   .ocelot-scoped .sm\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -7275,7 +7420,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:border-yellow:hover {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .sm\:hover\:border-yellow-light:hover {
@@ -7512,6 +7657,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .sm\:hover\:border-blue-100:hover {
     border-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-fb-blue:hover {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-tw-blue:hover {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-ig-brown:hover {
+    border-color: #675144;
   }
 
   .ocelot-scoped .sm\:rounded-none {
@@ -10079,7 +10236,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:text-yellow {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .sm\:text-yellow-light {
@@ -10318,6 +10475,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     color: #e6f0ff;
   }
 
+  .ocelot-scoped .sm\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .sm\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -10427,7 +10596,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .sm\:hover\:text-yellow:hover {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .sm\:hover\:text-yellow-light:hover {
@@ -10664,6 +10833,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .sm\:hover\:text-blue-100:hover {
     color: #e6f0ff;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-fb-blue:hover {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-tw-blue:hover {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-ig-brown:hover {
+    color: #675144;
   }
 
   .ocelot-scoped .sm\:text-xs {
@@ -11060,6 +11241,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     z-index: 50;
   }
 
+  .ocelot-scoped .sm\:z-60 {
+    z-index: 60;
+  }
+
   .ocelot-scoped .sm\:z-auto {
     z-index: auto;
   }
@@ -11196,7 +11381,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:bg-yellow {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .md\:bg-yellow-light {
@@ -11435,6 +11620,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .md\:bg-fb-blue {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:bg-tw-blue {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .md\:bg-ig-brown {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -11544,7 +11741,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:bg-yellow:hover {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .md\:hover\:bg-yellow-light:hover {
@@ -11783,6 +11980,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .md\:hover\:bg-fb-blue:hover {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-tw-blue:hover {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-ig-brown:hover {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .md\:bg-bottom {
     background-position: bottom;
   }
@@ -11952,7 +12161,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:border-yellow {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .md\:border-yellow-light {
@@ -12191,6 +12400,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     border-color: #e6f0ff;
   }
 
+  .ocelot-scoped .md\:border-fb-blue {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:border-tw-blue {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .md\:border-ig-brown {
+    border-color: #675144;
+  }
+
   .ocelot-scoped .md\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -12300,7 +12521,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:border-yellow:hover {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .md\:hover\:border-yellow-light:hover {
@@ -12537,6 +12758,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:hover\:border-blue-100:hover {
     border-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .md\:hover\:border-fb-blue:hover {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:hover\:border-tw-blue:hover {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .md\:hover\:border-ig-brown:hover {
+    border-color: #675144;
   }
 
   .ocelot-scoped .md\:rounded-none {
@@ -15104,7 +15337,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:text-yellow {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .md\:text-yellow-light {
@@ -15343,6 +15576,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     color: #e6f0ff;
   }
 
+  .ocelot-scoped .md\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .md\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .md\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -15452,7 +15697,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .md\:hover\:text-yellow:hover {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .md\:hover\:text-yellow-light:hover {
@@ -15689,6 +15934,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .md\:hover\:text-blue-100:hover {
     color: #e6f0ff;
+  }
+
+  .ocelot-scoped .md\:hover\:text-fb-blue:hover {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:hover\:text-tw-blue:hover {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .md\:hover\:text-ig-brown:hover {
+    color: #675144;
   }
 
   .ocelot-scoped .md\:text-xs {
@@ -16085,6 +16342,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     z-index: 50;
   }
 
+  .ocelot-scoped .md\:z-60 {
+    z-index: 60;
+  }
+
   .ocelot-scoped .md\:z-auto {
     z-index: auto;
   }
@@ -16221,7 +16482,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:bg-yellow {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .lg\:bg-yellow-light {
@@ -16460,6 +16721,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .lg\:bg-fb-blue {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:bg-tw-blue {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:bg-ig-brown {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -16569,7 +16842,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:bg-yellow:hover {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .lg\:hover\:bg-yellow-light:hover {
@@ -16808,6 +17081,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .lg\:hover\:bg-fb-blue:hover {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-tw-blue:hover {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-ig-brown:hover {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .lg\:bg-bottom {
     background-position: bottom;
   }
@@ -16977,7 +17262,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:border-yellow {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .lg\:border-yellow-light {
@@ -17216,6 +17501,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     border-color: #e6f0ff;
   }
 
+  .ocelot-scoped .lg\:border-fb-blue {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:border-tw-blue {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:border-ig-brown {
+    border-color: #675144;
+  }
+
   .ocelot-scoped .lg\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -17325,7 +17622,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:border-yellow:hover {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .lg\:hover\:border-yellow-light:hover {
@@ -17562,6 +17859,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .lg\:hover\:border-blue-100:hover {
     border-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-fb-blue:hover {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-tw-blue:hover {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-ig-brown:hover {
+    border-color: #675144;
   }
 
   .ocelot-scoped .lg\:rounded-none {
@@ -20129,7 +20438,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:text-yellow {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .lg\:text-yellow-light {
@@ -20368,6 +20677,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     color: #e6f0ff;
   }
 
+  .ocelot-scoped .lg\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .lg\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -20477,7 +20798,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .lg\:hover\:text-yellow:hover {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .lg\:hover\:text-yellow-light:hover {
@@ -20714,6 +21035,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .lg\:hover\:text-blue-100:hover {
     color: #e6f0ff;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-fb-blue:hover {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-tw-blue:hover {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-ig-brown:hover {
+    color: #675144;
   }
 
   .ocelot-scoped .lg\:text-xs {
@@ -21110,6 +21443,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
     z-index: 50;
   }
 
+  .ocelot-scoped .lg\:z-60 {
+    z-index: 60;
+  }
+
   .ocelot-scoped .lg\:z-auto {
     z-index: auto;
   }
@@ -21246,7 +21583,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:bg-yellow {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .xl\:bg-yellow-light {
@@ -21485,6 +21822,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .xl\:bg-fb-blue {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:bg-tw-blue {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:bg-ig-brown {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -21594,7 +21943,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:bg-yellow:hover {
-    background-color: #ffed4a;
+    background-color: #ffc859;
   }
 
   .ocelot-scoped .xl\:hover\:bg-yellow-light:hover {
@@ -21833,6 +22182,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     background-color: #e6f0ff;
   }
 
+  .ocelot-scoped .xl\:hover\:bg-fb-blue:hover {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-tw-blue:hover {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-ig-brown:hover {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .xl\:bg-bottom {
     background-position: bottom;
   }
@@ -22002,7 +22363,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:border-yellow {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .xl\:border-yellow-light {
@@ -22241,6 +22602,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     border-color: #e6f0ff;
   }
 
+  .ocelot-scoped .xl\:border-fb-blue {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:border-tw-blue {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:border-ig-brown {
+    border-color: #675144;
+  }
+
   .ocelot-scoped .xl\:hover\:border-transparent:hover {
     border-color: transparent;
   }
@@ -22350,7 +22723,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:border-yellow:hover {
-    border-color: #ffed4a;
+    border-color: #ffc859;
   }
 
   .ocelot-scoped .xl\:hover\:border-yellow-light:hover {
@@ -22587,6 +22960,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:hover\:border-blue-100:hover {
     border-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-fb-blue:hover {
+    border-color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-tw-blue:hover {
+    border-color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-ig-brown:hover {
+    border-color: #675144;
   }
 
   .ocelot-scoped .xl\:rounded-none {
@@ -25154,7 +25539,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:text-yellow {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .xl\:text-yellow-light {
@@ -25393,6 +25778,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
     color: #e6f0ff;
   }
 
+  .ocelot-scoped .xl\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .xl\:hover\:text-transparent:hover {
     color: transparent;
   }
@@ -25502,7 +25899,7 @@ html, .ocelot-scoped, .ocelot-scoped * {
   }
 
   .ocelot-scoped .xl\:hover\:text-yellow:hover {
-    color: #ffed4a;
+    color: #ffc859;
   }
 
   .ocelot-scoped .xl\:hover\:text-yellow-light:hover {
@@ -25739,6 +26136,18 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:hover\:text-blue-100:hover {
     color: #e6f0ff;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-fb-blue:hover {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-tw-blue:hover {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-ig-brown:hover {
+    color: #675144;
   }
 
   .ocelot-scoped .xl\:text-xs {
@@ -26133,6 +26542,10 @@ html, .ocelot-scoped, .ocelot-scoped * {
 
   .ocelot-scoped .xl\:z-50 {
     z-index: 50;
+  }
+
+  .ocelot-scoped .xl\:z-60 {
+    z-index: 60;
   }
 
   .ocelot-scoped .xl\:z-auto {

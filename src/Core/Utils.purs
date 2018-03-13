@@ -16,7 +16,7 @@ type IProp r i = HH.IProp ("class" :: String | r) i
 
 appendIProps
   :: ∀ r i
-   . Array (IProp r i) 
+   . Array (IProp r i)
   -> Array (IProp r i)
   -> Array (IProp r i)
 appendIProps ip ip' =

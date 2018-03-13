@@ -90,3 +90,16 @@ percentage iprops =
     [ HP.classes $ addonClasses <> inputRightClasses ]
     [ HH.text "%" ]
   ]
+
+currency
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+currency iprops =
+  HH.label
+  [ HP.class_ $ HH.ClassName "flex" ]
+  [ HH.span
+    [ HP.classes $ addonClasses <> inputLeftClasses ]
+    [ HH.text "$" ]
+  , HH.input (iprops <> [ HP.classes $ inputClasses <> inputRightClasses ])
+  ]

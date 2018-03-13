@@ -5,6 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLbutton)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 
 data ButtonType
   = Default
@@ -67,4 +68,4 @@ button
   -> HH.HTML p i
 button { type_ } iprops =
   HH.button
-    ( iprops <> [ HP.classes (buttonTypeClasses type_ <> buttonClasses) ] )
+    ( iprops <&> [ HP.classes (buttonTypeClasses type_ <> buttonClasses) ] )

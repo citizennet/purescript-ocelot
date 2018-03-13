@@ -2,19 +2,16 @@ module Ocelot.Block.FormHeader where
 
 import Prelude
 
-import DOM.Event.Types (MouseEvent)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Layout as Layout
 import Ocelot.Block.NavigationTab as NavigationTab
 
-type FormHeaderProps i =
-  { onClick :: (MouseEvent -> Maybe i)
-  , name :: String
-  , title :: String
+type FormHeaderProps p i =
+  { buttons :: Array (HH.HTML p i)
+  , name :: Array (HH.HTML p i)
+  , title :: Array (HH.HTML p i)
   , brand :: Maybe String
   }
 
@@ -37,29 +34,29 @@ innerClasses = HH.ClassName <$>
 stickyHeader
   :: ∀ p i page
    . Eq page
-  => FormHeaderProps i
+  => FormHeaderProps p i
   -> NavigationTab.TabConfig page
   -> HH.HTML p i
-stickyHeader props config =
+stickyHeader hConfig tConfig =
   HH.div
     [ HP.class_ $ HH.ClassName "h-40" ]
     [ HH.div
       [ HP.classes Layout.stickyClasses ]
-      [ formHeader props
-      , NavigationTab.navigationTabs config
+      [ formHeader hConfig
+      , NavigationTab.navigationTabs tConfig
       ]
     ]
 
-stickyHeader_ :: ∀ p i. FormHeaderProps i -> HH.HTML p i
-stickyHeader_ props =
+stickyHeader_ :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
+stickyHeader_ config =
   HH.div
     [ HP.class_ $ HH.ClassName "h-20" ]
     [ HH.div
       [ HP.classes Layout.stickyClasses ]
-      [ formHeader props ]
+      [ formHeader config ]
     ]
 
-formHeader :: ∀ p i. FormHeaderProps i -> HH.HTML p i
+formHeader :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
 formHeader props =
   HH.header
     [ HP.classes outerClasses ]
@@ -77,22 +74,13 @@ formHeader props =
           [ HP.class_ (HH.ClassName "flex-1 font-medium") ]
             [ HH.span
                 [ HP.class_ (HH.ClassName "text-lg text-grey-70 mr-4") ]
-                [ HH.text props.name ]
+                props.name
             , HH.span
                 [ HP.class_ (HH.ClassName "text-lg text-white") ]
-                [ HH.text props.title ]
+                props.title
             ]
-        , HH.span
-          [ HP.class_( HH.ClassName "mr-2" ) ]
-          [ Button.button
-              { type_: Button.Transparent }
-              []
-              [ HH.text "Cancel" ]
-          ]
-        , Button.button
-          { type_: Button.Primary }
-          [ HE.onClick props.onClick ]
-          [ HH.text "Create" ]
         ]
+        <>
+        props.buttons
       )
     ]

@@ -1,23 +1,35 @@
-module Ocelot.Block.Icon 
+module Ocelot.Block.Icon
   ( back, back_
   , caratDown, caratDown_
+  , caratLeft, caratLeft_
   , caratRight, caratRight_
   , caratUp, caratUp_
   , close, close_
   , collapse, collapse_
   , dataSources, dataSources_
+  , delete, delete_
+  , deleteCircle, deleteCircle_
   , download, download_
+  , error, error_
   , expand, expand_
+  , facebook, facebook_
   , info, info_
+  , instagram, instagram_
   , menu, menu_
+  , navigate, navigate_
   , options, options_
   , refresh, refresh_
-  , search, search_ 
+  , search, search_
   , settings, settings_
   , share, share_
+  , success, success_
   , timeline, timeline_
+  , tip, tip_
+  , twitter, twitter_
   )
   where
+
+import Prelude
 
 import DOM.HTML.Indexed (HTMLspan)
 import Halogen.HTML as HH
@@ -25,16 +37,27 @@ import Halogen.HTML.Properties as HP
 import Halogen.HTML.Properties.ARIA as HA
 import Ocelot.Core.Utils ((<&>))
 
-icon 
+icon
   :: ∀ p i
    . String
   -> Array (HH.IProp HTMLspan i)
   -> HH.HTML p i
 icon className iprops =
   HH.span
-    [ HA.label className ]
+    [ HA.label className
+    , HP.classes $ HH.ClassName <$>
+      [ "pr-2"
+      , "inline-block"
+      ]
+    ]
     [ HH.span
-        (iprops <&> [ HA.hidden "true", HP.class_ (HH.ClassName className) ])
+        ( iprops <&>
+          [ HA.hidden "true"
+          , HP.classes $ HH.ClassName <$>
+            [ className
+            ]
+          ]
+        )
         []
     ]
 
@@ -49,6 +72,12 @@ caratDown = icon "icon-carat-down"
 
 caratDown_ :: ∀ p i. HH.HTML p i
 caratDown_ = caratDown []
+
+caratLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+caratLeft = icon "icon-carat-left"
+
+caratLeft_ :: ∀ p i. HH.HTML p i
+caratLeft_ = caratLeft []
 
 caratRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratRight = icon "icon-carat-right"
@@ -80,11 +109,29 @@ dataSources = icon "icon-data-sources"
 dataSources_ :: ∀ p i. HH.HTML p i
 dataSources_ = dataSources []
 
+delete :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+delete = icon "icon-delete"
+
+delete_ :: ∀ p i. HH.HTML p i
+delete_ = delete []
+
+deleteCircle :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+deleteCircle = icon "icon-delete-circle"
+
+deleteCircle_ :: ∀ p i. HH.HTML p i
+deleteCircle_ = deleteCircle []
+
 download :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 download = icon "icon-download"
 
 download_ :: ∀ p i. HH.HTML p i
 download_ = download []
+
+error :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+error = icon "icon-error"
+
+error_ :: ∀ p i. HH.HTML p i
+error_ = error []
 
 expand :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 expand = icon "icon-expand"
@@ -92,17 +139,35 @@ expand = icon "icon-expand"
 expand_ :: ∀ p i. HH.HTML p i
 expand_ = expand []
 
+facebook :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+facebook = icon "icon-facebook"
+
+facebook_ :: ∀ p i. HH.HTML p i
+facebook_ = facebook []
+
 info :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 info = icon "icon-info"
 
 info_ :: ∀ p i. HH.HTML p i
 info_ = info []
 
+instagram :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+instagram = icon "icon-instagram"
+
+instagram_ :: ∀ p i. HH.HTML p i
+instagram_ = instagram []
+
 menu :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 menu = icon "icon-menu"
 
 menu_ :: ∀ p i. HH.HTML p i
 menu_ = menu []
+
+navigate :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+navigate = icon "icon-navigate"
+
+navigate_ :: ∀ p i. HH.HTML p i
+navigate_ = navigate []
 
 options :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 options = icon "icon-options"
@@ -134,9 +199,27 @@ share = icon "icon-share"
 share_ :: ∀ p i. HH.HTML p i
 share_ = share []
 
+success :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+success = icon "icon-success"
+
+success_ :: ∀ p i. HH.HTML p i
+success_ = success []
+
 timeline :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 timeline = icon "icon-timeline"
 
 timeline_ :: ∀ p i. HH.HTML p i
 timeline_ = timeline []
+
+tip :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+tip = icon "icon-tip"
+
+tip_ :: ∀ p i. HH.HTML p i
+tip_ = tip []
+
+twitter :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+twitter = icon "icon-twitter"
+
+twitter_ :: ∀ p i. HH.HTML p i
+twitter_ = twitter []
 

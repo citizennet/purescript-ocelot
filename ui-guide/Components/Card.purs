@@ -18,7 +18,7 @@ type Input = Unit
 
 type Message = Void
 
-card 
+card
   :: ∀ m
   . H.Component HH.HTML Query Input Message m
 card =
@@ -32,7 +32,7 @@ card =
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of
       NoOp a -> do
-        pure a 
+        pure a
 
     render :: State -> H.ComponentHTML Query
     render _ =
@@ -43,30 +43,32 @@ card =
           }
           [ Component.component
               { title: "Card" }
-                [ Card.card
-                    { title: "Summary" }
-                    meta
+                [ Card.card_
+                  [ Card.header_
+                    [ HH.text "Summary" ]
+                  , meta
+                  ]
                 ]
           ]
       ]
       where
         meta =
-          [ HH.table_ 
+          HH.table_
             [ HH.tr_
               [ HH.th
                 [ HP.class_ (HH.ClassName "font-medium text-left text-xs text-grey-50 pr-4 py-1") ]
                 [ HH.text "Run Ads On:"]
               , HH.td
                 [ HP.class_ (HH.ClassName "font-light text-left text-xs text-black-20 py-1") ]
-                [ HH.text "Stack Overflow"] 
+                [ HH.text "Stack Overflow"]
               ]
             , HH.tr_
-              [ HH.th 
+              [ HH.th
                   [ HP.class_ (HH.ClassName "font-medium text-left text-xs text-grey-50 pr-4 py-1") ]
                   [ HH.text "Social Account:"]
                 , HH.td
                   [ HP.class_ (HH.ClassName "font-light text-left text-xs text-black-20 py-1") ]
-                  [ HH.text "Dave Loves Gang of Four"] 
+                  [ HH.text "Dave Loves Gang of Four"]
                 ]
             , HH.tr_
               [ HH.th
@@ -74,7 +76,6 @@ card =
                 [ HH.text "Ads Account:"]
               , HH.td
                 [ HP.class_ (HH.ClassName "font-light text-left text-xs text-black-20 py-1") ]
-                [ HH.text "123991234"] 
+                [ HH.text "123991234"]
               ]
             ]
-          ] 

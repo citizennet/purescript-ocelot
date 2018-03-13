@@ -3,6 +3,7 @@ module Ocelot.Block.ItemContainer where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
+import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Fuzzy (Fuzzy(..))
@@ -12,6 +13,7 @@ import Data.StrMap (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 
@@ -50,19 +52,26 @@ ulClasses = HH.ClassName <$> [ "list-reset" ]
 liClasses :: Array HH.ClassName
 liClasses = HH.ClassName <$>
   [ "px-3"
-  , "py-2"
   , "rounded-sm"
   , "text-grey-darkest"
   , "group"
-  , "leading-normal"
   , "hover:bg-grey-lighter"
+  , "cursor-pointer"
+  ]
+
+selectionGroupClasses :: Array HH.ClassName
+selectionGroupClasses = HH.ClassName <$>
+  [ "flex"
+  , "items-start"
+  , "justify-between"
   ]
 
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
-  [ "float-right"
-  , "invisible"
+  [ "invisible"
+  , "text-grey"
   , "group-hover:visible"
+  , "text-grey"
   ]
 
 -- Provided an array of items, renders them in a container.
@@ -81,7 +90,7 @@ itemContainer highlightIndex html =
       ( \i h ->
           HH.li
             ( Setters.setItemProps i
-              [ HP.classes (liClasses <> hover i) ]
+              [ HP.classes (HH.ClassName "py-3" : liClasses <> hover i) ]
             )
             [ HH.fromPlainHTML h ]
       )
@@ -102,7 +111,7 @@ selectionContainer html =
     $ html <#>
     ( \h ->
         HH.li
-          [ HP.classes liClasses ]
+          [ HP.classes (HH.ClassName "py-2" : liClasses) ]
           [ h ]
     )
   ]
@@ -116,7 +125,7 @@ selectionGroup
   -> HH.HTML i p
 selectionGroup f props item =
   HH.div
-    props
+    ( [ HP.classes $ selectionGroupClasses ] <&> props )
     [ HH.fromPlainHTML (f item)
     , HH.button
       [ HP.classes buttonClasses ]
