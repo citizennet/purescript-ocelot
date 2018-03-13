@@ -2,7 +2,6 @@ module Ocelot.Block.NavigationTab where
 
 import Prelude
 
-import Data.Array ((:))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon

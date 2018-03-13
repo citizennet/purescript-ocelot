@@ -2,10 +2,8 @@ module Ocelot.Block.FormHeader where
 
 import Prelude
 
-import DOM.Event.Types (MouseEvent)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Layout as Layout
 import Ocelot.Block.NavigationTab as NavigationTab
