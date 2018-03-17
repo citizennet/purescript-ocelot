@@ -2,104 +2,257 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLinput)
+import DOM.HTML.Indexed (HTMLlabel, HTMLspan, HTMLinput)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 
-inputOuterClasses :: Array HH.ClassName
-inputOuterClasses = HH.ClassName <$>
+inputSharedClasses :: Array HH.ClassName
+inputSharedClasses = HH.ClassName <$>
   [ "bg-white"
+  , "border-t-2"
+  , "border-b-2"
   , "font-light"
-  , "rounded-sm"
-  , "w-full"
-  , "flex"
-  ]
-
-inputInnerClasses :: Array HH.ClassName
-inputInnerClasses = HH.ClassName <$>
-  [ "cc-blue-88"
-  , "disabled:bg-grey-light"
+  , "cc-blue-88"
+  , "disabled:bg-grey-95"
+  , "disabled:text-grey-dark"
   , "focus:no-outline"
-  , "py-3"
-  , "rounded-sm"
-  , "flex-auto"
+  , "py-2"
   ]
 
 inputClasses :: Array HH.ClassName
-inputClasses = inputOuterClasses <> inputInnerClasses
+inputClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "border-l-2"
+    , "border-r-2"
+    , "w-full"
+    , "px-3"
+    , "focus:border-blue-88"
+    , "!focus:!disabled:hover:border-grey"
+    ]
+  )
 
-inputCenterClasses :: Array HH.ClassName
-inputCenterClasses = HH.ClassName <$>
-  [ "px-4"
-  , "self-center"
+inputGroupClasses :: Array HH.ClassName
+inputGroupClasses = HH.ClassName <$>
+  [ "flex"
+  , "group"
+  , "w-full"
+  , "items-center"
   ]
 
-inputLeftClasses :: Array HH.ClassName
-inputLeftClasses = HH.ClassName <$>
-  [ "pl-4"
-  , "pr-1"
-  , "self-center"
-  ]
+mainItemClasses :: Array HH.ClassName
+mainItemClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "w-full"
+    , "focus:border-blue-88"
+    , "focus:sibling:border-blue-88"
+    , "group-hover:!focus:!disabled:border-grey"
+    , "group-hover:!focus:!disabled:sibling:border-grey"
+    , "disabled:sibling:bg-grey-95"
+    ]
+  )
 
-inputLeftBorderClasses :: Array HH.ClassName
-inputLeftBorderClasses = HH.ClassName <$>
-  [ "border-r"
-  , "px-4"
-  , "self-center"
-  ]
+leftClasses :: Array HH.ClassName
+leftClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "border-l-2"
+    , "pl-3"
+    , "pr-1"
+    ]
+  )
 
-inputRightClasses :: Array HH.ClassName
-inputRightClasses = HH.ClassName <$>
-  [ "pr-4"
-  , "pl-1"
-  , "self-center"
-  ]
+rightClasses :: Array HH.ClassName
+rightClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "border-r-2"
+    , "pr-3"
+    , "pl-1"
+    ]
+  )
 
-inputRightBorderClasses :: Array HH.ClassName
-inputRightBorderClasses = HH.ClassName <$>
-  [ "border-l"
-  , "self-center"
-  , "px-4"
-  ]
+mainLeftClasses :: Array HH.ClassName
+mainLeftClasses = mainItemClasses <> leftClasses
+
+mainRightClasses :: Array HH.ClassName
+mainRightClasses = mainItemClasses <> rightClasses
 
 addonClasses :: Array HH.ClassName
-addonClasses = HH.ClassName <$>
-  [ "text-grey"
-  , "cursor-pointer"
-  , "py-3"
-  , "bg-white"
-  , "rounded-sm"
-  ]
+addonClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "cursor-pointer"
+    , "text-grey"
+    ]
+  )
+
+addonLeftClassess :: Array HH.ClassName
+addonLeftClassess = addonClasses <> leftClasses <>
+  ( HH.ClassName <$>
+    [ "order-start"
+    ]
+  )
+
+addonRightClasses :: Array HH.ClassName
+addonRightClasses = addonClasses <> rightClasses
+
+borderClasses :: Array HH.ClassName
+borderClasses = []
+
+borderLeftClasses :: Array HH.ClassName
+borderLeftClasses = borderClasses <>
+  ( HH.ClassName <$>
+    [ "border-r"
+    , "pr-3"
+    , "order-start"
+    ]
+  )
+
+borderRightClasses :: Array HH.ClassName
+borderRightClasses = borderClasses <>
+  ( HH.ClassName <$>
+    [ "border-l"
+    , "pl-3"
+    ]
+  )
 
 input
   :: ∀ p i
    . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 input iprops =
-  HH.input (iprops <> [ HP.classes $ inputClasses <> inputCenterClasses ])
+  HH.input ( [ HP.classes inputClasses ] <&> iprops )
+
+inputGroup
+  :: ∀ p i
+   . Array (HH.IProp HTMLlabel i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+inputGroup iprops html =
+  HH.label
+    ( [ HP.classes inputGroupClasses ] <&> iprops )
+    html
+
+inputGroup_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+inputGroup_ = inputGroup []
+
+inputCenter
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+inputCenter iprops =
+  HH.input
+    ( [ HP.classes mainItemClasses ] <&> iprops )
+
+inputLeft
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+inputLeft iprops =
+  HH.input
+    ( [ HP.classes mainLeftClasses ] <&> iprops )
+
+inputRight
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+inputRight iprops =
+  HH.input
+    ( [ HP.classes mainRightClasses ] <&> iprops )
+
+addonLeft
+  :: ∀ p i
+   . Array (HH.IProp HTMLspan i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+addonLeft iprops html =
+  HH.span
+    ( [ HP.classes addonLeftClassess ] <&> iprops )
+    html
+
+addonLeft_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+addonLeft_ = addonLeft []
+
+addonRight
+  :: ∀ p i
+   . Array (HH.IProp HTMLspan i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+addonRight iprops html =
+  HH.span
+    ( [ HP.classes addonRightClasses ] <&> iprops )
+    html
+
+addonRight_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+addonRight_ = addonRight []
+
+borderLeft
+  :: ∀ p i
+   . Array (HH.IProp HTMLspan i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+borderLeft iprops html =
+  addonLeft_
+    [ HH.span
+      ( [ HP.classes borderLeftClasses ] <&> iprops )
+      html
+    ]
+
+borderLeft_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+borderLeft_ = borderLeft []
+
+borderRight
+  :: ∀ p i
+   . Array (HH.IProp HTMLspan i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+borderRight iprops html =
+  addonRight_
+    [ HH.span
+      ( [ HP.classes borderRightClasses ] <&> iprops )
+      html
+    ]
+
+borderRight_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+borderRight_ = borderRight []
 
 percentage
   :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
+   . Array (HH.IProp HTMLlabel i)
+  -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
-percentage iprops =
-  HH.label
-  [ HP.class_ $ HH.ClassName "flex" ]
-  [ HH.input (iprops <> [ HP.classes $ inputClasses <> inputLeftClasses ])
-  , HH.span
-    [ HP.classes $ addonClasses <> inputRightClasses ]
-    [ HH.text "%" ]
-  ]
+percentage lprops iprops =
+  inputGroup lprops [ inputLeft iprops, addonRight_ [ HH.text "%" ] ]
 
-currency
+percentage_
   :: ∀ p i
    . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
-currency iprops =
-  HH.label
-  [ HP.class_ $ HH.ClassName "flex" ]
-  [ HH.span
-    [ HP.classes $ addonClasses <> inputLeftClasses ]
-    [ HH.text "$" ]
-  , HH.input (iprops <> [ HP.classes $ inputClasses <> inputRightClasses ])
-  ]
+percentage_ = percentage []
+
+currency
+  :: ∀ p i
+   . Array (HH.IProp HTMLlabel i)
+  -> Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+currency lprops iprops =
+  inputGroup lprops [ inputRight iprops, addonLeft_ [ HH.text "$" ] ]
+
+currency_
+  :: ∀ p i
+   . Array (HH.IProp HTMLinput i)
+  -> HH.HTML p i
+currency_ = currency []

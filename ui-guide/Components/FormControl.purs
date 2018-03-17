@@ -12,6 +12,7 @@ import Ocelot.Block.Input as Input
 import Ocelot.Block.Radio as Radio
 import Ocelot.Block.Range as Range
 import Ocelot.Block.Toggle as Toggle
+import Ocelot.Block.Type as Type
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
@@ -20,7 +21,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Component as Component
+import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
 type State =
@@ -63,13 +64,15 @@ component =
     render :: State -> H.ComponentHTML Query
     render state =
       HH.div_
-      [ Documentation.documentation
+      [ Documentation.documentation_
           { header: "Form Header"
           , subheader: "The header used on forms"
           }
-          [ Component.component
-            { title: "Form Header" }
-            [ FormHeader.formHeader
+          [ Backdrop.backdrop_
+            [ HH.h3
+              [ HP.classes Type.captionClasses ]
+              [ HH.text "Form Header" ]
+            , FormHeader.formHeader
               { name: [ HH.text "Campaign Group" ]
               , title: [ HH.text "New" ]
               , brand: Nothing
@@ -86,18 +89,22 @@ component =
               }
             ]
           ]
-      , Documentation.documentation
+      , Documentation.documentation_
           { header: "Input"
           , subheader: "Inputing very important text"
           }
-          [ Component.component
-              { title: "Input" }
-              [ Input.input
-                  [ HP.placeholder "davelovesdesignpatterns@gmail.com" ]
+          [ Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Standalone Text Input" ]
+              , Input.input
+                [ HP.placeholder "davelovesdesignpatterns@gmail.com" ]
               ]
-          , Component.component
-              { title: "Input with Form Control" }
-              [ FormControl.formControl
+          , Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Text Input with Form Control" ]
+              , FormControl.formControl
                 { label: "Email"
                 , helpText: Just "Dave will spam your email with gang of four patterns"
                 , valid: Nothing
@@ -106,11 +113,10 @@ component =
                 ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com", HP.id_ "email" ] )
               ]
           ]
-      , Documentation.documentation
+      , Documentation.documentation_
           { header: "Toggle"
           , subheader: "Enable or disable something" }
-          [ Component.component
-              { title: "Toggle with Form Control" }
+          [ Backdrop.backdrop_
               [ FormControl.formControl
                 { label: "Dave's OO Emails"
                 , helpText: Just "Once enabled, you can never unsubscribe."
@@ -120,20 +126,11 @@ component =
                 ( Toggle.toggle [ HP.id_ "toggle" ] )
               ]
           ]
-      , Documentation.documentation
+      , Documentation.documentation_
           { header: "Radio"
           , subheader: "Select one option"
           }
-          [ Component.component
-              { title: "Radio" }
-              [ HH.div_
-                [ Radio.radio { label: "Apples" } [ HP.name "fruit" ]
-                , Radio.radio { label: "Bananas" } [ HP.name "fruit" ]
-                , Radio.radio { label: "Oranges" } [ HP.name "fruit" ]
-                ]
-              ]
-          , Component.component
-              { title: "Radio with Form Control" }
+          [ Backdrop.backdrop_
               [ Card.card_
                 [ Card.header_
                   [ Icon.tip
@@ -168,20 +165,24 @@ component =
                   )
               ]
           ]
-      , Documentation.documentation
+      , Documentation.documentation_
           { header: "Range"
           , subheader: "Select a numeric value between a min and max" }
-          [ Component.component
-              { title: "Range" }
-              [ Range.range
+          [ Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Standalone Range Input" ]
+              , Range.range
                 [ HP.id_ "range_"
                 , HP.min 0.0
                 , HP.max 100.0
                 ]
               ]
-          , Component.component
-              { title: "Range with Form Control" }
-              [ FormControl.formControl
+          , Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Range Input with Form Control" ]
+              , FormControl.formControl
                 { label: "Dave's OO Emails"
                 , helpText: Just "How many do you want?"
                 , valid: Nothing
@@ -195,12 +196,11 @@ component =
                 )
               ]
           ]
-      , Documentation.documentation
+      , Documentation.documentation_
           { header: "Form Panel"
           , subheader: "Collapse + Expand Form Controls"
           }
-          [ Component.component
-            { title: "Form Panel" }
+          [ Backdrop.backdrop_
             [ FormPanel.formPanel
                 { isOpen: state.formPanelIsOpen
                 , renderToggle:

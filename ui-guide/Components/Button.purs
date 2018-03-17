@@ -3,12 +3,13 @@ module UIGuide.Components.Button where
 import Prelude
 
 import Ocelot.Block.Button as Button
+import Ocelot.Block.Type as Type
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Component as Component
-import UIGuide.Block.Documentation as Documentation 
+import UIGuide.Block.Backdrop as Backdrop
+import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
@@ -30,30 +31,36 @@ component =
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of
       NoOp a -> do
-        pure a 
+        pure a
 
     render :: State -> H.ComponentHTML Query
     render _ =
       HH.div_
-      [ Documentation.documentation
+      [ Documentation.documentation_
           { header: "Buttons"
-          , subheader: "Perform Actions" 
+          , subheader: "Perform Actions"
           }
-          [ Component.component
-              { title: "Default" }
-              [ Button.button_
+          [ Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Standard Button" ]
+              , Button.button_
                   { type_: Button.Default }
                   [ HH.text "Cancel" ]
               ]
-          , Component.component
-              { title: "Primary" }
-              [ Button.button_
+          , Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Primary Button" ]
+              , Button.button_
                   { type_: Button.Primary }
                   [ HH.text "Submit" ]
               ]
-          , Component.component
-              { title: "Secondary" }
-              [ HH.div
+          , Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Standard Button with Dark Backdrop" ]
+              , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-16 w-full") ]
                   [ Button.button_
                       { type_: Button.Secondary }

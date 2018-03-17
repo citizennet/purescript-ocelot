@@ -4,9 +4,8 @@ import Prelude
 
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
-import Control.Monad.Aff.AVar (AVAR)
-import Network.HTTP.Affjax (AJAX)
 import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import DOM (DOM)
@@ -22,6 +21,7 @@ import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
@@ -66,7 +66,9 @@ type Input o item err eff m =
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data Query o item err eff m a
   = Remove item a
+  | TriggerFocus a
   | Synchronize a
+  | Search String a
   | HandleSelect (Select.Message o (Fuzzy item)) a
   | GetSelections (SelectionType item -> a)
   | ReplaceSelections (SelectionType item) a
@@ -223,6 +225,9 @@ component =
           (Message o item)
           m
     eval = case _ of
+      Search text a ->
+        eval $ HandleSelect ( Select.Searched text ) a
+
       HandleSelect message a -> case message of
         Select.Emit query -> H.raise (Emit query) *> pure a
 
@@ -272,7 +277,12 @@ component =
 
         H.modify $ seeks _ { selections = selections }
         H.raise $ SelectionsChanged ItemRemoved item selections
-        eval $ Synchronize a
+        _ <- eval $ Synchronize a
+        eval $ TriggerFocus a
+
+      -- Tell the Select to trigger focus on the input
+      TriggerFocus a -> a <$ do
+        H.query unit $ H.action Select.TriggerFocus
 
       -- Tell the parent what the current state of the Selections list is.
       GetSelections reply -> do

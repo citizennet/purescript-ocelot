@@ -23,6 +23,7 @@ import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icon as Icon
 import UIGuide.Components.Tab as Tab
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Typeaheads as Typeaheads
 import UIGuide.Components.Validation as Validation
 
 ----------
@@ -53,17 +54,43 @@ type RouteConfig eff =
 routes :: ∀ eff. Map String (RouteConfig eff)
 routes = fromFoldable
   [ Tuple "tabs"
-    { anchor: "Tabs", component: proxy Tab.component, group: Components }
+    { anchor: "Tabs"
+    , component: proxy Tab.component
+    , group: Components
+    }
   , Tuple "cards"
-    { anchor: "Cards", component: proxy Card.card, group: Components }
+    { anchor: "Cards"
+    , component: proxy Card.card
+    , group: Components
+    }
   , Tuple "textfields"
-      { anchor: "Text Fields", component: proxy TextFields.component, group: FormElements }
+    { anchor: "Text Fields"
+    , component: proxy TextFields.component
+    , group: FormElements
+    }
+  , Tuple "typeaheads"
+    { anchor: "Typeaheads"
+    , component: proxy Typeaheads.component
+    , group: FormElements
+    }
   , Tuple "buttons"
-      { anchor: "Buttons", component: proxy Button.component, group: FormElements }
+    { anchor: "Buttons"
+    , component: proxy Button.component
+    , group: FormElements
+    }
   , Tuple "formcontrols"
-      { anchor: "Form Controls", component: proxy FormControl.component, group: FormElements }
+    { anchor: "Form Controls"
+    , component: proxy FormControl.component
+    , group: FormElements
+    }
   , Tuple "validation"
-      { anchor: "Validation", component: proxy Validation.component, group: Behaviors }
+    { anchor: "Validation"
+    , component: proxy Validation.component
+    , group: Behaviors
+    }
   , Tuple "icon"
-      { anchor: "Icon", component: proxy Icon.icon, group: FormElements }
+    { anchor: "Icon"
+    , component: proxy Icon.icon
+    , group: FormElements
+    }
   ]

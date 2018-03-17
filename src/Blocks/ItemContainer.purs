@@ -20,31 +20,32 @@ import Select.Utils.Setters as Setters
 baseClasses :: Array HH.ClassName
 baseClasses = HH.ClassName <$>
   [ "bg-white"
-  , "rounded-sm"
-  , "w-full" ]
+  , "border-grey-light"
+  , "border-l-2"
+  , "border-r-2"
+  , "w-full"
+  ]
 
 selectionContainerClasses :: Array HH.ClassName
-selectionContainerClasses = baseClasses <> names
-  where
-    names = HH.ClassName <$>
-      [ "border-b"
-      , "border-grey-lighter"
-      , "px-1"
-      , "py-1"
-      ]
+selectionContainerClasses = baseClasses <>
+  ( HH.ClassName <$>
+    [ "border-t-2"
+    ]
+  )
 
 itemContainerClasses :: Array HH.ClassName
-itemContainerClasses = baseClasses <> names
-  where
-    names = HH.ClassName <$>
-      [ "absolute"
-      , "shadow"
-      , "max-h-80"
-      , "overflow-y-scroll"
-      , "pin-t"
-      , "pin-l"
-      , "z-50"
-      ]
+itemContainerClasses = baseClasses <>
+  ( HH.ClassName <$>
+    [ "absolute"
+    , "shadow"
+    , "max-h-80"
+    , "overflow-y-scroll"
+    , "pin-t"
+    , "pin-l"
+    , "z-50"
+    , "border-b-2"
+    ]
+  )
 
 ulClasses :: Array HH.ClassName
 ulClasses = HH.ClassName <$> [ "list-reset" ]
@@ -103,6 +104,8 @@ itemContainer highlightIndex html =
 -- Provided an array of selection items, renders them in a container
 -- Make sure the array of items includes the correct click handlers:w
 selectionContainer :: ∀ p i. Array (HH.HTML p i) -> HH.HTML p i
+selectionContainer []   =
+  HH.div_ []
 selectionContainer html =
   HH.div
   [ HP.classes selectionContainerClasses ]

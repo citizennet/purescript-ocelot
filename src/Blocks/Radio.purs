@@ -27,9 +27,9 @@ inputClasses = HH.ClassName <$>
   [ "checked:sibling:after:opacity-100"
   , "checked:sibling:after:scale-1"
   , "checked:sibling:border-blue-88"
-  , "not:checked:sibling:after:opacity-0"
-  , "not:checked:sibling:after:scale-0"
-  , "not:checked:sibling:border-grey-70-a40"
+  , "!checked:sibling:after:opacity-0"
+  , "!checked:sibling:after:scale-0"
+  , "!checked:sibling:border-grey-70-a40"
   , "offscreen"
   ]
 

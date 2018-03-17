@@ -1,9 +1,14 @@
-module UIGuide.Block.Documentation (documentation) where
+module UIGuide.Block.Documentation
+  ( documentation
+  , documentation_
+  ) where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLsection)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Core.Utils ((<&>))
 
 type DocumentationProps =
   { header :: String
@@ -12,13 +17,16 @@ type DocumentationProps =
 
 documentationClasses :: Array HH.ClassName
 documentationClasses = HH.ClassName <$>
-  [ ]
+  [ "my-16"
+  ]
 
 headerClasses :: Array HH.ClassName
 headerClasses = HH.ClassName <$>
-  [ "font-light"
+  [ "font-normal"
   , "leading-loose"
-  , "text-black-20" 
+  , "text-black-20"
+  , "text-4xl"
+  , "my-4"
   ]
 
 subheaderClasses :: Array HH.ClassName
@@ -26,25 +34,33 @@ subheaderClasses = HH.ClassName <$>
   [ "font-light"
   , "leading-normal"
   , "text-grey-50"
-  , "text-sm"
+  , "text-xl"
+  , "mb-12"
   ]
 
-documentation 
+documentation
   :: ∀ p i
    . DocumentationProps
+  -> Array (HH.IProp HTMLsection i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation props html =
-  HH.div
-    [ HP.classes documentationClasses ]
+documentation config iprops html =
+  HH.section
+    ( [ HP.classes documentationClasses ] <&> iprops )
     [ HH.h1
-        [ HP.classes headerClasses ] 
-        [ HH.text props.header ]
+        [ HP.classes headerClasses ]
+        [ HH.text config.header ]
     , HH.h2
         [ HP.classes subheaderClasses ]
-        [ HH.text props.subheader ]
+        [ HH.text config.subheader ]
     , HH.div
       [ HP.class_ (HH.ClassName "mt-5") ]
       html
     ]
 
+documentation_
+  :: ∀ p i
+   . DocumentationProps
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+documentation_ config = documentation config []

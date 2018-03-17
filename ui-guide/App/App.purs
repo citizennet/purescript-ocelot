@@ -102,8 +102,7 @@ app =
 
   render :: State m -> HTML m
   render state =
-    HH.body
-    [ HP.class_ $ HH.ClassName "font-sans font-normal text-black leading-normal" ]
+    HH.body_
     [ HH.div
       [ HP.class_ $ HH.ClassName "min-h-screen" ]
       [ renderSidebar state
@@ -126,7 +125,7 @@ app =
         ]
       ]
     , HH.div
-      [ HP.class_ $ HH.ClassName "px-6 pb-8 pt-20 md:pt-16 w-full max-w-lg mx-auto" ]
+      [ HP.class_ $ HH.ClassName "px-6 pb-8 pt-20 md:pt-16 w-full container mx-auto" ]
       [ renderSlot state ]
     ]
 

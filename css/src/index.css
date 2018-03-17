@@ -1,6 +1,9 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
 
+html, body { @apply .gotham; @apply .leading-normal; font-size: 12px; }
+button, input, optgroup, select, textarea { @apply .leading-normal; }
+
 /* Temp overrides */
 
 * {
@@ -39,6 +42,7 @@ label {
 .scale-0 { transform: scale(0); }
 .scale-1 { transform: scale(1); }
 .content-box { box-sizing: content-box; }
+.order-start { order: -1; }
 
 /* pseudo utilities */
 
@@ -50,21 +54,26 @@ label {
 .after\:no-content:after { @apply .no-content; }
 .after\:rounded-full:after { @apply .rounded-full; }
 .after\:shadow:after { @apply .shadow; }
-.checked\:sibling\:pl-4:checked + * { @apply .pl-4; }
-.not\:checked\:sibling\:pr-4:not(:checked) + * { @apply .pr-4; }
-.checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
-.checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
-.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
-.not\:checked\:sibling\:bg-grey-light:not(:checked) + * { @apply .bg-grey-light; }
-.not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * { @apply .border-grey-70-a40; }
-.checked\:sibling\:border-blue-88:checked + * { @apply .border-blue-88; }
-.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
-.disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
+.checked\:sibling\:pl-4:checked ~ * { @apply .pl-4; }
+.\!checked\:sibling\:pr-4:not(:checked) ~ * { @apply .pr-4; }
+.checked\:sibling\:after\:opacity-100:checked ~ *:after { @apply .opacity-100; }
+.checked\:sibling\:after\:scale-1:checked ~ *:after { @apply .scale-1; }
+.checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
+.\!checked\:sibling\:bg-grey-light:not(:checked) ~ * { @apply .bg-grey-light; }
+.\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * { @apply .border-grey-70-a40; }
+.checked\:sibling\:border-blue-88:checked ~ * { @apply .border-blue-88; }
+.checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
 .focus\:no-outline:focus { @apply .no-outline !important; }
-.not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
-.not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
-
-html { @apply .gotham; font-size: 12px; }
+.\!checked\:sibling\:after\:opacity-0:not(:checked) ~ *:after { @apply .opacity-0; }
+.\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after { @apply .scale-0; }
+.disabled\:bg-grey-95:disabled { @apply .bg-grey-95; }
+.disabled\:text-grey-dark:disabled { @apply .text-grey-dark; }
+.disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
+.disabled\:border-grey-light:disabled { @apply .border-grey-light; }
+.focus\:sibling\:border-blue-88:focus ~ * { @apply .border-blue-88; }
+.\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) { @apply .border-grey; }
+.group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
+.group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }
 
 /* Styles for range sliders */
 input[type=range] {

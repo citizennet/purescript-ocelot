@@ -23,9 +23,9 @@ import Network.RemoteData (RemoteData, fromEither)
 
 newtype Source item = Source
   { path :: String
-  , root :: String
   , speed :: Speed
-  , decoder :: Json -> RemoteData Err (Array item) }
+  , decoder :: Json -> RemoteData Err (Array item)
+  }
 
 data Speed
   = Fast
@@ -39,18 +39,16 @@ type Err = String
 
 users :: Source User
 users = Source
-  { path: "users"
-  , root: "https://jsonplaceholder.typicode.com/"
+  { path: "https://swapi.co/api/people/?search="
   , speed: Fast
   , decoder: decodeWith decodeUser
   }
 
-todos :: Source Todo
-todos = Source
-  { path: "todos"
-  , root: "https://jsonplaceholder.typicode.com/"
+locations :: Source Location
+locations = Source
+  { path: "https://swapi.co/api/planets/?search="
   , speed: Fast
-  , decoder: decodeWith decodeTodo
+  , decoder: decodeWith decodeLocation
   }
 
 slow :: Source User
@@ -64,74 +62,63 @@ fail = users
 -- Functions
 
 -- Given a source, load the resulting data.
-loadFromSource :: ∀ eff item
-  . Source item
- -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
-loadFromSource (Source { root, path, speed, decoder }) = case speed of
-  Fast -> get (root <> path) >>= (pure <<< decoder <<< _.response)
-  Fail -> get path >>= (pure <<< decoder <<< _.response)
-  Slow -> do
-    _ <- liftEff $ setTimeout 5000 (pure unit)
-    res <- get (root <> path)
-    pure $ decoder res.response
+loadFromSource
+  :: ∀ eff item
+   . Source item
+  -> String
+  -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
+loadFromSource (Source { path, speed, decoder }) search =
+  case speed of
+    Fast -> get (path <> search) >>= (pure <<< decoder <<< _.response)
+    Fail -> get search >>= (pure <<< decoder <<< _.response)
+    Slow -> do
+      _ <- liftEff $ setTimeout 5000 (pure unit)
+      res <- get (path <> search)
+      pure $ decoder res.response
 
 ----------
 -- Types for the JSON API
 
-decodeWith :: ∀ item. (Json -> Either String item) -> Json -> RemoteData Err (Array item)
-decodeWith decoder json = fromEither $ traverse decoder =<< decodeJson json
+decodeWith
+  :: ∀ item
+   . (Json -> Either String item)
+  -> Json
+  -> RemoteData Err (Array item)
+decodeWith decoder json =
+  fromEither $ traverse decoder =<< decodeResults =<< decodeJson json
 
-newtype Todo = Todo
-  { title :: String
-  , completed :: Boolean }
-
-derive instance newtypeTodo :: Newtype Todo _
-derive instance eqTodo :: Eq Todo
-
-instance showTodo :: Show Todo where
-  show (Todo { title, completed }) = "Todo: " <> title <> " " <> show completed
-
-decodeTodo :: Json -> Either String Todo
-decodeTodo json = do
+decodeResults :: Json -> Either String (Array Json)
+decodeResults json = do
   obj <- decodeJson json
-  title <- obj .? "title"
-  completed <- obj .? "completed"
-  pure $ Todo { title, completed }
-
-todoToStrMap :: Todo -> StrMap String
-todoToStrMap (Todo { title, completed }) =
-  fromFoldable
-    [ Tuple "title" title
-    , Tuple "completed" (if completed then "Completed" else "")
-    ]
-
-renderItemTodo :: TA.RenderTypeaheadItem Todo
-renderItemTodo =
-  { toStrMap: todoToStrMap
-  , renderItem: HH.text <<< _.title <<< unwrap
-  , renderFuzzy: HH.span_ <<< ItemContainer.boldMatches "title"
-  }
-
+  resultsJson <- obj .? "results"
+  results <- decodeJson resultsJson
+  pure $ results
 
 newtype User = User
-  { id :: Int
-  , name :: String
-  , city :: String }
+  { name :: String
+  , eyeColor :: String
+  , hairColor :: String
+  , skinColor :: String
+  }
 
 derive instance newtypeUser :: Newtype User _
 derive instance eqUser :: Eq User
 instance showUser :: Show User where
-  show (User { id, name }) = show id <> ": " <> name
+  show (User { name }) = name
 
 decodeUser :: Json -> Either String User
 decodeUser json = do
   obj <- decodeJson json
-
   name <- obj .? "name"
-  id <- obj .? "id"
-  city <- obj .? "address" >>= \i -> i .? "city"
-
-  pure $ User { id, name, city }
+  eyeColor <- obj .? "eye_color"
+  hairColor <- obj .? "hair_color"
+  skinColor <- obj .? "skin_color"
+  pure $ User
+    { name
+    , eyeColor
+    , hairColor
+    , skinColor
+    }
 
 renderItemUser :: TA.RenderTypeaheadItem User
 renderItemUser =
@@ -141,9 +128,41 @@ renderItemUser =
   }
 
 userToStrMap :: User -> StrMap String
-userToStrMap (User { id, name, city }) =
+userToStrMap (User { name, eyeColor, hairColor, skinColor }) =
   fromFoldable
-    [ Tuple "id" (show id)
-    , Tuple "name" name
-    , Tuple "city" city
+    [ Tuple "name" name
+    , Tuple "eyeColor" eyeColor
+    , Tuple "hairColor" hairColor
+    , Tuple "skinColor" skinColor
     ]
+
+newtype Location = Location
+  { name :: String
+  , population :: String
+  }
+
+derive instance newtypeLocation :: Newtype Location _
+derive instance eqLocation :: Eq Location
+instance showLocation :: Show Location where
+  show (Location { name, population }) =
+    name <> " (" <> show population <> " population)"
+
+decodeLocation :: Json -> Either String Location
+decodeLocation json = do
+  obj <- decodeJson json
+  name <- obj .? "name"
+  population <- obj .? "population"
+  pure $ Location { name, population }
+
+locationToStrMap :: Location -> StrMap String
+locationToStrMap (Location { name, population }) =
+  fromFoldable [ Tuple "name" name ]
+
+renderItemLocation :: TA.RenderTypeaheadItem Location
+renderItemLocation =
+  { toStrMap: locationToStrMap
+  , renderItem: TA.defRenderItem <<< unwrap
+  , renderFuzzy: TA.defRenderFuzzy
+  }
+
+

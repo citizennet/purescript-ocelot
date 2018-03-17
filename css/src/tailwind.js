@@ -97,7 +97,8 @@ config.borderWidths = Object.assign(config.borderWidths, {
 
 config.modules = Object.assign(config.modules, {
   'borderWidths': ['responsive', 'hover'],
-  'visibility': ['responsive', 'hover', 'focus', 'group-hover']
+  'visibility': ['responsive', 'hover', 'focus', 'group-hover'],
+  'borderColors': ['responsive', 'hover', 'focus', 'group-hover'],
 })
 
 // Export the new configuration

@@ -3,11 +3,12 @@ module UIGuide.Components.Tab where
 import Prelude
 
 import Ocelot.Block.NavigationTab as NavigationTab
+import Ocelot.Block.Type as Type
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Component as Component
+import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
@@ -36,19 +37,23 @@ component =
     render :: State -> H.ComponentHTML Query
     render _ =
       HH.div_
-      [ Documentation.documentation
+      [ Documentation.documentation_
           { header: "Tabs"
           , subheader: "Tabs for navigating, eg. between form pages"
           }
-          [ Component.component
-              { title: "Tabs" }
-              [ HH.div
+          [ Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Standard Tabs" ]
+              , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
                   [ NavigationTab.navigationTabs (tabConfig defaultTabs) ]
               ]
-          , Component.component
-              { title: "Tabs with Errors" }
-              [ HH.div
+          , Backdrop.backdrop_
+              [ HH.h3
+                [ HP.classes Type.captionClasses ]
+                [ HH.text "Tabs with Errors" ]
+              , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
                   [ NavigationTab.navigationTabs (tabConfig errorTabs) ]
               ]

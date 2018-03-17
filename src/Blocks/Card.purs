@@ -2,7 +2,7 @@ module Ocelot.Block.Card where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLaside, HTMLh3)
+import DOM.HTML.Indexed (HTMLdiv, HTMLh3)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
@@ -11,11 +11,9 @@ cardClasses :: Array HH.ClassName
 cardClasses = HH.ClassName <$>
   [ "bg-white"
   , "h-auto"
-  , "w-full"
   , "p-6"
-  , "shadow"
-  , "w-auto"
   , "mb-10"
+  , "rounded"
   ]
 
 headerClasses :: Array HH.ClassName
@@ -30,11 +28,11 @@ headerClasses = HH.ClassName <$>
 
 card
   :: ∀ p i
-   . Array (HH.IProp HTMLaside i)
+   . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 card iprops html =
-  HH.aside
+  HH.div
     ( [ HP.classes cardClasses ] <&> iprops )
     html
 
