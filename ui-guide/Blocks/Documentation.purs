@@ -27,6 +27,7 @@ headerClasses = HH.ClassName <$>
   , "text-black-20"
   , "text-4xl"
   , "my-4"
+  , "w-1/2"
   ]
 
 subheaderClasses :: Array HH.ClassName
@@ -36,6 +37,7 @@ subheaderClasses = HH.ClassName <$>
   , "text-grey-50"
   , "text-xl"
   , "mb-12"
+  , "w-1/2"
   ]
 
 documentation

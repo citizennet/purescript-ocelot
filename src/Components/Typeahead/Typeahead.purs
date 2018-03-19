@@ -142,7 +142,7 @@ defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderFuzzy renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap false
+  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
   }
 
 
@@ -231,7 +231,7 @@ renderTA props renderFuzzy renderSelectionItem st =
         otherwise -> renderMultiSearch
 
     renderSingle x slot =
-      HH.div_
+      HH.label_
         [ Input.inputGroup
           [ HP.class_ $ HH.ClassName $ maybe "offscreen" (const "") x ]
           ( ( maybe [] pure $ renderSingleItem <$> x ) <>
@@ -252,7 +252,18 @@ renderTA props renderFuzzy renderSelectionItem st =
 
     renderSingleSearch x =
       Input.inputGroup_
-        [ Input.inputCenter $ Setters.setInputProps props
+        [ Input.inputCenter
+          ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
+            <&> Setters.setInputProps props
+          )
+        , Input.addonCenter
+          [ HP.class_
+            $ HH.ClassName
+            $ case st.items of
+                Loading -> ""
+                otherwise -> "offscreen"
+          ]
+          [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes Type.linkClasses ]
@@ -268,7 +279,18 @@ renderTA props renderFuzzy renderSelectionItem st =
 
     renderMultiSearch =
       Input.inputGroup_
-        [ Input.inputCenter $ Setters.setInputProps props
+        [ Input.inputCenter
+          ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
+            <&> Setters.setInputProps props
+          )
+        , Input.addonCenter
+          [ HP.class_
+            $ HH.ClassName
+            $ case st.items of
+                Loading -> ""
+                otherwise -> "offscreen"
+          ]
+          [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes Type.linkClasses ]

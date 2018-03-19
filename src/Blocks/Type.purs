@@ -17,7 +17,7 @@ captionClasses = HH.ClassName <$>
 
 linkClasses :: Array HH.ClassName
 linkClasses = HH.ClassName <$>
-  [ "text-blue-light"
+  [ "text-blue-88"
   , "font-medium"
   , "cursor-pointer"
   ]

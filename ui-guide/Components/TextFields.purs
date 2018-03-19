@@ -4,6 +4,7 @@ import Prelude
 
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
@@ -138,7 +139,7 @@ cnDocumentationBlocks =
       ]
     ]
   , Documentation.documentation_
-    { header: "Text Field - Addon Right"
+    { header: "Text Field - Right Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
@@ -211,7 +212,7 @@ cnDocumentationBlocks =
       ]
     ]
   , Documentation.documentation_
-    { header: "Text Field - Addon Left"
+    { header: "Text Field - Left Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
@@ -282,4 +283,62 @@ cnDocumentationBlocks =
         ]
       ]
     ]
-  ]
+  , Documentation.documentation_
+    { header: "Text Field - Surround Addons"
+    , subheader: "Captures string input while indicating to user useful information about the input type."
+    }
+    [ Backdrop.backdrop_
+      [ Backdrop.content_
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Type.captionClasses ]
+            [ HH.text "Static" ]
+          , FormControl.formControl
+            { label: "Search"
+            , helpText: Just "This text field shows how you might represent a search field."
+            , valid: Nothing
+            , inputId: "search"
+            }
+            ( Input.inputGroup_
+              [ Input.inputCenter
+                [ HP.id_ "search"
+                , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
+                ]
+              , Input.addonLeft_ [ Icon.search_ ]
+              , Input.borderRight
+                [ HP.classes Type.linkClasses ]
+                [ HH.text "Search" ]
+              ]
+            )
+          ]
+        ]
+      , Backdrop.content_
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Type.captionClasses ]
+            [ HH.text "Loading" ]
+          , FormControl.formControl
+            { label: "Search"
+            , helpText: Just "This text field shows how you might represent a loading state for a search field."
+            , valid: Nothing
+            , inputId: "search-loading"
+            }
+            ( Input.inputGroup_
+              [ Input.inputCenter
+                [ HP.id_ "search-loading"
+                , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
+                , HP.value "Something"
+                ]
+              , Input.addonCenter_ [ Icon.loading_ ]
+              , Input.addonLeft_ [ Icon.search_ ]
+              , Input.borderRight
+                [ HP.classes Type.linkClasses ]
+                [ HH.text "Search" ]
+              ]
+            )
+          ]
+        ]
+      ]
+    ]]

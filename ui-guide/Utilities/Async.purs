@@ -2,20 +2,25 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
-import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead as TA
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Argonaut (Json, decodeJson, (.?))
+import Data.Array (head, last)
 import Data.Either (Either)
+import Data.Fuzzy (Fuzzy(..))
+import Data.Maybe (fromMaybe)
 import Data.Newtype (class Newtype, unwrap)
 import Data.StrMap (StrMap, fromFoldable)
+import Data.String (Pattern(..), split)
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
+import Ocelot.Block.ItemContainer as ItemContainer
+import Ocelot.Components.Typeahead as TA
 
 
 ----------
@@ -123,8 +128,8 @@ decodeUser json = do
 renderItemUser :: TA.RenderTypeaheadItem User
 renderItemUser =
   { toStrMap: userToStrMap
-  , renderItem: TA.defRenderItem <<< unwrap
-  , renderFuzzy: TA.defRenderFuzzy
+  , renderItem: renderUser
+  , renderFuzzy: renderFuzzyUser
   }
 
 userToStrMap :: User -> StrMap String
@@ -134,6 +139,76 @@ userToStrMap (User { name, eyeColor, hairColor, skinColor }) =
     , Tuple "eyeColor" eyeColor
     , Tuple "hairColor" hairColor
     , Tuple "skinColor" skinColor
+    ]
+
+renderUser :: ∀ p i. User -> HH.HTML p i
+renderUser u@(User { name }) =
+  HH.div
+    [ HP.classes $ HH.ClassName <$> [ "flex", "items-center" ] ]
+    [ renderUserImg u
+    , HH.text name
+    ]
+
+renderFuzzyUser :: ∀ p i. Fuzzy User -> HH.HTML p i
+renderFuzzyUser f@(Fuzzy { original: u }) =
+  HH.div
+    [ HP.classes $ HH.ClassName <$> [ "flex", "items-center" ] ]
+    [ renderUserImg u
+    , HH.span_ $ ItemContainer.boldMatches "name" f
+    ]
+
+renderUserImg :: ∀ p i. User -> HH.HTML p i
+renderUserImg (User { eyeColor, hairColor, skinColor }) =
+  let skinColors = split (Pattern ", ") skinColor
+      skinColor1 = fromMaybe "" $ head skinColors
+      skinColor2 = fromMaybe skinColor1 $ last skinColors in
+  HH.span
+    [ HP.classes $ HH.ClassName <$>
+      [ "inline-block"
+      , "mr-3"
+      , "w-6"
+      , "h-6"
+      , "rounded-full"
+      , "overflow-hidden"
+      , "border-t-4"
+      , "border-l-2"
+      , "border-r-2"
+      , "border-" <> colorToCSSColor hairColor
+      , "bg-" <> colorToCSSColor skinColor1
+      , "relative"
+      , "shadow"
+      ]
+    ]
+    [ HH.span
+      [ HP.classes $ HH.ClassName <$>
+        [ "flex"
+        , "justify-around"
+        , "pt-1"
+        ]
+      ]
+      ( ( \_ ->
+          HH.span
+            [ HP.classes $ HH.ClassName <$>
+              [ "w-1"
+              , "h-1"
+              , "rounded-full"
+              , "bg-" <> colorToCSSColor eyeColor
+              , "shadow-inner"
+              ]
+            ]
+            []
+        ) <$> [ 1, 2 ]
+      )
+    , HH.span
+      [ HP.classes $ HH.ClassName <$>
+        [ "pin-b"
+        , "h-1"
+        , "w-full"
+        , "bg-" <> colorToCSSColor skinColor2
+        , "absolute"
+        ]
+      ]
+      []
     ]
 
 newtype Location = Location
@@ -165,4 +240,36 @@ renderItemLocation =
   , renderFuzzy: TA.defRenderFuzzy
   }
 
+----------
+-- Helper for rendering user img
 
+colorToCSSColor :: String -> String
+colorToCSSColor color =
+  case color of
+    "blond" -> "yellow-dark"
+    "blonde" -> "yellow-dark"
+    "fair" -> "orange-lighter"
+    "blue" -> "blue-light"
+    "gold" -> "yellow-dark"
+    "yellow" -> "yellow"
+    "white" -> "grey-lighter"
+    "red" -> "red-dark"
+    "brown" -> "orange-darker"
+    "light" -> "orange-lighter"
+    "grey" -> "grey"
+    "black" -> "black"
+    "auburn" -> "orange-darkest"
+    "blue-gray" -> "indigo-light"
+    "green" -> "green-dark"
+    "green-tan" -> "green-lighter"
+    "orange" -> "orange"
+    "hazel" -> "green-dark"
+    "pale" -> "orange-lightest"
+    "metal" -> "grey"
+    "dark" -> "yellow-darkest"
+    "pink" -> "pink-lighter"
+    "tan" -> "orange-dark"
+    "silver" -> "grey-lighter"
+    "brown mottle" -> "orange-darker"
+    "mottled green" -> "green-dark"
+    otherwise -> "transparent"

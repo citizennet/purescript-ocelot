@@ -74,6 +74,14 @@ label {
 .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) { @apply .border-grey; }
 .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
 .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }
+.focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
+
+.spin { animation: spin 1.4s infinite linear; }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /* Styles for range sliders */
 input[type=range] {

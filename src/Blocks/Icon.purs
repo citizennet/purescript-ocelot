@@ -15,6 +15,7 @@ module Ocelot.Block.Icon
   , facebook, facebook_
   , info, info_
   , instagram, instagram_
+  , loading, loading_
   , menu, menu_
   , navigate, navigate_
   , options, options_
@@ -46,8 +47,7 @@ icon className iprops =
   HH.span
     [ HA.label className
     , HP.classes $ HH.ClassName <$>
-      [ "pr-2"
-      , "inline-block"
+      [ "inline-block"
       ]
     ]
     [ HH.span
@@ -55,6 +55,7 @@ icon className iprops =
           [ HA.hidden "true"
           , HP.classes $ HH.ClassName <$>
             [ className
+            , "inline-block"
             ]
           ]
         )
@@ -156,6 +157,13 @@ instagram = icon "icon-instagram"
 
 instagram_ :: ∀ p i. HH.HTML p i
 instagram_ = instagram []
+
+loading :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+loading iprops =
+  icon "icon-loading" $ [ HP.class_ $ HH.ClassName "spin" ] <&> iprops
+
+loading_ :: ∀ p i. HH.HTML p i
+loading_ = loading []
 
 menu :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 menu = icon "icon-menu"

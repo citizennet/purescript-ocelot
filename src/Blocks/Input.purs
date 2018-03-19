@@ -52,6 +52,14 @@ mainItemClasses = inputSharedClasses <>
     ]
   )
 
+centerClasses :: Array HH.ClassName
+centerClasses = inputSharedClasses <>
+  ( HH.ClassName <$>
+    [ "pl-1"
+    , "pr-1"
+    ]
+  )
+
 leftClasses :: Array HH.ClassName
 leftClasses = inputSharedClasses <>
   ( HH.ClassName <$>
@@ -70,6 +78,9 @@ rightClasses = inputSharedClasses <>
     ]
   )
 
+mainCenterClasses :: Array HH.ClassName
+mainCenterClasses = mainItemClasses <> centerClasses
+
 mainLeftClasses :: Array HH.ClassName
 mainLeftClasses = mainItemClasses <> leftClasses
 
@@ -83,6 +94,9 @@ addonClasses = inputSharedClasses <>
     , "text-grey"
     ]
   )
+
+addonCenterClasses :: Array HH.ClassName
+addonCenterClasses = addonClasses <> centerClasses
 
 addonLeftClassess :: Array HH.ClassName
 addonLeftClassess = addonClasses <> leftClasses <>
@@ -143,7 +157,7 @@ inputCenter
   -> HH.HTML p i
 inputCenter iprops =
   HH.input
-    ( [ HP.classes mainItemClasses ] <&> iprops )
+    ( [ HP.classes mainCenterClasses ] <&> iprops )
 
 inputLeft
   :: ∀ p i
@@ -160,6 +174,22 @@ inputRight
 inputRight iprops =
   HH.input
     ( [ HP.classes mainRightClasses ] <&> iprops )
+
+addonCenter
+  :: ∀ p i
+   . Array (HH.IProp HTMLspan i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+addonCenter iprops html =
+  HH.span
+    ( [ HP.classes addonCenterClasses ] <&> iprops )
+    html
+
+addonCenter_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+addonCenter_ = addonCenter []
 
 addonLeft
   :: ∀ p i
