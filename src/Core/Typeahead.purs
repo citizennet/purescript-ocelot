@@ -4,9 +4,8 @@ import Prelude
 
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
-import Control.Monad.Aff.AVar (AVAR)
-import Network.HTTP.Affjax (AJAX)
 import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (logShow, CONSOLE)
 import DOM (DOM)
@@ -18,10 +17,11 @@ import Data.Newtype (unwrap)
 import Data.Rational ((%))
 import Data.StrMap (StrMap)
 import Data.Time.Duration (Milliseconds)
-import Data.Tuple (Tuple(..))
+import Data.Tuple (Tuple(Tuple))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
@@ -290,7 +290,10 @@ component =
             H.liftAff $ logShow err
             _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
             H.query unit $ H.action $ Select.ReplaceItems []
-          _ -> pure (pure unit)
+          NotAsked -> do
+            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
+            H.query unit $ H.action $ Select.ReplaceItems []
+          Loading -> pure (pure unit)
 
         pure a
 

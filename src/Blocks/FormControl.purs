@@ -20,7 +20,7 @@ formControlClasses = HH.ClassName <$>
 
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = Type.mutedClasses <>
-  ( HH.ClassName <$> [ "block", "pt-2" ] )
+  ( HH.ClassName <$> [ "block", "pt-2", "leading-normal" ] )
 
 errorTextClasses :: Array HH.ClassName
 errorTextClasses = HH.ClassName <$>
