@@ -10,14 +10,13 @@ import Halogen.HTML as HH
 import Halogen.HTML.Core (ClassName(..))
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Data.Paging (Paging(..))
 
 
 -----
 -- A block for handling paging in list components
 
-pager  :: ∀ p i. Paging -> (Int -> MouseEvent -> Maybe i) -> HH.HTML p i
-pager (Paging { skip, last }) query =
+pager :: ∀ p i. Int -> Int -> (Int -> MouseEvent -> Maybe i) -> HH.HTML p i
+pager skip last query =
   HH.div
     [ HP.classes
       [ ClassName "cn-pagination"
