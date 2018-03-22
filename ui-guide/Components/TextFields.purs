@@ -328,7 +328,6 @@ cnDocumentationBlocks =
             ( Input.inputGroup_
               [ Input.inputCenter
                 [ HP.id_ "search-loading"
-                , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
                 , HP.value "Something"
                 ]
               , Input.addonCenter_ [ Icon.loading_ ]

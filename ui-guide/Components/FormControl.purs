@@ -132,7 +132,7 @@ component =
           }
           [ Backdrop.backdrop_
               [ Card.card_
-                [ Card.header_
+                [ Type.contentHeader_
                   [ Icon.tip
                     [ HP.class_ $ HH.ClassName "text-yellow text-2xl" ]
                   , HH.text "Accessibility Note"
