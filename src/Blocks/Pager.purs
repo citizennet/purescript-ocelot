@@ -1,9 +1,8 @@
-module Ocelot.Component.Pager where
+module Ocelot.Block.Pager where
 
 import Prelude
 
 import DOM.Event.Types (MouseEvent)
-import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.?))
 import Data.Array ((..))
 import Data.FoldableWithIndex (foldlWithIndex)
 import Data.Maybe (Maybe)
@@ -11,25 +10,11 @@ import Halogen.HTML as HH
 import Halogen.HTML.Core (ClassName(..))
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Ocelot.Data.Paging (Paging(..))
 
-newtype Paging = Paging
-  { skip :: Int
-  , count :: Int
-  , last :: Int
-  , limit :: Int
-  }
 
-instance decodeJsonPaging :: DecodeJson Paging where
-  decodeJson json = do
-    obj <- decodeJson json
-    skip <- obj .? "skip"
-    count <- obj .? "count"
-    last <- obj .? "last"
-    limit <- obj .? "limit"
-    pure $ Paging { skip, count, last, limit }
-
-instance showPaging :: Show Paging where
-  show (Paging { skip, limit }) = "&skip=" <> show skip <> "&limit=" <> show limit
+-----
+-- A block for handling paging in list components
 
 pager  :: ∀ p i. Paging -> (Int -> MouseEvent -> Maybe i) -> HH.HTML p i
 pager (Paging { skip, last }) query =
