@@ -1,9 +1,4 @@
-module UIGuide.Block.Backdrop
-  ( backdrop
-  , backdrop_
-  , content
-  , content_
-  ) where
+module UIGuide.Block.Backdrop where
 
 import Prelude
 
@@ -12,23 +7,42 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
 
+
 backdropClasses :: Array HH.ClassName
 backdropClasses = HH.ClassName <$>
-  [ "bg-grey-95"
-  , "border-dotted"
-  , "border"
-  , "rounded-sm"
+  [ "p-6"
   , "flex"
-  , "items-stretch"
-  , "my-6"
-  , "p-6"
+  , "flex-1"
   ]
+
+backdropDefaultClasses :: Array HH.ClassName
+backdropDefaultClasses = backdropClasses <>
+  ( HH.ClassName <$>
+    [ "bg-grey-95"
+    ]
+  )
+
+backdropWhiteClasses :: Array HH.ClassName
+backdropWhiteClasses = backdropClasses <>
+  ( HH.ClassName <$>
+    [ "bg-white"
+    ]
+  )
+
+backdropDarkClasses :: Array HH.ClassName
+backdropDarkClasses = backdropClasses <>
+  ( HH.ClassName <$>
+    [ "bg-black"
+    , "text-grey-lighter"
+    ]
+  )
 
 contentClasses :: Array HH.ClassName
 contentClasses = HH.ClassName <$>
   [ "flex-1"
   , "flex"
-  , "m-6"
+  , "mx-6"
+  , "mt-6"
   ]
 
 backdrop
@@ -38,7 +52,7 @@ backdrop
   -> HH.HTML p i
 backdrop iprops html =
   HH.div
-    ( [ HP.classes backdropClasses ] <&> iprops )
+    ( [ HP.classes backdropDefaultClasses ] <&> iprops )
     html
 
 backdrop_
@@ -46,6 +60,38 @@ backdrop_
    . Array (HH.HTML p i)
   -> HH.HTML p i
 backdrop_ = backdrop []
+
+backdropWhite
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+backdropWhite iprops html =
+  HH.div
+    ( [ HP.classes backdropWhiteClasses ] <&> iprops )
+    html
+
+backdropWhite_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+backdropWhite_ = backdropWhite []
+
+backdropDark
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+backdropDark iprops html =
+  HH.div
+    ( [ HP.classes backdropDarkClasses ] <&> iprops )
+    html
+
+backdropDark_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+backdropDark_ = backdropDark []
 
 content
   :: ∀ p i

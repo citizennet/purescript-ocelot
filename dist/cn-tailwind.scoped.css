@@ -6306,6 +6306,366 @@ body .ocelot-scoped {
   color: #675144;
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-transparent {
+  color: transparent;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-black {
+  color: #22292f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-darkest {
+  color: #3d4852;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-darker {
+  color: #606f7b;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-dark {
+  color: #8795a1;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey {
+  color: #b8c2cc;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-light {
+  color: #dae1e7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-lighter {
+  color: #f1f5f8;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-lightest {
+  color: #f8fafc;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-white {
+  color: #fff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-darkest {
+  color: #3b0d0c;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-darker {
+  color: #621b18;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-dark {
+  color: #cc1f1a;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red {
+  color: #ff5471;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-light {
+  color: #ef5753;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-lighter {
+  color: #f9acaa;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-red-lightest {
+  color: #fcebea;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-darkest {
+  color: #462a16;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-darker {
+  color: #613b1f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-dark {
+  color: #de751f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange {
+  color: #f6993f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-light {
+  color: #faad63;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-lighter {
+  color: #fcd9b6;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-orange-lightest {
+  color: #fff5eb;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-darkest {
+  color: #453411;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-darker {
+  color: #684f1d;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-dark {
+  color: #f2d024;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow {
+  color: #ffc859;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-light {
+  color: #fff382;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-lighter {
+  color: #fff9c2;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-yellow-lightest {
+  color: #fcfbeb;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-darkest {
+  color: #0f2f21;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-darker {
+  color: #1a4731;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-dark {
+  color: #1f9d55;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green {
+  color: #38c172;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-light {
+  color: #51d88a;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-lighter {
+  color: #a2f5bf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-green-lightest {
+  color: #e3fcec;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-darkest {
+  color: #0d3331;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-darker {
+  color: #20504f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-dark {
+  color: #38a89d;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal {
+  color: #4dc0b5;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-light {
+  color: #64d5ca;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-lighter {
+  color: #a0f0ed;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-teal-lightest {
+  color: #e8fffe;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-darkest {
+  color: #12283a;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-darker {
+  color: #1c3d5a;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-dark {
+  color: #2779bd;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue {
+  color: #3490dc;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-light {
+  color: #6cb2eb;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-lighter {
+  color: #bcdefa;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-lightest {
+  color: #eff8ff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-darkest {
+  color: #191e38;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-darker {
+  color: #2f365f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-dark {
+  color: #5661b3;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo {
+  color: #6574cd;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-light {
+  color: #7886d7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-lighter {
+  color: #b2b7ff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-indigo-lightest {
+  color: #e6e8ff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-darkest {
+  color: #21183c;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-darker {
+  color: #382b5f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-dark {
+  color: #794acf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple {
+  color: #9561e2;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-light {
+  color: #a779e9;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-lighter {
+  color: #d6bbfc;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-purple-lightest {
+  color: #f3ebff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-darkest {
+  color: #451225;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-darker {
+  color: #6f213f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-dark {
+  color: #eb5286;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink {
+  color: #f66d9b;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-light {
+  color: #fa7ea8;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-lighter {
+  color: #ffbbca;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pink-lightest {
+  color: #ffebef;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-black-10 {
+  color: #00081a;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-black-20 {
+  color: #242a33;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-50 {
+  color: rgb(102, 113, 128);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-50-a20 {
+  color: rgba(102, 113, 128, .2);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-50-a30 {
+  color: rgba(102, 113, 128, .3);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-70 {
+  color: rgb(143, 158, 179);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-70-a30 {
+  color: rgba(143, 158, 179, .3);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-70-a40 {
+  color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-90 {
+  color: #e1e3e6;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-95 {
+  color: #f0f1f2;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-75 {
+  color: #f0f1f2;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-82 {
+  color: #00abd1;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-88 {
+  color: #00bbe0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-100 {
+  color: #e6f0ff;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-fb-blue {
+  color: #3b5998;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-tw-blue {
+  color: #00aced;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-ig-brown {
+  color: #675144;
+}
+
 .ocelot-scoped .text-xs {
   font-size: .75rem;
 }
@@ -12381,6 +12741,366 @@ body .ocelot-scoped {
     color: #675144;
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-transparent {
+    color: transparent;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-black {
+    color: #22292f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-darkest {
+    color: #3d4852;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-darker {
+    color: #606f7b;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-dark {
+    color: #8795a1;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey {
+    color: #b8c2cc;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-light {
+    color: #dae1e7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-lighter {
+    color: #f1f5f8;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-lightest {
+    color: #f8fafc;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-white {
+    color: #fff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-darkest {
+    color: #3b0d0c;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-darker {
+    color: #621b18;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-dark {
+    color: #cc1f1a;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red {
+    color: #ff5471;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-light {
+    color: #ef5753;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-lighter {
+    color: #f9acaa;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-red-lightest {
+    color: #fcebea;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-darkest {
+    color: #462a16;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-darker {
+    color: #613b1f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-dark {
+    color: #de751f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange {
+    color: #f6993f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-light {
+    color: #faad63;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-lighter {
+    color: #fcd9b6;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-orange-lightest {
+    color: #fff5eb;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-darkest {
+    color: #453411;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-darker {
+    color: #684f1d;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-dark {
+    color: #f2d024;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow {
+    color: #ffc859;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-light {
+    color: #fff382;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-lighter {
+    color: #fff9c2;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-yellow-lightest {
+    color: #fcfbeb;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-darkest {
+    color: #0f2f21;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-darker {
+    color: #1a4731;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-dark {
+    color: #1f9d55;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green {
+    color: #38c172;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-light {
+    color: #51d88a;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-lighter {
+    color: #a2f5bf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-green-lightest {
+    color: #e3fcec;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-darkest {
+    color: #0d3331;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-darker {
+    color: #20504f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-dark {
+    color: #38a89d;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal {
+    color: #4dc0b5;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-light {
+    color: #64d5ca;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-lighter {
+    color: #a0f0ed;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-teal-lightest {
+    color: #e8fffe;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-darkest {
+    color: #12283a;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-darker {
+    color: #1c3d5a;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-dark {
+    color: #2779bd;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue {
+    color: #3490dc;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-light {
+    color: #6cb2eb;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-lighter {
+    color: #bcdefa;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-lightest {
+    color: #eff8ff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-darkest {
+    color: #191e38;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-darker {
+    color: #2f365f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-dark {
+    color: #5661b3;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo {
+    color: #6574cd;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-light {
+    color: #7886d7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-lighter {
+    color: #b2b7ff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-indigo-lightest {
+    color: #e6e8ff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-darkest {
+    color: #21183c;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-darker {
+    color: #382b5f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-dark {
+    color: #794acf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple {
+    color: #9561e2;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-light {
+    color: #a779e9;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-lighter {
+    color: #d6bbfc;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-purple-lightest {
+    color: #f3ebff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-darkest {
+    color: #451225;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-darker {
+    color: #6f213f;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-dark {
+    color: #eb5286;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink {
+    color: #f66d9b;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-light {
+    color: #fa7ea8;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-lighter {
+    color: #ffbbca;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-pink-lightest {
+    color: #ffebef;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-black-10 {
+    color: #00081a;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-black-20 {
+    color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50 {
+    color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50-a20 {
+    color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50-a30 {
+    color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-70 {
+    color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-70-a30 {
+    color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-70-a40 {
+    color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-90 {
+    color: #e1e3e6;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-95 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-75 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-82 {
+    color: #00abd1;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-88 {
+    color: #00bbe0;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-100 {
+    color: #e6f0ff;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .sm\:text-xs {
     font-size: .75rem;
   }
@@ -18199,6 +18919,366 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-ig-brown:hover {
+    color: #675144;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-transparent {
+    color: transparent;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-black {
+    color: #22292f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-darkest {
+    color: #3d4852;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-darker {
+    color: #606f7b;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-dark {
+    color: #8795a1;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey {
+    color: #b8c2cc;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-light {
+    color: #dae1e7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-lighter {
+    color: #f1f5f8;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-lightest {
+    color: #f8fafc;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-white {
+    color: #fff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-darkest {
+    color: #3b0d0c;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-darker {
+    color: #621b18;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-dark {
+    color: #cc1f1a;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red {
+    color: #ff5471;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-light {
+    color: #ef5753;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-lighter {
+    color: #f9acaa;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-red-lightest {
+    color: #fcebea;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-darkest {
+    color: #462a16;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-darker {
+    color: #613b1f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-dark {
+    color: #de751f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange {
+    color: #f6993f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-light {
+    color: #faad63;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-lighter {
+    color: #fcd9b6;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-orange-lightest {
+    color: #fff5eb;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-darkest {
+    color: #453411;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-darker {
+    color: #684f1d;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-dark {
+    color: #f2d024;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow {
+    color: #ffc859;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-light {
+    color: #fff382;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-lighter {
+    color: #fff9c2;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-yellow-lightest {
+    color: #fcfbeb;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-darkest {
+    color: #0f2f21;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-darker {
+    color: #1a4731;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-dark {
+    color: #1f9d55;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green {
+    color: #38c172;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-light {
+    color: #51d88a;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-lighter {
+    color: #a2f5bf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-green-lightest {
+    color: #e3fcec;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-darkest {
+    color: #0d3331;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-darker {
+    color: #20504f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-dark {
+    color: #38a89d;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal {
+    color: #4dc0b5;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-light {
+    color: #64d5ca;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-lighter {
+    color: #a0f0ed;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-teal-lightest {
+    color: #e8fffe;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-darkest {
+    color: #12283a;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-darker {
+    color: #1c3d5a;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-dark {
+    color: #2779bd;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue {
+    color: #3490dc;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-light {
+    color: #6cb2eb;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-lighter {
+    color: #bcdefa;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-lightest {
+    color: #eff8ff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-darkest {
+    color: #191e38;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-darker {
+    color: #2f365f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-dark {
+    color: #5661b3;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo {
+    color: #6574cd;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-light {
+    color: #7886d7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-lighter {
+    color: #b2b7ff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-indigo-lightest {
+    color: #e6e8ff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-darkest {
+    color: #21183c;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-darker {
+    color: #382b5f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-dark {
+    color: #794acf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple {
+    color: #9561e2;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-light {
+    color: #a779e9;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-lighter {
+    color: #d6bbfc;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-purple-lightest {
+    color: #f3ebff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-darkest {
+    color: #451225;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-darker {
+    color: #6f213f;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-dark {
+    color: #eb5286;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink {
+    color: #f66d9b;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-light {
+    color: #fa7ea8;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-lighter {
+    color: #ffbbca;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-pink-lightest {
+    color: #ffebef;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-black-10 {
+    color: #00081a;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-black-20 {
+    color: #242a33;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50 {
+    color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50-a20 {
+    color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50-a30 {
+    color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-70 {
+    color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-70-a30 {
+    color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-70-a40 {
+    color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-90 {
+    color: #e1e3e6;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-95 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-75 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-82 {
+    color: #00abd1;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-88 {
+    color: #00bbe0;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-100 {
+    color: #e6f0ff;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
   }
 
@@ -24023,6 +25103,366 @@ body .ocelot-scoped {
     color: #675144;
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-transparent {
+    color: transparent;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-black {
+    color: #22292f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-darkest {
+    color: #3d4852;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-darker {
+    color: #606f7b;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-dark {
+    color: #8795a1;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey {
+    color: #b8c2cc;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-light {
+    color: #dae1e7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-lighter {
+    color: #f1f5f8;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-lightest {
+    color: #f8fafc;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-white {
+    color: #fff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-darkest {
+    color: #3b0d0c;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-darker {
+    color: #621b18;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-dark {
+    color: #cc1f1a;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red {
+    color: #ff5471;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-light {
+    color: #ef5753;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-lighter {
+    color: #f9acaa;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-red-lightest {
+    color: #fcebea;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-darkest {
+    color: #462a16;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-darker {
+    color: #613b1f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-dark {
+    color: #de751f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange {
+    color: #f6993f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-light {
+    color: #faad63;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-lighter {
+    color: #fcd9b6;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-orange-lightest {
+    color: #fff5eb;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-darkest {
+    color: #453411;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-darker {
+    color: #684f1d;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-dark {
+    color: #f2d024;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow {
+    color: #ffc859;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-light {
+    color: #fff382;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-lighter {
+    color: #fff9c2;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-yellow-lightest {
+    color: #fcfbeb;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-darkest {
+    color: #0f2f21;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-darker {
+    color: #1a4731;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-dark {
+    color: #1f9d55;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green {
+    color: #38c172;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-light {
+    color: #51d88a;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-lighter {
+    color: #a2f5bf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-green-lightest {
+    color: #e3fcec;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-darkest {
+    color: #0d3331;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-darker {
+    color: #20504f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-dark {
+    color: #38a89d;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal {
+    color: #4dc0b5;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-light {
+    color: #64d5ca;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-lighter {
+    color: #a0f0ed;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-teal-lightest {
+    color: #e8fffe;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-darkest {
+    color: #12283a;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-darker {
+    color: #1c3d5a;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-dark {
+    color: #2779bd;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue {
+    color: #3490dc;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-light {
+    color: #6cb2eb;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-lighter {
+    color: #bcdefa;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-lightest {
+    color: #eff8ff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-darkest {
+    color: #191e38;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-darker {
+    color: #2f365f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-dark {
+    color: #5661b3;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo {
+    color: #6574cd;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-light {
+    color: #7886d7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-lighter {
+    color: #b2b7ff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-indigo-lightest {
+    color: #e6e8ff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-darkest {
+    color: #21183c;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-darker {
+    color: #382b5f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-dark {
+    color: #794acf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple {
+    color: #9561e2;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-light {
+    color: #a779e9;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-lighter {
+    color: #d6bbfc;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-purple-lightest {
+    color: #f3ebff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-darkest {
+    color: #451225;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-darker {
+    color: #6f213f;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-dark {
+    color: #eb5286;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink {
+    color: #f66d9b;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-light {
+    color: #fa7ea8;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-lighter {
+    color: #ffbbca;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-pink-lightest {
+    color: #ffebef;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-black-10 {
+    color: #00081a;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-black-20 {
+    color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50 {
+    color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50-a20 {
+    color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50-a30 {
+    color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-70 {
+    color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-70-a30 {
+    color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-70-a40 {
+    color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-90 {
+    color: #e1e3e6;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-95 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-75 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-82 {
+    color: #00abd1;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-88 {
+    color: #00bbe0;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-100 {
+    color: #e6f0ff;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-ig-brown {
+    color: #675144;
+  }
+
   .ocelot-scoped .lg\:text-xs {
     font-size: .75rem;
   }
@@ -29841,6 +31281,366 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-ig-brown:hover {
+    color: #675144;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-transparent {
+    color: transparent;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-black {
+    color: #22292f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-darkest {
+    color: #3d4852;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-darker {
+    color: #606f7b;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-dark {
+    color: #8795a1;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey {
+    color: #b8c2cc;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-light {
+    color: #dae1e7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-lighter {
+    color: #f1f5f8;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-lightest {
+    color: #f8fafc;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-white {
+    color: #fff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-darkest {
+    color: #3b0d0c;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-darker {
+    color: #621b18;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-dark {
+    color: #cc1f1a;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red {
+    color: #ff5471;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-light {
+    color: #ef5753;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-lighter {
+    color: #f9acaa;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-red-lightest {
+    color: #fcebea;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-darkest {
+    color: #462a16;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-darker {
+    color: #613b1f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-dark {
+    color: #de751f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange {
+    color: #f6993f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-light {
+    color: #faad63;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-lighter {
+    color: #fcd9b6;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-orange-lightest {
+    color: #fff5eb;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-darkest {
+    color: #453411;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-darker {
+    color: #684f1d;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-dark {
+    color: #f2d024;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow {
+    color: #ffc859;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-light {
+    color: #fff382;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-lighter {
+    color: #fff9c2;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-yellow-lightest {
+    color: #fcfbeb;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-darkest {
+    color: #0f2f21;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-darker {
+    color: #1a4731;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-dark {
+    color: #1f9d55;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green {
+    color: #38c172;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-light {
+    color: #51d88a;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-lighter {
+    color: #a2f5bf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-green-lightest {
+    color: #e3fcec;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-darkest {
+    color: #0d3331;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-darker {
+    color: #20504f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-dark {
+    color: #38a89d;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal {
+    color: #4dc0b5;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-light {
+    color: #64d5ca;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-lighter {
+    color: #a0f0ed;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-teal-lightest {
+    color: #e8fffe;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-darkest {
+    color: #12283a;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-darker {
+    color: #1c3d5a;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-dark {
+    color: #2779bd;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue {
+    color: #3490dc;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-light {
+    color: #6cb2eb;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-lighter {
+    color: #bcdefa;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-lightest {
+    color: #eff8ff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-darkest {
+    color: #191e38;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-darker {
+    color: #2f365f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-dark {
+    color: #5661b3;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo {
+    color: #6574cd;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-light {
+    color: #7886d7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-lighter {
+    color: #b2b7ff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-indigo-lightest {
+    color: #e6e8ff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-darkest {
+    color: #21183c;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-darker {
+    color: #382b5f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-dark {
+    color: #794acf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple {
+    color: #9561e2;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-light {
+    color: #a779e9;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-lighter {
+    color: #d6bbfc;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-purple-lightest {
+    color: #f3ebff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-darkest {
+    color: #451225;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-darker {
+    color: #6f213f;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-dark {
+    color: #eb5286;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink {
+    color: #f66d9b;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-light {
+    color: #fa7ea8;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-lighter {
+    color: #ffbbca;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-pink-lightest {
+    color: #ffebef;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-black-10 {
+    color: #00081a;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-black-20 {
+    color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50 {
+    color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50-a20 {
+    color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50-a30 {
+    color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-70 {
+    color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-70-a30 {
+    color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-70-a40 {
+    color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-90 {
+    color: #e1e3e6;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-95 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-75 {
+    color: #f0f1f2;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-82 {
+    color: #00abd1;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-88 {
+    color: #00bbe0;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-100 {
+    color: #e6f0ff;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-fb-blue {
+    color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-tw-blue {
+    color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
   }
 

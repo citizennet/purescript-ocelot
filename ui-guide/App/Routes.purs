@@ -20,9 +20,10 @@ import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
 import UIGuide.Components.Card as Card
 import UIGuide.Components.FormControl as FormControl
-import UIGuide.Components.Icon as Icon
+import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Tab as Tab
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
 import UIGuide.Components.Validation as Validation
 
@@ -31,7 +32,8 @@ import UIGuide.Components.Validation as Validation
 
 groups :: Array Group
 groups =
-  [ Components
+  [ Basics
+  , Components
   , FormElements
   , Behaviors
   ]
@@ -56,22 +58,22 @@ routes = fromFoldable
   [ Tuple "tabs"
     { anchor: "Tabs"
     , component: proxy Tab.component
-    , group: Components
+    , group: FormElements
     }
   , Tuple "cards"
     { anchor: "Cards"
     , component: proxy Card.card
-    , group: Components
+    , group: FormElements
     }
   , Tuple "textfields"
     { anchor: "Text Fields"
     , component: proxy TextFields.component
-    , group: FormElements
+    , group: Components
     }
   , Tuple "typeaheads"
     { anchor: "Typeaheads"
     , component: proxy Typeaheads.component
-    , group: FormElements
+    , group: Components
     }
   , Tuple "buttons"
     { anchor: "Buttons"
@@ -88,9 +90,14 @@ routes = fromFoldable
     , component: proxy Validation.component
     , group: Behaviors
     }
-  , Tuple "icon"
-    { anchor: "Icon"
-    , component: proxy Icon.icon
-    , group: FormElements
+  , Tuple "type"
+    { anchor: "Type"
+    , component: proxy Type.component
+    , group: Basics
+    }
+  , Tuple "icons"
+    { anchor: "Icons"
+    , component: proxy Icons.component
+    , group: Basics
     }
   ]

@@ -20,9 +20,7 @@ import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.Utilities.Async as Async
@@ -40,11 +38,11 @@ type Message = Void
 component :: ∀ m. H.Component HH.HTML Query Input Message m
 component =
   H.component
-  { initialState: const unit
-  , render
-  , eval
-  , receiver: const Nothing
-  }
+    { initialState: const unit
+    , render
+    , eval
+    , receiver: const Nothing
+    }
   where
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of

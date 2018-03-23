@@ -31,6 +31,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Storybook.Proxy (ProxyS, proxy)
 import Halogen.VDom.Driver (runUI)
+import Ocelot.Block.Type as Type
 
 import Routing (hashes)
 
@@ -54,13 +55,15 @@ type Page m =
   }
 
 data Group
-  = FormElements
+  = Basics
+  | FormElements
   | Components
   | Behaviors
 
 derive instance eqGroup :: Eq Group
 derive instance ordGroup :: Ord Group
 instance showGroup :: Show Group where
+  show Basics = "Basics"
   show FormElements = "Form Elements"
   show Components = "Components"
   show Behaviors = "Behaviors"
@@ -125,7 +128,7 @@ app =
         ]
       ]
     , HH.div
-      [ HP.class_ $ HH.ClassName "px-6 pb-8 pt-20 md:pt-16 w-full container mx-auto" ]
+      [ HP.class_ $ HH.ClassName "p-12 w-full container mx-auto" ]
       [ renderSlot state ]
     ]
 
@@ -142,8 +145,19 @@ app =
     [ HP.id_ "sidebar"
     , HP.class_ $ HH.ClassName "hidden z-50 fixed pin-y pin-l overflow-y-scroll md:overflow-visible scrolling-touch md:scrolling-auto bg-grey-95 w-4/5 md:w-full md:max-w-xs flex-none border-r-2 border-grey-light md:flex flex-col" ]
     [ HH.div
-      [ HP.class_ $ HH.ClassName "p-8 flex-1 overflow-y-scroll" ]
-      [ HH.nav
+      [ HP.class_ $ HH.ClassName "p-12 flex-1 overflow-y-scroll" ]
+      [ HH.header_
+        [ Type.heading
+          [ HP.class_ $ HH.ClassName "flex" ]
+          [ HH.img
+            [ HP.class_ $ HH.ClassName "mr-2"
+            , HP.src "https://citizennet.com/manager/images/logo.svg"
+            ]
+          , HH.text "Ocelot"
+          ]
+        -- , Type.subHeading_ [ HH.text "Design System" ]
+        ]
+      , HH.nav
         [ HP.class_ $ HH.ClassName "text-base overflow-y-scroll" ]
         (renderGroups state)
       ]

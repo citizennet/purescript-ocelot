@@ -15,8 +15,9 @@ cardClasses :: Array HH.ClassName
 cardClasses = HH.ClassName <$>
   [ "bg-white"
   , "h-auto"
-  , "p-6"
-  , "mb-10"
+  , "px-6"
+  , "pt-6"
+  , "mb-6"
   , "rounded"
   ]
 

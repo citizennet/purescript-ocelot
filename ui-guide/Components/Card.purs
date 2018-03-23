@@ -44,7 +44,7 @@ card =
           }
           [ Backdrop.backdrop_
             [ Card.card_
-              [ Type.contentHeader_
+              [ Type.contentHeading_
                 [ HH.text "Summary" ]
               , meta
               ]
