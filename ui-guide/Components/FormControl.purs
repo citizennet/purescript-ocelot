@@ -77,12 +77,10 @@ component =
               , title: [ HH.text "New" ]
               , brand: Nothing
               , buttons:
-                [ Button.button
-                  { type_: Button.Transparent }
+                [ Button.buttonClear
                   [ HP.class_ $ HH.ClassName "mr-2" ]
                   [ HH.text "Cancel" ]
-                , Button.button
-                  { type_: Button.Primary }
+                , Button.buttonPrimary
                   [ HE.onClick $ HE.input HandleFormHeaderClick ]
                   [ HH.text "Create" ]
                 ]

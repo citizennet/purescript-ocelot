@@ -381,8 +381,7 @@ renderForm st =
             , HP.id_ "username"
             , HE.onBlur (HE.input_ $ Validate FailUsername (UsernameV st.raw.username))
             , HE.onValueInput (HE.input $ UpdateTextField 2) ] )
-        , Button.button
-            { type_: Button.Primary }
+        , Button.buttonPrimary
             [ HP.type_ HP.ButtonSubmit ]
             [ HH.text "Submit" ]
         ]

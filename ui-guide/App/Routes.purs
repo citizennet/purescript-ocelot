@@ -78,7 +78,7 @@ routes = fromFoldable
   , Tuple "buttons"
     { anchor: "Buttons"
     , component: proxy Button.component
-    , group: FormElements
+    , group: Components
     }
   , Tuple "formcontrols"
     { anchor: "Form Controls"

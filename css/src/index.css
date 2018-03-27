@@ -75,6 +75,8 @@ label {
 .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
 .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }
 .focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
+.\!active\:border-b:not(:active) { @apply .border-b; }
+.active\:border-t:active { @apply .border-t; }
 
 .spin { animation: spin 1.4s infinite linear; }
 

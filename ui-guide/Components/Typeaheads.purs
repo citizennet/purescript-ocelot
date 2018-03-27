@@ -167,6 +167,9 @@ component =
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
 
+content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
+content = Backdrop.content [ css "flex" ]
+
 cnDocumentationBlocks :: ∀ eff m
   . MonadAff (Effects eff) m
  => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
@@ -177,7 +180,7 @@ cnDocumentationBlocks =
       , subheader: "Uses string input to search predetermined entries. User selects one of these entries."
       }
       [ Backdrop.backdrop_
-        [ Backdrop.content_
+        [ content
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
@@ -220,7 +223,7 @@ cnDocumentationBlocks =
               )
             ]
           ]
-        , Backdrop.content_
+        , content
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
@@ -270,7 +273,7 @@ cnDocumentationBlocks =
       , subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
       }
       [ Backdrop.backdrop_
-        [ Backdrop.content_
+        [ content
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
@@ -313,7 +316,7 @@ cnDocumentationBlocks =
               )
             ]
           ]
-        , Backdrop.content_
+        , content
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3

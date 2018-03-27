@@ -1262,6 +1262,366 @@ label {
   background-color: #675144;
 }
 
+.focus\:bg-transparent:focus {
+  background-color: transparent;
+}
+
+.focus\:bg-black:focus {
+  background-color: #22292f;
+}
+
+.focus\:bg-grey-darkest:focus {
+  background-color: #3d4852;
+}
+
+.focus\:bg-grey-darker:focus {
+  background-color: #606f7b;
+}
+
+.focus\:bg-grey-dark:focus {
+  background-color: #8795a1;
+}
+
+.focus\:bg-grey:focus {
+  background-color: #b8c2cc;
+}
+
+.focus\:bg-grey-light:focus {
+  background-color: #dae1e7;
+}
+
+.focus\:bg-grey-lighter:focus {
+  background-color: #f1f5f8;
+}
+
+.focus\:bg-grey-lightest:focus {
+  background-color: #f8fafc;
+}
+
+.focus\:bg-white:focus {
+  background-color: #fff;
+}
+
+.focus\:bg-red-darkest:focus {
+  background-color: #3b0d0c;
+}
+
+.focus\:bg-red-darker:focus {
+  background-color: #621b18;
+}
+
+.focus\:bg-red-dark:focus {
+  background-color: #cc1f1a;
+}
+
+.focus\:bg-red:focus {
+  background-color: #ff5471;
+}
+
+.focus\:bg-red-light:focus {
+  background-color: #ef5753;
+}
+
+.focus\:bg-red-lighter:focus {
+  background-color: #f9acaa;
+}
+
+.focus\:bg-red-lightest:focus {
+  background-color: #fcebea;
+}
+
+.focus\:bg-orange-darkest:focus {
+  background-color: #462a16;
+}
+
+.focus\:bg-orange-darker:focus {
+  background-color: #613b1f;
+}
+
+.focus\:bg-orange-dark:focus {
+  background-color: #de751f;
+}
+
+.focus\:bg-orange:focus {
+  background-color: #f6993f;
+}
+
+.focus\:bg-orange-light:focus {
+  background-color: #faad63;
+}
+
+.focus\:bg-orange-lighter:focus {
+  background-color: #fcd9b6;
+}
+
+.focus\:bg-orange-lightest:focus {
+  background-color: #fff5eb;
+}
+
+.focus\:bg-yellow-darkest:focus {
+  background-color: #453411;
+}
+
+.focus\:bg-yellow-darker:focus {
+  background-color: #684f1d;
+}
+
+.focus\:bg-yellow-dark:focus {
+  background-color: #f2d024;
+}
+
+.focus\:bg-yellow:focus {
+  background-color: #ffc859;
+}
+
+.focus\:bg-yellow-light:focus {
+  background-color: #fff382;
+}
+
+.focus\:bg-yellow-lighter:focus {
+  background-color: #fff9c2;
+}
+
+.focus\:bg-yellow-lightest:focus {
+  background-color: #fcfbeb;
+}
+
+.focus\:bg-green-darkest:focus {
+  background-color: #0f2f21;
+}
+
+.focus\:bg-green-darker:focus {
+  background-color: #1a4731;
+}
+
+.focus\:bg-green-dark:focus {
+  background-color: #1f9d55;
+}
+
+.focus\:bg-green:focus {
+  background-color: #38c172;
+}
+
+.focus\:bg-green-light:focus {
+  background-color: #51d88a;
+}
+
+.focus\:bg-green-lighter:focus {
+  background-color: #a2f5bf;
+}
+
+.focus\:bg-green-lightest:focus {
+  background-color: #e3fcec;
+}
+
+.focus\:bg-teal-darkest:focus {
+  background-color: #0d3331;
+}
+
+.focus\:bg-teal-darker:focus {
+  background-color: #20504f;
+}
+
+.focus\:bg-teal-dark:focus {
+  background-color: #38a89d;
+}
+
+.focus\:bg-teal:focus {
+  background-color: #4dc0b5;
+}
+
+.focus\:bg-teal-light:focus {
+  background-color: #64d5ca;
+}
+
+.focus\:bg-teal-lighter:focus {
+  background-color: #a0f0ed;
+}
+
+.focus\:bg-teal-lightest:focus {
+  background-color: #e8fffe;
+}
+
+.focus\:bg-blue-darkest:focus {
+  background-color: #12283a;
+}
+
+.focus\:bg-blue-darker:focus {
+  background-color: #1c3d5a;
+}
+
+.focus\:bg-blue-dark:focus {
+  background-color: #2779bd;
+}
+
+.focus\:bg-blue:focus {
+  background-color: #3490dc;
+}
+
+.focus\:bg-blue-light:focus {
+  background-color: #6cb2eb;
+}
+
+.focus\:bg-blue-lighter:focus {
+  background-color: #bcdefa;
+}
+
+.focus\:bg-blue-lightest:focus {
+  background-color: #eff8ff;
+}
+
+.focus\:bg-indigo-darkest:focus {
+  background-color: #191e38;
+}
+
+.focus\:bg-indigo-darker:focus {
+  background-color: #2f365f;
+}
+
+.focus\:bg-indigo-dark:focus {
+  background-color: #5661b3;
+}
+
+.focus\:bg-indigo:focus {
+  background-color: #6574cd;
+}
+
+.focus\:bg-indigo-light:focus {
+  background-color: #7886d7;
+}
+
+.focus\:bg-indigo-lighter:focus {
+  background-color: #b2b7ff;
+}
+
+.focus\:bg-indigo-lightest:focus {
+  background-color: #e6e8ff;
+}
+
+.focus\:bg-purple-darkest:focus {
+  background-color: #21183c;
+}
+
+.focus\:bg-purple-darker:focus {
+  background-color: #382b5f;
+}
+
+.focus\:bg-purple-dark:focus {
+  background-color: #794acf;
+}
+
+.focus\:bg-purple:focus {
+  background-color: #9561e2;
+}
+
+.focus\:bg-purple-light:focus {
+  background-color: #a779e9;
+}
+
+.focus\:bg-purple-lighter:focus {
+  background-color: #d6bbfc;
+}
+
+.focus\:bg-purple-lightest:focus {
+  background-color: #f3ebff;
+}
+
+.focus\:bg-pink-darkest:focus {
+  background-color: #451225;
+}
+
+.focus\:bg-pink-darker:focus {
+  background-color: #6f213f;
+}
+
+.focus\:bg-pink-dark:focus {
+  background-color: #eb5286;
+}
+
+.focus\:bg-pink:focus {
+  background-color: #f66d9b;
+}
+
+.focus\:bg-pink-light:focus {
+  background-color: #fa7ea8;
+}
+
+.focus\:bg-pink-lighter:focus {
+  background-color: #ffbbca;
+}
+
+.focus\:bg-pink-lightest:focus {
+  background-color: #ffebef;
+}
+
+.focus\:bg-black-10:focus {
+  background-color: #00081a;
+}
+
+.focus\:bg-black-20:focus {
+  background-color: #242a33;
+}
+
+.focus\:bg-grey-50:focus {
+  background-color: rgb(102, 113, 128);
+}
+
+.focus\:bg-grey-50-a20:focus {
+  background-color: rgba(102, 113, 128, .2);
+}
+
+.focus\:bg-grey-50-a30:focus {
+  background-color: rgba(102, 113, 128, .3);
+}
+
+.focus\:bg-grey-70:focus {
+  background-color: rgb(143, 158, 179);
+}
+
+.focus\:bg-grey-70-a30:focus {
+  background-color: rgba(143, 158, 179, .3);
+}
+
+.focus\:bg-grey-70-a40:focus {
+  background-color: rgba(143, 158, 179, .4);
+}
+
+.focus\:bg-grey-90:focus {
+  background-color: #e1e3e6;
+}
+
+.focus\:bg-grey-95:focus {
+  background-color: #f0f1f2;
+}
+
+.focus\:bg-blue-75:focus {
+  background-color: #f0f1f2;
+}
+
+.focus\:bg-blue-82:focus {
+  background-color: #00abd1;
+}
+
+.focus\:bg-blue-88:focus {
+  background-color: #00bbe0;
+}
+
+.focus\:bg-blue-100:focus {
+  background-color: #e6f0ff;
+}
+
+.focus\:bg-fb-blue:focus {
+  background-color: #3b5998;
+}
+
+.focus\:bg-tw-blue:focus {
+  background-color: #00aced;
+}
+
+.focus\:bg-ig-brown:focus {
+  background-color: #675144;
+}
+
 .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -7231,6 +7591,14 @@ label {
   color: #00bbe0;
 }
 
+.\!active\:border-b:not(:active) {
+  border-bottom-width: 1px;
+}
+
+.active\:border-t:active {
+  border-top-width: 1px;
+}
+
 .spin {
   animation: spin 1.4s infinite linear;
 }
@@ -7702,6 +8070,366 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:bg-ig-brown {
+    background-color: #675144;
+  }
+
+  .sm\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .sm\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .sm\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .sm\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .sm\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .sm\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .sm\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .sm\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .sm\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .sm\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .sm\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .sm\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .sm\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .sm\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .sm\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .sm\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .sm\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .sm\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .sm\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .sm\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .sm\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .sm\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .sm\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .sm\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .sm\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .sm\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .sm\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .sm\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .sm\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .sm\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .sm\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .sm\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .sm\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .sm\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .sm\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .sm\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .sm\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .sm\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .sm\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .sm\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .sm\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .sm\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .sm\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .sm\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .sm\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .sm\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .sm\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .sm\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .sm\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .sm\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .sm\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .sm\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .sm\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .sm\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .sm\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .sm\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .sm\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .sm\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .sm\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .sm\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .sm\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .sm\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .sm\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .sm\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .sm\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .sm\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .sm\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .sm\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .sm\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .sm\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .sm\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .sm\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .sm\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .sm\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .sm\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .sm\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .sm\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .sm\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .sm\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .sm\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .sm\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .sm\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .sm\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .sm\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .sm\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .sm\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .sm\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .sm\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .sm\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
   }
 
@@ -13886,6 +14614,366 @@ input[type=range]::-ms-thumb {
     background-color: #675144;
   }
 
+  .md\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .md\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .md\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .md\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .md\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .md\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .md\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .md\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .md\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .md\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .md\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .md\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .md\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .md\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .md\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .md\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .md\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .md\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .md\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .md\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .md\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .md\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .md\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .md\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .md\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .md\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .md\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .md\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .md\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .md\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .md\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .md\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .md\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .md\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .md\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .md\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .md\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .md\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .md\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .md\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .md\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .md\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .md\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .md\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .md\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .md\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .md\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .md\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .md\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .md\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .md\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .md\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .md\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .md\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .md\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .md\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .md\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .md\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .md\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .md\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .md\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .md\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .md\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .md\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .md\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .md\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .md\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .md\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .md\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .md\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .md\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .md\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .md\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .md\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .md\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .md\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .md\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .md\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .md\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .md\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .md\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .md\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .md\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .md\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .md\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .md\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .md\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .md\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .md\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .md\:focus\:bg-ig-brown:focus {
+    background-color: #675144;
+  }
+
   .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -20067,6 +21155,366 @@ input[type=range]::-ms-thumb {
     background-color: #675144;
   }
 
+  .lg\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .lg\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .lg\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .lg\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .lg\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .lg\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .lg\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .lg\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .lg\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .lg\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .lg\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .lg\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .lg\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .lg\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .lg\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .lg\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .lg\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .lg\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .lg\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .lg\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .lg\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .lg\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .lg\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .lg\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .lg\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .lg\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .lg\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .lg\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .lg\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .lg\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .lg\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .lg\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .lg\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .lg\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .lg\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .lg\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .lg\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .lg\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .lg\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .lg\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .lg\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .lg\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .lg\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .lg\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .lg\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .lg\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .lg\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .lg\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .lg\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .lg\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .lg\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .lg\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .lg\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .lg\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .lg\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .lg\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .lg\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .lg\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .lg\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .lg\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .lg\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .lg\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .lg\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .lg\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .lg\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .lg\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .lg\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .lg\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .lg\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .lg\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .lg\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .lg\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .lg\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .lg\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .lg\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .lg\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .lg\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .lg\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .lg\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .lg\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .lg\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .lg\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .lg\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .lg\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .lg\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .lg\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .lg\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .lg\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .lg\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .lg\:focus\:bg-ig-brown:focus {
+    background-color: #675144;
+  }
+
   .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -26245,6 +27693,366 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:bg-ig-brown {
+    background-color: #675144;
+  }
+
+  .xl\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .xl\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .xl\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .xl\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .xl\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .xl\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .xl\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .xl\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .xl\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .xl\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .xl\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .xl\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .xl\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .xl\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .xl\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .xl\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .xl\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .xl\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .xl\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .xl\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .xl\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .xl\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .xl\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .xl\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .xl\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .xl\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .xl\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .xl\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .xl\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .xl\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .xl\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .xl\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .xl\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .xl\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .xl\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .xl\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .xl\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .xl\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .xl\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .xl\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .xl\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .xl\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .xl\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .xl\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .xl\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .xl\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .xl\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .xl\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .xl\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .xl\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .xl\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .xl\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .xl\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .xl\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .xl\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .xl\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .xl\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .xl\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .xl\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .xl\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .xl\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .xl\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .xl\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .xl\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .xl\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .xl\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .xl\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .xl\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .xl\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .xl\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .xl\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .xl\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .xl\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .xl\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .xl\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .xl\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .xl\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .xl\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .xl\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .xl\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .xl\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .xl\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .xl\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .xl\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .xl\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .xl\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .xl\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .xl\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .xl\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
   }
 

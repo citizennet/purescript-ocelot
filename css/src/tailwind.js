@@ -100,6 +100,7 @@ config.modules = Object.assign(config.modules, {
   'visibility': ['responsive', 'hover', 'focus', 'group-hover'],
   'borderColors': ['responsive', 'hover', 'focus', 'group-hover'],
   'textColors': ['responsive', 'hover', 'group-hover'],
+  'backgroundColors': ['responsive', 'hover', 'focus', 'active'],
 })
 
 // Export the new configuration

@@ -1262,6 +1262,366 @@ body .ocelot-scoped {
   background-color: #675144;
 }
 
+.ocelot-scoped .focus\:bg-transparent:focus {
+  background-color: transparent;
+}
+
+.ocelot-scoped .focus\:bg-black:focus {
+  background-color: #22292f;
+}
+
+.ocelot-scoped .focus\:bg-grey-darkest:focus {
+  background-color: #3d4852;
+}
+
+.ocelot-scoped .focus\:bg-grey-darker:focus {
+  background-color: #606f7b;
+}
+
+.ocelot-scoped .focus\:bg-grey-dark:focus {
+  background-color: #8795a1;
+}
+
+.ocelot-scoped .focus\:bg-grey:focus {
+  background-color: #b8c2cc;
+}
+
+.ocelot-scoped .focus\:bg-grey-light:focus {
+  background-color: #dae1e7;
+}
+
+.ocelot-scoped .focus\:bg-grey-lighter:focus {
+  background-color: #f1f5f8;
+}
+
+.ocelot-scoped .focus\:bg-grey-lightest:focus {
+  background-color: #f8fafc;
+}
+
+.ocelot-scoped .focus\:bg-white:focus {
+  background-color: #fff;
+}
+
+.ocelot-scoped .focus\:bg-red-darkest:focus {
+  background-color: #3b0d0c;
+}
+
+.ocelot-scoped .focus\:bg-red-darker:focus {
+  background-color: #621b18;
+}
+
+.ocelot-scoped .focus\:bg-red-dark:focus {
+  background-color: #cc1f1a;
+}
+
+.ocelot-scoped .focus\:bg-red:focus {
+  background-color: #ff5471;
+}
+
+.ocelot-scoped .focus\:bg-red-light:focus {
+  background-color: #ef5753;
+}
+
+.ocelot-scoped .focus\:bg-red-lighter:focus {
+  background-color: #f9acaa;
+}
+
+.ocelot-scoped .focus\:bg-red-lightest:focus {
+  background-color: #fcebea;
+}
+
+.ocelot-scoped .focus\:bg-orange-darkest:focus {
+  background-color: #462a16;
+}
+
+.ocelot-scoped .focus\:bg-orange-darker:focus {
+  background-color: #613b1f;
+}
+
+.ocelot-scoped .focus\:bg-orange-dark:focus {
+  background-color: #de751f;
+}
+
+.ocelot-scoped .focus\:bg-orange:focus {
+  background-color: #f6993f;
+}
+
+.ocelot-scoped .focus\:bg-orange-light:focus {
+  background-color: #faad63;
+}
+
+.ocelot-scoped .focus\:bg-orange-lighter:focus {
+  background-color: #fcd9b6;
+}
+
+.ocelot-scoped .focus\:bg-orange-lightest:focus {
+  background-color: #fff5eb;
+}
+
+.ocelot-scoped .focus\:bg-yellow-darkest:focus {
+  background-color: #453411;
+}
+
+.ocelot-scoped .focus\:bg-yellow-darker:focus {
+  background-color: #684f1d;
+}
+
+.ocelot-scoped .focus\:bg-yellow-dark:focus {
+  background-color: #f2d024;
+}
+
+.ocelot-scoped .focus\:bg-yellow:focus {
+  background-color: #ffc859;
+}
+
+.ocelot-scoped .focus\:bg-yellow-light:focus {
+  background-color: #fff382;
+}
+
+.ocelot-scoped .focus\:bg-yellow-lighter:focus {
+  background-color: #fff9c2;
+}
+
+.ocelot-scoped .focus\:bg-yellow-lightest:focus {
+  background-color: #fcfbeb;
+}
+
+.ocelot-scoped .focus\:bg-green-darkest:focus {
+  background-color: #0f2f21;
+}
+
+.ocelot-scoped .focus\:bg-green-darker:focus {
+  background-color: #1a4731;
+}
+
+.ocelot-scoped .focus\:bg-green-dark:focus {
+  background-color: #1f9d55;
+}
+
+.ocelot-scoped .focus\:bg-green:focus {
+  background-color: #38c172;
+}
+
+.ocelot-scoped .focus\:bg-green-light:focus {
+  background-color: #51d88a;
+}
+
+.ocelot-scoped .focus\:bg-green-lighter:focus {
+  background-color: #a2f5bf;
+}
+
+.ocelot-scoped .focus\:bg-green-lightest:focus {
+  background-color: #e3fcec;
+}
+
+.ocelot-scoped .focus\:bg-teal-darkest:focus {
+  background-color: #0d3331;
+}
+
+.ocelot-scoped .focus\:bg-teal-darker:focus {
+  background-color: #20504f;
+}
+
+.ocelot-scoped .focus\:bg-teal-dark:focus {
+  background-color: #38a89d;
+}
+
+.ocelot-scoped .focus\:bg-teal:focus {
+  background-color: #4dc0b5;
+}
+
+.ocelot-scoped .focus\:bg-teal-light:focus {
+  background-color: #64d5ca;
+}
+
+.ocelot-scoped .focus\:bg-teal-lighter:focus {
+  background-color: #a0f0ed;
+}
+
+.ocelot-scoped .focus\:bg-teal-lightest:focus {
+  background-color: #e8fffe;
+}
+
+.ocelot-scoped .focus\:bg-blue-darkest:focus {
+  background-color: #12283a;
+}
+
+.ocelot-scoped .focus\:bg-blue-darker:focus {
+  background-color: #1c3d5a;
+}
+
+.ocelot-scoped .focus\:bg-blue-dark:focus {
+  background-color: #2779bd;
+}
+
+.ocelot-scoped .focus\:bg-blue:focus {
+  background-color: #3490dc;
+}
+
+.ocelot-scoped .focus\:bg-blue-light:focus {
+  background-color: #6cb2eb;
+}
+
+.ocelot-scoped .focus\:bg-blue-lighter:focus {
+  background-color: #bcdefa;
+}
+
+.ocelot-scoped .focus\:bg-blue-lightest:focus {
+  background-color: #eff8ff;
+}
+
+.ocelot-scoped .focus\:bg-indigo-darkest:focus {
+  background-color: #191e38;
+}
+
+.ocelot-scoped .focus\:bg-indigo-darker:focus {
+  background-color: #2f365f;
+}
+
+.ocelot-scoped .focus\:bg-indigo-dark:focus {
+  background-color: #5661b3;
+}
+
+.ocelot-scoped .focus\:bg-indigo:focus {
+  background-color: #6574cd;
+}
+
+.ocelot-scoped .focus\:bg-indigo-light:focus {
+  background-color: #7886d7;
+}
+
+.ocelot-scoped .focus\:bg-indigo-lighter:focus {
+  background-color: #b2b7ff;
+}
+
+.ocelot-scoped .focus\:bg-indigo-lightest:focus {
+  background-color: #e6e8ff;
+}
+
+.ocelot-scoped .focus\:bg-purple-darkest:focus {
+  background-color: #21183c;
+}
+
+.ocelot-scoped .focus\:bg-purple-darker:focus {
+  background-color: #382b5f;
+}
+
+.ocelot-scoped .focus\:bg-purple-dark:focus {
+  background-color: #794acf;
+}
+
+.ocelot-scoped .focus\:bg-purple:focus {
+  background-color: #9561e2;
+}
+
+.ocelot-scoped .focus\:bg-purple-light:focus {
+  background-color: #a779e9;
+}
+
+.ocelot-scoped .focus\:bg-purple-lighter:focus {
+  background-color: #d6bbfc;
+}
+
+.ocelot-scoped .focus\:bg-purple-lightest:focus {
+  background-color: #f3ebff;
+}
+
+.ocelot-scoped .focus\:bg-pink-darkest:focus {
+  background-color: #451225;
+}
+
+.ocelot-scoped .focus\:bg-pink-darker:focus {
+  background-color: #6f213f;
+}
+
+.ocelot-scoped .focus\:bg-pink-dark:focus {
+  background-color: #eb5286;
+}
+
+.ocelot-scoped .focus\:bg-pink:focus {
+  background-color: #f66d9b;
+}
+
+.ocelot-scoped .focus\:bg-pink-light:focus {
+  background-color: #fa7ea8;
+}
+
+.ocelot-scoped .focus\:bg-pink-lighter:focus {
+  background-color: #ffbbca;
+}
+
+.ocelot-scoped .focus\:bg-pink-lightest:focus {
+  background-color: #ffebef;
+}
+
+.ocelot-scoped .focus\:bg-black-10:focus {
+  background-color: #00081a;
+}
+
+.ocelot-scoped .focus\:bg-black-20:focus {
+  background-color: #242a33;
+}
+
+.ocelot-scoped .focus\:bg-grey-50:focus {
+  background-color: rgb(102, 113, 128);
+}
+
+.ocelot-scoped .focus\:bg-grey-50-a20:focus {
+  background-color: rgba(102, 113, 128, .2);
+}
+
+.ocelot-scoped .focus\:bg-grey-50-a30:focus {
+  background-color: rgba(102, 113, 128, .3);
+}
+
+.ocelot-scoped .focus\:bg-grey-70:focus {
+  background-color: rgb(143, 158, 179);
+}
+
+.ocelot-scoped .focus\:bg-grey-70-a30:focus {
+  background-color: rgba(143, 158, 179, .3);
+}
+
+.ocelot-scoped .focus\:bg-grey-70-a40:focus {
+  background-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .focus\:bg-grey-90:focus {
+  background-color: #e1e3e6;
+}
+
+.ocelot-scoped .focus\:bg-grey-95:focus {
+  background-color: #f0f1f2;
+}
+
+.ocelot-scoped .focus\:bg-blue-75:focus {
+  background-color: #f0f1f2;
+}
+
+.ocelot-scoped .focus\:bg-blue-82:focus {
+  background-color: #00abd1;
+}
+
+.ocelot-scoped .focus\:bg-blue-88:focus {
+  background-color: #00bbe0;
+}
+
+.ocelot-scoped .focus\:bg-blue-100:focus {
+  background-color: #e6f0ff;
+}
+
+.ocelot-scoped .focus\:bg-fb-blue:focus {
+  background-color: #3b5998;
+}
+
+.ocelot-scoped .focus\:bg-tw-blue:focus {
+  background-color: #00aced;
+}
+
+.ocelot-scoped .focus\:bg-ig-brown:focus {
+  background-color: #675144;
+}
+
 .ocelot-scoped .hover\:bg-transparent:hover {
   background-color: transparent;
 }
@@ -7231,6 +7591,14 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .\!active\:border-b:not(:active) {
+  border-bottom-width: 1px;
+}
+
+.ocelot-scoped .active\:border-t:active {
+  border-top-width: 1px;
+}
+
 .ocelot-scoped .spin {
   animation: spin 1.4s infinite linear;
 }
@@ -7702,6 +8070,366 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-ig-brown {
+    background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
   }
 
@@ -13886,6 +14614,366 @@ body .ocelot-scoped {
     background-color: #675144;
   }
 
+  .ocelot-scoped .md\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-ig-brown:focus {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .md\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -20067,6 +21155,366 @@ body .ocelot-scoped {
     background-color: #675144;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-ig-brown:focus {
+    background-color: #675144;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-transparent:hover {
     background-color: transparent;
   }
@@ -26245,6 +27693,366 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-ig-brown {
+    background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-transparent:focus {
+    background-color: transparent;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-black:focus {
+    background-color: #22292f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-darkest:focus {
+    background-color: #3d4852;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-darker:focus {
+    background-color: #606f7b;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-dark:focus {
+    background-color: #8795a1;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey:focus {
+    background-color: #b8c2cc;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-light:focus {
+    background-color: #dae1e7;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-lighter:focus {
+    background-color: #f1f5f8;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-lightest:focus {
+    background-color: #f8fafc;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-white:focus {
+    background-color: #fff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-darkest:focus {
+    background-color: #3b0d0c;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-darker:focus {
+    background-color: #621b18;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-dark:focus {
+    background-color: #cc1f1a;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red:focus {
+    background-color: #ff5471;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-light:focus {
+    background-color: #ef5753;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-lighter:focus {
+    background-color: #f9acaa;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-red-lightest:focus {
+    background-color: #fcebea;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-darkest:focus {
+    background-color: #462a16;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-darker:focus {
+    background-color: #613b1f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-dark:focus {
+    background-color: #de751f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange:focus {
+    background-color: #f6993f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-light:focus {
+    background-color: #faad63;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-lighter:focus {
+    background-color: #fcd9b6;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-orange-lightest:focus {
+    background-color: #fff5eb;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-darkest:focus {
+    background-color: #453411;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-darker:focus {
+    background-color: #684f1d;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-dark:focus {
+    background-color: #f2d024;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow:focus {
+    background-color: #ffc859;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-light:focus {
+    background-color: #fff382;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-lighter:focus {
+    background-color: #fff9c2;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-yellow-lightest:focus {
+    background-color: #fcfbeb;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-darkest:focus {
+    background-color: #0f2f21;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-darker:focus {
+    background-color: #1a4731;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-dark:focus {
+    background-color: #1f9d55;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green:focus {
+    background-color: #38c172;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-light:focus {
+    background-color: #51d88a;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-lighter:focus {
+    background-color: #a2f5bf;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-green-lightest:focus {
+    background-color: #e3fcec;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-darkest:focus {
+    background-color: #0d3331;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-darker:focus {
+    background-color: #20504f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-dark:focus {
+    background-color: #38a89d;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal:focus {
+    background-color: #4dc0b5;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-light:focus {
+    background-color: #64d5ca;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-lighter:focus {
+    background-color: #a0f0ed;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-teal-lightest:focus {
+    background-color: #e8fffe;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-darkest:focus {
+    background-color: #12283a;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-darker:focus {
+    background-color: #1c3d5a;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-dark:focus {
+    background-color: #2779bd;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue:focus {
+    background-color: #3490dc;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-light:focus {
+    background-color: #6cb2eb;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-lighter:focus {
+    background-color: #bcdefa;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-lightest:focus {
+    background-color: #eff8ff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-darkest:focus {
+    background-color: #191e38;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-darker:focus {
+    background-color: #2f365f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-dark:focus {
+    background-color: #5661b3;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo:focus {
+    background-color: #6574cd;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-light:focus {
+    background-color: #7886d7;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-lighter:focus {
+    background-color: #b2b7ff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-indigo-lightest:focus {
+    background-color: #e6e8ff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-darkest:focus {
+    background-color: #21183c;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-darker:focus {
+    background-color: #382b5f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-dark:focus {
+    background-color: #794acf;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple:focus {
+    background-color: #9561e2;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-light:focus {
+    background-color: #a779e9;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-lighter:focus {
+    background-color: #d6bbfc;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-purple-lightest:focus {
+    background-color: #f3ebff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-darkest:focus {
+    background-color: #451225;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-darker:focus {
+    background-color: #6f213f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-dark:focus {
+    background-color: #eb5286;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink:focus {
+    background-color: #f66d9b;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-light:focus {
+    background-color: #fa7ea8;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-lighter:focus {
+    background-color: #ffbbca;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pink-lightest:focus {
+    background-color: #ffebef;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-black-10:focus {
+    background-color: #00081a;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-black-20:focus {
+    background-color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-50:focus {
+    background-color: rgb(102, 113, 128);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-50-a20:focus {
+    background-color: rgba(102, 113, 128, .2);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-50-a30:focus {
+    background-color: rgba(102, 113, 128, .3);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-70:focus {
+    background-color: rgb(143, 158, 179);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-70-a30:focus {
+    background-color: rgba(143, 158, 179, .3);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-70-a40:focus {
+    background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-90:focus {
+    background-color: #e1e3e6;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-grey-95:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-75:focus {
+    background-color: #f0f1f2;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-82:focus {
+    background-color: #00abd1;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-88:focus {
+    background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-100:focus {
+    background-color: #e6f0ff;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-fb-blue:focus {
+    background-color: #3b5998;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-tw-blue:focus {
+    background-color: #00aced;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
   }
 

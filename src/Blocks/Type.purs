@@ -66,14 +66,16 @@ linkClasses :: Array HH.ClassName
 linkClasses = HH.ClassName <$>
   [ "text-blue-88"
   , "hover:text-blue-70"
+  , "no-underline"
   , "font-medium"
   , "cursor-pointer"
   ]
 
 linkDarkClasses :: Array HH.ClassName
 linkDarkClasses = HH.ClassName <$>
-  [ "text-grey-lightest"
-  , "hover:text-white"
+  [ "text-grey-light"
+  , "hover:text-grey-lighter"
+  , "no-underline"
   , "font-medium"
   , "cursor-pointer"
   ]

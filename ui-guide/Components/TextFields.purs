@@ -59,6 +59,9 @@ component =
 css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
 css = HP.class_ <<< HH.ClassName
 
+content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
+content = Backdrop.content [ css "flex" ]
+
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
   HH.div_
@@ -67,7 +70,7 @@ cnDocumentationBlocks =
     , subheader: "Captures string input."
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content_
+      [ content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -100,7 +103,7 @@ cnDocumentationBlocks =
             )
           ]
         ]
-      , Backdrop.content_
+      , content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -141,7 +144,7 @@ cnDocumentationBlocks =
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content_
+      [ content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -173,7 +176,7 @@ cnDocumentationBlocks =
             )
           ]
         ]
-      , Backdrop.content_
+      , content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -214,7 +217,7 @@ cnDocumentationBlocks =
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content_
+      [ content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -245,7 +248,7 @@ cnDocumentationBlocks =
             )
           ]
         ]
-      , Backdrop.content_
+      , content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -286,7 +289,7 @@ cnDocumentationBlocks =
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content_
+      [ content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
@@ -311,7 +314,7 @@ cnDocumentationBlocks =
             )
           ]
         ]
-      , Backdrop.content_
+      , content
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
