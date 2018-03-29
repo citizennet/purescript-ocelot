@@ -1,8 +1,7 @@
 -- | Constructors are not exported for Cents or Dollars
 module Ocelot.Core.Utils.Currency
   ( Cents
-  , lenientParseCentsFromDollarStr
-  , strictParseCentsFromDollarStr
+  , parseCentsFromDollarStr
   , parseCentsFromCentInt
   , Dollars
   , parseDollarsFromDollarStr
@@ -44,19 +43,22 @@ instance showCents :: Show Cents where
 -- Does not allow trailing decimals, but reformats commas. Allows two formats:
 -- dollars only, or dollars + two decimal places. Requires commas in the right
 -- place.
-strictParseCentsFromDollarStr :: String -> Maybe Cents
-strictParseCentsFromDollarStr str = parseCentsFromCentInt <$>
+parseCentsFromDollarStr :: String -> Maybe Cents
+parseCentsFromDollarStr str = parseCentsFromCentInt <$>
   case split (Pattern ".") str of
     [ dollars ] -> (_ * 100) <$> (join $ Int.fromString <$> verify dollars)
     [ dollars, cents ] -> do
-       case length cents of
-         2 -> do
-           let cents' = Int.fromString cents
-               dollars' = (_ * 100) <$> (join $ Int.fromString <$> verify dollars)
-           (+) <$> dollars' <*> cents'
-         otherwise -> Nothing
+       let cents' = Int.fromString (round cents)
+           dollars' = (_ * 100) <$> (join $ Int.fromString <$> verify dollars)
+       (+) <$> dollars' <*> cents'
     otherwise -> Nothing
     where
+      round :: String -> String
+      round c
+        | length c == 0 = "00"
+        | length c == 1 = c <> "0"
+        | otherwise = take 2 c
+
       verify s = if noCommas || (checkOne && checkRest) then Just (fromChars $ concat $ map toChars sub) else Nothing
         where
           sub = split (Pattern ",") s
@@ -64,23 +66,6 @@ strictParseCentsFromDollarStr str = parseCentsFromCentInt <$>
           checkOne = fromMaybe false $ ((_ <= 3) <<< length) <$> head sub
           checkRest = all (_ == 3) $ length <$> drop 1 sub
 
--- Given a string that might be formatted to an int representation in cents. This is
--- the default parser: if you can parse to Cents, you can always get a StrDollars.
-lenientParseCentsFromDollarStr :: String -> Maybe Cents
-lenientParseCentsFromDollarStr str = parseCentsFromCentInt <$>
-  case split (Pattern ".") str of
-    [d] -> Int.fromString $ strip d <> "00"
-    [d, c] -> (+) <$> Int.fromString (strip d <> "00") <*> Int.fromString (round c)
-    otherwise -> Nothing
-    where
-      strip :: String -> String
-      strip = substitute (Pattern ",") (Replacement "")
-
-      round :: String -> String
-      round c
-        | length c == 0 = "00"
-        | length c == 1 = c <> "0"
-        | otherwise = take 2 c
 
 -- WARN: Expects an integer already in cents, not dollars.
 parseCentsFromCentInt :: Int -> Cents
@@ -93,7 +78,7 @@ derive instance newtypeDollars :: Newtype Dollars _
 
 -- We can decode by first verifying legitimate `Cents` and then
 parseDollarsFromDollarStr :: String -> Maybe Dollars
-parseDollarsFromDollarStr str = centsToDollars <$> lenientParseCentsFromDollarStr str
+parseDollarsFromDollarStr str = centsToDollars <$> parseCentsFromDollarStr str
 
 parseDollarsFromDollarInt :: Int -> Dollars
 parseDollarsFromDollarInt n = Dollars $ n % 100

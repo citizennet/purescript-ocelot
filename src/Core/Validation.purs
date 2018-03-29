@@ -14,7 +14,7 @@ import Data.Number as Num
 import Data.String (null)
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
-import Ocelot.Core.Utils.Currency (Cents, strictParseCentsFromDollarStr)
+import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr)
 import Text.Email.Validate (isValid)
 
 -----
@@ -69,7 +69,7 @@ validateStrIsNumber :: String -> V ValidationErrors Number
 validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
 
 validateStrIsCents :: String -> V ValidationErrors Cents
-validateStrIsCents = maybe (invalid $ pure InvalidCurrency) pure <<< strictParseCentsFromDollarStr
+validateStrIsCents = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr
 
 validateStrIsInt :: String -> V ValidationErrors Int
 validateStrIsInt = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString
