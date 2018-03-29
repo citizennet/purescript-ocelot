@@ -11,7 +11,7 @@ import Data.Generic.Rep.Show (genericShow)
 import Data.Int as Integer
 import Data.Maybe (Maybe(..), maybe)
 import Data.Number as Num
-import Data.String (null)
+import Data.String as String
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
 import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr)
@@ -49,7 +49,7 @@ type ErrorMessage = String
 
 validateNonEmptyStr :: String -> V ValidationErrors String
 validateNonEmptyStr str
-  | null str = invalid $ pure EmptyField
+  | String.null str = invalid $ pure EmptyField
   | otherwise = pure str
 
 validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
@@ -69,10 +69,14 @@ validateStrIsNumber :: String -> V ValidationErrors Number
 validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
 
 validateStrIsCents :: String -> V ValidationErrors Cents
-validateStrIsCents = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr
+validateStrIsCents s
+  | canParseToInt s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr $ s
+  | otherwise = invalid $ pure InvalidCurrency
 
 validateStrIsInt :: String -> V ValidationErrors Int
-validateStrIsInt = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString
+validateStrIsInt s
+  | canParseToInt s = maybe (invalid $ pure InvalidCurrency) pure <<< Integer.fromString $ s
+  | otherwise = invalid $ pure InvalidCurrency
 
 validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
 validateMinLength n msg f
@@ -123,6 +127,15 @@ htmlE es | length es == 1 = HH.text <<< showE <$> es
       [ HH.p_ [ HH.text "You have errors:" ]
       , HH.ul_ $ HH.li_ <<< singleton <<< HH.text <<< showE <$> es
       ]
+
+-----
+-- TEMP
+
+canParseToInt :: String -> Boolean
+canParseToInt  s
+  | (String.length s) < 8 = true
+  | (String.length s < 9) && (String.charAt 0 s == Just '1') = true
+  | otherwise = false
 
 -----
 -- Additional helpers for converting to and from Either
