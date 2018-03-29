@@ -94,16 +94,28 @@
   content: "\E005";
 }
 
+.ocelot-scoped .icon-carat-left {
+  transform: rotate(90deg);
+}
+
 .ocelot-scoped .icon-carat-left:before {
-  content: "\E019";
+  content: "\E005";
+}
+
+.ocelot-scoped .icon-carat-right {
+  transform: rotate(270deg);
 }
 
 .ocelot-scoped .icon-carat-right:before {
-  content: "\E006";
+  content: "\E005";
+}
+
+.ocelot-scoped .icon-carat-up {
+  transform: rotate(180deg);
 }
 
 .ocelot-scoped .icon-carat-up:before {
-  content: "\E017";
+  content: "\E005";
 }
 
 .ocelot-scoped .icon-close:before {
@@ -134,8 +146,12 @@
   content: "\E025";
 }
 
+.ocelot-scoped .icon-collapse {
+  transform: rotate(180deg);
+}
+
 .ocelot-scoped .icon-expand:before {
-  content: "\E012";
+  content: "\E009";
 }
 
 .ocelot-scoped .icon-facebook:before {
@@ -4786,6 +4802,10 @@ body .ocelot-scoped {
   margin-left: 1px;
 }
 
+.ocelot-scoped .max-h-0 {
+  max-height: 0;
+}
+
 .ocelot-scoped .max-h-10 {
   max-height: 2.5rem;
 }
@@ -7430,8 +7450,20 @@ body .ocelot-scoped {
 
 /* cn utilities */
 
-.ocelot-scoped .all-02s-ease {
-  transition: all .2s ease;
+.ocelot-scoped .transition-1\/4 {
+  transition: all .25s ease;
+}
+
+.ocelot-scoped .transition-1\/4-in {
+  transition: all .25s ease-in;
+}
+
+.ocelot-scoped .transition-1\/4-out {
+  transition: all .25s ease-out;
+}
+
+.ocelot-scoped .transition-1-out {
+  transition: all 1s ease-out;
 }
 
 .ocelot-scoped .cc-blue-88 {
@@ -7475,8 +7507,8 @@ body .ocelot-scoped {
 
 /* pseudo utilities */
 
-.ocelot-scoped .after\:all-02s-ease:after {
-  transition: all .2s ease;
+.ocelot-scoped .after\:transition-1\/4:after {
+  transition: all .25s ease;
 }
 
 .ocelot-scoped .after\:bg-blue-88:after {
@@ -11595,6 +11627,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:ml-px {
     margin-left: 1px;
+  }
+
+  .ocelot-scoped .sm\:max-h-0 {
+    max-height: 0;
   }
 
   .ocelot-scoped .sm\:max-h-10 {
@@ -18138,6 +18174,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .md\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .md\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -24679,6 +24719,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .lg\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .lg\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -31218,6 +31262,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:ml-px {
     margin-left: 1px;
+  }
+
+  .ocelot-scoped .xl\:max-h-0 {
+    max-height: 0;
   }
 
   .ocelot-scoped .xl\:max-h-10 {

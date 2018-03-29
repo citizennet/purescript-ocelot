@@ -56,6 +56,7 @@ icon className iprops =
           , HP.classes $ HH.ClassName <$>
             [ className
             , "inline-block"
+            , "transition-1/4-out"
             ]
           ]
         )

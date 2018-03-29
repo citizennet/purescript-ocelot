@@ -33,7 +33,10 @@ label {
 @tailwind utilities;
 
 /* cn utilities */
-.all-02s-ease { transition: all 0.2s ease; }
+.transition-1\/4 { transition: all 0.25s ease; }
+.transition-1\/4-in { transition: all 0.25s ease-in; }
+.transition-1\/4-out { transition: all 0.25s ease-out; }
+.transition-1-out { transition: all 1s ease-out; }
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
@@ -46,7 +49,7 @@ label {
 
 /* pseudo utilities */
 
-.after\:all-02s-ease:after { @apply .all-02s-ease; }
+.after\:transition-1\/4:after { @apply .transition-1/4; }
 .after\:bg-blue-88:after { @apply .bg-blue-88; }
 .after\:bg-white:after { @apply .bg-white; }
 .after\:h-full:after { @apply .h-full; }

@@ -94,16 +94,28 @@
   content: "\E005";
 }
 
+.icon-carat-left {
+  transform: rotate(90deg);
+}
+
 .icon-carat-left:before {
-  content: "\E019";
+  content: "\E005";
+}
+
+.icon-carat-right {
+  transform: rotate(270deg);
 }
 
 .icon-carat-right:before {
-  content: "\E006";
+  content: "\E005";
+}
+
+.icon-carat-up {
+  transform: rotate(180deg);
 }
 
 .icon-carat-up:before {
-  content: "\E017";
+  content: "\E005";
 }
 
 .icon-close:before {
@@ -134,8 +146,12 @@
   content: "\E025";
 }
 
+.icon-collapse {
+  transform: rotate(180deg);
+}
+
 .icon-expand:before {
-  content: "\E012";
+  content: "\E009";
 }
 
 .icon-facebook:before {
@@ -4786,6 +4802,10 @@ label {
   margin-left: 1px;
 }
 
+.max-h-0 {
+  max-height: 0;
+}
+
 .max-h-10 {
   max-height: 2.5rem;
 }
@@ -7430,8 +7450,20 @@ label {
 
 /* cn utilities */
 
-.all-02s-ease {
-  transition: all .2s ease;
+.transition-1\/4 {
+  transition: all .25s ease;
+}
+
+.transition-1\/4-in {
+  transition: all .25s ease-in;
+}
+
+.transition-1\/4-out {
+  transition: all .25s ease-out;
+}
+
+.transition-1-out {
+  transition: all 1s ease-out;
 }
 
 .cc-blue-88 {
@@ -7475,8 +7507,8 @@ label {
 
 /* pseudo utilities */
 
-.after\:all-02s-ease:after {
-  transition: all .2s ease;
+.after\:transition-1\/4:after {
+  transition: all .25s ease;
 }
 
 .after\:bg-blue-88:after {
@@ -11595,6 +11627,10 @@ input[type=range]::-ms-thumb {
 
   .sm\:ml-px {
     margin-left: 1px;
+  }
+
+  .sm\:max-h-0 {
+    max-height: 0;
   }
 
   .sm\:max-h-10 {
@@ -18138,6 +18174,10 @@ input[type=range]::-ms-thumb {
     margin-left: 1px;
   }
 
+  .md\:max-h-0 {
+    max-height: 0;
+  }
+
   .md\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -24679,6 +24719,10 @@ input[type=range]::-ms-thumb {
     margin-left: 1px;
   }
 
+  .lg\:max-h-0 {
+    max-height: 0;
+  }
+
   .lg\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -31218,6 +31262,10 @@ input[type=range]::-ms-thumb {
 
   .xl\:ml-px {
     margin-left: 1px;
+  }
+
+  .xl\:max-h-0 {
+    max-height: 0;
   }
 
   .xl\:max-h-10 {

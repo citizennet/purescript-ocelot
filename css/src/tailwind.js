@@ -53,6 +53,7 @@ config.margin = Object.assign(config.margin, {
 config.negativeMargin = config.margin
 
 config.maxHeight = Object.assign(config.maxHeight, {
+  '0': '0',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',

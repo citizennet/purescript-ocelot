@@ -37,14 +37,23 @@
 .icon-carat-down:before {
   content: "\e005";
 }
+.icon-carat-left {
+  transform: rotate(90deg);
+}
 .icon-carat-left:before {
-  content: "\e019";
+  content: "\e005";
+}
+.icon-carat-right {
+  transform: rotate(270deg);
 }
 .icon-carat-right:before {
-  content: "\e006";
+  content: "\e005";
+}
+.icon-carat-up {
+  transform: rotate(180deg);
 }
 .icon-carat-up:before {
-  content: "\e017";
+  content: "\e005";
 }
 .icon-close:before {
   content: "\e008";
@@ -67,8 +76,11 @@
 .icon-error:before {
   content: "\e025";
 }
+.icon-collapse {
+  transform: rotate(180deg);
+}
 .icon-expand:before {
-  content: "\e012";
+  content: "\e009";
 }
 .icon-facebook:before {
   content: "\e018";

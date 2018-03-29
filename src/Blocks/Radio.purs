@@ -47,7 +47,7 @@ radioClasses = HH.ClassName <$>
   , "no-content"
   , "rounded-full"
   , "mr-3"
-  , "after:all-02s-ease"
+  , "after:transition-1/4"
   , "after:h-full"
   , "after:w-full"
   , "after:bg-blue-88"

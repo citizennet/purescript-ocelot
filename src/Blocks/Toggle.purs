@@ -33,7 +33,7 @@ inputClasses = HH.ClassName <$>
 
 toggleClasses :: Array HH.ClassName
 toggleClasses = HH.ClassName <$>
-  [ "all-02s-ease"
+  [ "transition-1/4"
   , "inline-flex"
   , "justify-center"
   , "items-center"

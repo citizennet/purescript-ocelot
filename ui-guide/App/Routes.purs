@@ -18,7 +18,7 @@ import Halogen.Storybook.Proxy (ProxyS)
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
-import UIGuide.Components.Card as Card
+import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Tab as Tab
@@ -60,10 +60,10 @@ routes = fromFoldable
     , component: proxy Tab.component
     , group: FormElements
     }
-  , Tuple "cards"
-    { anchor: "Cards"
-    , component: proxy Card.card
-    , group: FormElements
+  , Tuple "expandables"
+    { anchor: "Expansion Cards"
+    , component: proxy ExpansionCards.component
+    , group: Components
     }
   , Tuple "textfields"
     { anchor: "Text Fields"
