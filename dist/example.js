@@ -16091,6 +16091,7 @@ var PS = {};
   var Halogen_HTML = PS["Halogen.HTML"];
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Ocelot_Core_Utils_Currency = PS["Ocelot.Core.Utils.Currency"];
   var Prelude = PS["Prelude"];
   var Text_Email_Validate = PS["Text.Email.Validate"];        
   var EmptyField = (function () {
@@ -16113,6 +16114,13 @@ var PS = {};
       };
       InvalidNumber.value = new InvalidNumber();
       return InvalidNumber;
+  })();
+  var InvalidCurrency = (function () {
+      function InvalidCurrency() {
+
+      };
+      InvalidCurrency.value = new InvalidCurrency();
+      return InvalidCurrency;
   })();
   var InvalidInteger = (function () {
       function InvalidInteger() {
@@ -16176,7 +16184,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(InvalidEmail.value));
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 61, column 1 - line 61, column 58: " + [ email.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 63, column 1 - line 63, column 58: " + [ email.constructor.name ]);
   };
   var validateNonEmptyStr = function (str) {
       if (Data_String["null"](str)) {
@@ -16185,7 +16193,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return Control_Applicative.pure(Data_Validation_Semigroup.applicativeV(Data_Semigroup.semigroupArray))(str);
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 48, column 1 - line 48, column 59: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 50, column 1 - line 50, column 59: " + [ str.constructor.name ]);
   };
   var validateNonEmptyMaybe = function (v) {
       if (v instanceof Data_Maybe.Just) {
@@ -16194,7 +16202,7 @@ var PS = {};
       if (v instanceof Data_Maybe.Nothing) {
           return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(EmptyField.value));
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 57, column 1 - line 57, column 62: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 59, column 1 - line 59, column 62: " + [ v.constructor.name ]);
   };
   var validateNonEmptyArr = function (v) {
       if (v.length === 0) {
@@ -16212,7 +16220,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new UnderMinLength(n, msg)));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 72, column 1 - line 72, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 81, column 1 - line 81, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
               };
           };
       };
@@ -16227,7 +16235,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new Dependency(msg)));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 92, column 1 - line 92, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 101, column 1 - line 101, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
               };
           };
       };
@@ -16241,6 +16249,9 @@ var PS = {};
       };
       if (v instanceof InvalidNumber) {
           return "Must be a valid number";
+      };
+      if (v instanceof InvalidCurrency) {
+          return "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars.";
       };
       if (v instanceof InvalidInteger) {
           return "Must be a valid integer";
@@ -16260,25 +16271,26 @@ var PS = {};
       if (v instanceof Dependency) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 101, column 1 - line 101, column 35: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 110, column 1 - line 110, column 35: " + [ v.constructor.name ]);
   };
   var htmlE = function (es) {
       if (Data_Foldable.length(Data_Foldable.foldableArray)(Data_Semiring.semiringInt)(es) === 1) {
-          return Data_Functor.map(Data_Functor.functorArray)(function ($102) {
-              return Halogen_HTML_Core.text(showE($102));
+          return Data_Functor.map(Data_Functor.functorArray)(function ($113) {
+              return Halogen_HTML_Core.text(showE($113));
           })(es);
       };
       if (Data_Boolean.otherwise) {
-          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($103) {
-              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($103))));
+          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($114) {
+              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($114))));
           })(es)) ];
           return toHTML;
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 112, column 1 - line 112, column 48: " + [ es.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 122, column 1 - line 122, column 48: " + [ es.constructor.name ]);
   };
   exports["EmptyField"] = EmptyField;
   exports["InvalidEmail"] = InvalidEmail;
   exports["InvalidNumber"] = InvalidNumber;
+  exports["InvalidCurrency"] = InvalidCurrency;
   exports["InvalidInteger"] = InvalidInteger;
   exports["UnderMinLength"] = UnderMinLength;
   exports["OutOfRange"] = OutOfRange;
