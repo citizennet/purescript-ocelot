@@ -10,11 +10,13 @@ module Ocelot.Core.Utils.Currency
   , dollarsToCents
   , formatCentsToStrDollars
   , formatDollarsToStrDollars
+  , canParseToInt
   )
   where
 
 import Prelude
 
+import Data.String as String
 import Data.Argonaut.Decode (class DecodeJson, decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Array (all, concat, drop, head)
@@ -59,7 +61,10 @@ parseCentsFromDollarStr str = parseCentsFromCentInt <$>
         | length c == 1 = c <> "0"
         | otherwise = take 2 c
 
-      verify s = if noCommas || (checkOne && checkRest) then Just (fromChars $ concat $ map toChars sub) else Nothing
+      verify s =
+        if canParseToInt s && (noCommas || (checkOne && checkRest))
+          then Just (fromChars $ concat $ map toChars sub)
+          else Nothing
         where
           sub = split (Pattern ",") s
           noCommas = s == substitute (Pattern ",") (Replacement "") s
@@ -115,3 +120,12 @@ formatCentsToStrDollars (Cents n)
 
       next :: Int -> String -> Tuple Int String
       next i = Tuple (i + 1)
+
+canParseToInt :: String -> Boolean
+canParseToInt  s
+  | (String.length s) < 8 = true
+  | (String.length s < 9) && (String.charAt 0 s == Just '1') = true
+  | (String.length s < 9)
+    && (String.charAt 0 s == Just '2')
+    && (String.charAt 1 s == Just '0') = true
+  | otherwise = false

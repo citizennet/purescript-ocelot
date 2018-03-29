@@ -14,7 +14,7 @@ import Data.Number as Num
 import Data.String as String
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
-import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr)
+import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr, canParseToInt)
 import Text.Email.Validate (isValid)
 
 -----
@@ -111,7 +111,7 @@ showE :: ValidationError -> String
 showE EmptyField = "Required"
 showE InvalidEmail = "Must be a valid email"
 showE InvalidNumber = "Must be a valid number"
-showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90."
+showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars."
 showE InvalidInteger = "Must be a valid integer"
 showE (UnderMinLength _ msg) = msg
 showE (OutOfRange msg) = msg
@@ -127,15 +127,6 @@ htmlE es | length es == 1 = HH.text <<< showE <$> es
       [ HH.p_ [ HH.text "You have errors:" ]
       , HH.ul_ $ HH.li_ <<< singleton <<< HH.text <<< showE <$> es
       ]
-
------
--- TEMP
-
-canParseToInt :: String -> Boolean
-canParseToInt  s
-  | (String.length s) < 8 = true
-  | (String.length s < 9) && (String.charAt 0 s == Just '1') = true
-  | otherwise = false
 
 -----
 -- Additional helpers for converting to and from Either
