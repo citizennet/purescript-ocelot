@@ -69,14 +69,12 @@ validateStrIsNumber :: String -> V ValidationErrors Number
 validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
 
 validateStrIsCents :: String -> V ValidationErrors Cents
-validateStrIsCents s
-  | canParseToInt s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr $ s
-  | otherwise = invalid $ pure InvalidCurrency
+validateStrIsCents s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr $ s
 
 validateStrIsInt :: String -> V ValidationErrors Int
 validateStrIsInt s
-  | canParseToInt s = maybe (invalid $ pure InvalidCurrency) pure <<< Integer.fromString $ s
-  | otherwise = invalid $ pure InvalidCurrency
+  | canParseToInt s = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString $ s
+  | otherwise = invalid $ pure InvalidInteger
 
 validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
 validateMinLength n msg f
