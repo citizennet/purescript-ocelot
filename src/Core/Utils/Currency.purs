@@ -62,12 +62,12 @@ parseCentsFromDollarStr str = parseCentsFromCentInt <$>
         | otherwise = take 2 c
 
       verify s =
-        if canParseToInt s && (noCommas || (checkOne && checkRest))
+        if (canParseToInt noCommas) && (noCommas == s || (checkOne && checkRest))
           then Just (fromChars $ concat $ map toChars sub)
           else Nothing
         where
           sub = split (Pattern ",") s
-          noCommas = s == substitute (Pattern ",") (Replacement "") s
+          noCommas = substitute (Pattern ",") (Replacement "") s
           checkOne = fromMaybe false $ ((_ <= 3) <<< length) <$> head sub
           checkRest = all (_ == 3) $ length <$> drop 1 sub
 
