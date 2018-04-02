@@ -1,6 +1,7 @@
 -- | Constructors are not exported for Cents or Dollars
 module Ocelot.Core.Utils.Currency
   ( Cents
+  , parseCentsFromInt
   , parseCentsFromDollarStr
   , formatCentsToStrDollars
   , canParseToBigInt
@@ -34,6 +35,10 @@ instance encodeJsonCents :: EncodeJson Cents where
 
 instance showCents :: Show Cents where
   show (Cents n) = "Cents: " <> show n
+
+-- | Will parse cents from a 32bit int
+parseCentsFromInt :: Int -> Cents
+parseCentsFromInt = Cents <<< BigInt.fromInt
 
 -- | Will attempt to parse cents from a string representing a dollar amount. It will
 -- strip any trailing cents beyond the hundredths place. WARNING: Do not use this on
