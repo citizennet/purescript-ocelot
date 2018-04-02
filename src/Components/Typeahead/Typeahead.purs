@@ -2,28 +2,25 @@ module Ocelot.Components.Typeahead where
 
 import Prelude
 
+import Control.Monad.Aff (Aff)
+import Control.Monad.Aff.Class (class MonadAff)
+import DOM.HTML.Indexed (HTMLinput)
 import Data.Fuzzy (Fuzzy)
 import Data.Maybe (Maybe(..))
 import Data.StrMap (StrMap, fromFoldable, singleton)
-import Data.Tuple (Tuple(..))
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Class (class MonadAff)
 import Data.Time.Duration (Milliseconds(..))
+import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import DOM.HTML.Indexed (HTMLinput)
 import Network.RemoteData (RemoteData(..))
-
+import Ocelot.Block.Input as Input
+import Ocelot.Block.ItemContainer as ItemContainer
+import Ocelot.Block.Type as Type
+import Ocelot.Core.Typeahead as TA
 import Select as Select
 import Select.Utils.Setters as Setters
-
-import Ocelot.Block.ItemContainer as ItemContainer
-
-import Ocelot.Core.Typeahead as TA
-import Ocelot.Block.Type as Type
-import Ocelot.Block.Input as Input
 
 
 ----------
@@ -54,6 +51,20 @@ defRenderFuzzy = HH.span_ <<< ItemContainer.boldMatches "name"
 defRenderItem :: ∀ r. { name :: String | r } -> HH.PlainHTML
 defRenderItem { name } = HH.text name
 
+defRenderContainer
+  :: ∀ o item eff
+   . (Fuzzy item -> HH.PlainHTML)
+  -> Select.State (Fuzzy item) (TA.Effects eff)
+  -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff))
+defRenderContainer renderFuzzy selectState =
+  HH.div
+    [ HP.class_ $ HH.ClassName "relative" ]
+    if selectState.visibility == Select.Off then []
+    else
+    [ ItemContainer.itemContainer
+        selectState.highlightedIndex
+        (renderFuzzy <$> selectState.items)
+    ]
 
 ----------
 -- Default typeahead configurations
@@ -71,7 +82,7 @@ defSingle props xs { toStrMap, renderFuzzy, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA props renderFuzzy renderItem
+  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
   , config: syncConfig toStrMap false
   }
 
@@ -89,7 +100,7 @@ defLimit props n xs { toStrMap, renderFuzzy, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Limit n []
-  , render: renderTA props renderFuzzy renderItem
+  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
   , config: syncConfig toStrMap true
   }
 
@@ -107,7 +118,7 @@ defMulti props xs { toStrMap, renderFuzzy, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA props renderFuzzy renderItem
+  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
   , config: syncConfig toStrMap true
   }
 
@@ -124,7 +135,7 @@ defAsyncSingle props f { toStrMap, renderFuzzy, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA props renderFuzzy renderItem
+  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
   , config: asyncConfig (Milliseconds 100.0) f toStrMap true
   }
 
@@ -141,7 +152,7 @@ defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA props renderFuzzy renderItem
+  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
   , config: asyncConfig (Milliseconds 100.0) f toStrMap false
   }
 
@@ -188,11 +199,11 @@ renderTA :: ∀ o item err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
- -> (Fuzzy item -> HH.PlainHTML)
+ -> (Select.State (Fuzzy item) (TA.Effects eff) -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff)))
  -> (item -> HH.PlainHTML)
  -> TA.State item err (TA.Effects eff)
  -> TAParentHTML o item err (TA.Effects eff) m
-renderTA props renderFuzzy renderSelectionItem st =
+renderTA props renderContainer renderSelectionItem st =
   renderAll $
     HH.slot
       unit
@@ -241,10 +252,3 @@ renderTA props renderFuzzy renderSelectionItem st =
           [ HP.classes $ Input.inputRightBorderClasses <> Type.linkClasses ]
           [ HH.text "Browse" ]
         ]
-
-    renderContainer selectState =
-      HH.div
-        [ HP.class_ $ HH.ClassName "relative" ]
-        if selectState.visibility == Select.Off then []
-        else [ ItemContainer.itemContainer selectState.highlightedIndex (renderFuzzy <$> selectState.items) ]
-
