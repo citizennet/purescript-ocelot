@@ -109,7 +109,7 @@ showE :: ValidationError -> String
 showE EmptyField = "Required"
 showE InvalidEmail = "Must be a valid email"
 showE InvalidNumber = "Must be a valid number"
-showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars."
+showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90."
 showE InvalidInteger = "Must be a valid integer"
 showE (UnderMinLength _ msg) = msg
 showE (OutOfRange msg) = msg

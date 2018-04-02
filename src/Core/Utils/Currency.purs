@@ -34,7 +34,7 @@ instance encodeJsonCents :: EncodeJson Cents where
   encodeJson = encodeJson <<< BigInt.toString <<< unwrap
 
 instance showCents :: Show Cents where
-  show (Cents n) = "Cents: " <> show n
+  show (Cents n) = "Cents: " <> BigInt.toString n
 
 -- | Will parse cents from a 32bit int
 parseCentsFromInt :: Int -> Cents
@@ -85,8 +85,8 @@ parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
 -- in dollars.
 formatCentsToStrDollars :: Cents -> String
 formatCentsToStrDollars (Cents n)
-  | BigInt.toNumber n < 10.0  = "0.0" <> show n
-  | BigInt.toNumber n < 100.0 = "0." <> show n
+  | BigInt.toNumber n < 10.0  = "0.0" <> BigInt.toString n
+  | BigInt.toNumber n < 100.0 = "0." <> BigInt.toString n
   | otherwise = snd $ foldr formatCentsToDollars' (Tuple 0 "") (chars n)
     where
       chars :: BigInt -> Array Char
