@@ -26,15 +26,15 @@ import Select.Utils.Setters as Setters
 ----------
 -- Input types expected. This needs to be defined for each 'item' type we have.
 
-type RenderTypeaheadItem item
+type RenderTypeaheadItem o item eff
   = { toStrMap :: item -> StrMap String
-    , renderFuzzy :: Fuzzy item -> HH.PlainHTML
+    , renderContainer :: RenderContainer o item eff
     , renderItem :: item -> HH.PlainHTML }
 
-renderItemString :: RenderTypeaheadItem String
+renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
-  , renderFuzzy: defRenderFuzzy
+  , renderContainer: defRenderContainer defRenderFuzzy
   , renderItem: HH.text }
 
 ----------
@@ -51,11 +51,14 @@ defRenderFuzzy = HH.span_ <<< ItemContainer.boldMatches "name"
 defRenderItem :: ∀ r. { name :: String | r } -> HH.PlainHTML
 defRenderItem { name } = HH.text name
 
+type RenderContainer o item eff =
+  Select.State (Fuzzy item) (TA.Effects eff)
+  -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff))
+
 defRenderContainer
   :: ∀ o item eff
    . (Fuzzy item -> HH.PlainHTML)
-  -> Select.State (Fuzzy item) (TA.Effects eff)
-  -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff))
+  -> RenderContainer o item eff
 defRenderContainer renderFuzzy selectState =
   HH.div
     [ HP.class_ $ HH.ClassName "relative" ]
@@ -76,13 +79,13 @@ defSingle :: ∀ o item err eff m
  => Show err
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
  -> Array item
- -> RenderTypeaheadItem item
+ -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defSingle props xs { toStrMap, renderFuzzy, renderItem } =
+defSingle props xs { toStrMap, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
+  , render: renderTA props renderContainer renderItem
   , config: syncConfig toStrMap false
   }
 
@@ -94,13 +97,13 @@ defLimit :: ∀ o item err eff m
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
  -> Int
  -> Array item
- -> RenderTypeaheadItem item
+ -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defLimit props n xs { toStrMap, renderFuzzy, renderItem } =
+defLimit props n xs { toStrMap, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Limit n []
-  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
+  , render: renderTA props renderContainer renderItem
   , config: syncConfig toStrMap true
   }
 
@@ -112,13 +115,13 @@ defMulti :: ∀ o item err eff m
  => Show err
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
  -> Array item
- -> RenderTypeaheadItem item
+ -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defMulti props xs { toStrMap, renderFuzzy, renderItem } =
+defMulti props xs { toStrMap, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
+  , render: renderTA props renderContainer renderItem
   , config: syncConfig toStrMap true
   }
 
@@ -129,13 +132,13 @@ defAsyncSingle :: ∀ o item err eff m
   => Show err
   => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
   -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
-  -> RenderTypeaheadItem item
+  -> RenderTypeaheadItem o item eff
   -> TA.Input o item err (TA.Effects eff) m
-defAsyncSingle props f { toStrMap, renderFuzzy, renderItem } =
+defAsyncSingle props f { toStrMap, renderContainer, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
-  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
+  , render: renderTA props renderContainer renderItem
   , config: asyncConfig (Milliseconds 100.0) f toStrMap true
   }
 
@@ -146,13 +149,13 @@ defAsyncMulti :: ∀ o item err eff m
  => Show err
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
  -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
- -> RenderTypeaheadItem item
+ -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defAsyncMulti props f { toStrMap, renderFuzzy, renderItem } =
+defAsyncMulti props f { toStrMap, renderContainer, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
-  , render: renderTA props (defRenderContainer renderFuzzy) renderItem
+  , render: renderTA props renderContainer renderItem
   , config: asyncConfig (Milliseconds 100.0) f toStrMap false
   }
 
@@ -199,7 +202,7 @@ renderTA :: ∀ o item err eff m
   . MonadAff (TA.Effects eff) m
  => Eq item
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item) (TA.Effects eff)))
- -> (Select.State (Fuzzy item) (TA.Effects eff) -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff)))
+ -> RenderContainer o item eff
  -> (item -> HH.PlainHTML)
  -> TA.State item err (TA.Effects eff)
  -> TAParentHTML o item err (TA.Effects eff) m
