@@ -39,15 +39,21 @@ instance showCents :: Show Cents where
 -- strip any trailing cents beyond the hundredths place. WARNING: Do not use this on
 -- a string meant to represent cents! It will overstate by 100x.
 parseCentsFromDollarStr :: String -> Maybe Cents
-parseCentsFromDollarStr str = case split (Pattern ".") str of
+parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
   -- There is no decimal; treat as a full dollar string
-  [ dollars ] -> Cents <$> dollarsPlace dollars
-  [ dollars, cents ] -> map Cents $
-    (+) <$> dollarsPlace dollars <*> BigInt.fromString (take 2 cents)
+  [ dollars ] -> bigIntIs64Bit =<< dollarsPlace dollars
+
+  -- There is one decimal; truncate the cents to 2 places and
+  -- add them to the dollars
+  [ dollars, cents ] -> bigIntIs64Bit
+    =<< (+) <$> dollarsPlace dollars <*> BigInt.fromString (take 2 cents)
+
+  -- Unable to parse
   otherwise -> Nothing
+
   where
     -- Expects only the dollars place, no cents. Cents will overstate
-    -- by 100x!
+    -- by 100x! Verifies within 64 bit bounds.
     dollarsPlace :: String -> Maybe BigInt
     dollarsPlace s = pure
       <<< (*) (BigInt.fromInt 100)
@@ -65,6 +71,7 @@ parseCentsFromDollarStr str = case split (Pattern ".") str of
     stripCommas = substitute (Pattern ",") (Replacement "")
     checkHead = fromMaybe false <<< map ((_ <= 3) <<< length) <<< head
     checkTail = all (_ == 3) <<< map length <<< drop 1
+
 
 ----------
 -- CONVERSIONS
@@ -93,6 +100,14 @@ formatCentsToStrDollars (Cents n)
 -- other steps are taken, or for validation purposes.
 canParseToBigInt :: String -> Boolean
 canParseToBigInt = isJust <<< BigInt.fromString
+
+-- | Verify cents are within 64 bit bounds
+bigIntIs64Bit :: BigInt -> Maybe BigInt
+bigIntIs64Bit n = do
+  max <- BigInt.fromString "9223372036854775807"
+  if n <= max
+    then pure n
+    else Nothing
 
 -- | Simple check to see if the parsed int would fit within
 -- 64 bits (9,223,372,036,854,775,807)
