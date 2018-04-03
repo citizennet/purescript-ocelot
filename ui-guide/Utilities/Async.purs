@@ -20,6 +20,7 @@ import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
+import Ocelot.Components.Typeahead (defRenderContainer)
 import Ocelot.Components.Typeahead as TA
 
 
@@ -125,11 +126,11 @@ decodeUser json = do
     , skinColor
     }
 
-renderItemUser :: TA.RenderTypeaheadItem User
+renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
 renderItemUser =
   { toStrMap: userToStrMap
   , renderItem: renderUser
-  , renderFuzzy: renderFuzzyUser
+  , renderContainer: TA.defRenderContainer renderFuzzyUser
   }
 
 userToStrMap :: User -> StrMap String
@@ -233,11 +234,11 @@ locationToStrMap :: Location -> StrMap String
 locationToStrMap (Location { name, population }) =
   fromFoldable [ Tuple "name" name ]
 
-renderItemLocation :: TA.RenderTypeaheadItem Location
+renderItemLocation :: ∀ o eff. TA.RenderTypeaheadItem o Location eff
 renderItemLocation =
   { toStrMap: locationToStrMap
   , renderItem: TA.defRenderItem <<< unwrap
-  , renderFuzzy: TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
   }
 
 ----------

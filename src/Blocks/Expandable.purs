@@ -6,7 +6,6 @@ import DOM.HTML.Indexed (HTMLheader, HTMLspan, HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 
 data Status

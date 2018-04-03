@@ -18,7 +18,6 @@ import Data.Rational ((%))
 import Data.StrMap (StrMap)
 import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
-import Debug.Trace (spy)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -302,9 +301,10 @@ component =
             H.liftAff $ logShow err
             _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
             H.query unit $ H.action $ Select.ReplaceItems []
-          status -> do
-            _ <- pure $ spy status
-            pure (pure unit)
+          NotAsked -> do
+            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
+            H.query unit $ H.action $ Select.ReplaceItems []
+          Loading -> pure (pure unit)
 
         pure a
 
