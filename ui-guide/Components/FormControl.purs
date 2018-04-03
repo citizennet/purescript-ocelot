@@ -102,26 +102,30 @@ component =
               [ HH.h3
                 [ HP.classes Type.captionClasses ]
                 [ HH.text "Text Input with Form Control" ]
-              , FormControl.formControl
+              , FormControl.formControl_
                 { label: "Email"
                 , helpText: Just "Dave will spam your email with gang of four patterns"
                 , valid: Nothing
                 , inputId: "email"
                 }
-                ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com", HP.id_ "email" ] )
+              [ Input.input
+                [ HP.placeholder "davelovesdesignpatterns@gmail.com"
+                , HP.id_ "email" 
+                ]
               ]
+            ]
           ]
       , Documentation.documentation_
           { header: "Toggle"
           , subheader: "Enable or disable something" }
           [ Backdrop.backdrop_
-              [ FormControl.formControl
+              [ FormControl.formControl_
                 { label: "Dave's OO Emails"
                 , helpText: Just "Once enabled, you can never unsubscribe."
                 , valid: Nothing
                 , inputId: "toggle"
                 }
-                ( Toggle.toggle [ HP.id_ "toggle" ] )
+                [ Toggle.toggle [ HP.id_ "toggle" ] ]
               ]
           ]
       , Documentation.documentation_
@@ -143,13 +147,13 @@ component =
                   , HH.text " with groups of radios and checkboxes."
                   ]
                 ]
-              , FormControl.fieldset
+              , FormControl.fieldset_
                   { label: "Platform"
                   , inputId: "radio"
                   , helpText: Just "Where do you want your ad to appear?"
                   , valid: Nothing
                   }
-                  ( HH.div_
+                  [ HH.div_
                     [ Radio.radio
                         { label: "Facebook" }
                         [ HP.name "platform" ]
@@ -160,7 +164,7 @@ component =
                         { label: "Twitter" }
                         [ HP.name "platform" ]
                     ]
-                  )
+                  ]
               ]
           ]
       , Documentation.documentation_
@@ -180,18 +184,18 @@ component =
               [ HH.h3
                 [ HP.classes Type.captionClasses ]
                 [ HH.text "Range Input with Form Control" ]
-              , FormControl.formControl
+              , FormControl.formControl_
                 { label: "Dave's OO Emails"
                 , helpText: Just "How many do you want?"
                 , valid: Nothing
                 , inputId: "range"
                 }
-                ( Range.range
-                    [ HP.id_ "range"
-                    , HP.min 0.0
-                    , HP.max 100.0
-                    ]
-                )
+                [ Range.range
+                  [ HP.id_ "range"
+                  , HP.min 0.0
+                  , HP.max 100.0
+                  ]
+                ]
               ]
           ]
       , Documentation.documentation_
@@ -209,13 +213,17 @@ component =
                   )
                 }
                 [ HE.onClick (HE.input ToggleFormPanel) ]
-                [ FormControl.formControl
-                    { label: "Email"
-                    , helpText: Just "Dave will spam your email with gang of four patterns"
-                    , valid: Nothing
-                    , inputId: "email'"
-                    }
-                    ( Input.input [ HP.placeholder "davelovesdesignpatterns@gmail.com", HP.id_ "email'" ] )
+                [ FormControl.formControl_
+                  { label: "Email"
+                  , helpText: Just "Dave will spam your email with gang of four patterns"
+                  , valid: Nothing
+                  , inputId: "email'"
+                  }
+                  [ Input.input
+                    [ HP.placeholder "davelovesdesignpatterns@gmail.com"
+                    , HP.id_ "email'"
+                    ]
+                  ]
                 ]
             ]
           ]

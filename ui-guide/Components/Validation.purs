@@ -307,16 +307,16 @@ renderForm st =
       , subheader: "Test validations and form submission."
       }
       [ Backdrop.backdrop_
-        [ FormControl.formControl
+        [ FormControl.formControl_
           { label: "Developer"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Map.lookup FailDevelopers st.errors
           , inputId: "devs"
           }
-          ( HH.slot' CP.cp1 unit TACore.component
+          [ HH.slot' CP.cp1 unit TACore.component
             (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
             (HE.input HandleSync)
-          )
+          ]
         -- , FormControl.formControl
           -- { label: "Todos"
           -- , helpText: Just "Synchronous todo fetching like you've always wanted."
@@ -327,13 +327,13 @@ renderForm st =
             -- (TA.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] (\_ -> Async.loadFromSource Async.todos) Async.renderItemTodo)
             -- (HE.input HandleB)
           -- )
-        , FormControl.formControl
+        , FormControl.formControl_
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           , valid: Map.lookup FailUsers1 st.errors
           , inputId: "users1"
           }
-          ( HH.slot' CP.cp3 unit TACore.component
+          [ HH.slot' CP.cp3 unit TACore.component
             ( TA.defAsyncMulti
               [ HP.placeholder "Search users asynchronously"
               , HP.id_ "users1"
@@ -342,14 +342,14 @@ renderForm st =
               Async.renderItemUser
             )
             ( HE.input HandleC )
-          )
-        , FormControl.formControl
+          ]
+        , FormControl.formControl_
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           , valid: Map.lookup FailUsers2 st.errors
           , inputId: "users2"
           }
-          ( HH.slot' CP.cp3 unit TACore.component
+          [ HH.slot' CP.cp3 unit TACore.component
             ( TA.defAsyncMulti
               [ HP.placeholder "Search more users..."
               , HP.id_ "users2"
@@ -358,29 +358,33 @@ renderForm st =
               Async.renderItemUser
             )
             ( HE.input HandleD )
-          )
-        , FormControl.formControl
+          ]
+        , FormControl.formControl_
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
           , valid: Map.lookup FailEmail st.errors
           , inputId: "email"
           }
-          ( Input.input
+          [ Input.input
             [ HP.placeholder "davelovesgangoffour@gmail.com"
             , HP.id_ "email"
             , HE.onBlur (HE.input_ $ Validate FailEmail (EmailV st.raw.email))
-            , HE.onValueInput (HE.input $ UpdateTextField 1) ] )
-        , FormControl.formControl
+            , HE.onValueInput (HE.input $ UpdateTextField 1)
+            ]
+          ]
+        , FormControl.formControl_
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
           , valid: Map.lookup FailUsername st.errors
           , inputId: "username"
           }
-          ( Input.input
+          [ Input.input
             [ HP.placeholder "Placehold me"
             , HP.id_ "username"
             , HE.onBlur (HE.input_ $ Validate FailUsername (UsernameV st.raw.username))
-            , HE.onValueInput (HE.input $ UpdateTextField 2) ] )
+            , HE.onValueInput (HE.input $ UpdateTextField 2)
+            ]
+          ]
         , Button.buttonPrimary
             [ HP.type_ HP.ButtonSubmit ]
             [ HH.text "Submit" ]

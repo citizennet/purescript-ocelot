@@ -27,6 +27,7 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
 import Ocelot.Block.Expandable as Expandable
 import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Toggle as Toggle
 import Ocelot.Block.Type as Type
@@ -206,13 +207,13 @@ cnDocumentationBlocks st =
               ]
             , Expandable.content_
               st.singleLocation
-              [ FormControl.formControl
+              [ FormControl.formControl_
                 { label: "Primary Location"
                 , helpText: Just "Search your favorite destination."
                 , valid: Nothing
                 , inputId: "location"
                 }
-                ( HH.slot' CP.cp1 0 TACore.component
+                [ HH.slot' CP.cp1 0 TACore.component
                   (TA.defAsyncSingle
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "location"
@@ -221,14 +222,14 @@ cnDocumentationBlocks st =
                     Async.renderItemLocation
                   )
                   ( HE.input $ HandleTypeaheadLocation 0 )
-                )
-              , FormControl.formControl
+                ]
+              , FormControl.formControl_
                 { label: "Secondary Location"
                 , helpText: Just "Search your favorite destination."
                 , valid: Nothing
                 , inputId: "location-hydrated"
                 }
-                ( HH.slot' CP.cp1 1 TACore.component
+                [ HH.slot' CP.cp1 1 TACore.component
                   (TA.defAsyncSingle
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "location-hydrated"
@@ -237,7 +238,7 @@ cnDocumentationBlocks st =
                     Async.renderItemLocation
                   )
                   ( HE.input $ HandleTypeaheadLocation 1 )
-                )
+                ]
               ]
             ]
           ]
@@ -252,13 +253,13 @@ cnDocumentationBlocks st =
               [ Type.subHeading_ [ HH.text "Users" ] ]
             , Expandable.content_
               st.singleUser
-              [ FormControl.formControl
+              [ FormControl.formControl_
                 { label: "Primary User"
                 , helpText: Just "Search your favorite companion."
                 , valid: Nothing
                 , inputId: "user"
                 }
-                ( HH.slot' CP.cp2 0 TACore.component
+                [ HH.slot' CP.cp2 0 TACore.component
                   (TA.defAsyncSingle
                     [ HP.placeholder "Search users..."
                     , HP.id_ "user"
@@ -267,14 +268,14 @@ cnDocumentationBlocks st =
                     Async.renderItemUser
                   )
                   ( HE.input $ HandleTypeaheadUser 0 )
-                )
-              , FormControl.formControl
+                ]
+              , FormControl.formControl_
                 { label: "Secondary User"
                 , helpText: Just "Search your favorite companion."
                 , valid: Nothing
                 , inputId: "user-hydrated"
                 }
-                ( HH.slot' CP.cp2 1 TACore.component
+                [ HH.slot' CP.cp2 1 TACore.component
                   (TA.defAsyncSingle
                     [ HP.placeholder "Search users..."
                     , HP.id_ "user-hydrated"
@@ -283,8 +284,24 @@ cnDocumentationBlocks st =
                     Async.renderItemUser
                   )
                   ( HE.input $ HandleTypeaheadUser 1 )
-                )
+                ]
               ]
+            ]
+          ]
+        ]
+      ]
+    , Backdrop.backdrop_
+      [ Backdrop.content_
+        [ Card.card_
+          [ Type.subHeading_
+            [ Icon.info
+              [ HP.class_ $ HH.ClassName "text-yellow mr-2" ]
+            , HH.text "Animation Warning"
+            ]
+          , Type.p_
+            [ HH.text "If the expansion card or any of its parents have "
+            , HH.code_ [ HH.text "overflow: hidden" ]
+            , HH.text " set, it may cause the collapse and expand animations to fail in some browsers, resulting in a rougher transition."
             ]
           ]
         ]
@@ -300,13 +317,13 @@ cnDocumentationBlocks st =
               [ HH.text "Optimization Rules Engine" ]
             , Type.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Enabled"
               , helpText: Nothing
               , valid: Nothing
               , inputId: "enable-locations"
               }
-              ( Toggle.toggle
+              [ Toggle.toggle
                 [ HP.id_ "enable-locations"
                 , HP.checked
                   $ Expandable.toBoolean st.multiLocation
@@ -314,16 +331,16 @@ cnDocumentationBlocks st =
                   $ HE.input_
                   $ ToggleCard _multiLocation
                 ]
-              )
+              ]
             , Expandable.content_
               st.multiLocation
-              [ FormControl.formControl
+              [ FormControl.formControl_
                 { label: "Targeted Locations"
                 , helpText: Just "Search your top destinations."
                 , valid: Nothing
                 , inputId: "locations"
                 }
-                ( HH.slot' CP.cp1 2 TACore.component
+                [ HH.slot' CP.cp1 2 TACore.component
                   (TA.defAsyncMulti
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "locations"
@@ -332,14 +349,14 @@ cnDocumentationBlocks st =
                     Async.renderItemLocation
                   )
                   ( HE.input $ HandleTypeaheadLocation 2 )
-                )
-              , FormControl.formControl
+                ]
+              , FormControl.formControl_
                 { label: "Excluded Locations"
                 , helpText: Just "Search your top destinations."
                 , valid: Nothing
                 , inputId: "locations"
                 }
-                ( HH.slot' CP.cp1 3 TACore.component
+                [ HH.slot' CP.cp1 3 TACore.component
                   (TA.defAsyncMulti
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "locations"
@@ -348,7 +365,7 @@ cnDocumentationBlocks st =
                     Async.renderItemLocation
                   )
                   ( HE.input $ HandleTypeaheadLocation 3 )
-                )
+                ]
               ]
             ]
           ]
@@ -358,13 +375,13 @@ cnDocumentationBlocks st =
               [ HH.text "Optimization Rules Engine" ]
             , Type.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Enabled"
               , helpText: Nothing
               , valid: Nothing
               , inputId: "enable-users"
               }
-              ( Toggle.toggle
+              [ Toggle.toggle
                 [ HP.id_ "enable-users"
                 , HP.checked
                   $ Expandable.toBoolean st.multiUser
@@ -372,16 +389,16 @@ cnDocumentationBlocks st =
                   $ HE.input_
                   $ ToggleCard _multiUser
                 ]
-              )
+              ]
             , Expandable.content_
               st.multiUser
-              [ FormControl.formControl
+              [ FormControl.formControl_
                 { label: "Targeted Users"
                 , helpText: Just "Search your top companions."
                 , valid: Nothing
                 , inputId: "users"
                 }
-                ( HH.slot' CP.cp2 2 TACore.component
+                [ HH.slot' CP.cp2 2 TACore.component
                   (TA.defAsyncMulti
                     [ HP.placeholder "Search users..."
                     , HP.id_ "users"
@@ -390,14 +407,14 @@ cnDocumentationBlocks st =
                     Async.renderItemUser
                   )
                   ( HE.input $ HandleTypeaheadUser 2 )
-                )
-              , FormControl.formControl
+                ]
+              , FormControl.formControl_
                 { label: "Excluded Users"
                 , helpText: Just "Search your top companions."
                 , valid: Nothing
                 , inputId: "users-hydrated"
                 }
-                ( HH.slot' CP.cp2 3 TACore.component
+                [ HH.slot' CP.cp2 3 TACore.component
                   (TA.defAsyncMulti
                     [ HP.placeholder "Search users..."
                     , HP.id_ "users-hydrated"
@@ -406,7 +423,7 @@ cnDocumentationBlocks st =
                     Async.renderItemUser
                   )
                   ( HE.input $ HandleTypeaheadUser 3 )
-                )
+                ]
               ]
             ]
           ]

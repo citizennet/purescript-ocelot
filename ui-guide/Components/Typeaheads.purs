@@ -169,13 +169,13 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
               , valid: Nothing
               , inputId: "location"
               }
-              ( HH.slot' CP.cp1 0 TACore.component
+              [ HH.slot' CP.cp1 0 TACore.component
                 (TA.defAsyncSingle
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "location"
@@ -184,17 +184,17 @@ cnDocumentationBlocks =
                   Async.renderItemLocation
                 )
                 ( HE.input $ HandleTypeaheadLocation 0 )
-              )
+              ]
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard Hydrated" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
               , valid: Nothing
               , inputId: "location-hydrated"
               }
-              ( HH.slot' CP.cp1 1 TACore.component
+              [ HH.slot' CP.cp1 1 TACore.component
                 (TA.defAsyncSingle
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "location-hydrated"
@@ -203,7 +203,7 @@ cnDocumentationBlocks =
                   Async.renderItemLocation
                 )
                 ( HE.input $ HandleTypeaheadLocation 1 )
-              )
+              ]
             ]
           ]
         , content
@@ -212,13 +212,13 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
               , valid: Nothing
               , inputId: "user"
               }
-              ( HH.slot' CP.cp2 0 TACore.component
+              [ HH.slot' CP.cp2 0 TACore.component
                 (TA.defAsyncSingle
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user"
@@ -227,17 +227,17 @@ cnDocumentationBlocks =
                   Async.renderItemUser
                 )
                 ( HE.input $ HandleTypeaheadUser 0 )
-              )
+              ]
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
               , valid: Nothing
               , inputId: "user-hydrated"
               }
-              ( HH.slot' CP.cp2 1 TACore.component
+              [ HH.slot' CP.cp2 1 TACore.component
                 (TA.defAsyncSingle
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user-hydrated"
@@ -246,7 +246,7 @@ cnDocumentationBlocks =
                   Async.renderItemUser
                 )
                 ( HE.input $ HandleTypeaheadUser 1 )
-              )
+              ]
             ]
           ]
         ]
@@ -262,13 +262,13 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
               , valid: Nothing
               , inputId: "locations"
               }
-              ( HH.slot' CP.cp1 2 TACore.component
+              [ HH.slot' CP.cp1 2 TACore.component
                 (TA.defAsyncMulti
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
@@ -277,17 +277,17 @@ cnDocumentationBlocks =
                   Async.renderItemLocation
                 )
                 ( HE.input $ HandleTypeaheadLocation 2 )
-              )
+              ]
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard Hydrated" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
               , valid: Nothing
               , inputId: "locations"
               }
-              ( HH.slot' CP.cp1 3 TACore.component
+              [ HH.slot' CP.cp1 3 TACore.component
                 (TA.defAsyncMulti
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
@@ -296,7 +296,7 @@ cnDocumentationBlocks =
                   Async.renderItemLocation
                 )
                 ( HE.input $ HandleTypeaheadLocation 3 )
-              )
+              ]
             ]
           ]
         , content
@@ -305,13 +305,13 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Users"
               , helpText: Just "Search your top companions."
               , valid: Nothing
               , inputId: "users"
               }
-              ( HH.slot' CP.cp2 2 TACore.component
+              [ HH.slot' CP.cp2 2 TACore.component
                 (TA.defAsyncMulti
                   [ HP.placeholder "Search users..."
                   , HP.id_ "users"
@@ -320,17 +320,17 @@ cnDocumentationBlocks =
                   Async.renderItemUser
                 )
                 ( HE.input $ HandleTypeaheadUser 2 )
-              )
+              ]
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl
+            , FormControl.formControl_
               { label: "Users"
               , helpText: Just "Search your top companions."
               , valid: Nothing
               , inputId: "users-hydrated"
               }
-              ( HH.slot' CP.cp2 3 TACore.component
+              [ HH.slot' CP.cp2 3 TACore.component
                 (TA.defAsyncMulti
                   [ HP.placeholder "Search users..."
                   , HP.id_ "users-hydrated"
@@ -339,7 +339,7 @@ cnDocumentationBlocks =
                   Async.renderItemUser
                 )
                 ( HE.input $ HandleTypeaheadUser 3 )
-              )
+              ]
             ]
           ]
         ]

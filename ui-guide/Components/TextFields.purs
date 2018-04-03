@@ -76,31 +76,31 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
             , inputId: "email"
             }
-            ( Input.input
+            [ Input.input
               [ HP.placeholder "address@gmail.com"
               , HP.id_ "email"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Just [ Validation.EmptyField ]
             , inputId: "email-error"
             }
-            ( Input.input
+            [ Input.input
               [ HP.placeholder "address@gmail.com"
               , HP.id_ "email-error"
               ]
-            )
+            ]
           ]
         ]
       , content
@@ -109,32 +109,32 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
             , inputId: "email-hydrated"
             }
-            ( Input.input
+            [ Input.input
               [ HP.value "jeff@citizennet.com"
               , HP.id_ "email-hydrated"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
             , inputId: "email-disabled"
             }
-            ( Input.input
+            [ Input.input
               [ HP.value "jeff@citizennet.com"
               , HP.id_ "email-disabled"
               , HP.disabled true
               ]
-            )
+            ]
           ]
         ]
       ]
@@ -150,30 +150,30 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
             , inputId: "daily-goal"
             }
-            ( Input.percentage_
+            [ Input.percentage_
               [ HP.id_ "daily-goal"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
             , inputId: "daily-goal-error"
             }
-            ( Input.percentage_
+            [ Input.percentage_
               [ HP.value "200"
               , HP.id_ "daily-goal-error"
               ]
-            )
+            ]
           ]
         ]
       , content
@@ -182,32 +182,32 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
             , inputId: "daily-goal-hydrated"
             }
-            ( Input.percentage_
+            [ Input.percentage_
               [ HP.value "25"
               , HP.id_ "daily-goal-hydrated"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
             , inputId: "daily-goal-disabled"
             }
-            ( Input.percentage_
+            [ Input.percentage_
               [ HP.value "25"
               , HP.id_ "daily-goal-disabled"
               , HP.disabled true
               ]
-            )
+            ]
           ]
         ]
       ]
@@ -223,29 +223,29 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
             , inputId: "budget"
             }
-            ( Input.currency_
+            [ Input.currency_
               [ HP.id_ "budget"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Just [ Validation.EmptyField ]
             , inputId: "budget-error"
             }
-            ( Input.currency_
+            [ Input.currency_
               [ HP.id_ "budget-error"
               ]
-            )
+            ]
           ]
         ]
       , content
@@ -254,32 +254,32 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
             , inputId: "budget-hydrated"
             }
-            ( Input.currency_
+            [ Input.currency_
               [ HP.value "50,000"
               , HP.id_ "budget-hydrated"
               ]
-            )
+            ]
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
             , inputId: "budget-disabled"
             }
-            ( Input.currency_
+            [ Input.currency_
               [ HP.value "50,000"
               , HP.id_ "budget-disabled"
               , HP.disabled true
               ]
-            )
+            ]
           ]
         ]
       ]
@@ -295,13 +295,13 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a search field."
             , valid: Nothing
             , inputId: "search"
             }
-            ( Input.inputGroup_
+            [ Input.inputGroup_
               [ Input.inputCenter
                 [ HP.id_ "search"
                 , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
@@ -311,7 +311,7 @@ cnDocumentationBlocks =
                 [ HP.classes Type.linkClasses ]
                 [ HH.text "Search" ]
               ]
-            )
+            ]
           ]
         ]
       , content
@@ -320,13 +320,13 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Loading" ]
-          , FormControl.formControl
+          , FormControl.formControl_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a loading state for a search field."
             , valid: Nothing
             , inputId: "search-loading"
             }
-            ( Input.inputGroup_
+            [ Input.inputGroup_
               [ Input.inputCenter
                 [ HP.id_ "search-loading"
                 , HP.value "Something"
@@ -337,7 +337,7 @@ cnDocumentationBlocks =
                 [ HP.classes Type.linkClasses ]
                 [ HH.text "Search" ]
               ]
-            )
+            ]
           ]
         ]
       ]

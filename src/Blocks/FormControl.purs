@@ -1,16 +1,14 @@
-module Ocelot.Block.FormControl
-  ( formControl
-  , fieldset
-  , helpText
-  ) where
+module Ocelot.Block.FormControl where
 
 import Prelude
 
-import Ocelot.Block.Type as Type
-import Ocelot.Core.Validation (ValidationErrors, htmlE)
+import DOM.HTML.Indexed (HTMLdiv, HTMLp)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Type as Type
+import Ocelot.Core.Utils ((<&>))
+import Ocelot.Core.Validation (ValidationErrors, htmlE)
 
 formControlClasses :: Array HH.ClassName
 formControlClasses = HH.ClassName <$>
@@ -42,7 +40,7 @@ labelClasses = HH.ClassName <$>
   , "text-black"
   ]
 
-type FormControlProps =
+type FormControlConfig =
   { helpText :: Maybe String
   , label :: String
   , valid :: Maybe ValidationErrors
@@ -51,62 +49,91 @@ type FormControlProps =
 
 formControl
   :: ∀ p i
-   . FormControlProps
+   . FormControlConfig
+  -> Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-  -> HH.HTML p i
-formControl props html =
+formControl config iprops html =
   HH.div
-    [ HP.classes formControlClasses ]
+    ( [ HP.classes formControlClasses ] <&> iprops )
     [ HH.label
-      [ HP.class_ (HH.ClassName "w-full"), HP.for props.inputId ]
-      [ label props.label ]
+      [ HP.classes labelClasses
+      , HP.for config.inputId
+      ]
+      [ HH.text config.label ]
     , HH.div
       [ HP.class_ (HH.ClassName "my-1") ]
-      [ html ]
-    , helpText props.valid props.helpText
+      html
+    , errorText_ config.valid
+    , helpText_ config.helpText
     ]
+
+formControl_
+  :: ∀ p i
+   . FormControlConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+formControl_ config = formControl config []
 
 fieldset
   :: ∀ p i
-   . FormControlProps
+   . FormControlConfig
+  -> Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-  -> HH.HTML p i
-fieldset props html =
+fieldset config iprops html =
   HH.div
-    [ HP.classes formControlClasses ]
+    ( [ HP.classes formControlClasses ] <&> iprops )
     [ HH.fieldset
       []
       [ HH.legend
-        [ HP.class_ (HH.ClassName "w-full") ]
-        [ label props.label ]
+        [ HP.classes labelClasses ]
+        [ HH.text config.label ]
       , HH.div
         [ HP.class_ (HH.ClassName "my-1") ]
-        [ html ]
-      , helpText props.valid props.helpText
+        html
+      , errorText_ config.valid
+      , helpText_ config.helpText
       ]
     ]
 
-label :: ∀ p i. String -> HH.HTML p i
-label x =
-  HH.span
-    [ HP.classes labelClasses ]
-    [ HH.text x ]
+fieldset_
+  :: ∀ p i
+   . FormControlConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+fieldset_ config = fieldset config []
+
+errorText
+  :: ∀ p i
+   . Maybe ValidationErrors
+  -> Array (HH.IProp HTMLp i)
+  -> HH.HTML p i
+errorText Nothing _ = HH.span_ []
+errorText (Just e) iprops =
+  HH.p
+    ( [ HP.classes errorTextClasses ] <&> iprops )
+    ( HH.fromPlainHTML <$> htmlE e )
+
+errorText_
+  :: ∀ p i
+   . Maybe ValidationErrors
+  -> HH.HTML p i
+errorText_ v = errorText v []
 
 helpText
   :: ∀ p i
-   . Maybe ValidationErrors
-  -> Maybe String
+   . Maybe String
+  -> Array (HH.IProp HTMLp i)
   -> HH.HTML p i
-helpText errors help =
-  HH.div_
-  [ case errors of
-      Just e  -> HH.p
-        [ HP.classes errorTextClasses ]
-        ( HH.fromPlainHTML <$> htmlE e )
-      Nothing -> HH.text ""
-  , case help of
-      Just t -> HH.p
-        [ HP.classes helpTextClasses ]
-        [ HH.text t ]
-      Nothing -> HH.text ""
-  ]
+helpText Nothing _ = HH.span_ []
+helpText (Just t) iprops =
+  HH.p
+    ( [ HP.classes helpTextClasses ] <&> iprops )
+    [ HH.text t ]
+
+helpText_
+  :: ∀ p i
+   . Maybe String
+  -> HH.HTML p i
+helpText_ t = helpText t []
