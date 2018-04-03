@@ -2,7 +2,7 @@ module Ocelot.Block.Card where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLh3, HTMLdiv)
+import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))

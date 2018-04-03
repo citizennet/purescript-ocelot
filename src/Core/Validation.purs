@@ -11,9 +11,10 @@ import Data.Generic.Rep.Show (genericShow)
 import Data.Int as Integer
 import Data.Maybe (Maybe(..), maybe)
 import Data.Number as Num
-import Data.String (null)
+import Data.String as String
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
+import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr, canParseToInt)
 import Text.Email.Validate (isValid)
 
 -----
@@ -25,6 +26,7 @@ data ValidationError
   = EmptyField
   | InvalidEmail
   | InvalidNumber
+  | InvalidCurrency
   | InvalidInteger
   | UnderMinLength Int String
   | OutOfRange String
@@ -47,7 +49,7 @@ type ErrorMessage = String
 
 validateNonEmptyStr :: String -> V ValidationErrors String
 validateNonEmptyStr str
-  | null str = invalid $ pure EmptyField
+  | String.null str = invalid $ pure EmptyField
   | otherwise = pure str
 
 validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
@@ -66,8 +68,13 @@ validateStrIsEmail email
 validateStrIsNumber :: String -> V ValidationErrors Number
 validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
 
+validateStrIsCents :: String -> V ValidationErrors Cents
+validateStrIsCents s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr $ s
+
 validateStrIsInt :: String -> V ValidationErrors Int
-validateStrIsInt = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString
+validateStrIsInt s
+  | canParseToInt s = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString $ s
+  | otherwise = invalid $ pure InvalidInteger
 
 validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
 validateMinLength n msg f
@@ -102,6 +109,7 @@ showE :: ValidationError -> String
 showE EmptyField = "Required"
 showE InvalidEmail = "Must be a valid email"
 showE InvalidNumber = "Must be a valid number"
+showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars."
 showE InvalidInteger = "Must be a valid integer"
 showE (UnderMinLength _ msg) = msg
 showE (OutOfRange msg) = msg

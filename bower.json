@@ -12,14 +12,15 @@
   ],
   "dependencies": {
     "purescript-halogen": "^3.1.2",
-    "purescript-halogen-select": "^0.1.12",
+    "purescript-halogen-select": "^0.2.0",
     "purescript-fuzzy": "^0.1.2",
     "purescript-validation": "^3.2.0",
     "purescript-generics-rep": "^5.4.0",
     "purescript-aff": "^4.0.2",
     "purescript-remotedata": "^2.2.0",
     "purescript-email-validate": "^2.0.0",
-    "purescript-numbers": "^5.0.0"
+    "purescript-numbers": "^5.0.0",
+    "purescript-yarn": "^3.0.1"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
