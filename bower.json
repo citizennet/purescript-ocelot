@@ -20,7 +20,9 @@
     "purescript-remotedata": "^2.2.0",
     "purescript-email-validate": "^2.0.0",
     "purescript-numbers": "^5.0.0",
-    "purescript-yarn": "^3.0.1"
+    "purescript-yarn": "^3.0.1",
+    "purescript-bigints": "^3.5.0",
+    "purescript-arrays": "^4.3.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
