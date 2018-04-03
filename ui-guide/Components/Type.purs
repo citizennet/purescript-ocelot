@@ -61,14 +61,13 @@ cnDocumentationBlocks =
               [ HH.text "H3 — contentHeading" ]
             , Type.caption_
               [ HH.text "H4 — caption" ]
-            , HH.p
-              [ css "mb-6" ]
-              [ HH.text "plain" ]
-            , HH.p
-              ( [ HP.classes Type.mutedClasses ] <&> [ css "mb-6" ] )
+            , Type.p_
+              [ HH.text "p — plain pragraph" ]
+            , Type.p
+              [ HP.classes Type.mutedClasses ]
               [ HH.text ".muted" ]
-            , HH.p
-              ( [ HP.classes Type.linkClasses ] <&> [ css "mb-6" ] )
+            , Type.p
+              [ HP.classes Type.linkClasses ]
               [ HH.text ".link" ]
             ]
           ]
@@ -85,14 +84,13 @@ cnDocumentationBlocks =
               [ HH.text "H3 — contentHeading" ]
             , Type.caption_
               [ HH.text "H4 — caption" ]
-            , HH.p
-              [ css "mb-6" ]
-              [ HH.text "plain" ]
-            , HH.p
-              ( [ HP.classes Type.mutedClasses ] <&> [ css "mb-6" ] )
+            , Type.p_
+              [ HH.text "p — plain pragraph" ]
+            , Type.p
+              [ HP.classes Type.mutedClasses ]
               [ HH.text ".muted" ]
-            , HH.p
-              ( [ HP.classes Type.linkDarkClasses ] <&> [ css "mb-6" ] )
+            , Type.p
+              [ HP.classes Type.linkDarkClasses ]
               [ HH.text ".linkDark" ]
             ]
           ]

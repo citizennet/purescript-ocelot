@@ -6,6 +6,7 @@ import DOM.HTML.Indexed (HTMLheader, HTMLspan, HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 
 data Status
@@ -35,38 +36,41 @@ toBoolean Expanded = true
 headingClasses :: Array HH.ClassName
 headingClasses = HH.ClassName <$>
   [ "flex"
-  , "items-center"
   , "justify-between"
+  , "cursor-pointer"
   ]
 
-heaadingInnerClasses :: Array HH.ClassName
-heaadingInnerClasses = HH.ClassName <$>
+headingInnerClasses :: Array HH.ClassName
+headingInnerClasses = HH.ClassName <$>
   [ "flex-initial"
   ]
 
+chevronClasses :: Array HH.ClassName
+chevronClasses = HH.ClassName <$>
+  [ "text-grey-70"
+  , "text-lg"
+  , "leading-loose"
+  ]
+
+contentSharedClasses :: Array HH.ClassName
+contentSharedClasses = HH.ClassName <$>
+  []
+
 contentClasses :: Status -> Array HH.ClassName
-contentClasses Collapsed = HH.ClassName <$>
-  [ "max-h-0"
-  , "opacity-0"
-  , "overflow-hidden"
-  -- transition when collapsing
-  -- the browser doesn't calculate the animation based on the
-  -- content height, but some really high number, so we use
-  -- "ease-in" so it starts out fast while it's collapsing all
-  -- the unused "max" height, then slows down as it nears our
-  -- actual height. otherwise there will appear to be a long lag
-  -- before our content suddenly collapses
-  , "transition-1/4-in"
-  ]
-contentClasses Expanded = HH.ClassName <$>
-  [ "max-h-full"
-  , "opacity-100"
-  , "overflow-hidden"
-  -- transition while expanding
-  -- the inverse behavior described in the comment for when
-  -- it's collapsing
-  , "transition-1-out"
-  ]
+contentClasses status = contentSharedClasses <>
+  ( case status of
+    Collapsed -> HH.ClassName <$>
+      [ "max-h-0"
+      , "opacity-0"
+      , "overflow-hidden"
+      , "transition-1/4-in"
+      ]
+    Expanded -> HH.ClassName <$>
+      [ "max-h-full"
+      , "opacity-1"
+      , "transition-1/2-out"
+      ]
+  )
 
 heading
   :: ∀ p i
@@ -78,9 +82,10 @@ heading status iprops html =
   HH.header
     ( [ HP.classes headingClasses ] <&> iprops )
     [ HH.div
-      [ HP.classes heaadingInnerClasses ]
+      [ HP.classes headingInnerClasses ]
       html
-    , chevron_ status
+    , HH.div_
+      [ chevron_ status ]
     ]
 
 heading_
@@ -95,8 +100,12 @@ chevron
    . Status
   -> Array (HH.IProp HTMLspan i)
   -> HH.HTML p i
-chevron Collapsed = Icon.expand
-chevron Expanded = Icon.collapse
+chevron status iprops =
+  ( case status of
+    Collapsed -> Icon.expand
+    Expanded  -> Icon.collapse
+  )
+  ( [ HP.classes chevronClasses ] <&> iprops )
 
 chevron_
   :: ∀ p i

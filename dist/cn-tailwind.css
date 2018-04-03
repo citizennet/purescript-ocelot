@@ -146,8 +146,8 @@
   content: "\E025";
 }
 
-.icon-collapse {
-  transform: rotate(180deg);
+.icon-expand {
+  transform: rotate(-180deg);
 }
 
 .icon-expand:before {
@@ -7460,6 +7460,10 @@ label {
 
 .transition-1\/4-out {
   transition: all .25s ease-out;
+}
+
+.transition-1\/2-out {
+  transition: all .5s ease-out;
 }
 
 .transition-1-out {

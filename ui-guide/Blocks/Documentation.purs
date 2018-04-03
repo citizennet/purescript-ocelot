@@ -40,7 +40,6 @@ calloutClasses = HH.ClassName <$>
   [ "border-dotted"
   , "border"
   , "rounded"
-  , "overflow-hidden"
   , "flex"
   , "items-stretch"
   , "my-6"

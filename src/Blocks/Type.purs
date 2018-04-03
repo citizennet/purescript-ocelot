@@ -2,7 +2,7 @@ module Ocelot.Block.Type where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLh1, HTMLh2, HTMLh3, HTMLh4)
+import DOM.HTML.Indexed (HTMLh1, HTMLh2, HTMLh3, HTMLh4, HTMLp)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
@@ -28,7 +28,7 @@ subHeadingClasses :: Array HH.ClassName
 subHeadingClasses = HH.ClassName <$>
   [ "mb-6"
   , "text-xl"
-  , "font-light"
+  , "font-normal"
   , "leading-loose"
   , "flex"
   , "items-center"
@@ -85,15 +85,19 @@ mutedClasses = HH.ClassName <$>
   [ "text-grey-dark"
   ]
 
+pClasses :: Array HH.ClassName
+pClasses = HH.ClassName <$>
+  [ "mb-6"
+  ]
+
 heading
   :: ∀ p i
    . Array (HH.IProp HTMLh1 i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-heading iprops html =
+heading iprops =
   HH.h1
     ( [ HP.classes headingClasses ] <&> iprops )
-    html
 
 heading_
   :: ∀ p i
@@ -106,10 +110,9 @@ headingDark
    . Array (HH.IProp HTMLh1 i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-headingDark iprops html =
+headingDark iprops =
   HH.h1
     ( [ HP.classes headingDarkClasses ] <&> iprops )
-    html
 
 headingDark_
   :: ∀ p i
@@ -138,10 +141,9 @@ subHeadingDark
    . Array (HH.IProp HTMLh2 i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-subHeadingDark iprops html =
+subHeadingDark iprops =
   HH.h2
     ( [ HP.classes subHeadingDarkClasses ] <&> iprops )
-    html
 
 subHeadingDark_
   :: ∀ p i
@@ -154,10 +156,9 @@ contentHeading
    . Array (HH.IProp HTMLh3 i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-contentHeading iprops html =
+contentHeading iprops =
   HH.h3
     ( [ HP.classes contentHeadingClasses ] <&> iprops )
-    html
 
 contentHeading_
   :: ∀ p i
@@ -170,13 +171,27 @@ caption
    . Array (HH.IProp HTMLh4 i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-caption iprops html =
+caption iprops =
   HH.h4
     ( [ HP.classes captionClasses ] <&> iprops )
-    html
 
 caption_
   :: ∀ p i
    . Array (HH.HTML p i)
   -> HH.HTML p i
 caption_ = caption []
+
+p
+  :: ∀ p i
+   . Array (HH.IProp HTMLp i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+p iprops =
+  HH.p
+      ( [ HP.classes pClasses ] <&> iprops )
+
+p_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+p_ = p []

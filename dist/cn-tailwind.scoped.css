@@ -146,8 +146,8 @@
   content: "\E025";
 }
 
-.ocelot-scoped .icon-collapse {
-  transform: rotate(180deg);
+.ocelot-scoped .icon-expand {
+  transform: rotate(-180deg);
 }
 
 .ocelot-scoped .icon-expand:before {
@@ -7460,6 +7460,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .transition-1\/4-out {
   transition: all .25s ease-out;
+}
+
+.ocelot-scoped .transition-1\/2-out {
+  transition: all .5s ease-out;
 }
 
 .ocelot-scoped .transition-1-out {

@@ -28,6 +28,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.Expandable as Expandable
 import Ocelot.Block.FormControl as FormControl
 import Ocelot.Block.Input as Input
+import Ocelot.Block.Toggle as Toggle
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
@@ -167,39 +168,46 @@ component =
 
 ----------
 -- HTML
+
 _singleLocation :: Lens' State Expandable.Status
 _singleLocation = prop (SProxy :: SProxy "singleLocation")
+
+_singleUser :: Lens' State Expandable.Status
+_singleUser = prop (SProxy :: SProxy "singleUser")
+
+_multiLocation :: Lens' State Expandable.Status
+_multiLocation = prop (SProxy :: SProxy "multiLocation")
+
+_multiUser :: Lens' State Expandable.Status
+_multiUser = prop (SProxy :: SProxy "multiUser")
 
 cnDocumentationBlocks :: ∀ eff m
   . MonadAff (Effects eff) m
  => State
  -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
 cnDocumentationBlocks st =
-  let css = HP.class_ <<< HH.ClassName
-      content = Backdrop.content [ css "flex" ] in
+  let css = HP.class_ <<< HH.ClassName in
   HH.div_
     [ Documentation.documentation_
-      { header: "Typeaheads - Single-Select"
-      , subheader: "Uses string input to search predetermined entries. User selects one of these entries."
+      { header: "Expansion Cards"
+      , subheader: "Hide sections of UI behind a click, or allow them to be hidden with one."
       }
       [ Backdrop.backdrop_
         [ Backdrop.content_
-          [ Card.card
-            [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ Card.card_
             [ Expandable.heading
               st.singleLocation
               [ HE.onClick
                 $ HE.input_
                 $ ToggleCard _singleLocation
               ]
-              [ Type.subHeading_ [ HH.text "Locations" ] ]
+              [ Type.subHeading_ [ HH.text "Locations" ]
+              , Type.p_ [ HH.text "Here are some location typeaheads for you. Initially hidden from view since you may not be interested in them." ]
+              ]
             , Expandable.content_
               st.singleLocation
-              [ HH.h3
-                [ HP.classes Type.captionClasses ]
-                [ HH.text "Standard" ]
-              , FormControl.formControl
-                { label: "Locations"
+              [ FormControl.formControl
+                { label: "Primary Location"
                 , helpText: Just "Search your favorite destination."
                 , valid: Nothing
                 , inputId: "location"
@@ -214,11 +222,8 @@ cnDocumentationBlocks st =
                   )
                   ( HE.input $ HandleTypeaheadLocation 0 )
                 )
-              , HH.h3
-                [ HP.classes Type.captionClasses ]
-                [ HH.text "Standard Hydrated" ]
               , FormControl.formControl
-                { label: "Locations"
+                { label: "Secondary Location"
                 , helpText: Just "Search your favorite destination."
                 , valid: Nothing
                 , inputId: "location-hydrated"
@@ -236,140 +241,173 @@ cnDocumentationBlocks st =
               ]
             ]
           ]
-        , content
-          [ Card.card
-            [ HP.class_ $ HH.ClassName "flex-1" ]
-            [ HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Custom Render" ]
-            , FormControl.formControl
-              { label: "Users"
-              , helpText: Just "Search your favorite companion."
-              , valid: Nothing
-              , inputId: "user"
-              }
-              ( HH.slot' CP.cp2 0 TACore.component
-                (TA.defAsyncSingle
-                  [ HP.placeholder "Search users..."
-                  , HP.id_ "user"
-                  ]
-                  ( Async.loadFromSource Async.users )
-                  Async.renderItemUser
+        , Backdrop.content_
+          [ Card.card_
+            [ Expandable.heading
+              st.singleUser
+              [ HE.onClick
+                $ HE.input_
+                $ ToggleCard _singleUser
+              ]
+              [ Type.subHeading_ [ HH.text "Users" ] ]
+            , Expandable.content_
+              st.singleUser
+              [ FormControl.formControl
+                { label: "Primary User"
+                , helpText: Just "Search your favorite companion."
+                , valid: Nothing
+                , inputId: "user"
+                }
+                ( HH.slot' CP.cp2 0 TACore.component
+                  (TA.defAsyncSingle
+                    [ HP.placeholder "Search users..."
+                    , HP.id_ "user"
+                    ]
+                    ( Async.loadFromSource Async.users )
+                    Async.renderItemUser
+                  )
+                  ( HE.input $ HandleTypeaheadUser 0 )
                 )
-                ( HE.input $ HandleTypeaheadUser 0 )
-              )
-            , HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl
-              { label: "Users"
-              , helpText: Just "Search your favorite companion."
-              , valid: Nothing
-              , inputId: "user-hydrated"
-              }
-              ( HH.slot' CP.cp2 1 TACore.component
-                (TA.defAsyncSingle
-                  [ HP.placeholder "Search users..."
-                  , HP.id_ "user-hydrated"
-                  ]
-                  ( Async.loadFromSource Async.users )
-                  Async.renderItemUser
+              , FormControl.formControl
+                { label: "Secondary User"
+                , helpText: Just "Search your favorite companion."
+                , valid: Nothing
+                , inputId: "user-hydrated"
+                }
+                ( HH.slot' CP.cp2 1 TACore.component
+                  (TA.defAsyncSingle
+                    [ HP.placeholder "Search users..."
+                    , HP.id_ "user-hydrated"
+                    ]
+                    ( Async.loadFromSource Async.users )
+                    Async.renderItemUser
+                  )
+                  ( HE.input $ HandleTypeaheadUser 1 )
                 )
-                ( HE.input $ HandleTypeaheadUser 1 )
-              )
+              ]
             ]
           ]
         ]
       ]
     , Documentation.documentation_
-      { header: "Typeaheads - Multi-Select"
-      , subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
+      { header: "Expansion Cards - Custom"
+      , subheader: "Take control of how the expansion toggle looks and behaves."
       }
       [ Backdrop.backdrop_
-        [ content
-          [ Card.card
-            [ HP.class_ $ HH.ClassName "flex-1" ]
-            [ HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Standard" ]
+        [ Backdrop.content_
+          [ Card.card_
+            [ Type.subHeading_
+              [ HH.text "Optimization Rules Engine" ]
+            , Type.p_
+              [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormControl.formControl
-              { label: "Locations"
-              , helpText: Just "Search your top destinations."
+              { label: "Enabled"
+              , helpText: Nothing
               , valid: Nothing
-              , inputId: "locations"
+              , inputId: "enable-locations"
               }
-              ( HH.slot' CP.cp1 2 TACore.component
-                (TA.defAsyncMulti
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "locations"
-                  ]
-                  ( Async.loadFromSource Async.locations )
-                  Async.renderItemLocation
-                )
-                ( HE.input $ HandleTypeaheadLocation 2 )
+              ( Toggle.toggle
+                [ HP.id_ "enable-locations"
+                , HP.checked
+                  $ Expandable.toBoolean st.multiLocation
+                , HE.onChange
+                  $ HE.input_
+                  $ ToggleCard _multiLocation
+                ]
               )
-            , HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Standard Hydrated" ]
-            , FormControl.formControl
-              { label: "Locations"
-              , helpText: Just "Search your top destinations."
-              , valid: Nothing
-              , inputId: "locations"
-              }
-              ( HH.slot' CP.cp1 3 TACore.component
-                (TA.defAsyncMulti
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "locations"
-                  ]
-                  ( Async.loadFromSource Async.locations )
-                  Async.renderItemLocation
+            , Expandable.content_
+              st.multiLocation
+              [ FormControl.formControl
+                { label: "Targeted Locations"
+                , helpText: Just "Search your top destinations."
+                , valid: Nothing
+                , inputId: "locations"
+                }
+                ( HH.slot' CP.cp1 2 TACore.component
+                  (TA.defAsyncMulti
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "locations"
+                    ]
+                    ( Async.loadFromSource Async.locations )
+                    Async.renderItemLocation
+                  )
+                  ( HE.input $ HandleTypeaheadLocation 2 )
                 )
-                ( HE.input $ HandleTypeaheadLocation 3 )
-              )
+              , FormControl.formControl
+                { label: "Excluded Locations"
+                , helpText: Just "Search your top destinations."
+                , valid: Nothing
+                , inputId: "locations"
+                }
+                ( HH.slot' CP.cp1 3 TACore.component
+                  (TA.defAsyncMulti
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "locations"
+                    ]
+                    ( Async.loadFromSource Async.locations )
+                    Async.renderItemLocation
+                  )
+                  ( HE.input $ HandleTypeaheadLocation 3 )
+                )
+              ]
             ]
           ]
-        , content
-          [ Card.card
-            [ HP.class_ $ HH.ClassName "flex-1" ]
-            [ HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Custom Render" ]
+        , Backdrop.content_
+          [ Card.card_
+            [ Type.subHeading_
+              [ HH.text "Optimization Rules Engine" ]
+            , Type.p_
+              [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormControl.formControl
-              { label: "Users"
-              , helpText: Just "Search your top companions."
+              { label: "Enabled"
+              , helpText: Nothing
               , valid: Nothing
-              , inputId: "users"
+              , inputId: "enable-users"
               }
-              ( HH.slot' CP.cp2 2 TACore.component
-                (TA.defAsyncMulti
-                  [ HP.placeholder "Search users..."
-                  , HP.id_ "users"
-                  ]
-                  ( Async.loadFromSource Async.users )
-                  Async.renderItemUser
-                )
-                ( HE.input $ HandleTypeaheadUser 2 )
+              ( Toggle.toggle
+                [ HP.id_ "enable-users"
+                , HP.checked
+                  $ Expandable.toBoolean st.multiUser
+                , HE.onChange
+                  $ HE.input_
+                  $ ToggleCard _multiUser
+                ]
               )
-            , HH.h3
-              [ HP.classes Type.captionClasses ]
-              [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl
-              { label: "Users"
-              , helpText: Just "Search your top companions."
-              , valid: Nothing
-              , inputId: "users-hydrated"
-              }
-              ( HH.slot' CP.cp2 3 TACore.component
-                (TA.defAsyncMulti
-                  [ HP.placeholder "Search users..."
-                  , HP.id_ "users-hydrated"
-                  ]
-                  ( Async.loadFromSource Async.users )
-                  Async.renderItemUser
+            , Expandable.content_
+              st.multiUser
+              [ FormControl.formControl
+                { label: "Targeted Users"
+                , helpText: Just "Search your top companions."
+                , valid: Nothing
+                , inputId: "users"
+                }
+                ( HH.slot' CP.cp2 2 TACore.component
+                  (TA.defAsyncMulti
+                    [ HP.placeholder "Search users..."
+                    , HP.id_ "users"
+                    ]
+                    ( Async.loadFromSource Async.users )
+                    Async.renderItemUser
+                  )
+                  ( HE.input $ HandleTypeaheadUser 2 )
                 )
-                ( HE.input $ HandleTypeaheadUser 3 )
-              )
+              , FormControl.formControl
+                { label: "Excluded Users"
+                , helpText: Just "Search your top companions."
+                , valid: Nothing
+                , inputId: "users-hydrated"
+                }
+                ( HH.slot' CP.cp2 3 TACore.component
+                  (TA.defAsyncMulti
+                    [ HP.placeholder "Search users..."
+                    , HP.id_ "users-hydrated"
+                    ]
+                    ( Async.loadFromSource Async.users )
+                    Async.renderItemUser
+                  )
+                  ( HE.input $ HandleTypeaheadUser 3 )
+                )
+              ]
             ]
           ]
         ]

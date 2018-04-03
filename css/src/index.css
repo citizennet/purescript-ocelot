@@ -36,6 +36,7 @@ label {
 .transition-1\/4 { transition: all 0.25s ease; }
 .transition-1\/4-in { transition: all 0.25s ease-in; }
 .transition-1\/4-out { transition: all 0.25s ease-out; }
+.transition-1\/2-out { transition: all 0.5s ease-out; }
 .transition-1-out { transition: all 1s ease-out; }
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }

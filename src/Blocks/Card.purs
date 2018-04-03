@@ -14,11 +14,11 @@ data ExpansionStatus
 cardClasses :: Array HH.ClassName
 cardClasses = HH.ClassName <$>
   [ "bg-white"
-  , "h-auto"
   , "px-6"
   , "pt-6"
   , "mb-6"
   , "rounded"
+  , "clearfix"
   ]
 
 card
