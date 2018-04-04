@@ -81,6 +81,11 @@ label {
 .focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
 .\!active\:border-b:not(:active) { @apply .border-b; }
 .active\:border-t:active { @apply .border-t; }
+.disabled\:opacity-50:disabled { @apply .opacity-50; }
+.disabled\:cursor-default:disabled { @apply .cursor-default; }
+.hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) { @apply .bg-grey-50-a30; }
+.hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
+.hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
 
 .spin { animation: spin 1.4s infinite linear; }
 

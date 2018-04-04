@@ -7635,6 +7635,26 @@ label {
   border-top-width: 1px;
 }
 
+.disabled\:opacity-50:disabled {
+  opacity: .5;
+}
+
+.disabled\:cursor-default:disabled {
+  cursor: default;
+}
+
+.hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {
+  background-color: rgba(102, 113, 128, .3);
+}
+
+.hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) {
+  background-color: rgba(143, 158, 179, .4);
+}
+
+.hover\:\!disabled\:bg-blue-82:hover:not(:disabled) {
+  background-color: #00abd1;
+}
+
 .spin {
   animation: spin 1.4s infinite linear;
 }

@@ -64,7 +64,7 @@ component =
     render :: State -> H.ComponentHTML Query
     render state =
       HH.div_
-      [ Documentation.documentation_
+      [ Documentation.block_
           { header: "Form Header"
           , subheader: "The header used on forms"
           }
@@ -87,7 +87,7 @@ component =
               }
             ]
           ]
-      , Documentation.documentation_
+      , Documentation.block_
           { header: "Input"
           , subheader: "Inputing very important text"
           }
@@ -115,7 +115,7 @@ component =
               ]
             ]
           ]
-      , Documentation.documentation_
+      , Documentation.block_
           { header: "Toggle"
           , subheader: "Enable or disable something" }
           [ Backdrop.backdrop_
@@ -128,7 +128,7 @@ component =
                 [ Toggle.toggle [ HP.id_ "toggle" ] ]
               ]
           ]
-      , Documentation.documentation_
+      , Documentation.block_
           { header: "Radio"
           , subheader: "Select one option"
           }
@@ -167,7 +167,7 @@ component =
                   ]
               ]
           ]
-      , Documentation.documentation_
+      , Documentation.block_
           { header: "Range"
           , subheader: "Select a numeric value between a min and max" }
           [ Backdrop.backdrop_
@@ -198,7 +198,7 @@ component =
                 ]
               ]
           ]
-      , Documentation.documentation_
+      , Documentation.block_
           { header: "Form Panel"
           , subheader: "Collapse + Expand Form Controls"
           }

@@ -7635,6 +7635,26 @@ body .ocelot-scoped {
   border-top-width: 1px;
 }
 
+.ocelot-scoped .disabled\:opacity-50:disabled {
+  opacity: .5;
+}
+
+.ocelot-scoped .disabled\:cursor-default:disabled {
+  cursor: default;
+}
+
+.ocelot-scoped .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {
+  background-color: rgba(102, 113, 128, .3);
+}
+
+.ocelot-scoped .hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) {
+  background-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) {
+  background-color: #00abd1;
+}
+
 .ocelot-scoped .spin {
   animation: spin 1.4s infinite linear;
 }

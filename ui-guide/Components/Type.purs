@@ -45,7 +45,7 @@ css = HP.class_ <<< HH.ClassName
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
   HH.div_
-    [ Documentation.documentation_
+    [ Documentation.block_
       { header: "Type"
       , subheader: "Various typography styles."
       }

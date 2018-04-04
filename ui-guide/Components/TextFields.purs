@@ -65,7 +65,7 @@ content = Backdrop.content [ css "flex" ]
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
   HH.div_
-  [ Documentation.documentation_
+  [ Documentation.block_
     { header: "Text Field"
     , subheader: "Captures string input."
     }
@@ -139,7 +139,7 @@ cnDocumentationBlocks =
         ]
       ]
     ]
-  , Documentation.documentation_
+  , Documentation.block_
     { header: "Text Field - Right Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
@@ -212,7 +212,7 @@ cnDocumentationBlocks =
         ]
       ]
     ]
-  , Documentation.documentation_
+  , Documentation.block_
     { header: "Text Field - Left Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
@@ -284,7 +284,7 @@ cnDocumentationBlocks =
         ]
       ]
     ]
-  , Documentation.documentation_
+  , Documentation.block_
     { header: "Text Field - Surround Addons"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }

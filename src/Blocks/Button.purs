@@ -14,6 +14,8 @@ buttonSharedClasses = HH.ClassName <$>
   , "py-3"
   , "!active:border-b"
   , "active:border-t"
+  , "disabled:opacity-50"
+  , "disabled:cursor-default"
   ]
 
 buttonMainClasses :: Array HH.ClassName
@@ -27,7 +29,7 @@ buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "bg-grey-50-a20"
   , "border-grey-50-a20"
-  , "hover:bg-grey-50-a30"
+  , "hover:!disabled:bg-grey-50-a30"
   , "focus:bg-grey-50-a30"
   , "text-black-20"
   ]
@@ -36,7 +38,7 @@ buttonPrimaryClasses :: Array HH.ClassName
 buttonPrimaryClasses = HH.ClassName <$>
   [ "bg-blue-88"
   , "border-blue-88"
-  , "hover:bg-blue-82"
+  , "hover:!disabled:bg-blue-82"
   , "focus:bg-blue-82"
   , "text-white"
   ]
@@ -45,7 +47,7 @@ buttonDarkClasses :: Array HH.ClassName
 buttonDarkClasses = HH.ClassName <$>
   [ "bg-grey-70-a30"
   , "border-grey-70-a30"
-  , "hover:bg-grey-70-a40"
+  , "hover:!disabled:bg-grey-70-a40"
   , "focus:bg-grey-70-a40"
   , "text-grey-70"
   ]

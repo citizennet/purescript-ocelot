@@ -303,7 +303,7 @@ renderForm :: ∀ eff m
 renderForm st =
   HH.form
   [ HE.onSubmit $ HE.input_ FormSubmit ]
-  [ Documentation.documentation_
+  [ Documentation.block_
       { header: "Example Form"
       , subheader: "Test validations and form submission."
       }

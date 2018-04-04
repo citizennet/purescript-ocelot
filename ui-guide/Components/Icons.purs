@@ -60,7 +60,7 @@ component =
     render :: State -> H.ComponentHTML Query
     render _ =
       HH.div_
-      [ Documentation.documentation'_
+      [ Documentation.customBlock_
         { header: "Icon"
         , subheader: "Represent actions."
         }

@@ -2,19 +2,19 @@ module UIGuide.Block.Documentation where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLsection, HTMLdiv)
+import DOM.HTML.Indexed (HTMLdiv, HTMLsection, HTMLheader)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 
-type DocumentationProps =
+type Config =
   { header :: String
   , subheader :: String
   }
 
-documentationClasses :: Array HH.ClassName
-documentationClasses = HH.ClassName <$>
+blockClasses :: Array HH.ClassName
+blockClasses = HH.ClassName <$>
   [ "my-20"
   ]
 
@@ -61,47 +61,61 @@ callout_
   -> HH.HTML p i
 callout_ = callout []
 
-documentation'
+intro
   :: ∀ p i
-   . DocumentationProps
+   . Config
+  -> Array (HH.IProp HTMLheader i)
+  -> HH.HTML p i
+intro config iprops =
+  HH.header
+    ( [ HP.classes introClasses ] <&> iprops )
+    [ Type.heading
+      [ HP.classes headingClasses ]
+      [ HH.text config.header ]
+    , Type.subHeading
+      [ HP.classes subHeadingClasses ]
+      [ HH.text config.subheader ]
+    ]
+
+intro_
+  :: ∀ p i
+   . Config
+  -> HH.HTML p i
+intro_ config = intro config []
+
+customBlock
+  :: ∀ p i
+   . Config
   -> Array (HH.IProp HTMLsection i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation' config iprops html =
+customBlock config iprops html =
   HH.section
-    ( [ HP.classes documentationClasses ] <&> iprops )
-    [ HH.header
-      [ HP.classes introClasses ]
-      [ Type.heading
-          [ HP.classes headingClasses ]
-          [ HH.text config.header ]
-      , Type.subHeading
-        [ HP.classes subHeadingClasses ]
-        [ HH.text config.subheader ]
-      ]
+    ( [ HP.classes blockClasses ] <&> iprops )
+    [ intro_ config
     , HH.div_
       html
     ]
 
-documentation'_
+customBlock_
   :: ∀ p i
-   . DocumentationProps
+   . Config
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation'_ config = documentation' config []
+customBlock_ config = customBlock config []
 
-documentation
+block
   :: ∀ p i
-   . DocumentationProps
+   . Config
   -> Array (HH.IProp HTMLsection i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation config iprops html =
-  documentation' config iprops [ callout_ html ]
+block config iprops html =
+  customBlock config iprops [ callout_ html ]
 
-documentation_
+block_
   :: ∀ p i
-   . DocumentationProps
+   . Config
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation_ config = documentation config []
+block_ config = block config []

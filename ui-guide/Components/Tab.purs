@@ -37,7 +37,7 @@ component =
     render :: State -> H.ComponentHTML Query
     render _ =
       HH.div_
-      [ Documentation.documentation_
+      [ Documentation.block_
           { header: "Tabs"
           , subheader: "Tabs for navigating, eg. between form pages"
           }

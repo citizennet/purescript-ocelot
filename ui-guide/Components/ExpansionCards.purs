@@ -189,7 +189,7 @@ cnDocumentationBlocks :: ∀ eff m
 cnDocumentationBlocks st =
   let css = HP.class_ <<< HH.ClassName in
   HH.div_
-    [ Documentation.documentation_
+    [ Documentation.block_
       { header: "Expansion Cards"
       , subheader: "Hide sections of UI behind a click, or allow them to be hidden with one."
       }
@@ -306,7 +306,7 @@ cnDocumentationBlocks st =
           ]
         ]
       ]
-    , Documentation.documentation_
+    , Documentation.block_
       { header: "Expansion Cards - Custom"
       , subheader: "Take control of how the expansion toggle looks and behaves."
       }

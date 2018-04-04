@@ -158,7 +158,7 @@ cnDocumentationBlocks :: ∀ eff m
  => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
 cnDocumentationBlocks =
   HH.div_
-    [ Documentation.documentation_
+    [ Documentation.block_
       { header: "Typeaheads - Single-Select"
       , subheader: "Uses string input to search predetermined entries. User selects one of these entries."
       }
@@ -251,7 +251,7 @@ cnDocumentationBlocks =
           ]
         ]
       ]
-    , Documentation.documentation_
+    , Documentation.block_
       { header: "Typeaheads - Multi-Select"
       , subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
       }
