@@ -7450,6 +7450,16 @@ body .ocelot-scoped {
 
 /* cn utilities */
 
+.ocelot-scoped :root {
+  --scale: 1;
+  --rotate: 0deg;
+  --bounce: .3, .3, .7, 1.4;
+}
+
+.ocelot-scoped .transform {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+}
+
 .ocelot-scoped .transition-1\/4 {
   transition: all .25s ease;
 }
@@ -7460,6 +7470,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .transition-1\/4-out {
   transition: all .25s ease-out;
+}
+
+.ocelot-scoped .transition-1\/4-bounce {
+  transition: all .25s cubic-bezier(var(--bounce));
 }
 
 .ocelot-scoped .transition-1\/2-out {
@@ -7494,11 +7508,13 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .scale-0 {
-  transform: scale(0);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
 }
 
 .ocelot-scoped .scale-1 {
-  transform: scale(1);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
 }
 
 .ocelot-scoped .content-box {
@@ -7509,34 +7525,165 @@ body .ocelot-scoped {
   order: -1;
 }
 
-/* pseudo utilities */
+.ocelot-scoped .rotate-315 {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --rotate: 315deg;
+}
+
+/* variant & pseudo utilities
+ *
+ * going forward, custom selectors should follow the following order:
+ *
+ * interactive variants: active, focus, hover
+ * property variants: checked, disabled
+ * negated variants all go in place of the variant they're negating: !variant
+ * pseudo elements: before | after
+ * neighbor selectors: sibling
+ *
+ * a few examples:
+ * !active:!focus:hover:checked:!disabled:neighbor:after:border-blue
+ * checked:!disabled:neighbor:hover:after:border-blue
+ * focus:!checked:sibling:hover:!checked:before:border-blue
+ *
+ * */
+
+/* radio - todo: move to block */
+
+.ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
+  background-color: #fff;
+}
+
+.ocelot-scoped .disabled\:sibling\:bg-grey-95:disabled ~ * {
+  background-color: #f0f1f2;
+}
+
+.ocelot-scoped .checked\:sibling\:before\:opacity-100:checked ~ *:before {
+  opacity: 1;
+}
+
+.ocelot-scoped .checked\:sibling\:before\:scale-1:checked ~ *:before {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
+}
+
+.ocelot-scoped .checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * {
+  border-color: #00bbe0;
+}
+
+.ocelot-scoped .focus\:sibling\:border-blue-88:focus ~ * {
+  border-color: #00bbe0;
+}
+
+.ocelot-scoped .\!checked\:sibling\:before\:opacity-0:not(:checked) ~ *:before {
+  opacity: 0;
+}
+
+.ocelot-scoped .\!checked\:sibling\:before\:scale-0:not(:checked) ~ *:before {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
+}
+
+.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * {
+  border-color: #b8c2cc;
+}
+
+.ocelot-scoped .focus\:sibling\:shadow:focus ~ * {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.ocelot-scoped .checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before {
+  background-color: #00bbe0;
+}
+
+.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
+  background-color: #b8c2cc;
+}
+
+.ocelot-scoped .checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
+  border-color: #b8c2cc;
+}
+
+/* legacy variant & pseudo utilities */
+
+.ocelot-scoped .before\:absolute:before {
+  position: absolute;
+}
+
+.ocelot-scoped .before\:transition-1\/4:before {
+  transition: all .25s ease;
+}
+
+.ocelot-scoped .before\:transition-1\/4-bounce:before {
+  transition: all .25s cubic-bezier(var(--bounce));
+}
+
+.ocelot-scoped .before\:bg-blue-88:before {
+  background-color: #00bbe0;
+}
+
+.ocelot-scoped .before\:bg-white:before {
+  background-color: #fff;
+}
+
+.ocelot-scoped .before\:h-full:before {
+  height: 100%;
+}
+
+.ocelot-scoped .before\:w-full:before {
+  width: 100%;
+}
+
+.ocelot-scoped .before\:no-content:before {
+  content: '';
+}
+
+.ocelot-scoped .before\:rounded-full:before {
+  border-radius: 9999px;
+}
+
+.ocelot-scoped .before\:shadow:before {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.ocelot-scoped .after\:absolute:after {
+  position: absolute;
+}
 
 .ocelot-scoped .after\:transition-1\/4:after {
   transition: all .25s ease;
 }
 
-.ocelot-scoped .after\:bg-blue-88:after {
-  background-color: #00bbe0;
-}
-
-.ocelot-scoped .after\:bg-white:after {
-  background-color: #fff;
-}
-
-.ocelot-scoped .after\:h-full:after {
-  height: 100%;
+.ocelot-scoped .after\:transition-1\/4-bounce:after {
+  transition: all .25s cubic-bezier(var(--bounce));
 }
 
 .ocelot-scoped .after\:w-full:after {
   width: 100%;
 }
 
+.ocelot-scoped .after\:h-2:after {
+  height: .5rem;
+}
+
+.ocelot-scoped .after\:border-l-2:after {
+  border-left-width: 2px;
+}
+
+.ocelot-scoped .after\:border-b-2:after {
+  border-bottom-width: 2px;
+}
+
+.ocelot-scoped .after\:border-white:after {
+  border-color: #fff;
+}
+
 .ocelot-scoped .after\:no-content:after {
   content: '';
 }
 
-.ocelot-scoped .after\:rounded-full:after {
-  border-radius: 9999px;
+.ocelot-scoped .after\:rotate-315:after {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --rotate: 315deg;
 }
 
 .ocelot-scoped .after\:shadow:after {
@@ -7556,7 +7703,8 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .checked\:sibling\:after\:scale-1:checked ~ *:after {
-  transform: scale(1);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
 }
 
 .ocelot-scoped .checked\:sibling\:bg-blue-88:checked ~ * {
@@ -7575,6 +7723,10 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * {
+  border-color: #00bbe0;
+}
+
 .ocelot-scoped .checked\:sibling\:bg-blue-88:checked ~ * {
   background-color: #00bbe0;
 }
@@ -7588,7 +7740,8 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after {
-  transform: scale(0);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
 }
 
 .ocelot-scoped .disabled\:bg-grey-95:disabled {
@@ -7599,16 +7752,16 @@ body .ocelot-scoped {
   color: #8795a1;
 }
 
+.ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
+  background-color: #fff;
+}
+
 .ocelot-scoped .disabled\:sibling\:bg-grey-95:disabled ~ * {
   background-color: #f0f1f2;
 }
 
 .ocelot-scoped .disabled\:border-grey-light:disabled {
   border-color: #dae1e7;
-}
-
-.ocelot-scoped .focus\:sibling\:border-blue-88:focus ~ * {
-  border-color: #00bbe0;
 }
 
 .ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) {

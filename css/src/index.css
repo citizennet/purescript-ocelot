@@ -33,9 +33,16 @@ label {
 @tailwind utilities;
 
 /* cn utilities */
+:root {
+  --scale: 1;
+  --rotate: 0deg;
+  --bounce: .3,.3,.7,1.4;
+}
+.transform { transform: scale(var(--scale)) rotate(var(--rotate)); }
 .transition-1\/4 { transition: all 0.25s ease; }
 .transition-1\/4-in { transition: all 0.25s ease-in; }
 .transition-1\/4-out { transition: all 0.25s ease-out; }
+.transition-1\/4-bounce { transition: all 0.25s cubic-bezier(var(--bounce)); }
 .transition-1\/2-out { transition: all 0.5s ease-out; }
 .transition-1-out { transition: all 1s ease-out; }
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
@@ -43,20 +50,65 @@ label {
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
 .offscreen { @apply .fixed; left: -9999%; top: -9999%; z-index: -9999; }
-.scale-0 { transform: scale(0); }
-.scale-1 { transform: scale(1); }
+.scale-0 { @apply .transform; --scale: 0; }
+.scale-1 { @apply .transform; --scale: 1; }
 .content-box { box-sizing: content-box; }
 .order-start { order: -1; }
+.rotate-315 { @apply .transform; --rotate: 315deg; }
 
-/* pseudo utilities */
+/* variant & pseudo utilities
+ *
+ * going forward, custom selectors should follow the following order:
+ *
+ * interactive variants: active, focus, hover
+ * property variants: checked, disabled
+ * negated variants all go in place of the variant they're negating: !variant
+ * pseudo elements: before | after
+ * neighbor selectors: sibling
+ *
+ * a few examples:
+ * !active:!focus:hover:checked:!disabled:neighbor:after:border-blue
+ * checked:!disabled:neighbor:hover:after:border-blue
+ * focus:!checked:sibling:hover:!checked:before:border-blue
+ *
+ * */
 
+/* radio - todo: move to block */
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
+.disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
+.checked\:sibling\:before\:opacity-100:checked ~ *:before { @apply .opacity-100; }
+.checked\:sibling\:before\:scale-1:checked ~ *:before { @apply .scale-1; }
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * { @apply .border-blue-88; }
+.focus\:sibling\:border-blue-88:focus ~ * { @apply .border-blue-88; }
+.\!checked\:sibling\:before\:opacity-0:not(:checked) ~ *:before { @apply .opacity-0; }
+.\!checked\:sibling\:before\:scale-0:not(:checked) ~ *:before { @apply .scale-0; }
+.\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * { @apply .border-grey; }
+.focus\:sibling\:shadow:focus ~ * { @apply .shadow; }
+.checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before { @apply .bg-blue-88; }
+.checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before { @apply .bg-grey; }
+.checked\:disabled\:sibling\:border-grey:checked:disabled ~ * { @apply .border-grey; }
+
+/* legacy variant & pseudo utilities */
+.before\:absolute:before { @apply .absolute; }
+.before\:transition-1\/4:before { @apply .transition-1/4; }
+.before\:transition-1\/4-bounce:before { @apply .transition-1/4-bounce; }
+.before\:bg-blue-88:before { @apply .bg-blue-88; }
+.before\:bg-white:before { @apply .bg-white; }
+.before\:h-full:before { @apply .h-full; }
+.before\:w-full:before { @apply .w-full; }
+.before\:no-content:before { @apply .no-content; }
+.before\:rounded-full:before { @apply .rounded-full; }
+.before\:shadow:before { @apply .shadow; }
+.after\:absolute:after { @apply .absolute; }
 .after\:transition-1\/4:after { @apply .transition-1/4; }
-.after\:bg-blue-88:after { @apply .bg-blue-88; }
-.after\:bg-white:after { @apply .bg-white; }
-.after\:h-full:after { @apply .h-full; }
+.after\:transition-1\/4-bounce:after { @apply .transition-1/4-bounce; }
 .after\:w-full:after { @apply .w-full; }
+.after\:h-2:after { @apply .h-2; }
+.after\:border-l-2:after { @apply .border-l-2; }
+.after\:border-b-2:after { @apply .border-b-2; }
+.after\:border-white:after { @apply .border-white; }
 .after\:no-content:after { @apply .no-content; }
-.after\:rounded-full:after { @apply .rounded-full; }
+.after\:rotate-315:after { @apply .rotate-315; }
 .after\:shadow:after { @apply .shadow; }
 .checked\:sibling\:pl-4:checked ~ * { @apply .pl-4; }
 .\!checked\:sibling\:pr-4:not(:checked) ~ * { @apply .pr-4; }
@@ -66,15 +118,16 @@ label {
 .\!checked\:sibling\:bg-grey-light:not(:checked) ~ * { @apply .bg-grey-light; }
 .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * { @apply .border-grey-70-a40; }
 .checked\:sibling\:border-blue-88:checked ~ * { @apply .border-blue-88; }
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * { @apply .border-blue-88; }
 .checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
 .focus\:no-outline:focus { @apply .no-outline !important; }
 .\!checked\:sibling\:after\:opacity-0:not(:checked) ~ *:after { @apply .opacity-0; }
 .\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after { @apply .scale-0; }
 .disabled\:bg-grey-95:disabled { @apply .bg-grey-95; }
 .disabled\:text-grey-dark:disabled { @apply .text-grey-dark; }
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
 .disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
 .disabled\:border-grey-light:disabled { @apply .border-grey-light; }
-.focus\:sibling\:border-blue-88:focus ~ * { @apply .border-blue-88; }
 .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) { @apply .border-grey; }
 .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
 .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }

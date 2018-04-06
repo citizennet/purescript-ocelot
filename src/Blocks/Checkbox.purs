@@ -1,9 +1,9 @@
-module Ocelot.Block.Radio where
+module Ocelot.Block.Checkbox where
 
 import Prelude
 
 import DOM.HTML.Indexed (HTMLinput, HTMLlabel)
-import DOM.HTML.Indexed.InputType (InputType(InputRadio))
+import DOM.HTML.Indexed.InputType (InputType(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
@@ -22,6 +22,7 @@ labelClasses = HH.ClassName <$>
 
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
+  -- start shared custom classes defined for radios --
   [ "!disabled:sibling:bg-white"
   , "disabled:sibling:bg-grey-95"
   , "checked:sibling:before:opacity-100"
@@ -36,53 +37,63 @@ inputClasses = HH.ClassName <$>
   , "checked:disabled:sibling:before:bg-grey"
   , "checked:disabled:sibling:border-grey"
   , "offscreen"
+  -- end shared custom radio classes --
+  , "checked:sibling:after:opacity-100"
+  , "checked:sibling:after:scale-1"
+  , "!checked:sibling:after:opacity-0"
+  , "!checked:sibling:after:scale-0"
   ]
 
-radioClasses :: Array HH.ClassName
-radioClasses = HH.ClassName <$>
-  [ "inline-flex"
-  , "justify-center"
-  , "items-center"
+checkboxClasses :: Array HH.ClassName
+checkboxClasses = HH.ClassName <$>
+  [ "relative"
   , "content-box"
   , "border-2"
   , "border-solid"
-  , "h-3"
-  , "w-3"
-  , "p-1"
+  , "h-4"
+  , "w-4"
   , "no-content"
-  , "rounded-full"
   , "mr-3"
+  , "rounded"
   , "before:transition-1/4-bounce"
+  , "before:absolute"
   , "before:h-full"
   , "before:w-full"
-  , "before:bg-blue-88"
   , "before:no-content"
-  , "before:rounded-full"
-  , "before:shadow"
+  , "after:transition-1/4-bounce"
+  , "after:absolute"
+  , "after:w-full"
+  , "after:h-2"
+  , "after:border-l-2"
+  , "after:border-b-2"
+  , "after:border-white"
+  , "after:no-content"
+  , "after:rotate-315"
+  , "after:shadow"
   ]
 
-radio
+checkbox
   :: ∀ p i
    . Array (HH.IProp HTMLlabel i)
   -> Array (HH.IProp HTMLinput i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-radio iprops inprops html =
+checkbox iprops inprops html =
   HH.label
     ( [ HP.classes labelClasses ] <&> iprops )
     ( [ HH.input
         ( [ HP.classes inputClasses
-          , HP.type_ InputRadio
+          , HP.type_ InputCheckbox
           ] <&> inprops
         )
-      , HH.span [ HP.classes radioClasses ] []
+      , HH.span [ HP.classes checkboxClasses ] []
       ]
       <> html
     )
 
-radio_
+checkbox_
   :: ∀ p i
    . Array (HH.IProp HTMLinput i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-radio_ = radio []
+checkbox_ = checkbox []

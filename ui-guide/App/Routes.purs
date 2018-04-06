@@ -34,8 +34,7 @@ groups :: Array Group
 groups =
   [ Basics
   , Components
-  , FormElements
-  , Behaviors
+  -- , Behaviors
   ]
 
 type RouteEffects eff =
@@ -55,12 +54,12 @@ type RouteConfig eff =
 
 routes :: ∀ eff. Map String (RouteConfig eff)
 routes = fromFoldable
-  [ Tuple "tabs"
-    { anchor: "Tabs"
-    , component: proxy Tab.component
-    , group: FormElements
-    }
-  , Tuple "expandables"
+  -- [ Tuple "tabs"
+    -- { anchor: "Tabs"
+    -- , component: proxy Tab.component
+    -- , group: FormElements
+    -- }
+  [ Tuple "expandables"
     { anchor: "Expansion Cards"
     , component: proxy ExpansionCards.component
     , group: Components
@@ -80,16 +79,16 @@ routes = fromFoldable
     , component: proxy Button.component
     , group: Components
     }
-  , Tuple "formcontrols"
-    { anchor: "Form Controls"
+  , Tuple "controls"
+    { anchor: "Controls"
     , component: proxy FormControl.component
-    , group: FormElements
+    , group: Components
     }
-  , Tuple "validation"
-    { anchor: "Validation"
-    , component: proxy Validation.component
-    , group: Behaviors
-    }
+  -- , Tuple "validation"
+    -- { anchor: "Validation"
+    -- , component: proxy Validation.component
+    -- , group: Behaviors
+    -- }
   , Tuple "type"
     { anchor: "Type"
     , component: proxy Type.component

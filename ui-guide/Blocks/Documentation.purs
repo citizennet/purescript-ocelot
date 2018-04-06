@@ -8,7 +8,7 @@ import Halogen.HTML.Properties as HP
 import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 
-type Config =
+type DocumentationConfig =
   { header :: String
   , subheader :: String
   }
@@ -63,7 +63,7 @@ callout_ = callout []
 
 intro
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> Array (HH.IProp HTMLheader i)
   -> HH.HTML p i
 intro config iprops =
@@ -79,13 +79,13 @@ intro config iprops =
 
 intro_
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> HH.HTML p i
 intro_ config = intro config []
 
 customBlock
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> Array (HH.IProp HTMLsection i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -99,14 +99,14 @@ customBlock config iprops html =
 
 customBlock_
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 customBlock_ config = customBlock config []
 
 block
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> Array (HH.IProp HTMLsection i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -115,7 +115,7 @@ block config iprops html =
 
 block_
   :: ∀ p i
-   . Config
+   . DocumentationConfig
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 block_ config = block config []

@@ -7450,6 +7450,16 @@ label {
 
 /* cn utilities */
 
+:root {
+  --scale: 1;
+  --rotate: 0deg;
+  --bounce: .3, .3, .7, 1.4;
+}
+
+.transform {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+}
+
 .transition-1\/4 {
   transition: all .25s ease;
 }
@@ -7460,6 +7470,10 @@ label {
 
 .transition-1\/4-out {
   transition: all .25s ease-out;
+}
+
+.transition-1\/4-bounce {
+  transition: all .25s cubic-bezier(var(--bounce));
 }
 
 .transition-1\/2-out {
@@ -7494,11 +7508,13 @@ label {
 }
 
 .scale-0 {
-  transform: scale(0);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
 }
 
 .scale-1 {
-  transform: scale(1);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
 }
 
 .content-box {
@@ -7509,34 +7525,165 @@ label {
   order: -1;
 }
 
-/* pseudo utilities */
+.rotate-315 {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --rotate: 315deg;
+}
+
+/* variant & pseudo utilities
+ *
+ * going forward, custom selectors should follow the following order:
+ *
+ * interactive variants: active, focus, hover
+ * property variants: checked, disabled
+ * negated variants all go in place of the variant they're negating: !variant
+ * pseudo elements: before | after
+ * neighbor selectors: sibling
+ *
+ * a few examples:
+ * !active:!focus:hover:checked:!disabled:neighbor:after:border-blue
+ * checked:!disabled:neighbor:hover:after:border-blue
+ * focus:!checked:sibling:hover:!checked:before:border-blue
+ *
+ * */
+
+/* radio - todo: move to block */
+
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
+  background-color: #fff;
+}
+
+.disabled\:sibling\:bg-grey-95:disabled ~ * {
+  background-color: #f0f1f2;
+}
+
+.checked\:sibling\:before\:opacity-100:checked ~ *:before {
+  opacity: 1;
+}
+
+.checked\:sibling\:before\:scale-1:checked ~ *:before {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
+}
+
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * {
+  border-color: #00bbe0;
+}
+
+.focus\:sibling\:border-blue-88:focus ~ * {
+  border-color: #00bbe0;
+}
+
+.\!checked\:sibling\:before\:opacity-0:not(:checked) ~ *:before {
+  opacity: 0;
+}
+
+.\!checked\:sibling\:before\:scale-0:not(:checked) ~ *:before {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
+}
+
+.\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * {
+  border-color: #b8c2cc;
+}
+
+.focus\:sibling\:shadow:focus ~ * {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before {
+  background-color: #00bbe0;
+}
+
+.checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
+  background-color: #b8c2cc;
+}
+
+.checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
+  border-color: #b8c2cc;
+}
+
+/* legacy variant & pseudo utilities */
+
+.before\:absolute:before {
+  position: absolute;
+}
+
+.before\:transition-1\/4:before {
+  transition: all .25s ease;
+}
+
+.before\:transition-1\/4-bounce:before {
+  transition: all .25s cubic-bezier(var(--bounce));
+}
+
+.before\:bg-blue-88:before {
+  background-color: #00bbe0;
+}
+
+.before\:bg-white:before {
+  background-color: #fff;
+}
+
+.before\:h-full:before {
+  height: 100%;
+}
+
+.before\:w-full:before {
+  width: 100%;
+}
+
+.before\:no-content:before {
+  content: '';
+}
+
+.before\:rounded-full:before {
+  border-radius: 9999px;
+}
+
+.before\:shadow:before {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.after\:absolute:after {
+  position: absolute;
+}
 
 .after\:transition-1\/4:after {
   transition: all .25s ease;
 }
 
-.after\:bg-blue-88:after {
-  background-color: #00bbe0;
-}
-
-.after\:bg-white:after {
-  background-color: #fff;
-}
-
-.after\:h-full:after {
-  height: 100%;
+.after\:transition-1\/4-bounce:after {
+  transition: all .25s cubic-bezier(var(--bounce));
 }
 
 .after\:w-full:after {
   width: 100%;
 }
 
+.after\:h-2:after {
+  height: .5rem;
+}
+
+.after\:border-l-2:after {
+  border-left-width: 2px;
+}
+
+.after\:border-b-2:after {
+  border-bottom-width: 2px;
+}
+
+.after\:border-white:after {
+  border-color: #fff;
+}
+
 .after\:no-content:after {
   content: '';
 }
 
-.after\:rounded-full:after {
-  border-radius: 9999px;
+.after\:rotate-315:after {
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --rotate: 315deg;
 }
 
 .after\:shadow:after {
@@ -7556,7 +7703,8 @@ label {
 }
 
 .checked\:sibling\:after\:scale-1:checked ~ *:after {
-  transform: scale(1);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 1;
 }
 
 .checked\:sibling\:bg-blue-88:checked ~ * {
@@ -7575,6 +7723,10 @@ label {
   border-color: #00bbe0;
 }
 
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * {
+  border-color: #00bbe0;
+}
+
 .checked\:sibling\:bg-blue-88:checked ~ * {
   background-color: #00bbe0;
 }
@@ -7588,7 +7740,8 @@ label {
 }
 
 .\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after {
-  transform: scale(0);
+  transform: scale(var(--scale)) rotate(var(--rotate));
+  --scale: 0;
 }
 
 .disabled\:bg-grey-95:disabled {
@@ -7599,16 +7752,16 @@ label {
   color: #8795a1;
 }
 
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
+  background-color: #fff;
+}
+
 .disabled\:sibling\:bg-grey-95:disabled ~ * {
   background-color: #f0f1f2;
 }
 
 .disabled\:border-grey-light:disabled {
   border-color: #dae1e7;
-}
-
-.focus\:sibling\:border-blue-88:focus ~ * {
-  border-color: #00bbe0;
 }
 
 .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) {

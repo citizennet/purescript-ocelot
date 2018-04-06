@@ -3,7 +3,7 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import Ocelot.Block.Card as Card
-import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
@@ -56,17 +56,14 @@ component =
 ----------
 -- HTML
 
-css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
-css = HP.class_ <<< HH.ClassName
-
-content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
-content = Backdrop.content [ css "flex" ]
-
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
+  let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
+      css = HP.class_ <<< HH.ClassName
+      content = Backdrop.content [ css "flex" ] in
   HH.div_
   [ Documentation.block_
-    { header: "Text Field"
+    { header: "Text Fields"
     , subheader: "Captures string input."
     }
     [ Backdrop.backdrop_
@@ -76,7 +73,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
@@ -90,7 +87,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Just [ Validation.EmptyField ]
@@ -109,7 +106,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
@@ -123,7 +120,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , valid: Nothing
@@ -140,7 +137,7 @@ cnDocumentationBlocks =
       ]
     ]
   , Documentation.block_
-    { header: "Text Field - Right Addon"
+    { header: "Text Fields - Right Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
@@ -150,7 +147,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -163,7 +160,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
@@ -182,7 +179,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -196,7 +193,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -213,7 +210,7 @@ cnDocumentationBlocks =
       ]
     ]
   , Documentation.block_
-    { header: "Text Field - Left Addon"
+    { header: "Text Fields - Left Addon"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
@@ -223,7 +220,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
@@ -236,7 +233,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Just [ Validation.EmptyField ]
@@ -254,7 +251,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
@@ -268,7 +265,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
@@ -285,7 +282,7 @@ cnDocumentationBlocks =
       ]
     ]
   , Documentation.block_
-    { header: "Text Field - Surround Addons"
+    { header: "Text Fields - Surrounding Addons"
     , subheader: "Captures string input while indicating to user useful information about the input type."
     }
     [ Backdrop.backdrop_
@@ -295,7 +292,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a search field."
             , valid: Nothing
@@ -320,7 +317,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Loading" ]
-          , FormControl.formControl_
+          , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a loading state for a search field."
             , valid: Nothing
@@ -328,7 +325,8 @@ cnDocumentationBlocks =
             }
             [ Input.inputGroup_
               [ Input.inputCenter
-                [ HP.id_ "search-loading"
+                [ HP.class_ $ HH.ClassName "focus:next:text-blue-88"
+                , HP.id_ "search-loading"
                 , HP.value "Something"
                 ]
               , Input.addonCenter_ [ Icon.loading_ ]

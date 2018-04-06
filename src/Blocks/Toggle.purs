@@ -43,12 +43,12 @@ toggleClasses = HH.ClassName <$>
   , "p-1"
   , "rounded-full"
   , "mr-3"
-  , "after:bg-white"
-  , "after:h-full"
-  , "after:w-full"
-  , "after:rounded-full"
-  , "after:no-content"
-  , "after:shadow"
+  , "before:bg-white"
+  , "before:h-full"
+  , "before:w-full"
+  , "before:rounded-full"
+  , "before:no-content"
+  , "before:shadow"
   ]
 
 toggle

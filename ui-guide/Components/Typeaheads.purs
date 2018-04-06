@@ -22,7 +22,7 @@ import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
-import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
@@ -169,7 +169,7 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
               , valid: Nothing
@@ -188,7 +188,7 @@ cnDocumentationBlocks =
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard Hydrated" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
               , valid: Nothing
@@ -212,7 +212,7 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
               , valid: Nothing
@@ -231,7 +231,7 @@ cnDocumentationBlocks =
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
               , valid: Nothing
@@ -262,7 +262,7 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
               , valid: Nothing
@@ -281,7 +281,7 @@ cnDocumentationBlocks =
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Standard Hydrated" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
               , valid: Nothing
@@ -305,7 +305,7 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Users"
               , helpText: Just "Search your top companions."
               , valid: Nothing
@@ -324,7 +324,7 @@ cnDocumentationBlocks =
             , HH.h3
               [ HP.classes Type.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
-            , FormControl.formControl_
+            , FormField.field_
               { label: "Users"
               , helpText: Just "Search your top companions."
               , valid: Nothing

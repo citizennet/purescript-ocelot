@@ -28,7 +28,7 @@ import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Button as Button
-import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead (defRenderContainer)
@@ -308,7 +308,7 @@ renderForm st =
       , subheader: "Test validations and form submission."
       }
       [ Backdrop.backdrop_
-        [ FormControl.formControl_
+        [ FormField.field_
           { label: "Developer"
           , helpText: Just "There are lots of developers to choose from."
           , valid: Map.lookup FailDevelopers st.errors
@@ -318,7 +318,7 @@ renderForm st =
             (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
             (HE.input HandleSync)
           ]
-        -- , FormControl.formControl
+        -- , FormField.field
           -- { label: "Todos"
           -- , helpText: Just "Synchronous todo fetching like you've always wanted."
           -- , valid: Map.lookup FailTodos st.errors
@@ -328,7 +328,7 @@ renderForm st =
             -- (TA.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] (\_ -> Async.loadFromSource Async.todos) Async.renderItemTodo)
             -- (HE.input HandleB)
           -- )
-        , FormControl.formControl_
+        , FormField.field_
           { label: "Users"
           , helpText: Just "Oh, you REALLY need async, huh."
           , valid: Map.lookup FailUsers1 st.errors
@@ -344,7 +344,7 @@ renderForm st =
             )
             ( HE.input HandleC )
           ]
-        , FormControl.formControl_
+        , FormField.field_
           { label: "Users 2"
           , helpText: Just "Honestly, this is just lazy."
           , valid: Map.lookup FailUsers2 st.errors
@@ -360,7 +360,7 @@ renderForm st =
             )
             ( HE.input HandleD )
           ]
-        , FormControl.formControl_
+        , FormField.field_
           { label: "Email"
           , helpText: Just "Dave will spam your email with gang of four patterns"
           , valid: Map.lookup FailEmail st.errors
@@ -373,7 +373,7 @@ renderForm st =
             , HE.onValueInput (HE.input $ UpdateTextField 1)
             ]
           ]
-        , FormControl.formControl_
+        , FormField.field_
           { label: "Username"
           , helpText: Just "Put your name in and we'll spam you forever"
           , valid: Map.lookup FailUsername st.errors

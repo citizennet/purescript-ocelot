@@ -1,4 +1,4 @@
-module Ocelot.Block.FormControl where
+module Ocelot.Block.FormField where
 
 import Prelude
 
@@ -10,8 +10,8 @@ import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 import Ocelot.Core.Validation (ValidationErrors, htmlE)
 
-formControlClasses :: Array HH.ClassName
-formControlClasses = HH.ClassName <$>
+fieldClasses :: Array HH.ClassName
+fieldClasses = HH.ClassName <$>
   [ "w-full"
   , "mb-10"
   ]
@@ -40,22 +40,22 @@ labelClasses = HH.ClassName <$>
   , "text-black"
   ]
 
-type FormControlConfig =
+type FieldConfig =
   { helpText :: Maybe String
   , label :: String
   , valid :: Maybe ValidationErrors
   , inputId :: String
   }
 
-formControl
+field
   :: ∀ p i
-   . FormControlConfig
+   . FieldConfig
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-formControl config iprops html =
+field config iprops html =
   HH.div
-    ( [ HP.classes formControlClasses ] <&> iprops )
+    ( [ HP.classes fieldClasses ] <&> iprops )
     [ HH.label
       [ HP.classes labelClasses
       , HP.for config.inputId
@@ -68,22 +68,22 @@ formControl config iprops html =
     , helpText_ config.helpText
     ]
 
-formControl_
+field_
   :: ∀ p i
-   . FormControlConfig
+   . FieldConfig
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-formControl_ config = formControl config []
+field_ config = field config []
 
 fieldset
   :: ∀ p i
-   . FormControlConfig
+   . FieldConfig
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldset config iprops html =
   HH.div
-    ( [ HP.classes formControlClasses ] <&> iprops )
+    ( [ HP.classes fieldClasses ] <&> iprops )
     [ HH.fieldset
       []
       [ HH.legend
@@ -99,7 +99,7 @@ fieldset config iprops html =
 
 fieldset_
   :: ∀ p i
-   . FormControlConfig
+   . FieldConfig
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldset_ config = fieldset config []
