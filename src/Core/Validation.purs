@@ -14,7 +14,7 @@ import Data.Number as Num
 import Data.String as String
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
-import Ocelot.Core.Utils.Currency (Cents, parseCentsFromDollarStr, canParseToInt)
+import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Text.Email.Validate (isValid)
 
 -----
@@ -73,7 +73,7 @@ validateStrIsCents s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCent
 
 validateStrIsInt :: String -> V ValidationErrors Int
 validateStrIsInt s
-  | canParseToInt s = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString $ s
+  | canParseTo32Bit s = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString $ s
   | otherwise = invalid $ pure InvalidInteger
 
 validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
@@ -109,7 +109,7 @@ showE :: ValidationError -> String
 showE EmptyField = "Required"
 showE InvalidEmail = "Must be a valid email"
 showE InvalidNumber = "Must be a valid number"
-showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars."
+showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90."
 showE InvalidInteger = "Must be a valid integer"
 showE (UnderMinLength _ msg) = msg
 showE (OutOfRange msg) = msg

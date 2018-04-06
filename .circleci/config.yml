@@ -1,7 +1,7 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/ui-guide
+  working_directory: ~/ocelot
   docker:
     - image: thomashoneyman/purescript:0.0.3
 
@@ -13,15 +13,15 @@ jobs:
 
       - restore_cache:
           keys:
-            - v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
-            - v0.0-yarn-cache-{{ .Branch }}
-            - v0.0-yarn-cache
+            - v0.1-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - v0.1-yarn-cache-{{ .Branch }}
+            - v0.1-yarn-cache
 
       - restore_cache:
           keys:
-            - v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
-            - v0.0-bower-cache-{{ .Branch }}
-            - v0.0-bower-cache
+            - v0.1-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+            - v0.1-bower-cache-{{ .Branch }}
+            - v0.1-bower-cache
 
       - run:
           name: Install Bower and Node dependencies
@@ -32,15 +32,15 @@ jobs:
           command: yarn run build-ui
 
       - save_cache:
-          key: v0.0-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v0.1-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
-            - ~/ui-guide/node_modules
+            - ~/ocelot/node_modules
 
       - save_cache:
-          key: v0.0-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          key: v0.1-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
           paths:
-            - ~/ui-guide/bower_components
-            - ~/ui-guide/output
+            - ~/ocelot/bower_components
+            - ~/ocelot/output
 
       # Persist generated JS into the workspace
       - persist_to_workspace:
@@ -71,9 +71,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
-            - v0.0-css-cache-{{ .Branch }}
-            - v0.0-css-cache
+            - v0.1-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
+            - v0.1-css-cache-{{ .Branch }}
+            - v0.1-css-cache
 
       - run:
           name: Build CSS
@@ -82,9 +82,9 @@ jobs:
             yarn run build-css
 
       - save_cache:
-          key: v0.0-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
+          key: v0.1-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
           paths:
-            - ~/ui-guide/css/node_modules
+            - ~/ocelot/css/node_modules
 
       # Enable building docs with read/write SSH key
       - add_ssh_keys:
