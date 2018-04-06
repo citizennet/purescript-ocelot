@@ -2,13 +2,6 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import Network.RemoteData (RemoteData(..))
-import Ocelot.Block.Button as Button
-import Ocelot.Block.FormControl as FormControl
-import Ocelot.Block.Input as Input
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as CV
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
@@ -33,6 +26,13 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (AJAX)
+import Network.RemoteData (RemoteData(..))
+import Ocelot.Block.Button as Button
+import Ocelot.Block.FormControl as FormControl
+import Ocelot.Block.Input as Input
+import Ocelot.Components.Typeahead as TA
+import Ocelot.Core.Typeahead as TACore
+import Ocelot.Core.Validation as CV
 import UIGuide.Block.Component as Component
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -389,10 +389,10 @@ instance eqTestRecord :: Eq TestRecord where
 
 derive instance newtypeTestRecord :: Newtype TestRecord _
 
-renderItemTestRecord :: TA.RenderTypeaheadItem TestRecord
+renderItemTestRecord :: ∀ o eff. TA.RenderTypeaheadItem o TestRecord eff
 renderItemTestRecord =
   { toStrMap: testToStrMap
-  , renderFuzzy: TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
   , renderItem: (TA.defRenderItem <<< unwrap)
   }
 
