@@ -27,3 +27,17 @@ columnClasses = HH.ClassName <$>
   , "py-16"
   , "px-20"
   ]
+
+mainColClasses :: Array HH.ClassName
+mainColClasses = HH.ClassName <$>
+  [ "flex-3"
+  , "py-16"
+  , "px-20"
+  ]
+
+sideColClasses :: Array HH.ClassName
+sideColClasses = HH.ClassName <$>
+  [ "flex-2"
+  , "py-16"
+  , "px-20"
+  ]

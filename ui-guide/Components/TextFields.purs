@@ -147,7 +147,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -160,7 +160,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
@@ -179,7 +179,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -193,7 +193,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , valid: Nothing
@@ -220,7 +220,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Static" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
@@ -233,7 +233,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Error" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Just [ Validation.EmptyField ]
@@ -251,7 +251,7 @@ cnDocumentationBlocks =
           [ HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Hydrated" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing
@@ -265,7 +265,7 @@ cnDocumentationBlocks =
           , HH.h3
             [ HP.classes Type.captionClasses ]
             [ HH.text "Disabled" ]
-          , FormField.field_
+          , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , valid: Nothing

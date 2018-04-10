@@ -21,7 +21,11 @@ legend {
   text-transform: inherit;
 }
 label {
+  display: inherit;
   margin-bottom: unset;
+}
+dt {
+  margin-bottom: 0;
 }
 
 /* CitizenNet core CSS ... */
@@ -39,6 +43,7 @@ label {
   --bounce: .3,.3,.7,1.4;
 }
 .transform { transform: scale(var(--scale)) rotate(var(--rotate)); }
+.transition-1\/8 { transition: all 0.125s ease; }
 .transition-1\/4 { transition: all 0.25s ease; }
 .transition-1\/4-in { transition: all 0.25s ease-in; }
 .transition-1\/4-out { transition: all 0.25s ease-out; }
@@ -110,8 +115,8 @@ label {
 .after\:no-content:after { @apply .no-content; }
 .after\:rotate-315:after { @apply .rotate-315; }
 .after\:shadow:after { @apply .shadow; }
-.checked\:sibling\:pl-4:checked ~ * { @apply .pl-4; }
-.\!checked\:sibling\:pr-4:not(:checked) ~ * { @apply .pr-4; }
+.checked\:sibling\:pl-5:checked ~ * { @apply .pl-5; }
+.\!checked\:sibling\:pr-5:not(:checked) ~ * { @apply .pr-5; }
 .checked\:sibling\:after\:opacity-100:checked ~ *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked ~ *:after { @apply .scale-1; }
 .checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }

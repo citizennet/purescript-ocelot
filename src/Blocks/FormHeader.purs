@@ -65,18 +65,18 @@ formHeader props =
       ( case props.brand of
           Just src  ->
             [ HH.div
-              [ HP.class_ (HH.ClassName "w-20") ]
+              [ HP.class_ $ HH.ClassName "w-20" ]
               [ HH.img [ HP.src src ] ]
             ]
           otherwise -> []
         <>
         [ HH.h2
-          [ HP.class_ (HH.ClassName "flex-1 font-medium") ]
+          [ HP.class_ $ HH.ClassName "flex-1 font-medium" ]
             [ HH.span
-                [ HP.class_ (HH.ClassName "text-lg text-grey-70 mr-4") ]
+                [ HP.class_ $ HH.ClassName "text-lg text-grey-70 mr-4" ]
                 props.name
             , HH.span
-                [ HP.class_ (HH.ClassName "text-lg text-white") ]
+                [ HP.class_ $ HH.ClassName "text-lg text-white" ]
                 props.title
             ]
         ]

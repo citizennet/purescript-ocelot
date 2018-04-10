@@ -1,4 +1,8 @@
-module Ocelot.Core.Utils (appendIProps, (<&>)) where
+module Ocelot.Core.Utils
+  ( css
+  , appendIProps
+  , (<&>)
+  ) where
 
 import Prelude
 
@@ -13,6 +17,12 @@ import Halogen.VDom.DOM.Prop (Prop(..))
 import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
+
+css
+  :: ∀ r i
+   . String
+  -> IProp r i
+css = HP.class_ <<< HH.ClassName
 
 appendIProps
   :: ∀ r i

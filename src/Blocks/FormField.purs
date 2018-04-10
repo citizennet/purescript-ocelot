@@ -1,4 +1,15 @@
-module Ocelot.Block.FormField where
+module Ocelot.Block.FormField
+  ( fieldClasses
+  , helpTextClasses
+  , errorTextClasses
+  , labelClasses
+  , field
+  , field_
+  , fieldSmall
+  , fieldSmall_
+  , fieldset
+  , fieldset_
+  ) where
 
 import Prelude
 
@@ -47,13 +58,13 @@ type FieldConfig =
   , inputId :: String
   }
 
-field
+field'
   :: ∀ p i
    . FieldConfig
   -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
   -> HH.HTML p i
-field config iprops html =
+  -> HH.HTML p i
+field' config iprops html =
   HH.div
     ( [ HP.classes fieldClasses ] <&> iprops )
     [ HH.label
@@ -61,12 +72,22 @@ field config iprops html =
       , HP.for config.inputId
       ]
       [ HH.text config.label ]
-    , HH.div
-      [ HP.class_ (HH.ClassName "my-1") ]
-      html
+    , html
     , errorText_ config.valid
     , helpText_ config.helpText
     ]
+
+field
+  :: ∀ p i
+   . FieldConfig
+  -> Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+field config iprops html =
+  field'
+    config
+    iprops
+    ( HH.div [ HP.class_ $ HH.ClassName "my-1" ] html )
 
 field_
   :: ∀ p i
@@ -74,6 +95,25 @@ field_
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 field_ config = field config []
+
+fieldSmall
+  :: ∀ p i
+   . FieldConfig
+  -> Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+fieldSmall config iprops html =
+  field'
+    config
+    iprops
+    ( HH.div [ HP.class_ $ HH.ClassName "my-1 md:w-1/4" ] html )
+
+fieldSmall_
+  :: ∀ p i
+   . FieldConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+fieldSmall_ config = fieldSmall config []
 
 fieldset
   :: ∀ p i

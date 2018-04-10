@@ -862,7 +862,12 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped label {
+  display: inherit;
   margin-bottom: unset;
+}
+
+.ocelot-scoped dt {
+  margin-bottom: 0;
 }
 
 /* CitizenNet core CSS ... */
@@ -7460,6 +7465,10 @@ body .ocelot-scoped {
   transform: scale(var(--scale)) rotate(var(--rotate));
 }
 
+.ocelot-scoped .transition-1\/8 {
+  transition: all .125s ease;
+}
+
 .ocelot-scoped .transition-1\/4 {
   transition: all .25s ease;
 }
@@ -7690,12 +7699,12 @@ body .ocelot-scoped {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
 
-.ocelot-scoped .checked\:sibling\:pl-4:checked ~ * {
-  padding-left: 1rem;
+.ocelot-scoped .checked\:sibling\:pl-5:checked ~ * {
+  padding-left: 1.25rem;
 }
 
-.ocelot-scoped .\!checked\:sibling\:pr-4:not(:checked) ~ * {
-  padding-right: 1rem;
+.ocelot-scoped .\!checked\:sibling\:pr-5:not(:checked) ~ * {
+  padding-right: 1.25rem;
 }
 
 .ocelot-scoped .checked\:sibling\:after\:opacity-100:checked ~ *:after {
