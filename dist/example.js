@@ -2437,6 +2437,8 @@ var PS = {};
   var Control_Bind = PS["Control.Bind"];
   var Control_Monad = PS["Control.Monad"];
   var Data_Functor = PS["Data.Functor"];
+  var Data_Monoid = PS["Data.Monoid"];
+  var Data_Semigroup = PS["Data.Semigroup"];
   var Data_Unit = PS["Data.Unit"];        
   var monadEff = new Control_Monad.Monad(function () {
       return applicativeEff;
@@ -5564,6 +5566,7 @@ var PS = {};
   var Data_Ord = PS["Data.Ord"];
   var Data_Ordering = PS["Data.Ordering"];
   var Data_Semigroup = PS["Data.Semigroup"];
+  var Data_Semigroup_Foldable = PS["Data.Semigroup.Foldable"];
   var Data_Show = PS["Data.Show"];
   var Data_Traversable = PS["Data.Traversable"];
   var Data_TraversableWithIndex = PS["Data.TraversableWithIndex"];
@@ -7581,7 +7584,6 @@ var PS = {};
     "use strict";       
 
   exports.fromFoldableImpl = (function () {
-    // jshint maxparams: 2
     function Cons(head, tail) {
       this.head = head;
       this.tail = tail;
@@ -7719,7 +7721,6 @@ var PS = {};
 
   exports.sortImpl = function (f) {
     return function (l) {
-      // jshint maxparams: 2
       return l.slice().sort(function (x, y) {
         return f(x)(y);
       });
@@ -16220,7 +16221,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new UnderMinLength(n, msg)));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 81, column 1 - line 81, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 79, column 1 - line 79, column 97: " + [ n.constructor.name, msg.constructor.name, f.constructor.name ]);
               };
           };
       };
@@ -16235,7 +16236,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return Data_Validation_Semigroup.invalid(Control_Applicative.pure(Control_Applicative.applicativeArray)(new Dependency(msg)));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 101, column 1 - line 101, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Core.Validation line 99, column 1 - line 99, column 99: " + [ f.constructor.name, msg.constructor.name, item1.constructor.name, item2.constructor.name ]);
               };
           };
       };
@@ -16251,7 +16252,7 @@ var PS = {};
           return "Must be a valid number";
       };
       if (v instanceof InvalidCurrency) {
-          return "Must be a valid dollar amount, like $500 or $2,250.90. Note: Budgets are supported up to 20 million dollars.";
+          return "Must be a valid dollar amount, like $500 or $2,250.90.";
       };
       if (v instanceof InvalidInteger) {
           return "Must be a valid integer";
@@ -16271,21 +16272,21 @@ var PS = {};
       if (v instanceof Dependency) {
           return v.value0;
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 110, column 1 - line 110, column 35: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 108, column 1 - line 108, column 35: " + [ v.constructor.name ]);
   };
   var htmlE = function (es) {
       if (Data_Foldable.length(Data_Foldable.foldableArray)(Data_Semiring.semiringInt)(es) === 1) {
-          return Data_Functor.map(Data_Functor.functorArray)(function ($113) {
-              return Halogen_HTML_Core.text(showE($113));
+          return Data_Functor.map(Data_Functor.functorArray)(function ($112) {
+              return Halogen_HTML_Core.text(showE($112));
           })(es);
       };
       if (Data_Boolean.otherwise) {
-          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($114) {
-              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($114))));
+          var toHTML = [ Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("You have errors:") ]), Halogen_HTML_Elements.ul_(Data_Functor.map(Data_Functor.functorArray)(function ($113) {
+              return Halogen_HTML_Elements.li_(Data_Array.singleton(Halogen_HTML_Core.text(showE($113))));
           })(es)) ];
           return toHTML;
       };
-      throw new Error("Failed pattern match at Ocelot.Core.Validation line 122, column 1 - line 122, column 48: " + [ es.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Core.Validation line 120, column 1 - line 120, column 48: " + [ es.constructor.name ]);
   };
   exports["EmptyField"] = EmptyField;
   exports["InvalidEmail"] = InvalidEmail;
