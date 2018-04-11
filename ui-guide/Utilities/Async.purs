@@ -2,8 +2,6 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
-import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead as TA
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
@@ -16,6 +14,9 @@ import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
+import Ocelot.Block.ItemContainer as ItemContainer
+import Ocelot.Components.Typeahead (defRenderContainer)
+import Ocelot.Components.Typeahead as TA
 
 
 ----------
@@ -105,11 +106,11 @@ todoToStrMap (Todo { title, completed }) =
     , Tuple "completed" (if completed then "Completed" else "")
     ]
 
-renderItemTodo :: TA.RenderTypeaheadItem Todo
+renderItemTodo :: ∀ o eff. TA.RenderTypeaheadItem o Todo eff
 renderItemTodo =
   { toStrMap: todoToStrMap
   , renderItem: HH.text <<< _.title <<< unwrap
-  , renderFuzzy: HH.span_ <<< ItemContainer.boldMatches "title"
+  , renderContainer: TA.defRenderContainer (HH.span_ <<< ItemContainer.boldMatches "title")
   }
 
 
@@ -133,11 +134,11 @@ decodeUser json = do
 
   pure $ User { id, name, city }
 
-renderItemUser :: TA.RenderTypeaheadItem User
+renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
 renderItemUser =
   { toStrMap: userToStrMap
   , renderItem: TA.defRenderItem <<< unwrap
-  , renderFuzzy: TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
   }
 
 userToStrMap :: User -> StrMap String
