@@ -31,7 +31,7 @@ newtype Cents = Cents BigInt
 derive instance newtypeCents :: Newtype Cents _
 
 instance encodeJsonCents :: EncodeJson Cents where
-  encodeJson = encodeJson <<< BigInt.toString <<< unwrap
+  encodeJson = encodeJson <<< BigInt.toNumber <<< unwrap
 
 instance showCents :: Show Cents where
   show (Cents n) = "Cents: " <> BigInt.toString n
