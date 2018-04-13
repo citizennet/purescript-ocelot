@@ -15,7 +15,6 @@ import Halogen.HTML as HH
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead (defRenderContainer)
 import Ocelot.Components.Typeahead as TA
 
 
@@ -110,7 +109,7 @@ renderItemTodo :: ∀ o eff. TA.RenderTypeaheadItem o Todo eff
 renderItemTodo =
   { toStrMap: todoToStrMap
   , renderItem: HH.text <<< _.title <<< unwrap
-  , renderContainer: TA.defRenderContainer (HH.span_ <<< ItemContainer.boldMatches "title")
+  , renderContainer: TA.defRenderContainer_ (HH.span_ <<< ItemContainer.boldMatches "title")
   }
 
 
@@ -138,7 +137,7 @@ renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
 renderItemUser =
   { toStrMap: userToStrMap
   , renderItem: TA.defRenderItem <<< unwrap
-  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer_ TA.defRenderFuzzy
   }
 
 userToStrMap :: User -> StrMap String

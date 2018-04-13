@@ -392,7 +392,7 @@ derive instance newtypeTestRecord :: Newtype TestRecord _
 renderItemTestRecord :: ∀ o eff. TA.RenderTypeaheadItem o TestRecord eff
 renderItemTestRecord =
   { toStrMap: testToStrMap
-  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer_ TA.defRenderFuzzy
   , renderItem: (TA.defRenderItem <<< unwrap)
   }
 
