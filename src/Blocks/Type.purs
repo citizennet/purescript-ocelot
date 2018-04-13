@@ -28,7 +28,7 @@ subHeadingClasses :: Array HH.ClassName
 subHeadingClasses = HH.ClassName <$>
   [ "mb-6"
   , "text-xl"
-  , "font-normal"
+  , "font-medium"
   , "leading-loose"
   , "flex"
   , "items-center"
@@ -45,7 +45,7 @@ contentHeadingClasses :: Array HH.ClassName
 contentHeadingClasses = HH.ClassName <$>
   [ "mb-6"
   , "text-lg"
-  , "font-light"
+  , "font-normal"
   , "leading-loose"
   , "flex"
   , "items-center"

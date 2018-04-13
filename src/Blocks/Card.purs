@@ -11,15 +11,37 @@ data ExpansionStatus
   = Collapsed
   | Expanded
 
-cardClasses :: Array HH.ClassName
-cardClasses = HH.ClassName <$>
+baseCardClasses :: Array HH.ClassName
+baseCardClasses = HH.ClassName <$>
   [ "bg-white"
-  , "px-6"
-  , "pt-6"
   , "mb-6"
   , "rounded"
   , "clearfix"
   ]
+
+cardClasses :: Array HH.ClassName
+cardClasses = baseCardClasses <>
+  ( HH.ClassName <$>
+    [ "px-6"
+    , "pt-6"
+    ]
+  )
+
+baseCard
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+baseCard iprops html =
+  HH.div
+    ( [ HP.classes baseCardClasses ] <&> iprops )
+    html
+
+baseCard_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+baseCard_ = baseCard []
 
 card
   :: ∀ p i
