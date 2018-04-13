@@ -14,7 +14,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.RemoteData (RemoteData(..))
+import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Block.Type as Type
@@ -34,7 +34,7 @@ type RenderTypeaheadItem o item eff
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
-  , renderContainer: defRenderContainer defRenderFuzzy
+  , renderContainer: defRenderContainer' defRenderFuzzy
   , renderItem: HH.text }
 
 ----------
@@ -51,15 +51,16 @@ defRenderFuzzy = HH.span_ <<< ItemContainer.boldMatches "name"
 defRenderItem :: ∀ r. { name :: String | r } -> HH.PlainHTML
 defRenderItem { name } = HH.text name
 
-type RenderContainer o item eff =
-  Select.State (Fuzzy item) (TA.Effects eff)
+type RenderContainer o item eff
+  = Select.State (Fuzzy item) (TA.Effects eff)
   -> H.ComponentHTML (Select.Query o (Fuzzy item) (TA.Effects eff))
 
 defRenderContainer
   :: ∀ o item eff
    . (Fuzzy item -> HH.PlainHTML)
+  -> Array (H.HTML Void (Select.Query o (Fuzzy item) (TA.Effects eff)))
   -> RenderContainer o item eff
-defRenderContainer renderFuzzy selectState =
+defRenderContainer renderFuzzy addlHTML selectState =
   HH.div
     [ HP.class_ $ HH.ClassName "relative" ]
     if selectState.visibility == Select.Off then []
@@ -67,7 +68,15 @@ defRenderContainer renderFuzzy selectState =
     [ ItemContainer.itemContainer
         selectState.highlightedIndex
         (renderFuzzy <$> selectState.items)
+        addlHTML
     ]
+
+defRenderContainer'
+  :: ∀ o item eff
+   . (Fuzzy item -> HH.PlainHTML)
+  -> RenderContainer o item eff
+defRenderContainer' renderFuzzy = defRenderContainer renderFuzzy []
+
 
 ----------
 -- Default typeahead configurations
@@ -221,7 +230,7 @@ renderTA props renderContainer renderSelectionItem st =
       , debounceTime: case st.config.syncMethod of
           TA.Async { debounceTime } -> Just debounceTime
           TA.Sync -> Nothing
-      , render: \selectState -> HH.div_ [ renderSearch, renderContainer selectState ]
+      , render: \selectState -> HH.div_ [ renderSearch, renderContainer_ selectState ]
       }
 
     itemProps item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
@@ -255,3 +264,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ HP.classes $ Input.inputRightBorderClasses <> Type.linkClasses ]
           [ HH.text "Browse" ]
         ]
+
+    renderContainer_
+      | isSuccess st.items = renderContainer
+      | otherwise = const $ HH.div_ []
