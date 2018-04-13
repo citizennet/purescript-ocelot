@@ -18,6 +18,12 @@ import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
 
+testId
+  :: ∀ r i
+   . String
+  -> IProp r i
+testId = HP.attr (HH.AttrName "data-testid")
+
 css
   :: ∀ r i
    . String
