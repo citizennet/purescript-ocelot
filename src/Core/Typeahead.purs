@@ -293,7 +293,8 @@ component =
           NotAsked -> do
             _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
             H.query unit $ H.action $ Select.ReplaceItems []
-          Loading -> pure (pure unit)
+          Loading -> do
+            H.query unit $ H.action $ Select.ReplaceItems []
 
         pure a
 
