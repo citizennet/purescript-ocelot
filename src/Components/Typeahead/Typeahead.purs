@@ -34,7 +34,7 @@ type RenderTypeaheadItem o item eff
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
-  , renderContainer: defRenderContainer_ defRenderFuzzy
+  , renderContainer: defRenderContainer' defRenderFuzzy
   , renderItem: HH.text }
 
 ----------
@@ -71,11 +71,11 @@ defRenderContainer renderFuzzy addlHTML selectState =
         addlHTML
     ]
 
-defRenderContainer_
+defRenderContainer'
   :: ∀ o item eff
    . (Fuzzy item -> HH.PlainHTML)
   -> RenderContainer o item eff
-defRenderContainer_ renderFuzzy = defRenderContainer renderFuzzy []
+defRenderContainer' renderFuzzy = defRenderContainer renderFuzzy []
 
 
 ----------
