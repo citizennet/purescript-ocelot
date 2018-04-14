@@ -14,8 +14,8 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Icon as Icon
+import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Block.Type as Type
@@ -36,7 +36,7 @@ type RenderTypeaheadItem o item eff
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
-  , renderContainer: defRenderContainer defRenderFuzzy
+  , renderContainer: defRenderContainer' defRenderFuzzy
   , renderItem: HH.text }
 
 ----------
@@ -60,15 +60,26 @@ type RenderContainer o item eff
 defRenderContainer
   :: ∀ o item eff
    . (Fuzzy item -> HH.PlainHTML)
+  -> Array (H.HTML Void (Select.Query o (Fuzzy item) (TA.Effects eff)))
   -> RenderContainer o item eff
-defRenderContainer renderFuzzy selectState =
-  let index = selectState.highlightedIndex
-      items = selectState.items in
+defRenderContainer renderFuzzy addlHTML selectState =
   HH.div
     [ HP.class_ $ HH.ClassName "relative" ]
     if selectState.visibility == Select.Off
       then []
-      else [ ItemContainer.itemContainer index (renderFuzzy <$> items) ]
+      else
+        [ ItemContainer.itemContainer
+            selectState.highlightedIndex
+            (renderFuzzy <$> selectState.items)
+            addlHTML
+        ]
+
+defRenderContainer'
+  :: ∀ o item eff
+   . (Fuzzy item -> HH.PlainHTML)
+  -> RenderContainer o item eff
+defRenderContainer' renderFuzzy = defRenderContainer renderFuzzy []
+
 
 ----------
 -- Default typeahead configurations
@@ -222,7 +233,7 @@ renderTA props renderContainer renderSelectionItem st =
       , debounceTime: case st.config.syncMethod of
           TA.Async { debounceTime } -> Just debounceTime
           TA.Sync -> Nothing
-      , render
+      , render: \selectState -> HH.div_ [ renderSearch, renderContainer_ selectState ]
       }
 
     renderSlot =
@@ -314,3 +325,7 @@ renderTA props renderContainer renderSelectionItem st =
 
     renderSelectionItem' x =
       ItemContainer.selectionGroup renderSelectionItem (itemProps x) x
+
+    renderContainer_
+      | isSuccess st.items = renderContainer
+      | otherwise = const $ HH.div_ []
