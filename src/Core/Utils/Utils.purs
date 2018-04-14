@@ -2,6 +2,7 @@ module Ocelot.Core.Utils
   ( css
   , appendIProps
   , (<&>)
+  , testId
   ) where
 
 import Prelude
