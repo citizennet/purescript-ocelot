@@ -75,30 +75,36 @@ buttonClasses = HH.ClassName <$>
   , "text-grey"
   ]
 
--- Provided an array of items, renders them in a container.
+-- Provided an array of items and any additional HTML, renders the container
 -- Items should have already been treated with `boldMatches` by this point.
 itemContainer
   :: ∀ t o item eff
    . Maybe Int
   -> Array HH.PlainHTML
+  -> Array (H.HTML t (Select.Query o item eff))
   -> H.HTML t (Select.Query o item eff)
-itemContainer highlightIndex html =
+itemContainer highlightIndex itemsHTML addlHTML =
   HH.div
-  (Setters.setContainerProps [ HP.classes itemContainerClasses ])
-  [ HH.ul
-    [ HP.classes ulClasses ]
-    $ mapWithIndex
-      ( \i h ->
-          HH.li
-            ( Setters.setItemProps i
-              [ HP.classes (HH.ClassName "py-3" : liClasses <> hover i) ]
-            )
-            [ HH.fromPlainHTML h ]
-      )
-      html
-  ]
+    ( Setters.setContainerProps [ HP.classes itemContainerClasses ] )
+    ( renderItems <> addlHTML )
   where
+    hover :: Int -> Array HH.ClassName
     hover i = if highlightIndex == Just i then HH.ClassName <$> [ "bg-grey-lighter" ] else mempty
+
+    renderItems :: Array (H.HTML t (Select.Query o item eff))
+    renderItems =
+      [ HH.ul
+        [ HP.classes ulClasses ]
+        $ mapWithIndex
+          ( \i h ->
+              HH.li
+                ( Setters.setItemProps i
+                  [ HP.classes (HH.ClassName "py-3" : liClasses <> hover i) ]
+                )
+                [ HH.fromPlainHTML h ]
+          )
+          itemsHTML
+      ]
 
 
 -- Provided an array of selection items, renders them in a container

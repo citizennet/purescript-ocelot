@@ -20,7 +20,6 @@ import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead (defRenderContainer)
 import Ocelot.Components.Typeahead as TA
 
 
@@ -100,6 +99,20 @@ decodeResults json = do
   results <- decodeJson resultsJson
   pure $ results
 
+todoToStrMap :: Todo -> StrMap String
+todoToStrMap (Todo { title, completed }) =
+  fromFoldable
+    [ Tuple "title" title
+    , Tuple "completed" (if completed then "Completed" else "")
+    ]
+
+renderItemTodo :: ∀ o eff. TA.RenderTypeaheadItem o Todo eff
+renderItemTodo =
+  { toStrMap: todoToStrMap
+  , renderItem: HH.text <<< _.title <<< unwrap
+  , renderContainer: TA.defRenderContainer' (HH.span_ <<< ItemContainer.boldMatches "title")
+  }
+
 newtype User = User
   { name :: String
   , eyeColor :: String
@@ -130,7 +143,7 @@ renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
 renderItemUser =
   { toStrMap: userToStrMap
   , renderItem: renderUser
-  , renderContainer: TA.defRenderContainer renderFuzzyUser
+  , renderContainer: TA.defRenderContainer' renderFuzzyUser
   }
 
 userToStrMap :: User -> StrMap String

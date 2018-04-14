@@ -31,7 +31,6 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
-import Ocelot.Components.Typeahead (defRenderContainer)
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
 import Ocelot.Core.Validation as CV
@@ -410,7 +409,7 @@ derive instance newtypeTestRecord :: Newtype TestRecord _
 renderItemTestRecord :: ∀ o eff. TA.RenderTypeaheadItem o TestRecord eff
 renderItemTestRecord =
   { toStrMap: testToStrMap
-  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
   , renderItem: (TA.defRenderItem <<< unwrap)
   }
 
