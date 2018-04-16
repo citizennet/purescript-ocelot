@@ -12,6 +12,14 @@ data Status
   = Collapsed
   | Expanded
 
+toBoolean :: Status -> Boolean
+toBoolean Collapsed = false
+toBoolean Expanded = true
+
+fromBoolean :: Boolean -> Status
+fromBoolean false = Collapsed
+fromBoolean true = Expanded
+
 instance heytingAlgebraStatus :: HeytingAlgebra Status where
   ff = Collapsed
   tt = Expanded
@@ -23,14 +31,6 @@ instance heytingAlgebraStatus :: HeytingAlgebra Status where
   disj _ _ = Collapsed
   not Expanded = Collapsed
   not Collapsed = Expanded
-
-fromBoolean :: Boolean -> Status
-fromBoolean false = Collapsed
-fromBoolean true = Expanded
-
-toBoolean :: Status -> Boolean
-toBoolean Collapsed = false
-toBoolean Expanded = true
 
 headingClasses :: Array HH.ClassName
 headingClasses = HH.ClassName <$>

@@ -68,6 +68,7 @@ config.maxWidth = Object.assign(config.maxWidth, {
 config.colors = Object.assign(config.colors, {
   'black-10': '#00081A',
   'black-20': '#242A33',
+  'black-modal-a90': 'rgba(0,9,26,0.9);',
   'grey-50': 'rgb(102,113,128)',
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
