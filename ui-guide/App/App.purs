@@ -31,7 +31,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Storybook.Proxy (ProxyS, proxy)
 import Halogen.VDom.Driver (runUI)
-import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Type as Type
 import UIGuide.Block.Backdrop as Backdrop
 
@@ -120,7 +119,7 @@ app =
     HH.div
     [ HP.class_ $ HH.ClassName "md:ml-80" ]
     [ HH.div
-      [ HP.class_ $ HH.ClassName "fixed w-full z-20" ]
+      [ HP.class_ $ HH.ClassName "fixed w-full" ]
       [ HH.div
         [ HP.class_ $ HH.ClassName "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
         [ HH.a
@@ -148,7 +147,6 @@ app =
     , HP.classes
       ( HH.ClassName <$>
         [ "hidden"
-        , "z-50"
         , "fixed"
         , "pin-y"
         , "pin-l"

@@ -24,15 +24,21 @@ headingDarkClasses = headingClasses <>
     ]
   )
 
-subHeadingClasses :: Array HH.ClassName
-subHeadingClasses = HH.ClassName <$>
-  [ "mb-6"
-  , "text-xl"
+subHeadingClassesNoMargin :: Array HH.ClassName
+subHeadingClassesNoMargin = HH.ClassName <$>
+  [ "text-xl"
   , "font-medium"
   , "leading-loose"
   , "flex"
   , "items-center"
   ]
+
+subHeadingClasses :: Array HH.ClassName
+subHeadingClasses = subHeadingClassesNoMargin <>
+  ( HH.ClassName <$>
+    [ "mb-6"
+    ]
+  )
 
 subHeadingDarkClasses :: Array HH.ClassName
 subHeadingDarkClasses = subHeadingClasses <>
