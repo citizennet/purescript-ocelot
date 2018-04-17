@@ -7,11 +7,13 @@ module Ocelot.Core.Utils
 
 import Prelude
 
-import Data.Array (nub, snoc)
+import Data.Array (nub, nubBy, snoc)
 import Data.Bifunctor (rmap, lmap)
 import Data.Foldable (foldr)
-import Data.String (Pattern(..), split)
+import Data.String (Pattern(..), drop, null, split)
+import Data.String.Utils (startsWith)
 import Data.Tuple (Tuple(..))
+import Debug.Trace (spy)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.DOM.Prop (Prop(..))
@@ -41,7 +43,13 @@ appendIProps ip ip' =
   where
     (Tuple classes iprops) = extract ip
     (Tuple classes' iprops') = extract ip'
-    classNames = pure <<< HP.classes $ HH.ClassName <$> nub (classes <> classes')
+    classNames =
+      pure
+      <<< HP.classes
+        $ HH.ClassName
+      <$> nubBy
+          (\c c' -> classify c == classify c')
+          (classes' <> classes)
 
 infixr 5 appendIProps as <&>
 
@@ -55,3 +63,41 @@ extract =
     f (HP.IProp (Property "className" className)) =
       lmap (\_ -> (split (Pattern " ") <<< unsafeCoerce) className)
     f iprop =  rmap $ (flip snoc) iprop
+
+classify
+  :: String
+  -> String
+classify str
+  | startsWith "p" str && not null (classifySide $ drop 1 str)
+    = "padding" <-> classifySide (drop 1 str)
+  | startsWith "m" str && not null (classifySide $ drop 1 str)
+    = "margin" <-> classifySide (drop 1 str)
+  | startsWith "-m" str && not null (classifySide $ drop 2 str)
+    = "margin" <-> classifySide (drop 2 str)
+  | startsWith "min-" str = "min" <-> classify (drop 4 str)
+  | startsWith "max-" str = "max" <-> classify (drop 4 str)
+  | startsWith "w-" str = "width"
+  | startsWith "h-" str = "height"
+  | otherwise = str
+
+classifySide
+  :: String
+  -> String
+classifySide str
+  | startsWith "t-" str = "top"
+  | startsWith "r-" str = "right"
+  | startsWith "b-" str = "bottom"
+  | startsWith "l-" str = "left"
+  | startsWith "x-" str = "horizontal"
+  | startsWith "y-" str = "vertical"
+  | startsWith "-" str = "all"
+  | otherwise = ""
+
+append'
+  :: String
+  -> String
+  -> String
+append' x "" = x
+append' x y  = x <> "-" <> y
+
+infixr 5 append' as <->

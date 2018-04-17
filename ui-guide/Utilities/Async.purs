@@ -99,20 +99,6 @@ decodeResults json = do
   results <- decodeJson resultsJson
   pure $ results
 
-todoToStrMap :: Todo -> StrMap String
-todoToStrMap (Todo { title, completed }) =
-  fromFoldable
-    [ Tuple "title" title
-    , Tuple "completed" (if completed then "Completed" else "")
-    ]
-
-renderItemTodo :: ∀ o eff. TA.RenderTypeaheadItem o Todo eff
-renderItemTodo =
-  { toStrMap: todoToStrMap
-  , renderItem: HH.text <<< _.title <<< unwrap
-  , renderContainer: TA.defRenderContainer' (HH.span_ <<< ItemContainer.boldMatches "title")
-  }
-
 newtype User = User
   { name :: String
   , eyeColor :: String
@@ -251,7 +237,7 @@ renderItemLocation :: ∀ o eff. TA.RenderTypeaheadItem o Location eff
 renderItemLocation =
   { toStrMap: locationToStrMap
   , renderItem: TA.defRenderItem <<< unwrap
-  , renderContainer: TA.defRenderContainer TA.defRenderFuzzy
+  , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
   }
 
 ----------

@@ -25,7 +25,7 @@ columnClasses :: Array HH.ClassName
 columnClasses = HH.ClassName <$>
   [ "flex-1"
   , "py-16"
-  , "px-20"
+  , "pr-20"
   ]
 
 mainColClasses :: Array HH.ClassName
