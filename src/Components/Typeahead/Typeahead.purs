@@ -151,7 +151,7 @@ defAsyncSingle props f { toStrMap, renderContainer, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
+  , config: asyncConfig (Milliseconds 800.0) f toStrMap false
   }
 
 -- A def multi-select using the default render item function
@@ -168,7 +168,7 @@ defAsyncMulti props f { toStrMap, renderContainer, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
+  , config: asyncConfig (Milliseconds 800.0) f toStrMap true
   }
 
 
