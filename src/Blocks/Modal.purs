@@ -12,9 +12,7 @@ modalBackgroundClasses :: Array HH.ClassName
 modalBackgroundClasses = HH.ClassName <$>
   [ "fixed"              -- position absolute
   , "pin"                -- pins to all corners to fill screen
-  , "overflow-scroll"    -- allow scrolling if modal > viewport size
   , "bg-black-modal-a90" -- transparency background
-  , "flex"
   ]
 
 background
@@ -37,7 +35,8 @@ modalContainerClasses :: Array HH.ClassName
 modalContainerClasses = HH.ClassName <$>
   [ "fixed"
   , "pin"
-  , "p-20"
+  , "pb-20"
+  , "m-20"
   ]
 
 modalContainer
