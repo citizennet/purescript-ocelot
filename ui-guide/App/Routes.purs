@@ -21,11 +21,10 @@ import UIGuide.Components.Button as Button
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
-import UIGuide.Components.Tab as Tab
+import UIGuide.Components.Modals as Modals
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
-import UIGuide.Components.Validation as Validation
 
 ----------
 -- Routes
@@ -82,6 +81,11 @@ routes = fromFoldable
   , Tuple "controls"
     { anchor: "Controls"
     , component: proxy FormControl.component
+    , group: Components
+    }
+  , Tuple "modals"
+    { anchor: "Modals"
+    , component: proxy Modals.component
     , group: Components
     }
   -- , Tuple "validation"

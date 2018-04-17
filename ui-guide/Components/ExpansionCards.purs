@@ -8,15 +8,12 @@ import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Array (head, take)
-import Data.Either (either, note)
-import Data.Either.Nested (Either4, Either8, Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2, Coproduct4, Coproduct8, Coproduct3)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
-import Data.Maybe (Maybe(..), maybe)
-import Data.Newtype (class Newtype)
+import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
-import Data.Traversable (traverse)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -28,12 +25,10 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.Expandable as Expandable
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Input as Input
 import Ocelot.Block.Toggle as Toggle
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as Validation
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async

@@ -1223,6 +1223,10 @@ body .ocelot-scoped {
   background-color: #242a33;
 }
 
+.ocelot-scoped .bg-black-modal-a90 {
+  background-color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .bg-grey-50 {
   background-color: rgb(102, 113, 128);
 }
@@ -1583,6 +1587,10 @@ body .ocelot-scoped {
   background-color: #242a33;
 }
 
+.ocelot-scoped .focus\:bg-black-modal-a90:focus {
+  background-color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .focus\:bg-grey-50:focus {
   background-color: rgb(102, 113, 128);
 }
@@ -1941,6 +1949,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-black-20:hover {
   background-color: #242a33;
+}
+
+.ocelot-scoped .hover\:bg-black-modal-a90:hover {
+  background-color: rgba(0, 9, 26, .9);;
 }
 
 .ocelot-scoped .hover\:bg-grey-50:hover {
@@ -2363,6 +2375,10 @@ body .ocelot-scoped {
   border-color: #242a33;
 }
 
+.ocelot-scoped .border-black-modal-a90 {
+  border-color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .border-grey-50 {
   border-color: rgb(102, 113, 128);
 }
@@ -2721,6 +2737,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-black-20:focus {
   border-color: #242a33;
+}
+
+.ocelot-scoped .focus\:border-black-modal-a90:focus {
+  border-color: rgba(0, 9, 26, .9);;
 }
 
 .ocelot-scoped .focus\:border-grey-50:focus {
@@ -3083,6 +3103,10 @@ body .ocelot-scoped {
   border-color: #242a33;
 }
 
+.ocelot-scoped .hover\:border-black-modal-a90:hover {
+  border-color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .hover\:border-grey-50:hover {
   border-color: rgb(102, 113, 128);
 }
@@ -3441,6 +3465,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-black-20 {
   border-color: #242a33;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-black-modal-a90 {
+  border-color: rgba(0, 9, 26, .9);;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-50 {
@@ -6271,6 +6299,10 @@ body .ocelot-scoped {
   color: #242a33;
 }
 
+.ocelot-scoped .text-black-modal-a90 {
+  color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .text-grey-50 {
   color: rgb(102, 113, 128);
 }
@@ -6631,6 +6663,10 @@ body .ocelot-scoped {
   color: #242a33;
 }
 
+.ocelot-scoped .hover\:text-black-modal-a90:hover {
+  color: rgba(0, 9, 26, .9);;
+}
+
 .ocelot-scoped .hover\:text-grey-50:hover {
   color: rgb(102, 113, 128);
 }
@@ -6989,6 +7025,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-black-20 {
   color: #242a33;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-black-modal-a90 {
+  color: rgba(0, 9, 26, .9);;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-50 {
@@ -8231,6 +8271,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .sm\:bg-black-modal-a90 {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:bg-grey-50 {
     background-color: rgb(102, 113, 128);
   }
@@ -8591,6 +8635,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .sm\:focus\:bg-black-modal-a90:focus {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-grey-50:focus {
     background-color: rgb(102, 113, 128);
   }
@@ -8949,6 +8997,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-black-20:hover {
     background-color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-black-modal-a90:hover {
+    background-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-50:hover {
@@ -9371,6 +9423,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .sm\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:border-grey-50 {
     border-color: rgb(102, 113, 128);
   }
@@ -9729,6 +9785,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-black-20:focus {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-black-modal-a90:focus {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-50:focus {
@@ -10091,6 +10151,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .sm\:hover\:border-black-modal-a90:hover {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:hover\:border-grey-50:hover {
     border-color: rgb(102, 113, 128);
   }
@@ -10449,6 +10513,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-black-20 {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-50 {
@@ -13271,6 +13339,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .sm\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:text-grey-50 {
     color: rgb(102, 113, 128);
   }
@@ -13631,6 +13703,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .sm\:hover\:text-black-modal-a90:hover {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .sm\:hover\:text-grey-50:hover {
     color: rgb(102, 113, 128);
   }
@@ -13989,6 +14065,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-black-20 {
     color: #242a33;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50 {
@@ -14776,6 +14856,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .md\:bg-black-modal-a90 {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:bg-grey-50 {
     background-color: rgb(102, 113, 128);
   }
@@ -15136,6 +15220,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .md\:focus\:bg-black-modal-a90:focus {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:focus\:bg-grey-50:focus {
     background-color: rgb(102, 113, 128);
   }
@@ -15494,6 +15582,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-black-20:hover {
     background-color: #242a33;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-black-modal-a90:hover {
+    background-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-50:hover {
@@ -15916,6 +16008,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .md\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:border-grey-50 {
     border-color: rgb(102, 113, 128);
   }
@@ -16274,6 +16370,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-black-20:focus {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .md\:focus\:border-black-modal-a90:focus {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .md\:focus\:border-grey-50:focus {
@@ -16636,6 +16736,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .md\:hover\:border-black-modal-a90:hover {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:hover\:border-grey-50:hover {
     border-color: rgb(102, 113, 128);
   }
@@ -16994,6 +17098,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-black-20 {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-50 {
@@ -19816,6 +19924,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .md\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:text-grey-50 {
     color: rgb(102, 113, 128);
   }
@@ -20176,6 +20288,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .md\:hover\:text-black-modal-a90:hover {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .md\:hover\:text-grey-50:hover {
     color: rgb(102, 113, 128);
   }
@@ -20534,6 +20650,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-black-20 {
     color: #242a33;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50 {
@@ -21321,6 +21441,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .lg\:bg-black-modal-a90 {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:bg-grey-50 {
     background-color: rgb(102, 113, 128);
   }
@@ -21681,6 +21805,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-black-modal-a90:focus {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-grey-50:focus {
     background-color: rgb(102, 113, 128);
   }
@@ -22039,6 +22167,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-black-20:hover {
     background-color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-black-modal-a90:hover {
+    background-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-50:hover {
@@ -22461,6 +22593,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .lg\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:border-grey-50 {
     border-color: rgb(102, 113, 128);
   }
@@ -22819,6 +22955,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-black-20:focus {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-black-modal-a90:focus {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-50:focus {
@@ -23181,6 +23321,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .lg\:hover\:border-black-modal-a90:hover {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:hover\:border-grey-50:hover {
     border-color: rgb(102, 113, 128);
   }
@@ -23539,6 +23683,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-black-20 {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-50 {
@@ -26361,6 +26509,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .lg\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:text-grey-50 {
     color: rgb(102, 113, 128);
   }
@@ -26721,6 +26873,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .lg\:hover\:text-black-modal-a90:hover {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .lg\:hover\:text-grey-50:hover {
     color: rgb(102, 113, 128);
   }
@@ -27079,6 +27235,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-black-20 {
     color: #242a33;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50 {
@@ -27866,6 +28026,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .xl\:bg-black-modal-a90 {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:bg-grey-50 {
     background-color: rgb(102, 113, 128);
   }
@@ -28226,6 +28390,10 @@ body .ocelot-scoped {
     background-color: #242a33;
   }
 
+  .ocelot-scoped .xl\:focus\:bg-black-modal-a90:focus {
+    background-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-grey-50:focus {
     background-color: rgb(102, 113, 128);
   }
@@ -28584,6 +28752,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-black-20:hover {
     background-color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-black-modal-a90:hover {
+    background-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-50:hover {
@@ -29006,6 +29178,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .xl\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:border-grey-50 {
     border-color: rgb(102, 113, 128);
   }
@@ -29364,6 +29540,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-black-20:focus {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-black-modal-a90:focus {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-50:focus {
@@ -29726,6 +29906,10 @@ body .ocelot-scoped {
     border-color: #242a33;
   }
 
+  .ocelot-scoped .xl\:hover\:border-black-modal-a90:hover {
+    border-color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:hover\:border-grey-50:hover {
     border-color: rgb(102, 113, 128);
   }
@@ -30084,6 +30268,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-black-20 {
     border-color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-black-modal-a90 {
+    border-color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-50 {
@@ -32906,6 +33094,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .xl\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:text-grey-50 {
     color: rgb(102, 113, 128);
   }
@@ -33266,6 +33458,10 @@ body .ocelot-scoped {
     color: #242a33;
   }
 
+  .ocelot-scoped .xl\:hover\:text-black-modal-a90:hover {
+    color: rgba(0, 9, 26, .9);;
+  }
+
   .ocelot-scoped .xl\:hover\:text-grey-50:hover {
     color: rgb(102, 113, 128);
   }
@@ -33624,6 +33820,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-black-20 {
     color: #242a33;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-black-modal-a90 {
+    color: rgba(0, 9, 26, .9);;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50 {
