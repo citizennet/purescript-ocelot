@@ -28,16 +28,18 @@ import Select.Utils.Setters as Setters
 ----------
 -- Input types expected. This needs to be defined for each 'item' type we have.
 
-type RenderTypeaheadItem o item eff
-  = { toStrMap :: item -> StrMap String
-    , renderContainer :: RenderContainer o item eff
-    , renderItem :: item -> HH.PlainHTML }
+type RenderTypeaheadItem o item eff =
+  { toStrMap :: item -> StrMap String
+  , renderContainer :: RenderContainer o item eff
+  , renderItem :: item -> HH.PlainHTML
+  }
 
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
   , renderContainer: defRenderContainer' defRenderFuzzy
-  , renderItem: HH.text }
+  , renderItem: HH.text
+  }
 
 ----------
 -- Default rendering

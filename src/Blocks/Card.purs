@@ -19,23 +19,19 @@ baseCardClasses = HH.ClassName <$>
   , "clearfix"
   ]
 
-cardClasses :: Array HH.ClassName
-cardClasses = baseCardClasses <>
-  ( HH.ClassName <$>
-    [ "px-6"
-    , "pt-6"
-    ]
-  )
+innerCardClasses :: Array HH.ClassName
+innerCardClasses = HH.ClassName <$>
+  [ "m-6"
+  ]
 
 baseCard
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-baseCard iprops html =
+baseCard iprops =
   HH.div
     ( [ HP.classes baseCardClasses ] <&> iprops )
-    html
 
 baseCard_
   :: ∀ p i
@@ -43,15 +39,29 @@ baseCard_
   -> HH.HTML p i
 baseCard_ = baseCard []
 
+
+innerCard
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+innerCard iprops =
+  HH.div
+    ( [ HP.classes innerCardClasses ] <&> iprops )
+
+innerCard_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+innerCard_ = innerCard []
+
 card
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 card iprops html =
-  HH.div
-    ( [ HP.classes cardClasses ] <&> iprops )
-    html
+  baseCard iprops [ innerCard_ html ]
 
 card_
   :: ∀ p i

@@ -62,10 +62,9 @@ component =
       NoOp a -> pure a
 
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render _ = HH.div_
-      [ Modal.background_ []
-      , Modal.modalContainer_
-        [ Modal.modalHeader
+    render _ = 
+      Modal.modal_
+        [ Modal.header
           { buttons:
               [ HH.a
                 [ HP.classes ( Type.linkDarkClasses <> [ HH.ClassName "mr-4" ] ) ]
@@ -74,7 +73,7 @@ component =
               ]
           , title: [ HH.text "Editing" ]
           }
-        , Modal.modal_
+        , Modal.body_
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1 m-10" ]
             [ HH.h3
@@ -118,4 +117,3 @@ component =
             ]
           ]
       ]
-    ]

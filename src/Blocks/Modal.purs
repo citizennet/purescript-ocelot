@@ -8,64 +8,24 @@ import Halogen.HTML.Properties as HP
 import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
 
-modalBackgroundClasses :: Array HH.ClassName
-modalBackgroundClasses = HH.ClassName <$>
-  [ "fixed"              -- position absolute
-  , "pin"                -- pins to all corners to fill screen
-  , "bg-black-modal-a90" -- transparency background
+type HeaderProps p i =
+  { buttons :: Array (HH.HTML p i)
+  , title :: Array (HH.HTML p i)
+  }
+
+backgroundClasses :: Array HH.ClassName
+backgroundClasses = HH.ClassName <$>
+  [ "fixed"
+  , "pin"
+  , "bg-black-modal-a90"
   ]
 
-background
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-background iprops html =
-  HH.div
-    ( [ HP.classes modalBackgroundClasses ] <&> iprops )
-    html
-
-background_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-background_ = background []
-
-modalContainerClasses :: Array HH.ClassName
-modalContainerClasses = HH.ClassName <$>
+modalClasses :: Array HH.ClassName
+modalClasses = HH.ClassName <$>
   [ "fixed"
   , "pin"
   , "pb-20"
   , "m-20"
-  ]
-
-modalContainer
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-modalContainer iprops html =
-  HH.div
-    ( [ HP.classes modalContainerClasses ] <&> iprops )
-    html
-
-modalContainer_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-modalContainer_ = modalContainer []
-
-modalClasses :: Array HH.ClassName
-modalClasses = HH.ClassName <$>
-  [ "relative"      -- position in normal flow of page
-  , "bg-grey-95"
-  , "overflow-auto" -- allow scrolling if modal > viewport size
-  , "max-h-full"
-  , "w-full"        -- allow full width
-  , "max-w-2xl"     -- but never above breakpoint
-  , "m-auto"        -- centered
-  , "flex-col"
-  , "flex"
   ]
 
 modal
@@ -74,9 +34,14 @@ modal
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 modal iprops html =
-  HH.div
-    ( [ HP.classes modalClasses ] <&> iprops )
-    html
+  HH.div_
+    [ HH.div
+        [ HP.classes backgroundClasses ]
+        []
+    , HH.div
+        ( [ HP.classes modalClasses ] <&> iprops )
+        html
+    ]
 
 modal_
   :: ∀ p i
@@ -84,14 +49,37 @@ modal_
   -> HH.HTML p i
 modal_ = modal []
 
+bodyClasses :: Array HH.ClassName
+bodyClasses = HH.ClassName <$>
+  [ "relative"
+  , "bg-grey-95"
+  , "overflow-auto"
+  , "max-h-full"
+  , "w-full"
+  , "max-w-2xl"
+  , "m-auto"
+  , "flex-col"
+  , "flex"
+  ]
 
-type ModalHeaderProps p i =
-  { buttons :: Array (HH.HTML p i)
-  , title :: Array (HH.HTML p i)
-  }
+body 
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+body iprops html =
+  HH.div
+    ( [ HP.classes bodyClasses ] <&> iprops )
+    html
 
-headerContainerClasses :: Array HH.ClassName
-headerContainerClasses = HH.ClassName <$>
+body_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+body_ = body []
+
+headerClasses :: Array HH.ClassName
+headerClasses = HH.ClassName <$>
   [ "h-24"
   , "max-w-2xl"
   , "m-auto"
@@ -115,22 +103,22 @@ innerHeaderClasses = HH.ClassName <$>
   , "flex"
   ]
 
-modalHeader
+header
   :: ∀ p i
-   . ModalHeaderProps p i
+   . HeaderProps p i
   -> HH.HTML p i
-modalHeader config =
+header props =
   HH.div
-    [ HP.classes headerContainerClasses ]
+    [ HP.classes headerClasses ]
     [ HH.header
       [ HP.classes outerHeaderClasses ]
       ( [ HH.div
         [ HP.classes innerHeaderClasses ]
           [ HH.h2
             [ HP.classes Type.subHeadingClassesNoMargin ]
-            config.title
+            props.title
           ]
         ]
-        <> config.buttons
+        <> props.buttons
       )
     ]

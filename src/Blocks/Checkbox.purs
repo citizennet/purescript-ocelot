@@ -14,9 +14,8 @@ labelClasses = HH.ClassName <$>
   , "flex-row"
   , "items-center"
   , "inline-block"
-  , "py-1"
+  , "py-2"
   , "cursor-pointer"
-  , "leading-loose"
   , "text-black"
   ]
 
@@ -52,6 +51,7 @@ checkboxClasses = HH.ClassName <$>
   , "border-solid"
   , "h-5"
   , "w-5"
+  , "flex-none"
   , "no-content"
   , "mr-3"
   , "rounded"
