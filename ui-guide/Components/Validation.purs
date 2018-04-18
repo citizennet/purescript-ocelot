@@ -19,8 +19,9 @@ _email = SProxy :: SProxy "email"
 password sym =
   mkForm sym (validateNonEmptyStr)
 
-email sym =
-  mkForm sym (validateNonEmptyStr *> validateStrIsEmail "Not an email")
+email sym = mkForm sym \i ->
+  validateNonEmptyStr i
+  *> validateStrIsEmail "Not an email" i
 
 -- Make a two-password form  that will parse to a single password
 passwordForm = ( { p1: _, p2: _ } <$> password _password1 <*> password _password2 )

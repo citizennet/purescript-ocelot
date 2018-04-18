@@ -6,6 +6,7 @@ import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.Lens (Lens', set, view)
 import Data.Lens.Record (prop)
+import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
 import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
@@ -22,14 +23,23 @@ import Unsafe.Coerce (unsafeCoerce)
 type Two (a :: # Type) b = b
 type Const z (a :: # Type) b = z
 
-type InputConfig attrs e a =
-  { value :: Either e a
-  , validate :: Boolean
+type InputConfig attrs vl vd e a =
+  { validated   :: Maybe (Either e a)
+  , setValue    :: vl
+  , setValidate :: vd
   | attrs
+  }
+
+type FieldConfig a =
+  { value    :: a
+  , validate :: Boolean
   }
 
 _value :: ∀ t r. Lens' { value :: t | r } t
 _value = prop (SProxy :: SProxy "value")
+
+_validated :: ∀ t r. Lens' { validated :: t | r } t
+_validated = prop (SProxy :: SProxy "validated")
 
 _validate :: ∀ t r. Lens' { validate :: t | r } t
 _validate = prop (SProxy :: SProxy "validate")
@@ -61,20 +71,27 @@ collapseIfEqual a b symA symB = case a == b of
 ----------
 -- Make forms from fields
 
-mkForm :: ∀ sym input form trash0 trash1 m attrs e a
+mkForm :: ∀ sym input form trash0 trash1 m attrs vl vd e a b
    . IsSymbol sym
   => Monad m
-  => RowCons sym a trash0 input
-  => RowCons sym (InputConfig attrs e a) trash1 form
+  => RowCons sym (FieldConfig a) trash0 input
+  => RowCons sym (InputConfig attrs vl vd e b) trash1 form
   => SProxy sym
-  -> (a -> V e a)
-  -> Polyform.Validation m (FunctionR (Record form)) (Record input) a
+  -> (a -> V e b)
+  -> Polyform.Validation m (FunctionR (Record form)) (Record input) (Maybe b)
 mkForm fieldSymbol validator = Polyform.hoistFnV \inputForm -> do
-  let result = validator (get fieldSymbol inputForm)
-  unV
-    (\e -> Polyform.Invalid $ FunctionR $ set (prop fieldSymbol <<< _value) (Left e))
-    (\v -> Polyform.Valid (FunctionR $ set (prop fieldSymbol <<< _value) (Right v)) v)
-    result
+  let field = get fieldSymbol inputForm
+      result = validator $ _.value field
+  case _.validate field of
+    true  -> unV
+      (\e -> Polyform.Invalid
+             $ FunctionR
+             $ set (prop fieldSymbol <<< _validated) (Just $ Left e))
+      (\v -> Polyform.Valid
+             (FunctionR (set (prop fieldSymbol <<< _validated) (Just $ Right v)))
+             (Just v))
+        result
+    false -> Polyform.Valid (FunctionR id) Nothing
 
 
 ----------
@@ -95,9 +112,14 @@ instance monoidFunctionR :: Monoid (FunctionR a) where
 
 -- Will evaluate the form on an input, resulting either in the form returned with errors, or a successful parse
 -- to an output value.
-runValidation :: ∀ m form a input. Monad m => Polyform.Validation m (FunctionR form) input a -> input -> m (Either form a)
+runValidation :: ∀ m form a input
+  . Monad m
+ => Polyform.Validation m (FunctionR form) input (Maybe a)
+ -> input
+ -> m (Either form a)
 runValidation form input = do
   result <- Polyform.runValidation form input
   pure $ case result of
-    Polyform.Valid (FunctionR transform) a -> Right a
+    Polyform.Valid _ (Just a) -> Right a
+    Polyform.Valid (FunctionR transform) _ -> Left $ transform (unsafeCoerce {})
     Polyform.Invalid (FunctionR transform) -> Left $ transform (unsafeCoerce {})
