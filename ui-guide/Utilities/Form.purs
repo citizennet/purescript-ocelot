@@ -1,26 +1,26 @@
 module UIGuide.Utilities.Form where
 
-import Ocelot.Core.Validation
 import Prelude
 
 import Data.Array ((:))
 import Data.Either (Either(..))
-import Data.Lens (Lens', set)
+import Data.Lens (Lens', set, view)
 import Data.Lens.Record (prop)
 import Data.Monoid (class Monoid)
 import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Data.Tuple (Tuple(..))
 import Data.Validation.Semigroup (V, unV)
-import Data.Variant (inj)
+import Data.Variant (Variant, inj)
+import Ocelot.Core.Validation (validateNonEmptyStr)
 import Polyform.Validation as Polyform
 import Unsafe.Coerce (unsafeCoerce)
 
 ----------
 -- Constants
 
-type Id a = a
-type K a b = a
+type Two (a :: # Type) b = b
+type Const z (a :: # Type) b = z
 
 type InputConfig e a =
   { value :: Either e a
@@ -37,38 +37,52 @@ _validate = prop (SProxy :: SProxy "validate")
 ----------
 -- Concrete Example
 
+type PasswordFormT f =
+  ( password1 :: f ("emptyField" :: String) String
+  , password2 :: f ("emptyField" :: String) String
+  )
+
+_password1 = SProxy :: SProxy "password1"
+_password2 = SProxy :: SProxy "password2"
+
+type PasswordFormValue = Variant (PasswordFormT Two)
+type PasswordFormValidate = Variant (PasswordFormT (Const Boolean))
+
+
 -- Creates a form awaiting whatever the validation is awaiting and parsing to whetever
 -- validation parses to, which can be combined with other forms to parse to a record
 -- of what they all parse to
-password1 = mkForm (SProxy :: SProxy "password1") (validateNonEmptyStr *> validateNonEmptyStr)
-password2 = mkForm (SProxy :: SProxy "password2") (validateNonEmptyStr *> validateNonEmptyStr)
+password1 = mkForm _password1 (validateNonEmptyStr *> validateNonEmptyStr)
+password2 = mkForm _password1 (validateNonEmptyStr *> validateNonEmptyStr)
 
 -- This is the composition, creating a particular form; we've also added a custom validation 'checkEqual'
 -- which serves to collapse two input fields into a single parsed output field.
 myForm = ({ p1: _, p2: _ } <$> password1 <*> password2)
   >>> Polyform.hoistFnV \{ p1, p2 } ->
-    checkEqual p1 p2
-      (\err r -> r
-        { password2
-          { value = case r.password2.value of
-              Right _ -> Left [ err ]
-              Left errs -> Left ( err : errs )
-          }
-        }
-      )
+    collapseIfEqual p1 p2 _password1 _password2
 
-checkEqual a b update = case a == b of
+-- Unnecessary duplication here because of the fucking lens types. But this is a function that verifies
+-- two fields are equal, and if so, collapses their output to a single field. If there is an error, then
+-- both fields collect the error.
+collapseIfEqual a b symA symB = case a == b of
   true -> Polyform.Valid (FunctionR id) a
-  false ->
-    let err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
-     in Polyform.Invalid
-        $ FunctionR
-        $ update err
-
-r =
-  runValidation
-    myForm
-    { password1: "est", password2: "lkasdlkfalsdj" }
+  false -> Polyform.Invalid $ FunctionR setErrors
+    where
+      err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
+      setErrors rec =
+        rec
+        # set
+          (prop symA <<< _value)
+          (case view (prop symA <<< _value) rec of
+            Right _ -> Left [ err ]
+            Left errs -> Left ( err : errs )
+          )
+        # set
+          (prop symB <<< _value)
+          (case view (prop symB <<< _value) rec of
+            Right _ -> Left [ err ]
+            Left errs -> Left ( err : errs )
+          )
 
 
 ----------
@@ -106,6 +120,8 @@ instance monoidFunctionR :: Monoid (FunctionR a) where
 ----------
 -- Validation newtype
 
+-- Will evaluate the form on an input, resulting either in the form returned with errors, or a successful parse
+-- to an output value.
 runValidation :: ∀ m form a input. Monad m => Polyform.Validation m (FunctionR form) input a -> input -> m (Either form a)
 runValidation form input = do
   result <- Polyform.runValidation form input
