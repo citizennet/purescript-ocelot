@@ -43,22 +43,27 @@ _validate = prop (SProxy :: SProxy "validate")
 password1 = mkForm (SProxy :: SProxy "password1") (validateNonEmptyStr *> validateNonEmptyStr)
 password2 = mkForm (SProxy :: SProxy "password2") (validateNonEmptyStr *> validateNonEmptyStr)
 
--- This is the composition, creating a particular form.
+-- This is the composition, creating a particular form; we've also added a custom validation 'checkEqual'
+-- which serves to collapse two input fields into a single parsed output field.
 myForm = ({ p1: _, p2: _ } <$> password1 <*> password2)
   >>> Polyform.hoistFnV \{ p1, p2 } ->
-    if p1 == p2
-      then Polyform.Valid (FunctionR id) p1
-      else
-        let err = inj (SProxy :: SProxy "notEqual") (Tuple p1 p2)
-         in Polyform.Invalid
-            $ FunctionR
-            $ \r -> r
-              { password2
-                { value = case r.password2.value of
-                    Right _ -> Left [ err ]
-                    Left errs -> Left ( err : errs )
-                }
-              }
+    checkEqual p1 p2
+      (\err r -> r
+        { password2
+          { value = case r.password2.value of
+              Right _ -> Left [ err ]
+              Left errs -> Left ( err : errs )
+          }
+        }
+      )
+
+checkEqual a b update = case a == b of
+  true -> Polyform.Valid (FunctionR id) a
+  false ->
+    let err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
+     in Polyform.Invalid
+        $ FunctionR
+        $ update err
 
 r =
   runValidation
