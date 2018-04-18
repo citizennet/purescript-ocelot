@@ -17,12 +17,12 @@ import Text.Email.Validate (isValid)
 -----
 -- Possible validations to run on any field
 
-type Error err = Array (Variant err)
+type Errors err = Array (Variant err)
 
 validateNonEmptyStr
   :: ∀ err
    . String
-  -> V (Error (emptyField :: String | err)) String
+  -> V (Errors (emptyField :: String | err)) String
 validateNonEmptyStr str
   | String.null str = invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
   | otherwise = pure str
@@ -30,7 +30,7 @@ validateNonEmptyStr str
 validateNonEmptyArr
   :: ∀ err a
    . Array a
-  -> V (Error (emptyField :: String | err)) (Array a)
+  -> V (Errors (emptyField :: String | err)) (Array a)
 validateNonEmptyArr [] =
   invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
 validateNonEmptyArr xs = pure xs
@@ -38,7 +38,7 @@ validateNonEmptyArr xs = pure xs
 validateNonEmptyMaybe
   :: ∀ err a
    . Maybe a
-  -> V (Error (emptyField :: String | err)) a
+  -> V (Errors (emptyField :: String | err)) a
 validateNonEmptyMaybe (Just a) = pure a
 validateNonEmptyMaybe Nothing =
   invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
@@ -47,7 +47,7 @@ validateStrIsEmail
   :: ∀ err
    . String
   -> String
-  -> V (Error (badEmail :: String | err)) String
+  -> V (Errors (badEmail :: String | err)) String
 validateStrIsEmail msg email
   | isValid email = pure email
   | otherwise = invalid [ inj (SProxy :: SProxy "badEmail") msg ]
@@ -56,7 +56,7 @@ validateStrIsNumber
   :: ∀ err
    . String
   -> String
-  -> V (Error (invalidNumber :: String | err)) Number
+  -> V (Errors (invalidNumber :: String | err)) Number
 validateStrIsNumber msg = Num.fromString >>>
   maybe (invalid [ inj (SProxy :: SProxy "invalidNumber") msg ] ) pure
 
@@ -64,7 +64,7 @@ validateStrIsCents
   :: ∀ err
    . String
   -> String
-  -> V (Error (invalidCurrency :: String | err)) Cents
+  -> V (Errors (invalidCurrency :: String | err)) Cents
 validateStrIsCents msg = parseCentsFromDollarStr >>>
   maybe (invalid [ inj (SProxy :: SProxy "invalidCurrency") msg ]) pure
 
@@ -72,7 +72,7 @@ validateStrIsInt
   :: ∀ err
    . String
   -> String
-  -> V (Error (invalidInteger :: String | err)) Int
+  -> V (Errors (invalidInteger :: String | err)) Int
 validateStrIsInt msg s
   | canParseTo32Bit s = s # Integer.fromString >>>
       maybe (invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]) pure
@@ -84,7 +84,7 @@ validateMinLength
   => Int
   -> String
   -> f a
-  -> V (Error (underMinLength :: Tuple Int String | err)) (f a)
+  -> V (Errors (underMinLength :: Tuple Int String | err)) (f a)
 validateMinLength n msg f
   | length f >= n = pure f
   | otherwise = invalid [ inj (SProxy :: SProxy "underMinLength") (Tuple n msg) ]
@@ -96,7 +96,7 @@ validateInRange
   -> a
   -> String
   -> a
-  -> V (Error (outOfRange :: String | err)) a
+  -> V (Errors (outOfRange :: String | err)) a
 validateInRange low high msg num
   | low <= num && num <= high = pure num
   | otherwise = invalid [ inj (SProxy :: SProxy "outOfRange") msg ]
@@ -107,7 +107,7 @@ validateGreaterThan
   => a
   -> String
   -> a
-  -> V (Error (notGreaterThan :: String | err)) a
+  -> V (Errors (notGreaterThan :: String | err)) a
 validateGreaterThan min msg num
   | num > min = pure num
   | otherwise = invalid [ inj (SProxy :: SProxy "notGreaterThan") msg ]
@@ -117,7 +117,7 @@ validateLessThan :: ∀ err a
  => a
  -> String
  -> a
- -> V (Error (notLessThan :: String | err)) a
+ -> V (Errors (notLessThan :: String | err)) a
 validateLessThan max msg num
   | num < max = pure num
   | otherwise = invalid [ inj (SProxy :: SProxy "notLessThan") msg ]
@@ -127,7 +127,7 @@ validateDependence :: ∀ err a b
  -> String
  -> a
  -> b
- -> V (Error (dependency :: String | err)) a
+ -> V (Errors (dependency :: String | err)) a
 validateDependence f msg item1 item2
   | f item1 item2 = pure item1
   | otherwise = invalid [ inj (SProxy :: SProxy "dependency") msg ]
