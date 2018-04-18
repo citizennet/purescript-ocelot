@@ -9,7 +9,7 @@ import Ocelot.Block.Input as Input
 import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as Validation
+--  import Ocelot.Core.Validation as Validation
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE)
@@ -90,7 +90,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Just [ Validation.EmptyField ]
+            , valid: Nothing -- Just [ Validation.EmptyField ]
             , inputId: "email-error"
             }
             [ Input.input
@@ -163,7 +163,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
+            , valid: Nothing -- Just [ Validation.OutOfRange "Must be between 0 and 100" ]
             , inputId: "daily-goal-error"
             }
             [ Input.percentage_
@@ -236,7 +236,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Just [ Validation.EmptyField ]
+            , valid: Nothing -- Just [ Validation.EmptyField ]
             , inputId: "budget-error"
             }
             [ Input.currency_

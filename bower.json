@@ -23,7 +23,8 @@
     "purescript-yarn": "^3.0.1",
     "purescript-bigints": "^3.5.0",
     "purescript-arrays": "^4.3.0",
-    "purescript-variant": "^4.1.0"
+    "purescript-variant": "^4.1.0",
+    "purescript-polyform": "^0.6.3"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",

@@ -19,7 +19,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Type as Type
 import Ocelot.Core.Utils ((<&>))
-import Ocelot.Core.Validation (ValidationErrors, htmlE)
+--  import Ocelot.Core.Validation (ValidationErrors, htmlE)
 
 fieldClasses :: Array HH.ClassName
 fieldClasses = HH.ClassName <$>
@@ -54,7 +54,7 @@ labelClasses = HH.ClassName <$>
 type FieldConfig =
   { helpText :: Maybe String
   , label :: String
-  , valid :: Maybe ValidationErrors
+  , valid :: Maybe (Array String) -- ValidationErrors
   , inputId :: String
   }
 
@@ -146,18 +146,19 @@ fieldset_ config = fieldset config []
 
 errorText
   :: ∀ p i
-   . Maybe ValidationErrors
+   . Maybe (Array String) -- ValidationErrors
   -> Array (HH.IProp HTMLp i)
   -> HH.HTML p i
 errorText Nothing _ = HH.span_ []
 errorText (Just e) iprops =
   HH.p
     ( [ HP.classes errorTextClasses ] <&> iprops )
-    ( HH.fromPlainHTML <$> htmlE e )
+    []
+    --  ( HH.fromPlainHTML <$> htmlE e )
 
 errorText_
   :: ∀ p i
-   . Maybe ValidationErrors
+   . Maybe (Array String) -- ValidationErrors
   -> HH.HTML p i
 errorText_ v = errorText v []
 
