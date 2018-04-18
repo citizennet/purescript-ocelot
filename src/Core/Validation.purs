@@ -2,129 +2,136 @@ module Ocelot.Core.Validation where
 
 import Prelude
 
-import Data.Array (singleton)
+import Data.Variant (SProxy(..), Variant, inj)
 import Data.Either (Either(..), either)
 import Data.Foldable (class Foldable, length)
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Eq (genericEq)
-import Data.Generic.Rep.Show (genericShow)
 import Data.Int as Integer
 import Data.Maybe (Maybe(..), maybe)
 import Data.Number as Num
 import Data.String as String
+import Data.Tuple (Tuple(..))
 import Data.Validation.Semigroup (V, invalid, unV)
-import Halogen.HTML as HH
 import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Text.Email.Validate (isValid)
 
 -----
--- Validation types
-
-type ValidationErrors = Array ValidationError
-
-data ValidationError
-  = EmptyField
-  | InvalidEmail
-  | InvalidNumber
-  | InvalidCurrency
-  | InvalidInteger
-  | UnderMinLength Int String
-  | OutOfRange String
-  | NotGreaterThan String
-  | NotLessThan String
-  | Dependency String
-
-derive instance genericValidationError :: Generic ValidationError _
-
-instance eqValidationError :: Eq ValidationError where
-  eq = genericEq
-
-instance showValidationError :: Show ValidationError where
-  show = genericShow
-
-type ErrorMessage = String
-
------
 -- Possible validations to run on any field
 
-validateNonEmptyStr :: String -> V ValidationErrors String
+type Error err = Array (Variant err)
+
+validateNonEmptyStr
+  :: ∀ err
+   . String
+  -> V (Error (emptyField :: String | err)) String
 validateNonEmptyStr str
-  | String.null str = invalid $ pure EmptyField
+  | String.null str = invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
   | otherwise = pure str
 
-validateNonEmptyArr :: ∀ a. Array a -> V ValidationErrors (Array a)
-validateNonEmptyArr [] = invalid $ pure EmptyField
+validateNonEmptyArr
+  :: ∀ err a
+   . Array a
+  -> V (Error (emptyField :: String | err)) (Array a)
+validateNonEmptyArr [] =
+  invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
 validateNonEmptyArr xs = pure xs
 
-validateNonEmptyMaybe :: ∀ a. Maybe a -> V ValidationErrors a
+validateNonEmptyMaybe
+  :: ∀ err a
+   . Maybe a
+  -> V (Error (emptyField :: String | err)) a
 validateNonEmptyMaybe (Just a) = pure a
-validateNonEmptyMaybe Nothing = invalid $ pure EmptyField
+validateNonEmptyMaybe Nothing =
+  invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
 
-validateStrIsEmail :: String -> V ValidationErrors String
-validateStrIsEmail email
+validateStrIsEmail
+  :: ∀ err
+   . String
+  -> String
+  -> V (Error (badEmail :: String | err)) String
+validateStrIsEmail msg email
   | isValid email = pure email
-  | otherwise = invalid $ pure InvalidEmail
+  | otherwise = invalid [ inj (SProxy :: SProxy "badEmail") msg ]
 
-validateStrIsNumber :: String -> V ValidationErrors Number
-validateStrIsNumber = maybe (invalid $ pure InvalidNumber) pure <<< Num.fromString
+validateStrIsNumber
+  :: ∀ err
+   . String
+  -> String
+  -> V (Error (invalidNumber :: String | err)) Number
+validateStrIsNumber msg = Num.fromString >>>
+  maybe (invalid [ inj (SProxy :: SProxy "invalidNumber") msg ] ) pure
 
-validateStrIsCents :: String -> V ValidationErrors Cents
-validateStrIsCents s = maybe (invalid $ pure InvalidCurrency) pure <<< parseCentsFromDollarStr $ s
+validateStrIsCents
+  :: ∀ err
+   . String
+  -> String
+  -> V (Error (invalidCurrency :: String | err)) Cents
+validateStrIsCents msg = parseCentsFromDollarStr >>>
+  maybe (invalid [ inj (SProxy :: SProxy "invalidCurrency") msg ]) pure
 
-validateStrIsInt :: String -> V ValidationErrors Int
-validateStrIsInt s
-  | canParseTo32Bit s = maybe (invalid $ pure InvalidInteger) pure <<< Integer.fromString $ s
-  | otherwise = invalid $ pure InvalidInteger
+validateStrIsInt
+  :: ∀ err
+   . String
+  -> String
+  -> V (Error (invalidInteger :: String | err)) Int
+validateStrIsInt msg s
+  | canParseTo32Bit s = s # Integer.fromString >>>
+      maybe (invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]) pure
+  | otherwise = invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]
 
-validateMinLength :: ∀ f a. Foldable f => Int -> ErrorMessage -> f a -> V ValidationErrors (f a)
+validateMinLength
+  :: ∀ err f a
+   . Foldable f
+  => Int
+  -> String
+  -> f a
+  -> V (Error (underMinLength :: Tuple Int String | err)) (f a)
 validateMinLength n msg f
   | length f >= n = pure f
-  | otherwise = invalid $ pure (UnderMinLength n msg)
+  | otherwise = invalid [ inj (SProxy :: SProxy "underMinLength") (Tuple n msg) ]
 
-validateInRange :: ∀ a. Ord a => a -> a -> ErrorMessage -> a -> V ValidationErrors a
+validateInRange
+  :: ∀ err a
+   . Ord a
+  => a
+  -> a
+  -> String
+  -> a
+  -> V (Error (outOfRange :: String | err)) a
 validateInRange low high msg num
   | low <= num && num <= high = pure num
-  | otherwise = invalid $ pure (OutOfRange msg)
+  | otherwise = invalid [ inj (SProxy :: SProxy "outOfRange") msg ]
 
-validateGreaterThan :: ∀ a. Ord a => a -> ErrorMessage -> a -> V ValidationErrors a
+validateGreaterThan
+  :: ∀ err a
+   . Ord a
+  => a
+  -> String
+  -> a
+  -> V (Error (notGreaterThan :: String | err)) a
 validateGreaterThan min msg num
   | num > min = pure num
-  | otherwise = invalid $ pure (NotGreaterThan msg)
+  | otherwise = invalid [ inj (SProxy :: SProxy "notGreaterThan") msg ]
 
-validateLessThan :: ∀ a. Ord a => a -> ErrorMessage -> a -> V ValidationErrors a
+validateLessThan :: ∀ err a
+  . Ord a
+ => a
+ -> String
+ -> a
+ -> V (Error (notLessThan :: String | err)) a
 validateLessThan max msg num
   | num < max = pure num
-  | otherwise = invalid $ pure (NotLessThan msg)
+  | otherwise = invalid [ inj (SProxy :: SProxy "notLessThan") msg ]
 
-validateDependence :: ∀ a b. (a -> b -> Boolean) -> ErrorMessage -> a -> b -> V ValidationErrors a
+validateDependence :: ∀ err a b
+  . (a -> b -> Boolean)
+ -> String
+ -> a
+ -> b
+ -> V (Error (dependency :: String | err)) a
 validateDependence f msg item1 item2
   | f item1 item2 = pure item1
-  | otherwise = invalid $ pure (Dependency msg)
+  | otherwise = invalid [ inj (SProxy :: SProxy "dependency") msg ]
 
-
------
--- Helper functions for printing error messages from ValidationErrors
-
-showE :: ValidationError -> String
-showE EmptyField = "Required"
-showE InvalidEmail = "Must be a valid email"
-showE InvalidNumber = "Must be a valid number"
-showE InvalidCurrency = "Must be a valid dollar amount, like $500 or $2,250.90."
-showE InvalidInteger = "Must be a valid integer"
-showE (UnderMinLength _ msg) = msg
-showE (OutOfRange msg) = msg
-showE (NotGreaterThan msg) = msg
-showE (NotLessThan msg) = msg
-showE (Dependency msg) = msg
-
-htmlE :: ValidationErrors -> Array HH.PlainHTML
-htmlE es | length es == 1 = HH.text <<< showE <$> es
-         | otherwise = toHTML
-  where
-    toHTML =
-      [ HH.p_ [ HH.text "You have errors:" ]
-      , HH.ul_ $ HH.li_ <<< singleton <<< HH.text <<< showE <$> es
-      ]
 
 -----
 -- Additional helpers for converting to and from Either
