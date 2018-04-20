@@ -10,7 +10,7 @@ import Prelude
 
 import Data.Array (nubBy, snoc)
 import Data.Bifunctor (rmap, lmap)
-import Data.Foldable (foldr)
+import Data.Foldable (elem, foldr)
 import Data.String (Pattern(..), drop, null, split)
 import Data.String.Utils (startsWith)
 import Data.Tuple (Tuple(..))
@@ -91,6 +91,8 @@ classify str
   | startsWith "max-" str = "max" <-> classify (drop 4 str)
   | startsWith "w-" str = "width"
   | startsWith "h-" str = "height"
+  | startsWith "overflow-" str && (classifyOverflow $ drop 9 str) /= drop 9 str
+    = "overflow" <-> (classifyOverflow $ drop 9 str)
   | otherwise = str
 
 classifySide
@@ -105,6 +107,15 @@ classifySide str
   | startsWith "y-" str = "vertical"
   | startsWith "-" str = "all"
   | otherwise = ""
+
+classifyOverflow
+  :: String
+  -> String
+classifyOverflow str
+  | startsWith "x-" str = "horizontal" <-> (classifyOverflow $ drop 2 str)
+  | startsWith "y-" str = "vertical" <-> (classifyOverflow $ drop 2 str)
+  | elem str ["auto", "hidden", "visible", "scroll"] = ""
+  | otherwise = str
 
 append'
   :: String
