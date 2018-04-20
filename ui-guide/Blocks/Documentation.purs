@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv, HTMLsection, HTMLheader)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Utils ((<&>))
 
 type DocumentationConfig =
@@ -69,10 +69,10 @@ intro
 intro config iprops =
   HH.header
     ( [ HP.classes introClasses ] <&> iprops )
-    [ Type.heading
+    [ Format.heading
       [ HP.classes headingClasses ]
       [ HH.text config.header ]
-    , Type.subHeading
+    , Format.subHeading
       [ HP.classes subHeadingClasses ]
       [ HH.text config.subheader ]
     ]

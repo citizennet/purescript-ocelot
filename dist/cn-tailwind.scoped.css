@@ -4915,6 +4915,26 @@ body .ocelot-scoped {
   min-height: 0;
 }
 
+.ocelot-scoped .min-h-10 {
+  min-height: 2.5rem;
+}
+
+.ocelot-scoped .min-h-12 {
+  min-height: 3rem;
+}
+
+.ocelot-scoped .min-h-16 {
+  min-height: 4rem;
+}
+
+.ocelot-scoped .min-h-20 {
+  min-height: 5rem;
+}
+
+.ocelot-scoped .min-h-80 {
+  min-height: 20rem;
+}
+
 .ocelot-scoped .min-h-full {
   min-height: 100%;
 }
@@ -11963,6 +11983,26 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .sm\:min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-12 {
+    min-height: 3rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-16 {
+    min-height: 4rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-20 {
+    min-height: 5rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-80 {
+    min-height: 20rem;
+  }
+
   .ocelot-scoped .sm\:min-h-full {
     min-height: 100%;
   }
@@ -18546,6 +18586,26 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:min-h-0 {
     min-height: 0;
+  }
+
+  .ocelot-scoped .md\:min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .ocelot-scoped .md\:min-h-12 {
+    min-height: 3rem;
+  }
+
+  .ocelot-scoped .md\:min-h-16 {
+    min-height: 4rem;
+  }
+
+  .ocelot-scoped .md\:min-h-20 {
+    min-height: 5rem;
+  }
+
+  .ocelot-scoped .md\:min-h-80 {
+    min-height: 20rem;
   }
 
   .ocelot-scoped .md\:min-h-full {
@@ -25133,6 +25193,26 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .lg\:min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-12 {
+    min-height: 3rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-16 {
+    min-height: 4rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-20 {
+    min-height: 5rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-80 {
+    min-height: 20rem;
+  }
+
   .ocelot-scoped .lg\:min-h-full {
     min-height: 100%;
   }
@@ -31716,6 +31796,26 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:min-h-0 {
     min-height: 0;
+  }
+
+  .ocelot-scoped .xl\:min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-12 {
+    min-height: 3rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-16 {
+    min-height: 4rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-20 {
+    min-height: 5rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-80 {
+    min-height: 20rem;
   }
 
   .ocelot-scoped .xl\:min-h-full {

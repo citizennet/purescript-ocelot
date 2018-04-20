@@ -12,7 +12,6 @@ labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "flex"
   , "flex-row"
-  , "items-center"
   , "inline-block"
   , "py-2"
   , "cursor-pointer"

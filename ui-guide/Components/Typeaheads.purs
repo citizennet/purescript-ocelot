@@ -8,12 +8,9 @@ import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Array (head, take)
-import Data.Either (either, note)
-import Data.Either.Nested (Either4, Either8, Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2, Coproduct4, Coproduct8, Coproduct3)
-import Data.Maybe (Maybe(..), maybe)
-import Data.Newtype (class Newtype)
-import Data.Traversable (traverse)
+import Data.Either.Nested (Either2)
+import Data.Functor.Coproduct.Nested (Coproduct3)
+import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
@@ -23,11 +20,9 @@ import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
-import Ocelot.Block.Input as Input
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as Validation
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -167,7 +162,7 @@ cnDocumentationBlocks =
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
               { label: "Locations"
@@ -186,7 +181,7 @@ cnDocumentationBlocks =
                 ( HE.input $ HandleTypeaheadLocation 0 )
               ]
             , HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: "Locations"
@@ -210,7 +205,7 @@ cnDocumentationBlocks =
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render" ]
             , FormField.field_
               { label: "Users"
@@ -229,7 +224,7 @@ cnDocumentationBlocks =
                 ( HE.input $ HandleTypeaheadUser 0 )
               ]
             , HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
               { label: "Users"
@@ -260,7 +255,7 @@ cnDocumentationBlocks =
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
               { label: "Locations"
@@ -279,7 +274,7 @@ cnDocumentationBlocks =
                 ( HE.input $ HandleTypeaheadLocation 2 )
               ]
             , HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: "Locations"
@@ -303,7 +298,7 @@ cnDocumentationBlocks =
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
             [ HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render" ]
             , FormField.field_
               { label: "Users"
@@ -322,7 +317,7 @@ cnDocumentationBlocks =
                 ( HE.input $ HandleTypeaheadUser 2 )
               ]
             , HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
               { label: "Users"

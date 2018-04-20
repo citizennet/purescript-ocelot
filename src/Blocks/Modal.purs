@@ -5,8 +5,8 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Type as Type
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Block.Format as Format
+import Ocelot.Core.Utils (css, (<&>))
 
 type HeaderProps p i =
   { buttons :: Array (HH.HTML p i)
@@ -62,7 +62,7 @@ bodyClasses = HH.ClassName <$>
   , "flex"
   ]
 
-body 
+body
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
@@ -114,8 +114,8 @@ header props =
       [ HP.classes outerHeaderClasses ]
       ( [ HH.div
         [ HP.classes innerHeaderClasses ]
-          [ HH.h2
-            [ HP.classes Type.subHeadingClassesNoMargin ]
+          [ Format.subHeading
+            [ css "mb-0" ]
             props.title
           ]
         ]

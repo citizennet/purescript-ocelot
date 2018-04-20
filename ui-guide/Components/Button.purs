@@ -7,7 +7,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -52,14 +52,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Standard" ]
                 , Button.button_
                   [ HH.text "Cancel" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.button
                   [ HP.disabled true ]
@@ -70,14 +70,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Primary" ]
                 , Button.buttonPrimary_
                   [ HH.text "Submit" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.buttonPrimary
                   [ HP.disabled true ]
@@ -92,14 +92,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Standard" ]
                 , Button.button_
                   [ HH.text "Cancel" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.button
                   [ HP.disabled true ]
@@ -110,14 +110,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Primary" ]
                 , Button.buttonPrimary_
                   [ HH.text "Submit" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.buttonPrimary
                   [ HP.disabled true ]
@@ -132,14 +132,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Standard" ]
                 , Button.buttonDark_
                   [ HH.text "Cancel" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.buttonDark
                   [ HP.disabled true ]
@@ -150,14 +150,14 @@ component =
               [ css "mb-6 flex" ]
               [ HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Primary" ]
                 , Button.buttonPrimary_
                   [ HH.text "Submit" ]
                 ]
               , HH.div
                 [ css "flex-1" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Disabled" ]
                 , Button.buttonPrimary
                   [ HP.disabled true ]
@@ -176,7 +176,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonLeft_
@@ -187,7 +187,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonLeft
@@ -204,7 +204,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonLeft_
@@ -215,7 +215,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonLeft
@@ -232,7 +232,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonDarkLeft_
@@ -243,7 +243,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Two Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonDarkLeft
@@ -262,7 +262,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft_
@@ -275,7 +275,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft
@@ -295,7 +295,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft_
@@ -308,7 +308,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft
@@ -328,7 +328,7 @@ component =
             [ Backdrop.content_
               [ HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft_
@@ -341,7 +341,7 @@ component =
                 ]
               , HH.div
                 [ css "mb-6" ]
-                [ Type.caption_
+                [ Format.caption_
                   [ HH.text "Three Disabled Buttons" ]
                 , Button.buttonGroup_
                   [ Button.buttonPrimaryLeft

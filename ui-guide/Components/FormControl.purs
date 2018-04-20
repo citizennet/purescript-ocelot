@@ -2,25 +2,17 @@ module UIGuide.Components.FormControl where
 
 import Prelude
 
-import Ocelot.Block.Button as Button
-import Ocelot.Block.Card as Card
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.FormField as FormField
-import Ocelot.Block.FormHeader as FormHeader
-import Ocelot.Block.FormPanel as FormPanel
 import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Input as Input
 import Ocelot.Block.Radio as Radio
-import Ocelot.Block.Range as Range
-import Ocelot.Block.Toggle as Toggle
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -71,7 +63,7 @@ component =
             Documentation.callout_
               [ Backdrop.backdropWhite
                 [ css "flex-col" ]
-                [ Type.subHeading_
+                [ Format.subHeading_
                   [ Icon.tip [ css "text-yellow pr-2" ]
                   , HH.text "Accessibility Note"
                   ]
@@ -97,7 +89,7 @@ component =
                 [ HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Vertical List" ]
                   , FormField.fieldset_
                     { label: "Platform"
@@ -123,7 +115,7 @@ component =
                 , HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
                     { label: "Platform"
@@ -159,7 +151,7 @@ component =
                 [ HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Vertical List" ]
                   , FormField.fieldset_
                     { label: "Platform"
@@ -190,7 +182,7 @@ component =
                 , HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Horizontal List" ]
                   , FormField.fieldset_
                     { label: "Platform"
@@ -237,7 +229,7 @@ component =
                 [ HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Vertical List" ]
                   , FormField.fieldset_
                     { label: "Optimization Goal"
@@ -263,7 +255,7 @@ component =
                 , HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
                     { label: "Previews"
@@ -299,7 +291,7 @@ component =
                 [ HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Vertical List" ]
                   , FormField.fieldset_
                     { label: "Optimization Goal"
@@ -330,7 +322,7 @@ component =
                 , HH.div
                   [ css "flex-1" ]
                   [ HH.h3
-                    [ HP.classes Type.captionClasses ]
+                    [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
                     { label: "Disabled Previews"
@@ -372,7 +364,7 @@ component =
           -- , subheader: "Select a numeric value between a min and max" }
           -- [ Backdrop.backdrop_
             -- [ HH.h3
-              -- [ HP.classes Type.captionClasses ]
+              -- [ HP.classes Format.captionClasses ]
               -- [ HH.text "Standalone Range Input" ]
             -- , Range.range
               -- [ HP.id_ "range_"
@@ -382,7 +374,7 @@ component =
             -- ]
           -- , Backdrop.backdrop_
             -- [ HH.h3
-              -- [ HP.classes Type.captionClasses ]
+              -- [ HP.classes Format.captionClasses ]
               -- [ HH.text "Range Input with Form Control" ]
             -- , FormField.field_
               -- { label: "Dave's OO Emails"

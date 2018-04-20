@@ -1,5 +1,6 @@
 module Ocelot.Core.Utils
-  ( css
+  ( blockBuilder
+  , css
   , appendIProps
   , (<&>)
   , testId
@@ -7,19 +8,31 @@ module Ocelot.Core.Utils
 
 import Prelude
 
-import Data.Array (nub, nubBy, snoc)
+import Data.Array (nubBy, snoc)
 import Data.Bifunctor (rmap, lmap)
 import Data.Foldable (foldr)
 import Data.String (Pattern(..), drop, null, split)
 import Data.String.Utils (startsWith)
 import Data.Tuple (Tuple(..))
-import Debug.Trace (spy)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.DOM.Prop (Prop(..))
 import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
+
+blockBuilder
+  :: ∀ r p i
+   . ( Array (IProp r i)
+       -> Array (HH.HTML p i)
+       -> HH.HTML p i
+     )
+  -> Array HH.ClassName
+  -> Array (IProp r i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+blockBuilder elem classes iprops =
+  elem $ [ HP.classes classes ] <&> iprops
 
 testId
   :: ∀ r i

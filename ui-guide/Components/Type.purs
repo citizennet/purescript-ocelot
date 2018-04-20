@@ -6,8 +6,7 @@ import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Type as Type
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Block.Format as Format
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -53,21 +52,21 @@ cnDocumentationBlocks =
         [ Backdrop.content_
           [ HH.div
             [ css "flex-1 flex flex-col justify-between" ]
-            [ Type.heading_
+            [ Format.heading_
               [ HH.text "H1 — heading" ]
-            , Type.subHeading_
+            , Format.subHeading_
               [ HH.text "H2 — subHeading" ]
-            , Type.contentHeading_
+            , Format.contentHeading_
               [ HH.text "H3 — contentHeading" ]
-            , Type.caption_
+            , Format.caption_
               [ HH.text "H4 — caption" ]
-            , Type.p_
+            , Format.p_
               [ HH.text "p — plain pragraph" ]
-            , Type.p
-              [ HP.classes Type.mutedClasses ]
+            , Format.p
+              [ HP.classes Format.mutedClasses ]
               [ HH.text ".muted" ]
-            , Type.p
-              [ HP.classes Type.linkClasses ]
+            , Format.p
+              [ HP.classes Format.linkClasses ]
               [ HH.text ".link" ]
             ]
           ]
@@ -76,21 +75,21 @@ cnDocumentationBlocks =
         [ Backdrop.content_
           [ HH.div
             [ css "flex-1 flex flex-col justify-between" ]
-            [ Type.headingDark_
+            [ Format.headingDark_
               [ HH.text "H1 — headingDark" ]
-            , Type.subHeadingDark_
+            , Format.subHeadingDark_
               [ HH.text "H2 — subHeadingDark" ]
-            , Type.contentHeading_
+            , Format.contentHeading_
               [ HH.text "H3 — contentHeading" ]
-            , Type.caption_
+            , Format.caption_
               [ HH.text "H4 — caption" ]
-            , Type.p_
+            , Format.p_
               [ HH.text "p — plain pragraph" ]
-            , Type.p
-              [ HP.classes Type.mutedClasses ]
+            , Format.p
+              [ HP.classes Format.mutedClasses ]
               [ HH.text ".muted" ]
-            , Type.p
-              [ HP.classes Type.linkDarkClasses ]
+            , Format.p
+              [ HP.classes Format.linkDarkClasses ]
               [ HH.text ".linkDark" ]
             ]
           ]

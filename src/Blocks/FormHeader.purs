@@ -65,7 +65,7 @@ formHeader props =
       ( case props.brand of
           Just src  ->
             [ HH.div
-              [ HP.class_ $ HH.ClassName "w-20" ]
+              [ HP.class_ $ HH.ClassName "w-16" ]
               [ HH.img [ HP.src src ] ]
             ]
           otherwise -> []

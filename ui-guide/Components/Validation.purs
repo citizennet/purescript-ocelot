@@ -10,7 +10,7 @@ import DOM (DOM)
 import Data.Array as Array
 import Data.Bifunctor as Bifunctor
 import Data.Either.Nested (Either4)
-import Data.Functor.Coproduct.Nested (Coproduct4, Coproduct3)
+import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Generic.Rep as Generic
 import Data.Generic.Rep.Show as Generic.Show
 import Data.Map as Map
@@ -30,7 +30,6 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Button as Button
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Input as Input
-import Ocelot.Block.Type as Type
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
 import Ocelot.Core.Validation as CV

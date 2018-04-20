@@ -19,7 +19,7 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Modal as Modal
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
 import UIGuide.Utilities.Async as Async
@@ -67,7 +67,7 @@ component =
         [ Modal.header
           { buttons:
               [ HH.a
-                [ HP.classes ( Type.linkDarkClasses <> [ HH.ClassName "mr-4" ] ) ]
+                [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] ) ]
                 [ HH.text "Cancel" ]
               , Button.buttonPrimary_ [ HH.text "Submit" ]
               ]
@@ -77,7 +77,7 @@ component =
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1 m-10" ]
             [ HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
               { label: "Locations"
@@ -96,7 +96,7 @@ component =
                 ( const Nothing )
               ]
             , HH.h3
-              [ HP.classes Type.captionClasses ]
+              [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: "Locations"

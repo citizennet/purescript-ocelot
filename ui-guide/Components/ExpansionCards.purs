@@ -26,7 +26,7 @@ import Ocelot.Block.Expandable as Expandable
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Toggle as Toggle
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TA
 import Ocelot.Core.Typeahead as TACore
 import UIGuide.Block.Backdrop as Backdrop
@@ -193,11 +193,11 @@ cnDocumentationBlocks st =
       [ Documentation.callout_
         [ Backdrop.backdropWhite
           [ css "flex-col" ]
-          [ Type.subHeading_
+          [ Format.subHeading_
             [ Icon.info [ css "text-yellow pr-2" ]
             , HH.text "Animation Warning"
             ]
-          , Type.p_
+          , Format.p_
             [ HH.text "If the expansion card or any of its parents have "
             , HH.code_ [ HH.text "overflow: hidden" ]
             , HH.text " set, it may cause the collapse and expand animations to fail in some browsers, resulting in a rougher transition."
@@ -214,8 +214,8 @@ cnDocumentationBlocks st =
                   $ HE.input_
                   $ ToggleCard _singleLocation
                 ]
-                [ Type.subHeading_ [ HH.text "Locations" ]
-                , Type.p_ [ HH.text "Here are some location typeaheads for you. Initially hidden from view since you may not be interested in them." ]
+                [ Format.subHeading_ [ HH.text "Locations" ]
+                , Format.p_ [ HH.text "Here are some location typeaheads for you. Initially hidden from view since you may not be interested in them." ]
                 ]
               , Expandable.content_
                 st.singleLocation
@@ -262,7 +262,7 @@ cnDocumentationBlocks st =
                   $ HE.input_
                   $ ToggleCard _singleUser
                 ]
-                [ Type.subHeading_ [ HH.text "Users" ] ]
+                [ Format.subHeading_ [ HH.text "Users" ] ]
               , Expandable.content_
                 st.singleUser
                 [ FormField.field_
@@ -310,9 +310,9 @@ cnDocumentationBlocks st =
       [ Backdrop.backdrop_
         [ Backdrop.content_
           [ Card.card_
-            [ Type.subHeading_
+            [ Format.subHeading_
               [ HH.text "Optimization Rules Engine" ]
-            , Type.p_
+            , Format.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
               { label: "Enabled"
@@ -368,9 +368,9 @@ cnDocumentationBlocks st =
           ]
         , Backdrop.content_
           [ Card.card_
-            [ Type.subHeading_
+            [ Format.subHeading_
               [ HH.text "Optimization Rules Engine" ]
-            , Type.p_
+            , Format.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
               { label: "Enabled"

@@ -8,7 +8,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Utils ((<&>))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -45,14 +45,14 @@ component =
           [ Backdrop.backdrop_
             [ Backdrop.content_
               [ HH.p
-                ( [ HP.classes Type.subHeadingClasses ] <&>
+                ( [ HP.classes Format.subHeadingClasses ] <&>
                   [ HP.class_ $ HH.ClassName "min-w-9 justify-center" ]
                 )
                 [ icon ]
               ]
             ]
           ]
-        , Type.caption
+        , Format.caption
           [ HP.class_ $ HH.ClassName "text-center" ]
           [ HH.text name ]
         ]

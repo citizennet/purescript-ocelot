@@ -7,10 +7,6 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
 
-data ExpansionStatus
-  = Collapsed
-  | Expanded
-
 baseCardClasses :: Array HH.ClassName
 baseCardClasses = HH.ClassName <$>
   [ "bg-white"

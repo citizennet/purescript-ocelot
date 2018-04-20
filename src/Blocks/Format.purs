@@ -1,4 +1,4 @@
-module Ocelot.Block.Type where
+module Ocelot.Block.Format where
 
 import Prelude
 
@@ -24,21 +24,15 @@ headingDarkClasses = headingClasses <>
     ]
   )
 
-subHeadingClassesNoMargin :: Array HH.ClassName
-subHeadingClassesNoMargin = HH.ClassName <$>
+subHeadingClasses :: Array HH.ClassName
+subHeadingClasses = HH.ClassName <$>
   [ "text-xl"
   , "font-medium"
   , "leading-loose"
   , "flex"
   , "items-center"
+  , "mb-6"
   ]
-
-subHeadingClasses :: Array HH.ClassName
-subHeadingClasses = subHeadingClassesNoMargin <>
-  ( HH.ClassName <$>
-    [ "mb-6"
-    ]
-  )
 
 subHeadingDarkClasses :: Array HH.ClassName
 subHeadingDarkClasses = subHeadingClasses <>

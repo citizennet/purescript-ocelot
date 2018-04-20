@@ -18,7 +18,7 @@ import Ocelot.Block.Icon as Icon
 import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Typeahead as TA
 import Ocelot.Core.Utils ((<&>))
 import Select as Select
@@ -244,9 +244,6 @@ renderTA props renderContainer renderSelectionItem st =
         TA.Many xs    -> renderMulti xs
         TA.Limit _ xs -> renderMulti xs
 
-    itemProps item =
-      [ HE.onClick $ HE.input_ $ TA.Remove item ]
-
     render selectState =
       HH.div_
         [ renderSearch
@@ -264,7 +261,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ HP.class_ $ HH.ClassName $ maybe "offscreen" (const "") x ]
           ( ( maybe [] pure $ renderSingleItem <$> x ) <>
             [ Input.borderRight
-              [ HP.classes Type.linkClasses ]
+              [ HP.classes Format.linkClasses ]
               [ HH.text "Change" ]
             ]
           )
@@ -294,7 +291,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Type.linkClasses ]
+          [ HP.classes Format.linkClasses ]
           [ HH.text "Browse" ]
         ]
 
@@ -321,12 +318,13 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Type.linkClasses ]
+          [ HP.classes Format.linkClasses ]
           [ HH.text "Browse" ]
         ]
 
     renderSelectionItem' x =
-      ItemContainer.selectionGroup renderSelectionItem (itemProps x) x
+      ItemContainer.selectionGroup
+        renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
 
     renderContainer_
       | isSuccess st.items = renderContainer
