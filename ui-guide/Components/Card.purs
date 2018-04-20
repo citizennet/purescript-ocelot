@@ -3,11 +3,12 @@ module UIGuide.Components.Card where
 import Prelude
 
 import Ocelot.Block.Card as Card
+import Ocelot.Block.Format as Format
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Component as Component
+import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
@@ -37,18 +38,17 @@ card =
     render :: State -> H.ComponentHTML Query
     render _ =
       HH.div_
-      [ Documentation.documentation
+      [ Documentation.block_
           { header: "Card"
           , subheader: "Information on a card"
           }
-          [ Component.component
-              { title: "Card" }
-                [ Card.card_
-                  [ Card.header_
-                    [ HH.text "Summary" ]
-                  , meta
-                  ]
-                ]
+          [ Backdrop.backdrop_
+            [ Card.card_
+              [ Format.contentHeading_
+                [ HH.text "Summary" ]
+              , meta
+              ]
+            ]
           ]
       ]
       where

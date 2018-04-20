@@ -18,21 +18,22 @@ import Halogen.Storybook.Proxy (ProxyS)
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
-import UIGuide.Components.Card as Card
+import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
-import UIGuide.Components.Icon as Icon
-import UIGuide.Components.Tab as Tab
+import UIGuide.Components.Icons as Icons
+import UIGuide.Components.Modals as Modals
 import UIGuide.Components.TextFields as TextFields
-import UIGuide.Components.Validation as Validation
+import UIGuide.Components.Type as Type
+import UIGuide.Components.Typeaheads as Typeaheads
 
 ----------
 -- Routes
 
 groups :: Array Group
 groups =
-  [ Components
-  , FormElements
-  , Behaviors
+  [ Basics
+  , Components
+  -- , Behaviors
   ]
 
 type RouteEffects eff =
@@ -52,18 +53,54 @@ type RouteConfig eff =
 
 routes :: ∀ eff. Map String (RouteConfig eff)
 routes = fromFoldable
-  [ Tuple "tabs"
-    { anchor: "Tabs", component: proxy Tab.component, group: Components }
-  , Tuple "cards"
-    { anchor: "Cards", component: proxy Card.card, group: Components }
+  -- [ Tuple "tabs"
+    -- { anchor: "Tabs"
+    -- , component: proxy Tab.component
+    -- , group: FormElements
+    -- }
+  [ Tuple "expandables"
+    { anchor: "Expansion Cards"
+    , component: proxy ExpansionCards.component
+    , group: Components
+    }
   , Tuple "textfields"
-      { anchor: "Text Fields", component: proxy TextFields.component, group: FormElements }
+    { anchor: "Text Fields"
+    , component: proxy TextFields.component
+    , group: Components
+    }
+  , Tuple "typeaheads"
+    { anchor: "Typeaheads"
+    , component: proxy Typeaheads.component
+    , group: Components
+    }
   , Tuple "buttons"
-      { anchor: "Buttons", component: proxy Button.component, group: FormElements }
-  , Tuple "formcontrols"
-      { anchor: "Form Controls", component: proxy FormControl.component, group: FormElements }
-  , Tuple "validation"
-      { anchor: "Validation", component: proxy Validation.component, group: Behaviors }
-  , Tuple "icon"
-      { anchor: "Icon", component: proxy Icon.icon, group: FormElements }
+    { anchor: "Buttons"
+    , component: proxy Button.component
+    , group: Components
+    }
+  , Tuple "controls"
+    { anchor: "Controls"
+    , component: proxy FormControl.component
+    , group: Components
+    }
+  , Tuple "modals"
+    { anchor: "Modals"
+    , component: proxy Modals.component
+    , group: Components
+    }
+  -- , Tuple "validation"
+    -- { anchor: "Validation"
+    -- , component: proxy Validation.component
+    -- , group: Behaviors
+    -- }
+  , Tuple "type"
+    { anchor: "Type"
+    , component: proxy Type.component
+    , group: Basics
+    }
+  , Tuple "icons"
+    { anchor: "Icons"
+    , component: proxy Icons.component
+    , group: Basics
+    }
   ]

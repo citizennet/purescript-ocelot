@@ -6,7 +6,7 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Class (class MonadAff)
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), maybe)
 import Data.StrMap (StrMap, fromFoldable, singleton)
 import Data.Time.Duration (Milliseconds(..))
 import Data.Tuple (Tuple(..))
@@ -14,11 +14,13 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Icon as Icon
 import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Typeahead as TA
+import Ocelot.Core.Utils ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 
@@ -26,16 +28,18 @@ import Select.Utils.Setters as Setters
 ----------
 -- Input types expected. This needs to be defined for each 'item' type we have.
 
-type RenderTypeaheadItem o item eff
-  = { toStrMap :: item -> StrMap String
-    , renderContainer :: RenderContainer o item eff
-    , renderItem :: item -> HH.PlainHTML }
+type RenderTypeaheadItem o item eff =
+  { toStrMap :: item -> StrMap String
+  , renderContainer :: RenderContainer o item eff
+  , renderItem :: item -> HH.PlainHTML
+  }
 
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
   , renderContainer: defRenderContainer' defRenderFuzzy
-  , renderItem: HH.text }
+  , renderItem: HH.text
+  }
 
 ----------
 -- Default rendering
@@ -63,13 +67,14 @@ defRenderContainer
 defRenderContainer renderFuzzy addlHTML selectState =
   HH.div
     [ HP.class_ $ HH.ClassName "relative" ]
-    if selectState.visibility == Select.Off then []
-    else
-    [ ItemContainer.itemContainer
-        selectState.highlightedIndex
-        (renderFuzzy <$> selectState.items)
-        addlHTML
-    ]
+    if selectState.visibility == Select.Off
+      then []
+      else
+        [ ItemContainer.itemContainer
+            selectState.highlightedIndex
+            (renderFuzzy <$> selectState.items)
+            addlHTML
+        ]
 
 defRenderContainer'
   :: ∀ o item eff
@@ -216,7 +221,7 @@ renderTA :: ∀ o item err eff m
  -> TA.State item err (TA.Effects eff)
  -> TAParentHTML o item err (TA.Effects eff) m
 renderTA props renderContainer renderSelectionItem st =
-  renderAll $
+  renderSlot $
     HH.slot
       unit
       Select.component
@@ -233,37 +238,93 @@ renderTA props renderContainer renderSelectionItem st =
       , render: \selectState -> HH.div_ [ renderSearch, renderContainer_ selectState ]
       }
 
-    itemProps item = [ HE.onClick (HE.input_ (TA.Remove item)) ]
-
-    renderAll slot =
+    renderSlot =
       case st.selections of
-        TA.One Nothing ->
-          HH.div_ [ slot ]
-        TA.One (Just x) ->
-          HH.span_ [ renderSelection x, slot ]
-        TA.Many xs ->
-          HH.div_ [ renderSelections xs, slot ]
-        TA.Limit _ xs ->
-          HH.div_ [ renderSelections xs, slot ]
+        TA.One x      -> renderSingle x
+        TA.Many xs    -> renderMulti xs
+        TA.Limit _ xs -> renderMulti xs
 
-    renderSelection x =
-      ItemContainer.selectionContainer
-        [ ItemContainer.selectionGroup renderSelectionItem (itemProps x) x ]
-    renderSelections [] =
-      HH.div_ []
-    renderSelections xs =
-      ItemContainer.selectionContainer
-        $ (\x -> ItemContainer.selectionGroup renderSelectionItem (itemProps x) x) <$> xs
+    render selectState =
+      HH.div_
+        [ renderSearch
+        , renderContainer selectState
+        ]
 
     renderSearch =
-      HH.label
-        [ HP.classes Input.inputOuterClasses ]
-        [ Input.input
-          ( Setters.setInputProps props )
-        , HH.span
-          [ HP.classes $ Input.inputRightBorderClasses <> Type.linkClasses ]
+      case st.selections of
+        TA.One x  -> renderSingleSearch x
+        otherwise -> renderMultiSearch
+
+    renderSingle x slot =
+      HH.label_
+        [ Input.inputGroup
+          [ HP.class_ $ HH.ClassName $ maybe "offscreen" (const "") x ]
+          ( ( maybe [] pure $ renderSingleItem <$> x ) <>
+            [ Input.borderRight
+              [ HP.classes Format.linkClasses ]
+              [ HH.text "Change" ]
+            ]
+          )
+        , HH.div
+          [ HP.class_ $ HH.ClassName $ maybe "" (const "offscreen") x ]
+          [ slot ]
+        ]
+
+    renderSingleItem x =
+      HH.div
+        [ HP.classes Input.mainLeftClasses ]
+        [ renderSelectionItem' x ]
+
+    renderSingleSearch x =
+      Input.inputGroup_
+        [ Input.inputCenter
+          ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
+            <&> Setters.setInputProps props
+          )
+        , Input.addonCenter
+          [ HP.class_
+            $ HH.ClassName
+            $ case st.items of
+                Loading -> ""
+                otherwise -> "offscreen"
+          ]
+          [ Icon.loading_ ]
+        , Input.addonLeft_ [ Icon.search_ ]
+        , Input.borderRight
+          [ HP.classes Format.linkClasses ]
           [ HH.text "Browse" ]
         ]
+
+    renderMulti xs slot =
+      HH.div_
+        ( [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
+          , slot
+          ]
+        )
+
+    renderMultiSearch =
+      Input.inputGroup_
+        [ Input.inputCenter
+          ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
+            <&> Setters.setInputProps props
+          )
+        , Input.addonCenter
+          [ HP.class_
+            $ HH.ClassName
+            $ case st.items of
+                Loading -> ""
+                otherwise -> "offscreen"
+          ]
+          [ Icon.loading_ ]
+        , Input.addonLeft_ [ Icon.search_ ]
+        , Input.borderRight
+          [ HP.classes Format.linkClasses ]
+          [ HH.text "Browse" ]
+        ]
+
+    renderSelectionItem' x =
+      ItemContainer.selectionGroup
+        renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
 
     renderContainer_
       | isSuccess st.items = renderContainer
