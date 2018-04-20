@@ -56,7 +56,7 @@ bodyClasses = HH.ClassName <$>
   , "overflow-auto"
   , "max-h-full"
   , "w-full"
-  , "max-w-2xl"
+  , "max-w-lg"
   , "m-auto"
   , "flex-col"
   , "flex"
@@ -81,7 +81,7 @@ body_ = body []
 headerClasses :: Array HH.ClassName
 headerClasses = HH.ClassName <$>
   [ "h-24"
-  , "max-w-2xl"
+  , "max-w-lg"
   , "m-auto"
   , "flex"
   ]
