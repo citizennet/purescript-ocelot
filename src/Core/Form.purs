@@ -10,7 +10,6 @@ import Data.Newtype (unwrap)
 import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Polyform.Validation (Validation(..), V(..))
-import Unsafe.Coerce (unsafeCoerce)
 
 -----
 -- Custom form-building monoid (credit: @paluh)
@@ -119,6 +118,10 @@ type Form m form input output =
 -- underlying form. For example, below we transform the underlying
 -- record to hold an error value if validation failed and the actual
 -- parsed value if it succeeded.
+--
+-- Necessary to use Polyform `V` because we want to transform the
+-- underlying record on success AND failure, in the case of partial
+-- validation.
 formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
    . IsSymbol sym
   => Monad m
@@ -140,12 +143,11 @@ formFromField name validation = Validation $ \inputForm -> do
 runForm :: ∀ m form input output
   . Monad m
  => Form m form input output
+ -> Record form
  -> Record input
  -> m (V (Record form) output)
-runForm formValidation input = do
+runForm formValidation initial input = do
   result <- unwrap formValidation $ input
   pure $ case result of
-    Valid (Endo transform) v ->
-      Valid (transform $ unsafeCoerce {}) v
-    Invalid (Endo transform) ->
-      Invalid (transform $ unsafeCoerce {})
+    Valid (Endo transform) v -> Valid (transform initial) v
+    Invalid (Endo transform) -> Invalid $ transform initial

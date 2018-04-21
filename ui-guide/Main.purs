@@ -10,7 +10,7 @@ import Halogen.Aff as HA
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.App (runStorybook)
 import UIGuide.App.Routes (routes, groups)
-import UIGuide.Components.Validation (runSignupForm)
+import UIGuide.Components.Validation (badEmail, badPass, good, runSignupForm)
 
 type Effects =
   ( ajax :: AJAX
@@ -25,5 +25,6 @@ type Effects =
 
 main :: Eff _ Unit
 main = do
-  r <- runSignupForm
-  traceAnyA r
+  traceAnyA =<< runSignupForm badPass
+  traceAnyA =<< runSignupForm badEmail
+  traceAnyA =<< runSignupForm good
