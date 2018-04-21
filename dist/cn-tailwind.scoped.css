@@ -7877,6 +7877,8 @@ body .ocelot-scoped {
   background-color: #00abd1;
 }
 
+/* Animation Styles */
+
 .ocelot-scoped .spin {
   animation: spin 1.4s infinite linear;
 }
@@ -7888,6 +7890,34 @@ body .ocelot-scoped {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.ocelot-scoped .slide-down {
+  animation: yslide .1s ease-out 1;
+}
+
+@keyframes yslide {
+  0% {
+    transform: translateY(-50px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.ocelot-scoped .fade-in {
+  animation: fade .1s ease-out 1;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 

@@ -7877,6 +7877,8 @@ dt {
   background-color: #00abd1;
 }
 
+/* Animation Styles */
+
 .spin {
   animation: spin 1.4s infinite linear;
 }
@@ -7888,6 +7890,34 @@ dt {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.slide-down {
+  animation: yslide .1s ease-out 1;
+}
+
+@keyframes yslide {
+  0% {
+    transform: translateY(-50px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fade .1s ease-out 1;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 

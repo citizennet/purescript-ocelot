@@ -18,6 +18,7 @@ backgroundClasses = HH.ClassName <$>
   [ "fixed"
   , "pin"
   , "bg-black-modal-a90"
+  , "fade-in"
   ]
 
 modalClasses :: Array HH.ClassName
@@ -26,6 +27,7 @@ modalClasses = HH.ClassName <$>
   , "pin"
   , "pb-20"
   , "m-20"
+  , "slide-down"
   ]
 
 modal
@@ -60,6 +62,7 @@ bodyClasses = HH.ClassName <$>
   , "m-auto"
   , "flex-col"
   , "flex"
+  , "rounded-b"
   ]
 
 body
@@ -93,6 +96,7 @@ outerHeaderClasses = HH.ClassName <$>
   , "px-6"
   , "items-center"
   , "flex"
+  , "rounded-t"
   ]
 
 innerHeaderClasses :: Array HH.ClassName

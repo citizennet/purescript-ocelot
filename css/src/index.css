@@ -145,11 +145,26 @@ dt {
 .hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
 .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
 
+/* Animation Styles */
 .spin { animation: spin 1.4s infinite linear; }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.slide-down { animation: yslide 0.1s ease-out 1; }
+
+@keyframes yslide {
+  0% { transform: translateY(-50px); }
+  100% { transform: translateY(0); }
+}
+
+.fade-in { animation: fade 0.1s ease-out 1; }
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /* Styles for range sliders */
