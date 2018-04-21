@@ -9,6 +9,9 @@ button, input, optgroup, select, textarea { @apply .leading-normal; }
 * {
   font-size: inherit;
 }
+h3 {
+  text-transform: unset;
+}
 fieldset legend {
   position: unset;
   top: 0;

@@ -848,6 +848,10 @@ body .ocelot-scoped {
   font-size: inherit;
 }
 
+.ocelot-scoped h3 {
+  text-transform: unset;
+}
+
 .ocelot-scoped fieldset legend {
   position: unset;
   top: 0;

@@ -848,6 +848,10 @@ textarea {
   font-size: inherit;
 }
 
+h3 {
+  text-transform: unset;
+}
+
 fieldset legend {
   position: unset;
   top: 0;
