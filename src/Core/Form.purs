@@ -9,7 +9,7 @@ import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
 import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
-import Polyform.Validation as Polyform
+import Polyform.Validation (Validation(..), V(..))
 import Unsafe.Coerce (unsafeCoerce)
 
 -----
@@ -111,7 +111,7 @@ type Const z (a :: # Type) b = z
 -- forms. This `Validation` type doesn't hold errors in its `e`
 -- constructor but rather the fields of the form.
 type Form m form input output =
-  Polyform.Validation m (Endo (Record form)) (Record input) output
+  Validation m (Endo (Record form)) (Record input) output
 
 -- Turn a regular validation type into a form that can be composed
 -- with others by running its validation and then either producing
@@ -125,15 +125,15 @@ formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
   => RowCons sym (FormField a) t0 input
   => RowCons sym (FormInput attrs vl vd e b) t1 form
   => SProxy sym
-  -> Polyform.Validation m e a b
+  -> Validation m e a b
   -> Form m form input b
-formFromField name validation = Polyform.Validation $ \inputForm -> do
+formFromField name validation = Validation $ \inputForm -> do
   result <- unwrap validation <<< _.value <<< get name $ inputForm
   pure $ case result of
-    Polyform.Valid _ v ->
-      Polyform.Valid (Endo $ set (prop name <<< _validated) (Right v)) v
-    Polyform.Invalid e ->
-      Polyform.Invalid (Endo $ set (prop name <<< _validated) (Left e))
+    Valid _ v ->
+      Valid (Endo $ set (prop name <<< _validated) (Right v)) v
+    Invalid e ->
+      Invalid (Endo $ set (prop name <<< _validated) (Left e))
 
 -- Given a form, produces either the original input form after transforming
 -- it, or produces the output value you wanted.
@@ -141,11 +141,11 @@ runForm :: ∀ m form input output
   . Monad m
  => Form m form input output
  -> Record input
- -> m (Polyform.V (Record form) output)
+ -> m (V (Record form) output)
 runForm formValidation input = do
   result <- unwrap formValidation $ input
   pure $ case result of
-    Polyform.Valid (Endo transform) v ->
-      Polyform.Valid (transform $ unsafeCoerce {}) v
-    Polyform.Invalid (Endo transform) ->
-      Polyform.Invalid (transform $ unsafeCoerce {})
+    Valid (Endo transform) v ->
+      Valid (transform $ unsafeCoerce {}) v
+    Invalid (Endo transform) ->
+      Invalid (transform $ unsafeCoerce {})

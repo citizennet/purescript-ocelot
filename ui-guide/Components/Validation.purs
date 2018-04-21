@@ -2,12 +2,10 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import Data.Monoid (class Monoid)
 import Data.Symbol (SProxy(..))
-import Data.Variant (Variant)
-import Ocelot.Core.Form (Form, formFromField, runForm)
+import Ocelot.Core.Form (formFromField, runForm)
 import Ocelot.Core.Validation (validateNonEmptyStr, validateStrIsEmail)
-import Polyform.Validation (V(..), hoistFnV)
+import Polyform.Validation (hoistFnV)
 
 ----------
 -- Form

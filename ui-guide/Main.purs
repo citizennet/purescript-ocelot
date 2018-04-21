@@ -18,9 +18,12 @@ type Effects =
   , timer :: TIMER
   )
 
-main :: Eff (HA.HalogenEffects Effects) Unit
-main = HA.runHalogenAff do
-  body <- HA.awaitBody
+--  main :: Eff (HA.HalogenEffects Effects) Unit
+--  main = HA.runHalogenAff do
+--    body <- HA.awaitBody
+--    runStorybook routes groups body
+
+main :: Eff _ Unit
+main = do
   r <- runSignupForm
   traceAnyA r
-  runStorybook routes groups body
