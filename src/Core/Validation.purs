@@ -3,7 +3,7 @@ module Ocelot.Core.Validation where
 import Prelude
 
 import Data.Array ((:))
-import Data.Either (Either(..), either)
+import Data.Either (Either(..))
 import Data.Foldable (class Foldable, length)
 import Data.Int as Integer
 import Data.Lens (set, view)
@@ -12,11 +12,11 @@ import Data.Maybe (Maybe(..), maybe)
 import Data.Number as Num
 import Data.String as String
 import Data.Tuple (Tuple(..))
-import Data.Validation.Semigroup (V, invalid, unV)
 import Data.Variant (SProxy(..), Variant, inj)
+import Text.Email.Validate as Email
+import Polyform.Validation (V(..))
 import Ocelot.Core.Form (_value, Endo(..))
 import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
-import Text.Email.Validate as Email
 
 
 -----
@@ -30,7 +30,7 @@ validateNonEmptyStr
   -> V (Err (emptyField :: String | err)) String
 validateNonEmptyStr str
   | String.null str =
-      invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
+      Invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
   | otherwise = pure str
 
 validateNonEmptyArr
@@ -38,7 +38,7 @@ validateNonEmptyArr
    . Array a
   -> V (Err (emptyField :: String | err)) (Array a)
 validateNonEmptyArr [] =
-  invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
+  Invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
 validateNonEmptyArr xs = pure xs
 
 validateNonEmptyMaybe
@@ -47,7 +47,7 @@ validateNonEmptyMaybe
   -> V (Err (emptyField :: String | err)) a
 validateNonEmptyMaybe (Just a) = pure a
 validateNonEmptyMaybe Nothing =
-  invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
+  Invalid [ inj (SProxy :: SProxy "emptyField") "Required" ]
 
 validateStrIsEmail
   :: ∀ err
@@ -56,7 +56,7 @@ validateStrIsEmail
   -> V (Err (badEmail :: String | err)) String
 validateStrIsEmail msg str
   | Email.isValid str = pure str
-  | otherwise = invalid [ inj (SProxy :: SProxy "badEmail") msg ]
+  | otherwise = Invalid [ inj (SProxy :: SProxy "badEmail") msg ]
 
 validateStrIsNumber
   :: ∀ err
@@ -64,7 +64,7 @@ validateStrIsNumber
   -> String
   -> V (Err (invalidNumber :: String | err)) Number
 validateStrIsNumber msg = Num.fromString >>>
-  maybe (invalid [ inj (SProxy :: SProxy "invalidNumber") msg ] ) pure
+  maybe (Invalid [ inj (SProxy :: SProxy "invalidNumber") msg ] ) pure
 
 validateStrIsCents
   :: ∀ err
@@ -72,7 +72,7 @@ validateStrIsCents
   -> String
   -> V (Err (invalidCurrency :: String | err)) Cents
 validateStrIsCents msg = parseCentsFromDollarStr >>>
-  maybe (invalid [ inj (SProxy :: SProxy "invalidCurrency") msg ]) pure
+  maybe (Invalid [ inj (SProxy :: SProxy "invalidCurrency") msg ]) pure
 
 validateStrIsInt
   :: ∀ err
@@ -81,8 +81,8 @@ validateStrIsInt
   -> V (Err (invalidInteger :: String | err)) Int
 validateStrIsInt msg s
   | canParseTo32Bit s = s # Integer.fromString >>>
-      maybe (invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]) pure
-  | otherwise = invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]
+      maybe (Invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]) pure
+  | otherwise = Invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]
 
 validateMinLength
   :: ∀ err f a
@@ -94,7 +94,7 @@ validateMinLength
 validateMinLength n msg f
   | length f >= n = pure f
   | otherwise =
-      invalid [ inj (SProxy :: SProxy "underMinLength") (Tuple n msg) ]
+      Invalid [ inj (SProxy :: SProxy "underMinLength") (Tuple n msg) ]
 
 validateInRange
   :: ∀ err a
@@ -106,7 +106,7 @@ validateInRange
   -> V (Err (outOfRange :: String | err)) a
 validateInRange low high msg num
   | low <= num && num <= high = pure num
-  | otherwise = invalid [ inj (SProxy :: SProxy "outOfRange") msg ]
+  | otherwise = Invalid [ inj (SProxy :: SProxy "outOfRange") msg ]
 
 validateGreaterThan
   :: ∀ err a
@@ -117,7 +117,7 @@ validateGreaterThan
   -> V (Err (notGreaterThan :: String | err)) a
 validateGreaterThan min msg num
   | num > min = pure num
-  | otherwise = invalid [ inj (SProxy :: SProxy "notGreaterThan") msg ]
+  | otherwise = Invalid [ inj (SProxy :: SProxy "notGreaterThan") msg ]
 
 validateLessThan :: ∀ err a
   . Ord a
@@ -127,7 +127,7 @@ validateLessThan :: ∀ err a
  -> V (Err (notLessThan :: String | err)) a
 validateLessThan max msg num
   | num < max = pure num
-  | otherwise = invalid [ inj (SProxy :: SProxy "notLessThan") msg ]
+  | otherwise = Invalid [ inj (SProxy :: SProxy "notLessThan") msg ]
 
 validateDependence :: ∀ err a b
   . (a -> b -> Boolean)
@@ -137,7 +137,7 @@ validateDependence :: ∀ err a b
  -> V (Err (dependency :: String | err)) a
 validateDependence f msg item1 item2
   | f item1 item2 = pure item1
-  | otherwise = invalid [ inj (SProxy :: SProxy "dependency") msg ]
+  | otherwise = Invalid [ inj (SProxy :: SProxy "dependency") msg ]
 
 
 -----
@@ -145,31 +145,28 @@ validateDependence f msg item1 item2
 -- Useful for combining monadic and applicative validation
 
 toEither :: ∀ err a. Semigroup err => V err a -> Either err a
-toEither = unV Left Right
-
-fromEither :: ∀ err a. Semigroup err => Either err a -> V err a
-fromEither = either invalid pure
-
+toEither (Invalid e) = Left e
+toEither (Valid _ a) = Right a
 
 -----
 -- Multi-field and dependent validation
 
-collapseIfEqual a b symA symB = case a == b of
-  true -> pure a
-  false -> invalid $ Endo setErrors
-    where
-      err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
-      setErrors rec =
-        rec
-        # set
-          (prop symA <<< _value)
-          (case view (prop symA <<< _value) rec of
-            Right _ -> Left [ err ]
-            Left errs -> Left ( err : errs )
-          )
-        # set
-          (prop symB <<< _value)
-          (case view (prop symB <<< _value) rec of
-            Right _ -> Left [ err ]
-            Left errs -> Left ( err : errs )
-          )
+--  collapseIfEqual a b symA symB = case a == b of
+--    true -> pure a
+--    false -> Invalid $ Endo setErrors
+--      where
+--        err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
+--        setErrors rec =
+--          rec
+--          # set
+--            (prop symA <<< _value)
+--            (case view (prop symA <<< _value) rec of
+--              Right _ -> Left [ err ]
+--              Left errs -> Left ( err : errs )
+--            )
+--          # set
+--            (prop symB <<< _value)
+--            (case view (prop symB <<< _value) rec of
+--              Right _ -> Left [ err ]
+--              Left errs -> Left ( err : errs )
+--            )

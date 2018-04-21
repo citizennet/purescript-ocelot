@@ -5,11 +5,11 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Lens (Lens', set)
 import Data.Lens.Record (prop)
-import Data.Monoid (class Monoid, mempty)
-import Data.Newtype (class Newtype, unwrap)
+import Data.Monoid (class Monoid)
+import Data.Newtype (unwrap)
 import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
-import Data.Validation.Semigroup (V, invalid, unV)
+import Polyform.Validation as Polyform
 import Unsafe.Coerce (unsafeCoerce)
 
 -----
@@ -111,7 +111,7 @@ type Const z (a :: # Type) b = z
 -- forms. This `Validation` type doesn't hold errors in its `e`
 -- constructor but rather the fields of the form.
 type Form m form input output =
-  Validation m (Endo (Record form)) (Record input) output
+  Polyform.Validation m (Endo (Record form)) (Record input) output
 
 -- Turn a regular validation type into a form that can be composed
 -- with others by running its validation and then either producing
@@ -125,14 +125,15 @@ formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
   => RowCons sym (FormField a) t0 input
   => RowCons sym (FormInput attrs vl vd e b) t1 form
   => SProxy sym
-  -> Validation m e a b
+  -> Polyform.Validation m e a b
   -> Form m form input b
-formFromField name validation = Validation $ \inputForm -> do
+formFromField name validation = Polyform.Validation $ \inputForm -> do
   result <- unwrap validation <<< _.value <<< get name $ inputForm
-  pure $ unV
-    (\e -> invalid $ Endo (set (prop name <<< _validated) (Left e)))
-    (\v -> pure v)
-    result
+  pure $ case result of
+    Polyform.Valid _ v ->
+      Polyform.Valid (Endo $ set (prop name <<< _validated) (Right v)) v
+    Polyform.Invalid e ->
+      Polyform.Invalid (Endo $ set (prop name <<< _validated) (Left e))
 
 -- Given a form, produces either the original input form after transforming
 -- it, or produces the output value you wanted.
@@ -140,67 +141,11 @@ runForm :: ∀ m form input output
   . Monad m
  => Form m form input output
  -> Record input
- -> m (Either (Record form) output)
+ -> m (Polyform.V (Record form) output)
 runForm formValidation input = do
   result <- unwrap formValidation $ input
-  pure $ unV
-    (\(Endo transform) -> Left $ transform $ unsafeCoerce {})
-    (\a -> Right a)
-    result
-
------
--- Custom variation on the Polyform validation type
-
-newtype Validation m e a b = Validation (a -> m (V e b))
-
-derive instance newtypeValidation
-  :: Newtype (Validation m e a b) _
-
-derive instance functorValidation
-  :: (Functor m) => Functor (Validation m e a)
-
-instance semigroupValidation
-  :: (Semigroup (m (V e b))) => Semigroup (Validation m e a b)
-  where
-    append (Validation v0) (Validation v1) =
-      Validation $ \a -> v0 a <> v1 a
-
-instance monoidValidation
-  :: (Applicative m, Monoid e, Monoid b, Semigroup (m (V e b)))
-  => Monoid (Validation m e a b)
-  where
-    mempty = Validation <<< const <<< pure $ mempty
-
-instance applyValidation
-  :: (Semigroup e, Monad m) => Apply (Validation m e a)
-  where
-    apply vf va = Validation \i -> do
-      vf' <- unwrap vf i
-      va' <- unwrap va i
-      pure $ vf' <*> va'
-
-instance applicativeValidation
-  :: (Monoid e, Monad m) => Applicative (Validation m e a)
-  where
-    pure = Validation <<< const <<< pure <<< pure
-
-hoistFn :: ∀ m e a b
-  . Monad m
- => Monoid e
- => (a -> b)
- -> Validation m e a b
-hoistFn = hoistFnV <<< map pure
-
-hoistFnV :: ∀ m e a b
-  . Monad m
- => Monoid e
- => (a -> V e b)
- -> Validation m e a b
-hoistFnV = hoistFnMV <<< map pure
-
-hoistFnMV :: ∀ m e a b
-  . Monad m
- => Monoid e
- => (a -> m (V e b))
- -> Validation m e a b
-hoistFnMV = Validation
+  pure $ case result of
+    Polyform.Valid (Endo transform) v ->
+      Polyform.Valid (transform $ unsafeCoerce {}) v
+    Polyform.Invalid (Endo transform) ->
+      Polyform.Invalid (transform $ unsafeCoerce {})
