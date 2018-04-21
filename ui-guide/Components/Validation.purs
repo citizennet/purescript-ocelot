@@ -1,11 +1,10 @@
 module UIGuide.Components.Validation where
 
-import Ocelot.Core.Validation
 import Prelude
 
 import Data.Symbol (SProxy(..))
-import Polyform.Validation as Polyform
-import UIGuide.Utilities.Form (collapseIfEqual, mkForm)
+import Ocelot.Core.Form
+import Ocelot.Core.Validation
 
 ----------
 -- Form
@@ -17,14 +16,14 @@ _email = SProxy :: SProxy "email"
 
 -- Make fields with preset validation
 password sym =
-  mkForm sym (validateNonEmptyStr)
+  formFromField sym (validateNonEmptyStr)
 
-email sym = mkForm sym \i ->
+email sym = formFromField sym \i ->
   validateNonEmptyStr i
   *> validateStrIsEmail "Not an email" i
 
 -- Make a two-password form  that will parse to a single password
 passwordForm = ( { p1: _, p2: _ } <$> password _password1 <*> password _password2 )
- >>> Polyform.hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _password1 _password2
+ >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _password1 _password2
 
 signupForm = { password: _, email: _ } <$> passwordForm <*> email _email

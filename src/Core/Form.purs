@@ -5,7 +5,6 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Lens (Lens', set)
 import Data.Lens.Record (prop)
-import Data.Maybe (Maybe)
 import Data.Monoid (class Monoid, mempty)
 import Data.Newtype (class Newtype, unwrap)
 import Data.Record (get)
@@ -54,6 +53,8 @@ type FormInput attrs vl vd e a =
   | attrs
   }
 
+-- Lens to access the `validated` field of a FormInput. Used to transform
+-- our output type on validation.
 _validated :: ∀ t r. Lens' { validated :: t | r } t
 _validated = prop $ SProxy :: SProxy "validated"
 
@@ -69,13 +70,55 @@ type FormField a =
   , shouldValidate :: Boolean
   }
 
+_value :: ∀ t r. Lens' { value :: t | r } t
+_value = prop (SProxy :: SProxy "value")
+
+_shouldValidate :: ∀ t r. Lens' { shouldValidate :: t | r } t
+_shouldValidate = prop (SProxy :: SProxy "shouldValidate")
+
+_validate :: ∀ t r. Lens' { validate :: t | r } t
+_validate = prop (SProxy :: SProxy "validate")
+
+
+-----
+-- Higher kinded data
+
+-- We can use a single base row type to determine multiple variants and
+-- records with different types but the same field names. For example,
+-- given the type below:
+--
+-- `type FormFieldsT f = ( name :: f (label :: String) String )`
+--
+-- applying these types will construct new records:
+--
+-- `Record (FormFieldsT Snd) -> { name :: String }
+--
+-- or variants:
+--
+-- `Variant (FormFieldsT Fst) -> Variant ( name :: ( label :: String ) )
+-- `Variant (FormFieldsT Snd) -> Variant ( name :: String )
+-- `Variant (FormFieldsT (Const Int)) -> Variant ( name :: Int )
+
+type Fst (a :: # Type) b = a
+type Snd (a :: # Type) b = b
+type Const z (a :: # Type) b = z
+
 
 -----
 -- Form construction
 
+-- A type that represents a form that can be composed with other
+-- forms. This `Validation` type doesn't hold errors in its `e`
+-- constructor but rather the fields of the form.
 type Form m form input output =
   Validation m (Endo (Record form)) (Record input) output
 
+-- Turn a regular validation type into a form that can be composed
+-- with others by running its validation and then either producing
+-- the output value or producing a transformation to apply to the
+-- underlying form. For example, below we transform the underlying
+-- record to hold an error value if validation failed and the actual
+-- parsed value if it succeeded.
 formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
    . IsSymbol sym
   => Monad m
@@ -85,12 +128,25 @@ formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
   -> Validation m e a b
   -> Form m form input b
 formFromField name validation = Validation $ \inputForm -> do
-  result <- ?a validation (_.value $ get name inputForm)
-  case result of
-    Left e -> pure
-      $ invalid
-      $ Endo (set (prop name <<< _validated) (Left e))
-    Right v -> pure (pure v)
+  result <- unwrap validation <<< _.value <<< get name $ inputForm
+  pure $ unV
+    (\e -> invalid $ Endo (set (prop name <<< _validated) (Left e)))
+    (\v -> pure v)
+    result
+
+-- Given a form, produces either the original input form after transforming
+-- it, or produces the output value you wanted.
+runForm :: ∀ m form input output
+  . Monad m
+ => Form m form input output
+ -> Record input
+ -> m (Either (Record form) output)
+runForm formValidation input = do
+  result <- unwrap formValidation $ input
+  pure $ unV
+    (\(Endo transform) -> Left $ transform $ unsafeCoerce {})
+    (\a -> Right a)
+    result
 
 -----
 -- Custom variation on the Polyform validation type
@@ -148,15 +204,3 @@ hoistFnMV :: ∀ m e a b
  => (a -> m (V e b))
  -> Validation m e a b
 hoistFnMV = Validation
-
-runValidation :: ∀ m form input output
-  . Monad m
- => Form m form input output
- -> input
- -> m (Either form output)
-runValidation form input = do
-  result <- (unwrap form) input
-  pure $ unV
-    (\(Endo transform) -> Left $ transform $ unsafeCoerce {})
-    (\a -> pure a)
-    result

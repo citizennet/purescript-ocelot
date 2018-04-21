@@ -2,23 +2,22 @@ module Ocelot.Core.Validation where
 
 import Prelude
 
+import Data.Array ((:))
 import Data.Either (Either(..), either)
 import Data.Foldable (class Foldable, length)
 import Data.Int as Integer
+import Data.Lens (set, view)
+import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..), maybe)
-import Data.Monoid (class Monoid, mempty)
-import Data.Newtype (class Newtype, unwrap)
 import Data.Number as Num
 import Data.String as String
 import Data.Tuple (Tuple(..))
 import Data.Validation.Semigroup (V, invalid, unV)
 import Data.Variant (SProxy(..), Variant, inj)
+import Ocelot.Core.Form (_value, Endo(..))
+import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Text.Email.Validate as Email
-import Ocelot.Core.Utils.Currency
-  ( Cents
-  , canParseTo32Bit
-  , parseCentsFromDollarStr
-  )
+
 
 -----
 -- Possible validations to run on any field
@@ -150,3 +149,27 @@ toEither = unV Left Right
 
 fromEither :: ∀ err a. Semigroup err => Either err a -> V err a
 fromEither = either invalid pure
+
+
+-----
+-- Multi-field and dependent validation
+
+collapseIfEqual a b symA symB = case a == b of
+  true -> pure a
+  false -> invalid $ Endo setErrors
+    where
+      err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
+      setErrors rec =
+        rec
+        # set
+          (prop symA <<< _value)
+          (case view (prop symA <<< _value) rec of
+            Right _ -> Left [ err ]
+            Left errs -> Left ( err : errs )
+          )
+        # set
+          (prop symB <<< _value)
+          (case view (prop symB <<< _value) rec of
+            Right _ -> Left [ err ]
+            Left errs -> Left ( err : errs )
+          )
