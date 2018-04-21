@@ -8,6 +8,7 @@ import Control.Monad.Eff.Console (CONSOLE)
 import Data.Either (Either(..))
 import Data.Symbol (SProxy(..))
 import Data.Variant (inj)
+import Debug.Trace (traceAnyA)
 import Ocelot.Core.Form (formFromField, runForm)
 import Ocelot.Core.Validation (validateNonEmptyStr, validateStrIsEmail)
 import Polyform.Validation (V(..), hoistFnV)
@@ -40,16 +41,19 @@ main = runTest do
 
     test "Partially validate bad password" do
       res <- runForm testForm initialForm badPass
+      traceAnyA res
       assertFalse "Email should work, but password should fail."
         $ passValid res && emailValid res
 
     test "Partially validate bad email" do
       res <- runForm testForm initialForm badEmail
+      traceAnyA res
       assertFalse "Password should work, but email should fail."
         $ passValid res && emailValid res
 
     test "Validate correct input" do
       res <- runForm testForm initialForm good
+      traceAnyA res
       assert "Validation should pass"
         $ passValid res && emailValid res
 
