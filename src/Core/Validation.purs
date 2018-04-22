@@ -13,10 +13,10 @@ import Data.Number as Num
 import Data.String as String
 import Data.Tuple (Tuple(..))
 import Data.Variant (SProxy(..), Variant, inj)
-import Text.Email.Validate as Email
-import Polyform.Validation (V(..))
-import Ocelot.Core.Form (_value, Endo(..))
+import Ocelot.Core.Form (Endo(..), _validated)
 import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
+import Polyform.Validation (V(..))
+import Text.Email.Validate as Email
 
 
 -----
@@ -151,22 +151,22 @@ toEither (Valid _ a) = Right a
 -----
 -- Multi-field and dependent validation
 
---  collapseIfEqual a b symA symB = case a == b of
---    true -> pure a
---    false -> Invalid $ Endo setErrors
---      where
---        err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
---        setErrors rec =
---          rec
---          # set
---            (prop symA <<< _value)
---            (case view (prop symA <<< _value) rec of
---              Right _ -> Left [ err ]
---              Left errs -> Left ( err : errs )
---            )
---          # set
---            (prop symB <<< _value)
---            (case view (prop symB <<< _value) rec of
---              Right _ -> Left [ err ]
---              Left errs -> Left ( err : errs )
---            )
+collapseIfEqual a b symA symB = case a == b of
+  true -> pure a
+  false -> Invalid $ Endo setErrors
+    where
+      err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
+      setErrors rec =
+        rec
+        # set
+          (prop symA <<< _validated)
+          (case view (prop symA <<< _validated) rec of
+            Just (Left errs) -> Just $ Left ( err : errs )
+            otherwise -> Just $ Left [ err ]
+          )
+        # set
+          (prop symB <<< _validated)
+          (case view (prop symB <<< _validated) rec of
+            Just (Left errs) -> Just $ Left ( err : errs )
+            otherwise -> Just $ Left [ err ]
+          )
