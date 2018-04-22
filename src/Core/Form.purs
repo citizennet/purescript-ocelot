@@ -5,6 +5,7 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Lens (Lens', set)
 import Data.Lens.Record (prop)
+import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
 import Data.Record (get)
@@ -46,7 +47,7 @@ instance monoidEndo :: Monoid (Endo a) where
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
 type FormInput attrs vl vd e a =
-  { validated   :: Either e a
+  { validated   :: Maybe (Either e a)
   , setValue    :: vl
   , setValidate :: vd
   | attrs
@@ -122,6 +123,10 @@ type Form m form input output =
 -- Necessary to use Polyform `V` because we want to transform the
 -- underlying record on success AND failure, in the case of partial
 -- validation.
+--
+-- When fields are not meant to be validated, they will be skipped
+-- and parsing will result in Nothing; however, errors will still
+-- collect for other fields.
 formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
    . IsSymbol sym
   => Monad m
@@ -129,17 +134,25 @@ formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
   => RowCons sym (FormInput attrs vl vd e b) t1 form
   => SProxy sym
   -> Validation m e a b
-  -> Form m form input b
+  -> Form m form input (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
-  result <- unwrap validation <<< _.value <<< get name $ inputForm
-  pure $ case result of
-    Valid _ v ->
-      Valid (Endo $ set (prop name <<< _validated) (Right v)) v
-    Invalid e ->
-      Invalid (Endo $ set (prop name <<< _validated) (Left e))
+  let { value, shouldValidate } = get name inputForm
+      set' = set (prop name <<< _validated)
+  if shouldValidate
+    then do
+      result <- unwrap validation value
+      pure $ case result of
+        Valid _ v ->
+          Valid (Endo $ set' $ Just $ Right v) (Just v)
+        Invalid e ->
+          Invalid (Endo $ set' $ Just $ Left e)
+    else pure $
+      Valid (Endo $ set' Nothing) Nothing
 
--- Given a form, produces either the original input form after transforming
--- it, or produces the output value you wanted.
+-- This function will take some raw input and run it through validation
+-- to create a transformation: Endo (form -> form). Then, it will run that
+-- transformation on the initial record provided. If validation succeeds,
+-- then you'll also receive the parsed output.
 runForm :: ∀ m form input output
   . Monad m
  => Form m form input output

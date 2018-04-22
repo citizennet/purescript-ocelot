@@ -6,6 +6,7 @@ import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
 import Data.Variant (inj)
 import Debug.Trace (traceAnyA)
@@ -29,14 +30,16 @@ main = runTest do
   suite "Validation" do
     let emailValid = case _ of
           Invalid f -> case f.email.validated of
-            Left _ -> false
-            Right _ -> true
+            Nothing -> false
+            Just (Left _) -> false
+            (Just (Right _)) -> true
           Valid _ _ -> true
 
         passValid = case _ of
           Invalid f -> case f.password.validated of
-            Left _ -> false
-            Right _ -> true
+            Nothing -> false
+            Just (Left _) -> false
+            (Just (Right _)) -> true
           Valid _ _ -> true
 
     test "Partially validate bad password" do
@@ -57,6 +60,12 @@ main = runTest do
       assert "Validation should pass"
         $ passValid res && emailValid res
 
+    test "Validate skipped input" do
+      res <- runForm testForm initialForm skip
+      traceAnyA res
+      assert "Validation should pass, but not parse"
+        $ passValid res && emailValid res
+
 
 ----------
 -- Helpers for testing
@@ -74,12 +83,12 @@ testForm = { password: _, email: _ }
 
 initialForm =
   { password:
-    { validated: Right ""
+    { validated: Nothing
     , setValue: inj _password
     , setValidate: inj _password
     }
   , email:
-    { validated: Right ""
+    { validated: Nothing
     , setValue: inj _email
     , setValidate: inj _password
     }
@@ -92,7 +101,7 @@ badEmail =
     }
   , email:
     { value: "notlongenough89"
-    , shouldValidate: false
+    , shouldValidate: true
     }
   }
 
@@ -103,7 +112,7 @@ badPass =
     }
   , email:
     { value: "thomas@thomas.thomas"
-    , shouldValidate: false
+    , shouldValidate: true
     }
   }
 
@@ -114,7 +123,18 @@ good =
     }
   , email:
     { value: "thomas@thomas.thomas"
+    , shouldValidate: true
+    }
+  }
+
+skip =
+  { password:
+    { value: "longenough90"
     , shouldValidate: false
+    }
+  , email:
+    { value: "thomas@thomas.thomas"
+    , shouldValidate: true
     }
   }
 
