@@ -137,9 +137,6 @@ _value = prop (SProxy :: SProxy "value")
 _shouldValidate :: ∀ t r. Lens' { shouldValidate :: t | r } t
 _shouldValidate = prop (SProxy :: SProxy "shouldValidate")
 
-_validate :: ∀ t r. Lens' { validate :: t | r } t
-_validate = prop (SProxy :: SProxy "validate")
-
 
 -----
 -- Higher kinded data

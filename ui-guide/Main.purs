@@ -4,6 +4,7 @@ import Prelude
 
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import Halogen.Aff as HA
 import Network.HTTP.Affjax (AJAX)
@@ -14,6 +15,7 @@ type Effects =
   ( ajax :: AJAX
   , console :: CONSOLE
   , timer :: TIMER
+  , random :: RANDOM
   )
 
 main :: Eff (HA.HalogenEffects Effects) Unit

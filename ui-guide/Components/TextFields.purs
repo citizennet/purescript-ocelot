@@ -2,18 +2,18 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import Ocelot.Block.Card as Card
-import Ocelot.Block.FormField as FormField
-import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Input as Input
-import Ocelot.Block.Format as Format
---  import Ocelot.Core.Validation as Validation
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Documentation as Documentation
+import Ocelot.Block.Card as Card
+import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Format as Format
+import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Input as Input
+import Ocelot.Core.Utils (css)
 import UIGuide.Block.Backdrop as Backdrop
+import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
@@ -46,9 +46,7 @@ component =
 
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
-  let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-      css = HP.class_ <<< HH.ClassName
-      content = Backdrop.content [ css "flex" ] in
+  let content = Backdrop.content [ css "flex" ] in
   HH.div_
   [ Documentation.block_
     { header: "Text Fields"

@@ -2,221 +2,256 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Random (RANDOM)
-import Data.Either (Either)
-import Data.Maybe (Maybe(Nothing))
-import Data.Symbol (SProxy(..))
-import Data.Tuple (Tuple)
-import Data.Variant (Variant, inj)
+import Control.Monad.Aff.Console (log) as Console
+import Data.Lens (Lens', set)
+import Data.Lens.Record (prop)
+import Data.Maybe (Maybe(..))
+import Data.Symbol (class IsSymbol, SProxy(..))
+import Data.Tuple (Tuple(..))
+import Data.Variant (Variant, inj, match)
 import Halogen as H
 import Halogen.HTML as HH
-import Ocelot.Core.Form (Endo, FormField, Id, K, formFromField)
+import Halogen.HTML.Events as HE
+import Halogen.HTML.Properties as HP
+import Ocelot.Block.Card as Card
+import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Format as Format
+import Ocelot.Block.Input as Input
+import Ocelot.Core.Form (Endo, FormField, FormInput, Id, K, _shouldValidate, _value, formFromField, runForm)
+import Ocelot.Core.Utils (css)
 import Ocelot.Core.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
-import Polyform.Validation (Validation, hoistFnV)
-
+import Polyform.Validation (V(..), Validation, hoistFnV)
+import UIGuide.Block.Backdrop as Backdrop
+import UIGuide.Block.Documentation as Documentation
 
 ----------
 -- Form
 
 data Query a
-  = NoOp a
-  --  = UpdateContents FormFieldValue a
-  --  | ValidateOne FormFieldValidate a
-  --  | ValidateAll a
+  = UpdateContents FieldValueV a
+  | ValidateOne FieldValidateV a
+  | ValidateAll a
 
-type State = Unit
-  --  { form    :: _
-  --  , raw     :: _
-  --  }
+type State =
+  { form :: FormInputs
+  , raw  :: FormFields
+  , result :: Maybe User
+  }
 
-component :: ∀ eff m
-  . MonadAff ( console :: CONSOLE, random :: RANDOM | eff ) m
- => H.Component HH.HTML Query Unit Void m
+type User =
+  { email :: String
+  , password :: String
+  }
+
+component :: ∀ eff. H.Component HH.HTML Query Unit Void (Aff (console :: CONSOLE | eff))
 component =
   H.lifecycleComponent
     { initialState: const initialState
     , render
     , eval
     , receiver: const Nothing
-    , initializer: Nothing -- Just $ H.action ValidateAll
+    , initializer: Just $ H.action ValidateAll
     , finalizer: Nothing
     }
   where
   initialState :: State
-  initialState = unit --  { raw: signupRawForm, form: signupInitialForm }
+  initialState = { raw: signupRawForm, form: signupInitialForm, result: Nothing }
+
+  signupRawForm :: FormFields
+  signupRawForm =
+    { email: { value: "", shouldValidate: false }
+    , p1:    { value: "", shouldValidate: false }
+    , p2:    { value: "", shouldValidate: false }
+    }
+
+  signupInitialForm :: FormInputs
+  signupInitialForm =
+    { email: { validated: Nothing, setValue: inj _email, setValidate: inj _email }
+    , p1:    { validated: Nothing, setValue: inj _p1, setValidate: inj _p1 }
+    , p2:    { validated: Nothing, setValue: inj _p2, setValidate: inj _p2 }
+    }
+
+  signupForm :: SignupForm (Aff (console :: CONSOLE | eff))
+  signupForm = { email: _, password: _ }
+    <$> emailForm
+    <*> passwordForm
+    where
+      emailForm = formFromField (SProxy :: SProxy "email") $
+        hoistFnV validateNonEmptyStr
+        >>> hoistFnV (validateStrIsEmail "Not a valid email address.")
+
+      passwordForm = ( { p1: _, p2: _ }
+        <$> formFromField _p1 (hoistFnV validateNonEmptyStr)
+        <*> formFromField _p2 (hoistFnV validateNonEmptyStr)
+        )
+        >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p1 _p2
 
   render :: State -> H.ComponentHTML Query
-  render st = HH.div_ []
+  render st =
+    HH.div_
+    [ Documentation.block_
+      { header: "Text Field Form"
+      , subheader: "Validates composed form fields."
+      }
+      [ Backdrop.backdrop_
+        [ Backdrop.content [ css "flex" ]
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Fields" ]
+            , FormField.field_
+              { label: "Email*"
+              , helpText: Just "Provide a valid email address."
+              , valid: Nothing
+              , inputId: "email"
+              }
+              [ Input.input
+                [ HP.placeholder "address@gmail.com"
+                , HP.id_ "email"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.email.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.email.setValue
+                ]
+              ]
+            , FormField.field_
+              { label: "Password 1*"
+              , helpText: Just "Write your password."
+              , valid: Nothing -- Just [ Validation.EmptyField ]
+              , inputId: "password-1-error"
+              }
+              [ Input.input
+                [ HP.placeholder ""
+                , HP.id_ "password-1-error"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p1.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p1.setValue
+                ]
+              ]
+            , FormField.field_
+              { label: "Password 2*"
+              , helpText: Just "Write your password again for confirmation."
+              , valid: Nothing -- Just [ Validation.EmptyField ]
+              , inputId: "password-1-error"
+              }
+              [ Input.input
+                [ HP.placeholder ""
+                , HP.id_ "password-1-error"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p2.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p2.setValue
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
 
-  eval :: Query ~> H.ComponentDSL State Query Void m
+  eval :: Query ~> H.ComponentDSL State Query Void (Aff ( console :: CONSOLE | eff))
   eval = case _ of
-    NoOp a -> pure a
-    --  UpdateContents val next -> do
-    --    H.modify $ updateValue val
-    --    pure next
-    --
-    --  ValidateOne val next -> do
-    --    H.modify $ updateValidate val
-    --    eval $ ValidateAll next
-    --
-    --  ValidateAll next -> do
-    --    st <- H.get
-    --    pure next
+    UpdateContents val next -> do
+      H.modify $ updateValue val
+      pure next
+
+    ValidateOne val next -> do
+      H.modify $ updateValidate val
+      eval $ ValidateAll next
+
+    ValidateAll next -> do
+      st <- H.get
+      (Tuple form result) <- H.liftAff do
+         res <- runForm signupForm st.form st.raw
+         case res of
+           Valid form value -> do
+             case value of
+               Just v -> do
+                 Console.log "Successful parse!"
+                 Console.log $ "Email: " <> v.email <> "\nPassword: " <> v.password
+               Nothing -> do
+                 Console.log "Passed validation, but didn't parse."
+             pure $ Tuple form value
+           Invalid form -> do
+             Console.log "Failed validation."
+             pure $ Tuple form Nothing
+
+      H.modify _ { form = form, result = result }
+      pure next
 
 
-_email = SProxy :: SProxy "email"
-_p1 = SProxy :: SProxy "p1"
-_p2 = SProxy :: SProxy "p2"
+-----
+-- Form Types
 
--- - attrs: Arbitrary additional labels we want available for
---          input, like help text
--- - vl: A variant pointing to the value field in the accompanying
---       raw form for our form representation.
--- - vd: A variant pointing to the validation field in the accompanying
---       raw form for our form representation
--- - e: Our error type for our input value if it fails validation
--- - a: Our successfully parsed type if it passes validation
---
--- Note: Value wrapped in Maybe to represent a case where we haven't
--- validated the field yet.
---  type FormInput attrs vl vd e a =
---    { validated   :: Maybe (Either e a)
---    , setValue    :: vl
---    , setValidate :: vd
---    | attrs
---    }
-
+-- Fields available in this form's input
 type FormFieldsT f =
   ( email :: f String
   , p1    :: f String
   , p2    :: f String
   )
 
--- We can access the 'value' part of each input like this:
-type FieldValueV = Variant (FormFieldsT Id)
+-- Proxies for field labels for convenience (allows us to
+-- use just one query to access all labels in the record).
+_email = SProxy :: SProxy "email"
+_p1 = SProxy :: SProxy "p1"
+_p2 = SProxy :: SProxy "p2"
 
--- and the 'validation' part like this:
+-- The error types used on our fields (usually this would be kept with the field definitions
+-- and not with the form. That makes these portable.
+type EmailError = Array (Variant (emptyField :: String, badEmail :: String))
+type Password1Error = Array (Variant (emptyField :: String))
+type Password2Error = Array (Variant (emptyField :: String, notEqual :: Tuple (Maybe String) (Maybe String)))
+
+-- The variants used to access each field in the form
+type FieldValueV = Variant (FormFieldsT Id)
 type FieldValidateV = Variant (FormFieldsT (K Boolean))
 
--- Now we can easily create our raw form type...
-type RawForm = Record (FormFieldsT FormField)
+-- The form types we need: the raw form, the initial form, and the overall signup form.
+type FormFields = Record (FormFieldsT FormField)
 
-signupRawForm :: RawForm
-signupRawForm =
-  { email: { value: "", shouldValidate: false }
-  , p1:    { value: "", shouldValidate: false }
-  , p2:    { value: "", shouldValidate: false }
+type FormInputs =
+  { email :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) EmailError String
+  , p1 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) Password1Error String
+  , p2 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) Password2Error String
   }
 
+type SignupForm m = Validation m (Endo FormInputs) FormFields { email :: Maybe String, password :: Maybe String }
 
--- Making this one ain't so easy...haven't figured it out.
 
-signupInitialForm :: forall t141 t143 t144 t147 t148 t150 t152 t153 t156 t157 t159 t161 t162 t165 t166.
-   { email :: { validated :: Maybe t141
-              , shouldValidate :: Boolean
-              , updateValue :: t144 -> Variant ( email :: t144 | t143 )
-              , updateValidate :: t148 -> Variant ( email :: t148 | t147 )
-              }
-   , p1 :: { validated :: Maybe t150
-           , shouldValidate :: Boolean
-           , updateValue :: t153 -> Variant ( p1 :: t153 | t152 )
-           , updateValidate :: t157 -> Variant ( p1 :: t157 | t156 )
-           }
-   , p2 :: { validated :: Maybe t159
-           , shouldValidate :: Boolean
-           , updateValue :: t162 -> Variant ( p2 :: t162 | t161 )
-           , updateValidate :: t166 -> Variant ( p2 :: t166 | t165 )
-           }
-   }
-signupInitialForm =
-  { email: { validated: Nothing, shouldValidate: false, updateValue: inj _email, updateValidate: inj _email }
-  , p1:    { validated: Nothing, shouldValidate: false, updateValue: inj _p1, updateValidate: inj _p1 }
-  , p2:    { validated: Nothing, shouldValidate: false, updateValue: inj _p2, updateValidate: inj _p2 }
+-----
+-- Form Helpers
+
+_raw :: ∀ t r. Lens' { raw :: t | r } t
+_raw = prop (SProxy :: SProxy "raw")
+
+-- This can be abstracted away from the form
+setValue :: ∀ sym r0 r1 a t0 row
+   . IsSymbol sym
+  => RowCons sym { value :: a | r0 } t0 row
+  => SProxy sym
+  -> a
+  -> { raw :: Record row | r1 }
+  -> { raw :: Record row | r1 }
+setValue sym = set $ _raw <<< prop sym <<< _value
+
+-- But this should be written with the form
+updateValue :: FieldValueV -> (State -> State)
+updateValue = match
+  { p1:    setValue _p1
+  , p2:    setValue _p2
+  , email: setValue _email
   }
 
+setValidate :: ∀ sym r0 r1 t0 row
+   . IsSymbol sym
+  => RowCons sym { shouldValidate :: Boolean | r0 } t0 row
+  => SProxy sym
+  -> Boolean
+  -> { raw :: Record row | r1 }
+  -> { raw :: Record row | r1 }
+setValidate sym = set $ _raw <<< prop sym <<< _shouldValidate
 
--- Good God above, this one's even worse! It'd take all fuckin' year to write this type signature
-
-signupForm :: forall t102 t103 t104 t105 t126 t136 t137 t138 t37 t38 t39 t50 t54 t55 t56.
-   Monad t105 => Validation t105
-                   (Endo
-                      { p1 :: { validated :: Maybe
-                                               (Either
-                                                  (Array
-                                                     (Variant
-                                                        ( emptyField :: String
-                                                        | t50
-                                                        )
-                                                     )
-                                                  )
-                                                  String
-                                               )
-                              , setValue :: t38
-                              , setValidate :: t37
-                              | t39
-                              }
-                      , p2 :: { validated :: Maybe
-                                               (Either
-                                                  (Array
-                                                     (Variant
-                                                        ( emptyField :: String
-                                                        , notEqual :: Tuple (Maybe String) (Maybe String)
-                                                        | t136
-                                                        )
-                                                     )
-                                                  )
-                                                  String
-                                               )
-                              , setValue :: t55
-                              , setValidate :: t54
-                              | t56
-                              }
-                      , email :: { validated :: Maybe
-                                                  (Either
-                                                     (Array
-                                                        (Variant
-                                                           ( emptyField :: String
-                                                           , badEmail :: String
-                                                           | t126
-                                                           )
-                                                        )
-                                                     )
-                                                     String
-                                                  )
-                                 , setValue :: t103
-                                 , setValidate :: t102
-                                 | t104
-                                 }
-                      | t138
-                      }
-                   )
-                   { p1 :: { value :: String
-                           , shouldValidate :: Boolean
-                           }
-                   , p2 :: { value :: String
-                           , shouldValidate :: Boolean
-                           }
-                   , email :: { value :: String
-                              , shouldValidate :: Boolean
-                              }
-                   | t137
-                   }
-                   { email :: Maybe String
-                   , password :: Maybe String
-                   }
-signupForm = { email: _, password: _ }
-  <$> emailForm
-  <*> passwordForm
-  where
-    emailForm = formFromField (SProxy :: SProxy "email") $
-      hoistFnV validateNonEmptyStr
-      >>> hoistFnV (validateStrIsEmail "Not a valid email address.")
-
-    passwordForm = ( { p1: _, p2: _ }
-      <$> formFromField _p1 (hoistFnV validateNonEmptyStr)
-      <*> formFromField _p2 (hoistFnV validateNonEmptyStr)
-      )
-      >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p1 _p2
-
+updateValidate :: FieldValidateV -> (State -> State)
+updateValidate = match
+  { p1:    setValidate _p1
+  , p2:    setValidate _p2
+  , email: setValidate _email
+  }
