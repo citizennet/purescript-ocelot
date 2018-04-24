@@ -3,7 +3,7 @@ module UIGuide.Components.Tab where
 import Prelude
 
 import Ocelot.Block.NavigationTab as NavigationTab
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -43,7 +43,7 @@ component =
           }
           [ Backdrop.backdrop_
               [ HH.h3
-                [ HP.classes Type.captionClasses ]
+                [ HP.classes Format.captionClasses ]
                 [ HH.text "Standard Tabs" ]
               , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
@@ -51,7 +51,7 @@ component =
               ]
           , Backdrop.backdrop_
               [ HH.h3
-                [ HP.classes Type.captionClasses ]
+                [ HP.classes Format.captionClasses ]
                 [ HH.text "Tabs with Errors" ]
               , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]

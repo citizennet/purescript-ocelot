@@ -12,11 +12,9 @@ labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "flex"
   , "flex-row"
-  , "items-center"
   , "inline-block"
-  , "py-1"
+  , "py-2"
   , "cursor-pointer"
-  , "leading-loose"
   , "text-black"
   ]
 
@@ -49,6 +47,7 @@ radioClasses = HH.ClassName <$>
   , "h-4"
   , "w-4"
   , "p-1"
+  , "flex-none"
   , "no-content"
   , "rounded-full"
   , "mr-3"

@@ -6,24 +6,12 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
-import Ocelot.Block.Type as Type
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
+import Ocelot.Block.Format as Format
 --  import Ocelot.Core.Validation as Validation
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
-import UIGuide.Utilities.Async as Async
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Block.Backdrop as Backdrop
 
@@ -71,7 +59,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.field_
             { label: "Email*"
@@ -85,7 +73,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.field_
             { label: "Email*"
@@ -104,7 +92,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.field_
             { label: "Email*"
@@ -118,7 +106,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.field_
             { label: "Email*"
@@ -145,7 +133,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.fieldSmall_
             { label: "Daily Goal"
@@ -158,7 +146,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.fieldSmall_
             { label: "Daily Goal"
@@ -177,7 +165,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
             { label: "Daily Goal"
@@ -191,7 +179,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
             { label: "Daily Goal"
@@ -218,7 +206,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.fieldSmall_
             { label: "Budget*"
@@ -231,7 +219,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.fieldSmall_
             { label: "Budget*"
@@ -249,7 +237,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
             { label: "Budget*"
@@ -263,7 +251,7 @@ cnDocumentationBlocks =
               ]
             ]
           , HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
             { label: "Budget*"
@@ -290,7 +278,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.field_
             { label: "Search"
@@ -305,7 +293,7 @@ cnDocumentationBlocks =
                 ]
               , Input.addonLeft_ [ Icon.search_ ]
               , Input.borderRight
-                [ HP.classes Type.linkClasses ]
+                [ HP.classes Format.linkClasses ]
                 [ HH.text "Search" ]
               ]
             ]
@@ -315,7 +303,7 @@ cnDocumentationBlocks =
         [ Card.card
           [ HP.class_ $ HH.ClassName "flex-1" ]
           [ HH.h3
-            [ HP.classes Type.captionClasses ]
+            [ HP.classes Format.captionClasses ]
             [ HH.text "Loading" ]
           , FormField.field_
             { label: "Search"
@@ -332,7 +320,7 @@ cnDocumentationBlocks =
               , Input.addonCenter_ [ Icon.loading_ ]
               , Input.addonLeft_ [ Icon.search_ ]
               , Input.borderRight
-                [ HP.classes Type.linkClasses ]
+                [ HP.classes Format.linkClasses ]
                 [ HH.text "Search" ]
               ]
             ]

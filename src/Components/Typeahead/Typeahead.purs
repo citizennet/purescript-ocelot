@@ -18,7 +18,7 @@ import Ocelot.Block.Icon as Icon
 import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Typeahead as TA
 import Ocelot.Core.Utils ((<&>))
 import Select as Select
@@ -28,16 +28,18 @@ import Select.Utils.Setters as Setters
 ----------
 -- Input types expected. This needs to be defined for each 'item' type we have.
 
-type RenderTypeaheadItem o item eff
-  = { toStrMap :: item -> StrMap String
-    , renderContainer :: RenderContainer o item eff
-    , renderItem :: item -> HH.PlainHTML }
+type RenderTypeaheadItem o item eff =
+  { toStrMap :: item -> StrMap String
+  , renderContainer :: RenderContainer o item eff
+  , renderItem :: item -> HH.PlainHTML
+  }
 
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
   { toStrMap: singleton "name"
   , renderContainer: defRenderContainer' defRenderFuzzy
-  , renderItem: HH.text }
+  , renderItem: HH.text
+  }
 
 ----------
 -- Default rendering
@@ -151,7 +153,7 @@ defAsyncSingle props f { toStrMap, renderContainer, renderItem } =
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
+  , config: asyncConfig (Milliseconds 800.0) f toStrMap false
   }
 
 -- A def multi-select using the default render item function
@@ -168,7 +170,7 @@ defAsyncMulti props f { toStrMap, renderContainer, renderItem } =
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 100.0) f toStrMap true
+  , config: asyncConfig (Milliseconds 800.0) f toStrMap true
   }
 
 
@@ -242,9 +244,6 @@ renderTA props renderContainer renderSelectionItem st =
         TA.Many xs    -> renderMulti xs
         TA.Limit _ xs -> renderMulti xs
 
-    itemProps item =
-      [ HE.onClick $ HE.input_ $ TA.Remove item ]
-
     render selectState =
       HH.div_
         [ renderSearch
@@ -262,7 +261,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ HP.class_ $ HH.ClassName $ maybe "offscreen" (const "") x ]
           ( ( maybe [] pure $ renderSingleItem <$> x ) <>
             [ Input.borderRight
-              [ HP.classes Type.linkClasses ]
+              [ HP.classes Format.linkClasses ]
               [ HH.text "Change" ]
             ]
           )
@@ -292,7 +291,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Type.linkClasses ]
+          [ HP.classes Format.linkClasses ]
           [ HH.text "Browse" ]
         ]
 
@@ -319,12 +318,13 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Type.linkClasses ]
+          [ HP.classes Format.linkClasses ]
           [ HH.text "Browse" ]
         ]
 
     renderSelectionItem' x =
-      ItemContainer.selectionGroup renderSelectionItem (itemProps x) x
+      ItemContainer.selectionGroup
+        renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
 
     renderContainer_
       | isSuccess st.items = renderContainer

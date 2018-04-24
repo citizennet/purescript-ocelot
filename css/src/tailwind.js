@@ -61,6 +61,16 @@ config.maxHeight = Object.assign(config.maxHeight, {
   '80': '20rem',
 })
 
+
+config.minHeight = Object.assign(config.minHeight, {
+  '0': '0',
+  '10': '2.5rem',
+  '12': '3rem',
+  '16': '4rem',
+  '20': '5rem',
+  '80': '20rem',
+})
+
 config.maxWidth = Object.assign(config.maxWidth, {
   '6xl': '110rem',
 })

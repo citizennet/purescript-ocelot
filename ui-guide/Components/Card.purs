@@ -3,7 +3,7 @@ module UIGuide.Components.Card where
 import Prelude
 
 import Ocelot.Block.Card as Card
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -44,7 +44,7 @@ card =
           }
           [ Backdrop.backdrop_
             [ Card.card_
-              [ Type.contentHeading_
+              [ Format.contentHeading_
                 [ HH.text "Summary" ]
               , meta
               ]

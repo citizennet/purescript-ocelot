@@ -17,7 +17,7 @@ import DOM.HTML.Indexed (HTMLdiv, HTMLp)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import Ocelot.Core.Utils ((<&>))
 --  import Ocelot.Core.Validation (ValidationErrors, htmlE)
 
@@ -28,7 +28,7 @@ fieldClasses = HH.ClassName <$>
   ]
 
 helpTextClasses :: Array HH.ClassName
-helpTextClasses = Type.mutedClasses <>
+helpTextClasses = Format.mutedClasses <>
   ( HH.ClassName <$>
     [ "block"
     , "pt-3"

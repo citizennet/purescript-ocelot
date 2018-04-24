@@ -31,7 +31,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Storybook.Proxy (ProxyS, proxy)
 import Halogen.VDom.Driver (runUI)
-import Ocelot.Block.Type as Type
+import Ocelot.Block.Format as Format
 import UIGuide.Block.Backdrop as Backdrop
 
 import Routing (hashes)
@@ -168,7 +168,7 @@ app =
     [ HH.div
       [ HP.class_ $ HH.ClassName "flex-1 p-6 overflow-y-scroll" ]
       [ HH.header_
-        [ Type.heading
+        [ Format.heading
           [ HP.class_ $ HH.ClassName "flex" ]
           [ HH.img
             [ HP.class_ $ HH.ClassName "mr-2"
@@ -188,7 +188,7 @@ app =
     mapFlipped (M.toUnfoldable state.partitions) $ \(Tuple group stories) ->
       HH.div
       [ HP.class_ $ HH.ClassName "mb-6" ]
-      [ Type.caption_
+      [ Format.caption_
         [ HH.text $ show group ]
       , renderGroup state.route stories
       ]
@@ -201,7 +201,7 @@ app =
         [ HP.class_ $ HH.ClassName "mb-3" ]
         [ HH.a
           [ HP.classes $
-            Type.linkClasses <>
+            Format.linkClasses <>
             ( if href == route then [ HH.ClassName "font-medium" ] else [] )
           , HP.href $ "#" <> encodeURI href
           ]
