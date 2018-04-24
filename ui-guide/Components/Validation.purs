@@ -5,10 +5,8 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Aff.Console (log) as Console
-import Data.Lens (Lens', set)
-import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
-import Data.Symbol (class IsSymbol, SProxy(..))
+import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, inj, match)
 import Halogen as H
@@ -19,7 +17,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Core.Form (Endo, FormField, FormInput, Id, K, _shouldValidate, _value, formFromField, runForm)
+import Ocelot.Core.Form (Endo, FormField, FormInput, Id, K, formFromField, runForm, setValidate, setValue, check)
 import Ocelot.Core.Utils (css)
 import Ocelot.Core.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Polyform.Validation (V(..), Validation, hoistFnV)
@@ -105,7 +103,9 @@ component =
             , FormField.field_
               { label: "Email*"
               , helpText: Just "Provide a valid email address."
-              , valid: Nothing
+              , error: check st.form.email.validated $ match
+                  { badEmail: \s -> s
+                  , emptyField: \s -> s }
               , inputId: "email"
               }
               [ Input.input
@@ -118,7 +118,7 @@ component =
             , FormField.field_
               { label: "Password 1*"
               , helpText: Just "Write your password."
-              , valid: Nothing -- Just [ Validation.EmptyField ]
+              , error: check st.form.p1.validated $ match { emptyField: \s -> s }
               , inputId: "password-1-error"
               }
               [ Input.input
@@ -131,7 +131,10 @@ component =
             , FormField.field_
               { label: "Password 2*"
               , helpText: Just "Write your password again for confirmation."
-              , valid: Nothing -- Just [ Validation.EmptyField ]
+              , error: check st.form.p2.validated $ match
+                  { emptyField: \s -> s
+                  , notEqual: const "This password does not match the previously-entered password!"
+                  }
               , inputId: "password-1-error"
               }
               [ Input.input
@@ -178,6 +181,25 @@ component =
       pure next
 
 
+
+-----
+-- Form Helpers
+
+updateValue :: FieldValueV -> (State -> State)
+updateValue = match
+  { p1:    setValue _p1
+  , p2:    setValue _p2
+  , email: setValue _email
+  }
+
+updateValidate :: FieldValidateV -> (State -> State)
+updateValidate = match
+  { p1:    setValidate _p1
+  , p2:    setValidate _p2
+  , email: setValidate _email
+  }
+
+
 -----
 -- Form Types
 
@@ -215,43 +237,3 @@ type FormInputs =
 
 type SignupForm m = Validation m (Endo FormInputs) FormFields { email :: Maybe String, password :: Maybe String }
 
-
------
--- Form Helpers
-
-_raw :: ∀ t r. Lens' { raw :: t | r } t
-_raw = prop (SProxy :: SProxy "raw")
-
--- This can be abstracted away from the form
-setValue :: ∀ sym r0 r1 a t0 row
-   . IsSymbol sym
-  => RowCons sym { value :: a | r0 } t0 row
-  => SProxy sym
-  -> a
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValue sym = set $ _raw <<< prop sym <<< _value
-
--- But this should be written with the form
-updateValue :: FieldValueV -> (State -> State)
-updateValue = match
-  { p1:    setValue _p1
-  , p2:    setValue _p2
-  , email: setValue _email
-  }
-
-setValidate :: ∀ sym r0 r1 t0 row
-   . IsSymbol sym
-  => RowCons sym { shouldValidate :: Boolean | r0 } t0 row
-  => SProxy sym
-  -> Boolean
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValidate sym = set $ _raw <<< prop sym <<< _shouldValidate
-
-updateValidate :: FieldValidateV -> (State -> State)
-updateValidate = match
-  { p1:    setValidate _p1
-  , p2:    setValidate _p2
-  , email: setValidate _email
-  }

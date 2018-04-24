@@ -222,7 +222,7 @@ cnDocumentationBlocks st =
                 [ FormField.field_
                   { label: "Primary Location"
                   , helpText: Just "Search your favorite destination."
-                  , valid: Nothing
+                  , error: Nothing
                   , inputId: "location"
                   }
                   [ HH.slot' CP.cp1 0 TACore.component
@@ -238,7 +238,7 @@ cnDocumentationBlocks st =
                 , FormField.field_
                   { label: "Secondary Location"
                   , helpText: Just "Search your favorite destination."
-                  , valid: Nothing
+                  , error: Nothing
                   , inputId: "location-hydrated"
                   }
                   [ HH.slot' CP.cp1 1 TACore.component
@@ -268,7 +268,7 @@ cnDocumentationBlocks st =
                 [ FormField.field_
                   { label: "Primary User"
                   , helpText: Just "Search your favorite companion."
-                  , valid: Nothing
+                  , error: Nothing
                   , inputId: "user"
                   }
                   [ HH.slot' CP.cp2 0 TACore.component
@@ -284,7 +284,7 @@ cnDocumentationBlocks st =
                 , FormField.field_
                   { label: "Secondary User"
                   , helpText: Just "Search your favorite companion."
-                  , valid: Nothing
+                  , error: Nothing
                   , inputId: "user-hydrated"
                   }
                   [ HH.slot' CP.cp2 1 TACore.component
@@ -317,7 +317,7 @@ cnDocumentationBlocks st =
             , FormField.field_
               { label: "Enabled"
               , helpText: Nothing
-              , valid: Nothing
+              , error: Nothing
               , inputId: "enable-locations"
               }
               [ Toggle.toggle
@@ -334,7 +334,7 @@ cnDocumentationBlocks st =
               [ FormField.field_
                 { label: "Targeted Locations"
                 , helpText: Just "Search your top destinations."
-                , valid: Nothing
+                , error: Nothing
                 , inputId: "locations"
                 }
                 [ HH.slot' CP.cp1 2 TACore.component
@@ -350,7 +350,7 @@ cnDocumentationBlocks st =
               , FormField.field_
                 { label: "Excluded Locations"
                 , helpText: Just "Search your top destinations."
-                , valid: Nothing
+                , error: Nothing
                 , inputId: "locations"
                 }
                 [ HH.slot' CP.cp1 3 TACore.component
@@ -375,7 +375,7 @@ cnDocumentationBlocks st =
             , FormField.field_
               { label: "Enabled"
               , helpText: Nothing
-              , valid: Nothing
+              , error: Nothing
               , inputId: "enable-users"
               }
               [ Toggle.toggle
@@ -392,7 +392,7 @@ cnDocumentationBlocks st =
               [ FormField.field_
                 { label: "Targeted Users"
                 , helpText: Just "Search your top companions."
-                , valid: Nothing
+                , error: Nothing
                 , inputId: "users"
                 }
                 [ HH.slot' CP.cp2 2 TACore.component
@@ -408,7 +408,7 @@ cnDocumentationBlocks st =
               , FormField.field_
                 { label: "Excluded Users"
                 , helpText: Just "Search your top companions."
-                , valid: Nothing
+                , error: Nothing
                 , inputId: "users-hydrated"
                 }
                 [ HH.slot' CP.cp2 3 TACore.component

@@ -62,7 +62,7 @@ component =
       NoOp a -> pure a
 
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render _ = 
+    render _ =
       Modal.modal_
         [ Modal.header
           { buttons:
@@ -82,7 +82,7 @@ component =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp1 unit TACore.component
@@ -101,7 +101,7 @@ component =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp2 unit TACore.component

@@ -62,7 +62,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email"
             }
             [ Input.input
@@ -76,7 +76,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing -- Just [ Validation.EmptyField ]
+            , error: Just "This field is required."
             , inputId: "email-error"
             }
             [ Input.input
@@ -95,7 +95,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email-hydrated"
             }
             [ Input.input
@@ -109,7 +109,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email-disabled"
             }
             [ Input.input
@@ -136,7 +136,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal"
             }
             [ Input.percentage_
@@ -149,7 +149,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing -- Just [ Validation.OutOfRange "Must be between 0 and 100" ]
+            , error: Just "Must be between 0 and 100"
             , inputId: "daily-goal-error"
             }
             [ Input.percentage_
@@ -168,7 +168,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal-hydrated"
             }
             [ Input.percentage_
@@ -182,7 +182,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal-disabled"
             }
             [ Input.percentage_
@@ -209,7 +209,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget"
             }
             [ Input.currency_
@@ -222,7 +222,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing -- Just [ Validation.EmptyField ]
+            , error: Just "This field is required."
             , inputId: "budget-error"
             }
             [ Input.currency_
@@ -240,7 +240,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget-hydrated"
             }
             [ Input.currency_
@@ -254,7 +254,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget-disabled"
             }
             [ Input.currency_
@@ -281,7 +281,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a search field."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "search"
             }
             [ Input.inputGroup_
@@ -306,7 +306,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a loading state for a search field."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "search-loading"
             }
             [ Input.inputGroup_
