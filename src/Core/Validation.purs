@@ -151,7 +151,7 @@ toEither (Valid _ a) = Right a
 -----
 -- Multi-field and dependent validation
 
-collapseIfEqual a b symA symB = case a == b of
+collapseIfEqual a b symA = case a == b of
   true -> pure a
   false -> Invalid $ Endo setErrors
     where
@@ -161,12 +161,6 @@ collapseIfEqual a b symA symB = case a == b of
         # set
           (prop symA <<< _validated)
           (case view (prop symA <<< _validated) rec of
-            Just (Left errs) -> Just $ Left ( err : errs )
-            otherwise -> Just $ Left [ err ]
-          )
-        # set
-          (prop symB <<< _validated)
-          (case view (prop symB <<< _validated) rec of
             Just (Left errs) -> Just $ Left ( err : errs )
             otherwise -> Just $ Left [ err ]
           )

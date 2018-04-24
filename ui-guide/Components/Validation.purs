@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Aff.Console (log) as Console
+import Data.Either (Either)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
@@ -23,6 +24,8 @@ import Ocelot.Core.Validation (collapseIfEqual, validateNonEmptyStr, validateStr
 import Polyform.Validation (V(..), Validation, hoistFnV)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
+
+newtype E e a = E (Either (Array (Variant e)) a)
 
 ----------
 -- Form
@@ -84,7 +87,7 @@ component =
         <$> formFromField _p1 (hoistFnV validateNonEmptyStr)
         <*> formFromField _p2 (hoistFnV validateNonEmptyStr)
         )
-        >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p1 _p2
+        >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p2
 
   render :: State -> H.ComponentHTML Query
   render st =
@@ -219,8 +222,8 @@ _p2 = SProxy :: SProxy "p2"
 -- The error types used on our fields (usually this would be kept with the field definitions
 -- and not with the form. That makes these portable.
 type EmailError = Array (Variant (emptyField :: String, badEmail :: String))
-type Password1Error = Array (Variant (emptyField :: String))
-type Password2Error = Array (Variant (emptyField :: String, notEqual :: Tuple (Maybe String) (Maybe String)))
+type PasswordError = Array (Variant (emptyField :: String))
+type PasswordError2 = Array (Variant (emptyField :: String, notEqual :: Tuple (Maybe String) (Maybe String)))
 
 -- The variants used to access each field in the form
 type FieldValueV = Variant (FormFieldsT Id)
@@ -231,8 +234,8 @@ type FormFields = Record (FormFieldsT FormField)
 
 type FormInputs =
   { email :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) EmailError String
-  , p1 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) Password1Error String
-  , p2 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) Password2Error String
+  , p1 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) PasswordError String
+  , p2 :: FormInput () (String -> FieldValueV) (Boolean -> FieldValidateV) PasswordError2 String
   }
 
 type SignupForm m = Validation m (Endo FormInputs) FormFields { email :: Maybe String, password :: Maybe String }
