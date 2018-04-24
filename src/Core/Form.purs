@@ -194,14 +194,10 @@ setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldVa
 -- `Variant (FormFieldsT Snd) -> Variant ( name :: String )
 -- `Variant (FormFieldsT (Const Int)) -> Variant ( name :: Int )
 
-type Id a = a
-type K a b = a
---  type Fst (a :: # Type) b c d e = a
---  type Snd (a :: # Type) b c d e = b
---  type Three (a :: # Type) b c d e = c
---  type Four (a :: # Type) b c d e = d
---  type Five (a :: # Type) b c d e = e
---  type Const z (a :: # Type) b = z
+type First (a :: # Type) b c = a
+type Second (a :: # Type) b c = b
+type Third (a :: # Type) b c = c
+type K a (b :: # Type) c d = a
 
 -----
 -- Form construction
