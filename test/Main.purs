@@ -41,6 +41,7 @@ main = runTest do
         pass1Valid = isValid (prop _password1 <<< _validated)
         pass2Valid = isValid (prop _password2 <<< _validated)
 
+    pure unit
     test "Partially validate bad password" do
       res <- runForm testForm initialForm badPass
       traceAnyA res
@@ -52,13 +53,13 @@ main = runTest do
       traceAnyA res
       assertFalse "Password should work, but email should fail."
         $ emailValid res && pass1Valid res && pass2Valid res
-
+    --
     test "Validate correct input" do
       res <- runForm testForm initialForm good
       traceAnyA res
       assert "Validation should pass"
         $ emailValid res && pass1Valid res && pass2Valid res
-
+    --
     test "Validate skipped input" do
       res <- runForm testForm initialForm skip
       traceAnyA res

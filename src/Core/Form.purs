@@ -8,9 +8,10 @@ import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
-import Data.Record (get)
+import Data.Record (get, insert)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Polyform.Validation (Validation(..), V(..))
+import Type.Row (class RowLacks, class RowToList, Cons, Nil, RLProxy(..), kind RowList)
 
 -----
 -- Custom form-building monoid (credit: @paluh)
@@ -27,6 +28,66 @@ instance semigroupEndo :: Semigroup (Endo f) where
 
 instance monoidEndo :: Monoid (Endo a) where
   mempty = Endo id
+
+-----
+-- Folding form records
+
+-- To support partial validation, each field in our record will
+-- parse to `Maybe value`. If the field isn't meant to be validated
+-- it will return `Nothing`, and if it is, it will return `Just a` if
+-- the validation is successful.
+--
+-- This will produce a record like this:
+-- { a :: Maybe Email, b :: Maybe Password }
+--
+-- However, our data types are going to be like this:
+-- type UserLogin = { a :: Email, p :: Password }
+--
+-- This class provides a function `foldImpl` which can be used to
+-- create a record fold that will invert the applicative. Given
+-- that initial record, you'll produce:
+-- Maybe { a :: Email, p :: Password }
+
+-- The `Fold` class here is implemented for Maybe, but it could be
+-- changed to support any arbitrary applicative `f`.
+class Fold (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  foldImpl :: RLProxy rl -> Record r -> Maybe (Record o)
+
+-- In the base case when we have an empty record, we'll return it.
+instance nilFold :: Fold Nil r () where
+  foldImpl _ _ = Just {}
+
+-- Otherwise we'll accumulate the value at the head of the list into
+-- our base (Just {}) and then recursively call `foldImpl` on our tail.
+-- If we have a `Nothing` at any point, the entire structure will short-
+-- circuit with `Nothing` as the result.
+instance consFold
+  :: ( IsSymbol name
+     , RowCons name a tail' o
+     , RowCons name (Maybe a) t0 r
+     , RowLacks name tail'
+     , Fold tail r tail'
+     )
+  => Fold (Cons name (Maybe a) tail) r o
+  where
+    foldImpl _ r =
+      -- This has to be defined in a variable for some reason; it won't
+      -- compile otherwise, but I don't know why not.
+      let tail' = foldImpl (RLProxy :: RLProxy tail) r
+       in insert (SProxy :: SProxy name)
+          <$> get (SProxy :: SProxy name) r
+          <*> tail'
+
+-- With our `Fold` class we can define this function, which will turn
+-- a record of `{ Maybe a }` into `Maybe { a }`.
+foldRecord
+  :: ∀ r rl o
+   . Fold rl r o
+  => RowToList r rl
+  => Record r
+  -> Maybe (Record o)
+foldRecord r = foldImpl (RLProxy :: RLProxy rl) r
+
 
 -----
 -- Input and field types
@@ -110,8 +171,8 @@ type Const z (a :: # Type) b = z
 -- A type that represents a form that can be composed with other
 -- forms. This `Validation` type doesn't hold errors in its `e`
 -- constructor but rather the fields of the form.
-type Form m form input output =
-  Validation m (Endo (Record form)) (Record input) output
+--  type Form m form input output =
+--    Validation m (Endo (Record form)) (Record input) output
 
 -- Turn a regular validation type into a form that can be composed
 -- with others by running its validation and then either producing
@@ -134,7 +195,7 @@ formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
   => RowCons sym (FormInput attrs vl vd e b) t1 form
   => SProxy sym
   -> Validation m e a b
-  -> Form m form input (Maybe b)
+  -> Validation m (Endo (Record form)) (Record input) (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
   let { value, shouldValidate } = get name inputForm
       set' = set (prop name <<< _validated)
@@ -153,14 +214,16 @@ formFromField name validation = Validation $ \inputForm -> do
 -- to create a transformation: Endo (form -> form). Then, it will run that
 -- transformation on the initial record provided. If validation succeeds,
 -- then you'll also receive the parsed output.
-runForm :: ∀ m form input output
+runForm :: ∀ m form input output0 output1 outputl
   . Monad m
- => Form m form input output
+ => RowToList output0 outputl
+ => Fold outputl output0 output1
+ => Validation m (Endo (Record form)) (Record input) (Record output0)
  -> Record form
  -> Record input
- -> m (V (Record form) output)
+ -> m (V (Record form) (Maybe (Record output1)))
 runForm formValidation initial input = do
   result <- unwrap formValidation $ input
   pure $ case result of
-    Valid (Endo transform) v -> Valid (transform initial) v
+    Valid (Endo transform) v -> Valid (transform initial) (foldRecord v)
     Invalid (Endo transform) -> Invalid $ transform initial
