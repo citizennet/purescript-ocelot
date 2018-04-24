@@ -1,4 +1,4 @@
-module Ocelot.Core.Utils
+module Ocelot.Utils.Html
   ( blockBuilder
   , css
   , appendIProps

@@ -1,5 +1,5 @@
 -- | Constructors are not exported for Cents or Dollars
-module Ocelot.Core.Utils.Currency
+module Ocelot.Utils.Currency
   ( Cents
   , parseCentsFromInt
   , parseCentsFromDollarStr
