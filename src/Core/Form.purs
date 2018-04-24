@@ -160,10 +160,14 @@ _validate = prop (SProxy :: SProxy "validate")
 -- `Variant (FormFieldsT Snd) -> Variant ( name :: String )
 -- `Variant (FormFieldsT (Const Int)) -> Variant ( name :: Int )
 
-type Fst (a :: # Type) b = a
-type Snd (a :: # Type) b = b
-type Const z (a :: # Type) b = z
-
+type Id a = a
+type K a b = a
+--  type Fst (a :: # Type) b c d e = a
+--  type Snd (a :: # Type) b c d e = b
+--  type Three (a :: # Type) b c d e = c
+--  type Four (a :: # Type) b c d e = d
+--  type Five (a :: # Type) b c d e = e
+--  type Const z (a :: # Type) b = z
 
 -----
 -- Form construction
