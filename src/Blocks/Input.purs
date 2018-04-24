@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLlabel, HTMLspan, HTMLinput)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Utils.Html ((<&>))
 
 inputSharedClasses :: Array HH.ClassName
 inputSharedClasses = HH.ClassName <$>

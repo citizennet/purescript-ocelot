@@ -7,7 +7,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Format as Format
-import Ocelot.Core.Validation as Validation
+import Ocelot.Validation as Validation
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH

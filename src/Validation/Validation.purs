@@ -14,7 +14,7 @@ import Data.Number as Num
 import Data.String as String
 import Data.Validation.Semigroup (V, invalid, unV)
 import Halogen.HTML as HH
-import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
+import Ocelot.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Text.Email.Validate (isValid)
 
 -----

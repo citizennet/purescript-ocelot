@@ -20,8 +20,8 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Modal as Modal
 import Ocelot.Block.Format as Format
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
+import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.Components.Typeahead as TACore
 import UIGuide.Utilities.Async as Async
 
 type State = Unit
