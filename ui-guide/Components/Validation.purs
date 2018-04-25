@@ -16,9 +16,9 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Core.Form (Third, K, Endo, formFromField, runForm, setValidate, setValue, check)
-import Ocelot.Core.Utils (css)
-import Ocelot.Core.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
+import Ocelot.Form (Third, K, Endo, formFromField, runForm, setValidate, setValue, check)
+import Ocelot.Properties (css)
+import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Polyform.Validation (V(..), Validation, hoistFnV)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

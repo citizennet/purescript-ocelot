@@ -3,7 +3,7 @@ module UIGuide.Utilities.Form where
 import Data.Maybe (Maybe)
 import Data.Tuple (Tuple)
 import Data.Variant (Variant)
-import Ocelot.Core.Form (FormField, FormInput)
+import Ocelot.Form (FormField, FormInput)
 
 
 -----

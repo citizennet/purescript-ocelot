@@ -1,4 +1,4 @@
-module Ocelot.Core.Validation where
+module Ocelot.Form.Validation where
 
 import Prelude
 
@@ -13,8 +13,8 @@ import Data.Number as Num
 import Data.String as String
 import Data.Tuple (Tuple(..))
 import Data.Variant (SProxy(..), Variant, inj)
-import Ocelot.Core.Form (Endo(..), _validated)
-import Ocelot.Core.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
+import Ocelot.Form (Endo(..), _validated)
+import Ocelot.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Polyform.Validation (V(..))
 import Text.Email.Validate as Email
 

@@ -1,4 +1,4 @@
-module Ocelot.Core.Form where
+module Ocelot.Form where
 
 import Prelude
 
