@@ -13,7 +13,7 @@ import Data.StrMap (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 

@@ -6,7 +6,7 @@ import DOM.HTML.Indexed (HTMLinput, HTMLlabel)
 import DOM.HTML.Indexed.InputType (InputType(InputRadio))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Properties ((<&>))
 
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>

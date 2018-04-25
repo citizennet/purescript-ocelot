@@ -18,8 +18,8 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.Core.Utils ((<&>))
-import Ocelot.Core.Validation (ValidationErrors, htmlE)
+import Ocelot.Properties ((<&>))
+import Ocelot.Validation (ValidationErrors, htmlE)
 
 fieldClasses :: Array HH.ClassName
 fieldClasses = HH.ClassName <$>

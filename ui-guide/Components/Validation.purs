@@ -30,9 +30,9 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Button as Button
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Input as Input
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as CV
+import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.Components.Typeahead as TACore
+import Ocelot.Validation as CV
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
