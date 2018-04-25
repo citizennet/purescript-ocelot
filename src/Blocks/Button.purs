@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLbutton, HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Utils.Html ((<&>))
+import Ocelot.Properties ((<&>))
 
 buttonSharedClasses :: Array HH.ClassName
 buttonSharedClasses = HH.ClassName <$>

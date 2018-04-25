@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Utils.Html ((<&>))
+import Ocelot.Properties ((<&>))
 
 baseCardClasses :: Array HH.ClassName
 baseCardClasses = HH.ClassName <$>

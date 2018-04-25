@@ -6,7 +6,7 @@ import DOM.HTML.Indexed (HTMLinput, HTMLlabel)
 import DOM.HTML.Indexed.InputType (InputType(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Utils.Html ((<&>))
+import Ocelot.Properties ((<&>))
 
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
