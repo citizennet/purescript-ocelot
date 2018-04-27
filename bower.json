@@ -25,8 +25,7 @@
     "purescript-arrays": "^4.3.0",
     "purescript-variant": "^4.1.0",
     "purescript-polyform": "^0.6.3",
-    "purescript-test-unit": "^13.0.0",
-    "purescript-default": "thomashoneyman/purescript-default"
+    "purescript-test-unit": "^13.0.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",
