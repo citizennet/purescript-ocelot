@@ -7,8 +7,7 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Maybe (Maybe)
 import Debug.Trace (traceAnyA)
-import Ocelot.Form (makeRawForm)
-import Ocelot.Data.Default (class Default)
+import Ocelot.Form (makeDefaultRecord)
 import Test.Unit (suite)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Main (runTest)
@@ -21,18 +20,13 @@ type Effects eff =
   | eff
   )
 
-data Summer = Winter | Fall
-
-instance defaultSummer :: Default Summer where
-  def = Winter
-
-type FormFields =
+type Fields =
   ( email :: String
-  , password :: Maybe Summer
+  , password :: Maybe String
   )
 
 main :: ∀ eff. Eff (Effects eff) Unit
 main = runTest do
   suite "Validation" do
-    traceAnyA $ makeRawForm (RProxy :: RProxy FormFields)
+    traceAnyA $ makeDefaultRecord (RProxy :: RProxy Fields)
     pure unit

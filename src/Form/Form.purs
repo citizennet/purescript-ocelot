@@ -98,36 +98,36 @@ sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
 -- fields have a `shouldValidate` field that should be set to false,
 -- and a `value` field that should be set to some default value.
 
-class DefaultRawForm (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
-  makeRaw :: RLProxy rl -> RProxy r -> Record o
+class DefaultRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  defaultRecordImpl :: RLProxy rl -> RProxy r -> Record o
 
 -- In the base case when we have an empty record, we'll return it.
-instance nilDefaultRawForm :: DefaultRawForm Nil r () where
-  makeRaw _ _ = {}
+instance nilDefaultRecord :: DefaultRecord Nil r () where
+  defaultRecordImpl _ _ = {}
 
 -- Otherwise we'll accumulate the value at the head of the list into
 -- our base.
-instance consDefaultRawForm
+instance consDefaultRecord
   :: ( IsSymbol name
      , Default a
      , RowCons name { value :: a, shouldValidate :: Boolean } tail' o
      , RowCons name a t0 r
      , RowLacks name tail'
-     , DefaultRawForm tail r tail'
+     , DefaultRecord tail r tail'
      )
-  => DefaultRawForm (Cons name a tail) r o
+  => DefaultRecord (Cons name a tail) r o
   where
-    makeRaw _ r =
-      let tail' = makeRaw (RLProxy :: RLProxy tail) (RProxy :: RProxy r)
+    defaultRecordImpl _ r =
+      let tail' = defaultRecordImpl (RLProxy :: RLProxy tail) (RProxy :: RProxy r)
        in insert (SProxy :: SProxy name) { value: def, shouldValidate: false } tail'
 
-makeRawForm
+makeDefaultRecord
   :: ∀ r rl o
-   . DefaultRawForm rl r o
+   . DefaultRecord rl r o
   => RowToList r rl
   => RProxy r
   -> Record o
-makeRawForm r = makeRaw (RLProxy :: RLProxy rl) r
+makeDefaultRecord r = defaultRecordImpl (RLProxy :: RLProxy rl) r
 
 -----
 -- Input and field types
