@@ -16,10 +16,11 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Form (Third, K, Endo, formFromField, runForm, setValidate, setValue, check)
-import Ocelot.Properties (css)
+import Ocelot.Form (Endo, K, Third, check, formFromField, makeRawForm, runForm, setValidate, setValue)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
+import Ocelot.Properties (css)
 import Polyform.Validation (V(..), Validation, hoistFnV)
+import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Form (Email, FormField', FormInput', FormMaybe', Password, PasswordEq)
@@ -152,11 +153,7 @@ component =
 -- Note: If we restrict to monoidal values, then we can construct initial
 -- forms automatically, without having to write this all out.
 signupRawForm :: FormFields
-signupRawForm =
-  { email: { value: "", shouldValidate: false }
-  , p1:    { value: "", shouldValidate: false }
-  , p2:    { value: "", shouldValidate: false }
-  }
+signupRawForm = makeRawForm (RProxy :: RProxy (FormFieldsT Third))
 
 -- Next, the form we're going to continually run the user's raw input
 -- against. It's made up of the same fields as the raw input, but here
