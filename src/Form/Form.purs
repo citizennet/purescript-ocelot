@@ -8,10 +8,12 @@ import Data.Lens (Lens', set)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
+import Data.Default (class Default, def)
 import Data.Newtype (unwrap)
 import Data.Record (get, insert)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Polyform.Validation (Validation(..), V(..))
+import Type.Prelude (RProxy(..))
 import Type.Row (class RowLacks, class RowToList, Cons, Nil, RLProxy(..), kind RowList)
 
 -----
@@ -31,7 +33,7 @@ instance monoidEndo :: Monoid (Endo a) where
   mempty = Endo id
 
 -----
--- Folding form records
+-- Sequencing form records
 
 -- To support partial validation, each field in our record will
 -- parse to `Maybe value`. If the field isn't meant to be validated
@@ -44,51 +46,88 @@ instance monoidEndo :: Monoid (Endo a) where
 -- However, our data types are going to be like this:
 -- type UserLogin = { a :: Email, p :: Password }
 --
--- This class provides a function `foldImpl` which can be used to
+-- This class provides a function `sequenceImpl` which can be used to
 -- create a record fold that will invert the applicative. Given
 -- that initial record, you'll produce:
 -- Maybe { a :: Email, p :: Password }
 
--- The `Fold` class here is implemented for Maybe, but it could be
+-- The `SequenceRecord` class here is implemented for Maybe, but it could be
 -- changed to support any arbitrary applicative `f`.
-class Fold (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
-  foldImpl :: RLProxy rl -> Record r -> Maybe (Record o)
+class SequenceRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  sequenceImpl :: RLProxy rl -> Record r -> Maybe (Record o)
 
 -- In the base case when we have an empty record, we'll return it.
-instance nilFold :: Fold Nil r () where
-  foldImpl _ _ = Just {}
+instance nilSequenceRecord :: SequenceRecord Nil r () where
+  sequenceImpl _ _ = Just {}
 
 -- Otherwise we'll accumulate the value at the head of the list into
--- our base (Just {}) and then recursively call `foldImpl` on our tail.
+-- our base (Just {}) and then recursively call `sequenceImpl` on our tail.
 -- If we have a `Nothing` at any point, the entire structure will short-
 -- circuit with `Nothing` as the result.
-instance consFold
+instance consSequenceRecord
   :: ( IsSymbol name
      , RowCons name a tail' o
-     , RowCons name (Maybe a) t0 r
-     , RowLacks name tail'
-     , Fold tail r tail'
+     , RowCons name (Maybe a) t0 r , RowLacks name tail'
+     , SequenceRecord tail r tail'
      )
-  => Fold (Cons name (Maybe a) tail) r o
+  => SequenceRecord (Cons name (Maybe a) tail) r o
   where
-    foldImpl _ r =
+    sequenceImpl _ r =
       -- This has to be defined in a variable for some reason; it won't
       -- compile otherwise, but I don't know why not.
-      let tail' = foldImpl (RLProxy :: RLProxy tail) r
+      let tail' = sequenceImpl (RLProxy :: RLProxy tail) r
        in insert (SProxy :: SProxy name)
           <$> get (SProxy :: SProxy name) r
           <*> tail'
 
--- With our `Fold` class we can define this function, which will turn
+-- With our `SequenceRecord` class we can define this function, which will turn
 -- a record of `{ Maybe a }` into `Maybe { a }`.
-foldRecord
+sequenceRecord
   :: ∀ r rl o
-   . Fold rl r o
+   . SequenceRecord rl r o
   => RowToList r rl
   => Record r
   -> Maybe (Record o)
-foldRecord r = foldImpl (RLProxy :: RLProxy rl) r
+sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
 
+-----
+-- Default type class & record builder
+
+-- We want to generate raw form representations from a form spec, or
+-- in other words, `FormInput attrs vl vd e a -> FormField b`. Form
+-- fields have a `shouldValidate` field that should be set to false,
+-- and a `value` field that should be set to some default value.
+
+class DefaultRawForm (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  makeRaw :: RLProxy rl -> RProxy r -> Record o
+
+-- In the base case when we have an empty record, we'll return it.
+instance nilDefaultRawForm :: DefaultRawForm Nil r () where
+  makeRaw _ _ = {}
+
+-- Otherwise we'll accumulate the value at the head of the list into
+-- our base.
+instance consDefaultRawForm
+  :: ( IsSymbol name
+     , Default a
+     , RowCons name { value :: a, shouldValidate :: Boolean } tail' o
+     , RowCons name a t0 r
+     , RowLacks name tail'
+     , DefaultRawForm tail r tail'
+     )
+  => DefaultRawForm (Cons name a tail) r o
+  where
+    makeRaw _ r =
+      let tail' = makeRaw (RLProxy :: RLProxy tail) (RProxy :: RProxy r)
+       in insert (SProxy :: SProxy name) { value: def, shouldValidate: false } tail'
+
+makeRawForm
+  :: ∀ r rl o
+   . DefaultRawForm rl r o
+  => RowToList r rl
+  => RProxy r
+  -> Record o
+makeRawForm r = makeRaw (RLProxy :: RLProxy rl) r
 
 -----
 -- Input and field types
@@ -167,13 +206,6 @@ setValidate :: ∀ sym r0 r1 t0 row
   -> { raw :: Record row | r1 }
 setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldValidate
 
--- For example, to update your fields:
---  updateValue :: MyValueVariant -> (State -> State)
---  updateValue = match
---    { password: setValue $ SProxy :: SProxy "password"
---    , email:    setValue $ SProxy :: SProxy "email"
---    }
-
 
 -----
 -- Higher kinded data
@@ -251,7 +283,7 @@ formFromField name validation = Validation $ \inputForm -> do
 runForm :: ∀ m form input output0 output1 outputl
   . Monad m
  => RowToList output0 outputl
- => Fold outputl output0 output1
+ => SequenceRecord outputl output0 output1
  => Validation m (Endo (Record form)) (Record input) (Record output0)
  -> Record form
  -> Record input
@@ -259,5 +291,5 @@ runForm :: ∀ m form input output0 output1 outputl
 runForm formValidation initial input = do
   result <- unwrap formValidation $ input
   pure $ case result of
-    Valid (Endo transform) v -> Valid (transform initial) (foldRecord v)
+    Valid (Endo transform) v -> Valid (transform initial) (sequenceRecord v)
     Invalid (Endo transform) -> Invalid $ transform initial
