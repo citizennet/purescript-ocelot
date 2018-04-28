@@ -74,44 +74,7 @@ sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
 ----------
 -- Default Record Builders
 
--- We want to generate raw form representations from a form spec, or
--- in other words, `FormInput attrs vl vd e a -> FormField b`. Form
--- fields have a `shouldValidate` field that should be set to false,
--- and a `value` field that should be set to some default value.
-
-class DefaultFormFields (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
-  defaultFormFieldsImpl :: RLProxy rl -> RProxy r -> Record o
-
--- In the base case when we have an empty record, we'll return it.
-instance nilDefaultFormFields :: DefaultFormFields Nil r () where
-  defaultFormFieldsImpl _ _ = {}
-
--- Otherwise we'll accumulate the value at the head of the list into
--- our base.
-instance consDefaultFormFields
-  :: ( IsSymbol name
-     , Default a
-     , RowCons name { value :: a, shouldValidate :: Boolean } tail' o
-     , RowCons name a t0 r
-     , RowLacks name tail'
-     , DefaultFormFields tail r tail'
-     )
-  => DefaultFormFields (Cons name a tail) r o
-  where
-    defaultFormFieldsImpl _ r =
-      let tail' = defaultFormFieldsImpl (RLProxy :: RLProxy tail) (RProxy :: RProxy r)
-       in insert (SProxy :: SProxy name) { value: def, shouldValidate: false } tail'
-
-makeDefaultFormFields
-  :: ∀ r rl o
-   . DefaultFormFields rl r o
-  => RowToList r rl
-  => RProxy r
-  -> Record o
-makeDefaultFormFields r = defaultFormFieldsImpl (RLProxy :: RLProxy rl) r
-
-
--- We also want to generate our form spec, if possible.
+-- We want to generate raw form representations from a form spec.
 
 class DefaultFormInputs (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
   defaultFormInputs :: RLProxy rl -> RProxy r -> Record o
@@ -125,7 +88,12 @@ instance nilDefaultFormInputs :: DefaultFormInputs Nil r () where
 instance consDefaultFormInputs
   :: ( IsSymbol name
      , Default a
-     , RowCons name { validated :: Maybe (Either e a), setValue :: a -> (Variant r0), setValidate :: Boolean -> (Variant r1) } tail' o
+     , RowCons name { value :: a
+                    , shouldValidate :: Boolean
+                    , validated :: Maybe (Either e b)
+                    , setValue :: a -> (Variant r0)
+                    , setValidate :: Boolean -> (Variant r1)
+                    } tail' o
      , RowCons name a t0 r0
      , RowCons name Boolean t1 r1
      , RowLacks name tail'
@@ -136,7 +104,7 @@ instance consDefaultFormInputs
     defaultFormInputs _ r =
       let tail' = defaultFormInputs (RLProxy :: RLProxy tail) (RProxy :: RProxy r0)
           _name = SProxy :: SProxy name
-       in insert _name { validated: Nothing, setValue: inj _name, setValidate: inj _name } tail'
+       in insert _name { value: def, shouldValidate: false, validated: Nothing, setValue: inj _name, setValidate: inj _name } tail'
 
 makeDefaultFormInputs
   :: ∀ r rl o
