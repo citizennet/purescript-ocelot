@@ -16,15 +16,15 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs)
-import Ocelot.Form (Endo, K, Second, check, formFromField, runForm, setValidate, setValue)
+import Ocelot.Data.Record (makeDefaultFormInputs)
+import Ocelot.Form (Form, K, Second, check, formFromField, runForm, setValidate, setValue)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Ocelot.Properties (css)
-import Polyform.Validation (V(..), Validation, hoistFnV)
+import Polyform.Validation (V(..), hoistFnV)
 import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Utilities.Form (EmailError, FormField', FormInput', FormMaybe', PasswordError, PasswordErrorEq)
+import UIGuide.Utilities.Form (EmailError, FormInput', FormMaybe', PasswordError, PasswordErrorEq)
 
 ----------
 -- Form
@@ -36,7 +36,6 @@ data Query a
 
 type State =
   { form :: FormInputs
-  , raw  :: FormFields
   , result :: Maybe { email :: String, password :: String }
   }
 
@@ -52,7 +51,7 @@ component =
     }
   where
   initialState :: State
-  initialState = { raw: signupRawForm, form: signupInitialForm, result: Nothing }
+  initialState = { form: signupInitialForm, result: Nothing }
 
   render :: State -> H.ComponentHTML Query
   render st =
@@ -131,7 +130,7 @@ component =
     ValidateAll next -> do
       st <- H.get
       (Tuple form result) <- H.liftAff do
-         res <- runForm signupForm st.form st.raw
+         res <- runForm signupForm st.form
          case res of
            Valid form value -> do
              pure $ Tuple form value
@@ -144,42 +143,9 @@ component =
 -----
 -- Lets' Build A Form
 
--- Our form is going to consist of these three parts.
-
--- First, the raw form that the user interacts with in the DOM. These
--- don't have to have string values -- they can be of any type at all.
--- However, all fields will at least have `value` and `shouldValidate`
--- and `shouldValidate` will always be Boolean.
---
--- Note: If we restrict to monoidal values, then we can construct initial
--- forms automatically, without having to write this all out.
-signupRawForm :: FormFields
-signupRawForm = makeDefaultFormFields (RProxy :: RProxy (FormFieldsT Second))
-
--- Next, the form we're going to continually run the user's raw input
--- against. It's made up of the same fields as the raw input, but here
--- we have `validated` to represent a validation result, setValue to
--- allow us to set the `value` field of the raw form, and `validate`
--- to set the `shouldValidate` field of the raw form.
---
--- However, every field can be freely extended with more attributes
--- as we'd like. Each field can be extended with different ones -- they
--- don't all have to be the same. Here, I've made sure they all have
--- help text and labels.
---
--- Note: Like the prievious form, this one can be generated with validated
--- set to `Nothing` and setValue/setValidate set to a particular proxy.
---
--- However, the extra attributes can't be generated, so we'll probably write
--- this by hand most of the time.
 signupInitialForm :: FormInputs
 signupInitialForm = makeDefaultFormInputs (RProxy :: RProxy (FormFieldsT Second))
 
--- This is where the heavy lifting comes together. We want to be able to compose
--- smaller forms into larger ones. We can extend the two previous records easily
--- by sticking them onto other records. But composing monadic validations and result
--- values is tough. The form below is composed from multiple forms and results
--- in a single record.
 signupForm :: ∀ eff. SignupForm (Aff (console :: CONSOLE | eff))
 signupForm = { email: _, password: _ }
   <$> emailForm
@@ -203,9 +169,9 @@ signupForm = { email: _, password: _ }
 -- form. We want an email and two passwords. We can pre-build
 -- all sorts of fields with their validations ready to go.
 type FormFieldsT f =
-  ( email :: f EmailError String
-  , p1    :: f PasswordError String
-  , p2    :: f PasswordErrorEq String
+  ( email :: f EmailError      String String
+  , p1    :: f PasswordError   String String
+  , p2    :: f PasswordErrorEq String String
   )
 
 -- These symbols provide access to the fields in the
@@ -217,7 +183,7 @@ _p2    = SProxy :: SProxy "p2"
 -- We can use our form fields record to centralize modifying
 -- the record value or validation fields in a single handler
 -- in our state
-type FieldValueV = Variant (FormFieldsT Second)
+type FieldValueV    = Variant (FormFieldsT Second)
 type FieldValidateV = Variant (FormFieldsT (K Boolean))
 
 -- This helper function can be used to update the component
@@ -241,24 +207,16 @@ updateValidate = match
   , email: setValidate _email
   }
 
--- We need three types for our form: the raw fields that capture
--- user input; the form inputs that will hold validation results;
--- and our resulting parsed type which will hold the results when
--- we run our form. These three together provide us with a full
--- form we can run.
-type FormFields = Record (FormFieldsT FormField')
 type FormInputs = Record (FormFieldsT (FormInput' FieldValueV FieldValidateV))
 
 -- Our output data is not the same shape as the input, so we can't just
 -- run over FormFieldsT again. It's overkill to make this for just one
 -- type but it's here for demonstration purposes
 type FormFieldsOutT f =
-  ( email    :: f EmailError String
-  , password :: f PasswordError String
+  ( email    :: f EmailError    String String
+  , password :: f PasswordError String String
   )
+
 type FormMaybes = Record (FormFieldsOutT FormMaybe')
 
--- Finally, we have our actual signup form, made up of those three prior
--- types.
-type SignupForm m = Validation m (Endo FormInputs) FormFields FormMaybes
-
+type SignupForm m = Form m FormInputs FormMaybes

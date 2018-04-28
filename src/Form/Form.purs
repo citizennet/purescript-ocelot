@@ -38,39 +38,26 @@ instance monoidEndo :: Monoid (Endo a) where
 -- form representation. Our form will be a record filled with
 -- these input types.
 --
--- - attrs: Arbitrary additional labels we want available for
---          input, like help text
 -- - vl: A variant pointing to the value field in the accompanying
 --       raw form for our form representation.
 -- - vd: A variant pointing to the validation field in the accompanying
 --       raw form for our form representation
 -- - e: Our error type for our input value if it fails validation
--- - a: Our successfully parsed type if it passes validation
+-- - a: Our raw input type from user input
+-- - b: Our parsed type if it passes validation
 --
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
-type FormInput vl vd e a =
-  { validated   :: Maybe (Either e a)
-  , setValue    :: vl -- (Variant ( name :: a ))
-  , setValidate :: vd -- (Variant ( name :: Boolean ))
-  }
-
--- Lens to access the `validated` field of a FormInput. Used to transform
--- our output type on validation.
-_validated :: ∀ t r. Lens' { validated :: t | r } t
-_validated = prop $ SProxy :: SProxy "validated"
-
--- A field represents a raw form field that can accept user input. All
--- forms should have the exact same named fields in FormInput format
--- and in FormField format. DOM interaction happens in FormField;
--- validation control and results happen in FormInput.
---
--- a: The raw DOM value for this input. Should be the same input type
---    as what is required for the accompanying FormInput validation.
-type FormField a =
+type FormInput vl vd e a b =
   { value          :: a
+  , validated      :: Maybe (Either e b)
+  , setValue       :: vl
+  , setValidate    :: vd
   , shouldValidate :: Boolean
   }
+
+_validated :: ∀ t r. Lens' { validated :: t | r } t
+_validated = prop $ SProxy :: SProxy "validated"
 
 _value :: ∀ t r. Lens' { value :: t | r } t
 _value = prop (SProxy :: SProxy "value")
@@ -89,23 +76,24 @@ check (Just (Left err)) f = f <$> head err
 
 -- If you ensure your raw form is located at the `raw` label in the form,
 -- you can use these helpers to unify record updates on field values.
-setValue :: ∀ sym r0 r1 a t0 row
+setValue :: ∀ sym r r1 a t0 row
    . IsSymbol sym
-  => RowCons sym { value :: a | r0 } t0 row
+  => RowCons sym { value :: a | r } t0 row
   => SProxy sym
   -> a
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValue sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _value
+  -> { form :: Record row | r1 }
+  -> { form :: Record row | r1 }
+setValue sym = set $ prop (SProxy :: SProxy "form") <<< prop sym <<< _value
 
-setValidate :: ∀ sym r0 r1 t0 row
+setValidate :: ∀ sym r r1 t0 row
    . IsSymbol sym
-  => RowCons sym { shouldValidate :: Boolean | r0 } t0 row
+  => RowCons sym { shouldValidate :: Boolean | r } t0 row
   => SProxy sym
   -> Boolean
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldValidate
+  -> { form :: Record row | r1 }
+  -> { form :: Record row | r1 }
+setValidate sym = set $ prop (SProxy :: SProxy "form") <<< prop sym <<< _shouldValidate
+
 
 
 -----
@@ -127,9 +115,10 @@ setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldVa
 -- `Variant (FormFieldsT Snd) -> Variant ( name :: String )
 -- `Variant (FormFieldsT (Const Int)) -> Variant ( name :: Int )
 
-type First a b = a
-type Second a b = b
-type K a b c = a
+type First a b c = a
+type Second a b c = b
+type Third a b c = c
+type K a b c d = a
 
 -----
 -- Form construction
@@ -137,8 +126,8 @@ type K a b c = a
 -- A type that represents a form that can be composed with other
 -- forms. This `Validation` type doesn't hold errors in its `e`
 -- constructor but rather the fields of the form.
---  type Form m form input output =
---    Validation m (Endo (Record form)) (Record input) output
+
+type Form m i o = Validation m (Endo i) i o
 
 -- Turn a regular validation type into a form that can be composed
 -- with others by running its validation and then either producing
@@ -154,14 +143,13 @@ type K a b c = a
 -- When fields are not meant to be validated, they will be skipped
 -- and parsing will result in Nothing; however, errors will still
 -- collect for other fields.
-formFromField :: ∀ sym input form t0 t1 m vl vd e a b
+formFromField :: ∀ sym form t0 m vl vd e a b
    . IsSymbol sym
   => Monad m
-  => RowCons sym (FormField a) t0 input
-  => RowCons sym (FormInput vl vd e b) t1 form
+  => RowCons sym (FormInput vl vd e a b) t0 form
   => SProxy sym
   -> Validation m e a b
-  -> Validation m (Endo (Record form)) (Record input) (Maybe b)
+  -> Form m (Record form) (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
   let { value, shouldValidate } = get name inputForm
       set' = set (prop name <<< _validated)
@@ -180,16 +168,15 @@ formFromField name validation = Validation $ \inputForm -> do
 -- to create a transformation: Endo (form -> form). Then, it will run that
 -- transformation on the initial record provided. If validation succeeds,
 -- then you'll also receive the parsed output.
-runForm :: ∀ m form input output0 output1 outputl
+runForm :: ∀ m form output0 output1 outputl
   . Monad m
  => RowToList output0 outputl
  => SequenceRecord outputl output0 output1
- => Validation m (Endo (Record form)) (Record input) (Record output0)
+ => Validation m (Endo (Record form)) (Record form) (Record output0)
  -> Record form
- -> Record input
  -> m (V (Record form) (Maybe (Record output1)))
-runForm formValidation initial input = do
-  result <- unwrap formValidation $ input
+runForm formValidation initial = do
+  result <- unwrap formValidation $ initial
   pure $ case result of
     Valid (Endo transform) v -> Valid (transform initial) (sequenceRecord v)
     Invalid (Endo transform) -> Invalid $ transform initial
