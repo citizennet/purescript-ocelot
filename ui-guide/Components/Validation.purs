@@ -5,9 +5,10 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Data.Maybe (Maybe(..))
+import Data.Record (modify)
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
-import Data.Variant (Variant, match)
+import Data.Variant (Variant, case_, match)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -16,8 +17,8 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Data.Record (makeDefaultFormInputs)
-import Ocelot.Form (Form, K, Second, check, formFromField, runForm, setValidate, setValue)
+import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, valueSetter)
+import Ocelot.Form (Form, K, Second, check, formFromField, runForm)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Ocelot.Properties (css)
 import Polyform.Validation (V(..), hoistFnV)
@@ -141,12 +142,11 @@ component =
 
 
 -----
--- Lets' Build A Form
+-- Lets Build A Form
 
-signupInitialForm :: FormInputs
-signupInitialForm = makeDefaultFormInputs (RProxy :: RProxy (FormFieldsT Second))
-
-signupForm :: ∀ eff. SignupForm (Aff (console :: CONSOLE | eff))
+-- We can build forms from FormInput types using formFromField. Then we
+-- can compose these into larger forms.
+signupForm :: ∀ eff. SignupForm (Aff eff)
 signupForm = { email: _, password: _ }
   <$> emailForm
   <*> passwordForm
@@ -161,62 +161,62 @@ signupForm = { email: _, password: _ }
       )
       >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p2
 
+-- To create our form inputs, we can use the helper `makeDefaultFormInputs`
+-- on a row containing the field names in our form. In the form above, we've
+-- used p1, p2, and email, so we'll need those inputs.
+signupInitialForm :: FormInputs
+signupInitialForm = makeDefaultFormInputs (RProxy :: RProxy (FormFieldsT Second))
+
 
 -----
--- Types Involved
+-- Form Types Involved
 
--- These are the fields we'll make available in our
--- form. We want an email and two passwords. We can pre-build
--- all sorts of fields with their validations ready to go.
+-- Our form needs these three fields, so we'll define them in a row. Our
+-- row needs to contain the error type, input type, and output type for each.
+-- We'll use `f` here so we can fill in different types and build various
+-- type synonyms.
 type FormFieldsT f =
   ( email :: f EmailError      String String
   , p1    :: f PasswordError   String String
   , p2    :: f PasswordErrorEq String String
   )
 
--- These symbols provide access to the fields in the
--- form record and can be composed with other accessors
+-- This is a bit of boilerplate: we need to define the same names as are in
+-- our form all over again here.
 _email = SProxy :: SProxy "email"
 _p1    = SProxy :: SProxy "p1"
 _p2    = SProxy :: SProxy "p2"
 
--- We can use our form fields record to centralize modifying
--- the record value or validation fields in a single handler
--- in our state
+
+-----
+-- Variants to Update Form State
+
+-- We'd like to update all our form fields through a single query if possible.
+-- To do this, we'll create variants for our `shouldValidate` and `value` fields.
 type FieldValueV    = Variant (FormFieldsT Second)
 type FieldValidateV = Variant (FormFieldsT (K Boolean))
 
--- This helper function can be used to update the component
--- state for raw fields at the value level. When a user types
--- into an input field or clicks a selection, we'll modify
--- our form in state.
+-- Next, we'll create the functions that will actually update the relevant fields.
+-- These two helper functions will allow us to update the value and shouldValidate
+-- fields respectively.
+_form = SProxy :: SProxy "form"
+
 updateValue :: FieldValueV -> (State -> State)
-updateValue = match
-  { p1:    setValue _p1
-  , p2:    setValue _p2
-  , email: setValue _email
-  }
+updateValue = modify _form <<< valueSetter (RProxy :: RProxy (FormFieldsT Second)) case_
 
--- This helper function does the same thing, except this time
--- it allows us to modify whether the field should be validated
--- or not in state.
 updateValidate :: FieldValidateV -> (State -> State)
-updateValidate = match
-  { p1:    setValidate _p1
-  , p2:    setValidate _p2
-  , email: setValidate _email
-  }
+updateValidate = modify _form <<< validateSetter (RProxy :: RProxy (FormFieldsT (K Boolean))) case_
 
+-- We can finally write the type for our form in state, now that we have our variants:
 type FormInputs = Record (FormFieldsT (FormInput' FieldValueV FieldValidateV))
 
--- Our output data is not the same shape as the input, so we can't just
--- run over FormFieldsT again. It's overkill to make this for just one
--- type but it's here for demonstration purposes
+-- We'll need one more thing: our output type. This form parses to a different output
+-- than its input: (p1, p2, email) vs. (password, email).
 type FormFieldsOutT f =
   ( email    :: f EmailError    String String
   , password :: f PasswordError String String
   )
+type FormOutputs = Record (FormFieldsOutT FormMaybe')
 
-type FormMaybes = Record (FormFieldsOutT FormMaybe')
-
-type SignupForm m = Form m FormInputs FormMaybes
+-- Finally, we can create our overall form type!
+type SignupForm m = Form m FormInputs FormOutputs

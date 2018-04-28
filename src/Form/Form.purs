@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Array (head)
 import Data.Either (Either(..))
-import Data.Lens (Lens', set)
+import Data.Lens (set)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
@@ -56,43 +56,12 @@ type FormInput vl vd e a b =
   , shouldValidate :: Boolean
   }
 
-_validated :: ∀ t r. Lens' { validated :: t | r } t
-_validated = prop $ SProxy :: SProxy "validated"
-
-_value :: ∀ t r. Lens' { value :: t | r } t
-_value = prop (SProxy :: SProxy "value")
-
-_shouldValidate :: ∀ t r. Lens' { shouldValidate :: t | r } t
-_shouldValidate = prop (SProxy :: SProxy "shouldValidate")
-
-
 -- Can be used to unwrap a `Maybe (Either (Array (Variant err))) a)` into a string
 -- error message using `match` or another variant case.
 check :: ∀ err a. Maybe (Either (Array err) a) -> (err -> String) -> Maybe String
 check Nothing           _ = Nothing
 check (Just (Right _))  _ = Nothing
 check (Just (Left err)) f = f <$> head err
-
-
--- If you ensure your raw form is located at the `raw` label in the form,
--- you can use these helpers to unify record updates on field values.
-setValue :: ∀ sym r r1 a t0 row
-   . IsSymbol sym
-  => RowCons sym { value :: a | r } t0 row
-  => SProxy sym
-  -> a
-  -> { form :: Record row | r1 }
-  -> { form :: Record row | r1 }
-setValue sym = set $ prop (SProxy :: SProxy "form") <<< prop sym <<< _value
-
-setValidate :: ∀ sym r r1 t0 row
-   . IsSymbol sym
-  => RowCons sym { shouldValidate :: Boolean | r } t0 row
-  => SProxy sym
-  -> Boolean
-  -> { form :: Record row | r1 }
-  -> { form :: Record row | r1 }
-setValidate sym = set $ prop (SProxy :: SProxy "form") <<< prop sym <<< _shouldValidate
 
 
 
@@ -152,7 +121,7 @@ formFromField :: ∀ sym form t0 m vl vd e a b
   -> Form m (Record form) (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
   let { value, shouldValidate } = get name inputForm
-      set' = set (prop name <<< _validated)
+      set' = set (prop name <<< prop (SProxy :: SProxy "validated"))
   if shouldValidate
     then do
       result <- unwrap validation value

@@ -13,7 +13,7 @@ import Data.Number as Num
 import Data.String as String
 import Data.Tuple (Tuple(..))
 import Data.Variant (SProxy(..), Variant, inj)
-import Ocelot.Form (Endo(..), _validated)
+import Ocelot.Form (Endo(..))
 import Ocelot.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Polyform.Validation (V(..))
 import Text.Email.Validate as Email
@@ -155,12 +155,13 @@ collapseIfEqual a b sym = case a == b of
   true -> pure a
   false -> Invalid $ Endo setErrors
     where
+      _validated = SProxy :: SProxy "validated"
       err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
       setErrors rec =
         rec
         # set
-          (prop sym <<< _validated)
-          (case view (prop sym <<< _validated) rec of
+          (prop sym <<< prop _validated)
+          (case view (prop sym <<< prop _validated) rec of
             Just (Left errs) -> Just $ Left ( err : errs )
             otherwise -> Just $ Left [ err ]
           )
