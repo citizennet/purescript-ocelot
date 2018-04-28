@@ -18,7 +18,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
 import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs, validateSetter, valueSetter)
-import Ocelot.Form (Endo, K, Second, check, formFromField, runForm, setValidate, setValue)
+import Ocelot.Form (Endo, K, Second, check, formFromField, runForm)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Ocelot.Properties (css)
 import Polyform.Validation (V(..), Validation, hoistFnV)

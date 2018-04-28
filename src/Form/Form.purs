@@ -87,27 +87,6 @@ check (Just (Right _))  _ = Nothing
 check (Just (Left err)) f = f <$> head err
 
 
--- If you ensure your raw form is located at the `raw` label in the form,
--- you can use these helpers to unify record updates on field values.
-setValue :: ∀ sym r0 r1 a t0 row
-   . IsSymbol sym
-  => RowCons sym { value :: a | r0 } t0 row
-  => SProxy sym
-  -> a
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValue sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _value
-
-setValidate :: ∀ sym r0 r1 t0 row
-   . IsSymbol sym
-  => RowCons sym { shouldValidate :: Boolean | r0 } t0 row
-  => SProxy sym
-  -> Boolean
-  -> { raw :: Record row | r1 }
-  -> { raw :: Record row | r1 }
-setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldValidate
-
-
 -----
 -- Higher kinded data
 
