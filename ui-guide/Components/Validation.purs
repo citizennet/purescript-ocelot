@@ -5,9 +5,10 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
 import Data.Maybe (Maybe(..))
+import Data.Record (modify)
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
-import Data.Variant (Variant, match)
+import Data.Variant (Variant, case_, match)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -16,7 +17,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs)
+import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs, validateSetter, valueSetter)
 import Ocelot.Form (Endo, K, Second, check, formFromField, runForm, setValidate, setValue)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Ocelot.Properties (css)
@@ -224,22 +225,16 @@ type FieldValidateV = Variant (FormFieldsT (K Boolean))
 -- state for raw fields at the value level. When a user types
 -- into an input field or clicks a selection, we'll modify
 -- our form in state.
+_raw = SProxy :: SProxy "raw"
+
 updateValue :: FieldValueV -> (State -> State)
-updateValue = match
-  { p1:    setValue _p1
-  , p2:    setValue _p2
-  , email: setValue _email
-  }
+updateValue = modify _raw <<< valueSetter (RProxy :: RProxy (FormFieldsT Second)) case_
 
 -- This helper function does the same thing, except this time
 -- it allows us to modify whether the field should be validated
 -- or not in state.
 updateValidate :: FieldValidateV -> (State -> State)
-updateValidate = match
-  { p1:    setValidate _p1
-  , p2:    setValidate _p2
-  , email: setValidate _email
-  }
+updateValidate = modify _raw <<< validateSetter (RProxy :: RProxy (FormFieldsT (K Boolean))) case_
 
 -- We need three types for our form: the raw fields that capture
 -- user input; the form inputs that will hold validation results;
