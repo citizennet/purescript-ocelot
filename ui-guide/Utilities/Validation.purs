@@ -1,11 +1,10 @@
-module Ocelot.Form.Validation where
+module UIGuide.Utilities.Validation where
 
 import Prelude
 
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.Foldable (class Foldable, length)
-import Data.Int as Integer
 import Data.Lens (set, view)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..), maybe)
@@ -14,7 +13,6 @@ import Data.String as String
 import Data.Tuple (Tuple(..))
 import Data.Variant (SProxy(..), Variant, inj)
 import Ocelot.Form (Endo(..))
-import Ocelot.Utils.Currency (Cents, canParseTo32Bit, parseCentsFromDollarStr)
 import Polyform.Validation (V(..))
 import Text.Email.Validate as Email
 
@@ -65,24 +63,6 @@ validateStrIsNumber
   -> V (Err (invalidNumber :: String | err)) Number
 validateStrIsNumber msg = Num.fromString >>>
   maybe (Invalid [ inj (SProxy :: SProxy "invalidNumber") msg ] ) pure
-
-validateStrIsCents
-  :: ∀ err
-   . String
-  -> String
-  -> V (Err (invalidCurrency :: String | err)) Cents
-validateStrIsCents msg = parseCentsFromDollarStr >>>
-  maybe (Invalid [ inj (SProxy :: SProxy "invalidCurrency") msg ]) pure
-
-validateStrIsInt
-  :: ∀ err
-   . String
-  -> String
-  -> V (Err (invalidInteger :: String | err)) Int
-validateStrIsInt msg s
-  | canParseTo32Bit s = s # Integer.fromString >>>
-      maybe (Invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]) pure
-  | otherwise = Invalid [ inj (SProxy :: SProxy "invalidInteger") msg ]
 
 validateMinLength
   :: ∀ err f a
