@@ -8,13 +8,12 @@ import Data.Lens (Lens', set)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
-import Ocelot.Data.Default (class Default, def)
 import Data.Newtype (unwrap)
-import Data.Record (get, insert)
+import Data.Record (get)
 import Data.Symbol (class IsSymbol, SProxy(..))
+import Ocelot.Data.Record (class SequenceRecord, sequenceRecord)
 import Polyform.Validation (Validation(..), V(..))
-import Type.Prelude (RProxy(..))
-import Type.Row (class RowLacks, class RowToList, Cons, Nil, RLProxy(..), kind RowList)
+import Type.Row (class RowToList)
 
 -----
 -- Custom form-building monoid (credit: @paluh)
@@ -31,103 +30,6 @@ instance semigroupEndo :: Semigroup (Endo f) where
 
 instance monoidEndo :: Monoid (Endo a) where
   mempty = Endo id
-
------
--- Sequencing form records
-
--- To support partial validation, each field in our record will
--- parse to `Maybe value`. If the field isn't meant to be validated
--- it will return `Nothing`, and if it is, it will return `Just a` if
--- the validation is successful.
---
--- This will produce a record like this:
--- { a :: Maybe Email, b :: Maybe Password }
---
--- However, our data types are going to be like this:
--- type UserLogin = { a :: Email, p :: Password }
---
--- This class provides a function `sequenceImpl` which can be used to
--- create a record fold that will invert the applicative. Given
--- that initial record, you'll produce:
--- Maybe { a :: Email, p :: Password }
-
--- The `SequenceRecord` class here is implemented for Maybe, but it could be
--- changed to support any arbitrary applicative `f`.
-class SequenceRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
-  sequenceImpl :: RLProxy rl -> Record r -> Maybe (Record o)
-
--- In the base case when we have an empty record, we'll return it.
-instance nilSequenceRecord :: SequenceRecord Nil r () where
-  sequenceImpl _ _ = Just {}
-
--- Otherwise we'll accumulate the value at the head of the list into
--- our base (Just {}) and then recursively call `sequenceImpl` on our tail.
--- If we have a `Nothing` at any point, the entire structure will short-
--- circuit with `Nothing` as the result.
-instance consSequenceRecord
-  :: ( IsSymbol name
-     , RowCons name a tail' o
-     , RowCons name (Maybe a) t0 r , RowLacks name tail'
-     , SequenceRecord tail r tail'
-     )
-  => SequenceRecord (Cons name (Maybe a) tail) r o
-  where
-    sequenceImpl _ r =
-      -- This has to be defined in a variable for some reason; it won't
-      -- compile otherwise, but I don't know why not.
-      let tail' = sequenceImpl (RLProxy :: RLProxy tail) r
-       in insert (SProxy :: SProxy name)
-          <$> get (SProxy :: SProxy name) r
-          <*> tail'
-
--- With our `SequenceRecord` class we can define this function, which will turn
--- a record of `{ Maybe a }` into `Maybe { a }`.
-sequenceRecord
-  :: ∀ r rl o
-   . SequenceRecord rl r o
-  => RowToList r rl
-  => Record r
-  -> Maybe (Record o)
-sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
-
------
--- Default type class & record builder
-
--- We want to generate raw form representations from a form spec, or
--- in other words, `FormInput attrs vl vd e a -> FormField b`. Form
--- fields have a `shouldValidate` field that should be set to false,
--- and a `value` field that should be set to some default value.
-
-class DefaultRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
-  defaultRecordImpl :: RLProxy rl -> RProxy r -> Record o
-
--- In the base case when we have an empty record, we'll return it.
-instance nilDefaultRecord :: DefaultRecord Nil r () where
-  defaultRecordImpl _ _ = {}
-
--- Otherwise we'll accumulate the value at the head of the list into
--- our base.
-instance consDefaultRecord
-  :: ( IsSymbol name
-     , Default a
-     , RowCons name { value :: a, shouldValidate :: Boolean } tail' o
-     , RowCons name a t0 r
-     , RowLacks name tail'
-     , DefaultRecord tail r tail'
-     )
-  => DefaultRecord (Cons name a tail) r o
-  where
-    defaultRecordImpl _ r =
-      let tail' = defaultRecordImpl (RLProxy :: RLProxy tail) (RProxy :: RProxy r)
-       in insert (SProxy :: SProxy name) { value: def, shouldValidate: false } tail'
-
-makeDefaultRecord
-  :: ∀ r rl o
-   . DefaultRecord rl r o
-  => RowToList r rl
-  => RProxy r
-  -> Record o
-makeDefaultRecord r = defaultRecordImpl (RLProxy :: RLProxy rl) r
 
 -----
 -- Input and field types
@@ -147,11 +49,10 @@ makeDefaultRecord r = defaultRecordImpl (RLProxy :: RLProxy rl) r
 --
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
-type FormInput attrs vl vd e a =
+type FormInput vl vd e a =
   { validated   :: Maybe (Either e a)
-  , setValue    :: vl
-  , setValidate :: vd
-  | attrs
+  , setValue    :: vl -- (Variant ( name :: a ))
+  , setValidate :: vd -- (Variant ( name :: Boolean ))
   }
 
 -- Lens to access the `validated` field of a FormInput. Used to transform
@@ -226,10 +127,9 @@ setValidate sym = set $ prop (SProxy :: SProxy "raw") <<< prop sym <<< _shouldVa
 -- `Variant (FormFieldsT Snd) -> Variant ( name :: String )
 -- `Variant (FormFieldsT (Const Int)) -> Variant ( name :: Int )
 
-type First (a :: # Type) b c = a
-type Second (a :: # Type) b c = b
-type Third (a :: # Type) b c = c
-type K a (b :: # Type) c d = a
+type First a b = a
+type Second a b = b
+type K a b c = a
 
 -----
 -- Form construction
@@ -254,11 +154,11 @@ type K a (b :: # Type) c d = a
 -- When fields are not meant to be validated, they will be skipped
 -- and parsing will result in Nothing; however, errors will still
 -- collect for other fields.
-formFromField :: ∀ sym input form t0 t1 m attrs vl vd e a b
+formFromField :: ∀ sym input form t0 t1 m vl vd e a b
    . IsSymbol sym
   => Monad m
   => RowCons sym (FormField a) t0 input
-  => RowCons sym (FormInput attrs vl vd e b) t1 form
+  => RowCons sym (FormInput vl vd e b) t1 form
   => SProxy sym
   -> Validation m e a b
   -> Validation m (Endo (Record form)) (Record input) (Maybe b)

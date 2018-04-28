@@ -7,7 +7,7 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Maybe (Maybe)
 import Debug.Trace (traceAnyA)
-import Ocelot.Form (makeDefaultRecord)
+import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs)
 import Test.Unit (suite)
 import Test.Unit.Console (TESTOUTPUT)
 import Test.Unit.Main (runTest)
@@ -28,5 +28,6 @@ type Fields =
 main :: ∀ eff. Eff (Effects eff) Unit
 main = runTest do
   suite "Validation" do
-    traceAnyA $ makeDefaultRecord (RProxy :: RProxy Fields)
+    --  traceAnyA $ makeDefaultFormFields (RProxy :: RProxy Fields)
+    traceAnyA $ makeDefaultFormInputs (RProxy :: RProxy Fields)
     pure unit

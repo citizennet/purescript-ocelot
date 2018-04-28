@@ -7,7 +7,7 @@ import Control.Monad.Aff.Console (CONSOLE)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
-import Data.Variant (Variant, inj, match)
+import Data.Variant (Variant, match)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -16,14 +16,15 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Form (Endo, K, Third, check, formFromField, makeDefaultRecord, runForm, setValidate, setValue)
+import Ocelot.Data.Record (makeDefaultFormFields, makeDefaultFormInputs)
+import Ocelot.Form (Endo, K, Second, check, formFromField, runForm, setValidate, setValue)
 import Ocelot.Form.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
 import Ocelot.Properties (css)
 import Polyform.Validation (V(..), Validation, hoistFnV)
 import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Utilities.Form (Email, FormField', FormInput', FormMaybe', Password, PasswordEq)
+import UIGuide.Utilities.Form (EmailError, FormField', FormInput', FormMaybe', PasswordError, PasswordErrorEq)
 
 ----------
 -- Form
@@ -68,8 +69,8 @@ component =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Fields" ]
             , FormField.field_
-              { label: st.form.email.label
-              , helpText: Just st.form.email.helpText
+              { label: "Email"
+              , helpText: Just "Your email will be sold to the highest bidder."
               , error: check st.form.email.validated $ match
                   { badEmail: \s -> s
                   , emptyField: \s -> s }
@@ -83,8 +84,8 @@ component =
                 ]
               ]
             , FormField.field_
-              { label: st.form.p1.label
-              , helpText: Just st.form.p1.helpText
+              { label: "Password*"
+              , helpText: Just "We will store your password in plain text."
               , error: check st.form.p1.validated $ match { emptyField: \s -> s }
               , inputId: "password-1-error"
               }
@@ -96,8 +97,8 @@ component =
                 ]
               ]
             , FormField.field_
-              { label: st.form.p2.label
-              , helpText: Just st.form.p2.helpText
+              { label: "Password (again)*"
+              , helpText: Just "These better match!"
               , error: check st.form.p2.validated $ match
                   { emptyField: \s -> s
                   , notEqual: const "This password does not match the previously-entered password!"
@@ -153,7 +154,7 @@ component =
 -- Note: If we restrict to monoidal values, then we can construct initial
 -- forms automatically, without having to write this all out.
 signupRawForm :: FormFields
-signupRawForm = makeDefaultRecord (RProxy :: RProxy (FormFieldsT Third))
+signupRawForm = makeDefaultFormFields (RProxy :: RProxy (FormFieldsT Second))
 
 -- Next, the form we're going to continually run the user's raw input
 -- against. It's made up of the same fields as the raw input, but here
@@ -172,28 +173,7 @@ signupRawForm = makeDefaultRecord (RProxy :: RProxy (FormFieldsT Third))
 -- However, the extra attributes can't be generated, so we'll probably write
 -- this by hand most of the time.
 signupInitialForm :: FormInputs
-signupInitialForm =
-  { email: { validated: Nothing
-           , setValue: inj _email
-           , setValidate: inj _email
-           , label: "Email Address*"
-           , helpText: "Your email address will be used for egregious spam "
-                       <> "and will be shared with advertisers."
-           }
-  , p1:    { validated: Nothing
-           , setValue: inj _p1
-           , setValidate: inj _p1
-           , label: "Password*"
-           , helpText: "Your password will be stored in plaintext."
-           }
-  , p2:    { validated: Nothing
-           , setValue: inj _p2
-           , setValidate: inj _p2
-           , label: "Password*"
-           , helpText: "Your password must match the previously-entered one."
-           }
-  }
-
+signupInitialForm = makeDefaultFormInputs (RProxy :: RProxy (FormFieldsT Second))
 
 -- This is where the heavy lifting comes together. We want to be able to compose
 -- smaller forms into larger ones. We can extend the two previous records easily
@@ -223,9 +203,9 @@ signupForm = { email: _, password: _ }
 -- form. We want an email and two passwords. We can pre-build
 -- all sorts of fields with their validations ready to go.
 type FormFieldsT f =
-  ( email :: Email f
-  , p1    :: Password f
-  , p2    :: PasswordEq f
+  ( email :: f EmailError String
+  , p1    :: f PasswordError String
+  , p2    :: f PasswordErrorEq String
   )
 
 -- These symbols provide access to the fields in the
@@ -237,7 +217,7 @@ _p2    = SProxy :: SProxy "p2"
 -- We can use our form fields record to centralize modifying
 -- the record value or validation fields in a single handler
 -- in our state
-type FieldValueV = Variant (FormFieldsT Third)
+type FieldValueV = Variant (FormFieldsT Second)
 type FieldValidateV = Variant (FormFieldsT (K Boolean))
 
 -- This helper function can be used to update the component
@@ -273,8 +253,8 @@ type FormInputs = Record (FormFieldsT (FormInput' FieldValueV FieldValidateV))
 -- run over FormFieldsT again. It's overkill to make this for just one
 -- type but it's here for demonstration purposes
 type FormFieldsOutT f =
-  ( email    :: Email f
-  , password :: Password f
+  ( email    :: f EmailError String
+  , password :: f PasswordError String
   )
 type FormMaybes = Record (FormFieldsOutT FormMaybe')
 
