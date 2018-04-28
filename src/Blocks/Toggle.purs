@@ -25,30 +25,30 @@ labelClasses = HH.ClassName <$>
 inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
   [ "checked:sibling:bg-blue-88"
-  , "checked:sibling:pl-4"
-  , "not:checked:sibling:bg-grey-light"
-  , "not:checked:sibling:pr-4"
+  , "checked:sibling:pl-5"
+  , "!checked:sibling:bg-grey-light"
+  , "!checked:sibling:pr-5"
   , "offscreen"
   ]
 
 toggleClasses :: Array HH.ClassName
 toggleClasses = HH.ClassName <$>
-  [ "all-02s-ease"
+  [ "transition-1/8"
   , "inline-flex"
   , "justify-center"
   , "items-center"
   , "content-box"
-  , "h-4"
-  , "w-4"
+  , "h-5"
+  , "w-5"
   , "p-1"
   , "rounded-full"
   , "mr-3"
-  , "after:bg-white"
-  , "after:h-full"
-  , "after:w-full"
-  , "after:rounded-full"
-  , "after:no-content"
-  , "after:shadow"
+  , "before:bg-white"
+  , "before:h-full"
+  , "before:w-full"
+  , "before:rounded-full"
+  , "before:no-content"
+  , "before:shadow"
   ]
 
 toggle

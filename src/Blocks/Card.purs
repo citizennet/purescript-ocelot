@@ -2,62 +2,65 @@ module Ocelot.Block.Card where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLaside, HTMLh3)
+import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Core.Utils ((<&>))
 
-cardClasses :: Array HH.ClassName
-cardClasses = HH.ClassName <$>
+baseCardClasses :: Array HH.ClassName
+baseCardClasses = HH.ClassName <$>
   [ "bg-white"
-  , "h-auto"
-  , "w-full"
-  , "p-6"
-  , "shadow"
-  , "w-auto"
-  , "mb-10"
+  , "mb-6"
+  , "rounded"
+  , "clearfix"
   ]
 
-headerClasses :: Array HH.ClassName
-headerClasses = HH.ClassName <$>
-  [ "mb-4"
-  , "font-medium"
-  , "text-black-20"
-  , "text-lg"
-  , "flex"
-  , "items-center"
+innerCardClasses :: Array HH.ClassName
+innerCardClasses = HH.ClassName <$>
+  [ "m-6"
   ]
+
+baseCard
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+baseCard iprops =
+  HH.div
+    ( [ HP.classes baseCardClasses ] <&> iprops )
+
+baseCard_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+baseCard_ = baseCard []
+
+
+innerCard
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+innerCard iprops =
+  HH.div
+    ( [ HP.classes innerCardClasses ] <&> iprops )
+
+innerCard_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+innerCard_ = innerCard []
 
 card
   :: ∀ p i
-   . Array (HH.IProp HTMLaside i)
+   . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 card iprops html =
-  HH.aside
-    ( [ HP.classes cardClasses ] <&> iprops )
-    html
+  baseCard iprops [ innerCard_ html ]
 
 card_
   :: ∀ p i
    . Array (HH.HTML p i)
   -> HH.HTML p i
 card_ = card []
-
-header
-  :: ∀ p i
-   . Array (HH.IProp HTMLh3 i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-header iprops html =
-  HH.header_
-    [ HH.h3
-      ( [ HP.classes headerClasses ] <&> iprops )
-      html
-    ]
-
-header_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-header_ = header []

@@ -1,10 +1,16 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
 
+html, body { @apply .gotham; @apply .leading-normal; font-size: 12px; }
+button, input, optgroup, select, textarea { @apply .leading-normal; }
+
 /* Temp overrides */
 
 * {
   font-size: inherit;
+}
+h3 {
+  text-transform: unset;
 }
 fieldset legend {
   position: unset;
@@ -18,7 +24,11 @@ legend {
   text-transform: inherit;
 }
 label {
+  display: inherit;
   margin-bottom: unset;
+}
+dt {
+  margin-bottom: 0;
 }
 
 /* CitizenNet core CSS ... */
@@ -30,41 +40,135 @@ label {
 @tailwind utilities;
 
 /* cn utilities */
-.all-02s-ease { transition: all 0.2s ease; }
+:root {
+  --scale: 1;
+  --rotate: 0deg;
+  --bounce: .3,.3,.7,1.4;
+}
+.transform { transform: scale(var(--scale)) rotate(var(--rotate)); }
+.transition-1\/8 { transition: all 0.125s ease; }
+.transition-1\/4 { transition: all 0.25s ease; }
+.transition-1\/4-in { transition: all 0.25s ease-in; }
+.transition-1\/4-out { transition: all 0.25s ease-out; }
+.transition-1\/4-bounce { transition: all 0.25s cubic-bezier(var(--bounce)); }
+.transition-1\/2-out { transition: all 0.5s ease-out; }
+.transition-1-out { transition: all 1s ease-out; }
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
 .gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
 .offscreen { @apply .fixed; left: -9999%; top: -9999%; z-index: -9999; }
-.scale-0 { transform: scale(0); }
-.scale-1 { transform: scale(1); }
+.scale-0 { @apply .transform; --scale: 0; }
+.scale-1 { @apply .transform; --scale: 1; }
 .content-box { box-sizing: content-box; }
+.order-start { order: -1; }
+.rotate-315 { @apply .transform; --rotate: 315deg; }
 
-/* pseudo utilities */
+/* variant & pseudo utilities
+ *
+ * going forward, custom selectors should follow the following order:
+ *
+ * interactive variants: active, focus, hover
+ * property variants: checked, disabled
+ * negated variants all go in place of the variant they're negating: !variant
+ * pseudo elements: before | after
+ * neighbor selectors: sibling
+ *
+ * a few examples:
+ * !active:!focus:hover:checked:!disabled:neighbor:after:border-blue
+ * checked:!disabled:neighbor:hover:after:border-blue
+ * focus:!checked:sibling:hover:!checked:before:border-blue
+ *
+ * */
 
-.after\:all-02s-ease:after { @apply .all-02s-ease; }
-.after\:bg-blue-88:after { @apply .bg-blue-88; }
-.after\:bg-white:after { @apply .bg-white; }
-.after\:h-full:after { @apply .h-full; }
+/* radio - todo: move to block */
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
+.disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
+.checked\:sibling\:before\:opacity-100:checked ~ *:before { @apply .opacity-100; }
+.checked\:sibling\:before\:scale-1:checked ~ *:before { @apply .scale-1; }
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * { @apply .border-blue-88; }
+.focus\:sibling\:border-blue-88:focus ~ * { @apply .border-blue-88; }
+.\!checked\:sibling\:before\:opacity-0:not(:checked) ~ *:before { @apply .opacity-0; }
+.\!checked\:sibling\:before\:scale-0:not(:checked) ~ *:before { @apply .scale-0; }
+.\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * { @apply .border-grey; }
+.focus\:sibling\:shadow:focus ~ * { @apply .shadow; }
+.checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before { @apply .bg-blue-88; }
+.checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before { @apply .bg-grey; }
+.checked\:disabled\:sibling\:border-grey:checked:disabled ~ * { @apply .border-grey; }
+
+/* legacy variant & pseudo utilities */
+.before\:absolute:before { @apply .absolute; }
+.before\:transition-1\/4:before { @apply .transition-1/4; }
+.before\:transition-1\/4-bounce:before { @apply .transition-1/4-bounce; }
+.before\:bg-blue-88:before { @apply .bg-blue-88; }
+.before\:bg-white:before { @apply .bg-white; }
+.before\:h-full:before { @apply .h-full; }
+.before\:w-full:before { @apply .w-full; }
+.before\:no-content:before { @apply .no-content; }
+.before\:rounded-full:before { @apply .rounded-full; }
+.before\:shadow:before { @apply .shadow; }
+.after\:absolute:after { @apply .absolute; }
+.after\:transition-1\/4:after { @apply .transition-1/4; }
+.after\:transition-1\/4-bounce:after { @apply .transition-1/4-bounce; }
 .after\:w-full:after { @apply .w-full; }
+.after\:h-2:after { @apply .h-2; }
+.after\:border-l-2:after { @apply .border-l-2; }
+.after\:border-b-2:after { @apply .border-b-2; }
+.after\:border-white:after { @apply .border-white; }
 .after\:no-content:after { @apply .no-content; }
-.after\:rounded-full:after { @apply .rounded-full; }
+.after\:rotate-315:after { @apply .rotate-315; }
 .after\:shadow:after { @apply .shadow; }
-.checked\:sibling\:pl-4:checked + * { @apply .pl-4; }
-.not\:checked\:sibling\:pr-4:not(:checked) + * { @apply .pr-4; }
-.checked\:sibling\:after\:opacity-100:checked + *:after { @apply .opacity-100; }
-.checked\:sibling\:after\:scale-1:checked + *:after { @apply .scale-1; }
-.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
-.not\:checked\:sibling\:bg-grey-light:not(:checked) + * { @apply .bg-grey-light; }
-.not\:checked\:sibling\:border-grey-70-a40:not(:checked) + * { @apply .border-grey-70-a40; }
-.checked\:sibling\:border-blue-88:checked + * { @apply .border-blue-88; }
-.checked\:sibling\:bg-blue-88:checked + * { @apply .bg-blue-88; }
-.disabled\:bg-grey-light:disabled { @apply .bg-grey-light; }
+.checked\:sibling\:pl-5:checked ~ * { @apply .pl-5; }
+.\!checked\:sibling\:pr-5:not(:checked) ~ * { @apply .pr-5; }
+.checked\:sibling\:after\:opacity-100:checked ~ *:after { @apply .opacity-100; }
+.checked\:sibling\:after\:scale-1:checked ~ *:after { @apply .scale-1; }
+.checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
+.\!checked\:sibling\:bg-grey-light:not(:checked) ~ * { @apply .bg-grey-light; }
+.\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * { @apply .border-grey-70-a40; }
+.checked\:sibling\:border-blue-88:checked ~ * { @apply .border-blue-88; }
+.checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * { @apply .border-blue-88; }
+.checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
 .focus\:no-outline:focus { @apply .no-outline !important; }
-.not\:checked\:sibling\:after\:opacity-0:not(:checked) + *:after { @apply .opacity-0; }
-.not\:checked\:sibling\:after\:scale-0:not(:checked) + *:after { @apply .scale-0; }
+.\!checked\:sibling\:after\:opacity-0:not(:checked) ~ *:after { @apply .opacity-0; }
+.\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after { @apply .scale-0; }
+.disabled\:bg-grey-95:disabled { @apply .bg-grey-95; }
+.disabled\:text-grey-dark:disabled { @apply .text-grey-dark; }
+.\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
+.disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
+.disabled\:border-grey-light:disabled { @apply .border-grey-light; }
+.\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) { @apply .border-grey; }
+.group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
+.group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }
+.focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
+.\!active\:border-b:not(:active) { @apply .border-b; }
+.active\:border-t:active { @apply .border-t; }
+.disabled\:opacity-50:disabled { @apply .opacity-50; }
+.disabled\:cursor-default:disabled { @apply .cursor-default; }
+.hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) { @apply .bg-grey-50-a30; }
+.hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
+.hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
 
-html { @apply .gotham; font-size: 12px; }
+/* Animation Styles */
+.spin { animation: spin 1.4s infinite linear; }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.slide-down { animation: yslide 0.1s ease-out 1; }
+
+@keyframes yslide {
+  0% { transform: translateY(-50px); }
+  100% { transform: translateY(0); }
+}
+
+.fade-in { animation: fade 0.1s ease-out 1; }
+
+@keyframes fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
 /* Styles for range sliders */
 input[type=range] {
