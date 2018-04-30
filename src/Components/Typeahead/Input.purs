@@ -20,7 +20,7 @@ import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TA
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 

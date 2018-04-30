@@ -9,7 +9,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Format as Format
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 

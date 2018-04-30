@@ -19,7 +19,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
 import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, valueSetter)
 import Ocelot.Form (Form, K, Second, check, formFromField, runForm)
-import Ocelot.Properties (css)
+import Ocelot.HTML.Properties (css)
 import Polyform.Validation (V(..), hoistFnV)
 import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop

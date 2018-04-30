@@ -4,7 +4,7 @@ import Prelude
 
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 type IProp r i = HH.IProp ("class" :: String | r) i
 

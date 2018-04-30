@@ -18,7 +18,7 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 fieldClasses :: Array HH.ClassName
 fieldClasses = HH.ClassName <$>

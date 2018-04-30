@@ -1,4 +1,4 @@
-module Ocelot.Properties
+module Ocelot.HTML.Properties
   ( testId
   , css
   , appendIProps

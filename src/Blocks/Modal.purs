@@ -6,7 +6,7 @@ import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.Properties (css, (<&>))
+import Ocelot.HTML.Properties (css, (<&>))
 
 type HeaderProps p i =
   { buttons :: Array (HH.HTML p i)

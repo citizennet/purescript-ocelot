@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLh1, HTMLh2, HTMLh3, HTMLh4, HTMLp)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 headingClasses :: Array HH.ClassName
 headingClasses = HH.ClassName <$>

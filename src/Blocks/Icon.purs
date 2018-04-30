@@ -36,7 +36,7 @@ import DOM.HTML.Indexed (HTMLspan)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.HTML.Properties.ARIA as HA
-import Ocelot.Properties ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 icon
   :: ∀ p i
