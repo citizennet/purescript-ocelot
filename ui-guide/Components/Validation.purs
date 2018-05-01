@@ -17,7 +17,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, valueSetter)
+import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, inputSetter)
 import Ocelot.Form (Form, K, Second, check, formFromField, runForm)
 import Ocelot.HTML.Properties (css)
 import Polyform.Validation (V(..), hoistFnV)
@@ -71,7 +71,7 @@ component =
             , FormField.field_
               { label: "Email"
               , helpText: Just "Your email will be sold to the highest bidder."
-              , error: check st.form.email.validated $ match
+              , error: check st.form.email.result $ match
                   { badEmail: \s -> s
                   , emptyField: \s -> s }
               , inputId: "email"
@@ -80,26 +80,26 @@ component =
                 [ HP.placeholder "address@gmail.com"
                 , HP.id_ "email"
                 , HE.onBlur $ HE.input_ $ ValidateOne (st.form.email.setValidate true)
-                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.email.setValue
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.email.setInput
                 ]
               ]
             , FormField.field_
               { label: "Password*"
               , helpText: Just "We will store your password in plain text."
-              , error: check st.form.p1.validated $ match { emptyField: \s -> s }
+              , error: check st.form.p1.result $ match { emptyField: \s -> s }
               , inputId: "password-1-error"
               }
               [ Input.input
                 [ HP.placeholder ""
                 , HP.id_ "password-1-error"
                 , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p1.setValidate true)
-                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p1.setValue
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p1.setInput
                 ]
               ]
             , FormField.field_
               { label: "Password (again)*"
               , helpText: Just "These better match!"
-              , error: check st.form.p2.validated $ match
+              , error: check st.form.p2.result $ match
                   { emptyField: \s -> s
                   , notEqual: const "This password does not match the previously-entered password!"
                   }
@@ -109,7 +109,7 @@ component =
                 [ HP.placeholder ""
                 , HP.id_ "password-1-error"
                 , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p2.setValidate true)
-                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p2.setValue
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p2.setInput
                 ]
               ]
             ]
@@ -202,7 +202,7 @@ type FieldValidateV = Variant (FormFieldsT (K Boolean))
 _form = SProxy :: SProxy "form"
 
 updateValue :: FieldValueV -> (State -> State)
-updateValue = modify _form <<< valueSetter (RProxy :: RProxy (FormFieldsT Second)) case_
+updateValue = modify _form <<< inputSetter (RProxy :: RProxy (FormFieldsT Second)) case_
 
 updateValidate :: FieldValidateV -> (State -> State)
 updateValidate = modify _form <<< validateSetter (RProxy :: RProxy (FormFieldsT (K Boolean))) case_

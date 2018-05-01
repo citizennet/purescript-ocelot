@@ -48,12 +48,12 @@ instance monoidEndo :: Monoid (Endo a) where
 --
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
-type FormInput vl vd e a b =
-  { value          :: a
-  , validated      :: Maybe (Either e b)
-  , setValue       :: vl
-  , setValidate    :: vd
-  , shouldValidate :: Boolean
+type FormInput iv vv e a b =
+  { input          :: a
+  , result         :: Maybe (Either e b)
+  , setInput       :: iv
+  , setValidate    :: vv
+  , validate       :: Boolean
   }
 
 -- Can be used to unwrap a `Maybe (Either (Array (Variant err))) a)` into a string
@@ -120,11 +120,11 @@ formFromField :: ∀ sym form t0 m vl vd e a b
   -> Validation m e a b
   -> Form m (Record form) (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
-  let { value, shouldValidate } = get name inputForm
-      set' = set (prop name <<< prop (SProxy :: SProxy "validated"))
-  if shouldValidate
+  let { input, validate } = get name inputForm
+      set' = set (prop name <<< prop (SProxy :: SProxy "result"))
+  if validate
     then do
-      result <- unwrap validation value
+      result <- unwrap validation input
       pure $ case result of
         Valid _ v ->
           Valid (Endo $ set' $ Just $ Right v) (Just v)

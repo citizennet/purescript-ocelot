@@ -135,13 +135,13 @@ collapseIfEqual a b sym = case a == b of
   true -> pure a
   false -> Invalid $ Endo setErrors
     where
-      _validated = SProxy :: SProxy "validated"
+      _result = SProxy :: SProxy "result"
       err = inj (SProxy :: SProxy "notEqual") (Tuple a b)
       setErrors rec =
         rec
         # set
-          (prop sym <<< prop _validated)
-          (case view (prop sym <<< prop _validated) rec of
+          (prop sym <<< prop _result)
+          (case view (prop sym <<< prop _result) rec of
             Just (Left errs) -> Just $ Left ( err : errs )
             otherwise -> Just $ Left [ err ]
           )

@@ -62,10 +62,10 @@ instance nilDefaultFormInputs :: DefaultFormInputs Nil r () where
 instance consDefaultFormInputs
   :: ( IsSymbol name
      , Default a
-     , RowCons name { value :: a
-                    , shouldValidate :: Boolean
-                    , validated :: Maybe (Either e b)
-                    , setValue :: a -> (Variant r0)
+     , RowCons name { input :: a
+                    , validate :: Boolean
+                    , result :: Maybe (Either e b)
+                    , setInput :: a -> (Variant r0)
                     , setValidate :: Boolean -> (Variant r1)
                     } tail' o
      , RowCons name a t0 r0
@@ -78,7 +78,7 @@ instance consDefaultFormInputs
     defaultFormInputs _ r =
       let tail' = defaultFormInputs (RLProxy :: RLProxy tail) (RProxy :: RProxy r0)
           _name = SProxy :: SProxy name
-       in insert _name { value: def, shouldValidate: false, validated: Nothing, setValue: inj _name, setValidate: inj _name } tail'
+       in insert _name { input: def, validate: false, result: Nothing, setInput: inj _name, setValidate: inj _name } tail'
 
 makeDefaultFormInputs
   :: ∀ r rl o
@@ -94,8 +94,8 @@ makeDefaultFormInputs r = defaultFormInputs (RLProxy :: RLProxy rl) r
 
 -- We also want to be able to get functions to update
 -- our state from a Variant.
-class BuildValueSetters rl rin fin rout fout | rl rin fin -> rout fout where
-  buildValueSetters
+class BuildInputSetters rl rin fin rout fout | rl rin fin -> rout fout where
+  buildInputSetters
     :: RLProxy rl
     -> RProxy fin
     -> (Variant rin -> Record fout -> Record fout)
@@ -103,36 +103,36 @@ class BuildValueSetters rl rin fin rout fout | rl rin fin -> rout fout where
     -> Record fout
     -> Record fout
 
-instance valueSetterNil :: BuildValueSetters Nil r fin r fout where
-  buildValueSetters _ _ = id
+instance inputSetterNil :: BuildInputSetters Nil r fin r fout where
+  buildInputSetters _ _ = id
 
-instance valueSetterCons ::
+instance inputSetterCons ::
   ( IsSymbol sym
-  , RowCons sym { value :: a | r } fin fout
+  , RowCons sym { input :: a | r } fin fout
   , RowCons sym a rout' rout
-  , BuildValueSetters tail rin fin' rout' fout
-  ) => BuildValueSetters (Cons sym a tail) rin fin rout fout
+  , BuildInputSetters tail rin fin' rout' fout
+  ) => BuildInputSetters (Cons sym a tail) rin fin rout fout
   where
-  buildValueSetters _ _ =
+  buildInputSetters _ _ =
     let
       sym  = SProxy  :: SProxy sym
       tail = RLProxy :: RLProxy tail
       fin  = RProxy  :: RProxy fin'
     in
-      on sym (\a -> set (prop sym <<< prop (SProxy :: SProxy "value")) a )
-        <<< buildValueSetters tail fin
+      on sym (\a -> set (prop sym <<< prop (SProxy :: SProxy "input")) a )
+        <<< buildInputSetters tail fin
 
-valueSetter
+inputSetter
   :: ∀ rl vals rin fin rout fout
    . RowToList vals rl
-  => BuildValueSetters rl rin fin rout fout
+  => BuildInputSetters rl rin fin rout fout
   => RProxy vals
   -> (Variant rin -> Record fout -> Record fout)
   -> Variant rout
   -> Record fout
   -> Record fout
-valueSetter k =
-  buildValueSetters (RLProxy :: RLProxy rl) (RProxy :: RProxy fin)
+inputSetter k =
+  buildInputSetters (RLProxy :: RLProxy rl) (RProxy :: RProxy fin)
 
 
 class BuildValidateSetters rl rin fin rout fout | rl rin fin -> rout fout where
@@ -149,7 +149,7 @@ instance validateSetterNil :: BuildValidateSetters Nil r fin r fout where
 
 instance validateSetterCons ::
   ( IsSymbol sym
-  , RowCons sym { shouldValidate :: a | r } fin fout
+  , RowCons sym { validate :: a | r } fin fout
   , RowCons sym a rout' rout
   , BuildValidateSetters tail rin fin' rout' fout
   ) => BuildValidateSetters (Cons sym a tail) rin fin rout fout
@@ -160,7 +160,7 @@ instance validateSetterCons ::
       tail = RLProxy :: RLProxy tail
       fin  = RProxy  :: RProxy fin'
     in
-      on sym (\a -> set (prop sym <<< prop (SProxy :: SProxy "shouldValidate")) a )
+      on sym (\a -> set (prop sym <<< prop (SProxy :: SProxy "validate")) a )
         <<< buildValidateSetters tail fin
 
 validateSetter
