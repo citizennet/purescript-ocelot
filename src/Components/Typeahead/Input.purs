@@ -1,4 +1,4 @@
-module Ocelot.Components.Typeahead where
+module Ocelot.Components.Typeahead.Input where
 
 import Prelude
 
@@ -19,8 +19,8 @@ import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Block.Format as Format
-import Ocelot.Core.Typeahead as TA
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.Components.Typeahead as TA
+import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 
