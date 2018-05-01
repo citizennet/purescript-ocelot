@@ -18,8 +18,7 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.Core.Utils ((<&>))
-import Ocelot.Core.Validation (ValidationErrors, htmlE)
+import Ocelot.HTML.Properties ((<&>))
 
 fieldClasses :: Array HH.ClassName
 fieldClasses = HH.ClassName <$>
@@ -54,7 +53,7 @@ labelClasses = HH.ClassName <$>
 type FieldConfig =
   { helpText :: Maybe String
   , label :: String
-  , valid :: Maybe ValidationErrors
+  , error :: Maybe String
   , inputId :: String
   }
 
@@ -73,7 +72,7 @@ field' config iprops html =
       ]
       [ HH.text config.label ]
     , html
-    , errorText_ config.valid
+    , errorText_ config.error
     , helpText_ config.helpText
     ]
 
@@ -132,7 +131,7 @@ fieldset config iprops html =
       , HH.div
         [ HP.class_ (HH.ClassName "my-1") ]
         html
-      , errorText_ config.valid
+      , errorText_ config.error
       , helpText_ config.helpText
       ]
     ]
@@ -146,18 +145,18 @@ fieldset_ config = fieldset config []
 
 errorText
   :: ∀ p i
-   . Maybe ValidationErrors
+   . Maybe String
   -> Array (HH.IProp HTMLp i)
   -> HH.HTML p i
 errorText Nothing _ = HH.span_ []
 errorText (Just e) iprops =
   HH.p
     ( [ HP.classes errorTextClasses ] <&> iprops )
-    ( HH.fromPlainHTML <$> htmlE e )
+    [ HH.text e ]
 
 errorText_
   :: ∀ p i
-   . Maybe ValidationErrors
+   . Maybe String
   -> HH.HTML p i
 errorText_ v = errorText v []
 

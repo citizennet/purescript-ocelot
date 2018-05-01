@@ -7,6 +7,7 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (CONSOLE)
+import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Const (Const)
@@ -25,6 +26,7 @@ import UIGuide.Components.Modals as Modals
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
+import UIGuide.Components.Validation as Validation
 
 ----------
 -- Routes
@@ -33,7 +35,7 @@ groups :: Array Group
 groups =
   [ Basics
   , Components
-  -- , Behaviors
+  , Behaviors
   ]
 
 type RouteEffects eff =
@@ -42,6 +44,7 @@ type RouteEffects eff =
   , avar :: AVAR
   , dom :: DOM
   , timer :: TIMER
+  , random :: RANDOM
   | eff
   )
 
@@ -88,11 +91,11 @@ routes = fromFoldable
     , component: proxy Modals.component
     , group: Components
     }
-  -- , Tuple "validation"
-    -- { anchor: "Validation"
-    -- , component: proxy Validation.component
-    -- , group: Behaviors
-    -- }
+  , Tuple "validation"
+    { anchor: "Validation"
+    , component: proxy Validation.component
+    , group: Behaviors
+    }
   , Tuple "type"
     { anchor: "Type"
     , component: proxy Type.component
