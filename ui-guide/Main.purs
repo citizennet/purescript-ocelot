@@ -4,6 +4,7 @@ import Prelude
 
 import Control.Monad.Aff.Console (CONSOLE)
 import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Now (NOW)
 import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import Halogen.Aff as HA
@@ -16,6 +17,7 @@ type Effects =
   , console :: CONSOLE
   , timer :: TIMER
   , random :: RANDOM
+  , now :: NOW
   )
 
 main :: Eff (HA.HalogenEffects Effects) Unit

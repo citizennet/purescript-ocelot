@@ -7,6 +7,7 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Console (CONSOLE)
+import Control.Monad.Eff.Now (NOW)
 import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
@@ -19,6 +20,7 @@ import Halogen.Storybook.Proxy (ProxyS)
 import Network.HTTP.Affjax (AJAX)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
+import UIGuide.Components.DatePickers as DatePickers
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
@@ -45,6 +47,7 @@ type RouteEffects eff =
   , dom :: DOM
   , timer :: TIMER
   , random :: RANDOM
+  , now :: NOW
   | eff
   )
 
@@ -74,6 +77,11 @@ routes = fromFoldable
   , Tuple "typeaheads"
     { anchor: "Typeaheads"
     , component: proxy Typeaheads.component
+    , group: Components
+    }
+  , Tuple "date-pickers"
+    { anchor: "Date Pickers"
+    , component: proxy DatePickers.component
     , group: Components
     }
   , Tuple "buttons"
