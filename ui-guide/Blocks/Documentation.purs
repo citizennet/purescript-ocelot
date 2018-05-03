@@ -1,50 +1,121 @@
-module UIGuide.Block.Documentation (documentation) where
+module UIGuide.Block.Documentation where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLdiv, HTMLsection, HTMLheader)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Format as Format
+import Ocelot.Core.Utils ((<&>))
 
-type DocumentationProps =
+type DocumentationConfig =
   { header :: String
   , subheader :: String
   }
 
-documentationClasses :: Array HH.ClassName
-documentationClasses = HH.ClassName <$>
-  [ ]
-
-headerClasses :: Array HH.ClassName
-headerClasses = HH.ClassName <$>
-  [ "font-light"
-  , "leading-loose"
-  , "text-black-20" 
+blockClasses :: Array HH.ClassName
+blockClasses = HH.ClassName <$>
+  [ "my-20"
   ]
 
-subheaderClasses :: Array HH.ClassName
-subheaderClasses = HH.ClassName <$>
-  [ "font-light"
-  , "leading-normal"
+introClasses :: Array HH.ClassName
+introClasses = HH.ClassName <$>
+  [ "my-12"
+  ]
+
+headingClasses :: Array HH.ClassName
+headingClasses = HH.ClassName <$>
+  [ "w-1/2"
+  ]
+
+subHeadingClasses :: Array HH.ClassName
+subHeadingClasses = HH.ClassName <$>
+  [ "w-1/2"
+  , "font-light"
   , "text-grey-50"
-  , "text-sm"
   ]
 
-documentation 
+calloutClasses :: Array HH.ClassName
+calloutClasses = HH.ClassName <$>
+  [ "border-dotted"
+  , "border"
+  , "rounded"
+  , "flex"
+  , "items-stretch"
+  , "my-6"
+  ]
+
+callout
   :: ∀ p i
-   . DocumentationProps
+   . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-documentation props html =
+callout iprops html =
   HH.div
-    [ HP.classes documentationClasses ]
-    [ HH.h1
-        [ HP.classes headerClasses ] 
-        [ HH.text props.header ]
-    , HH.h2
-        [ HP.classes subheaderClasses ]
-        [ HH.text props.subheader ]
-    , HH.div
-      [ HP.class_ (HH.ClassName "mt-5") ]
+    ( [ HP.classes calloutClasses ] <&> iprops )
+    html
+
+callout_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+callout_ = callout []
+
+intro
+  :: ∀ p i
+   . DocumentationConfig
+  -> Array (HH.IProp HTMLheader i)
+  -> HH.HTML p i
+intro config iprops =
+  HH.header
+    ( [ HP.classes introClasses ] <&> iprops )
+    [ Format.heading
+      [ HP.classes headingClasses ]
+      [ HH.text config.header ]
+    , Format.subHeading
+      [ HP.classes subHeadingClasses ]
+      [ HH.text config.subheader ]
+    ]
+
+intro_
+  :: ∀ p i
+   . DocumentationConfig
+  -> HH.HTML p i
+intro_ config = intro config []
+
+customBlock
+  :: ∀ p i
+   . DocumentationConfig
+  -> Array (HH.IProp HTMLsection i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+customBlock config iprops html =
+  HH.section
+    ( [ HP.classes blockClasses ] <&> iprops )
+    [ intro_ config
+    , HH.div_
       html
     ]
 
+customBlock_
+  :: ∀ p i
+   . DocumentationConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+customBlock_ config = customBlock config []
+
+block
+  :: ∀ p i
+   . DocumentationConfig
+  -> Array (HH.IProp HTMLsection i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+block config iprops html =
+  customBlock config iprops [ callout_ html ]
+
+block_
+  :: ∀ p i
+   . DocumentationConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+block_ config = block config []

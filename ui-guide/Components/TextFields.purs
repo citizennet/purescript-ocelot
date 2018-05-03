@@ -2,167 +2,329 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import Ocelot.Block.FormControl as FormControl
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
+import Ocelot.Block.Card as Card
+import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Input as Input
+import Ocelot.Block.Format as Format
+import Ocelot.Core.Validation as Validation
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
-import UIGuide.Utilities.Async as Async
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Block.Component as Component
+import UIGuide.Block.Backdrop as Backdrop
 
+type State = Unit
 
-----------
--- Component Types
+data Query a = NoOp a
 
-type State
-  = Unit
+type Input = Unit
 
-data Query a
-  = NoOp a
-  | HandleTypeahead Unit (TACore.Message Query Async.Todo) a
-  | HandleSyncTypeahead (TACore.Message Query String) a
+type Message = Void
 
-----------
--- Child paths
-
-type ChildSlot = Either2 Unit Unit
-type ChildQuery eff m =
-  Coproduct2
-    (TACore.Query Query Async.Todo Async.Err eff m)
-    (TACore.Query Query String Void eff m)
-
-
-----------
--- Component definition
-
--- NOTE: Uses the same effects but does not compose with typeahead effects. Written out again from scratch.
-type Effects eff = ( avar :: AVAR, dom :: DOM, ajax :: AJAX, timer :: TIMER, console :: CONSOLE | eff )
-
-component :: ∀ eff m
-  . MonadAff (Effects eff) m
- => H.Component HH.HTML Query Unit Void m
+component :: ∀ m. H.Component HH.HTML Query Input Message m
 component =
-  H.parentComponent
-  { initialState: const unit
-  , render
-  , eval
-  , receiver: const Nothing
-  }
+  H.component
+    { initialState: const unit
+    , render
+    , eval
+    , receiver: const Nothing
+    }
   where
-    -- For the sake of testing and visual demonstration, we'll just render
-    -- out a bunch of selection variants in respective slots
-    render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+    eval :: Query ~> H.ComponentDSL State Query Message m
+    eval = case _ of
+      NoOp a -> do
+        pure a
+
+    render :: State -> H.ComponentHTML Query
     render _ = cnDocumentationBlocks
-
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
-    eval (NoOp next) = pure next
-
-    eval (HandleSyncTypeahead m next) = pure next
-
-    -- No longer necessary to fetch data. Treat it just like a Sync typeahead.
-    eval (HandleTypeahead slot m next) = pure next
-
-
-----------
--- Sample data
-
-newtype TestRecord = TestRecord
-  { name :: String
-  , id :: Int
-  }
-
-instance eqTestRecord :: Eq TestRecord where
-  eq (TestRecord { id: id'' }) (TestRecord { id: id' }) = id'' == id'
-
-derive instance newtypeTestRecord :: Newtype TestRecord _
-
-dropdownData :: Array TestRecord
-dropdownData =
-  [ TestRecord { name: "Chris", id: 0 }
-  , TestRecord { name: "Dave", id: 1 }
-  , TestRecord { name: "Thomas", id: 2 }
-  , TestRecord { name: "Forest", id: 3 }
-  ]
-
-containerData :: Array String
-containerData =
-  [ "Instagram"
-  , "Facebook"
-  , "Twitter"
-  , "Pinterest"
-  , "Snapchat"
-  , "YouTube"
-  , "Reddit"
-  , "Voat"
-  , "Discord"
-  , "4Chan"
-  , "8Chan"
-  , "Digg"
-  , "Myspace"
-  , "Friendster"
-  ]
 
 
 ----------
 -- HTML
 
-css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
-css = HP.class_ <<< HH.ClassName
-
-cnDocumentationBlocks :: ∀ eff m
-  . MonadAff (Effects eff) m
- => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
+  let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
+      css = HP.class_ <<< HH.ClassName
+      content = Backdrop.content [ css "flex" ] in
   HH.div_
-  [ Documentation.documentation
-      { header: "Typeaheads"
-      , subheader: "Use string input to search pre-determined entries."
-      }
-      [ Component.component
-        { title: "Synchronous Typeahead" }
-        [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
-          , valid: Nothing
-          , inputId: "devs"
-          }
-          ( HH.slot' CP.cp2 unit TACore.component
-              (TA.defMulti
-                [ HP.placeholder "Search developers...", HP.id_ "devs" ]
-                containerData
-                TA.renderItemString)
-              (HE.input HandleSyncTypeahead)
-          )
+  [ Documentation.block_
+    { header: "Text Fields"
+    , subheader: "Captures string input."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.field_
+            { label: "Email*"
+            , helpText: Just "Add the email of the End Advertiser."
+            , valid: Nothing
+            , inputId: "email"
+            }
+            [ Input.input
+              [ HP.placeholder "address@gmail.com"
+              , HP.id_ "email"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Error" ]
+          , FormField.field_
+            { label: "Email*"
+            , helpText: Just "Add the email of the End Advertiser."
+            , valid: Just [ Validation.EmptyField ]
+            , inputId: "email-error"
+            }
+            [ Input.input
+              [ HP.placeholder "address@gmail.com"
+              , HP.id_ "email-error"
+              ]
+            ]
+          ]
         ]
-      , Component.component
-        { title: "Continuous Asynchronous Typeahead" }
-        [ FormControl.formControl
-          { label: "Developers"
-          , helpText: Just "There are lots of developers to choose from."
-          , valid: Nothing
-          , inputId: "devs-async"
-          }
-          ( HH.slot' CP.cp1 unit TACore.component
-              (TA.defAsyncMulti
-                [ HP.placeholder "Search developers asynchronously...", HP.id_ "devs-async" ]
-                (\_ -> Async.loadFromSource Async.todos)
-                Async.renderItemTodo)
-              (HE.input $ HandleTypeahead unit)
-          )
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Hydrated" ]
+          , FormField.field_
+            { label: "Email*"
+            , helpText: Just "Add the email of the End Advertiser."
+            , valid: Nothing
+            , inputId: "email-hydrated"
+            }
+            [ Input.input
+              [ HP.value "jeff@citizennet.com"
+              , HP.id_ "email-hydrated"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Disabled" ]
+          , FormField.field_
+            { label: "Email*"
+            , helpText: Just "Add the email of the End Advertiser."
+            , valid: Nothing
+            , inputId: "email-disabled"
+            }
+            [ Input.input
+              [ HP.value "jeff@citizennet.com"
+              , HP.id_ "email-disabled"
+              , HP.disabled true
+              ]
+            ]
+          ]
         ]
       ]
-  ]
+    ]
+  , Documentation.block_
+    { header: "Text Fields - Right Addon"
+    , subheader: "Captures string input while indicating to user useful information about the input type."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.fieldSmall_
+            { label: "Daily Goal"
+            , helpText: Just "Desired daily spend as percentage of total budget."
+            , valid: Nothing
+            , inputId: "daily-goal"
+            }
+            [ Input.percentage_
+              [ HP.id_ "daily-goal"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Error" ]
+          , FormField.fieldSmall_
+            { label: "Daily Goal"
+            , helpText: Just "Desired daily spend as percentage of total budget."
+            , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
+            , inputId: "daily-goal-error"
+            }
+            [ Input.percentage_
+              [ HP.value "200"
+              , HP.id_ "daily-goal-error"
+              ]
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Hydrated" ]
+          , FormField.fieldSmall_
+            { label: "Daily Goal"
+            , helpText: Just "Desired daily spend as percentage of total budget."
+            , valid: Nothing
+            , inputId: "daily-goal-hydrated"
+            }
+            [ Input.percentage_
+              [ HP.value "25"
+              , HP.id_ "daily-goal-hydrated"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Disabled" ]
+          , FormField.fieldSmall_
+            { label: "Daily Goal"
+            , helpText: Just "Desired daily spend as percentage of total budget."
+            , valid: Nothing
+            , inputId: "daily-goal-disabled"
+            }
+            [ Input.percentage_
+              [ HP.value "25"
+              , HP.id_ "daily-goal-disabled"
+              , HP.disabled true
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  , Documentation.block_
+    { header: "Text Fields - Left Addon"
+    , subheader: "Captures string input while indicating to user useful information about the input type."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.fieldSmall_
+            { label: "Budget*"
+            , helpText: Just "Total amount for campaign to spend."
+            , valid: Nothing
+            , inputId: "budget"
+            }
+            [ Input.currency_
+              [ HP.id_ "budget"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Error" ]
+          , FormField.fieldSmall_
+            { label: "Budget*"
+            , helpText: Just "Total amount for campaign to spend."
+            , valid: Just [ Validation.EmptyField ]
+            , inputId: "budget-error"
+            }
+            [ Input.currency_
+              [ HP.id_ "budget-error"
+              ]
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Hydrated" ]
+          , FormField.fieldSmall_
+            { label: "Budget*"
+            , helpText: Just "Total amount for campaign to spend."
+            , valid: Nothing
+            , inputId: "budget-hydrated"
+            }
+            [ Input.currency_
+              [ HP.value "50,000"
+              , HP.id_ "budget-hydrated"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Disabled" ]
+          , FormField.fieldSmall_
+            { label: "Budget*"
+            , helpText: Just "Total amount for campaign to spend."
+            , valid: Nothing
+            , inputId: "budget-disabled"
+            }
+            [ Input.currency_
+              [ HP.value "50,000"
+              , HP.id_ "budget-disabled"
+              , HP.disabled true
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  , Documentation.block_
+    { header: "Text Fields - Surrounding Addons"
+    , subheader: "Captures string input while indicating to user useful information about the input type."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.field_
+            { label: "Search"
+            , helpText: Just "This text field shows how you might represent a search field."
+            , valid: Nothing
+            , inputId: "search"
+            }
+            [ Input.inputGroup_
+              [ Input.inputCenter
+                [ HP.id_ "search"
+                , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
+                ]
+              , Input.addonLeft_ [ Icon.search_ ]
+              , Input.borderRight
+                [ HP.classes Format.linkClasses ]
+                [ HH.text "Search" ]
+              ]
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Loading" ]
+          , FormField.field_
+            { label: "Search"
+            , helpText: Just "This text field shows how you might represent a loading state for a search field."
+            , valid: Nothing
+            , inputId: "search-loading"
+            }
+            [ Input.inputGroup_
+              [ Input.inputCenter
+                [ HP.class_ $ HH.ClassName "focus:next:text-blue-88"
+                , HP.id_ "search-loading"
+                , HP.value "Something"
+                ]
+              , Input.addonCenter_ [ Icon.loading_ ]
+              , Input.addonLeft_ [ Icon.search_ ]
+              , Input.borderRight
+                [ HP.classes Format.linkClasses ]
+                [ HH.text "Search" ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]]

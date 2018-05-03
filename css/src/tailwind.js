@@ -53,6 +53,17 @@ config.margin = Object.assign(config.margin, {
 config.negativeMargin = config.margin
 
 config.maxHeight = Object.assign(config.maxHeight, {
+  '0': '0',
+  '10': '2.5rem',
+  '12': '3rem',
+  '16': '4rem',
+  '20': '5rem',
+  '80': '20rem',
+})
+
+
+config.minHeight = Object.assign(config.minHeight, {
+  '0': '0',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',
@@ -67,6 +78,7 @@ config.maxWidth = Object.assign(config.maxWidth, {
 config.colors = Object.assign(config.colors, {
   'black-10': '#00081A',
   'black-20': '#242A33',
+  'black-modal-a90': 'rgba(0,9,26,0.9);',
   'grey-50': 'rgb(102,113,128)',
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
@@ -97,7 +109,10 @@ config.borderWidths = Object.assign(config.borderWidths, {
 
 config.modules = Object.assign(config.modules, {
   'borderWidths': ['responsive', 'hover'],
-  'visibility': ['responsive', 'hover', 'focus', 'group-hover']
+  'visibility': ['responsive', 'hover', 'focus', 'group-hover'],
+  'borderColors': ['responsive', 'hover', 'focus', 'group-hover'],
+  'textColors': ['responsive', 'hover', 'group-hover'],
+  'backgroundColors': ['responsive', 'hover', 'focus', 'active'],
 })
 
 // Export the new configuration

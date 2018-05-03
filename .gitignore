@@ -2,6 +2,7 @@
 .psci_modules
 bower_components
 node_modules
+.stack-work
 
 # Generated files
 .psci
