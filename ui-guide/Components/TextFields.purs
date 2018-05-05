@@ -325,4 +325,79 @@ cnDocumentationBlocks =
           ]
         ]
       ]
-    ]]
+    ]
+  , Documentation.block_
+    { header: "Text Areas"
+    , subheader: "Captures large string input."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.field_
+            { label: "Comment"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment"
+            }
+            [ Input.textarea
+              [ HP.placeholder "Be nice."
+              , HP.id_ "comment"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Error" ]
+          , FormField.field_
+            { label: "Comment*"
+            , helpText: Just "Say something."
+            , error: Just "This field is required."
+            , inputId: "comment-error"
+            }
+            [ Input.textarea
+              [ HP.placeholder "Be nice."
+              , HP.id_ "comment-error"
+              ]
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Hydrated" ]
+          , FormField.field_
+            { label: "Comment"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment-hydrated"
+            }
+            [ Input.textarea
+              [ HP.value "Forest drinks on the job"
+              , HP.id_ "comment-hydrated"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Disabled" ]
+          , FormField.field_
+            { label: "Comment*"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment-disabled"
+            }
+            [ Input.textarea
+              [ HP.value "Forest drinks on the job"
+              , HP.id_ "comment-disabled"
+              , HP.disabled true
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
