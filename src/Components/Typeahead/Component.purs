@@ -201,7 +201,7 @@ component =
     , render: extract
     , eval
     , receiver: HE.input Receive
-    , initializer: Just $ H.action $ Synchronize
+    , initializer: Just $ H.action Synchronize
     , finalizer: Nothing
     }
   where
@@ -242,7 +242,7 @@ component =
           H.modify $ seeks _ { selections = selections }
           _ <- if st.config.keepOpen
                then pure Nothing
-               else H.query unit $ H.action $ Select.SetVisibility Select.Off
+               else H.query unit $ Select.setVisibility Select.Off
 
           H.raise $ SelectionsChanged ItemSelected item selections
           eval $ Synchronize a
@@ -283,7 +283,7 @@ component =
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
-        H.query unit $ H.action Select.TriggerFocus
+        H.query unit Select.triggerFocus
 
       -- Tell the parent what the current state of the Selections list is.
       GetSelections reply -> do
@@ -296,16 +296,16 @@ component =
 
         _ <- case getNewItems st of
           Success items -> do
-            H.query unit $ H.action $ Select.ReplaceItems items
+            H.query unit $ Select.replaceItems items
           Failure err -> do
             H.liftAff $ logShow err
-            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
-            H.query unit $ H.action $ Select.ReplaceItems []
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            H.query unit $ Select.replaceItems []
           NotAsked -> do
-            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
-            H.query unit $ H.action $ Select.ReplaceItems []
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            H.query unit $ Select.replaceItems []
           Loading -> do
-            H.query unit $ H.action $ Select.ReplaceItems []
+            H.query unit $ Select.replaceItems []
 
         pure a
 
