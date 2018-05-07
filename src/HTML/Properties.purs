@@ -13,7 +13,7 @@ import Data.String (Pattern(..), drop, null, split)
 import Data.String.Utils (startsWith)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
-import Halogen.HTML.Core (Prop(..))
+import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Properties as HP
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -59,8 +59,11 @@ extract =
   foldr f (Tuple [] [])
   where
     f (HP.IProp (Property "className" className)) =
-      lmap (\_ -> (split (Pattern " ") <<< unsafeCoerce) className)
+      lmap (\_ -> (split (Pattern " ") <<< coerceClassName) className)
     f iprop =  rmap $ (flip snoc) iprop
+
+    coerceClassName :: PropValue -> String
+    coerceClassName = unsafeCoerce
 
 classify
   :: String
