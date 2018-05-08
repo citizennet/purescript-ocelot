@@ -8255,6 +8255,14 @@ dt {
   background-color: #00abd1;
 }
 
+.sibling\:bg-grey-95 ~ * {
+  background-color: #f0f1f2;
+}
+
+.sibling\:text-grey-dark ~ * {
+  color: #8795a1;
+}
+
 /* Animation Styles */
 
 .spin {

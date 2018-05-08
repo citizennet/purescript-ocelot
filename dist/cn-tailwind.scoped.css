@@ -8255,6 +8255,14 @@ body .ocelot-scoped {
   background-color: #00abd1;
 }
 
+.ocelot-scoped .sibling\:bg-grey-95 ~ * {
+  background-color: #f0f1f2;
+}
+
+.ocelot-scoped .sibling\:text-grey-dark ~ * {
+  color: #8795a1;
+}
+
 /* Animation Styles */
 
 .ocelot-scoped .spin {
