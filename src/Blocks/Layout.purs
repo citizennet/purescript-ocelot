@@ -4,7 +4,7 @@ import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
-import Ocelot.Core.Utils (blockBuilder)
+import Ocelot.Block.Builder (blockBuilder)
 
 stickyClasses :: Array HH.ClassName
 stickyClasses = HH.ClassName <$>

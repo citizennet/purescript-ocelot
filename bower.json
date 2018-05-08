@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "purescript-halogen": "^3.1.2",
-    "purescript-halogen-select": "^0.2.0",
+    "purescript-halogen-select": "^0.3.0",
     "purescript-fuzzy": "^0.1.2",
     "purescript-validation": "^3.2.0",
     "purescript-generics-rep": "^5.4.0",
@@ -22,7 +22,10 @@
     "purescript-numbers": "^5.0.0",
     "purescript-yarn": "^3.0.1",
     "purescript-bigints": "^3.5.0",
-    "purescript-arrays": "^4.3.0"
+    "purescript-arrays": "^4.3.0",
+    "purescript-variant": "^4.1.0",
+    "purescript-polyform": "^0.6.3",
+    "purescript-test-unit": "^13.0.0"
   },
   "devDependencies": {
     "purescript-console": "^3.0.0",

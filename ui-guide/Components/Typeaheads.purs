@@ -21,8 +21,8 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
+import Ocelot.Components.Typeahead as TACore
+import Ocelot.Components.Typeahead.Input as TA
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -121,10 +121,15 @@ component =
             $ TACore.ReplaceSelections
             $ TACore.Many
             $ take 4 xs
+          _ <- H.query' CP.cp1 5
+            $ H.action
+            $ TACore.ReplaceSelections
+            $ TACore.One
+            $ head xs
           pure unit
         otherwise -> pure unit
       selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
-      case selectedUsers of
+      _ <- case selectedUsers of
         Success xs -> do
           _ <- H.query' CP.cp2 1
             $ H.action
@@ -136,8 +141,18 @@ component =
             $ TACore.ReplaceSelections
             $ TACore.Many
             $ take 4 xs
+          _ <- H.query' CP.cp2 5
+            $ H.action
+            $ TACore.ReplaceSelections
+            $ TACore.Many
+            $ take 4 xs
           pure next
         otherwise -> pure next
+      _ <- H.query' CP.cp1 6 $ H.action $ TACore.ReplaceItems $ Failure ""
+      _ <- H.query' CP.cp2 6 $ H.action $ TACore.ReplaceItems $ Failure ""
+      _ <- H.query' CP.cp1 7 $ H.action $ TACore.ReplaceItems Loading
+      _ <- H.query' CP.cp2 7 $ H.action $ TACore.ReplaceItems Loading
+      pure next
 
 ----------
 -- HTML
@@ -167,7 +182,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "location"
               }
               [ HH.slot' CP.cp1 0 TACore.component
@@ -186,7 +201,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your favorite destination."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "location-hydrated"
               }
               [ HH.slot' CP.cp1 1 TACore.component
@@ -210,7 +225,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "user"
               }
               [ HH.slot' CP.cp2 0 TACore.component
@@ -229,7 +244,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Users"
               , helpText: Just "Search your favorite companion."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "user-hydrated"
               }
               [ HH.slot' CP.cp2 1 TACore.component
@@ -260,7 +275,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp1 2 TACore.component
@@ -279,7 +294,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp1 3 TACore.component
@@ -303,7 +318,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Users"
               , helpText: Just "Search your top companions."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "users"
               }
               [ HH.slot' CP.cp2 2 TACore.component
@@ -322,7 +337,7 @@ cnDocumentationBlocks =
             , FormField.field_
               { label: "Users"
               , helpText: Just "Search your top companions."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "users-hydrated"
               }
               [ HH.slot' CP.cp2 3 TACore.component
@@ -334,6 +349,179 @@ cnDocumentationBlocks =
                   Async.renderItemUser
                 )
                 ( HE.input $ HandleTypeaheadUser 3 )
+              ]
+            ]
+          ]
+        ]
+      ]
+    , Documentation.block_
+      { header: "Typeaheads - State Variants"
+      , subheader: "Typeaheads can also be in a disabled, loading or error state."
+      }
+      [ Backdrop.backdrop_
+        [ content
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Disabled Single Select - Empty" ]
+            , FormField.field_
+              { label: "Locations"
+              , helpText: Just "Search your top destinations."
+              , error: Nothing
+              , inputId: "disabled-locations-empty"
+              }
+              [ HH.slot' CP.cp1 4 TACore.component
+                (TA.defAsyncSingle
+                  [ HP.placeholder "Search locations..."
+                  , HP.id_ "disabled-locations-empty"
+                  , HP.disabled true
+                  ]
+                  ( Async.loadFromSource Async.locations )
+                  Async.renderItemLocation
+                )
+                ( HE.input $ HandleTypeaheadLocation 4 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Disabled Single Select - Hydrated" ]
+            , FormField.field_
+              { label: "Locations"
+              , helpText: Just "Search your top destinations."
+              , error: Nothing
+              , inputId: "disabled-locations-hydrated"
+              }
+              [ HH.slot' CP.cp1 5 TACore.component
+                (TA.defAsyncSingle
+                  [ HP.placeholder "Search locations..."
+                  , HP.id_ "disabled-locations-hydrated"
+                  , HP.disabled true
+                  ]
+                  ( Async.loadFromSource Async.locations )
+                  Async.renderItemLocation
+                )
+                ( HE.input $ HandleTypeaheadLocation 5 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Error Single Select" ]
+            , FormField.field_
+              { label: "Locations"
+              , helpText: Just "Search your top destinations."
+              , error: Nothing
+              , inputId: "error-locations"
+              }
+              [ HH.slot' CP.cp1 6 TACore.component
+                (TA.defAsyncSingle
+                  [ HP.placeholder "Search locations..."
+                  , HP.id_ "error-locations"
+                  ]
+                  ( Async.loadFromSource Async.locations )
+                  Async.renderItemLocation
+                )
+                ( HE.input $ HandleTypeaheadLocation 6 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Loading Single Select" ]
+            , FormField.field_
+              { label: "Locations"
+              , helpText: Just "Search your top destinations."
+              , error: Nothing
+              , inputId: "loading-locations"
+              }
+              [ HH.slot' CP.cp1 7 TACore.component
+                (TA.defAsyncSingle
+                  [ HP.placeholder "Search locations..."
+                  , HP.id_ "loading-locations"
+                  ]
+                  ( Async.loadFromSource Async.locations )
+                  Async.renderItemLocation
+                )
+                ( HE.input $ HandleTypeaheadLocation 7 )
+              ]
+            ]
+          ]
+        , content
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Disabled Multi Select - Empty" ]
+            , FormField.field_
+              { label: "Users"
+              , helpText: Just "Search your top companions."
+              , error: Nothing
+              , inputId: "disabled-users-empty"
+              }
+              [ HH.slot' CP.cp2 4 TACore.component
+                (TA.defAsyncMulti
+                  [ HP.placeholder "Search Users..."
+                  , HP.id_ "disabled-users-empty"
+                  , HP.disabled true
+                  ]
+                  ( Async.loadFromSource Async.users )
+                  Async.renderItemUser
+                )
+                ( HE.input $ HandleTypeaheadUser 4 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Disabled Multi Select - Hydrated" ]
+            , FormField.field_
+              { label: "Users"
+              , helpText: Just "Search your top companions."
+              , error: Nothing
+              , inputId: "disabled-users-hydrated"
+              }
+              [ HH.slot' CP.cp2 5 TACore.component
+                (TA.defAsyncMulti
+                  [ HP.placeholder "Search Users..."
+                  , HP.id_ "disabled-users-hydrated"
+                  , HP.disabled true
+                  ]
+                  ( Async.loadFromSource Async.users )
+                  Async.renderItemUser
+                )
+                ( HE.input $ HandleTypeaheadUser 5 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Error Multi Select" ]
+            , FormField.field_
+              { label: "Users"
+              , helpText: Just "Search your top companions."
+              , error: Nothing
+              , inputId: "error-users"
+              }
+              [ HH.slot' CP.cp2 6 TACore.component
+                (TA.defAsyncMulti
+                  [ HP.placeholder "Search users..."
+                  , HP.id_ "error-users"
+                  ]
+                  ( Async.loadFromSource Async.users )
+                  Async.renderItemUser
+                )
+                ( HE.input $ HandleTypeaheadUser 6 )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Loading Multi Select" ]
+            , FormField.field_
+              { label: "Users"
+              , helpText: Just "Search your top companions."
+              , error: Nothing
+              , inputId: "loading-users"
+              }
+              [ HH.slot' CP.cp2 7 TACore.component
+                (TA.defAsyncSingle
+                  [ HP.placeholder "Search users..."
+                  , HP.id_ "loading-users"
+                  ]
+                  ( Async.loadFromSource Async.users )
+                  Async.renderItemUser
+                )
+                ( HE.input $ HandleTypeaheadUser 7 )
               ]
             ]
           ]

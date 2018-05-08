@@ -6,7 +6,7 @@ import DOM.HTML.Indexed (HTMLdiv, HTMLsection, HTMLheader)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 type DocumentationConfig =
   { header :: String

@@ -20,8 +20,8 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Modal as Modal
 import Ocelot.Block.Format as Format
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
+import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.Components.Typeahead as TACore
 import UIGuide.Utilities.Async as Async
 
 type State = Unit
@@ -62,7 +62,7 @@ component =
       NoOp a -> pure a
 
     render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render _ = 
+    render _ =
       Modal.modal_
         [ Modal.header
           { buttons:
@@ -82,7 +82,7 @@ component =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp1 unit TACore.component
@@ -101,7 +101,7 @@ component =
             , FormField.field_
               { label: "Locations"
               , helpText: Just "Search your top destinations."
-              , valid: Nothing
+              , error: Nothing
               , inputId: "locations"
               }
               [ HH.slot' CP.cp2 unit TACore.component

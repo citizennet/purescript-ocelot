@@ -2,10 +2,10 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLlabel, HTMLspan, HTMLinput)
+import DOM.HTML.Indexed (HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 inputSharedClasses :: Array HH.ClassName
 inputSharedClasses = HH.ClassName <$>
@@ -126,6 +126,13 @@ borderRightClasses = borderClasses <>
   ( HH.ClassName <$>
     [ "border-l"
     , "pl-3"
+    ]
+  )
+
+textareaClasses :: Array HH.ClassName
+textareaClasses = inputClasses <>
+  ( HH.ClassName <$>
+    [ "min-h-40"
     ]
   )
 
@@ -287,3 +294,11 @@ currency_
    . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 currency_ = currency []
+
+textarea
+  :: ∀ p i
+   . Array (HH.IProp HTMLtextarea i)
+  -> HH.HTML p i
+textarea iprops =
+  HH.textarea
+    ( [ HP.classes textareaClasses ] <&> iprops )

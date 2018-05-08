@@ -2,18 +2,18 @@ module UIGuide.Components.TextFields where
 
 import Prelude
 
-import Ocelot.Block.Card as Card
-import Ocelot.Block.FormField as FormField
-import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Input as Input
-import Ocelot.Block.Format as Format
-import Ocelot.Core.Validation as Validation
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import UIGuide.Block.Documentation as Documentation
+import Ocelot.Block.Card as Card
+import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Format as Format
+import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Input as Input
+import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
+import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
@@ -46,9 +46,7 @@ component =
 
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
-  let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-      css = HP.class_ <<< HH.ClassName
-      content = Backdrop.content [ css "flex" ] in
+  let content = Backdrop.content [ css "flex" ] in
   HH.div_
   [ Documentation.block_
     { header: "Text Fields"
@@ -64,7 +62,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email"
             }
             [ Input.input
@@ -78,7 +76,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Just [ Validation.EmptyField ]
+            , error: Just "This field is required."
             , inputId: "email-error"
             }
             [ Input.input
@@ -97,7 +95,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email-hydrated"
             }
             [ Input.input
@@ -111,7 +109,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Email*"
             , helpText: Just "Add the email of the End Advertiser."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "email-disabled"
             }
             [ Input.input
@@ -138,7 +136,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal"
             }
             [ Input.percentage_
@@ -151,7 +149,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Just [ Validation.OutOfRange "Must be between 0 and 100" ]
+            , error: Just "Must be between 0 and 100"
             , inputId: "daily-goal-error"
             }
             [ Input.percentage_
@@ -170,7 +168,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal-hydrated"
             }
             [ Input.percentage_
@@ -184,7 +182,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "daily-goal-disabled"
             }
             [ Input.percentage_
@@ -211,7 +209,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget"
             }
             [ Input.currency_
@@ -224,7 +222,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Just [ Validation.EmptyField ]
+            , error: Just "This field is required."
             , inputId: "budget-error"
             }
             [ Input.currency_
@@ -242,7 +240,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget-hydrated"
             }
             [ Input.currency_
@@ -256,7 +254,7 @@ cnDocumentationBlocks =
           , FormField.fieldSmall_
             { label: "Budget*"
             , helpText: Just "Total amount for campaign to spend."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "budget-disabled"
             }
             [ Input.currency_
@@ -283,7 +281,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a search field."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "search"
             }
             [ Input.inputGroup_
@@ -308,7 +306,7 @@ cnDocumentationBlocks =
           , FormField.field_
             { label: "Search"
             , helpText: Just "This text field shows how you might represent a loading state for a search field."
-            , valid: Nothing
+            , error: Nothing
             , inputId: "search-loading"
             }
             [ Input.inputGroup_
@@ -327,4 +325,79 @@ cnDocumentationBlocks =
           ]
         ]
       ]
-    ]]
+    ]
+  , Documentation.block_
+    { header: "Text Areas"
+    , subheader: "Captures large string input."
+    }
+    [ Backdrop.backdrop_
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Static" ]
+          , FormField.field_
+            { label: "Comment"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment"
+            }
+            [ Input.textarea
+              [ HP.placeholder "Be nice."
+              , HP.id_ "comment"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Error" ]
+          , FormField.field_
+            { label: "Comment*"
+            , helpText: Just "Say something."
+            , error: Just "This field is required."
+            , inputId: "comment-error"
+            }
+            [ Input.textarea
+              [ HP.placeholder "Be nice."
+              , HP.id_ "comment-error"
+              ]
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Hydrated" ]
+          , FormField.field_
+            { label: "Comment"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment-hydrated"
+            }
+            [ Input.textarea
+              [ HP.value "Forest drinks on the job"
+              , HP.id_ "comment-hydrated"
+              ]
+            ]
+          , HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Disabled" ]
+          , FormField.field_
+            { label: "Comment*"
+            , helpText: Just "Say something."
+            , error: Nothing
+            , inputId: "comment-disabled"
+            }
+            [ Input.textarea
+              [ HP.value "Forest drinks on the job"
+              , HP.id_ "comment-disabled"
+              , HP.disabled true
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]

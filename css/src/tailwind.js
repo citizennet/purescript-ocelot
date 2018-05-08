@@ -1,78 +1,42 @@
 // This file modifies the base Tailwind configuration. We can freely re-use the same names or add new options to existing variables.
 
-var config = require('tailwindcss/defaultConfig')()
+let config = require('tailwindcss/defaultConfig')()
 
-config.height = Object.assign(config.height, {
+const spacing = {
+  '0': '0',
   '5': '1.25rem',
   '7': '1.75rem',
   '9': '2.25rem',
-  '20': '5rem',
-  '40': '10rem',
-})
-
-config.width = Object.assign(config.width, {
-  '5': '1.25rem',
-  '7': '1.75rem',
-  '9': '2.25rem',
-  '20': '5rem',
-  '40': '10rem',
-})
-
-config.minWidth = Object.assign(config.minWidth, {
-  '5': '1.25rem',
-  '7': '1.75rem',
-  '9': '2.25rem',
-  '12': '3rem',
-  '20': '5rem'
-})
-
-config.zIndex = Object.assign(config.zIndex, {
-  '60': '60'
-})
-
-
-// Additional padding and margin sizes
-config.padding = Object.assign(config.padding, {
-  '5': '1.25rem',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',
   '20': '5rem',
+  '40': '10rem',
   '80': '20rem',
-})
+}
 
-config.margin = Object.assign(config.margin, {
-  '5': '1.25rem',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
+config.padding = Object.assign(config.padding, spacing)
+
+config.margin = Object.assign(config.margin, spacing)
 
 config.negativeMargin = config.margin
 
-config.maxHeight = Object.assign(config.maxHeight, {
-  '0': '0',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
+config.height = Object.assign(config.height, spacing)
 
+config.width = Object.assign(config.width, spacing)
 
-config.minHeight = Object.assign(config.minHeight, {
-  '0': '0',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
-
-config.maxWidth = Object.assign(config.maxWidth, {
+config.maxWidth = Object.assign(config.maxWidth, spacing, {
   '6xl': '110rem',
+})
+
+config.minWidth = Object.assign(config.minWidth, spacing)
+
+config.maxHeight = Object.assign(config.maxHeight, spacing)
+
+config.minHeight = Object.assign(config.minHeight, spacing)
+
+config.zIndex = Object.assign(config.zIndex, {
+  '60': '60'
 })
 
 config.colors = Object.assign(config.colors, {
