@@ -506,7 +506,7 @@ cnDocumentationBlocks =
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
-              [ HH.text "Loading Single Select" ]
+              [ HH.text "Loading Multi Select" ]
             , FormField.field_
               { label: "Users"
               , helpText: Just "Search your top companions."
