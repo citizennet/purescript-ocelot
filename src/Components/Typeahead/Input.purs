@@ -16,7 +16,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.RemoteData (RemoteData(..), isSuccess)
+import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
@@ -238,7 +238,7 @@ renderTA props renderContainer renderSelectionItem st =
       , debounceTime: case st.config.syncMethod of
           TA.Async { debounceTime } -> Just debounceTime
           TA.Sync -> Nothing
-      , render: \selectState -> HH.div_ [ renderSearch, renderContainer' selectState ]
+      , render: \selectState -> HH.div_ [ renderSearch, renderContainer' selectState, renderError ]
       }
 
     renderSlot =
@@ -368,3 +368,15 @@ renderTA props renderContainer renderSelectionItem st =
       , "w-full"
       , "px-3"
       ]
+
+    renderError
+      | isFailure st.items =
+        HH.div
+        [ HP.class_ $ HH.ClassName "flex items-center mt-1" ]
+        [ Icon.error
+          [ HP.class_ $ HH.ClassName "text-2xl text-yellow" ]
+        , HH.p
+          [ HP.class_ $ HH.ClassName "ml-3 text-grey-70" ]
+          [ HH.text "Some data could not be retrieved here." ]
+        ]
+      | otherwise = HH.div_ []
