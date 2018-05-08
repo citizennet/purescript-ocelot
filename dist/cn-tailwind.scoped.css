@@ -4285,6 +4285,10 @@ body .ocelot-scoped {
   font-weight: 900;
 }
 
+.ocelot-scoped .h-0 {
+  height: 0;
+}
+
 .ocelot-scoped .h-1 {
   height: .25rem;
 }
@@ -4933,6 +4937,10 @@ body .ocelot-scoped {
   margin-left: 1px;
 }
 
+.ocelot-scoped .max-h-0 {
+  max-height: 0;
+}
+
 .ocelot-scoped .max-h-5 {
   max-height: 1.25rem;
 }
@@ -4975,6 +4983,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .max-h-screen {
   max-height: 100vh;
+}
+
+.ocelot-scoped .max-w-0 {
+  max-width: 0;
 }
 
 .ocelot-scoped .max-w-5 {
@@ -7705,6 +7717,10 @@ body .ocelot-scoped {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ocelot-scoped .w-0 {
+  width: 0;
 }
 
 .ocelot-scoped .w-1 {
@@ -11741,6 +11757,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .sm\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .sm\:h-1 {
     height: .25rem;
   }
@@ -12389,6 +12409,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .sm\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .sm\:max-h-5 {
     max-height: 1.25rem;
   }
@@ -12431,6 +12455,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .sm\:max-w-0 {
+    max-width: 0;
   }
 
   .ocelot-scoped .sm\:max-w-5 {
@@ -15153,6 +15181,10 @@ body .ocelot-scoped {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .ocelot-scoped .sm\:w-0 {
+    width: 0;
   }
 
   .ocelot-scoped .sm\:w-1 {
@@ -18704,6 +18736,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .md\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .md\:h-1 {
     height: .25rem;
   }
@@ -19352,6 +19388,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .md\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .md\:max-h-5 {
     max-height: 1.25rem;
   }
@@ -19394,6 +19434,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .md\:max-w-0 {
+    max-width: 0;
   }
 
   .ocelot-scoped .md\:max-w-5 {
@@ -22116,6 +22160,10 @@ body .ocelot-scoped {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .ocelot-scoped .md\:w-0 {
+    width: 0;
   }
 
   .ocelot-scoped .md\:w-1 {
@@ -25667,6 +25715,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .lg\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .lg\:h-1 {
     height: .25rem;
   }
@@ -26315,6 +26367,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .lg\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .lg\:max-h-5 {
     max-height: 1.25rem;
   }
@@ -26357,6 +26413,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .lg\:max-w-0 {
+    max-width: 0;
   }
 
   .ocelot-scoped .lg\:max-w-5 {
@@ -29079,6 +29139,10 @@ body .ocelot-scoped {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .ocelot-scoped .lg\:w-0 {
+    width: 0;
   }
 
   .ocelot-scoped .lg\:w-1 {
@@ -32630,6 +32694,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .xl\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .xl\:h-1 {
     height: .25rem;
   }
@@ -33278,6 +33346,10 @@ body .ocelot-scoped {
     margin-left: 1px;
   }
 
+  .ocelot-scoped .xl\:max-h-0 {
+    max-height: 0;
+  }
+
   .ocelot-scoped .xl\:max-h-5 {
     max-height: 1.25rem;
   }
@@ -33320,6 +33392,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .xl\:max-w-0 {
+    max-width: 0;
   }
 
   .ocelot-scoped .xl\:max-w-5 {
@@ -36042,6 +36118,10 @@ body .ocelot-scoped {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .ocelot-scoped .xl\:w-0 {
+    width: 0;
   }
 
   .ocelot-scoped .xl\:w-1 {

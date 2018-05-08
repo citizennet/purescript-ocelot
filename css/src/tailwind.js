@@ -3,6 +3,7 @@
 let config = require('tailwindcss/defaultConfig')()
 
 const spacing = {
+  '0': '0',
   '5': '1.25rem',
   '7': '1.75rem',
   '9': '2.25rem',
