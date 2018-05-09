@@ -147,6 +147,8 @@ dt {
 .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) { @apply .bg-grey-50-a30; }
 .hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
 .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
+.sibling\:bg-grey-95 ~ * { @apply .bg-grey-95; }
+.sibling\:text-grey-dark ~ * { @apply .text-grey-dark; }
 
 /* Animation Styles */
 .spin { animation: spin 1.4s infinite linear; }

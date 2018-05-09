@@ -95,7 +95,7 @@ component =
                     { label: "Platform"
                     , inputId: "checkbox-vertical"
                     , helpText: Just "Where do you want your ad to appear?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div_
                       [ Checkbox.checkbox_
@@ -121,7 +121,7 @@ component =
                     { label: "Platform"
                     , inputId: "checkbox-horizontal"
                     , helpText: Just "Where do you want your ad to appear?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -157,7 +157,7 @@ component =
                     { label: "Platform"
                     , inputId: "checkbox-vertical-disabled"
                     , helpText: Just "Where do you want your ad to appear?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div_
                       [ Checkbox.checkbox_
@@ -188,7 +188,7 @@ component =
                     { label: "Platform"
                     , inputId: "checkbox-horizontal-disabled"
                     , helpText: Just "Where do you want your ad to appear?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -235,7 +235,7 @@ component =
                     { label: "Optimization Goal"
                     , inputId: "radio-vertical"
                     , helpText: Just "What do you want to optimize for?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div_
                       [ Radio.radio_
@@ -261,7 +261,7 @@ component =
                     { label: "Previews"
                     , inputId: "radio-horizontal"
                     , helpText: Just "What kind of preview do you want to see?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -297,7 +297,7 @@ component =
                     { label: "Optimization Goal"
                     , inputId: "radio-vertical-disabled"
                     , helpText: Just "What do you want to optimize for?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div_
                       [ Radio.radio_
@@ -328,7 +328,7 @@ component =
                     { label: "Disabled Previews"
                     , inputId: "radio-horizontal-disabled"
                     , helpText: Just "What kind of preview do you want to see?"
-                    , valid: Nothing
+                    , error: Nothing
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -379,7 +379,7 @@ component =
             -- , FormField.field_
               -- { label: "Dave's OO Emails"
               -- , helpText: Just "How many do you want?"
-              -- , valid: Nothing
+              -- , error: Nothing
               -- , inputId: "range"
               -- }
               -- [ Range.range

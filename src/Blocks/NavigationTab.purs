@@ -79,6 +79,7 @@ errorIconClasses = HH.ClassName <$>
   , "mr-1"
   , "inline-flex"
   , "align-bottom"
+  , "my-px"
   ]
 
 navigationTabs
