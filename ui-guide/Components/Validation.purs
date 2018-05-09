@@ -18,14 +18,14 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
 import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, inputSetter)
-import Ocelot.Form (Form, K, Second, check, formFromField, runForm)
+import Ocelot.Form (Form, K, Second, check, formFromField, runForm, FormInput', FormMaybe')
 import Ocelot.HTML.Properties (css)
 import Polyform.Validation (V(..), hoistFnV)
 import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
-import UIGuide.Utilities.Form (EmailError, FormInput', FormMaybe', PasswordError, PasswordErrorEq)
+import UIGuide.Utilities.Form (EmailError, PasswordError, PasswordErrorEq)
 
 ----------
 -- Form

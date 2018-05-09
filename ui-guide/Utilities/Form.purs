@@ -3,8 +3,6 @@ module UIGuide.Utilities.Form where
 import Data.Maybe (Maybe)
 import Data.Tuple (Tuple)
 import Data.Variant (Variant)
-import Ocelot.Form (FormInput)
-
 
 -----
 -- Pre-Built Common Field Types
@@ -23,10 +21,3 @@ type PasswordErrorEq = Err
 type PasswordError = Err
   ( emptyField :: String
   )
-
------
--- Helpers
-
--- The form types we need: the raw form, the initial form, and the overall signup form.
-type FormInput' vl vd e a b = FormInput (a -> vl) (Boolean -> vd) e a b
-type FormMaybe' a b c = Maybe c

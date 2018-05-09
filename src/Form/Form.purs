@@ -48,6 +48,7 @@ instance monoidEndo :: Monoid (Endo a) where
 --
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
+
 type FormInput iv vv e a b =
   { input          :: a
   , result         :: Maybe (Either e b)
@@ -88,6 +89,10 @@ type First a b c = a
 type Second a b c = b
 type Third a b c = c
 type K a b c d = a
+
+type FormInput' vl vd e a b = FormInput (a -> vl) (Boolean -> vd) e a b
+type FormMaybe' a b c = Maybe c
+
 
 -----
 -- Form construction

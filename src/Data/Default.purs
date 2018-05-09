@@ -14,6 +14,9 @@ class Default v where
 instance defaultUnit :: Default Unit where
   def = mempty
 
+instance defaultBoolean :: Default Boolean where
+  def = false
+
 instance defaultInt :: Default Int where
   def = 0
 
