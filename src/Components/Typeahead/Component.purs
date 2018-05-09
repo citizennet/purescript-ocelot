@@ -7,7 +7,7 @@ import Control.Comonad.Store (Store, store, seeks)
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (logShow, CONSOLE)
+import Control.Monad.Aff.Console (CONSOLE)
 import DOM (DOM)
 import Data.Array (difference, filter, head, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
@@ -273,7 +273,6 @@ component =
           Success items -> do
             H.query unit $ Select.replaceItems items
           Failure err -> do
-            H.liftAff $ logShow err
             _ <- H.query unit $ Select.setVisibility Select.Off
             H.query unit $ Select.replaceItems []
           NotAsked -> do
