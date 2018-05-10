@@ -61,6 +61,36 @@ sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
 ----------
 -- Default Record Builders
 
+-- We can generate default records with just their raw values
+class DefaultRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  defaultRecord :: RLProxy rl -> RProxy r -> Record o
+
+instance nilDefaultRecord :: DefaultRecord Nil r () where
+  defaultRecord _ _ = {}
+
+instance consDefaultRecord
+  :: ( IsSymbol name
+     , Default a
+     , RowCons name a tail' o
+     , RowLacks name tail'
+     , DefaultRecord tail r0 tail'
+     )
+  => DefaultRecord (Cons name a tail) r0 o
+  where
+    defaultRecord _ r =
+      let tail' = defaultRecord (RLProxy :: RLProxy tail) (RProxy :: RProxy r0)
+          _name = SProxy :: SProxy name
+       in insert _name def tail'
+
+makeDefaultRecord
+  :: ∀ r rl o
+   . DefaultRecord rl r o
+  => RowToList r rl
+  => RProxy r
+  -> Record o
+makeDefaultRecord r = defaultRecord (RLProxy :: RLProxy rl) r
+
+
 -- We want to generate raw form representations from a form spec.
 class DefaultFormInputs (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
   defaultFormInputs :: RLProxy rl -> RProxy r -> Record o
