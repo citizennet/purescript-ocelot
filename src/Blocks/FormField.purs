@@ -47,7 +47,7 @@ labelClasses = HH.ClassName <$>
   [ "block"
   , "font-bold"
   , "leading-loose"
-  , "text-black"
+  , "text-black-20"
   ]
 
 type FieldConfig =

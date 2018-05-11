@@ -15,7 +15,7 @@ labelClasses = HH.ClassName <$>
   , "inline-block"
   , "py-2"
   , "cursor-pointer"
-  , "text-black"
+  , "text-black-20"
   ]
 
 inputClasses :: Array HH.ClassName

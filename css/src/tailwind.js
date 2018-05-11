@@ -43,7 +43,7 @@ config.colors = Object.assign(config.colors, {
   'black-10': '#00081A',
   'black-20': '#242A33',
   'black-modal-a90': 'rgba(0,9,26,0.9);',
-  'grey-50': 'rgb(102,113,128)',
+  'grey-50': '#5C6573',
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
   'grey-70': 'rgb(143,158,179)',
@@ -51,15 +51,20 @@ config.colors = Object.assign(config.colors, {
   'grey-70-a40': 'rgba(143,158,179,0.4)',
   'grey-90': '#E1E3E6',
   'grey-95': '#F0F1F2',
-  'blue-75': '#F0F1F2',
+  'grey-97': '#F7F7F7',
+  'blue-65': '#008AA6',
+  'blue-75': '#009FBF',
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
-  'blue-100': '#E6F0FF',
   'fb-blue': '#3B5998',
   'tw-blue': '#00ACED',
   'ig-brown': '#675144',
   'red': '#FF5471',
   'yellow': '#FFC859',
+  'green': '#66C7AF',
+  'steel-75': '#A8B2BF',
+  'steel-85': '#BFCAD9',
+  'steel-100': '#E6F0FF'
 })
 
 config.borderColors = Object.assign(

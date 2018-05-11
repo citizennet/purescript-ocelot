@@ -19,7 +19,7 @@ labelClasses = HH.ClassName <$>
   , "py-1"
   , "cursor-pointer"
   , "leading-loose"
-  , "text-black"
+  , "text-black-20"
   ]
 
 inputClasses :: Array HH.ClassName

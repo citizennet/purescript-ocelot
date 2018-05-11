@@ -1,7 +1,7 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
 
-html, body { @apply .gotham; @apply .leading-normal; font-size: 12px; }
+html, body { @apply .gotham; @apply .leading-normal; font-size: 12px; @apply .text-black-20; }
 button, input, optgroup, select, textarea { @apply .leading-normal; }
 
 /* Temp overrides */

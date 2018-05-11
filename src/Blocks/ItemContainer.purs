@@ -54,7 +54,7 @@ liClasses :: Array HH.ClassName
 liClasses = HH.ClassName <$>
   [ "px-3"
   , "rounded-sm"
-  , "text-grey-darkest"
+  , "text-black-20"
   , "group"
   , "hover:bg-grey-lighter"
   , "cursor-pointer"
@@ -72,7 +72,6 @@ buttonClasses = HH.ClassName <$>
   [ "invisible"
   , "text-grey"
   , "group-hover:visible"
-  , "text-grey"
   ]
 
 -- Provided an array of items and any additional HTML, renders the container

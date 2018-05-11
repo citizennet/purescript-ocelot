@@ -11,7 +11,7 @@ buttonSharedClasses :: Array HH.ClassName
 buttonSharedClasses = HH.ClassName <$>
   [ "no-outline"
   , "px-4"
-  , "py-3"
+  , "py-2"
   , "!active:border-b"
   , "active:border-t"
   , "disabled:opacity-50"
