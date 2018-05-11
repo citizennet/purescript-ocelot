@@ -2,15 +2,24 @@ module Ocelot.Data.Record where
 
 import Prelude
 
-import Data.Either (Either)
 import Data.Lens (set)
 import Data.Lens.Record (prop)
+import Data.Either (Either)
 import Data.Maybe (Maybe(..))
-import Data.Record (get, insert)
+import Data.Record (delete, get, insert)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Data.Variant (Variant, inj, on)
 import Ocelot.Data.Default (class Default, def)
-import Type.Row (class RowLacks, class RowToList, Cons, Nil, RLProxy(..), RProxy(..), kind RowList)
+import Type.Row
+  ( class ListToRow
+  , class RowLacks
+  , class RowToList
+  , Cons
+  , Nil
+  , RLProxy(..)
+  , RProxy(..)
+  , kind RowList
+  )
 
 -----
 -- Sequencing form records
@@ -52,6 +61,36 @@ sequenceRecord r = sequenceImpl (RLProxy :: RLProxy rl) r
 ----------
 -- Default Record Builders
 
+-- We can generate default records with just their raw values
+class DefaultRecord (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
+  defaultRecord :: RLProxy rl -> RProxy r -> Record o
+
+instance nilDefaultRecord :: DefaultRecord Nil r () where
+  defaultRecord _ _ = {}
+
+instance consDefaultRecord
+  :: ( IsSymbol name
+     , Default a
+     , RowCons name a tail' o
+     , RowLacks name tail'
+     , DefaultRecord tail r0 tail'
+     )
+  => DefaultRecord (Cons name a tail) r0 o
+  where
+    defaultRecord _ r =
+      let tail' = defaultRecord (RLProxy :: RLProxy tail) (RProxy :: RProxy r0)
+          _name = SProxy :: SProxy name
+       in insert _name def tail'
+
+makeDefaultRecord
+  :: ∀ r rl o
+   . DefaultRecord rl r o
+  => RowToList r rl
+  => RProxy r
+  -> Record o
+makeDefaultRecord r = defaultRecord (RLProxy :: RLProxy rl) r
+
+
 -- We want to generate raw form representations from a form spec.
 class DefaultFormInputs (rl :: RowList) (r :: # Type) (o :: # Type) | rl -> o where
   defaultFormInputs :: RLProxy rl -> RProxy r -> Record o
@@ -78,7 +117,12 @@ instance consDefaultFormInputs
     defaultFormInputs _ r =
       let tail' = defaultFormInputs (RLProxy :: RLProxy tail) (RProxy :: RProxy r0)
           _name = SProxy :: SProxy name
-       in insert _name { input: def, validate: false, result: Nothing, setInput: inj _name, setValidate: inj _name } tail'
+       in insert _name { input: def
+                       , validate: false
+                       , result: Nothing
+                       , setInput: inj _name
+                       , setValidate: inj _name
+                       } tail'
 
 makeDefaultFormInputs
   :: ∀ r rl o
@@ -174,3 +218,96 @@ validateSetter
   -> Record fout
 validateSetter k =
   buildValidateSetters (RLProxy :: RLProxy rl) (RProxy :: RProxy fin)
+
+----------
+-- From @liamgoodacre
+
+-- Apply a record of functions to a record of values to
+-- result in a record of outputs
+
+class ApplyRecord
+  (io :: # Type)
+  (i :: # Type)
+  (o :: # Type)
+  | io -> i o
+  , i -> io o
+  , o -> io i where
+    applyRecord ::
+      Record io ->
+      Record i ->
+      Record o
+
+instance applyRecordImpl ::
+  ( RowToList io lio
+  , RowToList i li
+  , RowToList o lo
+  , ApplyRowList lio li lo io i o
+  , ListToRow lio io
+  , ListToRow li i
+  , ListToRow lo o ) =>
+  ApplyRecord io i o where
+    applyRecord io i =
+      applyRowList
+        (RLProxy :: RLProxy lio)
+        (RLProxy :: RLProxy li)
+        (RLProxy :: RLProxy lo)
+        io
+        i
+
+class
+  ( ListToRow io ior
+  , ListToRow i ir
+  , ListToRow o or ) <=
+  ApplyRowList
+    (io :: RowList)
+    (i :: RowList)
+    (o :: RowList)
+    (ior :: # Type)
+    (ir :: # Type)
+    (or :: # Type)
+    | io -> i o ior ir or
+    , i -> io o ior ir or
+    , o -> io i ior ir or where
+      applyRowList ::
+        RLProxy io ->
+        RLProxy i ->
+        RLProxy o ->
+        Record ior ->
+        Record ir ->
+        Record or
+
+instance applyRowListNil ::
+  ApplyRowList Nil Nil Nil () () () where
+    applyRowList a b c d e = e
+
+rltail :: forall k v t. RLProxy (Cons k v t) -> RLProxy t
+rltail _ = RLProxy
+
+instance applyRowListCons ::
+  ( RowCons k (i -> o) tior ior
+  , RowCons k i tir ir
+  , RowCons k o tor or
+  , RowLacks k tior
+  , RowLacks k tir
+  , RowLacks k tor
+  , ListToRow tio tior
+  , ListToRow ti tir
+  , ListToRow to tor
+  , ApplyRowList tio ti to tior tir tor
+  , IsSymbol k ) =>
+  ApplyRowList
+    (Cons k (i -> o) tio)
+    (Cons k i ti)
+    (Cons k o to)
+    ior
+    ir
+    or
+  where
+    applyRowList io i o ior ir =
+      let key = SProxy :: SProxy k
+          f = get key ior
+          x = get key ir
+          tior = delete key ior :: Record tior
+          tir = delete key ir :: Record tir
+          tor = applyRowList (rltail io) (rltail i) (rltail o) tior tir
+       in insert key (f x) tor
