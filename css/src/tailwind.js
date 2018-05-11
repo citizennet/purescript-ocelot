@@ -69,7 +69,7 @@ config.colors = Object.assign(config.colors, {
 })
 
 config.borderColors = Object.assign(
-  { 'default': config.colors['grey-light'] },
+  { 'default': config.colors['grey-80'] },
   config.colors
 )
 

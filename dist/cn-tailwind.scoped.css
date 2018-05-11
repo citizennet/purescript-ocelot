@@ -770,7 +770,7 @@ html, .ocelot-scoped {
 .ocelot-scoped *::after {
   border-width: 0;
   border-style: solid;
-  border-color: #dae1e7;
+  border-color: #c2c6cc;
 }
 
 /**
@@ -8243,12 +8243,12 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
-  background-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before {
+  background-color: #c2c6cc;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * {
+  border-color: #c2c6cc;
 }
 
 /* legacy variant & pseudo utilities */
@@ -8359,8 +8359,8 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .\!checked\:sibling\:bg-grey-light:not(:checked) ~ * {
-  background-color: #dae1e7;
+.ocelot-scoped .\!checked\:sibling\:bg-grey-80:not(:checked) ~ * {
+  background-color: #c2c6cc;
 }
 
 .ocelot-scoped .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * {
@@ -8406,10 +8406,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .disabled\:sibling\:bg-grey-95:disabled ~ * {
   background-color: #f0f1f2;
-}
-
-.ocelot-scoped .disabled\:border-grey-light:disabled {
-  border-color: #dae1e7;
 }
 
 .ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) {

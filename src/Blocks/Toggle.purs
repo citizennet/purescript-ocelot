@@ -26,7 +26,7 @@ inputClasses :: Array HH.ClassName
 inputClasses = HH.ClassName <$>
   [ "checked:sibling:bg-blue-88"
   , "checked:sibling:pl-5"
-  , "!checked:sibling:bg-grey-light"
+  , "!checked:sibling:bg-grey-80"
   , "!checked:sibling:pr-5"
   , "offscreen"
   ]

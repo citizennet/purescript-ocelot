@@ -93,8 +93,8 @@ dt {
 .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey-70:not(:focus):hover:not(:checked):not(:disabled) ~ * { @apply .border-grey-70; }
 .focus\:sibling\:shadow:focus ~ * { @apply .shadow; }
 .checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before { @apply .bg-blue-88; }
-.checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before { @apply .bg-grey; }
-.checked\:disabled\:sibling\:border-grey:checked:disabled ~ * { @apply .border-grey; }
+.checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before { @apply .bg-grey-80; }
+.checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * { @apply .border-grey-80; }
 
 /* legacy variant & pseudo utilities */
 .before\:absolute:before { @apply .absolute; }
@@ -123,7 +123,7 @@ dt {
 .checked\:sibling\:after\:opacity-100:checked ~ *:after { @apply .opacity-100; }
 .checked\:sibling\:after\:scale-1:checked ~ *:after { @apply .scale-1; }
 .checked\:sibling\:bg-blue-88:checked ~ * { @apply .bg-blue-88; }
-.\!checked\:sibling\:bg-grey-light:not(:checked) ~ * { @apply .bg-grey-light; }
+.\!checked\:sibling\:bg-grey-80:not(:checked) ~ * { @apply .bg-grey-80; }
 .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * { @apply .border-grey-70-a40; }
 .checked\:sibling\:border-blue-88:checked ~ * { @apply .border-blue-88; }
 .checked\:\!disabled\:sibling\:border-blue-88:checked:not(:disabled) ~ * { @apply .border-blue-88; }
@@ -135,7 +135,6 @@ dt {
 .disabled\:text-grey-50:disabled { @apply .text-grey-50; }
 .\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
 .disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
-.disabled\:border-grey-light:disabled { @apply .border-grey-light; }
 .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) { @apply .border-grey-70; }
 .group:hover .group-hover\:\!focus\:\!disabled\:border-grey-70:not(:focus):not(:disabled) { @apply .border-grey-70; }
 .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * { @apply .border-grey-70; }

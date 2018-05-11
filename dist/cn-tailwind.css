@@ -770,7 +770,7 @@ ul {
 *::after {
   border-width: 0;
   border-style: solid;
-  border-color: #dae1e7;
+  border-color: #c2c6cc;
 }
 
 /**
@@ -8243,12 +8243,12 @@ dt {
   background-color: #00bbe0;
 }
 
-.checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
-  background-color: #b8c2cc;
+.checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before {
+  background-color: #c2c6cc;
 }
 
-.checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
-  border-color: #b8c2cc;
+.checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * {
+  border-color: #c2c6cc;
 }
 
 /* legacy variant & pseudo utilities */
@@ -8359,8 +8359,8 @@ dt {
   background-color: #00bbe0;
 }
 
-.\!checked\:sibling\:bg-grey-light:not(:checked) ~ * {
-  background-color: #dae1e7;
+.\!checked\:sibling\:bg-grey-80:not(:checked) ~ * {
+  background-color: #c2c6cc;
 }
 
 .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * {
@@ -8406,10 +8406,6 @@ dt {
 
 .disabled\:sibling\:bg-grey-95:disabled ~ * {
   background-color: #f0f1f2;
-}
-
-.disabled\:border-grey-light:disabled {
-  border-color: #dae1e7;
 }
 
 .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) {
