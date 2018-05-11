@@ -16,7 +16,7 @@ inputSharedClasses = HH.ClassName <$>
   , "cc-blue-88"
   , "border-grey-80"
   , "disabled:bg-grey-95"
-  , "disabled:text-grey-50"
+  , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
   , "transition-1/4-bounce"

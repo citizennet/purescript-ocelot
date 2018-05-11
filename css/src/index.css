@@ -132,7 +132,7 @@ dt {
 .\!checked\:sibling\:after\:opacity-0:not(:checked) ~ *:after { @apply .opacity-0; }
 .\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after { @apply .scale-0; }
 .disabled\:bg-grey-95:disabled { @apply .bg-grey-95; }
-.disabled\:text-grey-50:disabled { @apply .text-grey-50; }
+.disabled\:text-grey-70:disabled { @apply .text-grey-70; }
 .\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
 .disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
 .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) { @apply .border-grey-70; }

@@ -8396,8 +8396,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:text-grey-50:disabled {
-  color: #5c6573;
+.ocelot-scoped .disabled\:text-grey-70:disabled {
+  color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {

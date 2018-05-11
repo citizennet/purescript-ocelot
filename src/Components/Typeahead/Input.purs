@@ -350,7 +350,7 @@ renderTA props renderContainer renderSelectionItem st =
       | otherwise = Setters.setInputProps props
 
     linkClasses
-      | isDisabled == true = [ HH.ClassName "text-grey-50 no-underline font-medium" ]
+      | isDisabled == true = [ HH.ClassName "text-grey-70 no-underline font-medium" ]
       | otherwise = Format.linkClasses
 
     disabledClasses = HH.ClassName <$>
@@ -375,7 +375,7 @@ renderTA props renderContainer renderSelectionItem st =
         [ Icon.error
           [ HP.class_ $ HH.ClassName "text-2xl text-yellow" ]
         , HH.p
-          [ HP.class_ $ HH.ClassName "ml-3 text-grey-50" ]
+          [ HP.class_ $ HH.ClassName "ml-3 text-grey-50 font-light" ]
           [ HH.text "Some data could not be retrieved here." ]
         ]
       | otherwise = HH.div_ []

@@ -8396,8 +8396,8 @@ dt {
   background-color: #f0f1f2;
 }
 
-.disabled\:text-grey-50:disabled {
-  color: #5c6573;
+.disabled\:text-grey-70:disabled {
+  color: rgb(143, 158, 179);
 }
 
 .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
