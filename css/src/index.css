@@ -90,7 +90,7 @@ dt {
 .focus\:sibling\:border-blue-88:focus ~ * { @apply .border-blue-88; }
 .\!checked\:sibling\:before\:opacity-0:not(:checked) ~ *:before { @apply .opacity-0; }
 .\!checked\:sibling\:before\:scale-0:not(:checked) ~ *:before { @apply .scale-0; }
-.\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * { @apply .border-grey; }
+.\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey-70:not(:focus):hover:not(:checked):not(:disabled) ~ * { @apply .border-grey-70; }
 .focus\:sibling\:shadow:focus ~ * { @apply .shadow; }
 .checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before { @apply .bg-blue-88; }
 .checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before { @apply .bg-grey; }
@@ -132,13 +132,13 @@ dt {
 .\!checked\:sibling\:after\:opacity-0:not(:checked) ~ *:after { @apply .opacity-0; }
 .\!checked\:sibling\:after\:scale-0:not(:checked) ~ *:after { @apply .scale-0; }
 .disabled\:bg-grey-95:disabled { @apply .bg-grey-95; }
-.disabled\:text-grey-dark:disabled { @apply .text-grey-dark; }
+.disabled\:text-grey-50:disabled { @apply .text-grey-50; }
 .\!disabled\:sibling\:bg-white:not(:disabled) ~ * { @apply .bg-white; }
 .disabled\:sibling\:bg-grey-95:disabled ~ * { @apply .bg-grey-95; }
 .disabled\:border-grey-light:disabled { @apply .border-grey-light; }
-.\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) { @apply .border-grey; }
-.group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) { @apply .border-grey; }
-.group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * { @apply .border-grey; }
+.\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) { @apply .border-grey-70; }
+.group:hover .group-hover\:\!focus\:\!disabled\:border-grey-70:not(:focus):not(:disabled) { @apply .border-grey-70; }
+.group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * { @apply .border-grey-70; }
 .focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
 .\!active\:border-b:not(:active) { @apply .border-b; }
 .active\:border-t:active { @apply .border-t; }
@@ -148,7 +148,7 @@ dt {
 .hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
 .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
 .sibling\:bg-grey-95 ~ * { @apply .bg-grey-95; }
-.sibling\:text-grey-dark ~ * { @apply .text-grey-dark; }
+.sibling\:text-grey-50 ~ * { @apply .text-grey-50; }
 
 /* Animation Styles */
 .spin { animation: spin 1.4s infinite linear; }

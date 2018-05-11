@@ -49,6 +49,7 @@ config.colors = Object.assign(config.colors, {
   'grey-70': 'rgb(143,158,179)',
   'grey-70-a30': 'rgba(143,158,179,0.3)',
   'grey-70-a40': 'rgba(143,158,179,0.4)',
+  'grey-80': '#C2C6CC',
   'grey-90': '#E1E3E6',
   'grey-95': '#F0F1F2',
   'grey-97': '#F7F7F7',

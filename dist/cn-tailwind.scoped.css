@@ -1256,6 +1256,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .bg-grey-80 {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .bg-grey-90 {
   background-color: #e1e3e6;
 }
@@ -1636,6 +1640,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .focus\:bg-grey-80:focus {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .focus\:bg-grey-90:focus {
   background-color: #e1e3e6;
 }
@@ -2014,6 +2022,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-grey-70-a40:hover {
   background-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .hover\:bg-grey-80:hover {
+  background-color: #c2c6cc;
 }
 
 .ocelot-scoped .hover\:bg-grey-90:hover {
@@ -2456,6 +2468,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .border-grey-80 {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .border-grey-90 {
   border-color: #e1e3e6;
 }
@@ -2834,6 +2850,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-grey-70-a40:focus {
   border-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .focus\:border-grey-80:focus {
+  border-color: #c2c6cc;
 }
 
 .ocelot-scoped .focus\:border-grey-90:focus {
@@ -3216,6 +3236,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:border-grey-80:hover {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:border-grey-90:hover {
   border-color: #e1e3e6;
 }
@@ -3594,6 +3618,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-70-a40 {
   border-color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-grey-80 {
+  border-color: #c2c6cc;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-90 {
@@ -6830,6 +6858,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .text-grey-80 {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .text-grey-90 {
   color: #e1e3e6;
 }
@@ -7210,6 +7242,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:text-grey-80:hover {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:text-grey-90:hover {
   color: #e1e3e6;
 }
@@ -7588,6 +7624,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-70-a40 {
   color: rgba(143, 158, 179, .4);
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-grey-80 {
+  color: #c2c6cc;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-90 {
@@ -8191,8 +8231,8 @@ body .ocelot-scoped {
   --scale: 0;
 }
 
-.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey-70:not(:focus):hover:not(:checked):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:sibling\:shadow:focus ~ * {
@@ -8356,8 +8396,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:text-grey-dark:disabled {
-  color: #8795a1;
+.ocelot-scoped .disabled\:text-grey-50:disabled {
+  color: #5c6573;
 }
 
 .ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
@@ -8372,16 +8412,16 @@ body .ocelot-scoped {
   border-color: #dae1e7;
 }
 
-.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
+.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey-70:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:next\:text-blue-88:focus + * {
@@ -8420,8 +8460,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .sibling\:text-grey-dark ~ * {
-  color: #8795a1;
+.ocelot-scoped .sibling\:text-grey-50 ~ * {
+  color: #5c6573;
 }
 
 /* Animation Styles */
@@ -8896,6 +8936,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -9276,6 +9320,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -9654,6 +9702,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-grey-70-a40:hover {
     background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-90:hover {
@@ -10096,6 +10148,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -10474,6 +10530,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-grey-70-a40:focus {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-90:focus {
@@ -10856,6 +10916,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -11234,6 +11298,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-70-a40 {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-90 {
@@ -14462,6 +14530,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -14842,6 +14914,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -15220,6 +15296,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-70-a40 {
     color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-90 {
@@ -16035,6 +16115,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -16415,6 +16499,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -16793,6 +16881,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-grey-70-a40:hover {
     background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-90:hover {
@@ -17235,6 +17327,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -17613,6 +17709,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-grey-70-a40:focus {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .md\:focus\:border-grey-90:focus {
@@ -17995,6 +18095,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -18373,6 +18477,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-70-a40 {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-90 {
@@ -21601,6 +21709,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -21981,6 +22093,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -22359,6 +22475,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-70-a40 {
     color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-90 {
@@ -23174,6 +23294,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -23554,6 +23678,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -23932,6 +24060,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-grey-70-a40:hover {
     background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-90:hover {
@@ -24374,6 +24506,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -24752,6 +24888,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-grey-70-a40:focus {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-90:focus {
@@ -25134,6 +25274,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -25512,6 +25656,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-70-a40 {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-90 {
@@ -28740,6 +28888,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -29120,6 +29272,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -29498,6 +29654,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-70-a40 {
     color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-90 {
@@ -30313,6 +30473,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -30693,6 +30857,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -31071,6 +31239,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-grey-70-a40:hover {
     background-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-90:hover {
@@ -31513,6 +31685,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -31891,6 +32067,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-grey-70-a40:focus {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-90:focus {
@@ -32273,6 +32453,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -32651,6 +32835,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-70-a40 {
     border-color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-90 {
@@ -35879,6 +36067,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -36259,6 +36451,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -36637,6 +36833,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-70-a40 {
     color: rgba(143, 158, 179, .4);
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-90 {

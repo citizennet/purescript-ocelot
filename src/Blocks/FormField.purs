@@ -30,6 +30,7 @@ helpTextClasses :: Array HH.ClassName
 helpTextClasses = Format.mutedClasses <>
   ( HH.ClassName <$>
     [ "block"
+    , "font-light"
     , "pt-3"
     ]
   )
@@ -38,14 +39,14 @@ errorTextClasses :: Array HH.ClassName
 errorTextClasses = HH.ClassName <$>
   [ "block"
   , "text-red"
-  , "font-bold"
+  , "font-medium"
   , "pt-3"
   ]
 
 labelClasses :: Array HH.ClassName
 labelClasses = HH.ClassName <$>
   [ "block"
-  , "font-bold"
+  , "font-medium"
   , "leading-loose"
   , "text-black-20"
   ]
