@@ -2,7 +2,7 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLlabel, HTMLspan, HTMLinput)
+import DOM.HTML.Indexed (HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
@@ -14,8 +14,9 @@ inputSharedClasses = HH.ClassName <$>
   , "border-b-2"
   , "font-light"
   , "cc-blue-88"
+  , "border-grey-80"
   , "disabled:bg-grey-95"
-  , "disabled:text-grey-dark"
+  , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
   , "transition-1/4-bounce"
@@ -29,7 +30,7 @@ inputClasses = inputSharedClasses <>
     , "w-full"
     , "px-3"
     , "focus:border-blue-88"
-    , "!focus:!disabled:hover:border-grey"
+    , "!focus:!disabled:hover:border-grey-70"
     ]
   )
 
@@ -47,8 +48,8 @@ mainItemClasses = inputSharedClasses <>
     [ "w-full"
     , "focus:border-blue-88"
     , "focus:sibling:border-blue-88"
-    , "group-hover:!focus:!disabled:border-grey"
-    , "group-hover:!focus:!disabled:sibling:border-grey"
+    , "group-hover:!focus:!disabled:border-grey-70"
+    , "group-hover:!focus:!disabled:sibling:border-grey-70"
     , "disabled:sibling:bg-grey-95"
     ]
   )
@@ -92,7 +93,7 @@ addonClasses :: Array HH.ClassName
 addonClasses = inputSharedClasses <>
   ( HH.ClassName <$>
     [ "cursor-pointer"
-    , "text-grey"
+    , "text-grey-70"
     ]
   )
 
@@ -126,6 +127,13 @@ borderRightClasses = borderClasses <>
   ( HH.ClassName <$>
     [ "border-l"
     , "pl-3"
+    ]
+  )
+
+textareaClasses :: Array HH.ClassName
+textareaClasses = inputClasses <>
+  ( HH.ClassName <$>
+    [ "min-h-40"
     ]
   )
 
@@ -287,3 +295,11 @@ currency_
    . Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 currency_ = currency []
+
+textarea
+  :: ∀ p i
+   . Array (HH.IProp HTMLtextarea i)
+  -> HH.HTML p i
+textarea iprops =
+  HH.textarea
+    ( [ HP.classes textareaClasses ] <&> iprops )

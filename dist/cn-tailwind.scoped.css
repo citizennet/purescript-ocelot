@@ -770,7 +770,7 @@ html, .ocelot-scoped {
 .ocelot-scoped *::after {
   border-width: 0;
   border-style: solid;
-  border-color: #dae1e7;
+  border-color: #c2c6cc;
 }
 
 /**
@@ -832,6 +832,7 @@ body .ocelot-scoped {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   line-height: 1.5;
   font-size: 12px;
+  color: #242a33;
 }
 
 .ocelot-scoped button,
@@ -1064,7 +1065,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-green {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .bg-green-light {
@@ -1232,7 +1233,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-grey-50 {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .bg-grey-50-a20 {
@@ -1255,6 +1256,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .bg-grey-80 {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .bg-grey-90 {
   background-color: #e1e3e6;
 }
@@ -1263,8 +1268,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .bg-grey-97 {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .bg-blue-65 {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .bg-blue-75 {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .bg-blue-82 {
@@ -1273,10 +1286,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .bg-blue-88 {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .bg-blue-100 {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .bg-fb-blue {
@@ -1289,6 +1298,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .bg-ig-brown {
   background-color: #675144;
+}
+
+.ocelot-scoped .bg-steel-75 {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .bg-steel-85 {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .bg-steel-100 {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:bg-transparent:focus {
@@ -1428,7 +1449,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-green:focus {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .focus\:bg-green-light:focus {
@@ -1596,7 +1617,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-grey-50:focus {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .focus\:bg-grey-50-a20:focus {
@@ -1619,6 +1640,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .focus\:bg-grey-80:focus {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .focus\:bg-grey-90:focus {
   background-color: #e1e3e6;
 }
@@ -1627,8 +1652,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .focus\:bg-grey-97:focus {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .focus\:bg-blue-65:focus {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .focus\:bg-blue-75:focus {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .focus\:bg-blue-82:focus {
@@ -1637,10 +1670,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:bg-blue-88:focus {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .focus\:bg-blue-100:focus {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:bg-fb-blue:focus {
@@ -1653,6 +1682,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:bg-ig-brown:focus {
   background-color: #675144;
+}
+
+.ocelot-scoped .focus\:bg-steel-75:focus {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .focus\:bg-steel-85:focus {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .focus\:bg-steel-100:focus {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:bg-transparent:hover {
@@ -1792,7 +1833,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-green:hover {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .hover\:bg-green-light:hover {
@@ -1960,7 +2001,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-grey-50:hover {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .hover\:bg-grey-50-a20:hover {
@@ -1983,6 +2024,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:bg-grey-80:hover {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:bg-grey-90:hover {
   background-color: #e1e3e6;
 }
@@ -1991,8 +2036,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:bg-grey-97:hover {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:bg-blue-65:hover {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .hover\:bg-blue-75:hover {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .hover\:bg-blue-82:hover {
@@ -2001,10 +2054,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-blue-88:hover {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:bg-blue-100:hover {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:bg-fb-blue:hover {
@@ -2017,6 +2066,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-ig-brown:hover {
   background-color: #675144;
+}
+
+.ocelot-scoped .hover\:bg-steel-75:hover {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:bg-steel-85:hover {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:bg-steel-100:hover {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .bg-bottom {
@@ -2216,7 +2277,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-green {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .border-green-light {
@@ -2384,7 +2445,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-grey-50 {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .border-grey-50-a20 {
@@ -2407,6 +2468,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .border-grey-80 {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .border-grey-90 {
   border-color: #e1e3e6;
 }
@@ -2415,8 +2480,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .border-grey-97 {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .border-blue-65 {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .border-blue-75 {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .border-blue-82 {
@@ -2425,10 +2498,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .border-blue-88 {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .border-blue-100 {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .border-fb-blue {
@@ -2441,6 +2510,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .border-steel-75 {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .border-steel-85 {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .border-steel-100 {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:border-transparent:focus {
@@ -2580,7 +2661,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-green:focus {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .focus\:border-green-light:focus {
@@ -2748,7 +2829,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-grey-50:focus {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .focus\:border-grey-50-a20:focus {
@@ -2771,6 +2852,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .focus\:border-grey-80:focus {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .focus\:border-grey-90:focus {
   border-color: #e1e3e6;
 }
@@ -2779,8 +2864,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .focus\:border-grey-97:focus {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .focus\:border-blue-65:focus {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .focus\:border-blue-75:focus {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .focus\:border-blue-82:focus {
@@ -2789,10 +2882,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-blue-88:focus {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .focus\:border-blue-100:focus {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:border-fb-blue:focus {
@@ -2805,6 +2894,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-ig-brown:focus {
   border-color: #675144;
+}
+
+.ocelot-scoped .focus\:border-steel-75:focus {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .focus\:border-steel-85:focus {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .focus\:border-steel-100:focus {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:border-transparent:hover {
@@ -2944,7 +3045,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-green:hover {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .hover\:border-green-light:hover {
@@ -3112,7 +3213,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-grey-50:hover {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .hover\:border-grey-50-a20:hover {
@@ -3135,6 +3236,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:border-grey-80:hover {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:border-grey-90:hover {
   border-color: #e1e3e6;
 }
@@ -3143,8 +3248,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:border-grey-97:hover {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:border-blue-65:hover {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .hover\:border-blue-75:hover {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .hover\:border-blue-82:hover {
@@ -3153,10 +3266,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:border-blue-88:hover {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:border-blue-100:hover {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:border-fb-blue:hover {
@@ -3169,6 +3278,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:border-ig-brown:hover {
   border-color: #675144;
+}
+
+.ocelot-scoped .hover\:border-steel-75:hover {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:border-steel-85:hover {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:border-steel-100:hover {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-transparent {
@@ -3308,7 +3429,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-green {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-green-light {
@@ -3476,7 +3597,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-50 {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-50-a20 {
@@ -3499,6 +3620,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .group:hover .group-hover\:border-grey-80 {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .group:hover .group-hover\:border-grey-90 {
   border-color: #e1e3e6;
 }
@@ -3507,8 +3632,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .group:hover .group-hover\:border-grey-97 {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-blue-65 {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .group:hover .group-hover\:border-blue-75 {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-blue-82 {
@@ -3517,10 +3650,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-blue-88 {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .group:hover .group-hover\:border-blue-100 {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-fb-blue {
@@ -3533,6 +3662,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-75 {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-85 {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-100 {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .rounded-none {
@@ -4285,6 +4426,10 @@ body .ocelot-scoped {
   font-weight: 900;
 }
 
+.ocelot-scoped .h-0 {
+  height: 0;
+}
+
 .ocelot-scoped .h-1 {
   height: .25rem;
 }
@@ -4357,6 +4502,10 @@ body .ocelot-scoped {
   height: 16rem;
 }
 
+.ocelot-scoped .h-80 {
+  height: 20rem;
+}
+
 .ocelot-scoped .h-auto {
   height: auto;
 }
@@ -4417,8 +4566,16 @@ body .ocelot-scoped {
   margin: 1.5rem;
 }
 
+.ocelot-scoped .m-7 {
+  margin: 1.75rem;
+}
+
 .ocelot-scoped .m-8 {
   margin: 2rem;
+}
+
+.ocelot-scoped .m-9 {
+  margin: 2.25rem;
 }
 
 .ocelot-scoped .m-10 {
@@ -4435,6 +4592,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .m-20 {
   margin: 5rem;
+}
+
+.ocelot-scoped .m-40 {
+  margin: 10rem;
 }
 
 .ocelot-scoped .m-80 {
@@ -4519,6 +4680,16 @@ body .ocelot-scoped {
   margin-right: 1.5rem;
 }
 
+.ocelot-scoped .my-7 {
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+.ocelot-scoped .mx-7 {
+  margin-left: 1.75rem;
+  margin-right: 1.75rem;
+}
+
 .ocelot-scoped .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -4527,6 +4698,16 @@ body .ocelot-scoped {
 .ocelot-scoped .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
+}
+
+.ocelot-scoped .my-9 {
+  margin-top: 2.25rem;
+  margin-bottom: 2.25rem;
+}
+
+.ocelot-scoped .mx-9 {
+  margin-left: 2.25rem;
+  margin-right: 2.25rem;
 }
 
 .ocelot-scoped .my-10 {
@@ -4567,6 +4748,16 @@ body .ocelot-scoped {
 .ocelot-scoped .mx-20 {
   margin-left: 5rem;
   margin-right: 5rem;
+}
+
+.ocelot-scoped .my-40 {
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+
+.ocelot-scoped .mx-40 {
+  margin-left: 10rem;
+  margin-right: 10rem;
 }
 
 .ocelot-scoped .my-80 {
@@ -4711,6 +4902,22 @@ body .ocelot-scoped {
   margin-left: 1.5rem;
 }
 
+.ocelot-scoped .mt-7 {
+  margin-top: 1.75rem;
+}
+
+.ocelot-scoped .mr-7 {
+  margin-right: 1.75rem;
+}
+
+.ocelot-scoped .mb-7 {
+  margin-bottom: 1.75rem;
+}
+
+.ocelot-scoped .ml-7 {
+  margin-left: 1.75rem;
+}
+
 .ocelot-scoped .mt-8 {
   margin-top: 2rem;
 }
@@ -4725,6 +4932,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .ml-8 {
   margin-left: 2rem;
+}
+
+.ocelot-scoped .mt-9 {
+  margin-top: 2.25rem;
+}
+
+.ocelot-scoped .mr-9 {
+  margin-right: 2.25rem;
+}
+
+.ocelot-scoped .mb-9 {
+  margin-bottom: 2.25rem;
+}
+
+.ocelot-scoped .ml-9 {
+  margin-left: 2.25rem;
 }
 
 .ocelot-scoped .mt-10 {
@@ -4791,6 +5014,22 @@ body .ocelot-scoped {
   margin-left: 5rem;
 }
 
+.ocelot-scoped .mt-40 {
+  margin-top: 10rem;
+}
+
+.ocelot-scoped .mr-40 {
+  margin-right: 10rem;
+}
+
+.ocelot-scoped .mb-40 {
+  margin-bottom: 10rem;
+}
+
+.ocelot-scoped .ml-40 {
+  margin-left: 10rem;
+}
+
 .ocelot-scoped .mt-80 {
   margin-top: 20rem;
 }
@@ -4843,6 +5082,18 @@ body .ocelot-scoped {
   max-height: 0;
 }
 
+.ocelot-scoped .max-h-5 {
+  max-height: 1.25rem;
+}
+
+.ocelot-scoped .max-h-7 {
+  max-height: 1.75rem;
+}
+
+.ocelot-scoped .max-h-9 {
+  max-height: 2.25rem;
+}
+
 .ocelot-scoped .max-h-10 {
   max-height: 2.5rem;
 }
@@ -4859,6 +5110,10 @@ body .ocelot-scoped {
   max-height: 5rem;
 }
 
+.ocelot-scoped .max-h-40 {
+  max-height: 10rem;
+}
+
 .ocelot-scoped .max-h-80 {
   max-height: 20rem;
 }
@@ -4869,6 +5124,46 @@ body .ocelot-scoped {
 
 .ocelot-scoped .max-h-screen {
   max-height: 100vh;
+}
+
+.ocelot-scoped .max-w-0 {
+  max-width: 0;
+}
+
+.ocelot-scoped .max-w-5 {
+  max-width: 1.25rem;
+}
+
+.ocelot-scoped .max-w-7 {
+  max-width: 1.75rem;
+}
+
+.ocelot-scoped .max-w-9 {
+  max-width: 2.25rem;
+}
+
+.ocelot-scoped .max-w-10 {
+  max-width: 2.5rem;
+}
+
+.ocelot-scoped .max-w-12 {
+  max-width: 3rem;
+}
+
+.ocelot-scoped .max-w-16 {
+  max-width: 4rem;
+}
+
+.ocelot-scoped .max-w-20 {
+  max-width: 5rem;
+}
+
+.ocelot-scoped .max-w-40 {
+  max-width: 10rem;
+}
+
+.ocelot-scoped .max-w-80 {
+  max-width: 20rem;
 }
 
 .ocelot-scoped .max-w-xs {
@@ -4919,6 +5214,18 @@ body .ocelot-scoped {
   min-height: 0;
 }
 
+.ocelot-scoped .min-h-5 {
+  min-height: 1.25rem;
+}
+
+.ocelot-scoped .min-h-7 {
+  min-height: 1.75rem;
+}
+
+.ocelot-scoped .min-h-9 {
+  min-height: 2.25rem;
+}
+
 .ocelot-scoped .min-h-10 {
   min-height: 2.5rem;
 }
@@ -4933,6 +5240,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .min-h-20 {
   min-height: 5rem;
+}
+
+.ocelot-scoped .min-h-40 {
+  min-height: 10rem;
 }
 
 .ocelot-scoped .min-h-80 {
@@ -4963,12 +5274,28 @@ body .ocelot-scoped {
   min-width: 2.25rem;
 }
 
+.ocelot-scoped .min-w-10 {
+  min-width: 2.5rem;
+}
+
 .ocelot-scoped .min-w-12 {
   min-width: 3rem;
 }
 
+.ocelot-scoped .min-w-16 {
+  min-width: 4rem;
+}
+
 .ocelot-scoped .min-w-20 {
   min-width: 5rem;
+}
+
+.ocelot-scoped .min-w-40 {
+  min-width: 10rem;
+}
+
+.ocelot-scoped .min-w-80 {
+  min-width: 20rem;
 }
 
 .ocelot-scoped .min-w-full {
@@ -5003,8 +5330,16 @@ body .ocelot-scoped {
   margin: -1.5rem;
 }
 
+.ocelot-scoped .-m-7 {
+  margin: -1.75rem;
+}
+
 .ocelot-scoped .-m-8 {
   margin: -2rem;
+}
+
+.ocelot-scoped .-m-9 {
+  margin: -2.25rem;
 }
 
 .ocelot-scoped .-m-10 {
@@ -5021,6 +5356,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .-m-20 {
   margin: -5rem;
+}
+
+.ocelot-scoped .-m-40 {
+  margin: -10rem;
 }
 
 .ocelot-scoped .-m-80 {
@@ -5105,6 +5444,16 @@ body .ocelot-scoped {
   margin-right: -1.5rem;
 }
 
+.ocelot-scoped .-my-7 {
+  margin-top: -1.75rem;
+  margin-bottom: -1.75rem;
+}
+
+.ocelot-scoped .-mx-7 {
+  margin-left: -1.75rem;
+  margin-right: -1.75rem;
+}
+
 .ocelot-scoped .-my-8 {
   margin-top: -2rem;
   margin-bottom: -2rem;
@@ -5113,6 +5462,16 @@ body .ocelot-scoped {
 .ocelot-scoped .-mx-8 {
   margin-left: -2rem;
   margin-right: -2rem;
+}
+
+.ocelot-scoped .-my-9 {
+  margin-top: -2.25rem;
+  margin-bottom: -2.25rem;
+}
+
+.ocelot-scoped .-mx-9 {
+  margin-left: -2.25rem;
+  margin-right: -2.25rem;
 }
 
 .ocelot-scoped .-my-10 {
@@ -5153,6 +5512,16 @@ body .ocelot-scoped {
 .ocelot-scoped .-mx-20 {
   margin-left: -5rem;
   margin-right: -5rem;
+}
+
+.ocelot-scoped .-my-40 {
+  margin-top: -10rem;
+  margin-bottom: -10rem;
+}
+
+.ocelot-scoped .-mx-40 {
+  margin-left: -10rem;
+  margin-right: -10rem;
 }
 
 .ocelot-scoped .-my-80 {
@@ -5297,6 +5666,22 @@ body .ocelot-scoped {
   margin-left: -1.5rem;
 }
 
+.ocelot-scoped .-mt-7 {
+  margin-top: -1.75rem;
+}
+
+.ocelot-scoped .-mr-7 {
+  margin-right: -1.75rem;
+}
+
+.ocelot-scoped .-mb-7 {
+  margin-bottom: -1.75rem;
+}
+
+.ocelot-scoped .-ml-7 {
+  margin-left: -1.75rem;
+}
+
 .ocelot-scoped .-mt-8 {
   margin-top: -2rem;
 }
@@ -5311,6 +5696,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .-ml-8 {
   margin-left: -2rem;
+}
+
+.ocelot-scoped .-mt-9 {
+  margin-top: -2.25rem;
+}
+
+.ocelot-scoped .-mr-9 {
+  margin-right: -2.25rem;
+}
+
+.ocelot-scoped .-mb-9 {
+  margin-bottom: -2.25rem;
+}
+
+.ocelot-scoped .-ml-9 {
+  margin-left: -2.25rem;
 }
 
 .ocelot-scoped .-mt-10 {
@@ -5375,6 +5776,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .-ml-20 {
   margin-left: -5rem;
+}
+
+.ocelot-scoped .-mt-40 {
+  margin-top: -10rem;
+}
+
+.ocelot-scoped .-mr-40 {
+  margin-right: -10rem;
+}
+
+.ocelot-scoped .-mb-40 {
+  margin-bottom: -10rem;
+}
+
+.ocelot-scoped .-ml-40 {
+  margin-left: -10rem;
 }
 
 .ocelot-scoped .-mt-80 {
@@ -5507,8 +5924,16 @@ body .ocelot-scoped {
   padding: 1.5rem;
 }
 
+.ocelot-scoped .p-7 {
+  padding: 1.75rem;
+}
+
 .ocelot-scoped .p-8 {
   padding: 2rem;
+}
+
+.ocelot-scoped .p-9 {
+  padding: 2.25rem;
 }
 
 .ocelot-scoped .p-10 {
@@ -5525,6 +5950,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .p-20 {
   padding: 5rem;
+}
+
+.ocelot-scoped .p-40 {
+  padding: 10rem;
 }
 
 .ocelot-scoped .p-80 {
@@ -5605,6 +6034,16 @@ body .ocelot-scoped {
   padding-right: 1.5rem;
 }
 
+.ocelot-scoped .py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
+.ocelot-scoped .px-7 {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+
 .ocelot-scoped .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -5613,6 +6052,16 @@ body .ocelot-scoped {
 .ocelot-scoped .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.ocelot-scoped .py-9 {
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+}
+
+.ocelot-scoped .px-9 {
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
 }
 
 .ocelot-scoped .py-10 {
@@ -5653,6 +6102,16 @@ body .ocelot-scoped {
 .ocelot-scoped .px-20 {
   padding-left: 5rem;
   padding-right: 5rem;
+}
+
+.ocelot-scoped .py-40 {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+.ocelot-scoped .px-40 {
+  padding-left: 10rem;
+  padding-right: 10rem;
 }
 
 .ocelot-scoped .py-80 {
@@ -5787,6 +6246,22 @@ body .ocelot-scoped {
   padding-left: 1.5rem;
 }
 
+.ocelot-scoped .pt-7 {
+  padding-top: 1.75rem;
+}
+
+.ocelot-scoped .pr-7 {
+  padding-right: 1.75rem;
+}
+
+.ocelot-scoped .pb-7 {
+  padding-bottom: 1.75rem;
+}
+
+.ocelot-scoped .pl-7 {
+  padding-left: 1.75rem;
+}
+
 .ocelot-scoped .pt-8 {
   padding-top: 2rem;
 }
@@ -5801,6 +6276,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .pl-8 {
   padding-left: 2rem;
+}
+
+.ocelot-scoped .pt-9 {
+  padding-top: 2.25rem;
+}
+
+.ocelot-scoped .pr-9 {
+  padding-right: 2.25rem;
+}
+
+.ocelot-scoped .pb-9 {
+  padding-bottom: 2.25rem;
+}
+
+.ocelot-scoped .pl-9 {
+  padding-left: 2.25rem;
 }
 
 .ocelot-scoped .pt-10 {
@@ -5865,6 +6356,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .pl-20 {
   padding-left: 5rem;
+}
+
+.ocelot-scoped .pt-40 {
+  padding-top: 10rem;
+}
+
+.ocelot-scoped .pr-40 {
+  padding-right: 10rem;
+}
+
+.ocelot-scoped .pb-40 {
+  padding-bottom: 10rem;
+}
+
+.ocelot-scoped .pl-40 {
+  padding-left: 10rem;
 }
 
 .ocelot-scoped .pt-80 {
@@ -6160,7 +6667,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-green {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .text-green-light {
@@ -6328,7 +6835,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-grey-50 {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .text-grey-50-a20 {
@@ -6351,6 +6858,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .text-grey-80 {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .text-grey-90 {
   color: #e1e3e6;
 }
@@ -6359,8 +6870,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .text-grey-97 {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .text-blue-65 {
+  color: #008aa6;
+}
+
 .ocelot-scoped .text-blue-75 {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .text-blue-82 {
@@ -6369,10 +6888,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .text-blue-88 {
   color: #00bbe0;
-}
-
-.ocelot-scoped .text-blue-100 {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .text-fb-blue {
@@ -6385,6 +6900,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .text-steel-75 {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .text-steel-85 {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .text-steel-100 {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:text-transparent:hover {
@@ -6524,7 +7051,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-green:hover {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .hover\:text-green-light:hover {
@@ -6692,7 +7219,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-grey-50:hover {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .hover\:text-grey-50-a20:hover {
@@ -6715,6 +7242,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:text-grey-80:hover {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:text-grey-90:hover {
   color: #e1e3e6;
 }
@@ -6723,8 +7254,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:text-grey-97:hover {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:text-blue-65:hover {
+  color: #008aa6;
+}
+
 .ocelot-scoped .hover\:text-blue-75:hover {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .hover\:text-blue-82:hover {
@@ -6733,10 +7272,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:text-blue-88:hover {
   color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:text-blue-100:hover {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:text-fb-blue:hover {
@@ -6749,6 +7284,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:text-ig-brown:hover {
   color: #675144;
+}
+
+.ocelot-scoped .hover\:text-steel-75:hover {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:text-steel-85:hover {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:text-steel-100:hover {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-transparent {
@@ -6888,7 +7435,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-green {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-green-light {
@@ -7056,7 +7603,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-50 {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-50-a20 {
@@ -7079,6 +7626,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-grey-80 {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-grey-90 {
   color: #e1e3e6;
 }
@@ -7087,8 +7638,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-grey-97 {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-65 {
+  color: #008aa6;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-blue-75 {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-blue-82 {
@@ -7097,10 +7656,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-blue-88 {
   color: #00bbe0;
-}
-
-.ocelot-scoped .group:hover .group-hover\:text-blue-100 {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-fb-blue {
@@ -7113,6 +7668,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-75 {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-85 {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-100 {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .text-xs {
@@ -7353,6 +7920,10 @@ body .ocelot-scoped {
   white-space: nowrap;
 }
 
+.ocelot-scoped .w-0 {
+  width: 0;
+}
+
 .ocelot-scoped .w-1 {
   width: .25rem;
 }
@@ -7423,6 +7994,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .w-64 {
   width: 16rem;
+}
+
+.ocelot-scoped .w-80 {
+  width: 20rem;
 }
 
 .ocelot-scoped .w-auto {
@@ -7656,8 +8231,8 @@ body .ocelot-scoped {
   --scale: 0;
 }
 
-.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey-70:not(:focus):hover:not(:checked):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:sibling\:shadow:focus ~ * {
@@ -7668,12 +8243,12 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
-  background-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before {
+  background-color: #c2c6cc;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * {
+  border-color: #c2c6cc;
 }
 
 /* legacy variant & pseudo utilities */
@@ -7784,8 +8359,8 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .\!checked\:sibling\:bg-grey-light:not(:checked) ~ * {
-  background-color: #dae1e7;
+.ocelot-scoped .\!checked\:sibling\:bg-grey-80:not(:checked) ~ * {
+  background-color: #c2c6cc;
 }
 
 .ocelot-scoped .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * {
@@ -7821,8 +8396,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:text-grey-dark:disabled {
-  color: #8795a1;
+.ocelot-scoped .disabled\:text-grey-70:disabled {
+  color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
@@ -7833,20 +8408,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:border-grey-light:disabled {
-  border-color: #dae1e7;
+.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey-70:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
-}
-
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:next\:text-blue-88:focus + * {
@@ -7879,6 +8450,14 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) {
   background-color: #00abd1;
+}
+
+.ocelot-scoped .sibling\:bg-grey-95 ~ * {
+  background-color: #f0f1f2;
+}
+
+.ocelot-scoped .sibling\:text-grey-50 ~ * {
+  color: #5c6573;
 }
 
 /* Animation Styles */
@@ -8162,7 +8741,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:bg-green-light {
@@ -8330,7 +8909,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:bg-grey-50-a20 {
@@ -8353,6 +8932,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -8361,8 +8944,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:bg-blue-82 {
@@ -8371,10 +8962,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:bg-fb-blue {
@@ -8387,6 +8974,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:bg-transparent:focus {
@@ -8526,7 +9125,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:focus\:bg-green-light:focus {
@@ -8694,7 +9293,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:focus\:bg-grey-50-a20:focus {
@@ -8717,6 +9316,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -8725,8 +9328,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:focus\:bg-blue-82:focus {
@@ -8735,10 +9346,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:bg-fb-blue:focus {
@@ -8751,6 +9358,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:bg-transparent:hover {
@@ -8890,7 +9509,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:bg-green-light:hover {
@@ -9058,7 +9677,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-50-a20:hover {
@@ -9081,6 +9700,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -9089,8 +9712,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:bg-blue-82:hover {
@@ -9099,10 +9730,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:bg-fb-blue:hover {
@@ -9115,6 +9742,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:bg-bottom {
@@ -9314,7 +9953,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:border-green-light {
@@ -9482,7 +10121,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:border-grey-50-a20 {
@@ -9505,6 +10144,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -9513,8 +10156,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:border-blue-82 {
@@ -9523,10 +10174,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:border-fb-blue {
@@ -9539,6 +10186,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:border-transparent:focus {
@@ -9678,7 +10337,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:focus\:border-green-light:focus {
@@ -9846,7 +10505,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-50-a20:focus {
@@ -9869,6 +10528,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -9877,8 +10540,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:focus\:border-blue-82:focus {
@@ -9887,10 +10558,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:border-fb-blue:focus {
@@ -9903,6 +10570,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:border-transparent:hover {
@@ -10042,7 +10721,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:border-green-light:hover {
@@ -10210,7 +10889,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:border-grey-50-a20:hover {
@@ -10233,6 +10912,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -10241,8 +10924,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:border-blue-82:hover {
@@ -10251,10 +10942,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:border-fb-blue:hover {
@@ -10267,6 +10954,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-transparent {
@@ -10406,7 +11105,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-green-light {
@@ -10574,7 +11273,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-50-a20 {
@@ -10597,6 +11296,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -10605,8 +11308,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-82 {
@@ -10615,10 +11326,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-fb-blue {
@@ -10631,6 +11338,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:rounded-none {
@@ -11383,6 +12102,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .sm\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .sm\:h-1 {
     height: .25rem;
   }
@@ -11455,6 +12178,10 @@ body .ocelot-scoped {
     height: 16rem;
   }
 
+  .ocelot-scoped .sm\:h-80 {
+    height: 20rem;
+  }
+
   .ocelot-scoped .sm\:h-auto {
     height: auto;
   }
@@ -11515,8 +12242,16 @@ body .ocelot-scoped {
     margin: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:m-7 {
+    margin: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:m-8 {
     margin: 2rem;
+  }
+
+  .ocelot-scoped .sm\:m-9 {
+    margin: 2.25rem;
   }
 
   .ocelot-scoped .sm\:m-10 {
@@ -11533,6 +12268,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:m-20 {
     margin: 5rem;
+  }
+
+  .ocelot-scoped .sm\:m-40 {
+    margin: 10rem;
   }
 
   .ocelot-scoped .sm\:m-80 {
@@ -11617,6 +12356,16 @@ body .ocelot-scoped {
     margin-right: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:my-7 {
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:mx-7 {
+    margin-left: 1.75rem;
+    margin-right: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -11625,6 +12374,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .ocelot-scoped .sm\:my-9 {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:mx-9 {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
   }
 
   .ocelot-scoped .sm\:my-10 {
@@ -11665,6 +12424,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:mx-20 {
     margin-left: 5rem;
     margin-right: 5rem;
+  }
+
+  .ocelot-scoped .sm\:my-40 {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .sm\:mx-40 {
+    margin-left: 10rem;
+    margin-right: 10rem;
   }
 
   .ocelot-scoped .sm\:my-80 {
@@ -11809,6 +12578,22 @@ body .ocelot-scoped {
     margin-left: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:mr-7 {
+    margin-right: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:mb-7 {
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:ml-7 {
+    margin-left: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:mt-8 {
     margin-top: 2rem;
   }
@@ -11823,6 +12608,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .ocelot-scoped .sm\:mt-9 {
+    margin-top: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:mr-9 {
+    margin-right: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:mb-9 {
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:ml-9 {
+    margin-left: 2.25rem;
   }
 
   .ocelot-scoped .sm\:mt-10 {
@@ -11889,6 +12690,22 @@ body .ocelot-scoped {
     margin-left: 5rem;
   }
 
+  .ocelot-scoped .sm\:mt-40 {
+    margin-top: 10rem;
+  }
+
+  .ocelot-scoped .sm\:mr-40 {
+    margin-right: 10rem;
+  }
+
+  .ocelot-scoped .sm\:mb-40 {
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .sm\:ml-40 {
+    margin-left: 10rem;
+  }
+
   .ocelot-scoped .sm\:mt-80 {
     margin-top: 20rem;
   }
@@ -11941,6 +12758,18 @@ body .ocelot-scoped {
     max-height: 0;
   }
 
+  .ocelot-scoped .sm\:max-h-5 {
+    max-height: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:max-h-7 {
+    max-height: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:max-h-9 {
+    max-height: 2.25rem;
+  }
+
   .ocelot-scoped .sm\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -11957,6 +12786,10 @@ body .ocelot-scoped {
     max-height: 5rem;
   }
 
+  .ocelot-scoped .sm\:max-h-40 {
+    max-height: 10rem;
+  }
+
   .ocelot-scoped .sm\:max-h-80 {
     max-height: 20rem;
   }
@@ -11967,6 +12800,46 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .sm\:max-w-0 {
+    max-width: 0;
+  }
+
+  .ocelot-scoped .sm\:max-w-5 {
+    max-width: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-7 {
+    max-width: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-9 {
+    max-width: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-10 {
+    max-width: 2.5rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-12 {
+    max-width: 3rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-16 {
+    max-width: 4rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-20 {
+    max-width: 5rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-40 {
+    max-width: 10rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-80 {
+    max-width: 20rem;
   }
 
   .ocelot-scoped .sm\:max-w-xs {
@@ -12017,6 +12890,18 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .sm\:min-h-5 {
+    min-height: 1.25rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-7 {
+    min-height: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-9 {
+    min-height: 2.25rem;
+  }
+
   .ocelot-scoped .sm\:min-h-10 {
     min-height: 2.5rem;
   }
@@ -12031,6 +12916,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:min-h-20 {
     min-height: 5rem;
+  }
+
+  .ocelot-scoped .sm\:min-h-40 {
+    min-height: 10rem;
   }
 
   .ocelot-scoped .sm\:min-h-80 {
@@ -12061,12 +12950,28 @@ body .ocelot-scoped {
     min-width: 2.25rem;
   }
 
+  .ocelot-scoped .sm\:min-w-10 {
+    min-width: 2.5rem;
+  }
+
   .ocelot-scoped .sm\:min-w-12 {
     min-width: 3rem;
   }
 
+  .ocelot-scoped .sm\:min-w-16 {
+    min-width: 4rem;
+  }
+
   .ocelot-scoped .sm\:min-w-20 {
     min-width: 5rem;
+  }
+
+  .ocelot-scoped .sm\:min-w-40 {
+    min-width: 10rem;
+  }
+
+  .ocelot-scoped .sm\:min-w-80 {
+    min-width: 20rem;
   }
 
   .ocelot-scoped .sm\:min-w-full {
@@ -12101,8 +13006,16 @@ body .ocelot-scoped {
     margin: -1.5rem;
   }
 
+  .ocelot-scoped .sm\:-m-7 {
+    margin: -1.75rem;
+  }
+
   .ocelot-scoped .sm\:-m-8 {
     margin: -2rem;
+  }
+
+  .ocelot-scoped .sm\:-m-9 {
+    margin: -2.25rem;
   }
 
   .ocelot-scoped .sm\:-m-10 {
@@ -12119,6 +13032,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:-m-20 {
     margin: -5rem;
+  }
+
+  .ocelot-scoped .sm\:-m-40 {
+    margin: -10rem;
   }
 
   .ocelot-scoped .sm\:-m-80 {
@@ -12203,6 +13120,16 @@ body .ocelot-scoped {
     margin-right: -1.5rem;
   }
 
+  .ocelot-scoped .sm\:-my-7 {
+    margin-top: -1.75rem;
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .sm\:-mx-7 {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+
   .ocelot-scoped .sm\:-my-8 {
     margin-top: -2rem;
     margin-bottom: -2rem;
@@ -12211,6 +13138,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .ocelot-scoped .sm\:-my-9 {
+    margin-top: -2.25rem;
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mx-9 {
+    margin-left: -2.25rem;
+    margin-right: -2.25rem;
   }
 
   .ocelot-scoped .sm\:-my-10 {
@@ -12251,6 +13188,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:-mx-20 {
     margin-left: -5rem;
     margin-right: -5rem;
+  }
+
+  .ocelot-scoped .sm\:-my-40 {
+    margin-top: -10rem;
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .sm\:-mx-40 {
+    margin-left: -10rem;
+    margin-right: -10rem;
   }
 
   .ocelot-scoped .sm\:-my-80 {
@@ -12395,6 +13342,22 @@ body .ocelot-scoped {
     margin-left: -1.5rem;
   }
 
+  .ocelot-scoped .sm\:-mt-7 {
+    margin-top: -1.75rem;
+  }
+
+  .ocelot-scoped .sm\:-mr-7 {
+    margin-right: -1.75rem;
+  }
+
+  .ocelot-scoped .sm\:-mb-7 {
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .sm\:-ml-7 {
+    margin-left: -1.75rem;
+  }
+
   .ocelot-scoped .sm\:-mt-8 {
     margin-top: -2rem;
   }
@@ -12409,6 +13372,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:-ml-8 {
     margin-left: -2rem;
+  }
+
+  .ocelot-scoped .sm\:-mt-9 {
+    margin-top: -2.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mr-9 {
+    margin-right: -2.25rem;
+  }
+
+  .ocelot-scoped .sm\:-mb-9 {
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .sm\:-ml-9 {
+    margin-left: -2.25rem;
   }
 
   .ocelot-scoped .sm\:-mt-10 {
@@ -12473,6 +13452,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:-ml-20 {
     margin-left: -5rem;
+  }
+
+  .ocelot-scoped .sm\:-mt-40 {
+    margin-top: -10rem;
+  }
+
+  .ocelot-scoped .sm\:-mr-40 {
+    margin-right: -10rem;
+  }
+
+  .ocelot-scoped .sm\:-mb-40 {
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .sm\:-ml-40 {
+    margin-left: -10rem;
   }
 
   .ocelot-scoped .sm\:-mt-80 {
@@ -12605,8 +13600,16 @@ body .ocelot-scoped {
     padding: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:p-7 {
+    padding: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:p-8 {
     padding: 2rem;
+  }
+
+  .ocelot-scoped .sm\:p-9 {
+    padding: 2.25rem;
   }
 
   .ocelot-scoped .sm\:p-10 {
@@ -12623,6 +13626,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:p-20 {
     padding: 5rem;
+  }
+
+  .ocelot-scoped .sm\:p-40 {
+    padding: 10rem;
   }
 
   .ocelot-scoped .sm\:p-80 {
@@ -12703,6 +13710,16 @@ body .ocelot-scoped {
     padding-right: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:py-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -12711,6 +13728,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .ocelot-scoped .sm\:py-9 {
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:px-9 {
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
   }
 
   .ocelot-scoped .sm\:py-10 {
@@ -12751,6 +13778,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .ocelot-scoped .sm\:py-40 {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .sm\:px-40 {
+    padding-left: 10rem;
+    padding-right: 10rem;
   }
 
   .ocelot-scoped .sm\:py-80 {
@@ -12885,6 +13922,22 @@ body .ocelot-scoped {
     padding-left: 1.5rem;
   }
 
+  .ocelot-scoped .sm\:pt-7 {
+    padding-top: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:pr-7 {
+    padding-right: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .sm\:pl-7 {
+    padding-left: 1.75rem;
+  }
+
   .ocelot-scoped .sm\:pt-8 {
     padding-top: 2rem;
   }
@@ -12899,6 +13952,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .ocelot-scoped .sm\:pt-9 {
+    padding-top: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:pr-9 {
+    padding-right: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:pb-9 {
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .sm\:pl-9 {
+    padding-left: 2.25rem;
   }
 
   .ocelot-scoped .sm\:pt-10 {
@@ -12963,6 +14032,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:pl-20 {
     padding-left: 5rem;
+  }
+
+  .ocelot-scoped .sm\:pt-40 {
+    padding-top: 10rem;
+  }
+
+  .ocelot-scoped .sm\:pr-40 {
+    padding-right: 10rem;
+  }
+
+  .ocelot-scoped .sm\:pb-40 {
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .sm\:pl-40 {
+    padding-left: 10rem;
   }
 
   .ocelot-scoped .sm\:pt-80 {
@@ -13250,7 +14335,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:text-green-light {
@@ -13418,7 +14503,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:text-grey-50-a20 {
@@ -13441,6 +14526,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -13449,8 +14538,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:text-blue-82 {
@@ -13459,10 +14556,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:text-fb-blue {
@@ -13475,6 +14568,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:text-transparent:hover {
@@ -13614,7 +14719,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:text-green-light:hover {
@@ -13782,7 +14887,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:text-grey-50-a20:hover {
@@ -13805,6 +14910,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -13813,8 +14922,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:text-blue-82:hover {
@@ -13823,10 +14940,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:text-fb-blue:hover {
@@ -13839,6 +14952,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-transparent {
@@ -13978,7 +15103,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-green-light {
@@ -14146,7 +15271,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50-a20 {
@@ -14169,6 +15294,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -14177,8 +15306,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-82 {
@@ -14187,10 +15324,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-fb-blue {
@@ -14203,6 +15336,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:text-xs {
@@ -14443,6 +15588,10 @@ body .ocelot-scoped {
     white-space: nowrap;
   }
 
+  .ocelot-scoped .sm\:w-0 {
+    width: 0;
+  }
+
   .ocelot-scoped .sm\:w-1 {
     width: .25rem;
   }
@@ -14513,6 +15662,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:w-64 {
     width: 16rem;
+  }
+
+  .ocelot-scoped .sm\:w-80 {
+    width: 20rem;
   }
 
   .ocelot-scoped .sm\:w-auto {
@@ -14767,7 +15920,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:bg-green-light {
@@ -14935,7 +16088,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:bg-grey-50-a20 {
@@ -14958,6 +16111,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -14966,8 +16123,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:bg-blue-82 {
@@ -14976,10 +16141,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:bg-fb-blue {
@@ -14992,6 +16153,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:bg-transparent:focus {
@@ -15131,7 +16304,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:focus\:bg-green-light:focus {
@@ -15299,7 +16472,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:focus\:bg-grey-50-a20:focus {
@@ -15322,6 +16495,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -15330,8 +16507,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:focus\:bg-blue-82:focus {
@@ -15340,10 +16525,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:bg-fb-blue:focus {
@@ -15356,6 +16537,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:bg-transparent:hover {
@@ -15495,7 +16688,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:bg-green-light:hover {
@@ -15663,7 +16856,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-50-a20:hover {
@@ -15686,6 +16879,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -15694,8 +16891,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:bg-blue-82:hover {
@@ -15704,10 +16909,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:bg-fb-blue:hover {
@@ -15720,6 +16921,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:bg-bottom {
@@ -15919,7 +17132,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:border-green-light {
@@ -16087,7 +17300,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:border-grey-50-a20 {
@@ -16110,6 +17323,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -16118,8 +17335,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:border-blue-82 {
@@ -16128,10 +17353,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:border-fb-blue {
@@ -16144,6 +17365,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:border-transparent:focus {
@@ -16283,7 +17516,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:focus\:border-green-light:focus {
@@ -16451,7 +17684,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:focus\:border-grey-50-a20:focus {
@@ -16474,6 +17707,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -16482,8 +17719,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:focus\:border-blue-82:focus {
@@ -16492,10 +17737,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:border-fb-blue:focus {
@@ -16508,6 +17749,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:border-transparent:hover {
@@ -16647,7 +17900,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:border-green-light:hover {
@@ -16815,7 +18068,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:border-grey-50-a20:hover {
@@ -16838,6 +18091,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -16846,8 +18103,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:border-blue-82:hover {
@@ -16856,10 +18121,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:border-fb-blue:hover {
@@ -16872,6 +18133,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-transparent {
@@ -17011,7 +18284,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-green-light {
@@ -17179,7 +18452,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-50-a20 {
@@ -17202,6 +18475,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -17210,8 +18487,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-82 {
@@ -17220,10 +18505,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-fb-blue {
@@ -17236,6 +18517,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:rounded-none {
@@ -17988,6 +19281,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .md\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .md\:h-1 {
     height: .25rem;
   }
@@ -18060,6 +19357,10 @@ body .ocelot-scoped {
     height: 16rem;
   }
 
+  .ocelot-scoped .md\:h-80 {
+    height: 20rem;
+  }
+
   .ocelot-scoped .md\:h-auto {
     height: auto;
   }
@@ -18120,8 +19421,16 @@ body .ocelot-scoped {
     margin: 1.5rem;
   }
 
+  .ocelot-scoped .md\:m-7 {
+    margin: 1.75rem;
+  }
+
   .ocelot-scoped .md\:m-8 {
     margin: 2rem;
+  }
+
+  .ocelot-scoped .md\:m-9 {
+    margin: 2.25rem;
   }
 
   .ocelot-scoped .md\:m-10 {
@@ -18138,6 +19447,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:m-20 {
     margin: 5rem;
+  }
+
+  .ocelot-scoped .md\:m-40 {
+    margin: 10rem;
   }
 
   .ocelot-scoped .md\:m-80 {
@@ -18222,6 +19535,16 @@ body .ocelot-scoped {
     margin-right: 1.5rem;
   }
 
+  .ocelot-scoped .md\:my-7 {
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:mx-7 {
+    margin-left: 1.75rem;
+    margin-right: 1.75rem;
+  }
+
   .ocelot-scoped .md\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -18230,6 +19553,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .ocelot-scoped .md\:my-9 {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:mx-9 {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
   }
 
   .ocelot-scoped .md\:my-10 {
@@ -18270,6 +19603,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:mx-20 {
     margin-left: 5rem;
     margin-right: 5rem;
+  }
+
+  .ocelot-scoped .md\:my-40 {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .md\:mx-40 {
+    margin-left: 10rem;
+    margin-right: 10rem;
   }
 
   .ocelot-scoped .md\:my-80 {
@@ -18414,6 +19757,22 @@ body .ocelot-scoped {
     margin-left: 1.5rem;
   }
 
+  .ocelot-scoped .md\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:mr-7 {
+    margin-right: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:mb-7 {
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:ml-7 {
+    margin-left: 1.75rem;
+  }
+
   .ocelot-scoped .md\:mt-8 {
     margin-top: 2rem;
   }
@@ -18428,6 +19787,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .ocelot-scoped .md\:mt-9 {
+    margin-top: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:mr-9 {
+    margin-right: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:mb-9 {
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:ml-9 {
+    margin-left: 2.25rem;
   }
 
   .ocelot-scoped .md\:mt-10 {
@@ -18494,6 +19869,22 @@ body .ocelot-scoped {
     margin-left: 5rem;
   }
 
+  .ocelot-scoped .md\:mt-40 {
+    margin-top: 10rem;
+  }
+
+  .ocelot-scoped .md\:mr-40 {
+    margin-right: 10rem;
+  }
+
+  .ocelot-scoped .md\:mb-40 {
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .md\:ml-40 {
+    margin-left: 10rem;
+  }
+
   .ocelot-scoped .md\:mt-80 {
     margin-top: 20rem;
   }
@@ -18546,6 +19937,18 @@ body .ocelot-scoped {
     max-height: 0;
   }
 
+  .ocelot-scoped .md\:max-h-5 {
+    max-height: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:max-h-7 {
+    max-height: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:max-h-9 {
+    max-height: 2.25rem;
+  }
+
   .ocelot-scoped .md\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -18562,6 +19965,10 @@ body .ocelot-scoped {
     max-height: 5rem;
   }
 
+  .ocelot-scoped .md\:max-h-40 {
+    max-height: 10rem;
+  }
+
   .ocelot-scoped .md\:max-h-80 {
     max-height: 20rem;
   }
@@ -18572,6 +19979,46 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .md\:max-w-0 {
+    max-width: 0;
+  }
+
+  .ocelot-scoped .md\:max-w-5 {
+    max-width: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:max-w-7 {
+    max-width: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:max-w-9 {
+    max-width: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:max-w-10 {
+    max-width: 2.5rem;
+  }
+
+  .ocelot-scoped .md\:max-w-12 {
+    max-width: 3rem;
+  }
+
+  .ocelot-scoped .md\:max-w-16 {
+    max-width: 4rem;
+  }
+
+  .ocelot-scoped .md\:max-w-20 {
+    max-width: 5rem;
+  }
+
+  .ocelot-scoped .md\:max-w-40 {
+    max-width: 10rem;
+  }
+
+  .ocelot-scoped .md\:max-w-80 {
+    max-width: 20rem;
   }
 
   .ocelot-scoped .md\:max-w-xs {
@@ -18622,6 +20069,18 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .md\:min-h-5 {
+    min-height: 1.25rem;
+  }
+
+  .ocelot-scoped .md\:min-h-7 {
+    min-height: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:min-h-9 {
+    min-height: 2.25rem;
+  }
+
   .ocelot-scoped .md\:min-h-10 {
     min-height: 2.5rem;
   }
@@ -18636,6 +20095,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:min-h-20 {
     min-height: 5rem;
+  }
+
+  .ocelot-scoped .md\:min-h-40 {
+    min-height: 10rem;
   }
 
   .ocelot-scoped .md\:min-h-80 {
@@ -18666,12 +20129,28 @@ body .ocelot-scoped {
     min-width: 2.25rem;
   }
 
+  .ocelot-scoped .md\:min-w-10 {
+    min-width: 2.5rem;
+  }
+
   .ocelot-scoped .md\:min-w-12 {
     min-width: 3rem;
   }
 
+  .ocelot-scoped .md\:min-w-16 {
+    min-width: 4rem;
+  }
+
   .ocelot-scoped .md\:min-w-20 {
     min-width: 5rem;
+  }
+
+  .ocelot-scoped .md\:min-w-40 {
+    min-width: 10rem;
+  }
+
+  .ocelot-scoped .md\:min-w-80 {
+    min-width: 20rem;
   }
 
   .ocelot-scoped .md\:min-w-full {
@@ -18706,8 +20185,16 @@ body .ocelot-scoped {
     margin: -1.5rem;
   }
 
+  .ocelot-scoped .md\:-m-7 {
+    margin: -1.75rem;
+  }
+
   .ocelot-scoped .md\:-m-8 {
     margin: -2rem;
+  }
+
+  .ocelot-scoped .md\:-m-9 {
+    margin: -2.25rem;
   }
 
   .ocelot-scoped .md\:-m-10 {
@@ -18724,6 +20211,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:-m-20 {
     margin: -5rem;
+  }
+
+  .ocelot-scoped .md\:-m-40 {
+    margin: -10rem;
   }
 
   .ocelot-scoped .md\:-m-80 {
@@ -18808,6 +20299,16 @@ body .ocelot-scoped {
     margin-right: -1.5rem;
   }
 
+  .ocelot-scoped .md\:-my-7 {
+    margin-top: -1.75rem;
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .md\:-mx-7 {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+
   .ocelot-scoped .md\:-my-8 {
     margin-top: -2rem;
     margin-bottom: -2rem;
@@ -18816,6 +20317,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .ocelot-scoped .md\:-my-9 {
+    margin-top: -2.25rem;
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .md\:-mx-9 {
+    margin-left: -2.25rem;
+    margin-right: -2.25rem;
   }
 
   .ocelot-scoped .md\:-my-10 {
@@ -18856,6 +20367,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:-mx-20 {
     margin-left: -5rem;
     margin-right: -5rem;
+  }
+
+  .ocelot-scoped .md\:-my-40 {
+    margin-top: -10rem;
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .md\:-mx-40 {
+    margin-left: -10rem;
+    margin-right: -10rem;
   }
 
   .ocelot-scoped .md\:-my-80 {
@@ -19000,6 +20521,22 @@ body .ocelot-scoped {
     margin-left: -1.5rem;
   }
 
+  .ocelot-scoped .md\:-mt-7 {
+    margin-top: -1.75rem;
+  }
+
+  .ocelot-scoped .md\:-mr-7 {
+    margin-right: -1.75rem;
+  }
+
+  .ocelot-scoped .md\:-mb-7 {
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .md\:-ml-7 {
+    margin-left: -1.75rem;
+  }
+
   .ocelot-scoped .md\:-mt-8 {
     margin-top: -2rem;
   }
@@ -19014,6 +20551,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:-ml-8 {
     margin-left: -2rem;
+  }
+
+  .ocelot-scoped .md\:-mt-9 {
+    margin-top: -2.25rem;
+  }
+
+  .ocelot-scoped .md\:-mr-9 {
+    margin-right: -2.25rem;
+  }
+
+  .ocelot-scoped .md\:-mb-9 {
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .md\:-ml-9 {
+    margin-left: -2.25rem;
   }
 
   .ocelot-scoped .md\:-mt-10 {
@@ -19078,6 +20631,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:-ml-20 {
     margin-left: -5rem;
+  }
+
+  .ocelot-scoped .md\:-mt-40 {
+    margin-top: -10rem;
+  }
+
+  .ocelot-scoped .md\:-mr-40 {
+    margin-right: -10rem;
+  }
+
+  .ocelot-scoped .md\:-mb-40 {
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .md\:-ml-40 {
+    margin-left: -10rem;
   }
 
   .ocelot-scoped .md\:-mt-80 {
@@ -19210,8 +20779,16 @@ body .ocelot-scoped {
     padding: 1.5rem;
   }
 
+  .ocelot-scoped .md\:p-7 {
+    padding: 1.75rem;
+  }
+
   .ocelot-scoped .md\:p-8 {
     padding: 2rem;
+  }
+
+  .ocelot-scoped .md\:p-9 {
+    padding: 2.25rem;
   }
 
   .ocelot-scoped .md\:p-10 {
@@ -19228,6 +20805,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:p-20 {
     padding: 5rem;
+  }
+
+  .ocelot-scoped .md\:p-40 {
+    padding: 10rem;
   }
 
   .ocelot-scoped .md\:p-80 {
@@ -19308,6 +20889,16 @@ body .ocelot-scoped {
     padding-right: 1.5rem;
   }
 
+  .ocelot-scoped .md\:py-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
   .ocelot-scoped .md\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -19316,6 +20907,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .ocelot-scoped .md\:py-9 {
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:px-9 {
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
   }
 
   .ocelot-scoped .md\:py-10 {
@@ -19356,6 +20957,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .ocelot-scoped .md\:py-40 {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .md\:px-40 {
+    padding-left: 10rem;
+    padding-right: 10rem;
   }
 
   .ocelot-scoped .md\:py-80 {
@@ -19490,6 +21101,22 @@ body .ocelot-scoped {
     padding-left: 1.5rem;
   }
 
+  .ocelot-scoped .md\:pt-7 {
+    padding-top: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:pr-7 {
+    padding-right: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .md\:pl-7 {
+    padding-left: 1.75rem;
+  }
+
   .ocelot-scoped .md\:pt-8 {
     padding-top: 2rem;
   }
@@ -19504,6 +21131,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .ocelot-scoped .md\:pt-9 {
+    padding-top: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:pr-9 {
+    padding-right: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:pb-9 {
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .md\:pl-9 {
+    padding-left: 2.25rem;
   }
 
   .ocelot-scoped .md\:pt-10 {
@@ -19568,6 +21211,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:pl-20 {
     padding-left: 5rem;
+  }
+
+  .ocelot-scoped .md\:pt-40 {
+    padding-top: 10rem;
+  }
+
+  .ocelot-scoped .md\:pr-40 {
+    padding-right: 10rem;
+  }
+
+  .ocelot-scoped .md\:pb-40 {
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .md\:pl-40 {
+    padding-left: 10rem;
   }
 
   .ocelot-scoped .md\:pt-80 {
@@ -19855,7 +21514,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:text-green-light {
@@ -20023,7 +21682,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:text-grey-50-a20 {
@@ -20046,6 +21705,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -20054,8 +21717,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:text-blue-82 {
@@ -20064,10 +21735,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:text-fb-blue {
@@ -20080,6 +21747,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:text-transparent:hover {
@@ -20219,7 +21898,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:text-green-light:hover {
@@ -20387,7 +22066,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:text-grey-50-a20:hover {
@@ -20410,6 +22089,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -20418,8 +22101,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:text-blue-82:hover {
@@ -20428,10 +22119,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:text-fb-blue:hover {
@@ -20444,6 +22131,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-transparent {
@@ -20583,7 +22282,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-green-light {
@@ -20751,7 +22450,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50-a20 {
@@ -20774,6 +22473,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -20782,8 +22485,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-82 {
@@ -20792,10 +22503,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-fb-blue {
@@ -20808,6 +22515,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:text-xs {
@@ -21048,6 +22767,10 @@ body .ocelot-scoped {
     white-space: nowrap;
   }
 
+  .ocelot-scoped .md\:w-0 {
+    width: 0;
+  }
+
   .ocelot-scoped .md\:w-1 {
     width: .25rem;
   }
@@ -21118,6 +22841,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:w-64 {
     width: 16rem;
+  }
+
+  .ocelot-scoped .md\:w-80 {
+    width: 20rem;
   }
 
   .ocelot-scoped .md\:w-auto {
@@ -21372,7 +23099,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:bg-green-light {
@@ -21540,7 +23267,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:bg-grey-50-a20 {
@@ -21563,6 +23290,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -21571,8 +23302,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:bg-blue-82 {
@@ -21581,10 +23320,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:bg-fb-blue {
@@ -21597,6 +23332,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:bg-transparent:focus {
@@ -21736,7 +23483,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:focus\:bg-green-light:focus {
@@ -21904,7 +23651,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:focus\:bg-grey-50-a20:focus {
@@ -21927,6 +23674,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -21935,8 +23686,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:focus\:bg-blue-82:focus {
@@ -21945,10 +23704,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:bg-fb-blue:focus {
@@ -21961,6 +23716,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:bg-transparent:hover {
@@ -22100,7 +23867,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:bg-green-light:hover {
@@ -22268,7 +24035,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-50-a20:hover {
@@ -22291,6 +24058,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -22299,8 +24070,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:bg-blue-82:hover {
@@ -22309,10 +24088,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:bg-fb-blue:hover {
@@ -22325,6 +24100,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:bg-bottom {
@@ -22524,7 +24311,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:border-green-light {
@@ -22692,7 +24479,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:border-grey-50-a20 {
@@ -22715,6 +24502,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -22723,8 +24514,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:border-blue-82 {
@@ -22733,10 +24532,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:border-fb-blue {
@@ -22749,6 +24544,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:border-transparent:focus {
@@ -22888,7 +24695,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:focus\:border-green-light:focus {
@@ -23056,7 +24863,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-50-a20:focus {
@@ -23079,6 +24886,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -23087,8 +24898,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:focus\:border-blue-82:focus {
@@ -23097,10 +24916,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:border-fb-blue:focus {
@@ -23113,6 +24928,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:border-transparent:hover {
@@ -23252,7 +25079,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:border-green-light:hover {
@@ -23420,7 +25247,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:border-grey-50-a20:hover {
@@ -23443,6 +25270,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -23451,8 +25282,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:border-blue-82:hover {
@@ -23461,10 +25300,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:border-fb-blue:hover {
@@ -23477,6 +25312,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-transparent {
@@ -23616,7 +25463,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-green-light {
@@ -23784,7 +25631,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-50-a20 {
@@ -23807,6 +25654,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -23815,8 +25666,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-82 {
@@ -23825,10 +25684,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-fb-blue {
@@ -23841,6 +25696,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:rounded-none {
@@ -24593,6 +26460,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .lg\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .lg\:h-1 {
     height: .25rem;
   }
@@ -24665,6 +26536,10 @@ body .ocelot-scoped {
     height: 16rem;
   }
 
+  .ocelot-scoped .lg\:h-80 {
+    height: 20rem;
+  }
+
   .ocelot-scoped .lg\:h-auto {
     height: auto;
   }
@@ -24725,8 +26600,16 @@ body .ocelot-scoped {
     margin: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:m-7 {
+    margin: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:m-8 {
     margin: 2rem;
+  }
+
+  .ocelot-scoped .lg\:m-9 {
+    margin: 2.25rem;
   }
 
   .ocelot-scoped .lg\:m-10 {
@@ -24743,6 +26626,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:m-20 {
     margin: 5rem;
+  }
+
+  .ocelot-scoped .lg\:m-40 {
+    margin: 10rem;
   }
 
   .ocelot-scoped .lg\:m-80 {
@@ -24827,6 +26714,16 @@ body .ocelot-scoped {
     margin-right: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:my-7 {
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:mx-7 {
+    margin-left: 1.75rem;
+    margin-right: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -24835,6 +26732,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .ocelot-scoped .lg\:my-9 {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:mx-9 {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
   }
 
   .ocelot-scoped .lg\:my-10 {
@@ -24875,6 +26782,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:mx-20 {
     margin-left: 5rem;
     margin-right: 5rem;
+  }
+
+  .ocelot-scoped .lg\:my-40 {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .lg\:mx-40 {
+    margin-left: 10rem;
+    margin-right: 10rem;
   }
 
   .ocelot-scoped .lg\:my-80 {
@@ -25019,6 +26936,22 @@ body .ocelot-scoped {
     margin-left: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:mr-7 {
+    margin-right: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:mb-7 {
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:ml-7 {
+    margin-left: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:mt-8 {
     margin-top: 2rem;
   }
@@ -25033,6 +26966,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .ocelot-scoped .lg\:mt-9 {
+    margin-top: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:mr-9 {
+    margin-right: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:mb-9 {
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:ml-9 {
+    margin-left: 2.25rem;
   }
 
   .ocelot-scoped .lg\:mt-10 {
@@ -25099,6 +27048,22 @@ body .ocelot-scoped {
     margin-left: 5rem;
   }
 
+  .ocelot-scoped .lg\:mt-40 {
+    margin-top: 10rem;
+  }
+
+  .ocelot-scoped .lg\:mr-40 {
+    margin-right: 10rem;
+  }
+
+  .ocelot-scoped .lg\:mb-40 {
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .lg\:ml-40 {
+    margin-left: 10rem;
+  }
+
   .ocelot-scoped .lg\:mt-80 {
     margin-top: 20rem;
   }
@@ -25151,6 +27116,18 @@ body .ocelot-scoped {
     max-height: 0;
   }
 
+  .ocelot-scoped .lg\:max-h-5 {
+    max-height: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:max-h-7 {
+    max-height: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:max-h-9 {
+    max-height: 2.25rem;
+  }
+
   .ocelot-scoped .lg\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -25167,6 +27144,10 @@ body .ocelot-scoped {
     max-height: 5rem;
   }
 
+  .ocelot-scoped .lg\:max-h-40 {
+    max-height: 10rem;
+  }
+
   .ocelot-scoped .lg\:max-h-80 {
     max-height: 20rem;
   }
@@ -25177,6 +27158,46 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .lg\:max-w-0 {
+    max-width: 0;
+  }
+
+  .ocelot-scoped .lg\:max-w-5 {
+    max-width: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-7 {
+    max-width: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-9 {
+    max-width: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-10 {
+    max-width: 2.5rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-12 {
+    max-width: 3rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-16 {
+    max-width: 4rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-20 {
+    max-width: 5rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-40 {
+    max-width: 10rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-80 {
+    max-width: 20rem;
   }
 
   .ocelot-scoped .lg\:max-w-xs {
@@ -25227,6 +27248,18 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .lg\:min-h-5 {
+    min-height: 1.25rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-7 {
+    min-height: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-9 {
+    min-height: 2.25rem;
+  }
+
   .ocelot-scoped .lg\:min-h-10 {
     min-height: 2.5rem;
   }
@@ -25241,6 +27274,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:min-h-20 {
     min-height: 5rem;
+  }
+
+  .ocelot-scoped .lg\:min-h-40 {
+    min-height: 10rem;
   }
 
   .ocelot-scoped .lg\:min-h-80 {
@@ -25271,12 +27308,28 @@ body .ocelot-scoped {
     min-width: 2.25rem;
   }
 
+  .ocelot-scoped .lg\:min-w-10 {
+    min-width: 2.5rem;
+  }
+
   .ocelot-scoped .lg\:min-w-12 {
     min-width: 3rem;
   }
 
+  .ocelot-scoped .lg\:min-w-16 {
+    min-width: 4rem;
+  }
+
   .ocelot-scoped .lg\:min-w-20 {
     min-width: 5rem;
+  }
+
+  .ocelot-scoped .lg\:min-w-40 {
+    min-width: 10rem;
+  }
+
+  .ocelot-scoped .lg\:min-w-80 {
+    min-width: 20rem;
   }
 
   .ocelot-scoped .lg\:min-w-full {
@@ -25311,8 +27364,16 @@ body .ocelot-scoped {
     margin: -1.5rem;
   }
 
+  .ocelot-scoped .lg\:-m-7 {
+    margin: -1.75rem;
+  }
+
   .ocelot-scoped .lg\:-m-8 {
     margin: -2rem;
+  }
+
+  .ocelot-scoped .lg\:-m-9 {
+    margin: -2.25rem;
   }
 
   .ocelot-scoped .lg\:-m-10 {
@@ -25329,6 +27390,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:-m-20 {
     margin: -5rem;
+  }
+
+  .ocelot-scoped .lg\:-m-40 {
+    margin: -10rem;
   }
 
   .ocelot-scoped .lg\:-m-80 {
@@ -25413,6 +27478,16 @@ body .ocelot-scoped {
     margin-right: -1.5rem;
   }
 
+  .ocelot-scoped .lg\:-my-7 {
+    margin-top: -1.75rem;
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .lg\:-mx-7 {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+
   .ocelot-scoped .lg\:-my-8 {
     margin-top: -2rem;
     margin-bottom: -2rem;
@@ -25421,6 +27496,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .ocelot-scoped .lg\:-my-9 {
+    margin-top: -2.25rem;
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mx-9 {
+    margin-left: -2.25rem;
+    margin-right: -2.25rem;
   }
 
   .ocelot-scoped .lg\:-my-10 {
@@ -25461,6 +27546,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:-mx-20 {
     margin-left: -5rem;
     margin-right: -5rem;
+  }
+
+  .ocelot-scoped .lg\:-my-40 {
+    margin-top: -10rem;
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .lg\:-mx-40 {
+    margin-left: -10rem;
+    margin-right: -10rem;
   }
 
   .ocelot-scoped .lg\:-my-80 {
@@ -25605,6 +27700,22 @@ body .ocelot-scoped {
     margin-left: -1.5rem;
   }
 
+  .ocelot-scoped .lg\:-mt-7 {
+    margin-top: -1.75rem;
+  }
+
+  .ocelot-scoped .lg\:-mr-7 {
+    margin-right: -1.75rem;
+  }
+
+  .ocelot-scoped .lg\:-mb-7 {
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .lg\:-ml-7 {
+    margin-left: -1.75rem;
+  }
+
   .ocelot-scoped .lg\:-mt-8 {
     margin-top: -2rem;
   }
@@ -25619,6 +27730,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:-ml-8 {
     margin-left: -2rem;
+  }
+
+  .ocelot-scoped .lg\:-mt-9 {
+    margin-top: -2.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mr-9 {
+    margin-right: -2.25rem;
+  }
+
+  .ocelot-scoped .lg\:-mb-9 {
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .lg\:-ml-9 {
+    margin-left: -2.25rem;
   }
 
   .ocelot-scoped .lg\:-mt-10 {
@@ -25683,6 +27810,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:-ml-20 {
     margin-left: -5rem;
+  }
+
+  .ocelot-scoped .lg\:-mt-40 {
+    margin-top: -10rem;
+  }
+
+  .ocelot-scoped .lg\:-mr-40 {
+    margin-right: -10rem;
+  }
+
+  .ocelot-scoped .lg\:-mb-40 {
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .lg\:-ml-40 {
+    margin-left: -10rem;
   }
 
   .ocelot-scoped .lg\:-mt-80 {
@@ -25815,8 +27958,16 @@ body .ocelot-scoped {
     padding: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:p-7 {
+    padding: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:p-8 {
     padding: 2rem;
+  }
+
+  .ocelot-scoped .lg\:p-9 {
+    padding: 2.25rem;
   }
 
   .ocelot-scoped .lg\:p-10 {
@@ -25833,6 +27984,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:p-20 {
     padding: 5rem;
+  }
+
+  .ocelot-scoped .lg\:p-40 {
+    padding: 10rem;
   }
 
   .ocelot-scoped .lg\:p-80 {
@@ -25913,6 +28068,16 @@ body .ocelot-scoped {
     padding-right: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:py-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -25921,6 +28086,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .ocelot-scoped .lg\:py-9 {
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:px-9 {
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
   }
 
   .ocelot-scoped .lg\:py-10 {
@@ -25961,6 +28136,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .ocelot-scoped .lg\:py-40 {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .lg\:px-40 {
+    padding-left: 10rem;
+    padding-right: 10rem;
   }
 
   .ocelot-scoped .lg\:py-80 {
@@ -26095,6 +28280,22 @@ body .ocelot-scoped {
     padding-left: 1.5rem;
   }
 
+  .ocelot-scoped .lg\:pt-7 {
+    padding-top: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:pr-7 {
+    padding-right: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .lg\:pl-7 {
+    padding-left: 1.75rem;
+  }
+
   .ocelot-scoped .lg\:pt-8 {
     padding-top: 2rem;
   }
@@ -26109,6 +28310,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .ocelot-scoped .lg\:pt-9 {
+    padding-top: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:pr-9 {
+    padding-right: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:pb-9 {
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .lg\:pl-9 {
+    padding-left: 2.25rem;
   }
 
   .ocelot-scoped .lg\:pt-10 {
@@ -26173,6 +28390,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:pl-20 {
     padding-left: 5rem;
+  }
+
+  .ocelot-scoped .lg\:pt-40 {
+    padding-top: 10rem;
+  }
+
+  .ocelot-scoped .lg\:pr-40 {
+    padding-right: 10rem;
+  }
+
+  .ocelot-scoped .lg\:pb-40 {
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .lg\:pl-40 {
+    padding-left: 10rem;
   }
 
   .ocelot-scoped .lg\:pt-80 {
@@ -26460,7 +28693,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:text-green-light {
@@ -26628,7 +28861,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:text-grey-50-a20 {
@@ -26651,6 +28884,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -26659,8 +28896,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:text-blue-82 {
@@ -26669,10 +28914,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:text-fb-blue {
@@ -26685,6 +28926,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:text-transparent:hover {
@@ -26824,7 +29077,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:text-green-light:hover {
@@ -26992,7 +29245,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:text-grey-50-a20:hover {
@@ -27015,6 +29268,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -27023,8 +29280,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:text-blue-82:hover {
@@ -27033,10 +29298,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:text-fb-blue:hover {
@@ -27049,6 +29310,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-transparent {
@@ -27188,7 +29461,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-green-light {
@@ -27356,7 +29629,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50-a20 {
@@ -27379,6 +29652,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -27387,8 +29664,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-82 {
@@ -27397,10 +29682,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-fb-blue {
@@ -27413,6 +29694,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:text-xs {
@@ -27653,6 +29946,10 @@ body .ocelot-scoped {
     white-space: nowrap;
   }
 
+  .ocelot-scoped .lg\:w-0 {
+    width: 0;
+  }
+
   .ocelot-scoped .lg\:w-1 {
     width: .25rem;
   }
@@ -27723,6 +30020,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:w-64 {
     width: 16rem;
+  }
+
+  .ocelot-scoped .lg\:w-80 {
+    width: 20rem;
   }
 
   .ocelot-scoped .lg\:w-auto {
@@ -27977,7 +30278,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:bg-green-light {
@@ -28145,7 +30446,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:bg-grey-50-a20 {
@@ -28168,6 +30469,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -28176,8 +30481,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:bg-blue-82 {
@@ -28186,10 +30499,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:bg-fb-blue {
@@ -28202,6 +30511,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:bg-transparent:focus {
@@ -28341,7 +30662,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:focus\:bg-green-light:focus {
@@ -28509,7 +30830,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:focus\:bg-grey-50-a20:focus {
@@ -28532,6 +30853,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -28540,8 +30865,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:focus\:bg-blue-82:focus {
@@ -28550,10 +30883,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:bg-fb-blue:focus {
@@ -28566,6 +30895,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:bg-transparent:hover {
@@ -28705,7 +31046,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:bg-green-light:hover {
@@ -28873,7 +31214,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-50-a20:hover {
@@ -28896,6 +31237,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -28904,8 +31249,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:bg-blue-82:hover {
@@ -28914,10 +31267,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:bg-fb-blue:hover {
@@ -28930,6 +31279,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:bg-bottom {
@@ -29129,7 +31490,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:border-green-light {
@@ -29297,7 +31658,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:border-grey-50-a20 {
@@ -29320,6 +31681,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -29328,8 +31693,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:border-blue-82 {
@@ -29338,10 +31711,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:border-fb-blue {
@@ -29354,6 +31723,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:border-transparent:focus {
@@ -29493,7 +31874,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:focus\:border-green-light:focus {
@@ -29661,7 +32042,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-50-a20:focus {
@@ -29684,6 +32065,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -29692,8 +32077,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:focus\:border-blue-82:focus {
@@ -29702,10 +32095,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:border-fb-blue:focus {
@@ -29718,6 +32107,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:border-transparent:hover {
@@ -29857,7 +32258,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:border-green-light:hover {
@@ -30025,7 +32426,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:border-grey-50-a20:hover {
@@ -30048,6 +32449,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -30056,8 +32461,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:border-blue-82:hover {
@@ -30066,10 +32479,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:border-fb-blue:hover {
@@ -30082,6 +32491,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-transparent {
@@ -30221,7 +32642,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-green-light {
@@ -30389,7 +32810,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-50-a20 {
@@ -30412,6 +32833,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -30420,8 +32845,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-82 {
@@ -30430,10 +32863,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-fb-blue {
@@ -30446,6 +32875,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:rounded-none {
@@ -31198,6 +33639,10 @@ body .ocelot-scoped {
     font-weight: 900;
   }
 
+  .ocelot-scoped .xl\:h-0 {
+    height: 0;
+  }
+
   .ocelot-scoped .xl\:h-1 {
     height: .25rem;
   }
@@ -31270,6 +33715,10 @@ body .ocelot-scoped {
     height: 16rem;
   }
 
+  .ocelot-scoped .xl\:h-80 {
+    height: 20rem;
+  }
+
   .ocelot-scoped .xl\:h-auto {
     height: auto;
   }
@@ -31330,8 +33779,16 @@ body .ocelot-scoped {
     margin: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:m-7 {
+    margin: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:m-8 {
     margin: 2rem;
+  }
+
+  .ocelot-scoped .xl\:m-9 {
+    margin: 2.25rem;
   }
 
   .ocelot-scoped .xl\:m-10 {
@@ -31348,6 +33805,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:m-20 {
     margin: 5rem;
+  }
+
+  .ocelot-scoped .xl\:m-40 {
+    margin: 10rem;
   }
 
   .ocelot-scoped .xl\:m-80 {
@@ -31432,6 +33893,16 @@ body .ocelot-scoped {
     margin-right: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:my-7 {
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:mx-7 {
+    margin-left: 1.75rem;
+    margin-right: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -31440,6 +33911,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:mx-8 {
     margin-left: 2rem;
     margin-right: 2rem;
+  }
+
+  .ocelot-scoped .xl\:my-9 {
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:mx-9 {
+    margin-left: 2.25rem;
+    margin-right: 2.25rem;
   }
 
   .ocelot-scoped .xl\:my-10 {
@@ -31480,6 +33961,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:mx-20 {
     margin-left: 5rem;
     margin-right: 5rem;
+  }
+
+  .ocelot-scoped .xl\:my-40 {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .xl\:mx-40 {
+    margin-left: 10rem;
+    margin-right: 10rem;
   }
 
   .ocelot-scoped .xl\:my-80 {
@@ -31624,6 +34115,22 @@ body .ocelot-scoped {
     margin-left: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:mt-7 {
+    margin-top: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:mr-7 {
+    margin-right: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:mb-7 {
+    margin-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:ml-7 {
+    margin-left: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:mt-8 {
     margin-top: 2rem;
   }
@@ -31638,6 +34145,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:ml-8 {
     margin-left: 2rem;
+  }
+
+  .ocelot-scoped .xl\:mt-9 {
+    margin-top: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:mr-9 {
+    margin-right: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:mb-9 {
+    margin-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:ml-9 {
+    margin-left: 2.25rem;
   }
 
   .ocelot-scoped .xl\:mt-10 {
@@ -31704,6 +34227,22 @@ body .ocelot-scoped {
     margin-left: 5rem;
   }
 
+  .ocelot-scoped .xl\:mt-40 {
+    margin-top: 10rem;
+  }
+
+  .ocelot-scoped .xl\:mr-40 {
+    margin-right: 10rem;
+  }
+
+  .ocelot-scoped .xl\:mb-40 {
+    margin-bottom: 10rem;
+  }
+
+  .ocelot-scoped .xl\:ml-40 {
+    margin-left: 10rem;
+  }
+
   .ocelot-scoped .xl\:mt-80 {
     margin-top: 20rem;
   }
@@ -31756,6 +34295,18 @@ body .ocelot-scoped {
     max-height: 0;
   }
 
+  .ocelot-scoped .xl\:max-h-5 {
+    max-height: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:max-h-7 {
+    max-height: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:max-h-9 {
+    max-height: 2.25rem;
+  }
+
   .ocelot-scoped .xl\:max-h-10 {
     max-height: 2.5rem;
   }
@@ -31772,6 +34323,10 @@ body .ocelot-scoped {
     max-height: 5rem;
   }
 
+  .ocelot-scoped .xl\:max-h-40 {
+    max-height: 10rem;
+  }
+
   .ocelot-scoped .xl\:max-h-80 {
     max-height: 20rem;
   }
@@ -31782,6 +34337,46 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:max-h-screen {
     max-height: 100vh;
+  }
+
+  .ocelot-scoped .xl\:max-w-0 {
+    max-width: 0;
+  }
+
+  .ocelot-scoped .xl\:max-w-5 {
+    max-width: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-7 {
+    max-width: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-9 {
+    max-width: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-10 {
+    max-width: 2.5rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-12 {
+    max-width: 3rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-16 {
+    max-width: 4rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-20 {
+    max-width: 5rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-40 {
+    max-width: 10rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-80 {
+    max-width: 20rem;
   }
 
   .ocelot-scoped .xl\:max-w-xs {
@@ -31832,6 +34427,18 @@ body .ocelot-scoped {
     min-height: 0;
   }
 
+  .ocelot-scoped .xl\:min-h-5 {
+    min-height: 1.25rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-7 {
+    min-height: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-9 {
+    min-height: 2.25rem;
+  }
+
   .ocelot-scoped .xl\:min-h-10 {
     min-height: 2.5rem;
   }
@@ -31846,6 +34453,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:min-h-20 {
     min-height: 5rem;
+  }
+
+  .ocelot-scoped .xl\:min-h-40 {
+    min-height: 10rem;
   }
 
   .ocelot-scoped .xl\:min-h-80 {
@@ -31876,12 +34487,28 @@ body .ocelot-scoped {
     min-width: 2.25rem;
   }
 
+  .ocelot-scoped .xl\:min-w-10 {
+    min-width: 2.5rem;
+  }
+
   .ocelot-scoped .xl\:min-w-12 {
     min-width: 3rem;
   }
 
+  .ocelot-scoped .xl\:min-w-16 {
+    min-width: 4rem;
+  }
+
   .ocelot-scoped .xl\:min-w-20 {
     min-width: 5rem;
+  }
+
+  .ocelot-scoped .xl\:min-w-40 {
+    min-width: 10rem;
+  }
+
+  .ocelot-scoped .xl\:min-w-80 {
+    min-width: 20rem;
   }
 
   .ocelot-scoped .xl\:min-w-full {
@@ -31916,8 +34543,16 @@ body .ocelot-scoped {
     margin: -1.5rem;
   }
 
+  .ocelot-scoped .xl\:-m-7 {
+    margin: -1.75rem;
+  }
+
   .ocelot-scoped .xl\:-m-8 {
     margin: -2rem;
+  }
+
+  .ocelot-scoped .xl\:-m-9 {
+    margin: -2.25rem;
   }
 
   .ocelot-scoped .xl\:-m-10 {
@@ -31934,6 +34569,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:-m-20 {
     margin: -5rem;
+  }
+
+  .ocelot-scoped .xl\:-m-40 {
+    margin: -10rem;
   }
 
   .ocelot-scoped .xl\:-m-80 {
@@ -32018,6 +34657,16 @@ body .ocelot-scoped {
     margin-right: -1.5rem;
   }
 
+  .ocelot-scoped .xl\:-my-7 {
+    margin-top: -1.75rem;
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .xl\:-mx-7 {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+
   .ocelot-scoped .xl\:-my-8 {
     margin-top: -2rem;
     margin-bottom: -2rem;
@@ -32026,6 +34675,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:-mx-8 {
     margin-left: -2rem;
     margin-right: -2rem;
+  }
+
+  .ocelot-scoped .xl\:-my-9 {
+    margin-top: -2.25rem;
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mx-9 {
+    margin-left: -2.25rem;
+    margin-right: -2.25rem;
   }
 
   .ocelot-scoped .xl\:-my-10 {
@@ -32066,6 +34725,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:-mx-20 {
     margin-left: -5rem;
     margin-right: -5rem;
+  }
+
+  .ocelot-scoped .xl\:-my-40 {
+    margin-top: -10rem;
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .xl\:-mx-40 {
+    margin-left: -10rem;
+    margin-right: -10rem;
   }
 
   .ocelot-scoped .xl\:-my-80 {
@@ -32210,6 +34879,22 @@ body .ocelot-scoped {
     margin-left: -1.5rem;
   }
 
+  .ocelot-scoped .xl\:-mt-7 {
+    margin-top: -1.75rem;
+  }
+
+  .ocelot-scoped .xl\:-mr-7 {
+    margin-right: -1.75rem;
+  }
+
+  .ocelot-scoped .xl\:-mb-7 {
+    margin-bottom: -1.75rem;
+  }
+
+  .ocelot-scoped .xl\:-ml-7 {
+    margin-left: -1.75rem;
+  }
+
   .ocelot-scoped .xl\:-mt-8 {
     margin-top: -2rem;
   }
@@ -32224,6 +34909,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:-ml-8 {
     margin-left: -2rem;
+  }
+
+  .ocelot-scoped .xl\:-mt-9 {
+    margin-top: -2.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mr-9 {
+    margin-right: -2.25rem;
+  }
+
+  .ocelot-scoped .xl\:-mb-9 {
+    margin-bottom: -2.25rem;
+  }
+
+  .ocelot-scoped .xl\:-ml-9 {
+    margin-left: -2.25rem;
   }
 
   .ocelot-scoped .xl\:-mt-10 {
@@ -32288,6 +34989,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:-ml-20 {
     margin-left: -5rem;
+  }
+
+  .ocelot-scoped .xl\:-mt-40 {
+    margin-top: -10rem;
+  }
+
+  .ocelot-scoped .xl\:-mr-40 {
+    margin-right: -10rem;
+  }
+
+  .ocelot-scoped .xl\:-mb-40 {
+    margin-bottom: -10rem;
+  }
+
+  .ocelot-scoped .xl\:-ml-40 {
+    margin-left: -10rem;
   }
 
   .ocelot-scoped .xl\:-mt-80 {
@@ -32420,8 +35137,16 @@ body .ocelot-scoped {
     padding: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:p-7 {
+    padding: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:p-8 {
     padding: 2rem;
+  }
+
+  .ocelot-scoped .xl\:p-9 {
+    padding: 2.25rem;
   }
 
   .ocelot-scoped .xl\:p-10 {
@@ -32438,6 +35163,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:p-20 {
     padding: 5rem;
+  }
+
+  .ocelot-scoped .xl\:p-40 {
+    padding: 10rem;
   }
 
   .ocelot-scoped .xl\:p-80 {
@@ -32518,6 +35247,16 @@ body .ocelot-scoped {
     padding-right: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:py-7 {
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:px-7 {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -32526,6 +35265,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+
+  .ocelot-scoped .xl\:py-9 {
+    padding-top: 2.25rem;
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:px-9 {
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
   }
 
   .ocelot-scoped .xl\:py-10 {
@@ -32566,6 +35315,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:px-20 {
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .ocelot-scoped .xl\:py-40 {
+    padding-top: 10rem;
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .xl\:px-40 {
+    padding-left: 10rem;
+    padding-right: 10rem;
   }
 
   .ocelot-scoped .xl\:py-80 {
@@ -32700,6 +35459,22 @@ body .ocelot-scoped {
     padding-left: 1.5rem;
   }
 
+  .ocelot-scoped .xl\:pt-7 {
+    padding-top: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:pr-7 {
+    padding-right: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:pb-7 {
+    padding-bottom: 1.75rem;
+  }
+
+  .ocelot-scoped .xl\:pl-7 {
+    padding-left: 1.75rem;
+  }
+
   .ocelot-scoped .xl\:pt-8 {
     padding-top: 2rem;
   }
@@ -32714,6 +35489,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:pl-8 {
     padding-left: 2rem;
+  }
+
+  .ocelot-scoped .xl\:pt-9 {
+    padding-top: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:pr-9 {
+    padding-right: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:pb-9 {
+    padding-bottom: 2.25rem;
+  }
+
+  .ocelot-scoped .xl\:pl-9 {
+    padding-left: 2.25rem;
   }
 
   .ocelot-scoped .xl\:pt-10 {
@@ -32778,6 +35569,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:pl-20 {
     padding-left: 5rem;
+  }
+
+  .ocelot-scoped .xl\:pt-40 {
+    padding-top: 10rem;
+  }
+
+  .ocelot-scoped .xl\:pr-40 {
+    padding-right: 10rem;
+  }
+
+  .ocelot-scoped .xl\:pb-40 {
+    padding-bottom: 10rem;
+  }
+
+  .ocelot-scoped .xl\:pl-40 {
+    padding-left: 10rem;
   }
 
   .ocelot-scoped .xl\:pt-80 {
@@ -33065,7 +35872,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:text-green-light {
@@ -33233,7 +36040,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:text-grey-50-a20 {
@@ -33256,6 +36063,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -33264,8 +36075,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:text-blue-82 {
@@ -33274,10 +36093,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:text-fb-blue {
@@ -33290,6 +36105,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:text-transparent:hover {
@@ -33429,7 +36256,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:text-green-light:hover {
@@ -33597,7 +36424,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:text-grey-50-a20:hover {
@@ -33620,6 +36447,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -33628,8 +36459,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:text-blue-82:hover {
@@ -33638,10 +36477,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:text-fb-blue:hover {
@@ -33654,6 +36489,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-transparent {
@@ -33793,7 +36640,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-green-light {
@@ -33961,7 +36808,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50-a20 {
@@ -33984,6 +36831,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -33992,8 +36843,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-82 {
@@ -34002,10 +36861,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-fb-blue {
@@ -34018,6 +36873,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:text-xs {
@@ -34258,6 +37125,10 @@ body .ocelot-scoped {
     white-space: nowrap;
   }
 
+  .ocelot-scoped .xl\:w-0 {
+    width: 0;
+  }
+
   .ocelot-scoped .xl\:w-1 {
     width: .25rem;
   }
@@ -34328,6 +37199,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:w-64 {
     width: 16rem;
+  }
+
+  .ocelot-scoped .xl\:w-80 {
+    width: 20rem;
   }
 
   .ocelot-scoped .xl\:w-auto {

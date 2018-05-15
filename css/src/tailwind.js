@@ -1,105 +1,75 @@
 // This file modifies the base Tailwind configuration. We can freely re-use the same names or add new options to existing variables.
 
-var config = require('tailwindcss/defaultConfig')()
+let config = require('tailwindcss/defaultConfig')()
 
-config.height = Object.assign(config.height, {
+const spacing = {
+  '0': '0',
   '5': '1.25rem',
   '7': '1.75rem',
   '9': '2.25rem',
-  '20': '5rem',
-  '40': '10rem',
-})
-
-config.width = Object.assign(config.width, {
-  '5': '1.25rem',
-  '7': '1.75rem',
-  '9': '2.25rem',
-  '20': '5rem',
-  '40': '10rem',
-})
-
-config.minWidth = Object.assign(config.minWidth, {
-  '5': '1.25rem',
-  '7': '1.75rem',
-  '9': '2.25rem',
-  '12': '3rem',
-  '20': '5rem'
-})
-
-config.zIndex = Object.assign(config.zIndex, {
-  '60': '60'
-})
-
-
-// Additional padding and margin sizes
-config.padding = Object.assign(config.padding, {
-  '5': '1.25rem',
   '10': '2.5rem',
   '12': '3rem',
   '16': '4rem',
   '20': '5rem',
+  '40': '10rem',
   '80': '20rem',
-})
+}
 
-config.margin = Object.assign(config.margin, {
-  '5': '1.25rem',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
+config.padding = Object.assign(config.padding, spacing)
+
+config.margin = Object.assign(config.margin, spacing)
 
 config.negativeMargin = config.margin
 
-config.maxHeight = Object.assign(config.maxHeight, {
-  '0': '0',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
+config.height = Object.assign(config.height, spacing)
 
+config.width = Object.assign(config.width, spacing)
 
-config.minHeight = Object.assign(config.minHeight, {
-  '0': '0',
-  '10': '2.5rem',
-  '12': '3rem',
-  '16': '4rem',
-  '20': '5rem',
-  '80': '20rem',
-})
-
-config.maxWidth = Object.assign(config.maxWidth, {
+config.maxWidth = Object.assign(config.maxWidth, spacing, {
   '6xl': '110rem',
+})
+
+config.minWidth = Object.assign(config.minWidth, spacing)
+
+config.maxHeight = Object.assign(config.maxHeight, spacing)
+
+config.minHeight = Object.assign(config.minHeight, spacing)
+
+config.zIndex = Object.assign(config.zIndex, {
+  '60': '60'
 })
 
 config.colors = Object.assign(config.colors, {
   'black-10': '#00081A',
   'black-20': '#242A33',
   'black-modal-a90': 'rgba(0,9,26,0.9);',
-  'grey-50': 'rgb(102,113,128)',
+  'grey-50': '#5C6573',
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
   'grey-70': 'rgb(143,158,179)',
   'grey-70-a30': 'rgba(143,158,179,0.3)',
   'grey-70-a40': 'rgba(143,158,179,0.4)',
+  'grey-80': '#C2C6CC',
   'grey-90': '#E1E3E6',
   'grey-95': '#F0F1F2',
-  'blue-75': '#F0F1F2',
+  'grey-97': '#F7F7F7',
+  'blue-65': '#008AA6',
+  'blue-75': '#009FBF',
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
-  'blue-100': '#E6F0FF',
   'fb-blue': '#3B5998',
   'tw-blue': '#00ACED',
   'ig-brown': '#675144',
   'red': '#FF5471',
   'yellow': '#FFC859',
+  'green': '#66C7AF',
+  'steel-75': '#A8B2BF',
+  'steel-85': '#BFCAD9',
+  'steel-100': '#E6F0FF'
 })
 
 config.borderColors = Object.assign(
-  { 'default': config.colors['grey-light'] },
+  { 'default': config.colors['grey-80'] },
   config.colors
 )
 

@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Class (class MonadAff)
 import DOM.HTML.Indexed (HTMLinput)
+import Data.Array (foldr)
 import Data.Fuzzy (Fuzzy)
 import Data.Maybe (Maybe(..), maybe)
 import Data.StrMap (StrMap, fromFoldable, singleton)
@@ -12,17 +13,19 @@ import Data.Time.Duration (Milliseconds(..))
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
+import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
-import Network.RemoteData (RemoteData(..), isSuccess)
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TA
 import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
+import Unsafe.Coerce (unsafeCoerce)
 
 
 ----------
@@ -235,7 +238,7 @@ renderTA props renderContainer renderSelectionItem st =
       , debounceTime: case st.config.syncMethod of
           TA.Async { debounceTime } -> Just debounceTime
           TA.Sync -> Nothing
-      , render: \selectState -> HH.div_ [ renderSearch, renderContainer_ selectState ]
+      , render: \selectState -> HH.div_ [ renderSearch, renderContainer' selectState, renderError ]
       }
 
     renderSlot =
@@ -261,7 +264,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ HP.class_ $ HH.ClassName $ maybe "offscreen" (const "") x ]
           ( ( maybe [] pure $ renderSingleItem <$> x ) <>
             [ Input.borderRight
-              [ HP.classes Format.linkClasses ]
+              [ HP.classes linkClasses ]
               [ HH.text "Change" ]
             ]
           )
@@ -272,14 +275,14 @@ renderTA props renderContainer renderSelectionItem st =
 
     renderSingleItem x =
       HH.div
-        [ HP.classes Input.mainLeftClasses ]
+        [ HP.classes if isDisabled then disabledClasses else Input.mainLeftClasses ]
         [ renderSelectionItem' x ]
 
     renderSingleSearch x =
       Input.inputGroup_
         [ Input.inputCenter
           ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
-            <&> Setters.setInputProps props
+            <&> inputProps
           )
         , Input.addonCenter
           [ HP.class_
@@ -291,7 +294,7 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Format.linkClasses ]
+          [ HP.classes linkClasses ]
           [ HH.text "Browse" ]
         ]
 
@@ -306,7 +309,7 @@ renderTA props renderContainer renderSelectionItem st =
       Input.inputGroup_
         [ Input.inputCenter
           ( [ HP.class_ $ HH.ClassName "focus:next:text-blue-88" ]
-            <&> Setters.setInputProps props
+            <&> inputProps
           )
         , Input.addonCenter
           [ HP.class_
@@ -318,14 +321,61 @@ renderTA props renderContainer renderSelectionItem st =
           [ Icon.loading_ ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
-          [ HP.classes Format.linkClasses ]
+          [ HP.classes linkClasses ]
           [ HH.text "Browse" ]
         ]
 
     renderSelectionItem' x =
-      ItemContainer.selectionGroup
-        renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
+      if isDisabled then
+        HH.fromPlainHTML $ renderSelectionItem x
+      else
+        ItemContainer.selectionGroup
+          renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
 
-    renderContainer_
+    renderContainer'
       | isSuccess st.items = renderContainer
       | otherwise = const $ HH.div_ []
+
+    isDisabled :: Boolean
+    isDisabled = foldr f false props
+      where
+        f (HP.IProp (Property "disabled" disabled)) | coercePropValue disabled == true = (||) true
+        f _ = (||) false
+
+        coercePropValue :: PropValue -> Boolean
+        coercePropValue = unsafeCoerce
+
+    inputProps
+      | isDisabled == true = props
+      | otherwise = Setters.setInputProps props
+
+    linkClasses
+      | isDisabled == true = [ HH.ClassName "text-grey-70 no-underline font-medium" ]
+      | otherwise = Format.linkClasses
+
+    disabledClasses = HH.ClassName <$>
+      [ "bg-grey-95"
+      , "text-grey-70"
+      , "sibling:bg-grey-95"
+      , "sibling:text-grey-50"
+      , "border-t-2"
+      , "border-b-2"
+      , "font-light"
+      , "focus:no-outline"
+      , "py-2"
+      , "border-l-2"
+      , "w-full"
+      , "px-3"
+      ]
+
+    renderError
+      | isFailure st.items =
+        HH.div
+        [ HP.class_ $ HH.ClassName "flex items-center mt-1" ]
+        [ Icon.error
+          [ HP.class_ $ HH.ClassName "text-2xl text-yellow" ]
+        , HH.p
+          [ HP.class_ $ HH.ClassName "ml-3 text-grey-50 font-light" ]
+          [ HH.text "Some data could not be retrieved here." ]
+        ]
+      | otherwise = HH.div_ []

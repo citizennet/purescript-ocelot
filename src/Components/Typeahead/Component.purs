@@ -7,7 +7,7 @@ import Control.Comonad.Store (Store, store, seeks)
 import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (logShow, CONSOLE)
+import Control.Monad.Aff.Console (CONSOLE)
 import DOM (DOM)
 import Data.Array (difference, filter, head, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
@@ -155,31 +155,6 @@ derive instance functorSelectionType :: Functor SelectionType
 ----------
 -- Component
 
--- NOTE: Effects must be unified among input, component, HTML, and DSL types. Not all of
--- these will be defined in the same file. As an architectural decision, I have included
--- the effects type with the component definition. You are expected, when defining anything
--- else using the component types, to import and use this effects row. For example, if you
--- define default inputs or render functions elsewhere, make sure to import these effects.
---
--- The best practice is to avoid composition of synonyms at all costs because they make
--- it extremely difficult to tell when problems and duplication arise. Also defer applying
--- effects until the last possible moment: usually, this is in an actual function definition.
--- You will see that synonyms like `ChildQuery` do not explicitly list row effects.
---
--- So while you should import and use this effects type anywhere you write functions for
--- this component specifically, you should NOT import or use this effects type for any other
--- components or components higher up the chain. This effects type should be as minimal as
--- possible.
---
--- For example, this effects row must use `DOM` and `AVAR` because it mounts components in
--- slots that themselves use those effects. But rather than compose with their effects types,
--- they are written out and applied to this component for the first time here. The same is
--- done when _this_ component is used.
---
--- This may be overly-cautious, but given how difficult it is to track down the real source
--- of effect row unification errors, I advise following this practice for our components. This
--- is especially true because effects may compile in one file, but fail to compile once actually
--- used in context.
 type Effects eff = ( ajax :: AJAX, dom :: DOM, avar :: AVAR, console :: CONSOLE | eff )
 
 -- The Query, Input, ChildQuery, and component types use the same effects,
@@ -201,7 +176,7 @@ component =
     , render: extract
     , eval
     , receiver: HE.input Receive
-    , initializer: Just $ H.action $ Synchronize
+    , initializer: Just $ H.action Synchronize
     , finalizer: Nothing
     }
   where
@@ -242,7 +217,7 @@ component =
           H.modify $ seeks _ { selections = selections }
           _ <- if st.config.keepOpen
                then pure Nothing
-               else H.query unit $ H.action $ Select.SetVisibility Select.Off
+               else H.query unit $ Select.setVisibility Select.Off
 
           H.raise $ SelectionsChanged ItemSelected item selections
           eval $ Synchronize a
@@ -283,7 +258,7 @@ component =
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
-        H.query unit $ H.action Select.TriggerFocus
+        H.query unit Select.triggerFocus
 
       -- Tell the parent what the current state of the Selections list is.
       GetSelections reply -> do
@@ -296,16 +271,15 @@ component =
 
         _ <- case getNewItems st of
           Success items -> do
-            H.query unit $ H.action $ Select.ReplaceItems items
+            H.query unit $ Select.replaceItems items
           Failure err -> do
-            H.liftAff $ logShow err
-            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
-            H.query unit $ H.action $ Select.ReplaceItems []
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            H.query unit $ Select.replaceItems []
           NotAsked -> do
-            _ <- H.query unit $ H.action $ Select.SetVisibility Select.Off
-            H.query unit $ H.action $ Select.ReplaceItems []
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            H.query unit $ Select.replaceItems []
           Loading -> do
-            H.query unit $ H.action $ Select.ReplaceItems []
+            H.query unit $ Select.replaceItems []
 
         pure a
 

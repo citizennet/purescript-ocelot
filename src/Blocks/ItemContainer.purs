@@ -20,7 +20,7 @@ import Select.Utils.Setters as Setters
 baseClasses :: Array HH.ClassName
 baseClasses = HH.ClassName <$>
   [ "bg-white"
-  , "border-grey-light"
+  , "border-grey-80"
   , "border-l-2"
   , "border-r-2"
   , "w-full"
@@ -54,9 +54,9 @@ liClasses :: Array HH.ClassName
 liClasses = HH.ClassName <$>
   [ "px-3"
   , "rounded-sm"
-  , "text-grey-darkest"
+  , "text-black-20"
   , "group"
-  , "hover:bg-grey-lighter"
+  , "hover:bg-grey-97"
   , "cursor-pointer"
   ]
 
@@ -70,9 +70,9 @@ selectionGroupClasses = HH.ClassName <$>
 buttonClasses :: Array HH.ClassName
 buttonClasses = HH.ClassName <$>
   [ "invisible"
-  , "text-grey"
+  , "text-grey-80"
+  , "hover:text-grey-70"
   , "group-hover:visible"
-  , "text-grey"
   ]
 
 -- Provided an array of items and any additional HTML, renders the container
