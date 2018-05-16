@@ -2,425 +2,221 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
+import Control.Monad.Aff (Aff)
 import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
-import Data.Array as Array
-import Data.Bifunctor as Bifunctor
-import Data.Either.Nested (Either4)
-import Data.Functor.Coproduct.Nested (Coproduct3)
-import Data.Generic.Rep as Generic
-import Data.Generic.Rep.Show as Generic.Show
-import Data.Map as Map
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype, unwrap)
-import Data.StrMap (StrMap, fromFoldable)
-import Data.String.Utils as String.Utils
+import Data.Record (modify)
+import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
-import Data.Validation.Semigroup (V, unV)
+import Data.Variant (Variant, case_, match)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
-import Network.RemoteData (RemoteData(..))
-import Ocelot.Block.Button as Button
+import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Format as Format
 import Ocelot.Block.Input as Input
-import Ocelot.Components.Typeahead as TA
-import Ocelot.Core.Typeahead as TACore
-import Ocelot.Core.Validation as CV
+import Ocelot.Data.Record (makeDefaultFormInputs, validateSetter, inputSetter)
+import Ocelot.Form (Form, K, Second, check, formFromField, runForm)
+import Ocelot.HTML.Properties (css)
+import Polyform.Validation (V(..), hoistFnV)
+import Type.Prelude (RProxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Utilities.Async as Async
+import UIGuide.Utilities.Validation (collapseIfEqual, validateNonEmptyStr, validateStrIsEmail)
+import UIGuide.Utilities.Form (EmailError, FormInput', FormMaybe', PasswordError, PasswordErrorEq)
 
 ----------
--- Component Types
-
-type State =
-  { raw :: UnvalidatedForm
-  , errors :: FormErrors
-  }
-
+-- Form
 
 data Query a
-  = UpdateTextField Int String a
-  | HandleSync (TACore.Message Query TestRecord) a
-  -- | HandleB (TACore.Message Query Async.Todo) a
-  | HandleC (TACore.Message Query Async.User) a
-  | HandleD (TACore.Message Query Async.User) a
-  | Validate FormErrorKey FormVKey a
-  | FormSubmit a
+  = UpdateContents FieldValueV a
+  | ValidateOne FieldValidateV a
+  | ValidateAll a
 
-
-----------
--- Child paths
-
-type ChildSlot = Either4 Unit Unit Unit Unit
-type ChildQuery eff m = Coproduct3
-  (TACore.Query Query TestRecord Void eff m)
-  -- (TACore.Query Query Async.Todo Async.Err eff m)
-  (TACore.Query Query Async.User Async.Err eff m)
-  (TACore.Query Query Async.User Async.Err eff m)
-
-
-----------
--- Component definition
-
--- NOTE: Uses the same effects but does not compose with typeahead effects. Written out again from scratch.
-type Effects eff =
-  ( avar :: AVAR
-  , dom :: DOM
-  , ajax :: AJAX
-  , timer :: TIMER
-  , console :: CONSOLE
-  | eff
-  )
-
-component :: ∀ eff m
-  . MonadAff (Effects eff) m
- => H.Component HH.HTML Query Unit Void m
-component =
-  H.parentComponent
-  { initialState: const
-      { raw:
-        { developers: Nothing
-        -- , todos: []
-        , users1: []
-        , users2: []
-        , email: ""
-        , username: "" }
-      , errors: Map.empty }
-  , render
-  , eval
-  , receiver: const Nothing
+type State =
+  { form :: FormInputs
+  , result :: Maybe { email :: String, password :: String }
   }
+
+component :: ∀ eff. H.Component HH.HTML Query Unit Void (Aff (console :: CONSOLE | eff))
+component =
+  H.lifecycleComponent
+    { initialState: const initialState
+    , render
+    , eval
+    , receiver: const Nothing
+    , initializer: Just $ H.action ValidateAll
+    , finalizer: Nothing
+    }
   where
-    render
-      :: State
-      -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-    render st = HH.div_ [ renderForm st ]
+  initialState :: State
+  initialState = { form: signupInitialForm, result: Nothing }
 
-    eval
-      :: Query
-      ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
-    eval (HandleSync message next) = case message of
-      TACore.SelectionsChanged _ _ s -> do
-         H.modify (_ { raw { developers = TACore.unpackSelection s } } )
-         pure next
-      _ -> pure next
-
-    -- eval (HandleB message next) = case message of
-      -- TACore.SelectionsChanged _ _ s -> do
-        -- H.modify (_ { raw { todos = TACore.unpackSelections s }})
-        -- pure next
-      -- _ -> pure next
-
-    eval (HandleC message next) = case message of
-      TACore.SelectionsChanged _ _ s -> do
-         H.modify (_ { raw { users1 = TACore.unpackSelections s }})
-         pure next
-      _ -> pure next
-
-    eval (HandleD message next) = case message of
-      TACore.SelectionsChanged _ _ s -> do
-         H.modify (_ { raw { users2 = TACore.unpackSelections s }})
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.Reset
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceItems (Success testRecords)
-         _ <- H.query' CP.cp1 unit $ H.action $ TACore.ReplaceSelections (TACore.One $ Just $ TestRecord { name: "Dave", id: 1 })
-         pure next
-      _ -> pure next
-
-    eval (UpdateTextField i str next) = case i of
-      1 -> H.modify (_ { raw { email = str }}) *> pure next
-      2 -> H.modify (_ { raw { username = str }}) *> pure next
-      _ -> pure next
-
-    eval (Validate eKey vKey next) = do
-      st <- H.get
-      let v = validateField vKey
-      let errors = unV (flip Map.union st.errors) (const $ Map.delete eKey st.errors) v
-      H.modify (_ { errors = errors })
-      pure next
-
-    eval (FormSubmit next) = do
-      st <- H.get
-      let validation = runValidation st.raw
-      let errors = unV id (const Map.empty) validation
-      H.modify (_ { errors = errors })
-      pure next
-
-
------
--- Run validation
-
-runValidation :: UnvalidatedForm -> V FormErrors ValidatedForm
-runValidation f =
-  { developers: _
-  -- , todos: _
-  , users1: _
-  , users2: _
-  , email: _
-  , username: _ }
-  <$> validateDevelopers f.developers
-  -- <*> validateTodos f.todos
-  <*> validateUsers1 f.users1 f.users2
-  <*> validateUsers2 f.users2 f.users1
-  <*> validateEmail f.email
-  <*> validateUsername f.username
-
-
------
--- Top level form types
-
-type UnvalidatedForm =
-  { developers :: Maybe TestRecord
-  -- , todos      :: Array Async.Todo
-  , users1     :: Array Async.User
-  , users2     :: Array Async.User
-  , email      :: String
-  , username   :: String }
-
-type ValidatedForm =
-  { developers :: TestRecord
-  -- , todos      :: ValidatedArray Async.Todo
-  , users1     :: ValidatedArray Async.User
-  , users2     :: ValidatedArray Async.User
-  , email      :: Email
-  , username   :: Username }
-
------
--- Validation for form fields
-
-validateDevelopers
-  :: Maybe TestRecord
-  -> V FormErrors TestRecord
-validateDevelopers =
-  Bifunctor.lmap (Map.singleton FailDevelopers)
-  <<< CV.validateNonEmptyMaybe
-
--- validateTodos :: Array Async.Todo -> V FormErrors (ValidatedArray Async.Todo)
--- validateTodos xs =
-  -- Bifunctor.bimap (Map.singleton FailTodos) ValidatedArray
-  -- $ CV.validateNonEmptyArr xs
-
-validateUsers1 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
-validateUsers1 users1 users2 =
-  Bifunctor.bimap (Map.singleton FailUsers1) ValidatedArray
-  $ CV.validateNonEmptyArr users1
-  *> CV.validateMinLength 2 "Must select more than one user" users1
-  *> validateUserDependence users2 users2
-
-validateUsers2 :: Array Async.User -> Array Async.User -> V FormErrors (ValidatedArray Async.User)
-validateUsers2 users2 users1 =
-  Bifunctor.bimap (Map.singleton FailUsers2) ValidatedArray
-  $ CV.validateNonEmptyArr users2
-  *> validateUserDependence users2 users1
-
-validateUserDependence
-  :: Array Async.User
-  -> Array Async.User
-  -> V CV.ValidationErrors (Array Async.User)
-validateUserDependence users1 users2 =
-  CV.validateDependence
-    (\u1 u2 -> Array.length u1 + (Array.length u2) > 4)
-    "Users 1 and 2 must combine to 5 or more"
-    users1
-    users2
-
-validateEmail :: String -> V FormErrors Email
-validateEmail email =
-  Bifunctor.bimap (Map.singleton FailEmail) Email
-  $  CV.validateNonEmptyStr email
-  *> CV.validateStrIsEmail email
-
-validateUsername :: String -> V FormErrors Username
-validateUsername uname =
-  Bifunctor.bimap (Map.singleton FailUsername) (Username <<< String.Utils.fromCharArray)
-  $  CV.validateNonEmptyStr uname
-  *> CV.validateMinLength 8 "Username must be longer than 8 characters" (String.Utils.toCharArray uname)
-
------
--- Specialized types
-
-newtype Email = Email String
-newtype Username = Username String
-newtype ValidatedArray a = ValidatedArray (Array a)
-
------
--- Keys and Map for storing errors on the state
-
-data FormErrorKey
-  = FailDevelopers
-  -- | FailTodos
-  | FailUsers1
-  | FailUsers2
-  | FailEmail
-  | FailUsername
-
-derive instance eqFormErrorKey :: Eq FormErrorKey
-derive instance ordFormErrorKey :: Ord FormErrorKey
-derive instance genericFormErrorKey :: Generic.Generic (FormErrorKey) _
-instance showFormErrorKey :: Show (FormErrorKey) where
-  show = Generic.Show.genericShow
-
-type FormErrors = Map.Map FormErrorKey CV.ValidationErrors
-
------
--- Additional function for validating any arbitrary field
--- An extra sum type is required here in order to unify all of the field types
--- So they can get picked up and validated with a single Validate Query handler
-
-data FormVKey
-  = DevelopersV (Maybe TestRecord)
-  -- | TodosV (Array Async.Todo)
-  | Users1V (Tuple (Array Async.User) (Array Async.User))
-  | Users2V (Tuple (Array Async.User) (Array Async.User))
-  | EmailV String
-  | UsernameV String
-
-validateField :: FormVKey -> V FormErrors Unit
-validateField (DevelopersV devs) = const unit <$> validateDevelopers devs
--- validateField (TodosV todos) = const unit <$> validateTodos todos
-validateField (Users1V (Tuple u1 u2)) = const unit <$> validateUsers1 u1 u2
-validateField (Users2V (Tuple u2 u1)) = const unit <$> validateUsers2 u2 u1
-validateField (EmailV email) = const unit <$> validateEmail email
-validateField (UsernameV username) = const unit <$> validateUsername username
-
-
-----------
--- Rendering
-
-renderForm :: ∀ eff m
-  . MonadAff (Effects eff) m
- => State
- -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
-renderForm st =
-  HH.form
-  [ HE.onSubmit $ HE.input_ FormSubmit ]
-  [ Documentation.block_
-      { header: "Example Form"
-      , subheader: "Test validations and form submission."
+  render :: State -> H.ComponentHTML Query
+  render st =
+    HH.div_
+    [ Documentation.block_
+      { header: "Text Field Form"
+      , subheader: "Validates composed form fields."
       }
       [ Backdrop.backdrop_
-        [ FormField.field_
-          { label: "Developer"
-          , helpText: Just "There are lots of developers to choose from."
-          , valid: Map.lookup FailDevelopers st.errors
-          , inputId: "devs"
-          }
-          [ HH.slot' CP.cp1 unit TACore.component
-            (TA.defSingle [ HP.placeholder "Search developers...", HP.id_ "devs" ] [] renderItemTestRecord)
-            (HE.input HandleSync)
-          ]
-        -- , FormField.field
-          -- { label: "Todos"
-          -- , helpText: Just "Synchronous todo fetching like you've always wanted."
-          -- , valid: Map.lookup FailTodos st.errors
-          -- , inputId: "todos"
-          -- }
-          -- ( HH.slot' CP.cp2 unit TACore.component
-            -- (TA.defAsyncMulti [ HP.placeholder "Search todos asynchronously...", HP.id_ "todos" ] (\_ -> Async.loadFromSource Async.todos) Async.renderItemTodo)
-            -- (HE.input HandleB)
-          -- )
-        , FormField.field_
-          { label: "Users"
-          , helpText: Just "Oh, you REALLY need async, huh."
-          , valid: Map.lookup FailUsers1 st.errors
-          , inputId: "users1"
-          }
-          [ HH.slot' CP.cp3 unit TACore.component
-            ( TA.defAsyncMulti
-              [ HP.placeholder "Search users asynchronously"
-              , HP.id_ "users1"
+        [ Backdrop.content [ css "flex" ]
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Fields" ]
+            , FormField.field_
+              { label: "Email"
+              , helpText: Just "Your email will be sold to the highest bidder."
+              , error: check st.form.email.result $ match
+                  { badEmail: \s -> s
+                  , emptyField: \s -> s }
+              , inputId: "email"
+              }
+              [ Input.input
+                [ HP.placeholder "address@gmail.com"
+                , HP.id_ "email"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.email.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.email.setInput
+                ]
               ]
-              ( Async.loadFromSource Async.users )
-              Async.renderItemUser
-            )
-            ( HE.input HandleC )
-          ]
-        , FormField.field_
-          { label: "Users 2"
-          , helpText: Just "Honestly, this is just lazy."
-          , valid: Map.lookup FailUsers2 st.errors
-          , inputId: "users2"
-          }
-          [ HH.slot' CP.cp3 unit TACore.component
-            ( TA.defAsyncMulti
-              [ HP.placeholder "Search more users..."
-              , HP.id_ "users2"
+            , FormField.field_
+              { label: "Password*"
+              , helpText: Just "We will store your password in plain text."
+              , error: check st.form.p1.result $ match { emptyField: \s -> s }
+              , inputId: "password-1-error"
+              }
+              [ Input.input
+                [ HP.placeholder ""
+                , HP.id_ "password-1-error"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p1.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p1.setInput
+                ]
               ]
-              ( Async.loadFromSource Async.users )
-              Async.renderItemUser
-            )
-            ( HE.input HandleD )
-          ]
-        , FormField.field_
-          { label: "Email"
-          , helpText: Just "Dave will spam your email with gang of four patterns"
-          , valid: Map.lookup FailEmail st.errors
-          , inputId: "email"
-          }
-          [ Input.input
-            [ HP.placeholder "davelovesgangoffour@gmail.com"
-            , HP.id_ "email"
-            , HE.onBlur (HE.input_ $ Validate FailEmail (EmailV st.raw.email))
-            , HE.onValueInput (HE.input $ UpdateTextField 1)
+            , FormField.field_
+              { label: "Password (again)*"
+              , helpText: Just "These better match!"
+              , error: check st.form.p2.result $ match
+                  { emptyField: \s -> s
+                  , notEqual: const "This password does not match the previously-entered password!"
+                  }
+              , inputId: "password-1-error"
+              }
+              [ Input.input
+                [ HP.placeholder ""
+                , HP.id_ "password-1-error"
+                , HE.onBlur $ HE.input_ $ ValidateOne (st.form.p2.setValidate true)
+                , HE.onValueInput $ HE.input $ UpdateContents <<< st.form.p2.setInput
+                ]
+              ]
             ]
           ]
-        , FormField.field_
-          { label: "Username"
-          , helpText: Just "Put your name in and we'll spam you forever"
-          , valid: Map.lookup FailUsername st.errors
-          , inputId: "username"
-          }
-          [ Input.input
-            [ HP.placeholder "Placehold me"
-            , HP.id_ "username"
-            , HE.onBlur (HE.input_ $ Validate FailUsername (UsernameV st.raw.username))
-            , HE.onValueInput (HE.input $ UpdateTextField 2)
-            ]
-          ]
-        , Button.buttonPrimary
-            [ HP.type_ HP.ButtonSubmit ]
-            [ HH.text "Submit" ]
         ]
       ]
-  ]
+    ]
+
+  eval :: Query ~> H.ComponentDSL State Query Void (Aff ( console :: CONSOLE | eff))
+  eval = case _ of
+    UpdateContents val next -> do
+      H.modify $ updateValue val
+      pure next
+
+    ValidateOne val next -> do
+      H.modify $ updateValidate val
+      eval $ ValidateAll next
+
+    ValidateAll next -> do
+      st <- H.get
+      (Tuple form result) <- H.liftAff do
+         res <- runForm signupForm st.form
+         case res of
+           Valid form value -> do
+             pure $ Tuple form value
+           Invalid form -> do
+             pure $ Tuple form Nothing
+      H.modify _ { form = form, result = result }
+      pure next
 
 
-----------
--- Sample data
+-----
+-- Lets Build A Form
 
-newtype TestRecord = TestRecord
-  { name :: String
-  , id :: Int
-  }
+-- We can build forms from FormInput types using formFromField. Then we
+-- can compose these into larger forms.
+signupForm :: ∀ eff. SignupForm (Aff eff)
+signupForm = { email: _, password: _ }
+  <$> emailForm
+  <*> passwordForm
+  where
+    emailForm = formFromField _email $
+      hoistFnV validateNonEmptyStr
+      >>> hoistFnV (validateStrIsEmail "Not a valid email address.")
 
-instance eqTestRecord :: Eq TestRecord where
-  eq (TestRecord { id: id'' }) (TestRecord { id: id' }) = id'' == id'
+    passwordForm = ( { p1: _, p2: _ }
+      <$> formFromField _p1 (hoistFnV validateNonEmptyStr)
+      <*> formFromField _p2 (hoistFnV validateNonEmptyStr)
+      )
+      >>> hoistFnV \{ p1, p2 } -> collapseIfEqual p1 p2 _p2
 
-derive instance newtypeTestRecord :: Newtype TestRecord _
+-- To create our form inputs, we can use the helper `makeDefaultFormInputs`
+-- on a row containing the field names in our form. In the form above, we've
+-- used p1, p2, and email, so we'll need those inputs.
+signupInitialForm :: FormInputs
+signupInitialForm = makeDefaultFormInputs (RProxy :: RProxy (FormFieldsT Second))
 
-renderItemTestRecord :: ∀ o eff. TA.RenderTypeaheadItem o TestRecord eff
-renderItemTestRecord =
-  { toStrMap: testToStrMap
-  , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
-  , renderItem: (TA.defRenderItem <<< unwrap)
-  }
 
-testToStrMap :: TestRecord -> StrMap String
-testToStrMap (TestRecord { name, id }) =
-  fromFoldable [ Tuple "name" name, Tuple "id" (show id) ]
+-----
+-- Form Types Involved
 
-testRecords :: Array TestRecord
-testRecords =
-  [ TestRecord { name: "Chris", id: 0 }
-  , TestRecord { name: "Dave", id: 1 }
-  , TestRecord { name: "Thomas", id: 2 }
-  , TestRecord { name: "Forest", id: 3 }
-  ]
+-- Our form needs these three fields, so we'll define them in a row. Our
+-- row needs to contain the error type, input type, and output type for each.
+-- We'll use `f` here so we can fill in different types and build various
+-- type synonyms.
+type FormFieldsT f =
+  ( email :: f EmailError      String String
+  , p1    :: f PasswordError   String String
+  , p2    :: f PasswordErrorEq String String
+  )
 
+-- This is a bit of boilerplate: we need to define the same names as are in
+-- our form all over again here.
+_email = SProxy :: SProxy "email"
+_p1    = SProxy :: SProxy "p1"
+_p2    = SProxy :: SProxy "p2"
+
+
+-----
+-- Variants to Update Form State
+
+-- We'd like to update all our form fields through a single query if possible.
+-- To do this, we'll create variants for our `shouldValidate` and `value` fields.
+type FieldValueV    = Variant (FormFieldsT Second)
+type FieldValidateV = Variant (FormFieldsT (K Boolean))
+
+-- Next, we'll create the functions that will actually update the relevant fields.
+-- These two helper functions will allow us to update the value and shouldValidate
+-- fields respectively.
+_form = SProxy :: SProxy "form"
+
+updateValue :: FieldValueV -> (State -> State)
+updateValue = modify _form <<< inputSetter (RProxy :: RProxy (FormFieldsT Second)) case_
+
+updateValidate :: FieldValidateV -> (State -> State)
+updateValidate = modify _form <<< validateSetter (RProxy :: RProxy (FormFieldsT (K Boolean))) case_
+
+-- We can finally write the type for our form in state, now that we have our variants:
+type FormInputs = Record (FormFieldsT (FormInput' FieldValueV FieldValidateV))
+
+-- We'll need one more thing: our output type. This form parses to a different output
+-- than its input: (p1, p2, email) vs. (password, email).
+type FormFieldsOutT f =
+  ( email    :: f EmailError    String String
+  , password :: f PasswordError String String
+  )
+type FormOutputs = Record (FormFieldsOutT FormMaybe')
+
+-- Finally, we can create our overall form type!
+type SignupForm m = Form m FormInputs FormOutputs

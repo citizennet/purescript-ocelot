@@ -1,38 +1,23 @@
-module Ocelot.Core.Utils
-  ( blockBuilder
+module Ocelot.HTML.Properties
+  ( testId
   , css
   , appendIProps
   , (<&>)
-  , testId
   ) where
 
 import Prelude
 
-import Data.Array (nubBy, snoc)
-import Data.Bifunctor (rmap, lmap)
-import Data.Foldable (elem, foldr)
+import Data.Array (elem, foldr, nubBy, snoc)
+import Data.Bifunctor (lmap, rmap)
 import Data.String (Pattern(..), drop, null, split)
 import Data.String.Utils (startsWith)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
+import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Properties as HP
-import Halogen.VDom.DOM.Prop (Prop(..))
 import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
-
-blockBuilder
-  :: ∀ r p i
-   . ( Array (IProp r i)
-       -> Array (HH.HTML p i)
-       -> HH.HTML p i
-     )
-  -> Array HH.ClassName
-  -> Array (IProp r i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-blockBuilder elem classes iprops =
-  elem $ [ HP.classes classes ] <&> iprops
 
 testId
   :: ∀ r i
@@ -74,8 +59,11 @@ extract =
   foldr f (Tuple [] [])
   where
     f (HP.IProp (Property "className" className)) =
-      lmap (\_ -> (split (Pattern " ") <<< unsafeCoerce) className)
+      lmap (\_ -> (split (Pattern " ") <<< coerceClassName) className)
     f iprop =  rmap $ (flip snoc) iprop
+
+    coerceClassName :: PropValue -> String
+    coerceClassName = unsafeCoerce
 
 classify
   :: String

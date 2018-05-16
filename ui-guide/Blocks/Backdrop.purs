@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Core.Utils ((<&>))
+import Ocelot.HTML.Properties ((<&>))
 
 
 backdropClasses :: Array HH.ClassName

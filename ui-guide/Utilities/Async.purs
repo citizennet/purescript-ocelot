@@ -20,7 +20,7 @@ import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (get, AJAX)
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead as TA
+import Ocelot.Components.Typeahead.Input as TA
 
 
 ----------
