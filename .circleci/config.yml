@@ -58,7 +58,6 @@ jobs:
           command: |
             git checkout gh-pages
             git checkout master
-            git pull
 
       - run:
           name: Set up gh-pages in worktree for easy artifact copying
