@@ -39,7 +39,9 @@ Our CSS, however, is not automatically built because it's on our master branch s
 To do that, ensure that any commit to the master branch is preceded by a call to `npm run build-all`:
 
 ```sh
-npm run build-all
+yarn run build-all
 git commit -m "..."
 git push origin master
 ```
+
+If you haven't changed the CSS, then feel free to use just `yarn build-ui`.
