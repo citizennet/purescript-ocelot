@@ -209,10 +209,10 @@ cnDocumentationBlocks st =
           [ Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                st.singleLocation
                 [ HE.onClick
                   $ HE.input_
                   $ ToggleCard _singleLocation
+                , Expandable.status st.singleLocation
                 ]
                 [ Format.subHeading_ [ HH.text "Locations" ]
                 , Format.p_ [ HH.text "Here are some location typeaheads for you. Initially hidden from view since you may not be interested in them." ]
@@ -257,10 +257,10 @@ cnDocumentationBlocks st =
           , Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                st.singleUser
                 [ HE.onClick
                   $ HE.input_
                   $ ToggleCard _singleUser
+                , Expandable.status st.singleUser
                 ]
                 [ Format.subHeading_ [ HH.text "Users" ] ]
               , Expandable.content_

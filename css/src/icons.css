@@ -55,6 +55,18 @@
 .icon-carat-up:before {
   content: "\e005";
 }
+.icon-chevron-left {
+  transform: rotate(-90deg);
+}
+.icon-chevron-left:before {
+  content: "\e009";
+}
+.icon-chevron-right {
+  transform: rotate(90deg);
+}
+.icon-chevron-right:before {
+  content: "\e009";
+}
 .icon-close:before {
   content: "\e008";
 }

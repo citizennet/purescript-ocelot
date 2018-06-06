@@ -23,6 +23,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead as TACore
 import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utilities.Async as Async
@@ -156,9 +157,6 @@ component =
 
 ----------
 -- HTML
-
-css :: ∀ t0 t1. String -> H.IProp ( "class" :: String | t0 ) t1
-css = HP.class_ <<< HH.ClassName
 
 content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
 content = Backdrop.content [ css "flex" ]

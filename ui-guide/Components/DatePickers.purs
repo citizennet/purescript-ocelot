@@ -89,11 +89,8 @@ cnDocumentationBlocks =
         [ content
           [ Card.card
             [ HP.class_ $ HH.ClassName "flex-1" ]
-            [ HH.h3
-              [ HP.classes Format.captionClasses ]
-              [ HH.text "Standard"
-              , HH.slot unit DatePicker.component unit (const Nothing)
-              ]
+            [ Format.subHeading_ [ HH.text "Standard" ]
+            , HH.slot unit DatePicker.component unit (const Nothing)
             ]
           ]
         ]

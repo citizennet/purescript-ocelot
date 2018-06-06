@@ -15,13 +15,19 @@ import Data.Either (either)
 import Data.Formatter.DateTime (formatDateTime)
 import Data.Maybe (Maybe(Nothing, Just))
 import Data.Monoid (mempty)
+import Data.String (trim)
 import Data.Tuple (Tuple(..), fst, snd)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
+import Ocelot.Block.Format as Format
+import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Input as Input
+import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Components.DatePicker.Utils as Utils
+import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Utils.Setters as Setters
 
@@ -34,13 +40,20 @@ type Effects eff =
   )
 
 type State =
-  { targetDate :: Tuple Year Month }
+  { targetDate :: Tuple Year Month
+  , selection :: Maybe CalendarItem
+  }
 
 data Query a
   = HandleSelect (Select.Message Query CalendarItem) a
   | ToggleYear  Direction a
   | ToggleMonth Direction a
   | SetTime a
+  | Synchronize a
+
+data Message
+  = SelectionChanged (Maybe CalendarItem)
+  | VisibilityChanged Select.Visibility
 
 data Direction
   = Prev
@@ -70,10 +83,25 @@ data BoundaryStatus
   = OutOfBounds
   | InBounds
 
+dropdownClasses :: Array HH.ClassName
+dropdownClasses = HH.ClassName <$>
+  [ "absolute"
+  , "shadow"
+  , "pin-t"
+  , "pin-l"
+  , "z-50"
+  , "border"
+  , "border-grey-90"
+  , "rounded"
+  , "p-6"
+  , "bg-white"
+  , "text-center"
+  , "text-lg"
+  ]
 
 component :: ∀ e m
   . MonadAff ( Effects e ) m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component HH.HTML Query Unit Message m
 component =
   H.lifecycleParentComponent
     { initialState
@@ -86,21 +114,24 @@ component =
   where
     initialState :: Unit -> State
     initialState = const
-      { targetDate: Tuple (Utils.unsafeMkYear 2019) (Utils.unsafeMkMonth 2) }
+      { targetDate: Tuple (Utils.unsafeMkYear 2019) (Utils.unsafeMkMonth 2)
+      , selection: Nothing
+      }
 
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects e)) Unit Void m
+    eval
+      :: Query
+      ~> H.ParentDSL State Query (ChildQuery (Effects e)) Unit Message m
     eval = case _ of
       HandleSelect m a -> case m of
-        Select.Emit query -> do
-          eval query
-          pure a
+        Select.Emit query -> eval query *> pure a
 
         Select.Selected item -> do
           -- We'll want to select the item here, set its status, and raise
           -- a message about its selection.
           let stringify (CalendarItem _ _ _ date) = show date
           H.liftAff $ log ("Selected! Choice was " <> stringify item)
-          pure a
+          H.modify $ _ { selection = Just item }
+          eval $ Synchronize a
 
         Select.Searched str -> do
           -- We don't care about searches.
@@ -120,6 +151,7 @@ component =
                Next -> Utils.nextMonth (canonicalDate y m bottom)
                Prev -> Utils.prevMonth (canonicalDate y m bottom)
         H.modify _ { targetDate = Tuple (year newDate) (month newDate) }
+        eval $ Synchronize a
 
       -- We ought to be able to navigate years in the date picker
       ToggleYear dir a -> a <$ do
@@ -130,14 +162,22 @@ component =
                Next -> Utils.nextYear (canonicalDate y m bottom)
                Prev -> Utils.prevYear (canonicalDate y m bottom)
         H.modify _ { targetDate = Tuple (year newDate) (month newDate) }
+        eval $ Synchronize a
 
       -- We can always set the calendar to the current date and time for the user's
       -- convenience. Or just the month.
       SetTime a -> do
-         x <- H.liftEff now
-         let d = date (toDateTime x)
-         H.modify _ { targetDate = Tuple (year d) (month d) }
-         pure a
+        x <- H.liftEff now
+        let d = date (toDateTime x)
+        H.modify _ { targetDate = Tuple (year d) (month d) }
+        eval $ Synchronize a
+
+      Synchronize a -> do
+        { targetDate: Tuple y m, selection } <- H.get
+        _ <- H.query unit
+          $ Select.replaceItems
+          $ generateCalendarRows selection y m
+        pure a
 
     render :: State -> H.ParentHTML Query (ChildQuery (Effects e)) Unit m
     render st = HH.div_
@@ -147,24 +187,26 @@ component =
           { initialSearch: Nothing
           , debounceTime: Nothing
           , inputType: Select.Toggle
-          , items: generateCalendarRows targetYear targetMonth
-          , render: \s -> HH.div_ [ renderToggle, renderSelect targetYear targetMonth s ]
+          , items: generateCalendarRows st.selection targetYear targetMonth
+          , render: \s -> HH.div_ [ renderInput, renderSelect targetYear targetMonth s ]
           }
 
         targetYear  = fst st.targetDate
         targetMonth = snd st.targetDate
 
         -- The page element that will hold focus, capture key events, etcetera
-        renderToggle =
+        renderInput =
           Button.buttonPrimary
             ( Setters.setToggleProps [] )
-            [ HH.text "Choose Date" ]
+            [ HH.text "Choose a Date" ]
 
         renderSelect y m cst =
-          HH.div_
-            $ if cst.visibility == Select.Off
-              then [ ]
-              else [ renderCalendar ]
+          HH.div
+            [ css "relative" ]
+            [ renderCalendar ]
+            -- $ if cst.visibility == Select.On
+              -- then [ renderCalendar ]
+              -- else [ ]
           where
             -- A helper function that will turn a date into a year/month date string
             fmtMonthYear = either (const "-") id
@@ -178,7 +220,9 @@ component =
             -- The overall container for the calendar
             renderCalendar =
               HH.div
-                ( Setters.setContainerProps [] )
+                ( Setters.setContainerProps
+                  [ HP.classes dropdownClasses ]
+                )
                 [ calendarNav
                 , calendarHeader
                 , HH.div_ $ renderRows $ Utils.rowsFromArray cst.items
@@ -187,44 +231,61 @@ component =
             -- Given a string ("Month YYYY"), creates the calendar navigation.
             -- Could be much better in rendering
             calendarNav =
-              HH.div
-              [ ]
-              [ arrowButton (ToggleYear Prev) "<<"
-              , arrowButton (ToggleMonth Prev) "<"
-              , dateHeader
-              , arrowButton (ToggleMonth Next) ">"
-              , arrowButton (ToggleYear Next) ">>"
-              ]
+              Format.contentHeading
+                [ css "flex" ]
+                [ arrowButton (ToggleYear Prev)
+                  [ Icon.chevronLeft [ css "-mr-3" ]
+                  , Icon.chevronLeft_
+                  ]
+                , arrowButton (ToggleMonth Prev)
+                  [ Icon.chevronLeft_ ]
+                , dateHeader
+                , arrowButton (ToggleMonth Next)
+                  [ Icon.chevronRight_ ]
+                , arrowButton (ToggleYear Next)
+                  [ Icon.chevronRight [ css "-mr-3" ]
+                  , Icon.chevronRight_
+                  ]
+                ]
               where
                 -- We need to embed functionality into these arrow buttons so they trigger
                 -- queries in the parent. Let's do that here. To make this work, remember
                 -- you're writing in `Select`'s HTML type and you have to wrap your constructors
                 -- in Raise.
-                arrowButton q t =
-                  HH.button
-                    [ HE.onClick $ HE.input_ $ Select.Raise $ H.action q ]
-                    [ HH.text t ]
+                arrowButton q =
+                  Button.buttonClear
+                    [ HE.onClick $ Select.always $ Select.raise $ H.action q
+                    , css "text-grey-70 p-3"
+                    ]
 
                 -- Show the month and year
                 dateHeader =
                   HH.div
-                  [ ]
-                  [ HH.text monthYear ]
+                    [ css "flex-1" ]
+                    [ HH.text monthYear ]
 
             calendarHeader =
               HH.div
-              [ ]
-              ( headers <#> \day -> HH.div [ ] [ HH.text day ] )
+                [ css "flex text-grey-70" ]
+                ( headers <#>
+                  \day ->
+                    HH.div
+                      [ css "w-14 h-14 flex items-center justify-center" ]
+                      [ HH.text day ]
+                )
               where
-                headers = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+                headers = [ "S", "M", "T", "W", "T", "F", "S" ]
 
             -- Here we'll render out our dates as rows in the calendar.
-            renderRows = mapWithIndex (\row subArr -> renderRow (row * 7) subArr)
+            renderRows =
+              mapWithIndex (\row subArr -> renderRow (row * 7) subArr)
               where
                 renderRow offset items =
                   HH.div
-                    [ HP.class_ $ HH.ClassName "flex" ]
-                    ( mapWithIndex (\column item -> renderItem (column + offset) item) items )
+                    [ css "flex font-light" ]
+                    ( mapWithIndex
+                      (\column item -> renderItem (column + offset) item) items
+                    )
 
             renderItem index item =
               HH.div
@@ -234,7 +295,16 @@ component =
               -- Because there are so many possible states, what about a helper like
               -- getCalendarStyles?
                 ( maybeSetItemProps index item
-                  [ HP.attr (H.AttrName "style") (getCalendarStyles item) ]
+                  [ css
+                    $ trim
+                    $ "w-14 h-14 rounded-full relative "
+                      <> "flex items-center justify-center "
+                      <> "transition-1/4 border border-white "
+                      <> "before:no-content before:transition-1/4 "
+                      <> "before:w-full before:h-full "
+                      <> "before:absolute before:pin-t before:pin-l "
+                      <> (getCalendarStyles item)
+                  ]
                 )
                 -- printDay will format our item correctly
                 [ HH.text $ printDay item ]
@@ -250,23 +320,25 @@ component =
                 -- Get the correct styles for a calendar item, dependent on its statuses
                 getCalendarStyles :: CalendarItem -> String
                 getCalendarStyles i
-                  =  getSelectableStyles i
+                  = trim $ getSelectableStyles i
                   <> " " <> getSelectedStyles i
                   <> " " <> getBoundaryStyles i
                   where
                     getSelectableStyles:: CalendarItem -> String
                     getSelectableStyles (CalendarItem NotSelectable _ _ _) =
-                      mempty -- replace with something
-                    getSelectableStyles _ = mempty
+                      mempty
+                    getSelectableStyles _ =
+                      "cursor-pointer hover:border hover:border-blue-88"
 
                     getSelectedStyles :: CalendarItem -> String
                     getSelectedStyles (CalendarItem _ Selected _ _) =
-                      mempty -- replace with something
-                    getSelectedStyles _ = mempty
+                      "bg-blue-88 text-white before:scale-1"
+                    getSelectedStyles _ =
+                      "before:scale-0"
 
                     getBoundaryStyles :: CalendarItem -> String
                     getBoundaryStyles (CalendarItem _ _ OutOfBounds _) =
-                      mempty -- replace with something
+                      "text-grey-90"
                     getBoundaryStyles _ = mempty
 
                 -- Just a simple helper to format our CalendarItem into a day
@@ -285,11 +357,27 @@ component =
 -- Other helpers for the file
 
 -- Generate a standard set of dates from a year and month.
-generateCalendarRows :: Year -> Month -> Array CalendarItem
-generateCalendarRows y m = lastMonth <> thisMonth <> nextMonth
+generateCalendarRows
+  :: Maybe CalendarItem
+  -> Year
+  -> Month
+  -> Array CalendarItem
+generateCalendarRows selection y m = lastMonth <> thisMonth <> nextMonth
   where
     { pre, body, post, all } = Utils.alignByWeek y m
-    outOfBounds = map (\i -> CalendarItem Selectable NotSelected OutOfBounds i)
+    outOfBounds = map (generateCalendarItem selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post
-    thisMonth = body <#> (\i -> CalendarItem Selectable NotSelected InBounds i)
+
+    thisMonth = body <#> (generateCalendarItem selection InBounds)
+
+generateCalendarItem
+  :: Maybe CalendarItem
+  -> BoundaryStatus
+  -> Date
+  -> CalendarItem
+generateCalendarItem Nothing bound i =
+  CalendarItem Selectable NotSelected bound i
+generateCalendarItem (Just (CalendarItem _ _ _ d)) bound i
+  | d == i = CalendarItem Selectable Selected bound i
+  | otherwise = CalendarItem Selectable NotSelected bound i
