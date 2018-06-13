@@ -64,8 +64,8 @@ captionClasses = HH.ClassName <$>
 
 linkClasses :: Array HH.ClassName
 linkClasses = HH.ClassName <$>
-  [ "text-blue-88"
-  , "hover:text-blue-70"
+  [ "text-blue-75"
+  , "hover:text-blue-65"
   , "no-underline"
   , "font-medium"
   , "cursor-pointer"
@@ -82,7 +82,7 @@ linkDarkClasses = HH.ClassName <$>
 
 mutedClasses :: Array HH.ClassName
 mutedClasses = HH.ClassName <$>
-  [ "text-grey-dark"
+  [ "text-grey-50"
   ]
 
 pClasses :: Array HH.ClassName

@@ -770,7 +770,7 @@ html, .ocelot-scoped {
 .ocelot-scoped *::after {
   border-width: 0;
   border-style: solid;
-  border-color: #dae1e7;
+  border-color: #c2c6cc;
 }
 
 /**
@@ -832,6 +832,7 @@ body .ocelot-scoped {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   line-height: 1.5;
   font-size: 12px;
+  color: #242a33;
 }
 
 .ocelot-scoped button,
@@ -1064,7 +1065,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-green {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .bg-green-light {
@@ -1220,7 +1221,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-black-10 {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .bg-black-20 {
@@ -1232,7 +1233,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-grey-50 {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .bg-grey-50-a20 {
@@ -1255,6 +1256,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .bg-grey-80 {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .bg-grey-90 {
   background-color: #e1e3e6;
 }
@@ -1263,8 +1268,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .bg-grey-97 {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .bg-blue-65 {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .bg-blue-75 {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .bg-blue-82 {
@@ -1273,10 +1286,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .bg-blue-88 {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .bg-blue-100 {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .bg-fb-blue {
@@ -1289,6 +1298,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .bg-ig-brown {
   background-color: #675144;
+}
+
+.ocelot-scoped .bg-steel-75 {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .bg-steel-85 {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .bg-steel-100 {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:bg-transparent:focus {
@@ -1428,7 +1449,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-green:focus {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .focus\:bg-green-light:focus {
@@ -1584,7 +1605,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-black-10:focus {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .focus\:bg-black-20:focus {
@@ -1596,7 +1617,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-grey-50:focus {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .focus\:bg-grey-50-a20:focus {
@@ -1619,6 +1640,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .focus\:bg-grey-80:focus {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .focus\:bg-grey-90:focus {
   background-color: #e1e3e6;
 }
@@ -1627,8 +1652,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .focus\:bg-grey-97:focus {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .focus\:bg-blue-65:focus {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .focus\:bg-blue-75:focus {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .focus\:bg-blue-82:focus {
@@ -1637,10 +1670,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:bg-blue-88:focus {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .focus\:bg-blue-100:focus {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:bg-fb-blue:focus {
@@ -1653,6 +1682,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:bg-ig-brown:focus {
   background-color: #675144;
+}
+
+.ocelot-scoped .focus\:bg-steel-75:focus {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .focus\:bg-steel-85:focus {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .focus\:bg-steel-100:focus {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:bg-transparent:hover {
@@ -1792,7 +1833,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-green:hover {
-  background-color: #38c172;
+  background-color: #66c7af;
 }
 
 .ocelot-scoped .hover\:bg-green-light:hover {
@@ -1948,7 +1989,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-black-10:hover {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .hover\:bg-black-20:hover {
@@ -1960,7 +2001,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-grey-50:hover {
-  background-color: rgb(102, 113, 128);
+  background-color: #5c6573;
 }
 
 .ocelot-scoped .hover\:bg-grey-50-a20:hover {
@@ -1983,6 +2024,10 @@ body .ocelot-scoped {
   background-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:bg-grey-80:hover {
+  background-color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:bg-grey-90:hover {
   background-color: #e1e3e6;
 }
@@ -1991,8 +2036,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:bg-grey-97:hover {
+  background-color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:bg-blue-65:hover {
+  background-color: #008aa6;
+}
+
 .ocelot-scoped .hover\:bg-blue-75:hover {
-  background-color: #f0f1f2;
+  background-color: #009fbf;
 }
 
 .ocelot-scoped .hover\:bg-blue-82:hover {
@@ -2001,10 +2054,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-blue-88:hover {
   background-color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:bg-blue-100:hover {
-  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:bg-fb-blue:hover {
@@ -2017,6 +2066,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:bg-ig-brown:hover {
   background-color: #675144;
+}
+
+.ocelot-scoped .hover\:bg-steel-75:hover {
+  background-color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:bg-steel-85:hover {
+  background-color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:bg-steel-100:hover {
+  background-color: #e6f0ff;
 }
 
 .ocelot-scoped .bg-bottom {
@@ -2216,7 +2277,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-green {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .border-green-light {
@@ -2372,7 +2433,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .border-black-20 {
@@ -2384,7 +2445,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-grey-50 {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .border-grey-50-a20 {
@@ -2407,6 +2468,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .border-grey-80 {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .border-grey-90 {
   border-color: #e1e3e6;
 }
@@ -2415,8 +2480,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .border-grey-97 {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .border-blue-65 {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .border-blue-75 {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .border-blue-82 {
@@ -2425,10 +2498,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .border-blue-88 {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .border-blue-100 {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .border-fb-blue {
@@ -2441,6 +2510,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .border-steel-75 {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .border-steel-85 {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .border-steel-100 {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:border-transparent:focus {
@@ -2580,7 +2661,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-green:focus {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .focus\:border-green-light:focus {
@@ -2736,7 +2817,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-black-10:focus {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .focus\:border-black-20:focus {
@@ -2748,7 +2829,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-grey-50:focus {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .focus\:border-grey-50-a20:focus {
@@ -2771,6 +2852,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .focus\:border-grey-80:focus {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .focus\:border-grey-90:focus {
   border-color: #e1e3e6;
 }
@@ -2779,8 +2864,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .focus\:border-grey-97:focus {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .focus\:border-blue-65:focus {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .focus\:border-blue-75:focus {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .focus\:border-blue-82:focus {
@@ -2789,10 +2882,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-blue-88:focus {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .focus\:border-blue-100:focus {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .focus\:border-fb-blue:focus {
@@ -2805,6 +2894,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-ig-brown:focus {
   border-color: #675144;
+}
+
+.ocelot-scoped .focus\:border-steel-75:focus {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .focus\:border-steel-85:focus {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .focus\:border-steel-100:focus {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:border-transparent:hover {
@@ -2944,7 +3045,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-green:hover {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .hover\:border-green-light:hover {
@@ -3100,7 +3201,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-black-10:hover {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .hover\:border-black-20:hover {
@@ -3112,7 +3213,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-grey-50:hover {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .hover\:border-grey-50-a20:hover {
@@ -3135,6 +3236,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:border-grey-80:hover {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:border-grey-90:hover {
   border-color: #e1e3e6;
 }
@@ -3143,8 +3248,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:border-grey-97:hover {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:border-blue-65:hover {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .hover\:border-blue-75:hover {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .hover\:border-blue-82:hover {
@@ -3153,10 +3266,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:border-blue-88:hover {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:border-blue-100:hover {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:border-fb-blue:hover {
@@ -3169,6 +3278,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:border-ig-brown:hover {
   border-color: #675144;
+}
+
+.ocelot-scoped .hover\:border-steel-75:hover {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:border-steel-85:hover {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:border-steel-100:hover {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-transparent {
@@ -3308,7 +3429,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-green {
-  border-color: #38c172;
+  border-color: #66c7af;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-green-light {
@@ -3464,7 +3585,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-black-20 {
@@ -3476,7 +3597,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-50 {
-  border-color: rgb(102, 113, 128);
+  border-color: #5c6573;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-grey-50-a20 {
@@ -3499,6 +3620,10 @@ body .ocelot-scoped {
   border-color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .group:hover .group-hover\:border-grey-80 {
+  border-color: #c2c6cc;
+}
+
 .ocelot-scoped .group:hover .group-hover\:border-grey-90 {
   border-color: #e1e3e6;
 }
@@ -3507,8 +3632,16 @@ body .ocelot-scoped {
   border-color: #f0f1f2;
 }
 
+.ocelot-scoped .group:hover .group-hover\:border-grey-97 {
+  border-color: #f7f7f7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-blue-65 {
+  border-color: #008aa6;
+}
+
 .ocelot-scoped .group:hover .group-hover\:border-blue-75 {
-  border-color: #f0f1f2;
+  border-color: #009fbf;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-blue-82 {
@@ -3517,10 +3650,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-blue-88 {
   border-color: #00bbe0;
-}
-
-.ocelot-scoped .group:hover .group-hover\:border-blue-100 {
-  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-fb-blue {
@@ -3533,6 +3662,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-75 {
+  border-color: #a8b2bf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-85 {
+  border-color: #bfcad9;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-steel-100 {
+  border-color: #e6f0ff;
 }
 
 .ocelot-scoped .rounded-none {
@@ -6526,7 +6667,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-green {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .text-green-light {
@@ -6682,7 +6823,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .text-black-20 {
@@ -6694,7 +6835,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-grey-50 {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .text-grey-50-a20 {
@@ -6717,6 +6858,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .text-grey-80 {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .text-grey-90 {
   color: #e1e3e6;
 }
@@ -6725,8 +6870,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .text-grey-97 {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .text-blue-65 {
+  color: #008aa6;
+}
+
 .ocelot-scoped .text-blue-75 {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .text-blue-82 {
@@ -6735,10 +6888,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .text-blue-88 {
   color: #00bbe0;
-}
-
-.ocelot-scoped .text-blue-100 {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .text-fb-blue {
@@ -6751,6 +6900,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .text-steel-75 {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .text-steel-85 {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .text-steel-100 {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:text-transparent:hover {
@@ -6890,7 +7051,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-green:hover {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .hover\:text-green-light:hover {
@@ -7046,7 +7207,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-black-10:hover {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .hover\:text-black-20:hover {
@@ -7058,7 +7219,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-grey-50:hover {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .hover\:text-grey-50-a20:hover {
@@ -7081,6 +7242,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .hover\:text-grey-80:hover {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .hover\:text-grey-90:hover {
   color: #e1e3e6;
 }
@@ -7089,8 +7254,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .hover\:text-grey-97:hover {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .hover\:text-blue-65:hover {
+  color: #008aa6;
+}
+
 .ocelot-scoped .hover\:text-blue-75:hover {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .hover\:text-blue-82:hover {
@@ -7099,10 +7272,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:text-blue-88:hover {
   color: #00bbe0;
-}
-
-.ocelot-scoped .hover\:text-blue-100:hover {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .hover\:text-fb-blue:hover {
@@ -7115,6 +7284,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:text-ig-brown:hover {
   color: #675144;
+}
+
+.ocelot-scoped .hover\:text-steel-75:hover {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .hover\:text-steel-85:hover {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .hover\:text-steel-100:hover {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-transparent {
@@ -7254,7 +7435,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-green {
-  color: #38c172;
+  color: #66c7af;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-green-light {
@@ -7410,7 +7591,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-black-20 {
@@ -7422,7 +7603,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-50 {
-  color: rgb(102, 113, 128);
+  color: #5c6573;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-grey-50-a20 {
@@ -7445,6 +7626,10 @@ body .ocelot-scoped {
   color: rgba(143, 158, 179, .4);
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-grey-80 {
+  color: #c2c6cc;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-grey-90 {
   color: #e1e3e6;
 }
@@ -7453,8 +7638,16 @@ body .ocelot-scoped {
   color: #f0f1f2;
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-grey-97 {
+  color: #f7f7f7;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-blue-65 {
+  color: #008aa6;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-blue-75 {
-  color: #f0f1f2;
+  color: #009fbf;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-blue-82 {
@@ -7463,10 +7656,6 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-blue-88 {
   color: #00bbe0;
-}
-
-.ocelot-scoped .group:hover .group-hover\:text-blue-100 {
-  color: #e6f0ff;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-fb-blue {
@@ -7479,6 +7668,18 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-75 {
+  color: #a8b2bf;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-85 {
+  color: #bfcad9;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-steel-100 {
+  color: #e6f0ff;
 }
 
 .ocelot-scoped .text-xs {
@@ -8030,8 +8231,8 @@ body .ocelot-scoped {
   --scale: 0;
 }
 
-.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey:not(:focus):hover:not(:checked):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .\!focus\:hover\:\!checked\:\!disabled\:sibling\:border-grey-70:not(:focus):hover:not(:checked):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:sibling\:shadow:focus ~ * {
@@ -8042,12 +8243,12 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey:checked:disabled ~ *:before {
-  background-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before {
+  background-color: #c2c6cc;
 }
 
-.ocelot-scoped .checked\:disabled\:sibling\:border-grey:checked:disabled ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * {
+  border-color: #c2c6cc;
 }
 
 /* legacy variant & pseudo utilities */
@@ -8158,8 +8359,8 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
-.ocelot-scoped .\!checked\:sibling\:bg-grey-light:not(:checked) ~ * {
-  background-color: #dae1e7;
+.ocelot-scoped .\!checked\:sibling\:bg-grey-80:not(:checked) ~ * {
+  background-color: #c2c6cc;
 }
 
 .ocelot-scoped .\!checked\:sibling\:border-grey-70-a40:not(:checked) ~ * {
@@ -8195,8 +8396,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:text-grey-dark:disabled {
-  color: #8795a1;
+.ocelot-scoped .disabled\:text-grey-70:disabled {
+  color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .\!disabled\:sibling\:bg-white:not(:disabled) ~ * {
@@ -8207,20 +8408,16 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .disabled\:border-grey-light:disabled {
-  border-color: #dae1e7;
+.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey-70:hover:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .\!focus\:\!disabled\:hover\:border-grey:hover:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey-70:not(:focus):not(:disabled) {
+  border-color: rgb(143, 158, 179);
 }
 
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:border-grey:not(:focus):not(:disabled) {
-  border-color: #b8c2cc;
-}
-
-.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey:not(:focus):not(:disabled) ~ * {
-  border-color: #b8c2cc;
+.ocelot-scoped .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * {
+  border-color: rgb(143, 158, 179);
 }
 
 .ocelot-scoped .focus\:next\:text-blue-88:focus + * {
@@ -8259,8 +8456,8 @@ body .ocelot-scoped {
   background-color: #f0f1f2;
 }
 
-.ocelot-scoped .sibling\:text-grey-dark ~ * {
-  color: #8795a1;
+.ocelot-scoped .sibling\:text-grey-50 ~ * {
+  color: #5c6573;
 }
 
 /* Animation Styles */
@@ -8544,7 +8741,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:bg-green-light {
@@ -8700,7 +8897,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:bg-black-20 {
@@ -8712,7 +8909,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:bg-grey-50-a20 {
@@ -8735,6 +8932,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -8743,8 +8944,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:bg-blue-82 {
@@ -8753,10 +8962,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:bg-fb-blue {
@@ -8769,6 +8974,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:bg-transparent:focus {
@@ -8908,7 +9125,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:focus\:bg-green-light:focus {
@@ -9064,7 +9281,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:focus\:bg-black-20:focus {
@@ -9076,7 +9293,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:focus\:bg-grey-50-a20:focus {
@@ -9099,6 +9316,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -9107,8 +9328,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:focus\:bg-blue-82:focus {
@@ -9117,10 +9346,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:bg-fb-blue:focus {
@@ -9133,6 +9358,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:bg-transparent:hover {
@@ -9272,7 +9509,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:bg-green-light:hover {
@@ -9428,7 +9665,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:bg-black-20:hover {
@@ -9440,7 +9677,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:bg-grey-50-a20:hover {
@@ -9463,6 +9700,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -9471,8 +9712,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:bg-blue-82:hover {
@@ -9481,10 +9730,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:bg-fb-blue:hover {
@@ -9497,6 +9742,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:bg-bottom {
@@ -9696,7 +9953,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:border-green-light {
@@ -9852,7 +10109,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:border-black-20 {
@@ -9864,7 +10121,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:border-grey-50-a20 {
@@ -9887,6 +10144,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -9895,8 +10156,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:border-blue-82 {
@@ -9905,10 +10174,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:border-fb-blue {
@@ -9921,6 +10186,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:border-transparent:focus {
@@ -10060,7 +10337,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:focus\:border-green-light:focus {
@@ -10216,7 +10493,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:focus\:border-black-20:focus {
@@ -10228,7 +10505,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:focus\:border-grey-50-a20:focus {
@@ -10251,6 +10528,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -10259,8 +10540,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:focus\:border-blue-82:focus {
@@ -10269,10 +10558,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:focus\:border-fb-blue:focus {
@@ -10285,6 +10570,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:border-transparent:hover {
@@ -10424,7 +10721,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:border-green-light:hover {
@@ -10580,7 +10877,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:border-black-20:hover {
@@ -10592,7 +10889,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:border-grey-50-a20:hover {
@@ -10615,6 +10912,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -10623,8 +10924,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:border-blue-82:hover {
@@ -10633,10 +10942,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:border-fb-blue:hover {
@@ -10649,6 +10954,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-transparent {
@@ -10788,7 +11105,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-green-light {
@@ -10944,7 +11261,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-black-20 {
@@ -10956,7 +11273,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-50-a20 {
@@ -10979,6 +11296,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -10987,8 +11308,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-82 {
@@ -10997,10 +11326,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-fb-blue {
@@ -11013,6 +11338,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:rounded-none {
@@ -13998,7 +14335,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:text-green-light {
@@ -14154,7 +14491,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:text-black-20 {
@@ -14166,7 +14503,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:text-grey-50-a20 {
@@ -14189,6 +14526,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -14197,8 +14538,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:text-blue-82 {
@@ -14207,10 +14556,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:text-fb-blue {
@@ -14223,6 +14568,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:text-transparent:hover {
@@ -14362,7 +14719,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:hover\:text-green-light:hover {
@@ -14518,7 +14875,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:text-black-20:hover {
@@ -14530,7 +14887,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:hover\:text-grey-50-a20:hover {
@@ -14553,6 +14910,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -14561,8 +14922,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:hover\:text-blue-82:hover {
@@ -14571,10 +14940,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:hover\:text-fb-blue:hover {
@@ -14587,6 +14952,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-transparent {
@@ -14726,7 +15103,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-green-light {
@@ -14882,7 +15259,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-black-20 {
@@ -14894,7 +15271,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-50-a20 {
@@ -14917,6 +15294,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -14925,8 +15306,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-82 {
@@ -14935,10 +15324,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .sm\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-fb-blue {
@@ -14951,6 +15336,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .sm\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .sm\:text-xs {
@@ -15523,7 +15920,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:bg-green-light {
@@ -15679,7 +16076,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:bg-black-20 {
@@ -15691,7 +16088,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:bg-grey-50-a20 {
@@ -15714,6 +16111,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -15722,8 +16123,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:bg-blue-82 {
@@ -15732,10 +16141,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:bg-fb-blue {
@@ -15748,6 +16153,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:bg-transparent:focus {
@@ -15887,7 +16304,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:focus\:bg-green-light:focus {
@@ -16043,7 +16460,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:focus\:bg-black-20:focus {
@@ -16055,7 +16472,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:focus\:bg-grey-50-a20:focus {
@@ -16078,6 +16495,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -16086,8 +16507,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:focus\:bg-blue-82:focus {
@@ -16096,10 +16525,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:bg-fb-blue:focus {
@@ -16112,6 +16537,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:bg-transparent:hover {
@@ -16251,7 +16688,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:bg-green-light:hover {
@@ -16407,7 +16844,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:bg-black-20:hover {
@@ -16419,7 +16856,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:bg-grey-50-a20:hover {
@@ -16442,6 +16879,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -16450,8 +16891,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:bg-blue-82:hover {
@@ -16460,10 +16909,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:bg-fb-blue:hover {
@@ -16476,6 +16921,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:bg-bottom {
@@ -16675,7 +17132,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:border-green-light {
@@ -16831,7 +17288,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:border-black-20 {
@@ -16843,7 +17300,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:border-grey-50-a20 {
@@ -16866,6 +17323,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -16874,8 +17335,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:border-blue-82 {
@@ -16884,10 +17353,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:border-fb-blue {
@@ -16900,6 +17365,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:border-transparent:focus {
@@ -17039,7 +17516,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:focus\:border-green-light:focus {
@@ -17195,7 +17672,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:focus\:border-black-20:focus {
@@ -17207,7 +17684,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:focus\:border-grey-50-a20:focus {
@@ -17230,6 +17707,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -17238,8 +17719,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:focus\:border-blue-82:focus {
@@ -17248,10 +17737,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:focus\:border-fb-blue:focus {
@@ -17264,6 +17749,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:border-transparent:hover {
@@ -17403,7 +17900,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:border-green-light:hover {
@@ -17559,7 +18056,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:border-black-20:hover {
@@ -17571,7 +18068,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:border-grey-50-a20:hover {
@@ -17594,6 +18091,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -17602,8 +18103,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:border-blue-82:hover {
@@ -17612,10 +18121,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:border-fb-blue:hover {
@@ -17628,6 +18133,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-transparent {
@@ -17767,7 +18284,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-green-light {
@@ -17923,7 +18440,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-black-20 {
@@ -17935,7 +18452,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-50-a20 {
@@ -17958,6 +18475,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -17966,8 +18487,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-82 {
@@ -17976,10 +18505,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-fb-blue {
@@ -17992,6 +18517,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:rounded-none {
@@ -20977,7 +21514,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:text-green-light {
@@ -21133,7 +21670,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:text-black-20 {
@@ -21145,7 +21682,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:text-grey-50-a20 {
@@ -21168,6 +21705,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -21176,8 +21717,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:text-blue-82 {
@@ -21186,10 +21735,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:text-fb-blue {
@@ -21202,6 +21747,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:text-transparent:hover {
@@ -21341,7 +21898,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:hover\:text-green-light:hover {
@@ -21497,7 +22054,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:text-black-20:hover {
@@ -21509,7 +22066,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:hover\:text-grey-50-a20:hover {
@@ -21532,6 +22089,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -21540,8 +22101,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:hover\:text-blue-82:hover {
@@ -21550,10 +22119,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:hover\:text-fb-blue:hover {
@@ -21566,6 +22131,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-transparent {
@@ -21705,7 +22282,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-green-light {
@@ -21861,7 +22438,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-black-20 {
@@ -21873,7 +22450,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-50-a20 {
@@ -21896,6 +22473,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -21904,8 +22485,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .md\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-82 {
@@ -21914,10 +22503,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .md\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-fb-blue {
@@ -21930,6 +22515,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .md\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .md\:text-xs {
@@ -22502,7 +23099,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:bg-green-light {
@@ -22658,7 +23255,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:bg-black-20 {
@@ -22670,7 +23267,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:bg-grey-50-a20 {
@@ -22693,6 +23290,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -22701,8 +23302,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:bg-blue-82 {
@@ -22711,10 +23320,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:bg-fb-blue {
@@ -22727,6 +23332,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:bg-transparent:focus {
@@ -22866,7 +23483,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:focus\:bg-green-light:focus {
@@ -23022,7 +23639,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:focus\:bg-black-20:focus {
@@ -23034,7 +23651,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:focus\:bg-grey-50-a20:focus {
@@ -23057,6 +23674,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -23065,8 +23686,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:focus\:bg-blue-82:focus {
@@ -23075,10 +23704,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:bg-fb-blue:focus {
@@ -23091,6 +23716,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:bg-transparent:hover {
@@ -23230,7 +23867,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:bg-green-light:hover {
@@ -23386,7 +24023,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:bg-black-20:hover {
@@ -23398,7 +24035,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:bg-grey-50-a20:hover {
@@ -23421,6 +24058,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -23429,8 +24070,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:bg-blue-82:hover {
@@ -23439,10 +24088,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:bg-fb-blue:hover {
@@ -23455,6 +24100,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:bg-bottom {
@@ -23654,7 +24311,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:border-green-light {
@@ -23810,7 +24467,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:border-black-20 {
@@ -23822,7 +24479,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:border-grey-50-a20 {
@@ -23845,6 +24502,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -23853,8 +24514,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:border-blue-82 {
@@ -23863,10 +24532,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:border-fb-blue {
@@ -23879,6 +24544,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:border-transparent:focus {
@@ -24018,7 +24695,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:focus\:border-green-light:focus {
@@ -24174,7 +24851,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:focus\:border-black-20:focus {
@@ -24186,7 +24863,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:focus\:border-grey-50-a20:focus {
@@ -24209,6 +24886,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -24217,8 +24898,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:focus\:border-blue-82:focus {
@@ -24227,10 +24916,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:focus\:border-fb-blue:focus {
@@ -24243,6 +24928,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:border-transparent:hover {
@@ -24382,7 +25079,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:border-green-light:hover {
@@ -24538,7 +25235,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:border-black-20:hover {
@@ -24550,7 +25247,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:border-grey-50-a20:hover {
@@ -24573,6 +25270,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -24581,8 +25282,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:border-blue-82:hover {
@@ -24591,10 +25300,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:border-fb-blue:hover {
@@ -24607,6 +25312,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-transparent {
@@ -24746,7 +25463,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-green-light {
@@ -24902,7 +25619,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-black-20 {
@@ -24914,7 +25631,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-50-a20 {
@@ -24937,6 +25654,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -24945,8 +25666,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-82 {
@@ -24955,10 +25684,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-fb-blue {
@@ -24971,6 +25696,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:rounded-none {
@@ -27956,7 +28693,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:text-green-light {
@@ -28112,7 +28849,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:text-black-20 {
@@ -28124,7 +28861,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:text-grey-50-a20 {
@@ -28147,6 +28884,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -28155,8 +28896,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:text-blue-82 {
@@ -28165,10 +28914,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:text-fb-blue {
@@ -28181,6 +28926,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:text-transparent:hover {
@@ -28320,7 +29077,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:hover\:text-green-light:hover {
@@ -28476,7 +29233,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:text-black-20:hover {
@@ -28488,7 +29245,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:hover\:text-grey-50-a20:hover {
@@ -28511,6 +29268,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -28519,8 +29280,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:hover\:text-blue-82:hover {
@@ -28529,10 +29298,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:hover\:text-fb-blue:hover {
@@ -28545,6 +29310,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-transparent {
@@ -28684,7 +29461,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-green-light {
@@ -28840,7 +29617,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-black-20 {
@@ -28852,7 +29629,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-50-a20 {
@@ -28875,6 +29652,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -28883,8 +29664,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-82 {
@@ -28893,10 +29682,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .lg\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-fb-blue {
@@ -28909,6 +29694,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .lg\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .lg\:text-xs {
@@ -29481,7 +30278,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-green {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:bg-green-light {
@@ -29637,7 +30434,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:bg-black-20 {
@@ -29649,7 +30446,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-grey-50 {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:bg-grey-50-a20 {
@@ -29672,6 +30469,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:bg-grey-80 {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:bg-grey-90 {
     background-color: #e1e3e6;
   }
@@ -29680,8 +30481,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:bg-grey-97 {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:bg-blue-65 {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:bg-blue-75 {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:bg-blue-82 {
@@ -29690,10 +30499,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:bg-blue-88 {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:bg-blue-100 {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:bg-fb-blue {
@@ -29706,6 +30511,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-75 {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-85 {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:bg-steel-100 {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:bg-transparent:focus {
@@ -29845,7 +30662,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-green:focus {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:focus\:bg-green-light:focus {
@@ -30001,7 +30818,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:focus\:bg-black-20:focus {
@@ -30013,7 +30830,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-grey-50:focus {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:focus\:bg-grey-50-a20:focus {
@@ -30036,6 +30853,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:focus\:bg-grey-80:focus {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-grey-90:focus {
     background-color: #e1e3e6;
   }
@@ -30044,8 +30865,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:focus\:bg-grey-97:focus {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-blue-65:focus {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-blue-75:focus {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:focus\:bg-blue-82:focus {
@@ -30054,10 +30883,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:bg-blue-88:focus {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:focus\:bg-blue-100:focus {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:bg-fb-blue:focus {
@@ -30070,6 +30895,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-75:focus {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-85:focus {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-steel-100:focus {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:bg-transparent:hover {
@@ -30209,7 +31046,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-green:hover {
-    background-color: #38c172;
+    background-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:bg-green-light:hover {
@@ -30365,7 +31202,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:bg-black-20:hover {
@@ -30377,7 +31214,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-50:hover {
-    background-color: rgb(102, 113, 128);
+    background-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:bg-grey-50-a20:hover {
@@ -30400,6 +31237,10 @@ body .ocelot-scoped {
     background-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:bg-grey-80:hover {
+    background-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-grey-90:hover {
     background-color: #e1e3e6;
   }
@@ -30408,8 +31249,16 @@ body .ocelot-scoped {
     background-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:bg-grey-97:hover {
+    background-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-blue-65:hover {
+    background-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-blue-75:hover {
-    background-color: #f0f1f2;
+    background-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:bg-blue-82:hover {
@@ -30418,10 +31267,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-blue-88:hover {
     background-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:bg-blue-100:hover {
-    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:bg-fb-blue:hover {
@@ -30434,6 +31279,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-75:hover {
+    background-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-85:hover {
+    background-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-steel-100:hover {
+    background-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:bg-bottom {
@@ -30633,7 +31490,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:border-green-light {
@@ -30789,7 +31646,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:border-black-20 {
@@ -30801,7 +31658,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:border-grey-50-a20 {
@@ -30824,6 +31681,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -30832,8 +31693,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:border-blue-82 {
@@ -30842,10 +31711,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:border-fb-blue {
@@ -30858,6 +31723,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:border-transparent:focus {
@@ -30997,7 +31874,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-green:focus {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:focus\:border-green-light:focus {
@@ -31153,7 +32030,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:focus\:border-black-20:focus {
@@ -31165,7 +32042,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-50:focus {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:focus\:border-grey-50-a20:focus {
@@ -31188,6 +32065,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:focus\:border-grey-80:focus {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:focus\:border-grey-90:focus {
     border-color: #e1e3e6;
   }
@@ -31196,8 +32077,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:focus\:border-grey-97:focus {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-blue-65:focus {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:focus\:border-blue-75:focus {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:focus\:border-blue-82:focus {
@@ -31206,10 +32095,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:focus\:border-blue-100:focus {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:focus\:border-fb-blue:focus {
@@ -31222,6 +32107,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-75:focus {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-85:focus {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-steel-100:focus {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:border-transparent:hover {
@@ -31361,7 +32258,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-green:hover {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:border-green-light:hover {
@@ -31517,7 +32414,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:border-black-20:hover {
@@ -31529,7 +32426,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-grey-50:hover {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:border-grey-50-a20:hover {
@@ -31552,6 +32449,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:border-grey-80:hover {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:border-grey-90:hover {
     border-color: #e1e3e6;
   }
@@ -31560,8 +32461,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:border-grey-97:hover {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-blue-65:hover {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:border-blue-75:hover {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:border-blue-82:hover {
@@ -31570,10 +32479,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:border-blue-88:hover {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:border-blue-100:hover {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:border-fb-blue:hover {
@@ -31586,6 +32491,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-75:hover {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-85:hover {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-steel-100:hover {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-transparent {
@@ -31725,7 +32642,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-green {
-    border-color: #38c172;
+    border-color: #66c7af;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-green-light {
@@ -31881,7 +32798,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-black-20 {
@@ -31893,7 +32810,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-50 {
-    border-color: rgb(102, 113, 128);
+    border-color: #5c6573;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-50-a20 {
@@ -31916,6 +32833,10 @@ body .ocelot-scoped {
     border-color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-80 {
+    border-color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-90 {
     border-color: #e1e3e6;
   }
@@ -31924,8 +32845,16 @@ body .ocelot-scoped {
     border-color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-grey-97 {
+    border-color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-65 {
+    border-color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-75 {
-    border-color: #f0f1f2;
+    border-color: #009fbf;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-82 {
@@ -31934,10 +32863,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-88 {
     border-color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:group:hover .group-hover\:border-blue-100 {
-    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-fb-blue {
@@ -31950,6 +32875,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-75 {
+    border-color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-85 {
+    border-color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:border-steel-100 {
+    border-color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:rounded-none {
@@ -34935,7 +35872,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:text-green-light {
@@ -35091,7 +36028,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:text-black-20 {
@@ -35103,7 +36040,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:text-grey-50-a20 {
@@ -35126,6 +36063,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -35134,8 +36075,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:text-blue-82 {
@@ -35144,10 +36093,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:text-fb-blue {
@@ -35160,6 +36105,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:text-transparent:hover {
@@ -35299,7 +36256,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-green:hover {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:hover\:text-green-light:hover {
@@ -35455,7 +36412,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:text-black-20:hover {
@@ -35467,7 +36424,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-grey-50:hover {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:hover\:text-grey-50-a20:hover {
@@ -35490,6 +36447,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:hover\:text-grey-80:hover {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:hover\:text-grey-90:hover {
     color: #e1e3e6;
   }
@@ -35498,8 +36459,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:hover\:text-grey-97:hover {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-blue-65:hover {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:hover\:text-blue-75:hover {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:hover\:text-blue-82:hover {
@@ -35508,10 +36477,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:text-blue-88:hover {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:hover\:text-blue-100:hover {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:hover\:text-fb-blue:hover {
@@ -35524,6 +36489,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-75:hover {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-85:hover {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-steel-100:hover {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-transparent {
@@ -35663,7 +36640,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-green {
-    color: #38c172;
+    color: #66c7af;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-green-light {
@@ -35819,7 +36796,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-black-20 {
@@ -35831,7 +36808,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50 {
-    color: rgb(102, 113, 128);
+    color: #5c6573;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-50-a20 {
@@ -35854,6 +36831,10 @@ body .ocelot-scoped {
     color: rgba(143, 158, 179, .4);
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-80 {
+    color: #c2c6cc;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-90 {
     color: #e1e3e6;
   }
@@ -35862,8 +36843,16 @@ body .ocelot-scoped {
     color: #f0f1f2;
   }
 
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-grey-97 {
+    color: #f7f7f7;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-65 {
+    color: #008aa6;
+  }
+
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-75 {
-    color: #f0f1f2;
+    color: #009fbf;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-82 {
@@ -35872,10 +36861,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-88 {
     color: #00bbe0;
-  }
-
-  .ocelot-scoped .xl\:group:hover .group-hover\:text-blue-100 {
-    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-fb-blue {
@@ -35888,6 +36873,18 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-75 {
+    color: #a8b2bf;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-85 {
+    color: #bfcad9;
+  }
+
+  .ocelot-scoped .xl\:group:hover .group-hover\:text-steel-100 {
+    color: #e6f0ff;
   }
 
   .ocelot-scoped .xl\:text-xs {

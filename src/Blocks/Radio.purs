@@ -15,7 +15,8 @@ labelClasses = HH.ClassName <$>
   , "inline-block"
   , "py-2"
   , "cursor-pointer"
-  , "text-black"
+  , "text-black-20"
+  , "items-center"
   ]
 
 inputClasses :: Array HH.ClassName
@@ -28,11 +29,11 @@ inputClasses = HH.ClassName <$>
   , "focus:sibling:border-blue-88"
   , "!checked:sibling:before:opacity-0"
   , "!checked:sibling:before:scale-0"
-  , "!focus:hover:!checked:!disabled:sibling:border-grey"
+  , "!focus:hover:!checked:!disabled:sibling:border-grey-70"
   , "focus:sibling:shadow"
   , "checked:!disabled:sibling:before:bg-blue-88"
-  , "checked:disabled:sibling:before:bg-grey"
-  , "checked:disabled:sibling:border-grey"
+  , "checked:disabled:sibling:before:bg-grey-80"
+  , "checked:disabled:sibling:border-grey-80"
   , "offscreen"
   ]
 

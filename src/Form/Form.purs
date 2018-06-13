@@ -9,7 +9,7 @@ import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
-import Data.Record (get)
+import Data.Record as Record
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Ocelot.Data.Record (class SequenceRecord, sequenceRecord)
 import Polyform.Validation (Validation(..), V(..))
@@ -48,6 +48,7 @@ instance monoidEndo :: Monoid (Endo a) where
 --
 -- Note: Value wrapped in Maybe to represent a case where we haven't
 -- validated the field yet.
+
 type FormInput iv vv e a b =
   { input          :: a
   , result         :: Maybe (Either e b)
@@ -56,14 +57,45 @@ type FormInput iv vv e a b =
   , validate       :: Boolean
   }
 
+_input = SProxy :: SProxy "input"
+_result = SProxy :: SProxy "result"
+
+-- Can be used to create a record of functions from b -> a that
+-- can be applied to a default form input record to recover a record
+-- of form inputs from a parsed output
+--  run :: ∀ sym e b a t0 inrow outrow r
+--    . IsSymbol sym
+--   => RowCons sym b t0 inrow
+--   => RowCons sym { input :: a, result :: Maybe (Either e b) | r } inrow outrow
+--   => (b -> a)
+--   -> SProxy sym
+--   -> Record inrow
+--   -> _
+--   -> Record outrow
+run :: ∀ sym e b a t0 inrow r
+ . IsSymbol sym
+=> RowCons sym b t0 inrow
+--  => RowCons sym { input :: a, result :: Maybe (Either e b) | r } t1 outrow
+=> (b -> a)
+-> SProxy sym
+-> Record inrow
+-> { input :: a
+   , result :: Maybe (Either e b)
+   | r
+   }
+-> { input :: a
+  , result :: Maybe (Either e b)
+  | r
+  }
+run fab sym defR = Record.set _input (fab $ Record.get sym defR)
+ <<< Record.set _result (Just (Right $ Record.get sym defR))
+
 -- Can be used to unwrap a `Maybe (Either (Array (Variant err))) a)` into a string
 -- error message using `match` or another variant case.
 check :: ∀ err a. Maybe (Either (Array err) a) -> (err -> String) -> Maybe String
 check Nothing           _ = Nothing
 check (Just (Right _))  _ = Nothing
 check (Just (Left err)) f = f <$> head err
-
-
 
 -----
 -- Higher kinded data
@@ -88,6 +120,10 @@ type First a b c = a
 type Second a b c = b
 type Third a b c = c
 type K a b c d = a
+
+type FormInput' vl vd e a b = FormInput (a -> vl) (Boolean -> vd) e a b
+type FormMaybe' a b c = Maybe c
+
 
 -----
 -- Form construction
@@ -120,7 +156,7 @@ formFromField :: ∀ sym form t0 m vl vd e a b
   -> Validation m e a b
   -> Form m (Record form) (Maybe b)
 formFromField name validation = Validation $ \inputForm -> do
-  let { input, validate } = get name inputForm
+  let { input, validate } = Record.get name inputForm
       set' = set (prop name <<< prop (SProxy :: SProxy "result"))
   if validate
     then do

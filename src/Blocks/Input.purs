@@ -14,8 +14,9 @@ inputSharedClasses = HH.ClassName <$>
   , "border-b-2"
   , "font-light"
   , "cc-blue-88"
+  , "border-grey-80"
   , "disabled:bg-grey-95"
-  , "disabled:text-grey-dark"
+  , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
   , "transition-1/4-bounce"
@@ -29,7 +30,7 @@ inputClasses = inputSharedClasses <>
     , "w-full"
     , "px-3"
     , "focus:border-blue-88"
-    , "!focus:!disabled:hover:border-grey"
+    , "!focus:!disabled:hover:border-grey-70"
     ]
   )
 
@@ -47,8 +48,8 @@ mainItemClasses = inputSharedClasses <>
     [ "w-full"
     , "focus:border-blue-88"
     , "focus:sibling:border-blue-88"
-    , "group-hover:!focus:!disabled:border-grey"
-    , "group-hover:!focus:!disabled:sibling:border-grey"
+    , "group-hover:!focus:!disabled:border-grey-70"
+    , "group-hover:!focus:!disabled:sibling:border-grey-70"
     , "disabled:sibling:bg-grey-95"
     ]
   )
@@ -92,7 +93,7 @@ addonClasses :: Array HH.ClassName
 addonClasses = inputSharedClasses <>
   ( HH.ClassName <$>
     [ "cursor-pointer"
-    , "text-grey"
+    , "text-grey-70"
     ]
   )
 
