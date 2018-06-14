@@ -11,30 +11,27 @@
     "docs"
   ],
   "dependencies": {
-    "purescript-halogen": "^3.1.2",
-    "purescript-halogen-select": "^0.3.0",
-    "purescript-fuzzy": "^0.1.2",
-    "purescript-validation": "^3.2.0",
-    "purescript-generics-rep": "^5.4.0",
-    "purescript-aff": "^4.0.2",
-    "purescript-remotedata": "^2.2.0",
-    "purescript-email-validate": "^2.0.0",
-    "purescript-numbers": "^5.0.0",
-    "purescript-yarn": "^3.0.1",
-    "purescript-bigints": "^3.5.0",
-    "purescript-arrays": "^4.3.0",
-    "purescript-variant": "^4.1.0",
-    "purescript-polyform": "^0.6.3",
-    "purescript-test-unit": "^13.0.0"
+    "purescript-halogen": "^4.0.0",
+    "purescript-halogen-select": "^2.0.0",
+    "purescript-fuzzy": "^0.2.0",
+    "purescript-validation": "^4.0.0",
+    "purescript-generics-rep": "^6.0.0",
+    "purescript-aff": "^5.0.0",
+    "purescript-remotedata": "^4.0.0",
+    "purescript-email-validate": "^3.0.0",
+    "purescript-numbers": "^6.0.0",
+    "purescript-bigints": "^4.0.0",
+    "purescript-arrays": "^5.0.0",
+    "purescript-variant": "^5.0.0",
+    "purescript-polyform": "^0.7.0"
   },
   "devDependencies": {
-    "purescript-console": "^3.0.0",
-    "purescript-debug": "^3.0.0",
-    "purescript-psci-support": "^3.0.0",
-    "purescript-affjax": "^5.0.0",
-    "purescript-argonaut": "^3.1.0",
-    "purescript-js-timers": "^3.0.0",
-    "purescript-halogen-storybook": "^0.1.0",
-    "purescript-stringutils": "^0.0.7"
+    "purescript-test-unit": "^14.0.0",
+    "purescript-console": "^4.1.0",
+    "purescript-debug": "^4.0.0",
+    "purescript-psci-support": "^4.0.0",
+    "purescript-affjax": "^6.0.0",
+    "purescript-argonaut": "^4.0.0",
+    "purescript-halogen-storybook": "^0.3.0"
   }
 }

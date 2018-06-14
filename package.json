@@ -10,11 +10,11 @@
     "build-css": "cd css && yarn run build-all"
   },
   "devDependencies": {
-    "pulp": "^12.0.1",
-    "purescript": "^0.11.6",
-    "webpack-cli": "^2.0.12"
+    "pulp": "^12.3.0",
+    "purescript": "^0.12.0",
+    "webpack-cli": "^3.0.6"
   },
   "dependencies": {
-    "big-integer": "^1.6.27"
+    "big-integer": "^1.6.31"
   }
 }
