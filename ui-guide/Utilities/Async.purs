@@ -2,7 +2,7 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Timer (setTimeout, TIMER)
 import Data.Argonaut (Json, decodeJson, (.?))
@@ -11,7 +11,7 @@ import Data.Either (Either)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (fromMaybe)
 import Data.Newtype (class Newtype, unwrap)
-import Data.StrMap (StrMap, fromFoldable)
+import Foreign.Object (Object, fromFoldable)
 import Data.String (Pattern(..), split)
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
@@ -127,13 +127,13 @@ decodeUser json = do
 
 renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
 renderItemUser =
-  { toStrMap: userToStrMap
+  { toObject: userToStrMap
   , renderItem: renderUser
   , renderContainer: TA.defRenderContainer' renderFuzzyUser
   }
 
-userToStrMap :: User -> StrMap String
-userToStrMap (User { name, eyeColor, hairColor, skinColor }) =
+userToObject :: User -> StrMap String
+userToObject (User { name, eyeColor, hairColor, skinColor }) =
   fromFoldable
     [ Tuple "name" name
     , Tuple "eyeColor" eyeColor
@@ -229,13 +229,13 @@ decodeLocation json = do
   population <- obj .? "population"
   pure $ Location { name, population }
 
-locationToStrMap :: Location -> StrMap String
-locationToStrMap (Location { name, population }) =
+locationToObject :: Location -> StrMap String
+locationToObject (Location { name, population }) =
   fromFoldable [ Tuple "name" name ]
 
 renderItemLocation :: ∀ o eff. TA.RenderTypeaheadItem o Location eff
 renderItemLocation =
-  { toStrMap: locationToStrMap
+  { toObject: locationToStrMap
   , renderItem: TA.defRenderItem <<< unwrap
   , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
   }

@@ -9,7 +9,7 @@ import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
-import Data.Record as Record
+import Record as Record
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Ocelot.Data.Record (class SequenceRecord, sequenceRecord)
 import Polyform.Validation (Validation(..), V(..))

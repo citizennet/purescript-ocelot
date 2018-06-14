@@ -4,10 +4,10 @@ import Prelude
 
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
+import Effect.Aff (Aff)
+import Effect.Aff.AVar (AVAR)
+import Effect.Aff.Class (class MonadAff)
+import Effect.Aff.Console (CONSOLE)
 import DOM (DOM)
 import Data.Array (difference, filter, head, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
@@ -15,7 +15,7 @@ import Data.Fuzzy as Fuzz
 import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
 import Data.Newtype (unwrap)
 import Data.Rational ((%))
-import Data.StrMap (StrMap)
+import Foreign.Object (Object)
 import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
@@ -107,7 +107,7 @@ type Config item err eff =
   , insertable :: Insertable item
   , keepOpen   :: Boolean
   , syncMethod :: SyncMethod item err eff
-  , toStrMap   :: item -> StrMap String
+  , toObject   :: item -> StrMap String
   }
 
 data FilterType item
@@ -335,7 +335,7 @@ getNewItems st = sort <<< applyF <<< applyI <<< fuzzyItems <$> removeSelections 
     removeSelections items selections= (\i -> difference i $ unpackSelections selections) <$> items
 
     matcher :: item -> Fuzzy item
-    matcher = Fuzz.match true st.config.toStrMap st.search
+    matcher = Fuzz.match true st.config.toObject st.search
 
     fuzzyItems :: Array item -> Array (Fuzzy item)
     fuzzyItems = map matcher

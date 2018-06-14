@@ -2,8 +2,8 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Eff (Eff)
+import Effect.Aff.AVar (AVAR)
+import Effect (Effect)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Maybe (Maybe)
 import Debug.Trace (traceAnyA)

@@ -4,9 +4,9 @@ where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Console (CONSOLE)
+import Effect.Aff (Aff)
+import Effect.Aff.AVar (AVAR)
+import Effect.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)

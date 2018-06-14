@@ -9,7 +9,7 @@ import Data.FunctorWithIndex (mapWithIndex)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Monoid (mempty)
-import Data.StrMap (lookup)
+import Foreign.Object (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP

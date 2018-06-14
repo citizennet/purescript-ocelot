@@ -2,8 +2,8 @@ module Main where
 
 import Prelude
 
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff (Eff)
+import Effect.Aff.Console (CONSOLE)
+import Effect (Effect)
 import Control.Monad.Eff.Random (RANDOM)
 import Control.Monad.Eff.Timer (TIMER)
 import Halogen.Aff as HA

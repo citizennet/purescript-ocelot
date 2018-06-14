@@ -2,10 +2,10 @@ module UIGuide.Components.Validation where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Console (CONSOLE)
+import Effect.Aff (Aff)
+import Effect.Aff.Console (CONSOLE)
 import Data.Maybe (Maybe(..))
-import Data.Record (modify)
+import Record (modify)
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, case_, match)

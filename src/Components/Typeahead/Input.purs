@@ -2,13 +2,13 @@ module Ocelot.Components.Typeahead.Input where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Class (class MonadAff)
+import Effect.Aff (Aff)
+import Effect.Aff.Class (class MonadAff)
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr)
 import Data.Fuzzy (Fuzzy)
 import Data.Maybe (Maybe(..), maybe)
-import Data.StrMap (StrMap, fromFoldable, singleton)
+import Foreign.Object (Object, fromFoldable, singleton)
 import Data.Time.Duration (Milliseconds(..))
 import Data.Tuple (Tuple(..))
 import Halogen as H
@@ -32,14 +32,14 @@ import Unsafe.Coerce (unsafeCoerce)
 -- Input types expected. This needs to be defined for each 'item' type we have.
 
 type RenderTypeaheadItem o item eff =
-  { toStrMap :: item -> StrMap String
+  { toObject :: item -> StrMap String
   , renderContainer :: RenderContainer o item eff
   , renderItem :: item -> HH.PlainHTML
   }
 
 renderItemString :: ∀ o eff. RenderTypeaheadItem o String eff
 renderItemString =
-  { toStrMap: singleton "name"
+  { toObject: singleton "name"
   , renderContainer: defRenderContainer' defRenderFuzzy
   , renderItem: HH.text
   }
@@ -47,8 +47,8 @@ renderItemString =
 ----------
 -- Default rendering
 
-defToStrMap :: ∀ r. { name :: String | r } -> StrMap String
-defToStrMap { name } = fromFoldable [ Tuple "name" name ]
+defToObject :: ∀ r. { name :: String | r } -> StrMap String
+defToObject { name } = fromFoldable [ Tuple "name" name ]
 
 -- WARNING: This expects you to have a string map with the "name"
 -- key present or else it will not work but will compile!
@@ -98,12 +98,12 @@ defSingle :: ∀ o item err eff m
  -> Array item
  -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defSingle props xs { toStrMap, renderContainer, renderItem } =
+defSingle props xs { toObject, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderContainer renderItem
-  , config: syncConfig toStrMap false
+  , config: syncConfig toObject false
   }
 
 -- A def multi-select limited to N total possible selections.
@@ -116,12 +116,12 @@ defLimit :: ∀ o item err eff m
  -> Array item
  -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defLimit props n xs { toStrMap, renderContainer, renderItem } =
+defLimit props n xs { toObject, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Limit n []
   , render: renderTA props renderContainer renderItem
-  , config: syncConfig toStrMap true
+  , config: syncConfig toObject true
   }
 
 -- A def multi-select that is provided with a renderFuzzy and renderItem function to determine
@@ -134,12 +134,12 @@ defMulti :: ∀ o item err eff m
  -> Array item
  -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defMulti props xs { toStrMap, renderContainer, renderItem } =
+defMulti props xs { toObject, renderContainer, renderItem } =
   { items: Success xs
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderContainer renderItem
-  , config: syncConfig toStrMap true
+  , config: syncConfig toObject true
   }
 
 -- A def async single select using the default render function
@@ -151,12 +151,12 @@ defAsyncSingle :: ∀ o item err eff m
   -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
   -> RenderTypeaheadItem o item eff
   -> TA.Input o item err (TA.Effects eff) m
-defAsyncSingle props f { toStrMap, renderContainer, renderItem } =
+defAsyncSingle props f { toObject, renderContainer, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.One Nothing
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 800.0) f toStrMap false
+  , config: asyncConfig (Milliseconds 800.0) f toObject false
   }
 
 -- A def multi-select using the default render item function
@@ -168,12 +168,12 @@ defAsyncMulti :: ∀ o item err eff m
  -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
  -> RenderTypeaheadItem o item eff
  -> TA.Input o item err (TA.Effects eff) m
-defAsyncMulti props f { toStrMap, renderContainer, renderItem } =
+defAsyncMulti props f { toObject, renderContainer, renderItem } =
   { items: NotAsked
   , search: Nothing
   , initialSelection: TA.Many []
   , render: renderTA props renderContainer renderItem
-  , config: asyncConfig (Milliseconds 800.0) f toStrMap true
+  , config: asyncConfig (Milliseconds 800.0) f toObject true
   }
 
 
@@ -182,14 +182,14 @@ defAsyncMulti props f { toStrMap, renderContainer, renderItem } =
 
 syncConfig :: ∀ item err eff
   . Eq item
- => (item -> StrMap String)
+ => (item -> Object String)
  -> Boolean
  -> TA.Config item err (TA.Effects eff)
-syncConfig toStrMap keepOpen =
+syncConfig toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , syncMethod: TA.Sync
-  , toStrMap
+  , toObject
   , keepOpen
   }
 
@@ -197,14 +197,14 @@ asyncConfig :: ∀ item err eff
   . Eq item
  => Milliseconds
  -> (String -> Aff (TA.Effects eff) (RemoteData err (Array item)))
- -> (item -> StrMap String)
+ -> (item -> Object String)
  -> Boolean
  -> TA.Config item err (TA.Effects eff)
-asyncConfig ms f toStrMap keepOpen =
+asyncConfig ms f toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
   , syncMethod: TA.Async { debounceTime: ms, fetchItems: f }
-  , toStrMap
+  , toObject
   , keepOpen
   }
 

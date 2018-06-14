@@ -7,8 +7,8 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Radio as Radio
 import Ocelot.Block.Format as Format
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Console (log, CONSOLE)
+import Effect.Aff (Aff)
+import Effect.Aff.Console (log, CONSOLE)
 import DOM.Event.Types (MouseEvent)
 import Data.Maybe (Maybe(..))
 import Halogen as H

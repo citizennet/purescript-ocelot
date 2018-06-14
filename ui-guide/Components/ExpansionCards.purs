@@ -2,9 +2,9 @@ module UIGuide.Components.ExpansionCards where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
+import Effect.Aff.AVar (AVAR)
+import Effect.Aff.Class (class MonadAff)
+import Effect.Aff.Console (CONSOLE)
 import Control.Monad.Eff.Timer (TIMER)
 import DOM (DOM)
 import Data.Array (head, take)

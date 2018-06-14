@@ -14,7 +14,7 @@ module UIGuide.App
 
 import Prelude
 
-import Control.Monad.Aff (Aff, launchAff_)
+import Effect.Aff (Aff, launchAff_)
 
 import Data.Tuple (Tuple(..))
 import Data.Const (Const)
