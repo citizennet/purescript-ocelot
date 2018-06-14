@@ -13,7 +13,7 @@
   "dependencies": {
     "purescript-halogen": "^4.0.0",
     "purescript-halogen-select": "^2.0.0",
-    "purescript-fuzzy": "^0.2.0",
+    "purescript-fuzzy": "^0.2.1",
     "purescript-validation": "^4.0.0",
     "purescript-generics-rep": "^6.0.0",
     "purescript-aff": "^5.0.0",
