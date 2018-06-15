@@ -2,13 +2,20 @@ module Ocelot.Components.DatePicker.Utils where
 
 import Prelude
 
+import Data.Array (drop, find, reverse, take, (:))
 import Data.Date (Date, Day, Year, canonicalDate, lastDayOfMonth, year, month, day, Weekday(..), weekday)
 import Data.DateTime (Month(..), adjust, date)
 import Data.DateTime.Instant (fromDate, toDateTime)
-import Data.Enum (class Enum, toEnum, pred, succ)
-import Data.Array ((:), reverse, drop, take)
-import Data.Maybe (Maybe, fromJust)
+import Data.Either (either)
+import Data.Enum (class Enum, fromEnum, pred, succ, toEnum)
+import Data.Fuzzy (Fuzzy(..))
+import Data.Fuzzy (match) as Fuzz
+import Data.Maybe (Maybe(..), fromJust)
+import Data.Rational ((%))
+import Data.StrMap (StrMap, fromFoldable)
+import Data.String.Regex (parseFlags, regex, replace)
 import Data.Time.Duration (Days(..))
+import Data.Tuple (Tuple(..))
 import Partial.Unsafe (unsafePartial)
 
 ----------
@@ -157,6 +164,65 @@ nextYear d = canonicalDate (unsafeSucc (year d)) (month d) (day d)
 
 prevYear :: Date -> Date
 prevYear d = canonicalDate (unsafePred (year d)) (month d) (day d)
+
+yearsForward :: Int -> Date -> Date
+yearsForward n d | n <= 0    = d
+                 | otherwise = yearsForward (n - 1) (nextYear d)
+
+yearsBackward :: Int -> Date -> Date
+yearsBackward n d | n <= 0   = d
+                  | otherwise = yearsBackward (n - 1) (prevYear d)
+
+-- Both
+extractYearMonth :: Date -> Tuple Year Month
+extractYearMonth d = Tuple (year d) (month d)
+
+----------
+-- Search
+-- Generates a date range to search through for search term, if it doesn't
+-- match on first past it will generate more dates to search through until
+-- a specified range limit is reached, then return Nothing
+guessDate :: Date -> String -> Maybe Date
+guessDate d text =
+  let text'   = either (const text) (\r -> replace r " " text) (regex "-\\/" $ parseFlags "g")
+      text''  = either (const text') (\r -> replace r " " text') (regex "\\s+" $ parseFlags "g")
+
+      matcher :: Date -> Fuzzy Date
+      matcher = Fuzz.match true toStrMap text''
+
+      guess :: Array Date -> Int -> Maybe Date
+      guess dates = findIn (firstMatch $ matcher <$> dates)
+
+      findIn :: Maybe (Fuzzy Date) -> Int -> Maybe Date
+      findIn (Just (Fuzzy { original })) _
+        = Just original
+      findIn Nothing pass
+        | pass > 4  = Nothing
+        | pass == 0  = guess (dateRange (prevYear d) (prevDay d)) 1
+        | otherwise = guess (dateRange (yearsForward pass d) (yearsForward (pass + 1) d)) (pass + 1)
+
+   in guess (dateRange d $ nextYear d) 0
+
+firstMatch :: Array (Fuzzy Date) -> Maybe (Fuzzy Date)
+firstMatch = find match'
+  where
+    match' (Fuzzy { ratio }) = ratio == (1 % 1)
+
+toStrMap :: Date -> StrMap String
+toStrMap d =
+  fromFoldable
+    [ Tuple "mdy1" $ sYearMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "mdy2" $ sMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "weekday" $ sWeekDay
+    , Tuple "wmdy1" $ sWeekDay <> " " <> sYearMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "ymd" $ sYear <> " " <> sMonth <> " " <> sDay
+    ]
+    where
+      sYear = show $ fromEnum $ year d
+      sMonth = show $ fromEnum $ month d
+      sYearMonth = show $ month d
+      sDay = show $ fromEnum $ day d
+      sWeekDay = show $ weekday d
 
 ----------
 -- Unsafe Functions

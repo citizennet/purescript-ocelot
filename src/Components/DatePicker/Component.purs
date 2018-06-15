@@ -7,13 +7,14 @@ import Control.Monad.Aff.Class (class MonadAff)
 import Control.Monad.Aff.Console (CONSOLE, log)
 import Control.Monad.Eff.Now (NOW, now)
 import DOM (DOM)
+import DOM.Event.KeyboardEvent (KeyboardEvent) as KE
 import Data.Array (mapWithIndex)
 import Data.Date (Date, Month, Year, canonicalDate, month, year)
 import Data.DateTime (date)
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
 import Data.Formatter.DateTime (formatDateTime)
-import Data.Maybe (Maybe(Nothing, Just))
+import Data.Maybe (Maybe(Nothing, Just), maybe)
 import Data.Monoid (mempty)
 import Data.String (trim)
 import Data.Tuple (Tuple(..), fst, snd)
@@ -42,6 +43,12 @@ type Effects eff =
 type State =
   { targetDate :: Tuple Year Month
   , selection :: Maybe CalendarItem
+  , search :: String
+  }
+
+type Input =
+  { targetDate :: Maybe (Tuple Year Month)
+  , selection :: Maybe CalendarItem
   }
 
 data Query a
@@ -49,11 +56,17 @@ data Query a
   | ToggleYear  Direction a
   | ToggleMonth Direction a
   | SetTime a
+  | TriggerFocus a
   | Synchronize a
+  | GetSelection (Maybe CalendarItem -> a)
+  | SetSelection (Maybe CalendarItem) a
+  | Key KE.KeyboardEvent a
+  | Search String a
 
 data Message
   = SelectionChanged (Maybe CalendarItem)
   | VisibilityChanged Select.Visibility
+  | Searched String
 
 data Direction
   = Prev
@@ -62,8 +75,8 @@ data Direction
 type ParentHTML eff m
   = H.ParentHTML Query (ChildQuery eff) Unit m
 
+type ChildSlot = Unit
 type ChildQuery eff = Select.Query Query CalendarItem eff
-
 
 ----------
 -- Calendar Items
@@ -107,24 +120,26 @@ component =
     { initialState
     , render
     , eval
-    , receiver: const Nothing
-    , initializer: Just (H.action SetTime)
+    , receiver: HE.input Receive
+    , initializer: Just $ H.action SetTime
     , finalizer: Nothing
     }
   where
-    initialState :: Unit -> State
-    initialState = const
-      { targetDate: Tuple (Utils.unsafeMkYear 2019) (Utils.unsafeMkMonth 2)
-      , selection: Nothing
+    initialState :: Input -> State
+    initialState { targetDate, selection } =
+      { targetDate: maybe (Utils.extractYearMonth nowDate) targetDate
+      , selection
+      , search: ""
       }
 
     eval
       :: Query
       ~> H.ParentDSL State Query (ChildQuery (Effects e)) Unit Message m
     eval = case _ of
-      HandleSelect m a -> case m of
-        Select.Emit query -> eval query *> pure a
+      Search text a ->
+        eval $ HandleSelect $ Select.Searched text a
 
+      HandleSelect m a -> case m of
         Select.Selected item -> do
           -- We'll want to select the item here, set its status, and raise
           -- a message about its selection.
@@ -133,14 +148,13 @@ component =
           H.modify $ _ { selection = Just item }
           eval $ Synchronize a
 
-        Select.Searched str -> do
-          -- We don't care about searches.
+        Select.Searched text -> do
+          H.modify $ _ { search = text }
+          -- we don't actually want to match on search, we want to wait
+          -- until they hit ENTER and then we'll try to match their search
           pure a
 
-        Select.VisibilityChanged vis -> do
-          -- Do we care if the visibility changed? We could propagate upward
-          -- if the consumer cares.
-          pure a
+        Select.VisibilityChanged _ -> pure a
 
       -- We ought to be able to navigate months in the date picker
       ToggleMonth dir a -> a <$ do
@@ -172,6 +186,8 @@ component =
         H.modify _ { targetDate = Tuple (year d) (month d) }
         eval $ Synchronize a
 
+      TriggerFocus a -> a <$ H.query unit Select.triggerFocus
+
       Synchronize a -> do
         { targetDate: Tuple y m, selection } <- H.get
         _ <- H.query unit
@@ -186,27 +202,30 @@ component =
         selectInput =
           { initialSearch: Nothing
           , debounceTime: Nothing
-          , inputType: Select.Toggle
+          , inputType: Select.TextInput
           , items: generateCalendarRows st.selection targetYear targetMonth
-          , render: \s -> HH.div_ [ renderInput, renderSelect targetYear targetMonth s ]
+          , render: \s -> HH.div_ [ renderSearch, renderSelect targetYear targetMonth s ]
           }
 
         targetYear  = fst st.targetDate
         targetMonth = snd st.targetDate
 
         -- The page element that will hold focus, capture key events, etcetera
-        renderInput =
-          Button.buttonPrimary
-            ( Setters.setToggleProps [] )
-            [ HH.text "Choose a Date" ]
+        renderSearch =
+          Input.input
+            ( ( Setters.setInputProps [] ) <>
+              [ HE.onKeyDown $ Select.always $ Select.raise Key
+              , HE.onValueInput Nothing
+              ]
+            )
 
         renderSelect y m cst =
           HH.div
             [ css "relative" ]
-            [ renderCalendar ]
-            -- $ if cst.visibility == Select.On
-              -- then [ renderCalendar ]
-              -- else [ ]
+            -- [ renderCalendar ]
+            $ if cst.visibility == Select.On
+              then [ renderCalendar ]
+              else [ ]
           where
             -- A helper function that will turn a date into a year/month date string
             fmtMonthYear = either (const "-") id
