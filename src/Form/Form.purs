@@ -7,13 +7,13 @@ import Data.Either (Either(..))
 import Data.Lens (set)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
-import Data.Monoid (class Monoid)
 import Data.Newtype (unwrap)
 import Record as Record
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Ocelot.Data.Record (class SequenceRecord, sequenceRecord)
 import Polyform.Validation (Validation(..), V(..))
 import Type.Row (class RowToList)
+import Prim.Row (class Cons)
 
 -----
 -- Custom form-building monoid (credit: @paluh)
@@ -29,7 +29,7 @@ instance semigroupEndo :: Semigroup (Endo f) where
   append (Endo f0) (Endo f1) = Endo (f0 >>> f1)
 
 instance monoidEndo :: Monoid (Endo a) where
-  mempty = Endo id
+  mempty = Endo identity
 
 -----
 -- Input and field types
@@ -65,8 +65,8 @@ _result = SProxy :: SProxy "result"
 -- of form inputs from a parsed output
 --  run :: ∀ sym e b a t0 inrow outrow r
 --    . IsSymbol sym
---   => RowCons sym b t0 inrow
---   => RowCons sym { input :: a, result :: Maybe (Either e b) | r } inrow outrow
+--   => Cons sym b t0 inrow
+--   => Cons sym { input :: a, result :: Maybe (Either e b) | r } inrow outrow
 --   => (b -> a)
 --   -> SProxy sym
 --   -> Record inrow
@@ -74,8 +74,8 @@ _result = SProxy :: SProxy "result"
 --   -> Record outrow
 run :: ∀ sym e b a t0 inrow r
  . IsSymbol sym
-=> RowCons sym b t0 inrow
---  => RowCons sym { input :: a, result :: Maybe (Either e b) | r } t1 outrow
+=> Cons sym b t0 inrow
+--  => Cons sym { input :: a, result :: Maybe (Either e b) | r } t1 outrow
 => (b -> a)
 -> SProxy sym
 -> Record inrow
@@ -151,7 +151,7 @@ type Form m i o = Validation m (Endo i) i o
 formFromField :: ∀ sym form t0 m vl vd e a b
    . IsSymbol sym
   => Monad m
-  => RowCons sym (FormInput vl vd e a b) t0 form
+  => Cons sym (FormInput vl vd e a b) t0 form
   => SProxy sym
   -> Validation m e a b
   -> Form m (Record form) (Maybe b)

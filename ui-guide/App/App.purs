@@ -211,7 +211,7 @@ app =
 
   eval :: Query ~> H.ParentDSL (State m) Query StoryQuery Slot Void m
   eval (RouteChange route next) = do
-    H.modify (\state -> state { route = route })
+    H.modify_ (\state -> state { route = route })
     pure next
 
 

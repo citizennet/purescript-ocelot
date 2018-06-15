@@ -2,7 +2,7 @@ module Ocelot.Block.Pager where
 
 import Prelude
 
-import DOM.Event.Types (MouseEvent)
+import Web.UIEvent.MouseEvent (MouseEvent)
 import Data.Array ((..))
 import Data.FoldableWithIndex (foldlWithIndex)
 import Data.Maybe (Maybe)

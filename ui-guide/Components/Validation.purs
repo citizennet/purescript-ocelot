@@ -121,11 +121,11 @@ component =
   eval :: Query ~> H.ComponentDSL State Query Void (Aff ( console :: CONSOLE | eff))
   eval = case _ of
     UpdateContents val next -> do
-      H.modify $ updateValue val
+      H.modify_ $ updateValue val
       pure next
 
     ValidateOne val next -> do
-      H.modify $ updateValidate val
+      H.modify_ $ updateValidate val
       eval $ ValidateAll next
 
     ValidateAll next -> do
@@ -137,7 +137,7 @@ component =
              pure $ Tuple form value
            Invalid form -> do
              pure $ Tuple form Nothing
-      H.modify _ { form = form, result = result }
+      H.modify_ _ { form = form, result = result }
       pure next
 
 

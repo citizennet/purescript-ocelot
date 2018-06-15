@@ -51,7 +51,7 @@ component =
 
       ToggleFormPanel _ a -> do
         state <- H.get
-        H.modify (_ { formPanelIsOpen = not state.formPanelIsOpen })
+        H.modify_ (_ { formPanelIsOpen = not state.formPanelIsOpen })
         pure a
 
     render :: State -> H.ComponentHTML Query
