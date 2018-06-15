@@ -9,7 +9,7 @@ import Effect.Aff.Class (class MonadAff)
 import Data.Array (difference, filter, head, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Fuzz
-import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Newtype (unwrap)
 import Data.Rational ((%))
 import Foreign.Object (Object)
@@ -36,7 +36,7 @@ type StateStore o item err m =
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
 -- account for various limits on what can be selected. The component is responsible
 -- for managing its items and selections.
-type State item err=
+type State item err =
   { items :: RemoteData err (Array item)
   , selections :: SelectionType item
   , search :: String
@@ -98,7 +98,7 @@ type ChildQuery o item = Select.Query o item
 ----------
 -- Data modeling
 
-type Config item err=
+type Config item err =
   { filterType :: FilterType item
   , insertable :: Insertable item
   , keepOpen   :: Boolean
@@ -132,7 +132,7 @@ data SyncMethod item err
   = Sync
   | Async (AsyncConfig item err)
 
-type AsyncConfig item err=
+type AsyncConfig item err =
   { debounceTime :: Milliseconds
   , fetchItems   :: String -> Aff (RemoteData err (Array item))
   }
