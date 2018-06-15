@@ -4,24 +4,20 @@ import Prelude
 
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store, seeks)
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
-import DOM (DOM)
+import Effect.Aff (Aff)
+import Effect.Aff.Class (class MonadAff)
 import Data.Array (difference, filter, head, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Fuzz
-import Data.Maybe (Maybe(Just, Nothing), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Newtype (unwrap)
 import Data.Rational ((%))
-import Data.StrMap (StrMap)
+import Foreign.Object (Object)
 import Data.Time.Duration (Milliseconds)
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
-import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Select as Select
 import Select.Internal.State (getState, updateStore)
@@ -31,30 +27,30 @@ import Select.Internal.State (getState, updateStore)
 
 -- The render function is provided outside the component, so we rely
 -- on the `Store` type here to make that possible.
-type StateStore o item err eff m =
+type StateStore o item err m =
   Store
-    (State item err eff)
-    (H.ParentHTML (Query o item err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m)
+    (State item err)
+    (H.ParentHTML (Query o item err m) (ChildQuery o (Fuzzy item)) ChildSlot m)
 
 -- Items are wrapped in `SyncMethod` to account for failure and loading cases
 -- in asynchronous typeaheads. Selections are wrapped in `SelectionType` to
 -- account for various limits on what can be selected. The component is responsible
 -- for managing its items and selections.
-type State item err eff =
+type State item err =
   { items :: RemoteData err (Array item)
   , selections :: SelectionType item
   , search :: String
-  , config :: Config item err eff
+  , config :: Config item err
   }
 
-type Input o item err eff m =
+type Input o item err m =
   { items :: RemoteData err (Array item)
   , search :: Maybe String
   , initialSelection :: SelectionType item
   , render
-      :: State item err eff
-      -> H.ParentHTML (Query o item err eff m) (ChildQuery o (Fuzzy item) eff) ChildSlot m
-  , config :: Config item err eff
+      :: State item err
+      -> H.ParentHTML (Query o item err m) (ChildQuery o (Fuzzy item)) ChildSlot m
+  , config :: Config item err
   }
 
 -- `item` is wrapped in `Fuzzy` to support highlighting in render functions
@@ -64,7 +60,7 @@ type Input o item err eff m =
 -- `FulfillRequest`: The parent has fetched data for an async typeahead.
 -- `Initialize`: Async typeaheads should fetch their data.
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
-data Query o item err eff m a
+data Query o item err m a
   = Remove item a
   | TriggerFocus a
   | Synchronize a
@@ -74,7 +70,7 @@ data Query o item err eff m a
   | ReplaceSelections (SelectionType item) a
   | ReplaceItems (RemoteData err (Array item)) a
   | Reset a
-  | Receive (Input o item err eff m) a
+  | Receive (Input o item err m) a
 
 -- The parent is notified when items are selected or removed and when a
 -- new search is performed, but does not need to take action. This is just
@@ -97,17 +93,17 @@ data SelectionChange
 
 -- The typeahead relies on the Search and Container primitives.
 type ChildSlot = Unit
-type ChildQuery o item eff = Select.Query o item eff
+type ChildQuery o item = Select.Query o item
 
 ----------
 -- Data modeling
 
-type Config item err eff =
+type Config item err =
   { filterType :: FilterType item
   , insertable :: Insertable item
   , keepOpen   :: Boolean
-  , syncMethod :: SyncMethod item err eff
-  , toStrMap   :: item -> StrMap String
+  , syncMethod :: SyncMethod item err
+  , toObject   :: item -> Object String
   }
 
 data FilterType item
@@ -132,13 +128,13 @@ data Insertable item
 --
 -- `source` is an arbitrary representation for data the parent needs to fetch.
 -- Typically this will be a record the parent can use to perform a request.
-data SyncMethod item err eff
+data SyncMethod item err
   = Sync
-  | Async (AsyncConfig item err eff)
+  | Async (AsyncConfig item err)
 
-type AsyncConfig item err eff =
+type AsyncConfig item err =
   { debounceTime :: Milliseconds
-  , fetchItems   :: String -> Aff eff (RemoteData err (Array item))
+  , fetchItems   :: String -> Aff (RemoteData err (Array item))
   }
 
 -- How many items it is possible to select on the typeahead. NOTE: The limit
@@ -155,21 +151,14 @@ derive instance functorSelectionType :: Functor SelectionType
 ----------
 -- Component
 
-type Effects eff = ( ajax :: AJAX, dom :: DOM, avar :: AVAR, console :: CONSOLE | eff )
-
 -- The Query, Input, ChildQuery, and component types use the same effects,
 -- so make sure to apply the Effects type to each. NOTE: Avoid prematurely applying effects
 -- by applying them in synonyms. Only use them in function signatures where it is necessary.
-component :: ∀ o item err eff m
-  . MonadAff (Effects eff) m
+component :: ∀ o item err m
+  . MonadAff m
   => Eq item
   => Show err
-  => H.Component
-      HH.HTML
-      (Query o item err (Effects eff) m)
-      (Input o item err (Effects eff) m)
-      (Message o item)
-      m
+  => H.Component HH.HTML (Query o item err m) (Input o item err m) (Message o item) m
 component =
   H.lifecycleParentComponent
     { initialState
@@ -181,8 +170,8 @@ component =
     }
   where
     initialState
-      :: Input o item err (Effects eff) m
-      -> StateStore o item err (Effects eff) m
+      :: Input o item err m
+      -> StateStore o item err m
     initialState i = store i.render
       { items: i.items
       , selections: i.initialSelection
@@ -191,11 +180,11 @@ component =
       }
 
     eval
-      :: (Query o item err (Effects eff) m)
+      :: (Query o item err m)
       ~> H.ParentDSL
-          (StateStore o item err (Effects eff) m)
-          (Query o item err (Effects eff) m)
-          (ChildQuery o (Fuzzy item) (Effects eff))
+          (StateStore o item err m)
+          (Query o item err m)
+          (ChildQuery o (Fuzzy item))
           (ChildSlot)
           (Message o item)
           m
@@ -214,7 +203,7 @@ component =
                 Many    xs -> Many $ item : xs
                 Limit n xs -> if length xs >= n then st.selections else Limit n $ item : xs
 
-          H.modify $ seeks _ { selections = selections }
+          H.modify_ $ seeks _ { selections = selections }
           _ <- if st.config.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
@@ -225,15 +214,15 @@ component =
         -- Perform a new search, fetching data if Async.
         Select.Searched text -> do
           (Tuple _ st) <- getState
-          H.modify $ seeks _ { search = text }
+          H.modify_ $ seeks _ { search = text }
 
           case st.config.syncMethod of
             Sync -> pure unit
             Async { fetchItems } -> do
-              H.modify $ seeks $ _ { items = Loading }
+              H.modify_ $ seeks $ _ { items = Loading }
               _ <- eval $ Synchronize a
               newItems <- H.liftAff $ fetchItems text
-              H.modify $ seeks $ _ { items = newItems }
+              H.modify_ $ seeks $ _ { items = newItems }
 
           H.raise $ Searched text
           eval $ Synchronize a
@@ -251,7 +240,7 @@ component =
               Limit n xs -> Limit n $ filter ((/=) item) xs
               Many    xs -> Many    $ filter ((/=) item) xs
 
-        H.modify $ seeks _ { selections = selections }
+        H.modify_ $ seeks _ { selections = selections }
         H.raise $ SelectionsChanged ItemRemoved item selections
         _ <- eval $ Synchronize a
         eval $ TriggerFocus a
@@ -284,11 +273,11 @@ component =
         pure a
 
       ReplaceItems items a -> do
-        H.modify $ seeks $ _ { items = items }
+        H.modify_ $ seeks $ _ { items = items }
         eval $ Synchronize a
 
       ReplaceSelections selections a -> do
-        H.modify $ seeks _ { selections = selections }
+        H.modify_ $ seeks _ { selections = selections }
         eval $ Synchronize a
 
       Reset a -> do
@@ -298,11 +287,11 @@ component =
               One _ -> One Nothing
               Limit n _ -> Limit n []
               Many _ -> Many []
-        H.modify $ seeks _ { selections = selections, items = NotAsked }
+        H.modify_ $ seeks _ { selections = selections, items = NotAsked }
         eval $ Synchronize a
 
       Receive input a -> do
-        H.modify $ updateStore input.render id
+        H.modify_ $ updateStore input.render identity
         pure a
 
 
@@ -328,14 +317,14 @@ applyInsertable match insertable text items = case insertable of
       isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
 
 -- Attempt to match new items against the user's search.
-getNewItems :: ∀ item err eff. Eq item => State item err eff -> RemoteData err (Array (Fuzzy item))
+getNewItems :: ∀ item err. Eq item => State item err-> RemoteData err (Array (Fuzzy item))
 getNewItems st = sort <<< applyF <<< applyI <<< fuzzyItems <$> removeSelections st.items st.selections
   where
     removeSelections :: RemoteData err (Array item) -> SelectionType item -> RemoteData err (Array item)
     removeSelections items selections= (\i -> difference i $ unpackSelections selections) <$> items
 
     matcher :: item -> Fuzzy item
-    matcher = Fuzz.match true st.config.toStrMap st.search
+    matcher = Fuzz.match true st.config.toObject st.search
 
     fuzzyItems :: Array item -> Array (Fuzzy item)
     fuzzyItems = map matcher

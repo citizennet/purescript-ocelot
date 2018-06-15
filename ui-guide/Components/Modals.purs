@@ -2,11 +2,7 @@ module UIGuide.Components.Modals where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
+import Effect.Aff.Class (class MonadAff)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
@@ -14,7 +10,6 @@ import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
@@ -33,21 +28,13 @@ type Input = Unit
 type Message = Void
 
 type ChildSlot = Either2 Unit Unit
-type ChildQuery eff m =
+type ChildQuery m =
   Coproduct2
-    (TACore.Query Query Async.Location Async.Err eff m)
-    (TACore.Query Query Async.User Async.Err eff m)
+    (TACore.Query Query Async.Location Async.Err m)
+    (TACore.Query Query Async.User Async.Err m)
 
-type Effects eff =
-  ( avar :: AVAR
-  , dom :: DOM
-  , ajax :: AJAX
-  , console :: CONSOLE
-  , timer :: TIMER
-  | eff )
-
-component :: ∀ eff m
-  . MonadAff (Effects eff) m
+component :: ∀ m
+  . MonadAff m
  => H.Component HH.HTML Query Input Message m
 component =
   H.parentComponent
@@ -57,11 +44,11 @@ component =
     , receiver: const Nothing
     }
   where
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Message m
+    eval :: Query ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
     eval = case _ of
       NoOp a -> pure a
 
-    render :: State -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+    render :: State -> H.ParentHTML Query (ChildQuery m) ChildSlot m
     render _ =
       Modal.modal_
         [ Modal.header

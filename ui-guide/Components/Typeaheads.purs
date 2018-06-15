@@ -2,11 +2,7 @@ module UIGuide.Components.Typeaheads where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
+import Effect.Aff.Class (class MonadAff)
 import Data.Array (head, take)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct3)
@@ -16,7 +12,6 @@ import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
@@ -43,28 +38,18 @@ data Query a
 -- Child paths
 
 type ChildSlot = Either2 Int Int
-type ChildQuery eff m =
+type ChildQuery m =
   Coproduct3
-    (TACore.Query Query Async.Location Async.Err eff m)
-    (TACore.Query Query Async.User Async.Err eff m)
+    (TACore.Query Query Async.Location Async.Err m)
+    (TACore.Query Query Async.User Async.Err m)
     Query
 
 
 ----------
 -- Component definition
 
--- NOTE: Uses the same effects but does not compose with typeahead effects. Written out again from scratch.
-type Effects eff =
-  ( avar :: AVAR
-  , dom :: DOM
-  , ajax :: AJAX
-  , timer :: TIMER
-  , console :: CONSOLE
-  | eff
-  )
-
-component :: ∀ eff m
-  . MonadAff (Effects eff) m
+component :: ∀ m
+  . MonadAff m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.lifecycleParentComponent
@@ -80,12 +65,12 @@ component =
     -- out a bunch of selection variants in respective slots
     render
       :: State
-      -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+      -> H.ParentHTML Query (ChildQuery m) ChildSlot m
     render _ = cnDocumentationBlocks
 
     eval
       :: Query
-      ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
+      ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Void m
     eval (NoOp next) = pure next
 
 
@@ -163,9 +148,9 @@ css = HP.class_ <<< HH.ClassName
 content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
 content = Backdrop.content [ css "flex" ]
 
-cnDocumentationBlocks :: ∀ eff m
-  . MonadAff (Effects eff) m
- => H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+cnDocumentationBlocks :: ∀ m
+  . MonadAff m
+ => H.ParentHTML Query (ChildQuery m) ChildSlot m
 cnDocumentationBlocks =
   HH.div_
     [ Documentation.block_
