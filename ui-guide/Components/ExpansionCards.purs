@@ -2,11 +2,7 @@ module UIGuide.Components.ExpansionCards where
 
 import Prelude
 
-import Effect.Aff.AVar (AVAR)
 import Effect.Aff.Class (class MonadAff)
-import Effect.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
 import Data.Array (head, take)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct3)
@@ -19,7 +15,6 @@ import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (AJAX)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
 import Ocelot.Block.Expandable as Expandable
@@ -55,28 +50,18 @@ data Query a
 -- Child paths
 
 type ChildSlot = Either2 Int Int
-type ChildQuery eff m =
+type ChildQuery m =
   Coproduct3
-    (TACore.Query Query Async.Location Async.Err eff m)
-    (TACore.Query Query Async.User Async.Err eff m)
+    (TACore.Query Query Async.Location Async.Err m)
+    (TACore.Query Query Async.User Async.Err m)
     Query
 
 
 ----------
 -- Component definition
 
--- NOTE: Uses the same effects but does not compose with typeahead effects. Written out again from scratch.
-type Effects eff =
-  ( avar :: AVAR
-  , dom :: DOM
-  , ajax :: AJAX
-  , timer :: TIMER
-  , console :: CONSOLE
-  | eff
-  )
-
-component :: ∀ eff m
-  . MonadAff (Effects eff) m
+component :: ∀ m
+  . MonadAff m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.lifecycleParentComponent
@@ -98,12 +83,12 @@ component =
     -- out a bunch of selection variants in respective slots
     render
       :: State
-      -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+      -> H.ParentHTML Query (ChildQuery m) ChildSlot m
     render = cnDocumentationBlocks
 
     eval
       :: Query
-      ~> H.ParentDSL State Query (ChildQuery (Effects eff) m) ChildSlot Void m
+      ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Void m
     eval (NoOp next) = pure next
 
 
@@ -177,10 +162,10 @@ _multiLocation = prop (SProxy :: SProxy "multiLocation")
 _multiUser :: Lens' State Expandable.Status
 _multiUser = prop (SProxy :: SProxy "multiUser")
 
-cnDocumentationBlocks :: ∀ eff m
-  . MonadAff (Effects eff) m
+cnDocumentationBlocks :: ∀ m
+  . MonadAff m
  => State
- -> H.ParentHTML Query (ChildQuery (Effects eff) m) ChildSlot m
+ -> H.ParentHTML Query (ChildQuery m) ChildSlot m
 cnDocumentationBlocks st =
   let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
       css = HP.class_ <<< HH.ClassName

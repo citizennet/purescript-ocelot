@@ -8,8 +8,8 @@ import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Radio as Radio
 import Ocelot.Block.Format as Format
 import Effect.Aff (Aff)
-import Effect.Aff.Console (log, CONSOLE)
-import DOM.Event.Types (MouseEvent)
+import Effect.Console (log)
+import Web.UIEvent.MouseEvent (MouseEvent)
 import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -29,9 +29,7 @@ type Input = Unit
 
 type Message = Void
 
-type Effects eff = ( console :: CONSOLE | eff )
-
-component :: ∀ eff. H.Component HH.HTML Query Input Message (Aff (Effects eff))
+component :: H.Component HH.HTML Query Input Message Aff
 component =
   H.component
     { initialState: const { formPanelIsOpen: false }
@@ -40,13 +38,13 @@ component =
     , receiver: const Nothing
     }
   where
-    eval :: Query ~> H.ComponentDSL State Query Message (Aff (Effects eff))
+    eval :: Query ~> H.ComponentDSL State Query Message Aff
     eval = case _ of
       NoOp a -> do
         pure a
 
       HandleFormHeaderClick _ a -> do
-        H.liftAff (log "submit form")
+        H.liftEffect (log "submit form")
         pure a
 
       ToggleFormPanel _ a -> do

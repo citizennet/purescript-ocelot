@@ -21,12 +21,11 @@ import Data.Const (Const)
 import Data.Functor (mapFlipped)
 import Data.Maybe (Maybe(..))
 import Data.Map as M
-import DOM.HTML.Types (HTMLElement)
+import Web.HTML.HTMLElement (HTMLElement)
 
-import Global (decodeURI, encodeURI)
+import Global.Unsafe (unsafeDecodeURI, unsafeEncodeURI)
 
 import Halogen as H
-import Halogen.Aff (HalogenEffects)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Storybook.Proxy (ProxyS, proxy)
@@ -34,7 +33,7 @@ import Halogen.VDom.Driver (runUI)
 import Ocelot.Block.Format as Format
 import UIGuide.Block.Backdrop as Backdrop
 
-import Routing (hashes)
+import Routing.Hash (hashes)
 
 data Query a
   = RouteChange String a
@@ -76,15 +75,15 @@ type HTML m = H.ParentHTML Query StoryQuery Slot m
 
 
 -- | Takes stories config and mount element, and renders the storybook.
-runStorybook :: ∀ eff
-  . Stories (Aff (HalogenEffects eff))
+runStorybook
+ :: Stories Aff
  -> Array Group
  -> HTMLElement
- -> Aff (HalogenEffects eff) Unit
+ -> Aff Unit
 runStorybook stories groups body = do
   app' <- runUI app { stories, groups } body
-  H.liftEff $ hashes $ \_ next ->
-    launchAff_ $ app'.query (H.action $ RouteChange $ decodeURI next)
+  void $ H.liftEffect $ hashes $ \_ next ->
+    launchAff_ $ app'.query (H.action $ RouteChange $ unsafeDecodeURI next)
 
 type Input m =
   { stories :: Stories m
@@ -203,7 +202,7 @@ app =
           [ HP.classes $
             Format.linkClasses <>
             ( if href == route then [ HH.ClassName "font-medium" ] else [] )
-          , HP.href $ "#" <> encodeURI href
+          , HP.href $ "#" <> unsafeEncodeURI href
           ]
           [ HH.text anchor ]
         ]

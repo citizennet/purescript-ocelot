@@ -3,7 +3,6 @@ module UIGuide.Components.Validation where
 import Prelude
 
 import Effect.Aff (Aff)
-import Effect.Aff.Console (CONSOLE)
 import Data.Maybe (Maybe(..))
 import Record (modify)
 import Data.Symbol (SProxy(..))
@@ -40,7 +39,7 @@ type State =
   , result :: Maybe { email :: String, password :: String }
   }
 
-component :: ∀ eff. H.Component HH.HTML Query Unit Void (Aff (console :: CONSOLE | eff))
+component :: H.Component HH.HTML Query Unit Void Aff
 component =
   H.lifecycleComponent
     { initialState: const initialState
@@ -118,7 +117,7 @@ component =
       ]
     ]
 
-  eval :: Query ~> H.ComponentDSL State Query Void (Aff ( console :: CONSOLE | eff))
+  eval :: Query ~> H.ComponentDSL State Query Void Aff
   eval = case _ of
     UpdateContents val next -> do
       H.modify_ $ updateValue val
@@ -146,7 +145,7 @@ component =
 
 -- We can build forms from FormInput types using formFromField. Then we
 -- can compose these into larger forms.
-signupForm :: ∀ eff. SignupForm (Aff eff)
+signupForm :: SignupForm Aff
 signupForm = { email: _, password: _ }
   <$> emailForm
   <*> passwordForm

@@ -3,8 +3,8 @@ module UIGuide.Utilities.Async where
 import Prelude
 
 import Effect.Aff (Aff)
-import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Eff.Timer (setTimeout, TIMER)
+import Effect.Class (liftEffect)
+import Effect.Timer (setTimeout)
 import Data.Argonaut (Json, decodeJson, (.?))
 import Data.Array (head, last)
 import Data.Either (Either)
@@ -17,7 +17,8 @@ import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (get, AJAX)
+import Network.HTTP.Affjax (get)
+import Network.HTTP.Affjax.Response as Response
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Components.Typeahead.Input as TA
@@ -68,17 +69,17 @@ fail = users
 
 -- Given a source, load the resulting data.
 loadFromSource
-  :: ∀ eff item
+  :: ∀ item
    . Source item
   -> String
-  -> Aff (ajax :: AJAX, timer :: TIMER | eff) (RemoteData Err (Array item))
+  -> Aff (RemoteData Err (Array item))
 loadFromSource (Source { path, speed, decoder }) search =
   case speed of
-    Fast -> get (path <> search) >>= (pure <<< decoder <<< _.response)
-    Fail -> get search >>= (pure <<< decoder <<< _.response)
+    Fast -> get Response.json (path <> search) >>= (pure <<< decoder <<< _.response)
+    Fail -> get Response.json search >>= (pure <<< decoder <<< _.response)
     Slow -> do
-      _ <- liftEff $ setTimeout 5000 (pure unit)
-      res <- get (path <> search)
+      _ <- liftEffect $ setTimeout 5000 (pure unit)
+      res <- get Response.json (path <> search)
       pure $ decoder res.response
 
 ----------
@@ -125,14 +126,14 @@ decodeUser json = do
     , skinColor
     }
 
-renderItemUser :: ∀ o eff. TA.RenderTypeaheadItem o User eff
+renderItemUser :: ∀ o. TA.RenderTypeaheadItem o User
 renderItemUser =
-  { toObject: userToStrMap
+  { toObject: userToObject
   , renderItem: renderUser
   , renderContainer: TA.defRenderContainer' renderFuzzyUser
   }
 
-userToObject :: User -> StrMap String
+userToObject :: User -> Object String
 userToObject (User { name, eyeColor, hairColor, skinColor }) =
   fromFoldable
     [ Tuple "name" name
@@ -229,13 +230,13 @@ decodeLocation json = do
   population <- obj .? "population"
   pure $ Location { name, population }
 
-locationToObject :: Location -> StrMap String
+locationToObject :: Location -> Object String
 locationToObject (Location { name, population }) =
   fromFoldable [ Tuple "name" name ]
 
-renderItemLocation :: ∀ o eff. TA.RenderTypeaheadItem o Location eff
+renderItemLocation :: ∀ o. TA.RenderTypeaheadItem o Location
 renderItemLocation =
-  { toObject: locationToStrMap
+  { toObject: locationToObject
   , renderItem: TA.defRenderItem <<< unwrap
   , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
   }
