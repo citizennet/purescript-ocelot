@@ -5,7 +5,6 @@ import Prelude
 import Data.List (List)
 import Data.Map (Map)
 import Data.Maybe (Maybe(..))
-import Data.Monoid (mempty)
 import Data.Tuple (Tuple(..))
 
 class Default v where
