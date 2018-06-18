@@ -299,11 +299,23 @@ renderTA props renderContainer renderSelectionItem st =
         ]
 
     renderMulti xs slot =
-      HH.div_
-        ( [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
+      HH.div
+        [ HP.class_ $ HH.ClassName "relative" ]
+        ( removeAllBtn <>
+          [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
           , slot
           ]
         )
+      where
+        removeAllBtn = case st.selections of
+          TA.Many [] -> []
+          TA.Limit _ [] -> []
+          _ ->
+            [ HH.a
+              [ HP.class_ $ HH.ClassName "absolute -mt-7 pin-r underline text-grey-70"
+              , HE.onClick $ HE.input_ TA.RemoveAll ]
+              [ HH.text "Remove All" ]
+            ]
 
     renderMultiSearch =
       Input.inputGroup_
