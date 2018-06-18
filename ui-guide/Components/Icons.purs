@@ -89,7 +89,6 @@ component =
             , Tuple "Tip" (Icon.tip [ css "text-yellow" ])
             , Tuple "Info" (Icon.info [ css "text-blue" ])
             , Tuple "Success" (Icon.success [ css "text-green" ])
-            , Tuple "Loading" (Icon.loading [ css "text-grey" ])
             , Tuple "Facebook" (Icon.facebook [ css "text-fb-blue" ])
             , Tuple "Instagram" (Icon.instagram [ css "text-ig-brown" ])
             , Tuple "Twitter" (Icon.twitter [ css "text-tw-blue" ])

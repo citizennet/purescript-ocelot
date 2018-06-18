@@ -166,10 +166,6 @@
   content: "\E021";
 }
 
-.ocelot-scoped .icon-loading:before {
-  content: "\E007";
-}
-
 .ocelot-scoped .icon-menu:before {
   content: "\E014";
 }
@@ -8461,20 +8457,6 @@ body .ocelot-scoped {
 }
 
 /* Animation Styles */
-
-.ocelot-scoped .spin {
-  animation: spin 1.4s infinite linear;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
 
 .ocelot-scoped .slide-down {
   animation: yslide .1s ease-out 1;

@@ -166,10 +166,6 @@
   content: "\E021";
 }
 
-.icon-loading:before {
-  content: "\E007";
-}
-
 .icon-menu:before {
   content: "\E014";
 }
@@ -8461,20 +8457,6 @@ dt {
 }
 
 /* Animation Styles */
-
-.spin {
-  animation: spin 1.4s infinite linear;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
 
 .slide-down {
   animation: yslide .1s ease-out 1;

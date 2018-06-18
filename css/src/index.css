@@ -150,13 +150,6 @@ dt {
 .sibling\:text-grey-50 ~ * { @apply .text-grey-50; }
 
 /* Animation Styles */
-.spin { animation: spin 1.4s infinite linear; }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .slide-down { animation: yslide 0.1s ease-out 1; }
 
 @keyframes yslide {
