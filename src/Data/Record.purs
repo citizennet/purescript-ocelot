@@ -6,13 +6,13 @@ import Data.Lens (set)
 import Data.Lens.Record (prop)
 import Data.Either (Either)
 import Data.Maybe (Maybe(..))
-import Data.Record (delete, get, insert)
+import Record (delete, get, insert)
 import Data.Symbol (class IsSymbol, SProxy(..))
 import Data.Variant (Variant, inj, on)
 import Ocelot.Data.Default (class Default, def)
+import Prim.Row (class Lacks, class Cons)
 import Type.Row
   ( class ListToRow
-  , class RowLacks
   , class RowToList
   , Cons
   , Nil
@@ -35,8 +35,8 @@ instance nilSequenceRecord :: SequenceRecord Nil r () where
 
 instance consSequenceRecord
   :: ( IsSymbol name
-     , RowCons name a tail' o
-     , RowCons name (Maybe a) t0 r , RowLacks name tail'
+     , Cons name a tail' o
+     , Cons name (Maybe a) t0 r , Lacks name tail'
      , SequenceRecord tail r tail'
      )
   => SequenceRecord (Cons name (Maybe a) tail) r o
@@ -71,8 +71,8 @@ instance nilDefaultRecord :: DefaultRecord Nil r () where
 instance consDefaultRecord
   :: ( IsSymbol name
      , Default a
-     , RowCons name a tail' o
-     , RowLacks name tail'
+     , Cons name a tail' o
+     , Lacks name tail'
      , DefaultRecord tail r0 tail'
      )
   => DefaultRecord (Cons name a tail) r0 o
@@ -101,15 +101,15 @@ instance nilDefaultFormInputs :: DefaultFormInputs Nil r () where
 instance consDefaultFormInputs
   :: ( IsSymbol name
      , Default a
-     , RowCons name { input :: a
+     , Cons name { input :: a
                     , validate :: Boolean
                     , result :: Maybe (Either e b)
                     , setInput :: a -> (Variant r0)
                     , setValidate :: Boolean -> (Variant r1)
                     } tail' o
-     , RowCons name a t0 r0
-     , RowCons name Boolean t1 r1
-     , RowLacks name tail'
+     , Cons name a t0 r0
+     , Cons name Boolean t1 r1
+     , Lacks name tail'
      , DefaultFormInputs tail r0 tail'
      )
   => DefaultFormInputs (Cons name a tail) r0 o
@@ -148,12 +148,12 @@ class BuildInputSetters rl rin fin rout fout | rl rin fin -> rout fout where
     -> Record fout
 
 instance inputSetterNil :: BuildInputSetters Nil r fin r fout where
-  buildInputSetters _ _ = id
+  buildInputSetters _ _ = identity
 
 instance inputSetterCons ::
   ( IsSymbol sym
-  , RowCons sym { input :: a | r } fin fout
-  , RowCons sym a rout' rout
+  , Cons sym { input :: a | r } fin fout
+  , Cons sym a rout' rout
   , BuildInputSetters tail rin fin' rout' fout
   ) => BuildInputSetters (Cons sym a tail) rin fin rout fout
   where
@@ -189,12 +189,12 @@ class BuildValidateSetters rl rin fin rout fout | rl rin fin -> rout fout where
     -> Record fout
 
 instance validateSetterNil :: BuildValidateSetters Nil r fin r fout where
-  buildValidateSetters _ _ = id
+  buildValidateSetters _ _ = identity
 
 instance validateSetterCons ::
   ( IsSymbol sym
-  , RowCons sym { validate :: a | r } fin fout
-  , RowCons sym a rout' rout
+  , Cons sym { validate :: a | r } fin fout
+  , Cons sym a rout' rout
   , BuildValidateSetters tail rin fin' rout' fout
   ) => BuildValidateSetters (Cons sym a tail) rin fin rout fout
   where
@@ -284,12 +284,12 @@ rltail :: forall k v t. RLProxy (Cons k v t) -> RLProxy t
 rltail _ = RLProxy
 
 instance applyRowListCons ::
-  ( RowCons k (i -> o) tior ior
-  , RowCons k i tir ir
-  , RowCons k o tor or
-  , RowLacks k tior
-  , RowLacks k tir
-  , RowLacks k tor
+  ( Cons k (i -> o) tior ior
+  , Cons k i tir ir
+  , Cons k o tor or
+  , Lacks k tior
+  , Lacks k tir
+  , Lacks k tor
   , ListToRow tio tior
   , ListToRow ti tir
   , ListToRow to tor

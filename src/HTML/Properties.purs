@@ -7,10 +7,9 @@ module Ocelot.HTML.Properties
 
 import Prelude
 
-import Data.Array (elem, foldr, nubBy, snoc)
+import Data.Array (elem, foldr, nubByEq, snoc)
 import Data.Bifunctor (lmap, rmap)
-import Data.String (Pattern(..), drop, null, split)
-import Data.String.Utils (startsWith)
+import Data.String (Pattern(..), drop, length, null, split, take)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
@@ -45,7 +44,7 @@ appendIProps ip ip' =
       pure
       <<< HP.classes
         $ HH.ClassName
-      <$> nubBy
+      <$> nubByEq
           (\c c' -> classify c == classify c')
           (classes' <> classes)
 
@@ -113,3 +112,10 @@ append' x "" = x
 append' x y  = x <> "-" <> y
 
 infixr 5 append' as <->
+
+-- | WARN: Not tested, written during 0.12 migration
+startsWith
+  :: String
+  -> String
+  -> Boolean
+startsWith str0 str1 = str0 == (take (length str0) str1)

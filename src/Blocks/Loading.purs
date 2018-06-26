@@ -16,7 +16,7 @@ svgString =
   "</svg>"
 
 svgElem :: ∀ p i. HH.HTML p i
-svgElem = either (const $ HH.text "") id $ parse svgString
+svgElem = either (const $ HH.text "") identity $ parse svgString
 
 spinner :: ∀ p i. Array (HH.IProp HTMLdiv i) -> HH.HTML p i
 spinner props =
