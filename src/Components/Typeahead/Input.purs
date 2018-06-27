@@ -18,6 +18,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Ocelot.Block.Format as Format
+import Ocelot.Block.Loading as Loading
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
@@ -291,7 +292,9 @@ renderTA props renderContainer renderSelectionItem st =
                 Loading -> ""
                 otherwise -> "offscreen"
           ]
-          [ Icon.loading_ ]
+          [ Loading.spinner
+            [ HP.classes spinnerClasses ]
+          ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes linkClasses ]
@@ -299,11 +302,23 @@ renderTA props renderContainer renderSelectionItem st =
         ]
 
     renderMulti xs slot =
-      HH.div_
-        ( [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
+      HH.div
+        [ HP.class_ $ HH.ClassName "relative" ]
+        ( removeAllBtn <>
+          [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
           , slot
           ]
         )
+      where
+        removeAllBtn = case st.selections of
+          TA.Many [] -> []
+          TA.Limit _ [] -> []
+          _ ->
+            [ HH.a
+              [ HP.class_ $ HH.ClassName "absolute -mt-7 pin-r underline text-grey-70"
+              , HE.onClick $ HE.input_ TA.RemoveAll ]
+              [ HH.text "Remove All" ]
+            ]
 
     renderMultiSearch =
       Input.inputGroup_
@@ -318,7 +333,9 @@ renderTA props renderContainer renderSelectionItem st =
                 Loading -> ""
                 otherwise -> "offscreen"
           ]
-          [ Icon.loading_ ]
+          [ Loading.spinner
+            [ HP.classes spinnerClasses ]
+          ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes linkClasses ]
@@ -366,6 +383,11 @@ renderTA props renderContainer renderSelectionItem st =
       , "border-l-2"
       , "w-full"
       , "px-3"
+      ]
+
+    spinnerClasses = HH.ClassName <$>
+      [ "w-6"
+      , "text-blue-88"
       ]
 
     renderError

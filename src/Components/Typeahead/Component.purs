@@ -62,6 +62,7 @@ type Input o item err m =
 -- `TypeaheadReceiver`: Refresh the typeahead with new input
 data Query o item err m a
   = Remove item a
+  | RemoveAll a
   | TriggerFocus a
   | Synchronize a
   | Search String a
@@ -79,14 +80,15 @@ data Query o item err m a
 -- the `FulfillRequest` method to return the data.
 data Message o item
   = Searched String
-  | SelectionsChanged SelectionChange item (SelectionType item)
+  | SelectionsChanged (SelectionChange item) (SelectionType item)
   | VisibilityChanged Select.Visibility
   | Emit (o Unit)
 
 -- Selections change because something was added or removed.
-data SelectionChange
-  = ItemSelected
-  | ItemRemoved
+data SelectionChange item
+  = ItemSelected item
+  | ItemRemoved item
+  | AllRemoved
 
 ----------
 -- Child types
@@ -208,7 +210,7 @@ component =
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
 
-          H.raise $ SelectionsChanged ItemSelected item selections
+          H.raise $ SelectionsChanged (ItemSelected item) selections
           eval $ Synchronize a
 
         -- Perform a new search, fetching data if Async.
@@ -241,9 +243,24 @@ component =
               Many    xs -> Many    $ filter ((/=) item) xs
 
         H.modify_ $ seeks _ { selections = selections }
-        H.raise $ SelectionsChanged ItemRemoved item selections
+        H.raise $ SelectionsChanged (ItemRemoved item) selections
         _ <- eval $ Synchronize a
         eval $ TriggerFocus a
+
+      -- Remove all the items.
+      RemoveAll a -> do
+        (Tuple _ st) <- getState
+
+        let selections = case st.selections of
+              One     _  -> One Nothing
+              Limit n xs -> Limit n []
+              Many    xs -> Many    []
+
+        H.modify_ $ seeks _ { selections = selections }
+        H.raise $ SelectionsChanged AllRemoved selections
+        _ <- eval $ Synchronize a
+        eval $ TriggerFocus a
+
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
