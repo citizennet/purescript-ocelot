@@ -2,19 +2,19 @@ module UIGuide.Utilities.Async where
 
 import Prelude
 
-import Effect.Aff (Aff)
-import Effect.Class (liftEffect)
-import Effect.Timer (setTimeout)
 import Data.Argonaut (Json, decodeJson, (.?))
 import Data.Array (head, last)
 import Data.Either (Either)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (fromMaybe)
 import Data.Newtype (class Newtype, unwrap)
-import Foreign.Object (Object, fromFoldable)
 import Data.String (Pattern(..), split)
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
+import Effect.Aff.Class (class MonadAff, liftAff)
+import Effect.Class (liftEffect)
+import Effect.Timer (setTimeout)
+import Foreign.Object (Object, fromFoldable)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Network.HTTP.Affjax (get)
@@ -69,12 +69,13 @@ fail = users
 
 -- Given a source, load the resulting data.
 loadFromSource
-  :: ∀ item
-   . Source item
+  :: ∀ item m
+   . MonadAff m
+  => Source item
   -> String
-  -> Aff (RemoteData Err (Array item))
+  -> m (RemoteData Err (Array item))
 loadFromSource (Source { path, speed, decoder }) search =
-  case speed of
+  liftAff $ case speed of
     Fast -> get Response.json (path <> search) >>= (pure <<< decoder <<< _.response)
     Fail -> get Response.json search >>= (pure <<< decoder <<< _.response)
     Slow -> do
