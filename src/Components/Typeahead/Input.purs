@@ -2,7 +2,6 @@ module Ocelot.Components.Typeahead.Input where
 
 import Prelude
 
-import Effect.Aff (Aff)
 import Effect.Aff.Class (class MonadAff)
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr)
@@ -149,7 +148,7 @@ defAsyncSingle :: ∀ o item err m
   => Eq item
   => Show err
   => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
-  -> (String -> Aff (RemoteData err (Array item)))
+  -> (String -> m (RemoteData err (Array item)))
   -> RenderTypeaheadItem o item
   -> TA.Input o item err m
 defAsyncSingle props f { toObject, renderContainer, renderItem } =
@@ -166,7 +165,7 @@ defAsyncMulti :: ∀ o item err m
  => Eq item
  => Show err
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
- -> (String -> Aff (RemoteData err (Array item)))
+ -> (String -> m (RemoteData err (Array item)))
  -> RenderTypeaheadItem o item
  -> TA.Input o item err m
 defAsyncMulti props f { toObject, renderContainer, renderItem } =
@@ -181,11 +180,12 @@ defAsyncMulti props f { toObject, renderContainer, renderItem } =
 ----------
 -- Default Configuration
 
-syncConfig :: ∀ item err
+syncConfig :: ∀ item err m
   . Eq item
+ => MonadAff m
  => (item -> Object String)
  -> Boolean
- -> TA.Config item err
+ -> TA.Config item err m
 syncConfig toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
@@ -194,13 +194,14 @@ syncConfig toObject keepOpen =
   , keepOpen
   }
 
-asyncConfig :: ∀ item err
+asyncConfig :: ∀ item err m
   . Eq item
+ => MonadAff m
  => Milliseconds
- -> (String -> Aff (RemoteData err (Array item)))
+ -> (String -> m (RemoteData err (Array item)))
  -> (item -> Object String)
  -> Boolean
- -> TA.Config item err
+ -> TA.Config item err m
 asyncConfig ms f toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
@@ -222,7 +223,7 @@ renderTA :: ∀ o item err m
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
  -> RenderContainer o item
  -> (item -> HH.PlainHTML)
- -> TA.State item err
+ -> TA.State item err m
  -> TAParentHTML o item err m
 renderTA props renderContainer renderSelectionItem st =
   renderSlot $
