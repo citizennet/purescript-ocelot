@@ -24,7 +24,6 @@ outerClasses :: Array HH.ClassName
 outerClasses = HH.ClassName <$>
   [ "bg-black-10"
   , "w-full"
-  , "px-6"
   ]
 
 innerClasses :: Array HH.ClassName
@@ -33,7 +32,7 @@ innerClasses = HH.ClassName <$>
   , "items-end"
   , "mx-auto"
   , "flex"
-  , "px-20"
+  , "px-16"
   , "h-16"
   , "list-reset"
   ]

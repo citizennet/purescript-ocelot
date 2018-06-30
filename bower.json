@@ -11,33 +11,20 @@
     "docs"
   ],
   "dependencies": {
-    "purescript-halogen": "^3.1.2",
-    "purescript-halogen-select": "^1.0.0",
-    "purescript-fuzzy": "^0.1.2",
-    "purescript-validation": "^3.2.0",
-    "purescript-generics-rep": "^5.4.0",
-    "purescript-aff": "^4.0.2",
-    "purescript-remotedata": "^2.2.0",
-    "purescript-email-validate": "^2.0.0",
-    "purescript-numbers": "^5.0.0",
-    "purescript-yarn": "^3.0.1",
-    "purescript-bigints": "^3.5.0",
-    "purescript-arrays": "^4.3.0",
-    "purescript-variant": "^4.1.0",
-    "purescript-polyform": "^0.6.3",
-    "purescript-test-unit": "^13.0.0",
-    "purescript-datetime": "^3.4.1",
-    "purescript-now": "^3.0.0",
-    "purescript-formatters": "^3.0.1"
+    "purescript-halogen-select": "^2.0.0",
+    "purescript-fuzzy": "^0.2.1",
+    "purescript-polyform": "^0.7.0",
+    "purescript-remotedata": "^4.0.0",
+    "purescript-formatters": "https://github.com/citizennet/purescript-formatters.git#master"
   },
   "devDependencies": {
-    "purescript-console": "^3.0.0",
-    "purescript-debug": "^3.0.0",
-    "purescript-psci-support": "^3.0.0",
-    "purescript-affjax": "^5.0.0",
-    "purescript-argonaut": "^3.1.0",
-    "purescript-js-timers": "^3.0.0",
-    "purescript-halogen-storybook": "^0.1.0",
-    "purescript-stringutils": "^0.0.7"
+    "purescript-affjax": "^6.0.0",
+    "purescript-argonaut": "^4.0.0",
+    "purescript-halogen-storybook": "^0.3.0",
+    "purescript-email-validate": "^3.0.0",
+    "purescript-numbers": "^6.0.0",
+    "purescript-js-timers": "^4.0.0",
+    "purescript-test-unit": "^14.0.0",
+    "purescript-debug": "^4.0.0"
   }
 }

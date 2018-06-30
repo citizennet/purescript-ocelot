@@ -1237,7 +1237,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .bg-black-10 {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .bg-black-20 {
@@ -1621,7 +1621,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:bg-black-10:focus {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .focus\:bg-black-20:focus {
@@ -2005,7 +2005,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:bg-black-10:hover {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .ocelot-scoped .hover\:bg-black-20:hover {
@@ -2449,7 +2449,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .border-black-20 {
@@ -2833,7 +2833,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .focus\:border-black-10:focus {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .focus\:border-black-20:focus {
@@ -3217,7 +3217,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:border-black-10:hover {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .hover\:border-black-20:hover {
@@ -3601,7 +3601,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-black-20 {
@@ -7169,7 +7169,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .text-black-20 {
@@ -7553,7 +7553,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .hover\:text-black-10:hover {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .hover\:text-black-20:hover {
@@ -7937,7 +7937,7 @@ body .ocelot-scoped {
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-black-20 {
@@ -9267,7 +9267,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:bg-black-20 {
@@ -9651,7 +9651,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:focus\:bg-black-20:focus {
@@ -10035,7 +10035,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:bg-black-20:hover {
@@ -10479,7 +10479,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:border-black-20 {
@@ -10863,7 +10863,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:focus\:border-black-20:focus {
@@ -11247,7 +11247,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:border-black-20:hover {
@@ -11631,7 +11631,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:border-black-20 {
@@ -15191,7 +15191,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:text-black-20 {
@@ -15575,7 +15575,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:hover\:text-black-20:hover {
@@ -15959,7 +15959,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .sm\:group:hover .group-hover\:text-black-20 {
@@ -16788,7 +16788,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:bg-black-20 {
@@ -17172,7 +17172,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:focus\:bg-black-20:focus {
@@ -17556,7 +17556,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:bg-black-20:hover {
@@ -18000,7 +18000,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:border-black-20 {
@@ -18384,7 +18384,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:focus\:border-black-20:focus {
@@ -18768,7 +18768,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:border-black-20:hover {
@@ -19152,7 +19152,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:border-black-20 {
@@ -22712,7 +22712,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:text-black-20 {
@@ -23096,7 +23096,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:hover\:text-black-20:hover {
@@ -23480,7 +23480,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .md\:group:hover .group-hover\:text-black-20 {
@@ -24309,7 +24309,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:bg-black-20 {
@@ -24693,7 +24693,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:focus\:bg-black-20:focus {
@@ -25077,7 +25077,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:bg-black-20:hover {
@@ -25521,7 +25521,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:border-black-20 {
@@ -25905,7 +25905,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:focus\:border-black-20:focus {
@@ -26289,7 +26289,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:border-black-20:hover {
@@ -26673,7 +26673,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:border-black-20 {
@@ -30233,7 +30233,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:text-black-20 {
@@ -30617,7 +30617,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:hover\:text-black-20:hover {
@@ -31001,7 +31001,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .lg\:group:hover .group-hover\:text-black-20 {
@@ -31830,7 +31830,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:bg-black-20 {
@@ -32214,7 +32214,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:focus\:bg-black-20:focus {
@@ -32598,7 +32598,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:bg-black-20:hover {
@@ -33042,7 +33042,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:border-black-20 {
@@ -33426,7 +33426,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:focus\:border-black-20:focus {
@@ -33810,7 +33810,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:border-black-20:hover {
@@ -34194,7 +34194,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:border-black-20 {
@@ -37754,7 +37754,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:text-black-20 {
@@ -38138,7 +38138,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:hover\:text-black-20:hover {
@@ -38522,7 +38522,7 @@ body .ocelot-scoped {
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .ocelot-scoped .xl\:group:hover .group-hover\:text-black-20 {

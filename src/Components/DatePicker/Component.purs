@@ -2,22 +2,17 @@ module Ocelot.Components.DatePicker where
 
 import Prelude
 
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Class (class MonadAff)
-import Control.Monad.Aff.Console (CONSOLE, log)
-import Control.Monad.Eff.Now (NOW, now)
-import DOM (DOM)
-import DOM.Event.KeyboardEvent (KeyboardEvent) as KE
 import Data.Array (mapWithIndex)
 import Data.Date (Date, Month, Year, canonicalDate, month, year)
-import Data.DateTime (date)
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
 import Data.Formatter.DateTime (formatDateTime)
-import Data.Maybe (Maybe(Nothing, Just), maybe)
-import Data.Monoid (mempty)
+import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.String (trim)
 import Data.Tuple (Tuple(..), fst, snd)
+import Effect.Aff.Class (class MonadAff)
+import Effect.Class.Console (log)
+import Effect.Now (nowDate)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -26,45 +21,41 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
-import Ocelot.Block.ItemContainer as ItemContainer
 import Ocelot.Components.DatePicker.Utils as Utils
+import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Utils.Setters as Setters
-
-type Effects eff =
-  ( console :: CONSOLE
-  , dom :: DOM
-  , avar :: AVAR
-  , now :: NOW
-  | eff
-  )
+import Web.Event.Event (preventDefault)
+import Web.UIEvent.KeyboardEvent (KeyboardEvent)
+import Web.UIEvent.KeyboardEvent as KE
 
 type State =
   { targetDate :: Tuple Year Month
-  , selection :: Maybe CalendarItem
+  , selection :: Maybe Date
   , search :: String
   }
 
 type Input =
   { targetDate :: Maybe (Tuple Year Month)
-  , selection :: Maybe CalendarItem
+  , selection :: Maybe Date
   }
 
 data Query a
   = HandleSelect (Select.Message Query CalendarItem) a
   | ToggleYear  Direction a
   | ToggleMonth Direction a
-  | SetTime a
+  | Initialize a
   | TriggerFocus a
   | Synchronize a
-  | GetSelection (Maybe CalendarItem -> a)
-  | SetSelection (Maybe CalendarItem) a
-  | Key KE.KeyboardEvent a
+  | GetSelection (Maybe Date -> a)
+  | SetSelection (Maybe Date) a
+  | Key KeyboardEvent a
   | Search String a
+  | Receive Input a
 
 data Message
-  = SelectionChanged (Maybe CalendarItem)
+  = SelectionChanged (Maybe Date)
   | VisibilityChanged Select.Visibility
   | Searched String
 
@@ -72,11 +63,11 @@ data Direction
   = Prev
   | Next
 
-type ParentHTML eff m
-  = H.ParentHTML Query (ChildQuery eff) Unit m
+type ParentHTML m
+  = H.ParentHTML Query ChildQuery Input m
 
 type ChildSlot = Unit
-type ChildQuery eff = Select.Query Query CalendarItem eff
+type ChildQuery = Select.Query Query CalendarItem
 
 ----------
 -- Calendar Items
@@ -112,49 +103,64 @@ dropdownClasses = HH.ClassName <$>
   , "text-lg"
   ]
 
-component :: ∀ e m
-  . MonadAff ( Effects e ) m
- => H.Component HH.HTML Query Unit Message m
+component :: ∀ m
+  . MonadAff m
+ => H.Component HH.HTML Query Input Message m
 component =
   H.lifecycleParentComponent
     { initialState
     , render
     , eval
     , receiver: HE.input Receive
-    , initializer: Just $ H.action SetTime
+    , initializer: Just $ H.action Initialize
     , finalizer: Nothing
     }
   where
     initialState :: Input -> State
     initialState { targetDate, selection } =
-      { targetDate: maybe (Utils.extractYearMonth nowDate) targetDate
+      { targetDate: fromMaybe (Tuple (ODT.unsafeMkYear 2001) (ODT.unsafeMkMonth 1)) targetDate
       , selection
       , search: ""
       }
 
     eval
       :: Query
-      ~> H.ParentDSL State Query (ChildQuery (Effects e)) Unit Message m
+      ~> H.ParentDSL State Query ChildQuery Unit Message m
     eval = case _ of
-      Search text a ->
-        eval $ HandleSelect $ Select.Searched text a
+      Search text a -> do
+        H.raise $ Searched text
+        today <- H.liftEffect nowDate
+        H.liftEffect $ log ("Search: " <> text <> show today)
+        case text of
+          "" -> eval $ SetSelection Nothing a
+          _  -> case Utils.guessDate today 5 text of
+            Nothing -> pure a
+            Just d  -> do
+              _ <- eval $ SetSelection (Just d) a
+              _ <- H.query unit $ Select.setVisibility Select.Off
+              pure a
 
       HandleSelect m a -> case m of
-        Select.Selected item -> do
+        Select.Emit query -> eval query *> pure a
+
+        Select.Selected (CalendarItem _ _ _ date) -> do
           -- We'll want to select the item here, set its status, and raise
           -- a message about its selection.
-          let stringify (CalendarItem _ _ _ date) = show date
-          H.liftAff $ log ("Selected! Choice was " <> stringify item)
-          H.modify $ _ { selection = Just item }
+          H.liftEffect $ log ("Selected! Choice was " <> show date)
+          H.modify_ _ { selection = Just date }
+          _ <- H.query unit $ Select.setVisibility Select.Off
+          H.raise $ SelectionChanged $ Just date
           eval $ Synchronize a
 
         Select.Searched text -> do
-          H.modify $ _ { search = text }
+          H.modify_ _ { search = text }
           -- we don't actually want to match on search, we want to wait
           -- until they hit ENTER and then we'll try to match their search
           pure a
 
-        Select.VisibilityChanged _ -> pure a
+        Select.VisibilityChanged visibility -> do
+          H.raise $ VisibilityChanged visibility
+          pure a
 
       -- We ought to be able to navigate months in the date picker
       ToggleMonth dir a -> a <$ do
@@ -162,9 +168,9 @@ component =
         let y = fst st.targetDate
             m = snd st.targetDate
             newDate = case dir of
-               Next -> Utils.nextMonth (canonicalDate y m bottom)
-               Prev -> Utils.prevMonth (canonicalDate y m bottom)
-        H.modify _ { targetDate = Tuple (year newDate) (month newDate) }
+               Next -> ODT.nextMonth (canonicalDate y m bottom)
+               Prev -> ODT.prevMonth (canonicalDate y m bottom)
+        H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
         eval $ Synchronize a
 
       -- We ought to be able to navigate years in the date picker
@@ -173,17 +179,18 @@ component =
         let y = fst st.targetDate
             m = snd st.targetDate
             newDate = case dir of
-               Next -> Utils.nextYear (canonicalDate y m bottom)
-               Prev -> Utils.prevYear (canonicalDate y m bottom)
-        H.modify _ { targetDate = Tuple (year newDate) (month newDate) }
+               Next -> ODT.nextYear (canonicalDate y m bottom)
+               Prev -> ODT.prevYear (canonicalDate y m bottom)
+        H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
         eval $ Synchronize a
 
       -- We can always set the calendar to the current date and time for the user's
       -- convenience. Or just the month.
-      SetTime a -> do
-        x <- H.liftEff now
-        let d = date (toDateTime x)
-        H.modify _ { targetDate = Tuple (year d) (month d) }
+      Initialize a -> do
+        { selection } <- H.get
+        d <- H.liftEffect nowDate
+        let d' = fromMaybe d selection
+        H.modify_ _ { targetDate = Tuple (year d') (month d') }
         eval $ Synchronize a
 
       TriggerFocus a -> a <$ H.query unit Select.triggerFocus
@@ -193,9 +200,39 @@ component =
         _ <- H.query unit
           $ Select.replaceItems
           $ generateCalendarRows selection y m
+        _ <- case selection of
+          Just date -> H.modify_ _ { search = ODT.formatDate date }
+          otherwise -> pure unit
         pure a
 
-    render :: State -> H.ParentHTML Query (ChildQuery (Effects e)) Unit m
+      GetSelection reply -> do
+        { selection } <- H.get
+        pure $ reply selection
+
+      SetSelection selection a -> do
+        st <- H.get
+        let targetDate = maybe st.targetDate (\d -> Tuple (year d) (month d)) selection
+        H.modify_ _ { selection = selection, targetDate = targetDate }
+        eval $ Synchronize a
+
+      Key ev a -> do
+        _ <- H.liftEffect $ log $ "key press: " <> show (KE.code ev)
+        _ <- H.query unit $ Select.setVisibility Select.On
+        let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
+        case KE.code ev of
+          "Enter"   -> do
+            preventIt
+            { search } <- H.get
+            eval $ Search search a
+          otherwise -> pure a
+
+      Receive { targetDate, selection } a -> do
+        st <- H.get
+        H.modify_ _ { targetDate = fromMaybe st.targetDate targetDate
+                    , selection = selection }
+        pure a
+
+    render :: State -> H.ParentHTML Query ChildQuery Unit m
     render st = HH.div_
         [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
       where
@@ -213,22 +250,21 @@ component =
         -- The page element that will hold focus, capture key events, etcetera
         renderSearch =
           Input.input
-            ( ( Setters.setInputProps [] ) <>
-              [ HE.onKeyDown $ Select.always $ Select.raise Key
-              , HE.onValueInput Nothing
+            ( Setters.setInputProps
+              [ HE.onKeyDown $ Just <<< Select.raise <<< H.action <<< Key
+              , HP.value st.search
               ]
             )
 
         renderSelect y m cst =
           HH.div
             [ css "relative" ]
-            -- [ renderCalendar ]
             $ if cst.visibility == Select.On
               then [ renderCalendar ]
               else [ ]
           where
             -- A helper function that will turn a date into a year/month date string
-            fmtMonthYear = either (const "-") id
+            fmtMonthYear = either (const "-") identity
               <<< formatDateTime "MMMM YYYY"
               <<< toDateTime
               <<< fromDate
@@ -252,19 +288,9 @@ component =
             calendarNav =
               Format.contentHeading
                 [ css "flex" ]
-                [ arrowButton (ToggleYear Prev)
-                  [ Icon.chevronLeft [ css "-mr-3" ]
-                  , Icon.chevronLeft_
-                  ]
-                , arrowButton (ToggleMonth Prev)
-                  [ Icon.chevronLeft_ ]
+                [ arrowButton (ToggleMonth Prev) [ Icon.chevronLeft_ ]
                 , dateHeader
-                , arrowButton (ToggleMonth Next)
-                  [ Icon.chevronRight_ ]
-                , arrowButton (ToggleYear Next)
-                  [ Icon.chevronRight [ css "-mr-3" ]
-                  , Icon.chevronRight_
-                  ]
+                , arrowButton (ToggleMonth Next) [ Icon.chevronRight_ ]
                 ]
               where
                 -- We need to embed functionality into these arrow buttons so they trigger
@@ -343,7 +369,7 @@ component =
                   <> " " <> getSelectedStyles i
                   <> " " <> getBoundaryStyles i
                   where
-                    getSelectableStyles:: CalendarItem -> String
+                    getSelectableStyles :: CalendarItem -> String
                     getSelectableStyles (CalendarItem NotSelectable _ _ _) =
                       mempty
                     getSelectableStyles _ =
@@ -366,7 +392,7 @@ component =
                 printDay (CalendarItem _ _ _ d) = printDay' d
                   where
                     printDay' :: Date -> String
-                    printDay' = (either (const "-") id)
+                    printDay' = (either (const "-") identity)
                       <<< formatDateTime "D"
                       <<< toDateTime
                       <<< fromDate
@@ -377,7 +403,7 @@ component =
 
 -- Generate a standard set of dates from a year and month.
 generateCalendarRows
-  :: Maybe CalendarItem
+  :: Maybe Date
   -> Year
   -> Month
   -> Array CalendarItem
@@ -391,12 +417,12 @@ generateCalendarRows selection y m = lastMonth <> thisMonth <> nextMonth
     thisMonth = body <#> (generateCalendarItem selection InBounds)
 
 generateCalendarItem
-  :: Maybe CalendarItem
+  :: Maybe Date
   -> BoundaryStatus
   -> Date
   -> CalendarItem
 generateCalendarItem Nothing bound i =
   CalendarItem Selectable NotSelected bound i
-generateCalendarItem (Just (CalendarItem _ _ _ d)) bound i
+generateCalendarItem (Just d) bound i
   | d == i = CalendarItem Selectable Selected bound i
   | otherwise = CalendarItem Selectable NotSelected bound i

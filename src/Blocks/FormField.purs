@@ -5,6 +5,8 @@ module Ocelot.Block.FormField
   , labelClasses
   , field
   , field_
+  , fieldMid
+  , fieldMid_
   , fieldSmall
   , fieldSmall_
   , fieldset
@@ -18,7 +20,7 @@ import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
-import Ocelot.HTML.Properties ((<&>))
+import Ocelot.HTML.Properties (css, (<&>))
 
 fieldClasses :: Array HH.ClassName
 fieldClasses = HH.ClassName <$>
@@ -87,7 +89,7 @@ field config iprops html =
   field'
     config
     iprops
-    ( HH.div [ HP.class_ $ HH.ClassName "my-1" ] html )
+    ( HH.div [ css "my-1" ] html )
 
 field_
   :: ∀ p i
@@ -106,7 +108,7 @@ fieldSmall config iprops html =
   field'
     config
     iprops
-    ( HH.div [ HP.class_ $ HH.ClassName "my-1 md:w-1/4" ] html )
+    ( HH.div [ css "my-1 md:w-1/4" ] html )
 
 fieldSmall_
   :: ∀ p i
@@ -114,6 +116,25 @@ fieldSmall_
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldSmall_ config = fieldSmall config []
+
+fieldMid
+  :: ∀ p i
+   . FieldConfig
+  -> Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+fieldMid config iprops html =
+  field'
+    config
+    iprops
+    ( HH.div [ css "my-1 md:w-1/2" ] html )
+
+fieldMid_
+  :: ∀ p i
+   . FieldConfig
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+fieldMid_ config = fieldMid config []
 
 fieldset
   :: ∀ p i
@@ -130,7 +151,7 @@ fieldset config iprops html =
         [ HP.classes labelClasses ]
         [ HH.text config.label ]
       , HH.div
-        [ HP.class_ (HH.ClassName "my-1") ]
+        [ css "my-1" ]
         html
       , errorText_ config.error
       , helpText_ config.helpText

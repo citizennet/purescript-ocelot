@@ -4,20 +4,13 @@ where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.AVar (AVAR)
-import Control.Monad.Aff.Console (CONSOLE)
-import Control.Monad.Eff.Now (NOW)
-import Control.Monad.Eff.Random (RANDOM)
-import Control.Monad.Eff.Timer (TIMER)
-import DOM (DOM)
+import Effect.Aff (Aff)
 import Data.Const (Const)
 import Data.Map (Map, fromFoldable)
 import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.Storybook.Proxy (ProxyS)
-import Network.HTTP.Affjax (AJAX)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
 import UIGuide.Components.DatePickers as DatePickers
@@ -40,24 +33,13 @@ groups =
   , Behaviors
   ]
 
-type RouteEffects eff =
-  ( console :: CONSOLE
-  , ajax :: AJAX
-  , avar :: AVAR
-  , dom :: DOM
-  , timer :: TIMER
-  , random :: RANDOM
-  , now :: NOW
-  | eff
-  )
-
-type RouteConfig eff =
+type RouteConfig =
   { anchor :: String
-  , component :: H.Component HH.HTML (ProxyS (Const Void) Unit) Unit Void (Aff (RouteEffects eff))
+  , component :: H.Component HH.HTML (ProxyS (Const Void) Unit) Unit Void Aff
   , group :: Group
   }
 
-routes :: ∀ eff. Map String (RouteConfig eff)
+routes :: Map String RouteConfig
 routes = fromFoldable
   -- [ Tuple "tabs"
     -- { anchor: "Tabs"

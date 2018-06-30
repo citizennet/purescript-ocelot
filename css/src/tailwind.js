@@ -43,7 +43,7 @@ config.zIndex = Object.assign(config.zIndex, {
 })
 
 config.colors = Object.assign(config.colors, {
-  'black-10': '#00081A',
+  'black-10': '#00091A',
   'black-20': '#242A33',
   'black-modal-a90': 'rgba(0,9,26,0.9);',
   'grey-50': '#5C6573',

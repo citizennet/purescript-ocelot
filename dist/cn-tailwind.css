@@ -1237,7 +1237,7 @@ dt {
 }
 
 .bg-black-10 {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .bg-black-20 {
@@ -1621,7 +1621,7 @@ dt {
 }
 
 .focus\:bg-black-10:focus {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .focus\:bg-black-20:focus {
@@ -2005,7 +2005,7 @@ dt {
 }
 
 .hover\:bg-black-10:hover {
-  background-color: #00081a;
+  background-color: #00091a;
 }
 
 .hover\:bg-black-20:hover {
@@ -2449,7 +2449,7 @@ dt {
 }
 
 .border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .border-black-20 {
@@ -2833,7 +2833,7 @@ dt {
 }
 
 .focus\:border-black-10:focus {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .focus\:border-black-20:focus {
@@ -3217,7 +3217,7 @@ dt {
 }
 
 .hover\:border-black-10:hover {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .hover\:border-black-20:hover {
@@ -3601,7 +3601,7 @@ dt {
 }
 
 .group:hover .group-hover\:border-black-10 {
-  border-color: #00081a;
+  border-color: #00091a;
 }
 
 .group:hover .group-hover\:border-black-20 {
@@ -7169,7 +7169,7 @@ dt {
 }
 
 .text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .text-black-20 {
@@ -7553,7 +7553,7 @@ dt {
 }
 
 .hover\:text-black-10:hover {
-  color: #00081a;
+  color: #00091a;
 }
 
 .hover\:text-black-20:hover {
@@ -7937,7 +7937,7 @@ dt {
 }
 
 .group:hover .group-hover\:text-black-10 {
-  color: #00081a;
+  color: #00091a;
 }
 
 .group:hover .group-hover\:text-black-20 {
@@ -9267,7 +9267,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .sm\:bg-black-20 {
@@ -9651,7 +9651,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .sm\:focus\:bg-black-20:focus {
@@ -10035,7 +10035,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .sm\:hover\:bg-black-20:hover {
@@ -10479,7 +10479,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .sm\:border-black-20 {
@@ -10863,7 +10863,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .sm\:focus\:border-black-20:focus {
@@ -11247,7 +11247,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .sm\:hover\:border-black-20:hover {
@@ -11631,7 +11631,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .sm\:group:hover .group-hover\:border-black-20 {
@@ -15191,7 +15191,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .sm\:text-black-20 {
@@ -15575,7 +15575,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .sm\:hover\:text-black-20:hover {
@@ -15959,7 +15959,7 @@ input[type=range]::-ms-thumb {
   }
 
   .sm\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .sm\:group:hover .group-hover\:text-black-20 {
@@ -16788,7 +16788,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .md\:bg-black-20 {
@@ -17172,7 +17172,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .md\:focus\:bg-black-20:focus {
@@ -17556,7 +17556,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .md\:hover\:bg-black-20:hover {
@@ -18000,7 +18000,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .md\:border-black-20 {
@@ -18384,7 +18384,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .md\:focus\:border-black-20:focus {
@@ -18768,7 +18768,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .md\:hover\:border-black-20:hover {
@@ -19152,7 +19152,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .md\:group:hover .group-hover\:border-black-20 {
@@ -22712,7 +22712,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .md\:text-black-20 {
@@ -23096,7 +23096,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .md\:hover\:text-black-20:hover {
@@ -23480,7 +23480,7 @@ input[type=range]::-ms-thumb {
   }
 
   .md\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .md\:group:hover .group-hover\:text-black-20 {
@@ -24309,7 +24309,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .lg\:bg-black-20 {
@@ -24693,7 +24693,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .lg\:focus\:bg-black-20:focus {
@@ -25077,7 +25077,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .lg\:hover\:bg-black-20:hover {
@@ -25521,7 +25521,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .lg\:border-black-20 {
@@ -25905,7 +25905,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .lg\:focus\:border-black-20:focus {
@@ -26289,7 +26289,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .lg\:hover\:border-black-20:hover {
@@ -26673,7 +26673,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .lg\:group:hover .group-hover\:border-black-20 {
@@ -30233,7 +30233,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .lg\:text-black-20 {
@@ -30617,7 +30617,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .lg\:hover\:text-black-20:hover {
@@ -31001,7 +31001,7 @@ input[type=range]::-ms-thumb {
   }
 
   .lg\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .lg\:group:hover .group-hover\:text-black-20 {
@@ -31830,7 +31830,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:bg-black-10 {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .xl\:bg-black-20 {
@@ -32214,7 +32214,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:focus\:bg-black-10:focus {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .xl\:focus\:bg-black-20:focus {
@@ -32598,7 +32598,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:hover\:bg-black-10:hover {
-    background-color: #00081a;
+    background-color: #00091a;
   }
 
   .xl\:hover\:bg-black-20:hover {
@@ -33042,7 +33042,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .xl\:border-black-20 {
@@ -33426,7 +33426,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:focus\:border-black-10:focus {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .xl\:focus\:border-black-20:focus {
@@ -33810,7 +33810,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:hover\:border-black-10:hover {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .xl\:hover\:border-black-20:hover {
@@ -34194,7 +34194,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:group:hover .group-hover\:border-black-10 {
-    border-color: #00081a;
+    border-color: #00091a;
   }
 
   .xl\:group:hover .group-hover\:border-black-20 {
@@ -37754,7 +37754,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .xl\:text-black-20 {
@@ -38138,7 +38138,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:hover\:text-black-10:hover {
-    color: #00081a;
+    color: #00091a;
   }
 
   .xl\:hover\:text-black-20:hover {
@@ -38522,7 +38522,7 @@ input[type=range]::-ms-thumb {
   }
 
   .xl\:group:hover .group-hover\:text-black-10 {
-    color: #00081a;
+    color: #00091a;
   }
 
   .xl\:group:hover .group-hover\:text-black-20 {
