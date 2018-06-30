@@ -11,6 +11,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
+import Ocelot.Block.Loading as Loading
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -315,7 +316,7 @@ cnDocumentationBlocks =
                 , HP.id_ "search-loading"
                 , HP.value "Something"
                 ]
-              , Input.addonCenter_ [ Icon.loading_ ]
+              , Input.addonCenter_ [ Loading.spinner [ HP.class_ $ HH.ClassName "w-6 text-blue-88" ] ]
               , Input.addonLeft_ [ Icon.search_ ]
               , Input.borderRight
                 [ HP.classes Format.linkClasses ]

@@ -2,7 +2,6 @@ module Ocelot.Components.Typeahead.Input where
 
 import Prelude
 
-import Effect.Aff (Aff)
 import Effect.Aff.Class (class MonadAff)
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr)
@@ -18,6 +17,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (RemoteData(..), isFailure, isSuccess)
 import Ocelot.Block.Format as Format
+import Ocelot.Block.Loading as Loading
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
@@ -148,7 +148,7 @@ defAsyncSingle :: ∀ o item err m
   => Eq item
   => Show err
   => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
-  -> (String -> Aff (RemoteData err (Array item)))
+  -> (String -> m (RemoteData err (Array item)))
   -> RenderTypeaheadItem o item
   -> TA.Input o item err m
 defAsyncSingle props f { toObject, renderContainer, renderItem } =
@@ -165,7 +165,7 @@ defAsyncMulti :: ∀ o item err m
  => Eq item
  => Show err
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
- -> (String -> Aff (RemoteData err (Array item)))
+ -> (String -> m (RemoteData err (Array item)))
  -> RenderTypeaheadItem o item
  -> TA.Input o item err m
 defAsyncMulti props f { toObject, renderContainer, renderItem } =
@@ -180,11 +180,12 @@ defAsyncMulti props f { toObject, renderContainer, renderItem } =
 ----------
 -- Default Configuration
 
-syncConfig :: ∀ item err
+syncConfig :: ∀ item err m
   . Eq item
+ => MonadAff m
  => (item -> Object String)
  -> Boolean
- -> TA.Config item err
+ -> TA.Config item err m
 syncConfig toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
@@ -193,13 +194,14 @@ syncConfig toObject keepOpen =
   , keepOpen
   }
 
-asyncConfig :: ∀ item err
+asyncConfig :: ∀ item err m
   . Eq item
+ => MonadAff m
  => Milliseconds
- -> (String -> Aff (RemoteData err (Array item)))
+ -> (String -> m (RemoteData err (Array item)))
  -> (item -> Object String)
  -> Boolean
- -> TA.Config item err
+ -> TA.Config item err m
 asyncConfig ms f toObject keepOpen =
   { insertable: TA.NotInsertable
   , filterType: TA.FuzzyMatch
@@ -221,7 +223,7 @@ renderTA :: ∀ o item err m
  => Array (H.IProp HTMLinput (Select.Query o (Fuzzy item)))
  -> RenderContainer o item
  -> (item -> HH.PlainHTML)
- -> TA.State item err
+ -> TA.State item err m
  -> TAParentHTML o item err m
 renderTA props renderContainer renderSelectionItem st =
   renderSlot $
@@ -291,7 +293,9 @@ renderTA props renderContainer renderSelectionItem st =
                 Loading -> ""
                 otherwise -> "offscreen"
           ]
-          [ Icon.loading_ ]
+          [ Loading.spinner
+            [ HP.classes spinnerClasses ]
+          ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes linkClasses ]
@@ -299,11 +303,23 @@ renderTA props renderContainer renderSelectionItem st =
         ]
 
     renderMulti xs slot =
-      HH.div_
-        ( [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
+      HH.div
+        [ HP.class_ $ HH.ClassName "relative" ]
+        ( removeAllBtn <>
+          [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
           , slot
           ]
         )
+      where
+        removeAllBtn = case st.selections of
+          TA.Many [] -> []
+          TA.Limit _ [] -> []
+          _ ->
+            [ HH.a
+              [ HP.class_ $ HH.ClassName "absolute -mt-7 pin-r underline text-grey-70"
+              , HE.onClick $ HE.input_ TA.RemoveAll ]
+              [ HH.text "Remove All" ]
+            ]
 
     renderMultiSearch =
       Input.inputGroup_
@@ -318,7 +334,9 @@ renderTA props renderContainer renderSelectionItem st =
                 Loading -> ""
                 otherwise -> "offscreen"
           ]
-          [ Icon.loading_ ]
+          [ Loading.spinner
+            [ HP.classes spinnerClasses ]
+          ]
         , Input.addonLeft_ [ Icon.search_ ]
         , Input.borderRight
           [ HP.classes linkClasses ]
@@ -366,6 +384,11 @@ renderTA props renderContainer renderSelectionItem st =
       , "border-l-2"
       , "w-full"
       , "px-3"
+      ]
+
+    spinnerClasses = HH.ClassName <$>
+      [ "w-6"
+      , "text-blue-88"
       ]
 
     renderError

@@ -182,10 +182,6 @@
   content: "\E021";
 }
 
-.icon-loading:before {
-  content: "\E007";
-}
-
 .icon-menu:before {
   content: "\E014";
 }
@@ -8832,20 +8828,6 @@ dt {
 
 /* Animation Styles */
 
-.spin {
-  animation: spin 1.4s infinite linear;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 .slide-down {
   animation: yslide .1s ease-out 1;
 }
@@ -8950,6 +8932,63 @@ input[type=range]::-ms-thumb {
   border-radius: 20px;
   background: #00bbe0;
   cursor: pointer;
+}
+
+/* Loading Spinner Styles */
+
+.loader {
+  position: relative;
+  margin: 0 auto;
+}
+
+.loader::before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+
+.circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  stroke: currentColor;
+}
+
+.path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
 }
 
 @media (min-width: 576px) {
