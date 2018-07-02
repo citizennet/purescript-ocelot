@@ -15491,7 +15491,7 @@ var PS = {};
   var Data_HeytingAlgebra = PS["Data.HeytingAlgebra"];
   var Data_Semigroup = PS["Data.Semigroup"];
   var Data_String = PS["Data.String"];
-  var Data_String_CodePoints = PS["Data.String.CodePoints"];
+  var Data_String_CodeUnits = PS["Data.String.CodeUnits"];
   var Data_String_Common = PS["Data.String.Common"];
   var Data_String_Pattern = PS["Data.String.Pattern"];
   var Data_Tuple = PS["Data.Tuple"];
@@ -15503,7 +15503,7 @@ var PS = {};
   var Unsafe_Coerce = PS["Unsafe.Coerce"];                 
   var startsWith = function (str0) {
       return function (str1) {
-          return str0 === Data_String_CodePoints.take(Data_String_CodePoints.length(str0))(str1);
+          return str0 === Data_String_CodeUnits.take(Data_String_CodeUnits.length(str0))(str1);
       };
   };
   var extract = (function () {
@@ -15545,7 +15545,7 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return "";
       };
-      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 85, column 1 - line 87, column 12: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 86, column 1 - line 88, column 12: " + [ str.constructor.name ]);
   };
   var append$prime = function (x) {
       return function (v) {
@@ -15557,10 +15557,10 @@ var PS = {};
   };
   var classifyOverflow = function (str) {
       if (startsWith("x-")(str)) {
-          return append$prime("horizontal")(classifyOverflow(Data_String_CodePoints.drop(2)(str)));
+          return append$prime("horizontal")(classifyOverflow(Data_String_CodeUnits.drop(2)(str)));
       };
       if (startsWith("y-")(str)) {
-          return append$prime("vertical")(classifyOverflow(Data_String_CodePoints.drop(2)(str)));
+          return append$prime("vertical")(classifyOverflow(Data_String_CodeUnits.drop(2)(str)));
       };
       if (Data_Foldable.elem(Data_Foldable.foldableArray)(Data_Eq.eqString)(str)([ "auto", "hidden", "visible", "scroll" ])) {
           return "";
@@ -15568,23 +15568,23 @@ var PS = {};
       if (Data_Boolean.otherwise) {
           return str;
       };
-      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 98, column 1 - line 100, column 12: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 99, column 1 - line 101, column 12: " + [ str.constructor.name ]);
   };
   var classify = function (str) {
-      if (startsWith("p")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodePoints.drop(1)(str)))) {
-          return append$prime("padding")(classifySide(Data_String_CodePoints.drop(1)(str)));
+      if (startsWith("p")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodeUnits.drop(1)(str)))) {
+          return append$prime("padding")(classifySide(Data_String_CodeUnits.drop(1)(str)));
       };
-      if (startsWith("m")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodePoints.drop(1)(str)))) {
-          return append$prime("margin")(classifySide(Data_String_CodePoints.drop(1)(str)));
+      if (startsWith("m")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodeUnits.drop(1)(str)))) {
+          return append$prime("margin")(classifySide(Data_String_CodeUnits.drop(1)(str)));
       };
-      if (startsWith("-m")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodePoints.drop(2)(str)))) {
-          return append$prime("margin")(classifySide(Data_String_CodePoints.drop(2)(str)));
+      if (startsWith("-m")(str) && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_String_Common["null"])(classifySide(Data_String_CodeUnits.drop(2)(str)))) {
+          return append$prime("margin")(classifySide(Data_String_CodeUnits.drop(2)(str)));
       };
       if (startsWith("min-")(str)) {
-          return append$prime("min")(classify(Data_String_CodePoints.drop(4)(str)));
+          return append$prime("min")(classify(Data_String_CodeUnits.drop(4)(str)));
       };
       if (startsWith("max-")(str)) {
-          return append$prime("max")(classify(Data_String_CodePoints.drop(4)(str)));
+          return append$prime("max")(classify(Data_String_CodeUnits.drop(4)(str)));
       };
       if (startsWith("w-")(str)) {
           return "width";
@@ -15592,13 +15592,13 @@ var PS = {};
       if (startsWith("h-")(str)) {
           return "height";
       };
-      if (startsWith("overflow-")(str) && classifyOverflow(Data_String_CodePoints.drop(9)(str)) !== Data_String_CodePoints.drop(9)(str)) {
-          return append$prime("overflow")(classifyOverflow(Data_String_CodePoints.drop(9)(str)));
+      if (startsWith("overflow-")(str) && classifyOverflow(Data_String_CodeUnits.drop(9)(str)) !== Data_String_CodeUnits.drop(9)(str)) {
+          return append$prime("overflow")(classifyOverflow(Data_String_CodeUnits.drop(9)(str)));
       };
       if (Data_Boolean.otherwise) {
           return str;
       };
-      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 67, column 1 - line 69, column 12: " + [ str.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.HTML.Properties line 68, column 1 - line 70, column 12: " + [ str.constructor.name ]);
   };
   var appendIProps = function (ip) {
       return function (ip$prime) {
