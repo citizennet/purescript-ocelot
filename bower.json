@@ -15,7 +15,9 @@
     "purescript-halogen-select": "^2.0.0",
     "purescript-fuzzy": "^0.2.1",
     "purescript-polyform": "^0.7.0",
-    "purescript-remotedata": "^4.0.0"
+    "purescript-remotedata": "^4.0.0",
+    "purescript-formatters": "^4.0.0",
+    "purescript-read": "^1.0.1"
   },
   "devDependencies": {
     "purescript-affjax": "^6.0.0",

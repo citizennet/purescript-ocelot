@@ -98,6 +98,10 @@ dt {
 .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before { @apply .bg-grey-80; }
 .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * { @apply .border-grey-80; }
 
+/* added for datepicker */
+.before\:scale-0:before { @apply .scale-0; }
+.before\:scale-1:before { @apply .scale-1; }
+
 /* legacy variant & pseudo utilities */
 .before\:absolute:before { @apply .absolute; }
 .before\:transition-1\/4:before { @apply .transition-1/4; }

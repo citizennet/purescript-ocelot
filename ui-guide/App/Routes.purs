@@ -13,6 +13,7 @@ import Halogen.HTML as HH
 import Halogen.Storybook.Proxy (ProxyS)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
+import UIGuide.Components.DatePickers as DatePickers
 import UIGuide.Components.Choice as Choice
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
@@ -61,6 +62,11 @@ routes = fromFoldable
   , Tuple "typeaheads"
     { anchor: "Typeaheads"
     , component: proxy Typeaheads.component
+    , group: Components
+    }
+  , Tuple "date-pickers"
+    { anchor: "Date Pickers"
+    , component: proxy DatePickers.component
     , group: Components
     }
   , Tuple "buttons"
