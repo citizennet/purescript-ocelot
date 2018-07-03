@@ -77,10 +77,6 @@ config.borderWidths = Object.assign(config.borderWidths, {
   '3': '3px'
 })
 
-config.height = Object.assign(config.height,{
-  '20': '5rem'
-})
-
 config.modules = Object.assign(config.modules, {
   'borderWidths': ['responsive', 'hover'],
   'visibility': ['responsive', 'hover', 'focus', 'group-hover'],

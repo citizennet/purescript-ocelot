@@ -6,9 +6,9 @@ import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
-import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Tray as Tray
+import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -21,9 +21,6 @@ data Query a
 type Input = Unit
 
 type Message = Void
-
-css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-css = HP.class_ <<< HH.ClassName
 
 component :: ∀ m . H.Component HH.HTML Query Input Message m
 component =
@@ -55,13 +52,13 @@ component =
             [ HE.onClick (HE.input_ Toggle) ]
             [ HH.text "toggle tray" ]
           , Tray.tray
-            [ HP.class_ (HH.ClassName "text-blue")
+            [css "text-blue"
             , Tray.open state.open
             ]
             [ Button.button_
               [ HH.text "View Ads" ]
             , Button.button
-              [HP.class_ (HH.ClassName "ml-4")]
+              [css "ml-4"]
               [ HH.text "Dave's Design Patterns" ]
             ]
           ]

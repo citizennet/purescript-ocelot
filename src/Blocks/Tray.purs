@@ -12,7 +12,7 @@ import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
 import Unsafe.Coerce (unsafeCoerce)
 
-type Tray r = ( open :: Boolean | r)
+type Tray r = ( open :: Boolean | r )
 
 type HTMLtray = Tray HTMLdiv
 
@@ -58,7 +58,7 @@ tray iprops html = HH.div
 
 pullOpenProp
   :: ∀ r i
-   . Array (HH.IProp ( open :: Boolean | r) i)
+   . Array (HH.IProp ( open :: Boolean | r ) i)
   -> Tuple Boolean (Array (HH.IProp r i))
 pullOpenProp = foldr f (Tuple false [])
   where
