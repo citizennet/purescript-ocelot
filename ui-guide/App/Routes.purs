@@ -14,6 +14,7 @@ import Halogen.Storybook.Proxy (ProxyS)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
 import UIGuide.Components.DatePickers as DatePickers
+import UIGuide.Components.Choice as Choice
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
@@ -79,6 +80,11 @@ routes = fromFoldable
   , Tuple "modals"
     { anchor: "Modals"
     , component: proxy Modals.component
+    , group: Components
+    }
+  , Tuple "choice"
+    { anchor: "Choice"
+    , component: proxy Choice.component
     , group: Components
     }
   , Tuple "validation"
