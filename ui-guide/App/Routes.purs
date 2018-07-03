@@ -17,6 +17,7 @@ import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Modals as Modals
+import UIGuide.Components.Table as Table 
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
@@ -74,6 +75,11 @@ routes = fromFoldable
     { anchor: "Modals"
     , component: proxy Modals.component
     , group: Components
+    }
+  , Tuple "tables" 
+    { anchor: "Tables"
+    , component: proxy Table.component
+    , group: Components 
     }
   , Tuple "validation"
     { anchor: "Validation"
