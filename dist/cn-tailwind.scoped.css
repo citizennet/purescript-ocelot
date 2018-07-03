@@ -8646,6 +8646,10 @@ body .ocelot-scoped {
   --rotate: 315deg;
 }
 
+.ocelot-scoped .pin-b--20 {
+  bottom: -5rem;
+}
+
 /* variant & pseudo utilities
  *
  * going forward, custom selectors should follow the following order:

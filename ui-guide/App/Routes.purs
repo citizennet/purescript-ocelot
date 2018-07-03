@@ -20,9 +20,11 @@ import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Modals as Modals
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Tray as Tray
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
 import UIGuide.Components.Validation as Validation
+
 
 ----------
 -- Routes
@@ -102,4 +104,9 @@ routes = fromFoldable
     , component: proxy Icons.component
     , group: Basics
     }
+  , Tuple "tray"
+    { anchor: "Tray"
+    , component: proxy Tray.component
+    , group: Components
+    } 
   ]

@@ -8646,6 +8646,10 @@ dt {
   --rotate: 315deg;
 }
 
+.pin-b--20 {
+  bottom: -5rem;
+}
+
 /* variant & pseudo utilities
  *
  * going forward, custom selectors should follow the following order:

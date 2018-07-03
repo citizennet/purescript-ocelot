@@ -45,6 +45,7 @@ dt {
   --rotate: 0deg;
   --bounce: .3,.3,.7,1.4;
 }
+
 .transform { transform: scale(var(--scale)) rotate(var(--rotate)); }
 .transition-1\/8 { transition: all 0.125s ease; }
 .transition-1\/4 { transition: all 0.25s ease; }
@@ -63,6 +64,7 @@ dt {
 .content-box { box-sizing: content-box; }
 .order-start { order: -1; }
 .rotate-315 { @apply .transform; --rotate: 315deg; }
+.pin-b--20 { bottom: -5rem; }
 
 /* variant & pseudo utilities
  *
@@ -290,4 +292,3 @@ input[type=range]::-ms-thumb {
     stroke-dashoffset: -124px;
   }
 }
-
