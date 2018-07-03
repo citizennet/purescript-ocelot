@@ -5,14 +5,14 @@ import Prelude
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Maybe (Maybe(..))
 import Data.String (trim)
-import Data.Time (Time(..))
+import Data.Time (Time)
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console (log)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Input as Input
+import Ocelot.Block.Layout as Layout
 import Ocelot.Components.TimePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
@@ -33,7 +33,6 @@ type Input =
 
 data Query a
   = HandleSelect (Select.Message Query TimeUnit) a
-  | Initialize a
   | TriggerFocus a
   | Synchronize a
   | GetSelection (Maybe Time -> a)
@@ -69,17 +68,11 @@ data SelectedStatus
 
 dropdownClasses :: Array HH.ClassName
 dropdownClasses = HH.ClassName <$>
-  [ "absolute"
-  , "shadow"
-  , "max-h-80"
+  [ "max-h-80"
   , "w-full"
   , "overflow-y-scroll"
   , "pin-t"
   , "pin-l"
-  , "z-50"
-  , "border"
-  , "border-grey-90"
-  , "rounded"
   , "bg-white"
   , "text-center"
   ]
@@ -93,7 +86,7 @@ component =
     , render
     , eval
     , receiver: HE.input Receive
-    , initializer: Just $ H.action Initialize
+    , initializer: Nothing
     , finalizer: Nothing
     }
   where
@@ -108,9 +101,7 @@ component =
       ~> H.ParentDSL State Query ChildQuery Unit Message m
     eval = case _ of
       Search text a -> do
-        H.raise $ Searched text
-        H.liftEffect $ log ("Search: " <> text)
-        case text of
+        _ <- case text of
           "" -> eval $ SetSelection Nothing a
           _  -> case Utils.guessTime text of
             Nothing -> pure a
@@ -118,6 +109,8 @@ component =
               _ <- eval $ SetSelection (Just t) a
               _ <- H.query unit $ Select.setVisibility Select.Off
               pure a
+        H.raise $ Searched text
+        pure a
 
       HandleSelect m a -> case m of
         Select.Emit query -> eval query *> pure a
@@ -125,7 +118,6 @@ component =
         Select.Selected (TimeUnit _ _ time) -> do
           -- We'll want to select the item here, set its status, and raise
           -- a message about its selection.
-          H.liftEffect $ log ("Selected! Choice was " <> show time)
           H.modify_ _ { selection = Just time }
           _ <- H.query unit $ Select.setVisibility Select.Off
           H.raise $ SelectionChanged $ Just time
@@ -140,10 +132,6 @@ component =
         Select.VisibilityChanged visibility -> do
           H.raise $ VisibilityChanged visibility
           pure a
-
-      Initialize a -> do
-        -- TODO: use or delete
-        eval $ Synchronize a
 
       TriggerFocus a -> a <$ H.query unit Select.triggerFocus
 
@@ -166,7 +154,6 @@ component =
         eval $ Synchronize a
 
       Key ev a -> do
-        _ <- H.liftEffect $ log $ "key press: " <> show (KE.code ev)
         _ <- H.query unit $ Select.setVisibility Select.On
         let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
         case KE.code ev of
@@ -174,6 +161,10 @@ component =
             preventIt
             { search } <- H.get
             eval $ Search search a
+          "Escape" -> do
+            preventIt
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            pure a
           otherwise -> pure a
 
       Receive { selection } a -> do
@@ -210,7 +201,7 @@ component =
           where
             -- The overall container for the time dropdown
             renderTimes =
-              HH.div
+              Layout.popover
                 ( Setters.setContainerProps
                   [ HP.classes dropdownClasses ]
                 )

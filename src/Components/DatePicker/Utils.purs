@@ -97,8 +97,10 @@ padNext Saturday  = 0.0
 -- Generates a date range to search through for search term, if it doesn't
 -- match on first past it will generate more dates to search through until
 -- a specified range limit is reached, then return Nothing
-guessDate :: Date -> Int -> String -> Maybe Date
-guessDate start max text =
+newtype MaxYears = MaxYears Int
+
+guessDate :: Date -> MaxYears -> String -> Maybe Date
+guessDate start (MaxYears max) text =
   let text' :: String -- replace dashes and slashes with spaces
       text' = either
         (const text)

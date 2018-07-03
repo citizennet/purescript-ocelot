@@ -11,7 +11,6 @@ import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.String (trim)
 import Data.Tuple (Tuple(..), fst, snd)
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console (log)
 import Effect.Now (nowDate)
 import Halogen as H
 import Halogen.HTML as HH
@@ -21,6 +20,7 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
+import Ocelot.Block.Layout as Layout
 import Ocelot.Components.DatePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
@@ -89,14 +89,8 @@ data BoundaryStatus
 
 dropdownClasses :: Array HH.ClassName
 dropdownClasses = HH.ClassName <$>
-  [ "absolute"
-  , "shadow"
-  , "pin-t"
+  [ "pin-t"
   , "pin-l"
-  , "z-50"
-  , "border"
-  , "border-grey-90"
-  , "rounded"
   , "p-6"
   , "bg-white"
   , "text-center"
@@ -128,17 +122,17 @@ component =
       ~> H.ParentDSL State Query ChildQuery Unit Message m
     eval = case _ of
       Search text a -> do
-        H.raise $ Searched text
         today <- H.liftEffect nowDate
-        H.liftEffect $ log ("Search: " <> text <> show today)
-        case text of
+        _ <- case text of
           "" -> eval $ SetSelection Nothing a
-          _  -> case Utils.guessDate today 5 text of
+          _  -> case Utils.guessDate today (Utils.MaxYears 5) text of
             Nothing -> pure a
             Just d  -> do
               _ <- eval $ SetSelection (Just d) a
               _ <- H.query unit $ Select.setVisibility Select.Off
               pure a
+        H.raise $ Searched text
+        pure a
 
       HandleSelect m a -> case m of
         Select.Emit query -> eval query *> pure a
@@ -146,7 +140,6 @@ component =
         Select.Selected (CalendarItem _ _ _ date) -> do
           -- We'll want to select the item here, set its status, and raise
           -- a message about its selection.
-          H.liftEffect $ log ("Selected! Choice was " <> show date)
           H.modify_ _ { selection = Just date }
           _ <- H.query unit $ Select.setVisibility Select.Off
           H.raise $ SelectionChanged $ Just date
@@ -216,14 +209,17 @@ component =
         eval $ Synchronize a
 
       Key ev a -> do
-        _ <- H.liftEffect $ log $ "key press: " <> show (KE.code ev)
         _ <- H.query unit $ Select.setVisibility Select.On
         let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
         case KE.code ev of
-          "Enter"   -> do
+          "Enter" -> do
             preventIt
             { search } <- H.get
             eval $ Search search a
+          "Escape" -> do
+            preventIt
+            _ <- H.query unit $ Select.setVisibility Select.Off
+            pure a
           otherwise -> pure a
 
       Receive { targetDate, selection } a -> do
@@ -274,7 +270,7 @@ component =
 
             -- The overall container for the calendar
             renderCalendar =
-              HH.div
+              Layout.popover
                 ( Setters.setContainerProps
                   [ HP.classes dropdownClasses ]
                 )

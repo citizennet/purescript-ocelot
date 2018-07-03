@@ -7,6 +7,7 @@ import Data.Array (snoc)
 import Data.Bifunctor (lmap, rmap)
 import Data.Foldable (foldr)
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String.Read (class Read, read)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML (PropName(..))
 import Halogen.HTML as HH
@@ -21,19 +22,19 @@ data Status
   = Collapsed
   | Expanded
 
-renderStatus :: Status -> String
-renderStatus = case _ of
-  Collapsed -> "collapsed"
-  Expanded  -> "expanded"
-
-readStatus :: String -> Maybe Status
-readStatus = case _ of
-  "collapsed" -> pure Collapsed
-  "expanded"  -> pure Expanded
-  otherwise   -> Nothing
+instance read :: Read Status where
+  read = case _ of
+    "collapsed" -> pure Collapsed
+    "expanded"  -> pure Expanded
+    otherwise   -> Nothing
 
 instance isPropStatus :: IsProp Status where
-  toPropValue = propFromString <<< renderStatus
+  toPropValue = propFromString <<< toProp
+
+toProp :: Status -> String
+toProp = case _ of
+  Collapsed -> "collapsed"
+  Expanded  -> "expanded"
 
 toBoolean :: Status -> Boolean
 toBoolean Collapsed = false
@@ -99,6 +100,9 @@ type HTMLexpandable = Interactive ( expanded :: Status )
 status :: ∀ r i. Status -> HP.IProp ( expanded :: Status | r ) i
 status = HP.prop (PropName "expanded")
 
+-- Takes a row of `IProps` containing the `expanded` label
+-- and returns a `Tuple` containing the extracted value as
+-- well as the original row, minus the `expanded` label
 extractStatus
   :: ∀ r i
    . Array (HH.IProp ( expanded :: Status | r) i)
@@ -111,7 +115,7 @@ extractStatus =
     f iprop = rmap $ (flip snoc) $ coerceR iprop
 
     coerceExpanded :: PropValue -> Status
-    coerceExpanded = fromMaybe Expanded <<< readStatus <<< unsafeCoerce
+    coerceExpanded = fromMaybe Expanded <<< read <<< unsafeCoerce
 
     coerceR :: HH.IProp ( expanded :: Status | r ) i -> HH.IProp r i
     coerceR = unsafeCoerce
