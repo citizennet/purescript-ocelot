@@ -52,13 +52,13 @@ component =
             [ HE.onClick (HE.input_ Toggle) ]
             [ HH.text "toggle tray" ]
           , Tray.tray
-            [css "text-blue"
+            [ css "text-blue"
             , Tray.open state.open
             ]
             [ Button.button_
               [ HH.text "View Ads" ]
             , Button.button
-              [css "ml-4"]
+              [ css "ml-4" ]
               [ HH.text "Dave's Design Patterns" ]
             ]
           ]
