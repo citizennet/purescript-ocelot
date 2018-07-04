@@ -122,17 +122,16 @@ component =
                       [ Icon.caratDown_ ]
                     ]
 
-                menu = case selectState.visibility of
-                  Select.Off ->
-                    HH.ul
-                    ( setContainerProps [ HP.classes ([HH.ClassName "invisible"] <> containerClasses) ] )
-                      ( mapWithIndex renderItem selectState.items )
-                  Select.On ->
-                    HH.ul
-                      ( setContainerProps [ HP.classes containerClasses ] )
-                      ( mapWithIndex renderItem selectState.items )
+                menu =
+                  HH.ul
+                    ( setContainerProps [ HP.classes containerClasses ] )
+                    ( mapWithIndex renderItem selectState.items )
 
-                containerClasses = HH.ClassName <$>
+                containerClasses = HH.ClassName <$> case selectState.visibility of
+                  Select.Off -> [ "invisible" ] <> containerClasses'
+                  Select.On -> containerClasses'
+
+                containerClasses' =
                   [ "bg-white"
                   , "border"
                   , "cursor-pointer"
@@ -152,9 +151,9 @@ component =
                       setItemProps idx [ HP.classes itemClasses ]
 
                     itemClasses =
-                      HH.ClassName <$> (baseClasses <> highlightClass <> selectedClass)
+                      HH.ClassName <$> (itemClasses' <> highlightClass <> selectedClass)
 
-                    baseClasses =
+                    itemClasses' =
                       [ "px-4"
                       , "py-2"
                       ]

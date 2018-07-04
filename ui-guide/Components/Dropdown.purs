@@ -6,11 +6,13 @@ import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
+import Effect.Class.Console (log)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Ocelot.Block.Format (caption_) as Format
+import Ocelot.Components.Choice (Platform(..))
 import Ocelot.Components.Choice as Choice
 import Ocelot.Components.Dropdown as Dropdown
 import Ocelot.HTML.Properties (css)
@@ -49,10 +51,13 @@ component =
       ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
     eval = case _ of
       HandleDropdown message a -> case message of
-        Dropdown.ItemSelected x -> pure a
+        Dropdown.ItemSelected x -> a <$ H.liftEffect (log x)
 
       HandleChoice message a -> case message of
-        Choice.ItemSelected x -> pure a
+        Choice.ItemSelected x -> a <$ do
+          H.liftEffect $ case x of
+            Facebook -> log "Facebook"
+            Twitter -> log "Twitter"
 
     render
       :: State
