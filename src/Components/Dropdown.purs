@@ -87,12 +87,8 @@ component button =
           H.modify_ _ { selectedItem = Just item }
           pure a
         _ -> pure a
-      Receive { selectedItem, items, label, disabled } a -> do
-        H.modify_ _
-          { selectedItem = selectedItem
-          , items = items
-          , label = label
-          , disabled = disabled }
+      Receive input a -> do
+        H.put input
         pure a
       SetItems items a -> do
         H.modify_ _ { items = items }
