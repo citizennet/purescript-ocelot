@@ -83,8 +83,8 @@ component button =
       HandleSelect message a -> case message of
         Select.Selected item -> do
           _ <- H.query unit $ Select.setVisibility Select.Off
-          H.raise $ ItemSelected item
           H.modify_ _ { selectedItem = Just item }
+          H.raise $ ItemSelected item
           pure a
         _ -> pure a
       Receive input a -> do
