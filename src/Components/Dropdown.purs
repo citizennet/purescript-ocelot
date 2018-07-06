@@ -17,6 +17,7 @@ import Select.Utils.Setters (setContainerProps, setItemProps, setToggleProps)
 data Query item a
   = HandleSelect (Select.Message (Query item) item) a
   | Receive (Input item) a
+  | SetItems (Array item) a
 
 type State item =
   { isOpen :: Boolean
@@ -88,6 +89,9 @@ component =
           , items = items
           , label = label
           , disabled = disabled }
+        pure a
+      SetItems items a -> do
+        H.modify_ _ { items = items }
         pure a
 
     render
