@@ -68,42 +68,112 @@ component =
           { header: "Dropdown"
           , subheader: "A dropdown list of selectable items."
           }
-          [ Backdrop.backdrop
-            [ css "flex" ]
-            [ HH.div
-              [ css "flex-1" ]
-              [ Format.caption_
-                [ HH.text "Standard" ]
-              , HH.slot'
-                CP.cp1
-                unit
-                Dropdown.component
-                { selectedItem: Nothing
-                , items
-                , label: "Pick one"
-                , toString: identity
-                , disabled: false
-                }
-                ( HE.input HandleDropdown )
+          [ Backdrop.backdrop_
+            [ Backdrop.content_
+              [ HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Standard" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdown
+                  { selectedItem: Nothing
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: false
+                  }
+                  ( HE.input HandleDropdown )
+                ]
+              , HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Disabled & Hydrated" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdown
+                  { selectedItem: Just "Kilchoman Blue Label"
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: true
+                  }
+                  ( HE.input HandleDropdown )
+                ]
               ]
             ]
-          , Backdrop.backdrop
-            [ css "flex" ]
-            [ HH.div
-              [ css "flex-1" ]
-              [ Format.caption_
-                [ HH.text "Disabled & Hydrated" ]
-              , HH.slot'
-                CP.cp1
-                unit
-                Dropdown.component
-                { selectedItem: Just "Kilchoman Blue Label"
-                , items
-                , label: "Pick one"
-                , toString: identity
-                , disabled: true
-                }
-                ( HE.input HandleDropdown )
+          , Backdrop.backdropWhite_
+            [ Backdrop.content_
+              [ HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Standard" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdown
+                  { selectedItem: Nothing
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: false
+                  }
+                  ( HE.input HandleDropdown )
+                ]
+              , HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Disabled & Hydrated" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdown
+                  { selectedItem: Just "Kilchoman Blue Label"
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: true
+                  }
+                  ( HE.input HandleDropdown )
+                ]
+              ]
+            ]
+          , Backdrop.backdropDark_
+            [ Backdrop.content_
+              [ HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Standard" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdownDark
+                  { selectedItem: Nothing
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: false
+                  }
+                  ( HE.input HandleDropdown )
+                ]
+              , HH.div
+                [ css "mb-6" ]
+                [ Format.caption_
+                  [ HH.text "Disabled & Hydrated" ]
+                , HH.slot'
+                  CP.cp1
+                  unit
+                  Dropdown.dropdownDark
+                  { selectedItem: Just "Kilchoman Blue Label"
+                  , items
+                  , label: "Pick one"
+                  , toString: identity
+                  , disabled: true
+                  }
+                  ( HE.input HandleDropdown )
+                ]
               ]
             ]
           ]

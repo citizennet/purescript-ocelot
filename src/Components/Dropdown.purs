@@ -2,6 +2,7 @@ module Ocelot.Components.Dropdown where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLbutton)
 import Data.Array (mapWithIndex)
 import Data.Maybe (Maybe(..), maybe)
 import Effect.Aff.Class (class MonadAff)
@@ -20,15 +21,6 @@ data Query item a
   | SetItems (Array item) a
 
 type State item =
-  { isOpen :: Boolean
-  , selectedItem :: Maybe item
-  , items :: Array item
-  , label :: String
-  , toString :: item -> String
-  , disabled :: Boolean
-  }
-
-type Input item =
   { selectedItem :: Maybe item
   , items :: Array item
   , label :: String
@@ -36,36 +28,48 @@ type Input item =
   , disabled :: Boolean
   }
 
+type Input item = State item
+
 data Message item = ItemSelected item
 
 type ChildSlot = Unit
 
 type ChildQuery item = Select.Query (Query item) item
 
+type ButtonFn p i
+   = Array (HH.IProp HTMLbutton i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+
+dropdown
+  :: ∀ item m
+   . MonadAff m
+  => Eq item
+  => H.Component HH.HTML (Query item) (Input item) (Message item) m
+dropdown = component Button.button
+
+dropdownDark
+  :: ∀ item m
+   . MonadAff m
+  => Eq item
+  => H.Component HH.HTML (Query item) (Input item) (Message item) m
+dropdownDark = component Button.buttonDark
+
 component
   :: ∀ m item
    . MonadAff m
   => Eq item
-  => H.Component HH.HTML (Query item) (Input item) (Message item) m
-component =
+  => (∀ p i. ButtonFn p i)
+  -> H.Component HH.HTML (Query item) (Input item) (Message item) m
+component button =
   H.parentComponent
-    { initialState
+    { initialState: identity
     , render
     , eval
     , receiver: HE.input Receive
     }
 
   where
-    initialState :: Input item -> State item
-    initialState { selectedItem, items, label, toString, disabled } =
-      { isOpen: false
-      , selectedItem
-      , items
-      , label
-      , toString
-      , disabled
-      }
-
     eval
       :: Query item
       ~> H.ParentDSL
@@ -116,7 +120,7 @@ component =
 
               where
                 toggle =
-                  Button.button
+                  button
                     ( setToggleProps
                       [ HP.disabled state.disabled
                       , HP.class_ $ HH.ClassName "font-medium flex items-center" ] )
@@ -145,6 +149,7 @@ component =
                   , "shadow"
                   , "absolute"
                   , "pin-t"
+                  , "z-60"
                   ]
 
                 renderItem idx item =
