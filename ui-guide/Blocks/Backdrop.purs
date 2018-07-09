@@ -33,14 +33,12 @@ backdropDarkClasses :: Array HH.ClassName
 backdropDarkClasses = backdropClasses <>
   ( HH.ClassName <$>
     [ "bg-black"
-    , "text-grey-lighter"
     ]
   )
 
 contentClasses :: Array HH.ClassName
 contentClasses = HH.ClassName <$>
   [ "flex-1"
-  -- , "flex"
   , "mx-6"
   , "mt-6"
   ]
