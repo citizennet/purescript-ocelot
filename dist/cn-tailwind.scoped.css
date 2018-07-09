@@ -8954,6 +8954,10 @@ body .ocelot-scoped {
   opacity: 1;
 }
 
+.ocelot-scoped *:focus ~ .sibling\:focus\:visible {
+  visibility: visible;
+}
+
 .ocelot-scoped .focus-within\:w-full:focus-within {
   width: 100%;
 }

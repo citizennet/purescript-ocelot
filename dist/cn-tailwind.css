@@ -8954,6 +8954,10 @@ dt {
   opacity: 1;
 }
 
+*:focus ~ .sibling\:focus\:visible {
+  visibility: visible;
+}
+
 .focus-within\:w-full:focus-within {
   width: 100%;
 }

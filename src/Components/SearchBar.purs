@@ -94,19 +94,16 @@ component =
 
     render :: State -> H.ComponentHTML Query
     render { query } =
-      HH.div
-      [ HP.classes containerClasses ]
+      HH.label
+        [ HP.classes containerClasses ]
         [ HH.input
           [ HE.onValueInput (HE.input Search)
           , HP.placeholder "Search"
           , HP.value query
-          , HP.id_ "search-bar"
           , HP.classes inputClasses
           ]
-        , HH.label
-          [ HP.for "search-bar"
-          , HP.classes labelClasses
-          ]
+        , HH.div
+          [ HP.classes labelClasses ]
           [ Icon.search_ ]
         , HH.button
           [ HE.onClick (HE.input $ const Clear)
@@ -151,6 +148,8 @@ component =
           , "text-grey-80"
           , "hover:text-grey-70"
           , "sibling:focus:opacity-100"
+          , "sibling:focus:visible"
+          , "invisible"
           , "opacity-0"
           , "text-xs"
           , "transition-1/4"
