@@ -8944,6 +8944,32 @@ body .ocelot-scoped {
   color: #5c6573;
 }
 
+/* Search Bar Styles */
+
+.ocelot-scoped *:focus ~ .sibling\:focus\:text-grey-50 {
+  color: #5c6573;
+}
+
+.ocelot-scoped *:focus ~ .sibling\:focus\:opacity-100 {
+  opacity: 1;
+}
+
+.ocelot-scoped .focus-within\:w-full:focus-within {
+  width: 100%;
+}
+
+.ocelot-scoped .search-bar::placeholder {
+  color: transparent;
+}
+
+.ocelot-scoped .search-bar:focus::placeholder {
+  color: initial;
+}
+
+.ocelot-scoped .order--1 {
+  order: -1;
+}
+
 /* Animation Styles */
 
 .ocelot-scoped .slide-down {
