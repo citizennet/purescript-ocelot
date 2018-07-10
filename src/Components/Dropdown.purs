@@ -137,6 +137,7 @@ component button =
 
                 containerClasses' =
                   [ "bg-white"
+                  , "text-black-20"
                   , "border"
                   , "cursor-pointer"
                   , "list-reset"
