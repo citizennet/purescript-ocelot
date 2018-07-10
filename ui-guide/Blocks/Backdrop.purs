@@ -33,6 +33,7 @@ backdropDarkClasses :: Array HH.ClassName
 backdropDarkClasses = backdropClasses <>
   ( HH.ClassName <$>
     [ "bg-black"
+    , "text-grey-lighter"
     ]
   )
 
