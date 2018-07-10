@@ -19,6 +19,7 @@ data Query item a
   = HandleSelect (Select.Message (Query item) item) a
   | Receive (Input item) a
   | SetItems (Array item) a
+  | SetSelection (Maybe item) a
 
 type State item =
   { selectedItem :: Maybe item
@@ -87,11 +88,14 @@ component button =
           H.raise $ ItemSelected item
           pure a
         _ -> pure a
-      Receive input a -> do
-        H.put input
-        pure a
       SetItems items a -> do
         H.modify_ _ { items = items }
+        pure a
+      SetSelection item a -> do
+        H.modify_ _ { selectedItem = item }
+        pure a
+      Receive input a -> do
+        H.put input
         pure a
 
     render
