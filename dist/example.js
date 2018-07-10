@@ -23242,6 +23242,18 @@ var PS = {};
       };
       return SetItems;
   })();
+  var SetSelection = (function () {
+      function SetSelection(value0, value1) {
+          this.value0 = value0;
+          this.value1 = value1;
+      };
+      SetSelection.create = function (value0) {
+          return function (value1) {
+              return new SetSelection(value0, value1);
+          };
+      };
+      return SetSelection;
+  })();
   var component = function (dictMonadAff) {
       return function (dictEq) {
           return function (button) {
@@ -23258,7 +23270,7 @@ var PS = {};
                                       if (Data_Boolean.otherwise) {
                                           return [  ];
                                       };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 171, column 21 - line 173, column 38: " + [  ]);
+                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 175, column 21 - line 177, column 38: " + [  ]);
                                   })();
                                   var itemClasses$prime = [ "px-4", "py-2" ];
                                   var highlightClass = (function () {
@@ -23268,7 +23280,7 @@ var PS = {};
                                       if (Data_Boolean.otherwise) {
                                           return [  ];
                                       };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 167, column 21 - line 169, column 39: " + [  ]);
+                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 171, column 21 - line 173, column 39: " + [  ]);
                                   })();
                                   var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
                                   var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
@@ -23283,7 +23295,7 @@ var PS = {};
                               if (selectState.visibility instanceof Select.On) {
                                   return containerClasses$prime;
                               };
-                              throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 134, column 53 - line 136, column 49: " + [ selectState.visibility.constructor.name ]);
+                              throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 138, column 53 - line 140, column 49: " + [ selectState.visibility.constructor.name ]);
                           })());
                           var menu = Halogen_HTML_Elements.ul(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(containerClasses) ]))(Data_Array.mapWithIndex(renderItem)(selectState.items));
                           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])([ toggle, menu ]);
@@ -23303,14 +23315,14 @@ var PS = {};
                       if (v.value0 instanceof Select.Selected) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                  var $13 = {};
-                                  for (var $14 in v2) {
-                                      if ({}.hasOwnProperty.call(v2, $14)) {
-                                          $13[$14] = v2[$14];
+                                  var $14 = {};
+                                  for (var $15 in v2) {
+                                      if ({}.hasOwnProperty.call(v2, $15)) {
+                                          $14[$15] = v2[$15];
                                       };
                                   };
-                                  $13.selectedItem = new Data_Maybe.Just(v.value0.value0);
-                                  return $13;
+                                  $14.selectedItem = new Data_Maybe.Just(v.value0.value0);
+                                  return $14;
                               }))(function () {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new ItemSelected(v.value0.value0)))(function () {
                                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
@@ -23320,26 +23332,40 @@ var PS = {};
                       };
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                   };
+                  if (v instanceof SetItems) {
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
+                          var $20 = {};
+                          for (var $21 in v1) {
+                              if ({}.hasOwnProperty.call(v1, $21)) {
+                                  $20[$21] = v1[$21];
+                              };
+                          };
+                          $20.items = v.value0;
+                          return $20;
+                      }))(function () {
+                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                      });
+                  };
+                  if (v instanceof SetSelection) {
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
+                          var $25 = {};
+                          for (var $26 in v1) {
+                              if ({}.hasOwnProperty.call(v1, $26)) {
+                                  $25[$26] = v1[$26];
+                              };
+                          };
+                          $25.selectedItem = v.value0;
+                          return $25;
+                      }))(function () {
+                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                      });
+                  };
                   if (v instanceof Receive) {
                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.put(Halogen_Query_HalogenM.monadStateHalogenM)(v.value0))(function () {
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                       });
                   };
-                  if (v instanceof SetItems) {
-                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                          var $21 = {};
-                          for (var $22 in v1) {
-                              if ({}.hasOwnProperty.call(v1, $22)) {
-                                  $21[$22] = v1[$22];
-                              };
-                          };
-                          $21.items = v.value0;
-                          return $21;
-                      }))(function () {
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                      });
-                  };
-                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 82, column 12 - line 95, column 15: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 83, column 12 - line 99, column 15: " + [ v.constructor.name ]);
               };
               return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
                   initialState: Control_Category.identity(Control_Category.categoryFn),
@@ -23363,6 +23389,7 @@ var PS = {};
   exports["HandleSelect"] = HandleSelect;
   exports["Receive"] = Receive;
   exports["SetItems"] = SetItems;
+  exports["SetSelection"] = SetSelection;
   exports["ItemSelected"] = ItemSelected;
   exports["dropdown"] = dropdown;
   exports["dropdownDark"] = dropdownDark;
