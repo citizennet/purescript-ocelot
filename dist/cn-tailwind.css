@@ -8944,6 +8944,36 @@ dt {
   color: #5c6573;
 }
 
+/* Search Bar Styles */
+
+*:focus ~ .sibling\:focus\:text-grey-50 {
+  color: #5c6573;
+}
+
+*:focus ~ .sibling\:focus\:opacity-100 {
+  opacity: 1;
+}
+
+*:focus ~ .sibling\:focus\:visible {
+  visibility: visible;
+}
+
+.focus-within\:w-full:focus-within {
+  width: 100%;
+}
+
+.search-bar::placeholder {
+  color: transparent;
+}
+
+.search-bar:focus::placeholder {
+  color: initial;
+}
+
+.order--1 {
+  order: -1;
+}
+
 /* Animation Styles */
 
 .slide-down {
