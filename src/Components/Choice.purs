@@ -1,4 +1,4 @@
-module UIGuide.Components.Choice where
+module Ocelot.Components.Choice where
 
 import Prelude
 
@@ -15,8 +15,6 @@ import Ocelot.Blocks.Choice as Choice
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Utils.Setters as SelectSetters
-import UIGuide.Block.Backdrop as Backdrop
-import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
@@ -25,13 +23,13 @@ data Query a
 
 type Input = Unit
 
-type Message = Void
+data Message = ItemSelected Platform
 
 type ChildSlot = Unit
 
-type ChildQuery = Select.Query Query Platform 
+type ChildQuery = Select.Query Query Platform
 
-data Platform 
+data Platform
   = Facebook
   | Twitter
 
@@ -55,37 +53,23 @@ component =
       HandleSelect message a -> case message of
         Select.Selected x -> do
           _ <- H.query unit ( Select.setVisibility Select.Off )
+          H.raise (ItemSelected x)
           pure a
 
         _ -> do pure a
 
-    render 
-      :: State 
+    render
+      :: State
       -> H.ParentHTML Query ChildQuery ChildSlot m
-    render state =
-      HH.div_
-        [ Documentation.block_
-          { header: "Choice"
-          , subheader: "A specialized dropdown for making selections."
-          }
-          [ Backdrop.backdrop
-            [ css "h-40 flex items-center justify-center" ]
-            [ HH.slot 
-                unit 
-                Select.component 
-                selectInput 
-                ( HE.input HandleSelect )
-            ]
-          ]
-        ]
+    render state = HH.slot unit Select.component selectInput ( HE.input HandleSelect )
 
-      where 
+      where
         selectInput :: Select.Input Query Platform
         selectInput =
           { debounceTime: Nothing
           , initialSearch: Nothing
           , inputType: Select.Toggle
-          , items: [ Facebook, Twitter ] 
+          , items: [ Facebook, Twitter ]
           , render: renderPlatformChoice
           }
 
@@ -113,11 +97,11 @@ component =
                   , Choice.body_ $
                       mapWithIndex
                         ( \index item ->
-                            Choice.option 
-                              ( SelectSetters.setItemProps 
+                            Choice.option
+                              ( SelectSetters.setItemProps
                                   index
                                   [ if Just index == state'.highlightedIndex
-                                      then HP.classes Choice.highlightedOptionClasses 
+                                      then HP.classes Choice.highlightedOptionClasses
                                       else HP.classes []
                                   ]
                               )
@@ -128,9 +112,9 @@ component =
 
               renderPlatform = case _ of
                 Facebook ->
-                  [ HH.div_ 
-                    [ Icon.facebook 
-                      [ css "text-fb-blue text-4xl" ] 
+                  [ HH.div_
+                    [ Icon.facebook
+                      [ css "text-fb-blue text-4xl" ]
                     ]
                   , HH.div_
                     [ HH.p
@@ -139,8 +123,8 @@ component =
                     ]
                   ]
                 Twitter ->
-                  [ HH.div_ 
-                    [ Icon.twitter 
+                  [ HH.div_
+                    [ Icon.twitter
                       [ css "text-tw-blue text-4xl" ] ]
                   , HH.div_
                     [ HH.p

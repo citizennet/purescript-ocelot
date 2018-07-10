@@ -15,7 +15,7 @@ import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Badge as Badge
 import UIGuide.Components.Button as Button
 import UIGuide.Components.DatePickers as DatePickers
-import UIGuide.Components.Choice as Choice
+import UIGuide.Components.Dropdown as Dropdown
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
@@ -85,9 +85,9 @@ routes = fromFoldable
     , component: proxy Modals.component
     , group: Components
     }
-  , Tuple "choice"
-    { anchor: "Choice"
-    , component: proxy Choice.component
+  , Tuple "dropdowns"
+    { anchor: "Dropdowns"
+    , component: proxy Dropdown.component
     , group: Components
     }
   , Tuple "validation"
