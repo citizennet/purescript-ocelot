@@ -6,6 +6,7 @@ import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Ocelot.Block.Badge as Badge
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Tray as Tray
 import Ocelot.HTML.Properties (css)
@@ -52,10 +53,14 @@ component =
             [ HE.onClick (HE.input_ Toggle) ]
             [ HH.text "toggle tray" ]
           , Tray.tray
-            [ css "text-blue"
-            , Tray.open state.open
-            ]
-            [ Button.button_
+            [ Tray.open state.open ]
+            [ Badge.badgeLarge
+              [ css "mr-2" ]
+              [ HH.text "2" ]
+            , HH.p
+              [ css "mr-10" ]
+              [ HH.text "Ads selected:" ]
+            , Button.button_
               [ HH.text "View Ads" ]
             , Button.button
               [ css "ml-4" ]
