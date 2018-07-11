@@ -17,6 +17,7 @@ labelClasses = HH.ClassName <$>
   , "cursor-pointer"
   , "text-black-20"
   , "items-center"
+  , "text-left" -- styles get messed up otherwise
   ]
 
 inputClasses :: Array HH.ClassName
