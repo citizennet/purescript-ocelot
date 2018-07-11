@@ -2,6 +2,7 @@ module Ocelot.HTML.Properties
   ( testId
   , css
   , appendIProps
+  , extract
   , (<&>)
   ) where
 

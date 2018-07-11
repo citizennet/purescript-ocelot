@@ -12,6 +12,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.Storybook.Proxy (ProxyS)
 import UIGuide.App (Group(..), proxy)
+import UIGuide.Components.Badge as Badge
 import UIGuide.Components.Button as Button
 import UIGuide.Components.DatePickers as DatePickers
 import UIGuide.Components.Dropdown as Dropdown
@@ -114,5 +115,10 @@ routes = fromFoldable
     { anchor: "Tray"
     , component: proxy Tray.component
     , group: Components
+    }
+  , Tuple "badge"
+    { anchor: "Badge"
+    , component: proxy Badge.component
+    , group: Basics
     }
   ]

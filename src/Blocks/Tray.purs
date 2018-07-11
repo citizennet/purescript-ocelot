@@ -30,6 +30,8 @@ trayClasses = HH.ClassName <$>
   , "shadow-inner"
   , "transition-1/4-out"
   , "w-full"
+  , "flex"
+  , "items-center"
   ]
 
 trayOpenClasses :: Array HH.ClassName

@@ -7,6 +7,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
+import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -37,9 +38,6 @@ component =
 
 ----------
 -- HTML
-
-css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-css = HP.class_ <<< HH.ClassName
 
 cnDocumentationBlocks :: H.ComponentHTML Query
 cnDocumentationBlocks =
