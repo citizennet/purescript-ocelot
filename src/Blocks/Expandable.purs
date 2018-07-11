@@ -2,15 +2,39 @@ module Ocelot.Block.Expandable where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLheader, HTMLspan, HTMLdiv)
+import DOM.HTML.Indexed (HTMLdiv, HTMLheader, HTMLspan, Interactive)
+import Data.Array (snoc)
+import Data.Bifunctor (lmap, rmap)
+import Data.Foldable (foldr)
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String.Read (class Read, read)
+import Data.Tuple (Tuple(..))
+import Halogen.HTML (PropName(..))
 import Halogen.HTML as HH
+import Halogen.HTML.Core (class IsProp, Prop(..), PropValue)
 import Halogen.HTML.Properties as HP
+import Halogen.VDom.DOM.Prop (propFromString)
 import Ocelot.Block.Icon as Icon
 import Ocelot.HTML.Properties ((<&>))
+import Unsafe.Coerce (unsafeCoerce)
 
 data Status
   = Collapsed
   | Expanded
+
+instance read :: Read Status where
+  read = case _ of
+    "collapsed" -> pure Collapsed
+    "expanded"  -> pure Expanded
+    otherwise   -> Nothing
+
+instance isPropStatus :: IsProp Status where
+  toPropValue = propFromString <<< toProp
+
+toProp :: Status -> String
+toProp = case _ of
+  Collapsed -> "collapsed"
+  Expanded  -> "expanded"
 
 toBoolean :: Status -> Boolean
 toBoolean Collapsed = false
@@ -71,28 +95,46 @@ contentClasses status = contentSharedClasses <>
       ]
   )
 
+type HTMLexpandable = Interactive ( expanded :: Status )
+
+status :: ∀ r i. Status -> HP.IProp ( expanded :: Status | r ) i
+status = HP.prop (PropName "expanded")
+
+-- Takes a row of `IProps` containing the `expanded` label
+-- and returns a `Tuple` containing the extracted value as
+-- well as the original row, minus the `expanded` label
+extractStatus
+  :: ∀ r i
+   . Array (HH.IProp ( expanded :: Status | r) i)
+  -> Tuple Status (Array (HH.IProp r i))
+extractStatus =
+  foldr f (Tuple Expanded [])
+  where
+    f (HP.IProp (Property "expanded" expanded)) =
+      lmap (const $ coerceExpanded expanded)
+    f iprop = rmap $ (flip snoc) $ coerceR iprop
+
+    coerceExpanded :: PropValue -> Status
+    coerceExpanded = fromMaybe Expanded <<< read <<< unsafeCoerce
+
+    coerceR :: HH.IProp ( expanded :: Status | r ) i -> HH.IProp r i
+    coerceR = unsafeCoerce
+
 heading
   :: ∀ p i
-   . Status
-  -> Array (HH.IProp HTMLheader i)
+   . Array (HH.IProp HTMLexpandable i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-heading status iprops html =
+heading iprops html =
+  let (Tuple status iprops') = extractStatus iprops in
   HH.header
-    ( [ HP.classes headingClasses ] <&> iprops )
+    ( [ HP.classes headingClasses ] <&> iprops' )
     [ HH.div
       [ HP.classes headingInnerClasses ]
       html
     , HH.div_
       [ chevron_ status ]
     ]
-
-heading_
-  :: ∀ p i
-   . Status
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-heading_ status = heading status []
 
 chevron
   :: ∀ p i

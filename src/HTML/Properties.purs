@@ -9,7 +9,8 @@ import Prelude
 
 import Data.Array (elem, foldr, nubByEq, snoc)
 import Data.Bifunctor (lmap, rmap)
-import Data.String (Pattern(..), drop, length, null, split, take)
+import Data.String (Pattern(..), null, split)
+import Data.String.CodeUnits (length, take, drop)
 import Data.Tuple (Tuple(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)

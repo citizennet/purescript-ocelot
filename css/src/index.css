@@ -45,6 +45,7 @@ dt {
   --rotate: 0deg;
   --bounce: .3,.3,.7,1.4;
 }
+
 .transform { transform: scale(var(--scale)) rotate(var(--rotate)); }
 .transition-1\/8 { transition: all 0.125s ease; }
 .transition-1\/4 { transition: all 0.25s ease; }
@@ -63,6 +64,7 @@ dt {
 .content-box { box-sizing: content-box; }
 .order-start { order: -1; }
 .rotate-315 { @apply .transform; --rotate: 315deg; }
+.pin-b--20 { bottom: -5rem; }
 
 /* variant & pseudo utilities
  *
@@ -95,6 +97,10 @@ dt {
 .checked\:\!disabled\:sibling\:before\:bg-blue-88:checked:not(:disabled) ~ *:before { @apply .bg-blue-88; }
 .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before { @apply .bg-grey-80; }
 .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * { @apply .border-grey-80; }
+
+/* added for datepicker */
+.before\:scale-0:before { @apply .scale-0; }
+.before\:scale-1:before { @apply .scale-1; }
 
 /* legacy variant & pseudo utilities */
 .before\:absolute:before { @apply .absolute; }
@@ -149,8 +155,18 @@ dt {
 .sibling\:bg-grey-95 ~ * { @apply .bg-grey-95; }
 .sibling\:text-grey-50 ~ * { @apply .text-grey-50; }
 
+/* Search Bar Styles */
+*:focus ~ .sibling\:focus\:text-grey-50 { @apply .text-grey-50; }
+*:focus ~ .sibling\:focus\:opacity-100 { @apply .opacity-100; }
+*:focus ~ .sibling\:focus\:visible { @apply .visible; }
+.focus-within\:w-full:focus-within { @apply .w-full; }
+.search-bar::placeholder { color: transparent; }
+.search-bar:focus::placeholder { color: initial; }
+.order--1 { order: -1; }
+
 /* Animation Styles */
 .slide-down { animation: yslide 0.1s ease-out 1; }
+
 
 @keyframes yslide {
   0% { transform: translateY(-50px); }
@@ -286,4 +302,3 @@ input[type=range]::-ms-thumb {
     stroke-dashoffset: -124px;
   }
 }
-

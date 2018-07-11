@@ -13,15 +13,19 @@ import Halogen.HTML as HH
 import Halogen.Storybook.Proxy (ProxyS)
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Components.Button as Button
+import UIGuide.Components.DatePickers as DatePickers
+import UIGuide.Components.Dropdown as Dropdown
 import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Modals as Modals
 import UIGuide.Components.Table as Table 
 import UIGuide.Components.TextFields as TextFields
+import UIGuide.Components.Tray as Tray
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
 import UIGuide.Components.Validation as Validation
+
 
 ----------
 -- Routes
@@ -61,6 +65,11 @@ routes = fromFoldable
     , component: proxy Typeaheads.component
     , group: Components
     }
+  , Tuple "date-pickers"
+    { anchor: "Date Pickers"
+    , component: proxy DatePickers.component
+    , group: Components
+    }
   , Tuple "buttons"
     { anchor: "Buttons"
     , component: proxy Button.component
@@ -76,10 +85,15 @@ routes = fromFoldable
     , component: proxy Modals.component
     , group: Components
     }
-  , Tuple "tables" 
+  , Tuple "tables"
     { anchor: "Tables"
     , component: proxy Table.component
-    , group: Components 
+    , group: Components
+    }
+  , Tuple "dropdowns"
+    { anchor: "Dropdowns"
+    , component: proxy Dropdown.component
+    , group: Components
     }
   , Tuple "validation"
     { anchor: "Validation"
@@ -95,5 +109,10 @@ routes = fromFoldable
     { anchor: "Icons"
     , component: proxy Icons.component
     , group: Basics
+    }
+  , Tuple "tray"
+    { anchor: "Tray"
+    , component: proxy Tray.component
+    , group: Components
     }
   ]

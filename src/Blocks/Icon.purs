@@ -4,6 +4,8 @@ module Ocelot.Block.Icon
   , caratLeft, caratLeft_
   , caratRight, caratRight_
   , caratUp, caratUp_
+  , chevronLeft, chevronLeft_
+  , chevronRight, chevronRight_
   , close, close_
   , collapse, collapse_
   , dataSources, dataSources_
@@ -91,6 +93,18 @@ caratUp = icon "icon-carat-up"
 
 caratUp_ :: ∀ p i. HH.HTML p i
 caratUp_ = caratUp []
+
+chevronLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+chevronLeft = icon "icon-chevron-left"
+
+chevronLeft_ :: ∀ p i. HH.HTML p i
+chevronLeft_ = chevronLeft []
+
+chevronRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+chevronRight = icon "icon-chevron-right"
+
+chevronRight_ :: ∀ p i. HH.HTML p i
+chevronRight_ = chevronRight []
 
 close :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 close = icon "icon-close"

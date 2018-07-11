@@ -6,6 +6,29 @@ import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Ocelot.Block.Builder (blockBuilder)
 
+popoverClasses :: Array HH.ClassName
+popoverClasses = HH.ClassName <$>
+  [ "absolute"
+  , "shadow"
+  , "z-50"
+  , "border"
+  , "border-grey-90"
+  , "rounded"
+  ]
+
+popover
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+popover = blockBuilder HH.div popoverClasses
+
+popover_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+popover_ = popover []
+
 stickyClasses :: Array HH.ClassName
 stickyClasses = HH.ClassName <$>
   [ "fixed"
@@ -14,32 +37,6 @@ stickyClasses = HH.ClassName <$>
   , "w-full"
   , "shadow-md"
   , "z-60"
-  ]
-
-containerClasses :: Array HH.ClassName
-containerClasses = HH.ClassName <$>
-  [ "container"
-  , "m-auto"
-  , "flex"
-  , "p-8"
-  ]
-
-columnClasses :: Array HH.ClassName
-columnClasses = HH.ClassName <$>
-  [ "flex-1"
-  , "p-8"
-  ]
-
-mainClasses :: Array HH.ClassName
-mainClasses = HH.ClassName <$>
-  [ "flex-3"
-  , "p-8"
-  ]
-
-sideClasses :: Array HH.ClassName
-sideClasses = HH.ClassName <$>
-  [ "flex-2"
-  , "p-8"
   ]
 
 sticky
@@ -55,6 +52,14 @@ sticky_
   -> HH.HTML p i
 sticky_ = sticky []
 
+containerClasses :: Array HH.ClassName
+containerClasses = HH.ClassName <$>
+  [ "container"
+  , "m-auto"
+  , "flex"
+  , "p-8"
+  ]
+
 container
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
@@ -67,6 +72,12 @@ container_
    . Array (HH.HTML p i)
   -> HH.HTML p i
 container_ = container []
+
+columnClasses :: Array HH.ClassName
+columnClasses = HH.ClassName <$>
+  [ "flex-1"
+  , "p-8"
+  ]
 
 column
   :: ∀ p i
@@ -81,6 +92,12 @@ column_
   -> HH.HTML p i
 column_ = column []
 
+mainClasses :: Array HH.ClassName
+mainClasses = HH.ClassName <$>
+  [ "flex-3"
+  , "p-8"
+  ]
+
 main
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
@@ -93,6 +110,12 @@ main_
    . Array (HH.HTML p i)
   -> HH.HTML p i
 main_ = main []
+
+sideClasses :: Array HH.ClassName
+sideClasses = HH.ClassName <$>
+  [ "flex-2"
+  , "p-8"
+  ]
 
 side
   :: ∀ p i

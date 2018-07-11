@@ -2,97 +2,86 @@ module Ocelot.Blocks.Table where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLtbody, HTMLth, HTMLthead, HTMLtd)
+import DOM.HTML.Indexed (HTMLtable, HTMLtbody, HTMLtd, HTMLth, HTMLthead, HTMLtr)
+import Halogen.HTML (HTML(..), IProp)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Builder (blockBuilder)
 import Ocelot.HTML.Properties ((<&>))
 
-theadClasses :: Array HH.ClassName
-theadClasses = HH.ClassName <$>
-  [ "bg-grey-90"
-  , "h-16"
-  , "shadow"
-  , "w-full"
+tableClasses :: Array HH.ClassName
+tableClasses = HH.ClassName <$>
+  [ "w-full"
+  , "text-center"
+  , "border-collapse"
   ]
 
-thead
+table
   :: ∀ p i
-   . Array (HH.IProp HTMLthead i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-thead iprops =
-  HH.thead
-    ( [ HP.classes theadClasses ] <&> iprops )
+   . Array (IProp HTMLtable i)
+  -> Array (HTML p i)
+  -> HTML p i
+table = blockBuilder HH.table tableClasses
 
-thead_
+table_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-thead_ =
-  thead []
+   . Array (HTML p i)
+  -> HTML p i
+table_ = table []
 
-thClasses :: Array HH.ClassName
-thClasses = HH.ClassName <$>
-  [ "font-medium"
+row
+  :: ∀ p i
+   . Array (IProp HTMLtr i)
+  -> Array (HTML p i)
+  -> HTML p i
+row = HH.tr
+
+row_
+  :: ∀ p i
+   . Array (HTML p i)
+  -> HTML p i
+row_ = HH.tr_
+
+headerClasses :: Array HH.ClassName
+headerClasses = HH.ClassName <$>
+  [ "bg-grey-90"
+  , "py-4"
+  , "px-5"
+  , "font-medium"
   , "text-black-20"
   ]
 
-th
+header
   :: ∀ p i
-   . Array (HH.IProp HTMLth i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-th iprops =
-  HH.th
-    ( [ HP.classes thClasses ] <&> iprops )
+   . Array (IProp HTMLth i)
+  -> Array (HTML p i)
+  -> HTML p i
+header = blockBuilder HH.th headerClasses
 
-th_
+header_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-th_ =
-  th []
+   . Array (HTML p i)
+  -> HTML p i
+header_ = header []
 
-tbodyClasses :: Array HH.ClassName
-tbodyClasses = HH.ClassName <$>
-  [ "shadow" ]
-
-tbody
-  :: ∀ p i
-   . Array (HH.IProp HTMLtbody i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-tbody iprops =
-  HH.tbody
-    ( [ HP.classes tbodyClasses ] <&> iprops )
-
-tbody_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-tbody_ =
-  tbody []
-
-tdClasses :: Array HH.ClassName
-tdClasses = HH.ClassName <$>
+cellClasses :: Array HH.ClassName
+cellClasses = HH.ClassName <$>
   [ "bg-white"
-  , "h-20"
-  , "my-pixel"
-  , "shadow" 
+  , "p-5"
+  , "min-h-20"
+  , "border-b"
+  , "border-grey-95"
   ]
 
-td
+cell
   :: ∀ p i
-   . Array (HH.IProp HTMLtd i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-td iprops =
-  HH.td
-    ( [ HP.classes tdClasses ] <&> iprops )
+   . Array (IProp HTMLtd i)
+  -> Array (HTML p i)
+  -> HTML p i
+cell = blockBuilder HH.td cellClasses
 
-td_
+cell_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-td_ =
-  td []
+   . Array (HTML p i)
+  -> HTML p i
+cell_ = cell []

@@ -3,8 +3,12 @@ module UIGuide.Components.TextFields where
 import Prelude
 
 import Data.Maybe (Maybe(..))
+import Data.Time.Duration (Milliseconds(..))
+import Effect.Aff.Class (class MonadAff)
+import Effect.Console (log)
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events (input) as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
@@ -12,40 +16,46 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Loading as Loading
+import Ocelot.Components.SearchBar as SearchBar
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a = NoOp a
+data Query a = HandleSearch SearchBar.Message a
 
 type Input = Unit
 
 type Message = Void
 
-component :: ∀ m. H.Component HH.HTML Query Input Message m
+type ChildSlot = Unit
+
+type ChildQuery = SearchBar.Query
+
+component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
 component =
-  H.component
+  H.parentComponent
     { initialState: const unit
     , render
     , eval
     , receiver: const Nothing
     }
   where
-    eval :: Query ~> H.ComponentDSL State Query Message m
+    eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
     eval = case _ of
-      NoOp a -> do
+      HandleSearch (SearchBar.Searched str) a -> do
+        H.liftEffect $ log str
         pure a
 
-    render :: State -> H.ComponentHTML Query
+    render :: State -> H.ParentHTML Query ChildQuery ChildSlot m
     render _ = cnDocumentationBlocks
 
 
 ----------
 -- HTML
 
-cnDocumentationBlocks :: H.ComponentHTML Query
+cnDocumentationBlocks :: ∀ m. MonadAff m => H.ParentHTML Query ChildQuery ChildSlot m
 cnDocumentationBlocks =
   let content = Backdrop.content [ css "flex" ] in
   HH.div_
@@ -397,6 +407,24 @@ cnDocumentationBlocks =
               , HP.disabled true
               ]
             ]
+          ]
+        ]
+      ]
+    ]
+  , Documentation.block_
+    { header: "Search Bar"
+    , subheader: "A component for handling searching"
+    }
+    [ Backdrop.backdrop_
+      [ Backdrop.content
+        [ css "text-center" ]
+        [ HH.div
+          [ css "w-1/3 inline-flex mb-6" ]
+          [ HH.slot
+              unit
+              SearchBar.component
+              { debounceTime: Just (Milliseconds 500.0) }
+              (HE.input HandleSearch)
           ]
         ]
       ]

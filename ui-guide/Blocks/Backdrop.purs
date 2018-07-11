@@ -40,7 +40,6 @@ backdropDarkClasses = backdropClasses <>
 contentClasses :: Array HH.ClassName
 contentClasses = HH.ClassName <$>
   [ "flex-1"
-  -- , "flex"
   , "mx-6"
   , "mt-6"
   ]

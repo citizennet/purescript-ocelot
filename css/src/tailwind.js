@@ -9,10 +9,14 @@ const spacing = {
   '9': '2.25rem',
   '10': '2.5rem',
   '12': '3rem',
+  '14': '3.5rem',
   '16': '4rem',
   '20': '5rem',
+  '30': '7.5rem',
   '40': '10rem',
   '80': '20rem',
+  '120': '30rem',
+  '160': '40rem',
 }
 
 config.padding = Object.assign(config.padding, spacing)
