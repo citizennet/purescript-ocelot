@@ -8,7 +8,7 @@ import Halogen.HTML as HH
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.Icon as Icon
-import Ocelot.Blocks.Table as Table
+import Ocelot.Block.Table as Table
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

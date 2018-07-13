@@ -7,9 +7,9 @@ import Data.Tuple (Tuple(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Format as Format
-import Ocelot.HTML.Properties ((<&>))
+import Ocelot.Block.Icon as Icon
+import Ocelot.HTML.Properties (css, (<&>))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -20,9 +20,6 @@ data Query a = NoOp a
 type Input = Unit
 
 type Message = Void
-
-css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-css = HP.class_ <<< HH.ClassName
 
 component :: ∀ m . H.Component HH.HTML Query Input Message m
 component =

@@ -1,4 +1,4 @@
-module Ocelot.Blocks.Table where
+module Ocelot.Block.Table where
 
 import Prelude
 

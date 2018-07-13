@@ -27,6 +27,9 @@ label {
   display: inherit;
   margin-bottom: unset;
 }
+th {
+  text-align: inherit;
+}
 dt {
   margin-bottom: 0;
 }
