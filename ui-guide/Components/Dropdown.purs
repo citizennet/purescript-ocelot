@@ -2,6 +2,7 @@ module UIGuide.Components.Dropdown where
 
 import Prelude
 
+import Data.Array (mapWithIndex)
 import Data.Either.Nested (Either2)
 import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
@@ -11,11 +12,15 @@ import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
+import Halogen.HTML.Properties as HP
+import Ocelot.Block.Button as Button
 import Ocelot.Block.Format (caption_) as Format
-import Ocelot.Components.Choice (Platform(..))
-import Ocelot.Components.Choice as Choice
+import Ocelot.Block.Icon as Icon
+import Ocelot.Blocks.Choice as Choice
 import Ocelot.Components.Dropdown as Dropdown
 import Ocelot.HTML.Properties (css)
+import Select as Select
+import Select.Utils.Setters as SelectSetters
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -23,7 +28,7 @@ type State = Unit
 
 data Query a
   = HandleDropdown (Dropdown.Message String) a
-  | HandleChoice (Choice.Message) a
+  | HandleChoice (Select.Message Query Platform) a
 
 type Input = Unit
 
@@ -31,7 +36,11 @@ type Message = Void
 
 type ChildSlot = Either2 Unit Unit
 
-type ChildQuery = Coproduct2 (Dropdown.Query String) Choice.Query
+type ChildQuery = Coproduct2 (Dropdown.Query String) (Select.Query Query Platform)
+
+data Platform
+  = Facebook
+  | Twitter
 
 component
   :: ∀ m
@@ -54,10 +63,13 @@ component =
         Dropdown.ItemSelected x -> a <$ H.liftEffect (log x)
 
       HandleChoice message a -> case message of
-        Choice.ItemSelected x -> a <$ do
+        Select.Selected x -> a <$ do
           H.liftEffect $ case x of
             Facebook -> log "Facebook"
             Twitter -> log "Twitter"
+          H.query' CP.cp2 unit ( Select.setVisibility Select.Off )
+
+        _ -> pure a
 
     render
       :: State
@@ -186,17 +198,88 @@ component =
             [ HH.slot'
                 CP.cp2
                 unit
-                Choice.component
-                unit
+                Select.component
+                selectInput
                 ( HE.input HandleChoice )
             ]
           ]
         ]
 
       where
+        items :: Array String
         items =
           [ "Lagavulin 16"
           , "Kilchoman Blue Label"
           , "Laphroaig"
           , "Ardbeg"
           ]
+
+        selectInput :: Select.Input Query Platform
+        selectInput =
+          { debounceTime: Nothing
+          , initialSearch: Nothing
+          , inputType: Select.Toggle
+          , items: [ Facebook, Twitter ]
+          , render: renderPlatformChoice
+          }
+
+        renderPlatformChoice state' =
+          HH.div
+            [ css "flex items-center flex-col" ]
+            [ menu
+            , Button.buttonPrimary
+              ( SelectSetters.setToggleProps [] )
+              [ HH.text "Create Campaign Group" ]
+            ]
+            where
+              visibilityClasses = case state'.visibility of
+                Select.On -> css ""
+                Select.Off -> css "hidden"
+
+              menu =
+                Choice.choice
+                  ( SelectSetters.setContainerProps [ visibilityClasses ] )
+                  [ Choice.header_
+                    [ HH.span
+                      [ css "font-medium text-grey-50" ]
+                      [ HH.text "Advertise on..." ]
+                    ]
+                  , Choice.body_ $
+                      mapWithIndex
+                        ( \index item ->
+                            Choice.option
+                              ( SelectSetters.setItemProps
+                                  index
+                                  [ if Just index == state'.highlightedIndex
+                                      then HP.classes Choice.highlightedOptionClasses
+                                      else HP.classes []
+                                  ]
+                              )
+                              ( renderPlatform item )
+                        )
+                        state'.items
+                  ]
+
+              renderPlatform = case _ of
+                Facebook ->
+                  [ HH.div_
+                    [ Icon.facebook
+                      [ css "text-fb-blue text-4xl" ]
+                    ]
+                  , HH.div_
+                    [ HH.p
+                      [ css "text-black-20 font-light" ]
+                      [ HH.text "Facebook" ]
+                    ]
+                  ]
+                Twitter ->
+                  [ HH.div_
+                    [ Icon.twitter
+                      [ css "text-tw-blue text-4xl" ] ]
+                  , HH.div_
+                    [ HH.p
+                      [ css "text-black-20 font-light" ]
+                      [ HH.text "Twitter" ]
+                    ]
+                  ]
+
