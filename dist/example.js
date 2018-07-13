@@ -23119,135 +23119,6 @@ var PS = {};
   "use strict";
   var Control_Applicative = PS["Control.Applicative"];
   var Control_Bind = PS["Control.Bind"];
-  var Data_Array = PS["Data.Array"];
-  var Data_Eq = PS["Data.Eq"];
-  var Data_Function = PS["Data.Function"];
-  var Data_Maybe = PS["Data.Maybe"];
-  var Data_Ord = PS["Data.Ord"];
-  var Data_Unit = PS["Data.Unit"];
-  var Effect_Aff_Class = PS["Effect.Aff.Class"];
-  var Halogen = PS["Halogen"];
-  var Halogen_Component = PS["Halogen.Component"];
-  var Halogen_HTML = PS["Halogen.HTML"];
-  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
-  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
-  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
-  var Halogen_Query = PS["Halogen.Query"];
-  var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
-  var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
-  var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
-  var Ocelot_Blocks_Choice = PS["Ocelot.Blocks.Choice"];
-  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
-  var Prelude = PS["Prelude"];
-  var Select = PS["Select"];
-  var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
-  var Facebook = (function () {
-      function Facebook() {
-
-      };
-      Facebook.value = new Facebook();
-      return Facebook;
-  })();
-  var Twitter = (function () {
-      function Twitter() {
-
-      };
-      Twitter.value = new Twitter();
-      return Twitter;
-  })();
-  var HandleSelect = (function () {
-      function HandleSelect(value0, value1) {
-          this.value0 = value0;
-          this.value1 = value1;
-      };
-      HandleSelect.create = function (value0) {
-          return function (value1) {
-              return new HandleSelect(value0, value1);
-          };
-      };
-      return HandleSelect;
-  })();
-  var ItemSelected = (function () {
-      function ItemSelected(value0) {
-          this.value0 = value0;
-      };
-      ItemSelected.create = function (value0) {
-          return new ItemSelected(value0);
-      };
-      return ItemSelected;
-  })();
-  var component = function (dictMonadAff) {
-      var render = function (state) {
-          var renderPlatformChoice = function (state$prime) {
-              var visibilityClasses = (function () {
-                  if (state$prime.visibility instanceof Select.On) {
-                      return Ocelot_HTML_Properties.css("");
-                  };
-                  if (state$prime.visibility instanceof Select.Off) {
-                      return Ocelot_HTML_Properties.css("hidden");
-                  };
-                  throw new Error("Failed pattern match at Ocelot.Components.Choice line 85, column 35 - line 89, column 15: " + [ state$prime.visibility.constructor.name ]);
-              })();
-              var renderPlatform = function (v) {
-                  if (v instanceof Facebook) {
-                      return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.facebook([ Ocelot_HTML_Properties.css("text-fb-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Facebook") ]) ]) ];
-                  };
-                  if (v instanceof Twitter) {
-                      return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-tw-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ];
-                  };
-                  throw new Error("Failed pattern match at Ocelot.Components.Choice line 113, column 32 - line 134, column 19: " + [ v.constructor.name ]);
-              };
-              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.body_(Data_Array.mapWithIndex(function (index) {
-                  return function (item) {
-                      return Ocelot_Blocks_Choice.option(Select_Utils_Setters.setItemProps(index)([ (function () {
-                          var $6 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(index))(state$prime.highlightedIndex);
-                          if ($6) {
-                              return Halogen_HTML_Properties.classes(Ocelot_Blocks_Choice.highlightedOptionClasses);
-                          };
-                          return Halogen_HTML_Properties.classes([  ]);
-                      })() ]))(renderPlatform(item));
-                  };
-              })(state$prime.items)) ]);
-              return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex items-center flex-col") ])([ menu, Ocelot_Block_Button.buttonPrimary(Select_Utils_Setters.setToggleProps([  ]))([ Halogen_HTML_Core.text("Create Campaign Group") ]) ]);
-          };
-          var selectInput = {
-              debounceTime: Data_Maybe.Nothing.value,
-              initialSearch: Data_Maybe.Nothing.value,
-              inputType: Select.Toggle.value,
-              items: [ Facebook.value, Twitter.value ],
-              render: renderPlatformChoice
-          };
-          return Halogen_HTML.slot(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(HandleSelect.create));
-      };
-      var $$eval = function (v) {
-          if (v.value0 instanceof Select.Selected) {
-              return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
-                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new ItemSelected(v.value0.value0)))(function () {
-                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                  });
-              });
-          };
-          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-      };
-      return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
-          initialState: Data_Function["const"](Data_Unit.unit),
-          render: render,
-          "eval": $$eval,
-          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
-      });
-  };
-  exports["HandleSelect"] = HandleSelect;
-  exports["ItemSelected"] = ItemSelected;
-  exports["Facebook"] = Facebook;
-  exports["Twitter"] = Twitter;
-  exports["component"] = component;
-})(PS["Ocelot.Components.Choice"] = PS["Ocelot.Components.Choice"] || {});
-(function(exports) {
-  // Generated by purs version 0.12.0
-  "use strict";
-  var Control_Applicative = PS["Control.Applicative"];
-  var Control_Bind = PS["Control.Bind"];
   var Control_Category = PS["Control.Category"];
   var Control_Monad_State_Class = PS["Control.Monad.State.Class"];
   var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
@@ -23476,7 +23347,10 @@ var PS = {};
 (function(exports) {
   // Generated by purs version 0.12.0
   "use strict";
+  var Control_Applicative = PS["Control.Applicative"];
+  var Control_Bind = PS["Control.Bind"];
   var Control_Category = PS["Control.Category"];
+  var Data_Array = PS["Data.Array"];
   var Data_Either = PS["Data.Either"];
   var Data_Either_Nested = PS["Data.Either.Nested"];
   var Data_Eq = PS["Data.Eq"];
@@ -23496,14 +23370,34 @@ var PS = {};
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Halogen_Query = PS["Halogen.Query"];
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
+  var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
   var Ocelot_Block_Format = PS["Ocelot.Block.Format"];
-  var Ocelot_Components_Choice = PS["Ocelot.Components.Choice"];
+  var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
+  var Ocelot_Blocks_Choice = PS["Ocelot.Blocks.Choice"];
   var Ocelot_Components_Dropdown = PS["Ocelot.Components.Dropdown"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];
+  var Select = PS["Select"];
+  var Select_Utils_Setters = PS["Select.Utils.Setters"];
   var UIGuide_Block_Backdrop = PS["UIGuide.Block.Backdrop"];
   var UIGuide_Block_Documentation = PS["UIGuide.Block.Documentation"];                 
+  var Facebook = (function () {
+      function Facebook() {
+
+      };
+      Facebook.value = new Facebook();
+      return Facebook;
+  })();
+  var Twitter = (function () {
+      function Twitter() {
+
+      };
+      Twitter.value = new Twitter();
+      return Twitter;
+  })();
   var HandleDropdown = (function () {
       function HandleDropdown(value0, value1) {
           this.value0 = value0;
@@ -23530,6 +23424,45 @@ var PS = {};
   })();
   var component = function (dictMonadAff) {
       var render = function (state) {
+          var renderPlatformChoice = function (state$prime) {
+              var visibilityClasses = (function () {
+                  if (state$prime.visibility instanceof Select.On) {
+                      return Ocelot_HTML_Properties.css("");
+                  };
+                  if (state$prime.visibility instanceof Select.Off) {
+                      return Ocelot_HTML_Properties.css("hidden");
+                  };
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 235, column 35 - line 239, column 15: " + [ state$prime.visibility.constructor.name ]);
+              })();
+              var renderPlatform = function (v) {
+                  if (v instanceof Facebook) {
+                      return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.facebook([ Ocelot_HTML_Properties.css("text-fb-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Facebook") ]) ]) ];
+                  };
+                  if (v instanceof Twitter) {
+                      return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-tw-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ];
+                  };
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 263, column 32 - line 284, column 19: " + [ v.constructor.name ]);
+              };
+              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.body_(Data_Array.mapWithIndex(function (index) {
+                  return function (item) {
+                      return Ocelot_Blocks_Choice.option(Select_Utils_Setters.setItemProps(index)([ (function () {
+                          var $5 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(index))(state$prime.highlightedIndex);
+                          if ($5) {
+                              return Halogen_HTML_Properties.classes(Ocelot_Blocks_Choice.highlightedOptionClasses);
+                          };
+                          return Halogen_HTML_Properties.classes([  ]);
+                      })() ]))(renderPlatform(item));
+                  };
+              })(state$prime.items)) ]);
+              return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex items-center flex-col") ])([ menu, Ocelot_Block_Button.buttonPrimary(Select_Utils_Setters.setToggleProps([  ]))([ Halogen_HTML_Core.text("Create Campaign Group") ]) ]);
+          };
+          var selectInput = {
+              debounceTime: Data_Maybe.Nothing.value,
+              initialSearch: Data_Maybe.Nothing.value,
+              inputType: Select.Toggle.value,
+              items: [ Facebook.value, Twitter.value ],
+              render: renderPlatformChoice
+          };
           var items = [ "Lagavulin 16", "Kilchoman Blue Label", "Laphroaig", "Ardbeg" ];
           return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.block_({
               header: "Dropdown",
@@ -23573,24 +23506,29 @@ var PS = {};
           })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
               header: "Choice",
               subheader: "A specialized dropdown for making selections."
-          })([ UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("h-40 flex items-center justify-center") ])([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Ocelot_Components_Choice.component(dictMonadAff))(Data_Unit.unit)(Halogen_HTML_Events.input(HandleChoice.create)) ]) ]) ]);
+          })([ UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("h-40 flex items-center justify-center") ])([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(HandleChoice.create)) ]) ]) ]);
       };
       var $$eval = function (v) {
           if (v instanceof HandleDropdown) {
               return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)(v.value0.value0)));
           };
           if (v instanceof HandleChoice) {
-              return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))((function () {
-                  if (v.value0.value0 instanceof Ocelot_Components_Choice.Facebook) {
-                      return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Facebook");
-                  };
-                  if (v.value0.value0 instanceof Ocelot_Components_Choice.Twitter) {
-                      return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Twitter");
-                  };
-                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 58, column 26 - line 62, column 5: " + [ v.value0.value0.constructor.name ]);
-              })()));
+              if (v.value0 instanceof Select.Selected) {
+                  return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))((function () {
+                      if (v.value0.value0 instanceof Facebook) {
+                          return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Facebook");
+                      };
+                      if (v.value0.value0 instanceof Twitter) {
+                          return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Twitter");
+                      };
+                      throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 67, column 26 - line 70, column 11: " + [ v.value0.value0.constructor.name ]);
+                  })()))(function () {
+                      return Halogen_Query["query'"](Data_Either.eqEither(Data_Eq.eqUnit)(Data_Either.eqEither(Data_Eq.eqUnit)(Data_Eq.eqVoid)))(Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Select.setVisibility(Select.Off.value));
+                  }));
+              };
+              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
           };
-          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 52, column 12 - line 62, column 5: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 61, column 12 - line 72, column 20: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid)))({
           initialState: Data_Function["const"](Data_Unit.unit),
@@ -23601,6 +23539,8 @@ var PS = {};
   };
   exports["HandleDropdown"] = HandleDropdown;
   exports["HandleChoice"] = HandleChoice;
+  exports["Facebook"] = Facebook;
+  exports["Twitter"] = Twitter;
   exports["component"] = component;
 })(PS["UIGuide.Components.Dropdown"] = PS["UIGuide.Components.Dropdown"] || {});
 (function(exports) {
