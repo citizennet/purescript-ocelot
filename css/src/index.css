@@ -158,15 +158,6 @@ dt {
 .sibling\:bg-grey-95 ~ * { @apply .bg-grey-95; }
 .sibling\:text-grey-50 ~ * { @apply .text-grey-50; }
 
-/* Search Bar Styles */
-*:focus ~ .sibling\:focus\:text-grey-50 { @apply .text-grey-50; }
-*:focus ~ .sibling\:focus\:opacity-100 { @apply .opacity-100; }
-*:focus ~ .sibling\:focus\:visible { @apply .visible; }
-.focus-within\:w-full:focus-within { @apply .w-full; }
-.search-bar::placeholder { color: transparent; }
-.search-bar:focus::placeholder { color: initial; }
-.order--1 { order: -1; }
-
 /* Animation Styles */
 .slide-down { animation: yslide 0.1s ease-out 1; }
 

@@ -8,6 +8,7 @@ module Ocelot.Components.SearchBar
 import Prelude
 
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String (null)
 import Data.Time.Duration (Milliseconds(..))
 import Effect.Aff (Fiber, delay, forkAff, killFiber)
 import Effect.Aff.AVar (AVar)
@@ -24,6 +25,7 @@ type State =
   { query :: String
   , debouncer :: Maybe Debouncer
   , debounceTime :: Milliseconds
+  , open :: Boolean
   }
 
 type Debouncer =
@@ -34,6 +36,8 @@ type Debouncer =
 data Query a
   = Clear a
   | Search String a
+  | Open a
+  | Blur a
 
 type Input = { debounceTime :: Maybe Milliseconds }
 
@@ -55,12 +59,23 @@ component =
       { query: ""
       , debouncer: Nothing
       , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
+      , open: false
       }
 
     eval :: Query ~> H.ComponentDSL State Query Message m
     eval = case _ of
+      Open a -> do
+        H.modify_ _ { open = true }
+        pure a
+
+      Blur a -> do
+        query <- H.gets _.query
+        if null query then H.modify_ _ { open = false } else pure unit
+        pure a
+
       Clear a -> do
         H.modify_ _ { query = "" }
+        H.modify_ _ { open = false }
         H.raise $ Searched ""
         pure a
 
@@ -93,22 +108,25 @@ component =
         pure a
 
     render :: State -> H.ComponentHTML Query
-    render { query } =
+    render { query, open } =
       HH.label
-        [ HP.classes containerClasses ]
+        [ HP.classes $ containerClasses <> containerCondClasses ]
         [ HH.input
           [ HE.onValueInput (HE.input Search)
           , HP.placeholder "Search"
           , HP.value query
-          , HP.classes inputClasses
+          , HP.classes $ inputClasses <> inputCondClasses
+          , HE.onBlur (HE.input $ const Blur)
           ]
         , HH.div
-          [ HP.classes labelClasses ]
+          [ HP.classes $ labelClasses <> labelCondClasses
+          , HE.onClick (HE.input $ const Open)
+          ]
           [ Icon.search_ ]
         , HH.button
           [ HE.onClick (HE.input $ const Clear)
           , HP.type_ (HP.ButtonButton)
-          , HP.classes buttonClasses
+          , HP.classes $ buttonClasses <> buttonCondClasses
           ]
           [ Icon.close_ ]
         ]
@@ -121,36 +139,38 @@ component =
           , "no-outline"
           , "items-stretch"
           , "w-0"
-          , "focus-within:w-full"
           , "transition-1/4"
           ]
+
+        containerCondClasses = ifOpen [ "w-full" ] [ ]
 
         labelClasses = HH.ClassName <$>
           [ "mr-3"
           , "text-2xl"
-          , "text-grey-70"
-          , "sibling:focus:text-grey-50"
           , "order--1"
           , "cursor-pointer"
           ]
 
+        labelCondClasses = ifOpen [ "text-grey-50" ] [ "text-grey-70" ]
+
         inputClasses = HH.ClassName <$>
           [ "no-outline"
           , "flex-1"
-          , "search-bar"
           , "bg-transparent"
           , "w-0"
-          , "focus:w-full"
           ]
+
+        inputCondClasses = ifOpen [ "w-full" ] [ ]
 
         buttonClasses = HH.ClassName <$>
           [ "no-outline"
           , "text-grey-80"
           , "hover:text-grey-70"
-          , "sibling:focus:opacity-100"
-          , "sibling:focus:visible"
-          , "invisible"
-          , "opacity-0"
           , "text-xs"
           , "transition-1/4"
           ]
+
+        buttonCondClasses = ifOpen [ "opacity-100",  "visible" ] [ "opacity-0", "invisible" ]
+
+        ifOpen openClasses closedClasses =
+          HH.ClassName <$> if open then openClasses else closedClasses
