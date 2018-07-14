@@ -2,12 +2,10 @@ module Ocelot.Block.Table where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLtable, HTMLtbody, HTMLtd, HTMLth, HTMLthead, HTMLtr)
-import Halogen.HTML (HTML(..), IProp)
+import DOM.HTML.Indexed (HTMLtable, HTMLtd, HTMLth, HTMLtr)
+import Halogen.HTML (HTML, IProp)
 import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
 import Ocelot.Block.Builder (blockBuilder)
-import Ocelot.HTML.Properties ((<&>))
 
 tableClasses :: Array HH.ClassName
 tableClasses = HH.ClassName <$>

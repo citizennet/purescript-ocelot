@@ -17,7 +17,6 @@ import Select.Utils.Setters (setContainerProps, setItemProps, setToggleProps)
 
 data Query item a
   = HandleSelect (Select.Message (Query item) item) a
-  | Receive (Input item) a
   | SetItems (Array item) a
   | SetSelection (Maybe item) a
 
@@ -67,7 +66,7 @@ component button =
     { initialState: identity
     , render
     , eval
-    , receiver: HE.input Receive
+    , receiver: const Nothing
     }
 
   where
@@ -93,9 +92,6 @@ component button =
         pure a
       SetSelection item a -> do
         H.modify_ _ { selectedItem = item }
-        pure a
-      Receive input a -> do
-        H.put input
         pure a
 
     render

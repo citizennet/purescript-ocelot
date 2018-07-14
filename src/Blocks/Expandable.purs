@@ -2,7 +2,7 @@ module Ocelot.Block.Expandable where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLheader, HTMLspan, Interactive)
+import DOM.HTML.Indexed (HTMLdiv, HTMLspan, Interactive)
 import Data.Array (snoc)
 import Data.Bifunctor (lmap, rmap)
 import Data.Foldable (foldr)
@@ -80,8 +80,8 @@ contentSharedClasses = HH.ClassName <$>
   []
 
 contentClasses :: Status -> Array HH.ClassName
-contentClasses status = contentSharedClasses <>
-  ( case status of
+contentClasses status_ = contentSharedClasses <>
+  ( case status_ of
     Collapsed -> HH.ClassName <$>
       [ "max-h-0"
       , "opacity-0"
@@ -126,14 +126,14 @@ heading
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 heading iprops html =
-  let (Tuple status iprops') = extractStatus iprops in
+  let (Tuple status_ iprops') = extractStatus iprops in
   HH.header
     ( [ HP.classes headingClasses ] <&> iprops' )
     [ HH.div
       [ HP.classes headingInnerClasses ]
       html
     , HH.div_
-      [ chevron_ status ]
+      [ chevron_ status_ ]
     ]
 
 chevron
@@ -141,8 +141,8 @@ chevron
    . Status
   -> Array (HH.IProp HTMLspan i)
   -> HH.HTML p i
-chevron status iprops =
-  ( case status of
+chevron status_ iprops =
+  ( case status_ of
     Collapsed -> Icon.expand
     Expanded  -> Icon.collapse
   )
@@ -152,7 +152,7 @@ chevron_
   :: ∀ p i
    . Status
   -> HH.HTML p i
-chevron_ status = chevron status []
+chevron_ status_ = chevron status_ []
 
 content
   :: ∀ p i
@@ -160,13 +160,13 @@ content
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-content status iprops =
+content status_ iprops =
   HH.div
-    ( [ HP.classes $ contentClasses status ] <&> iprops )
+    ( [ HP.classes $ contentClasses status_ ] <&> iprops )
 
 content_
   :: ∀ p i
    . Status
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-content_ status = content status []
+content_ status_ = content status_ []

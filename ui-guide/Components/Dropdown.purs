@@ -60,7 +60,10 @@ component =
       ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
     eval = case _ of
       HandleDropdown message a -> case message of
-        Dropdown.ItemSelected x -> a <$ H.liftEffect (log x)
+        Dropdown.ItemSelected x -> do
+          H.liftEffect (log x)
+          H.modify_ identity
+          pure a
 
       HandleChoice message a -> case message of
         Select.Selected x -> a <$ do
