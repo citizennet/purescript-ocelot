@@ -60,104 +60,52 @@ header_
 header_ =
   header []
 
--- Blocks for a horizontally oriented Choice element
+bodyClasses :: Array HH.ClassName
+bodyClasses = HH.ClassName <$> [ "flex" ]
 
-hBodyClasses :: Array HH.ClassName
-hBodyClasses = HH.ClassName <$>
-  [ "flex"
-  , "mt-px"
-  ]
-
-hBody
+body
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-hBody iprops =
+body iprops =
   HH.div
-    ( [ HP.classes hBodyClasses ] <&> iprops )
+    ( [ HP.classes bodyClasses ] <&> iprops )
 
-hBody_
+body_
   :: ∀ p i
    . Array (HH.HTML p i)
   -> HH.HTML p i
-hBody_ =
-  hBody []
+body_ =
+  body []
 
-hOptionClasses :: Array HH.ClassName
-hOptionClasses = HH.ClassName <$>
+optionClasses :: Array HH.ClassName
+optionClasses = HH.ClassName <$>
   [ "bg-white"
   , "flex"
   , "flex-col"
   , "items-center"
   , "h-30"
   , "justify-center"
-  , "shadow"
   , "w-40"
   , "cursor-pointer"
   ]
 
-hOption
+option
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-hOption iprops =
+option iprops =
   HH.div
-    ( [ HP.classes hOptionClasses ] <&> iprops )
+    ( [ HP.classes optionClasses ] <&> iprops )
 
-hOption_
+option_
   :: ∀ p i
    . Array (HH.HTML p i)
   -> HH.HTML p i
-hOption_ =
-  hOption []
-
--- Blocks for a vertically oriented Choice element
-
-vBodyClasses :: Array HH.ClassName
-vBodyClasses = hBodyClasses <> (HH.ClassName <$> [ "flex-col", "w-90" ])
-
-vBody
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-vBody iprops =
-  HH.div
-    ( [ HP.classes vBodyClasses ] <&> iprops )
-
-vBody_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-vBody_ =
-  vBody []
-
-vOptionClasses :: Array HH.ClassName
-vOptionClasses = HH.ClassName <$>
-  [ "bg-white"
-  , "flex"
-  , "items-center"
-  , "justify-center"
-  , "cursor-pointer"
-  ]
-
-vOption
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-vOption iprops =
-  HH.div
-    ( [ HP.classes vOptionClasses ] <&> iprops )
-
-vOption_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
-vOption_ =
-  vOption []
+option_ =
+  option []
 
 highlightedOptionClasses :: Array HH.ClassName
 highlightedOptionClasses = HH.ClassName <$>
