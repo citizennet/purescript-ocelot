@@ -4937,6 +4937,10 @@ body .ocelot-scoped {
   height: 20rem;
 }
 
+.ocelot-scoped .h-90 {
+  height: 22.5rem;
+}
+
 .ocelot-scoped .h-120 {
   height: 30rem;
 }
@@ -5055,6 +5059,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .m-80 {
   margin: 20rem;
+}
+
+.ocelot-scoped .m-90 {
+  margin: 22.5rem;
 }
 
 .ocelot-scoped .m-120 {
@@ -5271,6 +5279,16 @@ body .ocelot-scoped {
 .ocelot-scoped .mx-80 {
   margin-left: 20rem;
   margin-right: 20rem;
+}
+
+.ocelot-scoped .my-90 {
+  margin-top: 22.5rem;
+  margin-bottom: 22.5rem;
+}
+
+.ocelot-scoped .mx-90 {
+  margin-left: 22.5rem;
+  margin-right: 22.5rem;
 }
 
 .ocelot-scoped .my-120 {
@@ -5633,6 +5651,22 @@ body .ocelot-scoped {
   margin-left: 20rem;
 }
 
+.ocelot-scoped .mt-90 {
+  margin-top: 22.5rem;
+}
+
+.ocelot-scoped .mr-90 {
+  margin-right: 22.5rem;
+}
+
+.ocelot-scoped .mb-90 {
+  margin-bottom: 22.5rem;
+}
+
+.ocelot-scoped .ml-90 {
+  margin-left: 22.5rem;
+}
+
 .ocelot-scoped .mt-120 {
   margin-top: 30rem;
 }
@@ -5745,6 +5779,10 @@ body .ocelot-scoped {
   max-height: 20rem;
 }
 
+.ocelot-scoped .max-h-90 {
+  max-height: 22.5rem;
+}
+
 .ocelot-scoped .max-h-120 {
   max-height: 30rem;
 }
@@ -5807,6 +5845,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .max-w-80 {
   max-width: 20rem;
+}
+
+.ocelot-scoped .max-w-90 {
+  max-width: 22.5rem;
 }
 
 .ocelot-scoped .max-w-120 {
@@ -5909,6 +5951,10 @@ body .ocelot-scoped {
   min-height: 20rem;
 }
 
+.ocelot-scoped .min-h-90 {
+  min-height: 22.5rem;
+}
+
 .ocelot-scoped .min-h-120 {
   min-height: 30rem;
 }
@@ -5971,6 +6017,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .min-w-80 {
   min-width: 20rem;
+}
+
+.ocelot-scoped .min-w-90 {
+  min-width: 22.5rem;
 }
 
 .ocelot-scoped .min-w-120 {
@@ -6063,6 +6113,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .-m-80 {
   margin: -20rem;
+}
+
+.ocelot-scoped .-m-90 {
+  margin: -22.5rem;
 }
 
 .ocelot-scoped .-m-120 {
@@ -6279,6 +6333,16 @@ body .ocelot-scoped {
 .ocelot-scoped .-mx-80 {
   margin-left: -20rem;
   margin-right: -20rem;
+}
+
+.ocelot-scoped .-my-90 {
+  margin-top: -22.5rem;
+  margin-bottom: -22.5rem;
+}
+
+.ocelot-scoped .-mx-90 {
+  margin-left: -22.5rem;
+  margin-right: -22.5rem;
 }
 
 .ocelot-scoped .-my-120 {
@@ -6641,6 +6705,22 @@ body .ocelot-scoped {
   margin-left: -20rem;
 }
 
+.ocelot-scoped .-mt-90 {
+  margin-top: -22.5rem;
+}
+
+.ocelot-scoped .-mr-90 {
+  margin-right: -22.5rem;
+}
+
+.ocelot-scoped .-mb-90 {
+  margin-bottom: -22.5rem;
+}
+
+.ocelot-scoped .-ml-90 {
+  margin-left: -22.5rem;
+}
+
 .ocelot-scoped .-mt-120 {
   margin-top: -30rem;
 }
@@ -6869,6 +6949,10 @@ body .ocelot-scoped {
   padding: 20rem;
 }
 
+.ocelot-scoped .p-90 {
+  padding: 22.5rem;
+}
+
 .ocelot-scoped .p-120 {
   padding: 30rem;
 }
@@ -7079,6 +7163,16 @@ body .ocelot-scoped {
 .ocelot-scoped .px-80 {
   padding-left: 20rem;
   padding-right: 20rem;
+}
+
+.ocelot-scoped .py-90 {
+  padding-top: 22.5rem;
+  padding-bottom: 22.5rem;
+}
+
+.ocelot-scoped .px-90 {
+  padding-left: 22.5rem;
+  padding-right: 22.5rem;
 }
 
 .ocelot-scoped .py-120 {
@@ -7429,6 +7523,22 @@ body .ocelot-scoped {
 
 .ocelot-scoped .pl-80 {
   padding-left: 20rem;
+}
+
+.ocelot-scoped .pt-90 {
+  padding-top: 22.5rem;
+}
+
+.ocelot-scoped .pr-90 {
+  padding-right: 22.5rem;
+}
+
+.ocelot-scoped .pb-90 {
+  padding-bottom: 22.5rem;
+}
+
+.ocelot-scoped .pl-90 {
+  padding-left: 22.5rem;
 }
 
 .ocelot-scoped .pt-120 {
@@ -9189,6 +9299,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .w-80 {
   width: 20rem;
+}
+
+.ocelot-scoped .w-90 {
+  width: 22.5rem;
 }
 
 .ocelot-scoped .w-120 {
@@ -13880,6 +13994,10 @@ body .ocelot-scoped {
     height: 20rem;
   }
 
+  .ocelot-scoped .sm\:h-90 {
+    height: 22.5rem;
+  }
+
   .ocelot-scoped .sm\:h-120 {
     height: 30rem;
   }
@@ -13998,6 +14116,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:m-80 {
     margin: 20rem;
+  }
+
+  .ocelot-scoped .sm\:m-90 {
+    margin: 22.5rem;
   }
 
   .ocelot-scoped .sm\:m-120 {
@@ -14214,6 +14336,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:mx-80 {
     margin-left: 20rem;
     margin-right: 20rem;
+  }
+
+  .ocelot-scoped .sm\:my-90 {
+    margin-top: 22.5rem;
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:mx-90 {
+    margin-left: 22.5rem;
+    margin-right: 22.5rem;
   }
 
   .ocelot-scoped .sm\:my-120 {
@@ -14576,6 +14708,22 @@ body .ocelot-scoped {
     margin-left: 20rem;
   }
 
+  .ocelot-scoped .sm\:mt-90 {
+    margin-top: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:mr-90 {
+    margin-right: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:mb-90 {
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:ml-90 {
+    margin-left: 22.5rem;
+  }
+
   .ocelot-scoped .sm\:mt-120 {
     margin-top: 30rem;
   }
@@ -14688,6 +14836,10 @@ body .ocelot-scoped {
     max-height: 20rem;
   }
 
+  .ocelot-scoped .sm\:max-h-90 {
+    max-height: 22.5rem;
+  }
+
   .ocelot-scoped .sm\:max-h-120 {
     max-height: 30rem;
   }
@@ -14750,6 +14902,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:max-w-80 {
     max-width: 20rem;
+  }
+
+  .ocelot-scoped .sm\:max-w-90 {
+    max-width: 22.5rem;
   }
 
   .ocelot-scoped .sm\:max-w-120 {
@@ -14852,6 +15008,10 @@ body .ocelot-scoped {
     min-height: 20rem;
   }
 
+  .ocelot-scoped .sm\:min-h-90 {
+    min-height: 22.5rem;
+  }
+
   .ocelot-scoped .sm\:min-h-120 {
     min-height: 30rem;
   }
@@ -14914,6 +15074,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:min-w-80 {
     min-width: 20rem;
+  }
+
+  .ocelot-scoped .sm\:min-w-90 {
+    min-width: 22.5rem;
   }
 
   .ocelot-scoped .sm\:min-w-120 {
@@ -15006,6 +15170,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:-m-80 {
     margin: -20rem;
+  }
+
+  .ocelot-scoped .sm\:-m-90 {
+    margin: -22.5rem;
   }
 
   .ocelot-scoped .sm\:-m-120 {
@@ -15222,6 +15390,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:-mx-80 {
     margin-left: -20rem;
     margin-right: -20rem;
+  }
+
+  .ocelot-scoped .sm\:-my-90 {
+    margin-top: -22.5rem;
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .sm\:-mx-90 {
+    margin-left: -22.5rem;
+    margin-right: -22.5rem;
   }
 
   .ocelot-scoped .sm\:-my-120 {
@@ -15584,6 +15762,22 @@ body .ocelot-scoped {
     margin-left: -20rem;
   }
 
+  .ocelot-scoped .sm\:-mt-90 {
+    margin-top: -22.5rem;
+  }
+
+  .ocelot-scoped .sm\:-mr-90 {
+    margin-right: -22.5rem;
+  }
+
+  .ocelot-scoped .sm\:-mb-90 {
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .sm\:-ml-90 {
+    margin-left: -22.5rem;
+  }
+
   .ocelot-scoped .sm\:-mt-120 {
     margin-top: -30rem;
   }
@@ -15804,6 +15998,10 @@ body .ocelot-scoped {
     padding: 20rem;
   }
 
+  .ocelot-scoped .sm\:p-90 {
+    padding: 22.5rem;
+  }
+
   .ocelot-scoped .sm\:p-120 {
     padding: 30rem;
   }
@@ -16014,6 +16212,16 @@ body .ocelot-scoped {
   .ocelot-scoped .sm\:px-80 {
     padding-left: 20rem;
     padding-right: 20rem;
+  }
+
+  .ocelot-scoped .sm\:py-90 {
+    padding-top: 22.5rem;
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:px-90 {
+    padding-left: 22.5rem;
+    padding-right: 22.5rem;
   }
 
   .ocelot-scoped .sm\:py-120 {
@@ -16364,6 +16572,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:pl-80 {
     padding-left: 20rem;
+  }
+
+  .ocelot-scoped .sm\:pt-90 {
+    padding-top: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:pr-90 {
+    padding-right: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:pb-90 {
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .sm\:pl-90 {
+    padding-left: 22.5rem;
   }
 
   .ocelot-scoped .sm\:pt-120 {
@@ -18116,6 +18340,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:w-80 {
     width: 20rem;
+  }
+
+  .ocelot-scoped .sm\:w-90 {
+    width: 22.5rem;
   }
 
   .ocelot-scoped .sm\:w-120 {
@@ -22259,6 +22487,10 @@ body .ocelot-scoped {
     height: 20rem;
   }
 
+  .ocelot-scoped .md\:h-90 {
+    height: 22.5rem;
+  }
+
   .ocelot-scoped .md\:h-120 {
     height: 30rem;
   }
@@ -22377,6 +22609,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:m-80 {
     margin: 20rem;
+  }
+
+  .ocelot-scoped .md\:m-90 {
+    margin: 22.5rem;
   }
 
   .ocelot-scoped .md\:m-120 {
@@ -22593,6 +22829,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:mx-80 {
     margin-left: 20rem;
     margin-right: 20rem;
+  }
+
+  .ocelot-scoped .md\:my-90 {
+    margin-top: 22.5rem;
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:mx-90 {
+    margin-left: 22.5rem;
+    margin-right: 22.5rem;
   }
 
   .ocelot-scoped .md\:my-120 {
@@ -22955,6 +23201,22 @@ body .ocelot-scoped {
     margin-left: 20rem;
   }
 
+  .ocelot-scoped .md\:mt-90 {
+    margin-top: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:mr-90 {
+    margin-right: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:mb-90 {
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:ml-90 {
+    margin-left: 22.5rem;
+  }
+
   .ocelot-scoped .md\:mt-120 {
     margin-top: 30rem;
   }
@@ -23067,6 +23329,10 @@ body .ocelot-scoped {
     max-height: 20rem;
   }
 
+  .ocelot-scoped .md\:max-h-90 {
+    max-height: 22.5rem;
+  }
+
   .ocelot-scoped .md\:max-h-120 {
     max-height: 30rem;
   }
@@ -23129,6 +23395,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:max-w-80 {
     max-width: 20rem;
+  }
+
+  .ocelot-scoped .md\:max-w-90 {
+    max-width: 22.5rem;
   }
 
   .ocelot-scoped .md\:max-w-120 {
@@ -23231,6 +23501,10 @@ body .ocelot-scoped {
     min-height: 20rem;
   }
 
+  .ocelot-scoped .md\:min-h-90 {
+    min-height: 22.5rem;
+  }
+
   .ocelot-scoped .md\:min-h-120 {
     min-height: 30rem;
   }
@@ -23293,6 +23567,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:min-w-80 {
     min-width: 20rem;
+  }
+
+  .ocelot-scoped .md\:min-w-90 {
+    min-width: 22.5rem;
   }
 
   .ocelot-scoped .md\:min-w-120 {
@@ -23385,6 +23663,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:-m-80 {
     margin: -20rem;
+  }
+
+  .ocelot-scoped .md\:-m-90 {
+    margin: -22.5rem;
   }
 
   .ocelot-scoped .md\:-m-120 {
@@ -23601,6 +23883,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:-mx-80 {
     margin-left: -20rem;
     margin-right: -20rem;
+  }
+
+  .ocelot-scoped .md\:-my-90 {
+    margin-top: -22.5rem;
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .md\:-mx-90 {
+    margin-left: -22.5rem;
+    margin-right: -22.5rem;
   }
 
   .ocelot-scoped .md\:-my-120 {
@@ -23963,6 +24255,22 @@ body .ocelot-scoped {
     margin-left: -20rem;
   }
 
+  .ocelot-scoped .md\:-mt-90 {
+    margin-top: -22.5rem;
+  }
+
+  .ocelot-scoped .md\:-mr-90 {
+    margin-right: -22.5rem;
+  }
+
+  .ocelot-scoped .md\:-mb-90 {
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .md\:-ml-90 {
+    margin-left: -22.5rem;
+  }
+
   .ocelot-scoped .md\:-mt-120 {
     margin-top: -30rem;
   }
@@ -24183,6 +24491,10 @@ body .ocelot-scoped {
     padding: 20rem;
   }
 
+  .ocelot-scoped .md\:p-90 {
+    padding: 22.5rem;
+  }
+
   .ocelot-scoped .md\:p-120 {
     padding: 30rem;
   }
@@ -24393,6 +24705,16 @@ body .ocelot-scoped {
   .ocelot-scoped .md\:px-80 {
     padding-left: 20rem;
     padding-right: 20rem;
+  }
+
+  .ocelot-scoped .md\:py-90 {
+    padding-top: 22.5rem;
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:px-90 {
+    padding-left: 22.5rem;
+    padding-right: 22.5rem;
   }
 
   .ocelot-scoped .md\:py-120 {
@@ -24743,6 +25065,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:pl-80 {
     padding-left: 20rem;
+  }
+
+  .ocelot-scoped .md\:pt-90 {
+    padding-top: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:pr-90 {
+    padding-right: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:pb-90 {
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .md\:pl-90 {
+    padding-left: 22.5rem;
   }
 
   .ocelot-scoped .md\:pt-120 {
@@ -26495,6 +26833,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:w-80 {
     width: 20rem;
+  }
+
+  .ocelot-scoped .md\:w-90 {
+    width: 22.5rem;
   }
 
   .ocelot-scoped .md\:w-120 {
@@ -30638,6 +30980,10 @@ body .ocelot-scoped {
     height: 20rem;
   }
 
+  .ocelot-scoped .lg\:h-90 {
+    height: 22.5rem;
+  }
+
   .ocelot-scoped .lg\:h-120 {
     height: 30rem;
   }
@@ -30756,6 +31102,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:m-80 {
     margin: 20rem;
+  }
+
+  .ocelot-scoped .lg\:m-90 {
+    margin: 22.5rem;
   }
 
   .ocelot-scoped .lg\:m-120 {
@@ -30972,6 +31322,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:mx-80 {
     margin-left: 20rem;
     margin-right: 20rem;
+  }
+
+  .ocelot-scoped .lg\:my-90 {
+    margin-top: 22.5rem;
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:mx-90 {
+    margin-left: 22.5rem;
+    margin-right: 22.5rem;
   }
 
   .ocelot-scoped .lg\:my-120 {
@@ -31334,6 +31694,22 @@ body .ocelot-scoped {
     margin-left: 20rem;
   }
 
+  .ocelot-scoped .lg\:mt-90 {
+    margin-top: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:mr-90 {
+    margin-right: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:mb-90 {
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:ml-90 {
+    margin-left: 22.5rem;
+  }
+
   .ocelot-scoped .lg\:mt-120 {
     margin-top: 30rem;
   }
@@ -31446,6 +31822,10 @@ body .ocelot-scoped {
     max-height: 20rem;
   }
 
+  .ocelot-scoped .lg\:max-h-90 {
+    max-height: 22.5rem;
+  }
+
   .ocelot-scoped .lg\:max-h-120 {
     max-height: 30rem;
   }
@@ -31508,6 +31888,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:max-w-80 {
     max-width: 20rem;
+  }
+
+  .ocelot-scoped .lg\:max-w-90 {
+    max-width: 22.5rem;
   }
 
   .ocelot-scoped .lg\:max-w-120 {
@@ -31610,6 +31994,10 @@ body .ocelot-scoped {
     min-height: 20rem;
   }
 
+  .ocelot-scoped .lg\:min-h-90 {
+    min-height: 22.5rem;
+  }
+
   .ocelot-scoped .lg\:min-h-120 {
     min-height: 30rem;
   }
@@ -31672,6 +32060,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:min-w-80 {
     min-width: 20rem;
+  }
+
+  .ocelot-scoped .lg\:min-w-90 {
+    min-width: 22.5rem;
   }
 
   .ocelot-scoped .lg\:min-w-120 {
@@ -31764,6 +32156,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:-m-80 {
     margin: -20rem;
+  }
+
+  .ocelot-scoped .lg\:-m-90 {
+    margin: -22.5rem;
   }
 
   .ocelot-scoped .lg\:-m-120 {
@@ -31980,6 +32376,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:-mx-80 {
     margin-left: -20rem;
     margin-right: -20rem;
+  }
+
+  .ocelot-scoped .lg\:-my-90 {
+    margin-top: -22.5rem;
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .lg\:-mx-90 {
+    margin-left: -22.5rem;
+    margin-right: -22.5rem;
   }
 
   .ocelot-scoped .lg\:-my-120 {
@@ -32342,6 +32748,22 @@ body .ocelot-scoped {
     margin-left: -20rem;
   }
 
+  .ocelot-scoped .lg\:-mt-90 {
+    margin-top: -22.5rem;
+  }
+
+  .ocelot-scoped .lg\:-mr-90 {
+    margin-right: -22.5rem;
+  }
+
+  .ocelot-scoped .lg\:-mb-90 {
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .lg\:-ml-90 {
+    margin-left: -22.5rem;
+  }
+
   .ocelot-scoped .lg\:-mt-120 {
     margin-top: -30rem;
   }
@@ -32562,6 +32984,10 @@ body .ocelot-scoped {
     padding: 20rem;
   }
 
+  .ocelot-scoped .lg\:p-90 {
+    padding: 22.5rem;
+  }
+
   .ocelot-scoped .lg\:p-120 {
     padding: 30rem;
   }
@@ -32772,6 +33198,16 @@ body .ocelot-scoped {
   .ocelot-scoped .lg\:px-80 {
     padding-left: 20rem;
     padding-right: 20rem;
+  }
+
+  .ocelot-scoped .lg\:py-90 {
+    padding-top: 22.5rem;
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:px-90 {
+    padding-left: 22.5rem;
+    padding-right: 22.5rem;
   }
 
   .ocelot-scoped .lg\:py-120 {
@@ -33122,6 +33558,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:pl-80 {
     padding-left: 20rem;
+  }
+
+  .ocelot-scoped .lg\:pt-90 {
+    padding-top: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:pr-90 {
+    padding-right: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:pb-90 {
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .lg\:pl-90 {
+    padding-left: 22.5rem;
   }
 
   .ocelot-scoped .lg\:pt-120 {
@@ -34874,6 +35326,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:w-80 {
     width: 20rem;
+  }
+
+  .ocelot-scoped .lg\:w-90 {
+    width: 22.5rem;
   }
 
   .ocelot-scoped .lg\:w-120 {
@@ -39017,6 +39473,10 @@ body .ocelot-scoped {
     height: 20rem;
   }
 
+  .ocelot-scoped .xl\:h-90 {
+    height: 22.5rem;
+  }
+
   .ocelot-scoped .xl\:h-120 {
     height: 30rem;
   }
@@ -39135,6 +39595,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:m-80 {
     margin: 20rem;
+  }
+
+  .ocelot-scoped .xl\:m-90 {
+    margin: 22.5rem;
   }
 
   .ocelot-scoped .xl\:m-120 {
@@ -39351,6 +39815,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:mx-80 {
     margin-left: 20rem;
     margin-right: 20rem;
+  }
+
+  .ocelot-scoped .xl\:my-90 {
+    margin-top: 22.5rem;
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:mx-90 {
+    margin-left: 22.5rem;
+    margin-right: 22.5rem;
   }
 
   .ocelot-scoped .xl\:my-120 {
@@ -39713,6 +40187,22 @@ body .ocelot-scoped {
     margin-left: 20rem;
   }
 
+  .ocelot-scoped .xl\:mt-90 {
+    margin-top: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:mr-90 {
+    margin-right: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:mb-90 {
+    margin-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:ml-90 {
+    margin-left: 22.5rem;
+  }
+
   .ocelot-scoped .xl\:mt-120 {
     margin-top: 30rem;
   }
@@ -39825,6 +40315,10 @@ body .ocelot-scoped {
     max-height: 20rem;
   }
 
+  .ocelot-scoped .xl\:max-h-90 {
+    max-height: 22.5rem;
+  }
+
   .ocelot-scoped .xl\:max-h-120 {
     max-height: 30rem;
   }
@@ -39887,6 +40381,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:max-w-80 {
     max-width: 20rem;
+  }
+
+  .ocelot-scoped .xl\:max-w-90 {
+    max-width: 22.5rem;
   }
 
   .ocelot-scoped .xl\:max-w-120 {
@@ -39989,6 +40487,10 @@ body .ocelot-scoped {
     min-height: 20rem;
   }
 
+  .ocelot-scoped .xl\:min-h-90 {
+    min-height: 22.5rem;
+  }
+
   .ocelot-scoped .xl\:min-h-120 {
     min-height: 30rem;
   }
@@ -40051,6 +40553,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:min-w-80 {
     min-width: 20rem;
+  }
+
+  .ocelot-scoped .xl\:min-w-90 {
+    min-width: 22.5rem;
   }
 
   .ocelot-scoped .xl\:min-w-120 {
@@ -40143,6 +40649,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:-m-80 {
     margin: -20rem;
+  }
+
+  .ocelot-scoped .xl\:-m-90 {
+    margin: -22.5rem;
   }
 
   .ocelot-scoped .xl\:-m-120 {
@@ -40359,6 +40869,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:-mx-80 {
     margin-left: -20rem;
     margin-right: -20rem;
+  }
+
+  .ocelot-scoped .xl\:-my-90 {
+    margin-top: -22.5rem;
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .xl\:-mx-90 {
+    margin-left: -22.5rem;
+    margin-right: -22.5rem;
   }
 
   .ocelot-scoped .xl\:-my-120 {
@@ -40721,6 +41241,22 @@ body .ocelot-scoped {
     margin-left: -20rem;
   }
 
+  .ocelot-scoped .xl\:-mt-90 {
+    margin-top: -22.5rem;
+  }
+
+  .ocelot-scoped .xl\:-mr-90 {
+    margin-right: -22.5rem;
+  }
+
+  .ocelot-scoped .xl\:-mb-90 {
+    margin-bottom: -22.5rem;
+  }
+
+  .ocelot-scoped .xl\:-ml-90 {
+    margin-left: -22.5rem;
+  }
+
   .ocelot-scoped .xl\:-mt-120 {
     margin-top: -30rem;
   }
@@ -40941,6 +41477,10 @@ body .ocelot-scoped {
     padding: 20rem;
   }
 
+  .ocelot-scoped .xl\:p-90 {
+    padding: 22.5rem;
+  }
+
   .ocelot-scoped .xl\:p-120 {
     padding: 30rem;
   }
@@ -41151,6 +41691,16 @@ body .ocelot-scoped {
   .ocelot-scoped .xl\:px-80 {
     padding-left: 20rem;
     padding-right: 20rem;
+  }
+
+  .ocelot-scoped .xl\:py-90 {
+    padding-top: 22.5rem;
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:px-90 {
+    padding-left: 22.5rem;
+    padding-right: 22.5rem;
   }
 
   .ocelot-scoped .xl\:py-120 {
@@ -41501,6 +42051,22 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:pl-80 {
     padding-left: 20rem;
+  }
+
+  .ocelot-scoped .xl\:pt-90 {
+    padding-top: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:pr-90 {
+    padding-right: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:pb-90 {
+    padding-bottom: 22.5rem;
+  }
+
+  .ocelot-scoped .xl\:pl-90 {
+    padding-left: 22.5rem;
   }
 
   .ocelot-scoped .xl\:pt-120 {
@@ -43253,6 +43819,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:w-80 {
     width: 20rem;
+  }
+
+  .ocelot-scoped .xl\:w-90 {
+    width: 22.5rem;
   }
 
   .ocelot-scoped .xl\:w-120 {

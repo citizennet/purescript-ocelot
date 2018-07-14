@@ -23077,41 +23077,42 @@ var PS = {};
   "use strict";
   var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
   var Data_Functor = PS["Data.Functor"];
+  var Data_Semigroup = PS["Data.Semigroup"];
   var Halogen_HTML = PS["Halogen.HTML"];
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
-  var Prelude = PS["Prelude"];                 
-  var optionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "flex", "flex-col", "items-center", "h-30", "justify-center", "shadow", "w-40" ]);
-  var option = function (iprops) {
-      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(optionClasses) ])(iprops));
-  };                         
+  var Prelude = PS["Prelude"]; 
   var highlightedOptionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-97" ]);
-  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "h-10", "justify-center", "items-center", "shadow" ]);
+  var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "h-10", "justify-center", "items-center", "border-b", "border-grey-90" ]);
   var header = function (iprops) {
       return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(headerClasses) ])(iprops));
   };
   var header_ = header([  ]);
-  var choiceClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "bg-white", "rounded-sm" ]);
+  var hOptionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "flex", "flex-col", "items-center", "h-30", "justify-center", "shadow", "w-40", "cursor-pointer" ]);
+  var hOption = function (iprops) {
+      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(hOptionClasses) ])(iprops));
+  };                           
+  var hBodyClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "mt-px" ]);
+  var hBody = function (iprops) {
+      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(hBodyClasses) ])(iprops));
+  };
+  var hBody_ = hBody([  ]);
+  var choiceClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "bg-white", "rounded-lg", "border", "border-grey-90", "shadow", "overflow-hidden" ]);
   var choice = function (iprops) {
       return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(choiceClasses) ])(iprops));
-  };                         
-  var bodyClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "mt-px" ]);
-  var body = function (iprops) {
-      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(bodyClasses) ])(iprops));
   };
-  var body_ = body([  ]);
   exports["choiceClasses"] = choiceClasses;
   exports["choice"] = choice;
   exports["headerClasses"] = headerClasses;
   exports["header"] = header;
   exports["header_"] = header_;
-  exports["bodyClasses"] = bodyClasses;
-  exports["body"] = body;
-  exports["body_"] = body_;
-  exports["optionClasses"] = optionClasses;
-  exports["option"] = option;
+  exports["hBodyClasses"] = hBodyClasses;
+  exports["hBody"] = hBody;
+  exports["hBody_"] = hBody_;
+  exports["hOptionClasses"] = hOptionClasses;
+  exports["hOption"] = hOption;
   exports["highlightedOptionClasses"] = highlightedOptionClasses;
 })(PS["Ocelot.Blocks.Choice"] = PS["Ocelot.Blocks.Choice"] || {});
 (function(exports) {
@@ -23443,9 +23444,9 @@ var PS = {};
                   };
                   throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 263, column 32 - line 284, column 19: " + [ v.constructor.name ]);
               };
-              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.body_(Data_Array.mapWithIndex(function (index) {
+              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.hBody_(Data_Array.mapWithIndex(function (index) {
                   return function (item) {
-                      return Ocelot_Blocks_Choice.option(Select_Utils_Setters.setItemProps(index)([ (function () {
+                      return Ocelot_Blocks_Choice.hOption(Select_Utils_Setters.setItemProps(index)([ (function () {
                           var $5 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(index))(state$prime.highlightedIndex);
                           if ($5) {
                               return Halogen_HTML_Properties.classes(Ocelot_Blocks_Choice.highlightedOptionClasses);
@@ -27342,7 +27343,7 @@ var PS = {};
   })();
   var component = function (dictMonadAff) {
       var render = function (v) {
-          var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mr-3", "text-2xl", "order--1", "cursor-pointer" ]);
+          var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mr-3", "text-2xl", "cursor-pointer" ]);
           var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "w-0" ]);
           var ifOpen = function (openClasses) {
               return function (closedClasses) {
@@ -27360,7 +27361,7 @@ var PS = {};
           var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "border-b-2", "border-blue-88", "no-outline", "items-stretch", "w-0", "transition-1/4" ]);
           var buttonCondClasses = ifOpen([ "opacity-100", "visible" ])([ "opacity-0", "invisible" ]);
           var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "text-grey-80", "hover:text-grey-70", "text-xs", "transition-1/4" ]);
-          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))) ]), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.close_ ]) ]);
+          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.close_ ]) ]);
       };
       var initialState = function (v) {
           return {
