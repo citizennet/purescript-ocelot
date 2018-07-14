@@ -17,7 +17,8 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Blocks.Choice as Choice
-import Ocelot.Components.Dropdown as Dropdown
+import Ocelot.Components.Dropdown as DD
+import Ocelot.Components.Dropdown.Render as DR
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Utils.Setters as SelectSetters
@@ -27,7 +28,7 @@ import UIGuide.Block.Documentation as Documentation
 type State = Unit
 
 data Query a
-  = HandleDropdown (Dropdown.Message String) a
+  = HandleDropdown (DD.Message Query String) a
   | HandleChoice (Select.Message Query Platform) a
 
 type Input = Unit
@@ -36,7 +37,7 @@ type Message = Void
 
 type ChildSlot = Either2 Unit Unit
 
-type ChildQuery = Coproduct2 (Dropdown.Query String) (Select.Query Query Platform)
+type ChildQuery m = Coproduct2 (DD.Query Query String m) (Select.Query Query Platform)
 
 data Platform
   = Facebook
@@ -57,13 +58,15 @@ component =
   where
     eval
       :: Query
-      ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
+      ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
     eval = case _ of
       HandleDropdown message a -> case message of
-        Dropdown.ItemSelected x -> do
+        DD.Selected x -> do
           H.liftEffect (log x)
           H.modify_ identity
           pure a
+
+        _ -> pure a
 
       HandleChoice message a -> case message of
         Select.Selected x -> a <$ do
@@ -76,11 +79,11 @@ component =
 
     render
       :: State
-      -> H.ParentHTML Query ChildQuery ChildSlot m
+      -> H.ParentHTML Query (ChildQuery m) ChildSlot m
     render state =
       HH.div_
         [ Documentation.block_
-          { header: "Dropdown"
+          { header: "DD"
           , subheader: "A dropdown list of selectable items."
           }
           [ Backdrop.backdrop_
@@ -92,12 +95,10 @@ component =
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdown
+                  DD.component
                   { selectedItem: Nothing
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: false
+                  , render: renderDropdown Button.button
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -108,12 +109,10 @@ component =
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdown
+                  DD.component
                   { selectedItem: Just "Kilchoman Blue Label"
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: true
+                  , render: renderDisabledDropdown Button.button
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -124,16 +123,14 @@ component =
               [ HH.div
                 [ css "mb-6" ]
                 [ Format.caption_
-                  [ HH.text "Standard" ]
+                  [ HH.text "Primary" ]
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdown
+                  DD.component
                   { selectedItem: Nothing
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: false
+                  , render: renderDropdown Button.buttonPrimary
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -144,12 +141,10 @@ component =
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdown
+                  DD.component
                   { selectedItem: Just "Kilchoman Blue Label"
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: true
+                  , render: renderDisabledDropdown Button.buttonPrimary
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -160,16 +155,14 @@ component =
               [ HH.div
                 [ css "mb-6" ]
                 [ Format.caption_
-                  [ HH.text "Standard" ]
+                  [ HH.text "Dark" ]
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdownDark
+                  DD.component
                   { selectedItem: Nothing
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: false
+                  , render: renderDropdown Button.buttonDark
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -180,12 +173,10 @@ component =
                 , HH.slot'
                   CP.cp1
                   unit
-                  Dropdown.dropdownDark
+                  DD.component
                   { selectedItem: Just "Kilchoman Blue Label"
                   , items
-                  , label: "Pick one"
-                  , toString: identity
-                  , disabled: true
+                  , render: renderDisabledDropdown Button.buttonDark
                   }
                   ( HE.input HandleDropdown )
                 ]
@@ -216,6 +207,19 @@ component =
           , "Laphroaig"
           , "Ardbeg"
           ]
+
+        renderDropdown
+          :: (∀ p i. DR.ButtonFn p i)
+          -> DD.State String
+          -> H.ParentHTML (DD.Query Query String m) (DD.ChildQuery Query String) DD.ChildSlot m
+        renderDropdown btnFn = DR.render $ DR.defDropdown btnFn [ ] identity "Pick One"
+
+        renderDisabledDropdown
+          :: (∀ p i. DR.ButtonFn p i)
+          -> DD.State String
+          -> H.ParentHTML (DD.Query Query String m) (DD.ChildQuery Query String) DD.ChildSlot m
+        renderDisabledDropdown btnFn =
+          DR.render $ DR.defDropdown btnFn [ HP.disabled true ] identity "Pick One"
 
         selectInput :: Select.Input Query Platform
         selectInput =
