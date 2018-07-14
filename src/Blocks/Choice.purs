@@ -11,13 +11,17 @@ choiceClasses :: Array HH.ClassName
 choiceClasses = HH.ClassName <$>
   [ "absolute"
   , "bg-white"
-  , "rounded-sm"
+  , "rounded-lg"
+  , "border"
+  , "border-grey-90"
+  , "shadow"
+  , "overflow-hidden"
   ]
 
-choice 
+choice
   :: ∀ p i
    .  Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i) 
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
 choice iprops =
   HH.div
@@ -25,7 +29,7 @@ choice iprops =
 
 choice_
   :: ∀ p i
-   . Array (HH.HTML p i) 
+   . Array (HH.HTML p i)
   -> HH.HTML p i
 choice_ =
   choice []
@@ -33,16 +37,17 @@ choice_ =
 headerClasses :: Array HH.ClassName
 headerClasses = HH.ClassName <$>
   [ "flex"
-  , "h-10" 
+  , "h-10"
   , "justify-center"
   , "items-center"
-  , "shadow"
+  , "border-b"
+  , "border-grey-90"
   ]
 
 header
   :: ∀ p i
    .  Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i) 
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
 header iprops =
   HH.div
@@ -50,35 +55,37 @@ header iprops =
 
 header_
   :: ∀ p i
-   . Array (HH.HTML p i) 
+   . Array (HH.HTML p i)
   -> HH.HTML p i
 header_ =
   header []
 
-bodyClasses :: Array HH.ClassName
-bodyClasses = HH.ClassName <$>
+-- Blocks for a horizontally oriented Choice element
+
+hBodyClasses :: Array HH.ClassName
+hBodyClasses = HH.ClassName <$>
   [ "flex"
   , "mt-px"
   ]
 
-body
+hBody
   :: ∀ p i
-   .  Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i) 
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-body iprops =
+hBody iprops =
   HH.div
-    ( [ HP.classes bodyClasses ] <&> iprops )
+    ( [ HP.classes hBodyClasses ] <&> iprops )
 
-body_
+hBody_
   :: ∀ p i
-   . Array (HH.HTML p i) 
+   . Array (HH.HTML p i)
   -> HH.HTML p i
-body_ =
-  body []
+hBody_ =
+  hBody []
 
-optionClasses :: Array HH.ClassName
-optionClasses = HH.ClassName <$>
+hOptionClasses :: Array HH.ClassName
+hOptionClasses = HH.ClassName <$>
   [ "bg-white"
   , "flex"
   , "flex-col"
@@ -87,24 +94,72 @@ optionClasses = HH.ClassName <$>
   , "justify-center"
   , "shadow"
   , "w-40"
+  , "cursor-pointer"
   ]
 
-option 
+hOption
   :: ∀ p i
    . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i) 
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-option iprops =
+hOption iprops =
   HH.div
-    ( [ HP.classes optionClasses ] <&> iprops )
+    ( [ HP.classes hOptionClasses ] <&> iprops )
 
-option_
+hOption_
   :: ∀ p i
-   . Array (HH.HTML p i) 
+   . Array (HH.HTML p i)
   -> HH.HTML p i
-option_ =
-  option []
+hOption_ =
+  hOption []
+
+-- Blocks for a vertically oriented Choice element
+
+vBodyClasses :: Array HH.ClassName
+vBodyClasses = hBodyClasses <> (HH.ClassName <$> [ "flex-col", "w-90" ])
+
+vBody
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+vBody iprops =
+  HH.div
+    ( [ HP.classes vBodyClasses ] <&> iprops )
+
+vBody_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+vBody_ =
+  vBody []
+
+vOptionClasses :: Array HH.ClassName
+vOptionClasses = HH.ClassName <$>
+  [ "bg-white"
+  , "flex"
+  , "items-center"
+  , "justify-center"
+  , "cursor-pointer"
+  ]
+
+vOption
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+vOption iprops =
+  HH.div
+    ( [ HP.classes vOptionClasses ] <&> iprops )
+
+vOption_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+vOption_ =
+  vOption []
 
 highlightedOptionClasses :: Array HH.ClassName
 highlightedOptionClasses = HH.ClassName <$>
   [ "bg-grey-97" ]
+

@@ -244,10 +244,10 @@ component =
                       [ css "font-medium text-grey-50" ]
                       [ HH.text "Advertise on..." ]
                     ]
-                  , Choice.body_ $
+                  , Choice.hBody_ $
                       mapWithIndex
                         ( \index item ->
-                            Choice.option
+                            Choice.hOption
                               ( SelectSetters.setItemProps
                                   index
                                   [ if Just index == state'.highlightedIndex

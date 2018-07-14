@@ -111,18 +111,18 @@ component =
     render { query, open } =
       HH.label
         [ HP.classes $ containerClasses <> containerCondClasses ]
-        [ HH.input
+        [ HH.div
+          [ HP.classes $ labelClasses <> labelCondClasses
+          , HE.onClick (HE.input $ const Open)
+          ]
+          [ Icon.search_ ]
+        , HH.input
           [ HE.onValueInput (HE.input Search)
           , HP.placeholder "Search"
           , HP.value query
           , HP.classes $ inputClasses <> inputCondClasses
           , HE.onBlur (HE.input $ const Blur)
           ]
-        , HH.div
-          [ HP.classes $ labelClasses <> labelCondClasses
-          , HE.onClick (HE.input $ const Open)
-          ]
-          [ Icon.search_ ]
         , HH.button
           [ HE.onClick (HE.input $ const Clear)
           , HP.type_ (HP.ButtonButton)
@@ -147,7 +147,6 @@ component =
         labelClasses = HH.ClassName <$>
           [ "mr-3"
           , "text-2xl"
-          , "order--1"
           , "cursor-pointer"
           ]
 
