@@ -3,25 +3,19 @@ module Ocelot.Components.DatePicker.Utils where
 import Prelude
 
 import Data.Array (drop, find, reverse, sort, take)
-import Data.Date (Date, Day, Year, canonicalDate, lastDayOfMonth, year, month, day, Weekday(..), weekday)
-import Data.DateTime (DateTime(..), Hour, Millisecond, Minute, Month(..), Second, Time(..), adjust, date)
-import Data.DateTime.Instant (fromDate, toDateTime)
+import Data.Date (Date, Weekday(..), Year, day, month, weekday, year)
+import Data.DateTime (Month)
 import Data.Either (either)
-import Data.Enum (class Enum, fromEnum, pred, succ, toEnum)
-import Data.Formatter.DateTime (FormatterCommand(..), Formatter)
-import Data.Formatter.DateTime (format) as Formatter
+import Data.Enum (fromEnum)
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy (match) as Fuzz
-import Data.List (List(..), (:))
-import Data.Maybe (Maybe(..), fromJust, maybe)
+import Data.Maybe (Maybe(..), maybe)
 import Data.Rational ((%))
 import Data.String.Regex (parseFlags, regex, replace)
-import Data.Time.Duration (Days(..))
 import Data.Tuple (Tuple(..), fst)
 import Foreign.Object (Object, fromFoldable)
 import Ocelot.Data.DateTime (adjustDaysBy, dateRange, firstDateOfMonth, lastDateOfMonth, nextDay, nextYear, prevDay, yearsForward)
-import Partial.Unsafe (unsafePartial)
 
 ----------
 -- Padded Dates

@@ -10,7 +10,7 @@ import Data.Formatter.DateTime (unformatDateTime)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.String (joinWith)
 import Data.String.Regex (match, parseFlags, regex)
-import Data.Time (Time(..))
+import Data.Time (Time)
 
 
 ----------
