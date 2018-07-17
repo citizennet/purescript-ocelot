@@ -2,29 +2,30 @@ module UIGuide.Components.Toast where
 
 import Prelude
 
-import Data.Array (mapWithIndex)
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console (log)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
-import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
+import Halogen.HTML.Events (input_, onClick) as HE
+import Ocelot.Block.Button (button) as Button
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
-import Ocelot.Blocks.Choice as Choice
-import Ocelot.Components.Dropdown as Dropdown
+import Ocelot.Block.Toast (toast) as Toast
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
-type State = Unit
+type State =
+  { toast :: Maybe ToastType }
 
 data Query a
+  = Toggle ToastType a
+
+data ToastType
+  = Success
+  | Error
+  --  | Info
+derive instance eqToastType :: Eq ToastType
 
 type Input = Unit
 
@@ -36,7 +37,7 @@ component
   => H.Component HH.HTML Query Input Message m
 component =
   H.component
-    { initialState: const unit
+    { initialState: const { toast: Nothing }
     , render
     , eval
     , receiver: const Nothing
@@ -44,7 +45,9 @@ component =
 
   where
     eval :: Query ~> H.ComponentDSL State Query Message m
-    eval = const $ pure unit
+    eval (Toggle t a) = do
+      H.modify_ _ { toast = Just t }
+      pure a
 
     render :: State -> H.ComponentHTML Query
     render state =
@@ -59,6 +62,19 @@ component =
                 [ css "mb-6" ]
                 [ Format.caption_
                   [ HH.text "Success" ]
+                , Button.button
+                  [ HE.onClick $ HE.input_ $ Toggle Success ]
+                  [ HH.text "Success" ]
+                , if state.toast == Just Success
+                    then
+                      Toast.toast
+                      []
+                      [ Icon.success
+                        [ css "text-green text-2xl mr-2" ]
+                      , HH.p_
+                        [ HH.text "Campaign saved." ]
+                      ]
+                    else HH.text ""
                 ]
               ]
             ]
@@ -68,6 +84,19 @@ component =
                 [ css "mb-6" ]
                 [ Format.caption_
                   [ HH.text "Error" ]
+                , Button.button
+                  [ HE.onClick $ HE.input_ $ Toggle Error ]
+                  [ HH.text "Error" ]
+                , if state.toast == Just Error
+                    then
+                      Toast.toast
+                      []
+                      [ Icon.error
+                        [ css "text-red text-2xl mr-2" ]
+                      , HH.p_
+                        [ HH.text "Fix errors before saving." ]
+                      ]
+                    else HH.text ""
                 ]
               ]
             ]
