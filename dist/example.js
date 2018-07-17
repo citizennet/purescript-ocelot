@@ -20601,7 +20601,6 @@ var PS = {};
   var Data_Formatter_DateTime = PS["Data.Formatter.DateTime"];
   var Data_Function = PS["Data.Function"];
   var Data_Functor = PS["Data.Functor"];
-  var Data_FunctorWithIndex = PS["Data.FunctorWithIndex"];
   var Data_List = PS["Data.List"];
   var Data_List_Types = PS["Data.List.Types"];
   var Data_Maybe = PS["Data.Maybe"];
@@ -20609,7 +20608,6 @@ var PS = {};
   var Data_Ring = PS["Data.Ring"];
   var Data_Semigroup = PS["Data.Semigroup"];
   var Data_Semiring = PS["Data.Semiring"];
-  var Data_String_Regex = PS["Data.String.Regex"];
   var Data_Time = PS["Data.Time"];
   var Data_Time_Component = PS["Data.Time.Component"];
   var Data_Time_Duration = PS["Data.Time.Duration"];
@@ -20702,7 +20700,7 @@ var PS = {};
                   $copy_d = nextYear(d);
                   return;
               };
-              throw new Error("Failed pattern match at Ocelot.Data.DateTime line 134, column 1 - line 134, column 36: " + [ n.constructor.name, d.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Data.DateTime line 132, column 1 - line 132, column 36: " + [ n.constructor.name, d.constructor.name ]);
           };
           while (!$tco_done) {
               $tco_result = $tco_loop($tco_var_n, $copy_d);
@@ -20745,7 +20743,7 @@ var PS = {};
                               $copy_acc = Data_Semigroup.append(Data_Semigroup.semigroupArray)(acc)([ cur ]);
                               return;
                           };
-                          throw new Error("Failed pattern match at Ocelot.Data.DateTime line 44, column 5 - line 46, column 68: " + [ cur.constructor.name, count.constructor.name, acc.constructor.name ]);
+                          throw new Error("Failed pattern match at Ocelot.Data.DateTime line 42, column 5 - line 44, column 68: " + [ cur.constructor.name, count.constructor.name, acc.constructor.name ]);
                       };
                       while (!$tco_done) {
                           $tco_result = $tco_loop($tco_var_cur, $tco_var_count, $copy_acc);
@@ -20795,7 +20793,7 @@ var PS = {};
                   if (Data_Boolean.otherwise) {
                       return go(nextDay(start))(end)(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ start ])(acc));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Data.DateTime line 65, column 5 - line 68, column 63: " + [ start.constructor.name, end.constructor.name, acc.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Data.DateTime line 63, column 5 - line 66, column 63: " + [ start.constructor.name, end.constructor.name, acc.constructor.name ]);
               };
           };
       };
@@ -20847,17 +20845,14 @@ var PS = {};
   var Data_Date = PS["Data.Date"];
   var Data_Date_Component = PS["Data.Date.Component"];
   var Data_DateTime = PS["Data.DateTime"];
-  var Data_DateTime_Instant = PS["Data.DateTime.Instant"];
   var Data_Either = PS["Data.Either"];
   var Data_Enum = PS["Data.Enum"];
   var Data_Eq = PS["Data.Eq"];
   var Data_EuclideanRing = PS["Data.EuclideanRing"];
   var Data_Foldable = PS["Data.Foldable"];
-  var Data_Formatter_DateTime = PS["Data.Formatter.DateTime"];
   var Data_Function = PS["Data.Function"];
   var Data_FunctorWithIndex = PS["Data.FunctorWithIndex"];
   var Data_Fuzzy = PS["Data.Fuzzy"];
-  var Data_List = PS["Data.List"];
   var Data_Maybe = PS["Data.Maybe"];
   var Data_Ord = PS["Data.Ord"];
   var Data_Ratio = PS["Data.Ratio"];
@@ -20867,11 +20862,9 @@ var PS = {};
   var Data_Semiring = PS["Data.Semiring"];
   var Data_Show = PS["Data.Show"];
   var Data_String_Regex = PS["Data.String.Regex"];
-  var Data_Time_Duration = PS["Data.Time.Duration"];
   var Data_Tuple = PS["Data.Tuple"];
   var Foreign_Object = PS["Foreign.Object"];
   var Ocelot_Data_DateTime = PS["Ocelot.Data.DateTime"];
-  var Partial_Unsafe = PS["Partial.Unsafe"];
   var Prelude = PS["Prelude"];
   var toObject = function (d) {
       var sYearMonth = Data_Show.show(Data_Date_Component.showMonth)(Data_Date.month(d));
@@ -20926,7 +20919,7 @@ var PS = {};
       if (v instanceof Data_Date_Component.Saturday) {
           return -6.0;
       };
-      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 73, column 1 - line 73, column 29: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 67, column 1 - line 67, column 29: " + [ v.constructor.name ]);
   };
   var padNext = function (v) {
       if (v instanceof Data_Date_Component.Sunday) {
@@ -20950,7 +20943,7 @@ var PS = {};
       if (v instanceof Data_Date_Component.Saturday) {
           return 0.0;
       };
-      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 86, column 1 - line 86, column 29: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 80, column 1 - line 80, column 29: " + [ v.constructor.name ]);
   };
   var firstMatch = (function () {
       var match$prime = function (v) {
@@ -20992,7 +20985,7 @@ var PS = {};
                               return guess(Ocelot_Data_DateTime.dateRange(Ocelot_Data_DateTime.yearsForward(v2)(start))(Ocelot_Data_DateTime.yearsForward(v2 + 1 | 0)(start)))(v2 + 1 | 0);
                           };
                       };
-                      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 122, column 7 - line 122, column 56: " + [ v1.constructor.name, v2.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Components.DatePicker.Utils line 116, column 7 - line 116, column 56: " + [ v1.constructor.name, v2.constructor.name ]);
                   };
               };
               return guess(Ocelot_Data_DateTime.dateRange(start)(Ocelot_Data_DateTime.nextYear(start)))(0);
@@ -23077,42 +23070,41 @@ var PS = {};
   "use strict";
   var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
   var Data_Functor = PS["Data.Functor"];
-  var Data_Semigroup = PS["Data.Semigroup"];
   var Halogen_HTML = PS["Halogen.HTML"];
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
-  var Prelude = PS["Prelude"]; 
+  var Prelude = PS["Prelude"];                 
+  var optionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "flex", "flex-col", "items-center", "h-30", "justify-center", "w-40", "cursor-pointer" ]);
+  var option = function (iprops) {
+      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(optionClasses) ])(iprops));
+  };                         
   var highlightedOptionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-97" ]);
   var headerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "h-10", "justify-center", "items-center", "border-b", "border-grey-90" ]);
   var header = function (iprops) {
       return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(headerClasses) ])(iprops));
   };
   var header_ = header([  ]);
-  var hOptionClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "flex", "flex-col", "items-center", "h-30", "justify-center", "shadow", "w-40", "cursor-pointer" ]);
-  var hOption = function (iprops) {
-      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(hOptionClasses) ])(iprops));
-  };                           
-  var hBodyClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "mt-px" ]);
-  var hBody = function (iprops) {
-      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(hBodyClasses) ])(iprops));
-  };
-  var hBody_ = hBody([  ]);
   var choiceClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "bg-white", "rounded-lg", "border", "border-grey-90", "shadow", "overflow-hidden" ]);
   var choice = function (iprops) {
       return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(choiceClasses) ])(iprops));
+  };                         
+  var bodyClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex" ]);
+  var body = function (iprops) {
+      return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(bodyClasses) ])(iprops));
   };
+  var body_ = body([  ]);
   exports["choiceClasses"] = choiceClasses;
   exports["choice"] = choice;
   exports["headerClasses"] = headerClasses;
   exports["header"] = header;
   exports["header_"] = header_;
-  exports["hBodyClasses"] = hBodyClasses;
-  exports["hBody"] = hBody;
-  exports["hBody_"] = hBody_;
-  exports["hOptionClasses"] = hOptionClasses;
-  exports["hOption"] = hOption;
+  exports["bodyClasses"] = bodyClasses;
+  exports["body"] = body;
+  exports["body_"] = body_;
+  exports["optionClasses"] = optionClasses;
+  exports["option"] = option;
   exports["highlightedOptionClasses"] = highlightedOptionClasses;
 })(PS["Ocelot.Blocks.Choice"] = PS["Ocelot.Blocks.Choice"] || {});
 (function(exports) {
@@ -23147,15 +23139,6 @@ var PS = {};
   var Prelude = PS["Prelude"];
   var Select = PS["Select"];
   var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
-  var ItemSelected = (function () {
-      function ItemSelected(value0) {
-          this.value0 = value0;
-      };
-      ItemSelected.create = function (value0) {
-          return new ItemSelected(value0);
-      };
-      return ItemSelected;
-  })();
   var HandleSelect = (function () {
       function HandleSelect(value0, value1) {
           this.value0 = value0;
@@ -23167,18 +23150,6 @@ var PS = {};
           };
       };
       return HandleSelect;
-  })();
-  var Receive = (function () {
-      function Receive(value0, value1) {
-          this.value0 = value0;
-          this.value1 = value1;
-      };
-      Receive.create = function (value0) {
-          return function (value1) {
-              return new Receive(value0, value1);
-          };
-      };
-      return Receive;
   })();
   var SetItems = (function () {
       function SetItems(value0, value1) {
@@ -23204,6 +23175,15 @@ var PS = {};
       };
       return SetSelection;
   })();
+  var ItemSelected = (function () {
+      function ItemSelected(value0) {
+          this.value0 = value0;
+      };
+      ItemSelected.create = function (value0) {
+          return new ItemSelected(value0);
+      };
+      return ItemSelected;
+  })();
   var component = function (dictMonadAff) {
       return function (dictEq) {
           return function (button) {
@@ -23220,7 +23200,7 @@ var PS = {};
                                       if (Data_Boolean.otherwise) {
                                           return [  ];
                                       };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 175, column 21 - line 177, column 38: " + [  ]);
+                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 171, column 21 - line 173, column 38: " + [  ]);
                                   })();
                                   var itemClasses$prime = [ "px-4", "py-2" ];
                                   var highlightClass = (function () {
@@ -23230,7 +23210,7 @@ var PS = {};
                                       if (Data_Boolean.otherwise) {
                                           return [  ];
                                       };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 171, column 21 - line 173, column 39: " + [  ]);
+                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 167, column 21 - line 169, column 39: " + [  ]);
                                   })();
                                   var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
                                   var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
@@ -23245,7 +23225,7 @@ var PS = {};
                               if (selectState.visibility instanceof Select.On) {
                                   return containerClasses$prime;
                               };
-                              throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 138, column 53 - line 140, column 49: " + [ selectState.visibility.constructor.name ]);
+                              throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 134, column 53 - line 136, column 49: " + [ selectState.visibility.constructor.name ]);
                           })());
                           var menu = Halogen_HTML_Elements.ul(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(containerClasses) ]))(Data_Array.mapWithIndex(renderItem)(selectState.items));
                           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])([ toggle, menu ]);
@@ -23310,18 +23290,13 @@ var PS = {};
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                       });
                   };
-                  if (v instanceof Receive) {
-                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.put(Halogen_Query_HalogenM.monadStateHalogenM)(v.value0))(function () {
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                      });
-                  };
-                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 83, column 12 - line 99, column 15: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 82, column 12 - line 95, column 15: " + [ v.constructor.name ]);
               };
               return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
                   initialState: Control_Category.identity(Control_Category.categoryFn),
                   render: render,
                   "eval": $$eval,
-                  receiver: Halogen_HTML_Events.input(Receive.create)
+                  receiver: Data_Function["const"](Data_Maybe.Nothing.value)
               });
           };
       };
@@ -23337,7 +23312,6 @@ var PS = {};
       };
   };
   exports["HandleSelect"] = HandleSelect;
-  exports["Receive"] = Receive;
   exports["SetItems"] = SetItems;
   exports["SetSelection"] = SetSelection;
   exports["ItemSelected"] = ItemSelected;
@@ -23351,6 +23325,7 @@ var PS = {};
   var Control_Applicative = PS["Control.Applicative"];
   var Control_Bind = PS["Control.Bind"];
   var Control_Category = PS["Control.Category"];
+  var Control_Monad_State_Class = PS["Control.Monad.State.Class"];
   var Data_Array = PS["Data.Array"];
   var Data_Either = PS["Data.Either"];
   var Data_Either_Nested = PS["Data.Either.Nested"];
@@ -23433,7 +23408,7 @@ var PS = {};
                   if (state$prime.visibility instanceof Select.Off) {
                       return Ocelot_HTML_Properties.css("hidden");
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 235, column 35 - line 239, column 15: " + [ state$prime.visibility.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 238, column 35 - line 242, column 15: " + [ state$prime.visibility.constructor.name ]);
               })();
               var renderPlatform = function (v) {
                   if (v instanceof Facebook) {
@@ -23442,11 +23417,11 @@ var PS = {};
                   if (v instanceof Twitter) {
                       return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-tw-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ];
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 263, column 32 - line 284, column 19: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 266, column 32 - line 287, column 19: " + [ v.constructor.name ]);
               };
-              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.hBody_(Data_Array.mapWithIndex(function (index) {
+              var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.body_(Data_Array.mapWithIndex(function (index) {
                   return function (item) {
-                      return Ocelot_Blocks_Choice.hOption(Select_Utils_Setters.setItemProps(index)([ (function () {
+                      return Ocelot_Blocks_Choice.option(Select_Utils_Setters.setItemProps(index)([ (function () {
                           var $5 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(index))(state$prime.highlightedIndex);
                           if ($5) {
                               return Halogen_HTML_Properties.classes(Ocelot_Blocks_Choice.highlightedOptionClasses);
@@ -23511,7 +23486,11 @@ var PS = {};
       };
       var $$eval = function (v) {
           if (v instanceof HandleDropdown) {
-              return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)(v.value0.value0)));
+              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)(v.value0.value0)))(function () {
+                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Category.identity(Control_Category.categoryFn)))(function () {
+                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                  });
+              });
           };
           if (v instanceof HandleChoice) {
               if (v.value0 instanceof Select.Selected) {
@@ -23522,14 +23501,14 @@ var PS = {};
                       if (v.value0.value0 instanceof Twitter) {
                           return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Twitter");
                       };
-                      throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 67, column 26 - line 70, column 11: " + [ v.value0.value0.constructor.name ]);
+                      throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 70, column 26 - line 73, column 11: " + [ v.value0.value0.constructor.name ]);
                   })()))(function () {
                       return Halogen_Query["query'"](Data_Either.eqEither(Data_Eq.eqUnit)(Data_Either.eqEither(Data_Eq.eqUnit)(Data_Eq.eqVoid)))(Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Select.setVisibility(Select.Off.value));
                   }));
               };
               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
           };
-          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 61, column 12 - line 72, column 20: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 61, column 12 - line 75, column 20: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid)))({
           initialState: Data_Function["const"](Data_Unit.unit),
@@ -23772,41 +23751,41 @@ var PS = {};
       return Data_Foldable.foldr(Data_Foldable.foldableArray)(f)(new Data_Tuple.Tuple(Expanded.value, [  ]));
   })();
   var contentSharedClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([  ]);
-  var contentClasses = function (status1) {
+  var contentClasses = function (status_) {
       return Data_Semigroup.append(Data_Semigroup.semigroupArray)(contentSharedClasses)((function () {
-          if (status1 instanceof Collapsed) {
+          if (status_ instanceof Collapsed) {
               return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "max-h-0", "opacity-0", "overflow-hidden", "transition-1/4-in" ]);
           };
-          if (status1 instanceof Expanded) {
+          if (status_ instanceof Expanded) {
               return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "max-h-full", "opacity-1", "transition-1/2-out" ]);
           };
-          throw new Error("Failed pattern match at Ocelot.Block.Expandable line 84, column 5 - line 95, column 8: " + [ status1.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Block.Expandable line 84, column 5 - line 95, column 8: " + [ status_.constructor.name ]);
       })());
   };
-  var content = function (status1) {
+  var content = function (status_) {
       return function (iprops) {
-          return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(contentClasses(status1)) ])(iprops));
+          return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(contentClasses(status_)) ])(iprops));
       };
   };
-  var content_ = function (status1) {
-      return content(status1)([  ]);
+  var content_ = function (status_) {
+      return content(status_)([  ]);
   };
   var chevronClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "text-grey-70", "text-lg", "leading-loose" ]);
-  var chevron = function (status1) {
+  var chevron = function (status_) {
       return function (iprops) {
           return (function () {
-              if (status1 instanceof Collapsed) {
+              if (status_ instanceof Collapsed) {
                   return Ocelot_Block_Icon.expand;
               };
-              if (status1 instanceof Expanded) {
+              if (status_ instanceof Expanded) {
                   return Ocelot_Block_Icon.collapse;
               };
-              throw new Error("Failed pattern match at Ocelot.Block.Expandable line 145, column 5 - line 147, column 31: " + [ status1.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Block.Expandable line 145, column 5 - line 147, column 31: " + [ status_.constructor.name ]);
           })()(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(chevronClasses) ])(iprops));
       };
   };
-  var chevron_ = function (status1) {
-      return chevron(status1)([  ]);
+  var chevron_ = function (status_) {
+      return chevron(status_)([  ]);
   };
   var heading = function (iprops) {
       return function (html) {
@@ -27156,9 +27135,7 @@ var PS = {};
   var Halogen_HTML = PS["Halogen.HTML"];
   var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_Block_Builder = PS["Ocelot.Block.Builder"];
-  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];                 
   var tableClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full", "text-center", "border-collapse" ]);
   var table = Ocelot_Block_Builder.blockBuilder(Halogen_HTML_Elements.table)(tableClasses);
