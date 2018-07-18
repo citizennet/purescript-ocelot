@@ -20,9 +20,10 @@ import UIGuide.Components.ExpansionCards as ExpansionCards
 import UIGuide.Components.FormControl as FormControl
 import UIGuide.Components.Icons as Icons
 import UIGuide.Components.Modals as Modals
-import UIGuide.Components.Table as Table 
+import UIGuide.Components.Table as Table
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Tray as Tray
+import UIGuide.Components.Toast as Toast
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
 import UIGuide.Components.Validation as Validation
@@ -114,6 +115,11 @@ routes = fromFoldable
   , Tuple "tray"
     { anchor: "Tray"
     , component: proxy Tray.component
+    , group: Components
+    }
+  , Tuple "toasts"
+    { anchor: "Toasts"
+    , component: proxy Toast.component
     , group: Components
     }
   , Tuple "badge"
