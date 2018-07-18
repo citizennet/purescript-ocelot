@@ -10,7 +10,7 @@ import Ocelot.Block.Builder (blockBuilder)
 tableClasses :: Array HH.ClassName
 tableClasses = HH.ClassName <$>
   [ "w-full"
-  , "text-center"
+  , "text-left"
   , "border-collapse"
   ]
 
