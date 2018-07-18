@@ -2,23 +2,21 @@ module Ocelot.Data.DateTime where
 
 import Prelude
 
-import Data.Array (drop, find, reverse, sort, take)
-import Data.Date (Date, Day, Year, canonicalDate, lastDayOfMonth, year, month, day, Weekday(..), weekday)
-import Data.DateTime (DateTime(..), Hour, Millisecond, Minute, Month(..), Second, Time(..))
+import Data.Array (reverse)
+import Data.Date (Date, Day, Year, canonicalDate, day, lastDayOfMonth, month, year)
+import Data.DateTime (DateTime(..), Month(..))
 import Data.DateTime (adjust, date) as DT
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
-import Data.Enum (class Enum, fromEnum, pred, succ, toEnum)
+import Data.Enum (class Enum, pred, succ, toEnum)
 import Data.Formatter.DateTime (Formatter)
 import Data.Formatter.DateTime as Formatter
-import Data.FunctorWithIndex (mapWithIndex)
 import Data.List (List(..), (:))
-import Data.Maybe (Maybe(..), fromJust, maybe)
-import Data.String.Regex (parseFlags, regex, replace)
+import Data.Maybe (Maybe, fromJust)
 import Data.Time (Hour, Millisecond, Minute, Second, Time(..))
 import Data.Time (adjust) as T
 import Data.Time.Duration (Days(..), Hours(..), Minutes(..), negateDuration)
-import Data.Tuple (Tuple(..), fst, snd)
+import Data.Tuple (Tuple(..), snd)
 import Partial.Unsafe (unsafePartial)
 
 

@@ -86,7 +86,7 @@
   transform: rotate(-90deg);
 }
 .icon-chevron-left:before {
-  content: "\e00r";
+  content: "\e004";
 }
 .icon-chevron-right {
   transform: rotate(90deg);
