@@ -75,7 +75,7 @@ component =
                   [ HE.onClick $ HE.input_ $ Toggle Success ]
                   [ HH.text "Success" ]
                 , Toast.toast
-                  [ Toast.open $ state.toast == Just Success ]
+                  [ Toast.visible $ state.toast == Just Success ]
                   [ Icon.success
                     [ css "text-green text-2xl mr-2" ]
                   , HH.p_
@@ -94,7 +94,7 @@ component =
                   [ HE.onClick $ HE.input_ $ Toggle Error ]
                   [ HH.text "Error" ]
                 , Toast.toast
-                  [ Toast.open $ state.toast == Just Error ]
+                  [ Toast.visible $ state.toast == Just Error ]
                   [ Icon.error
                     [ css "text-red text-2xl mr-2" ]
                   , HH.p_

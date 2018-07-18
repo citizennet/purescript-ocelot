@@ -13,12 +13,12 @@ import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
 import Unsafe.Coerce (unsafeCoerce)
 
-type Toast r = ( open :: Boolean | r )
+type Toast r = ( visible :: Boolean | r )
 
 type HTMLtoast = Toast HTMLdiv
 
-open :: ∀ r i. Boolean -> HP.IProp ( open :: Boolean | r ) i
-open = HP.prop (HH.PropName "open")
+visible :: ∀ r i. Boolean -> HP.IProp ( visible :: Boolean | r ) i
+visible = HP.prop (HH.PropName "visible")
 
 -- Necessary for centering the toast
 toastContainerClasses :: Array HH.ClassName
@@ -33,8 +33,8 @@ toastContainerClasses = HH.ClassName <$>
   , "pin-b"
   ]
 
-containerOpenClasses :: Array HH.ClassName
-containerOpenClasses = HH.ClassName <$>
+containerVisibleClasses :: Array HH.ClassName
+containerVisibleClasses = HH.ClassName <$>
   [ "mb-8" ]
 
 containerClosedClasses :: Array HH.ClassName
@@ -68,24 +68,25 @@ toast iprops html =
     html
   ]
   where
-    Tuple open iprops' = pullOpenProp iprops
+    Tuple visible iprops' = pullVisibleProp iprops
     containerClasses' =
-      if open
-        then containerOpenClasses
+      if visible
+        then containerVisibleClasses
         else containerClosedClasses
 
-pullOpenProp
+
+pullVisibleProp
   :: ∀ r i
-   . Array (HH.IProp ( open :: Boolean | r ) i)
+   . Array (HH.IProp ( visible :: Boolean | r ) i)
   -> Tuple Boolean (Array (HH.IProp r i))
-pullOpenProp = foldr f (Tuple false [])
+pullVisibleProp = foldr f (Tuple false [])
   where
-    f (HP.IProp (HC.Property "open" x)) =
+    f (HP.IProp (HC.Property "visible" x)) =
       lmap $ const $ coerceExpanded x
     f iprop = rmap $ (flip snoc) $ coerceR iprop
 
     coerceExpanded :: HC.PropValue -> Boolean
     coerceExpanded = unsafeCoerce
 
-    coerceR :: HH.IProp ( open :: Boolean | r ) i -> HH.IProp r i
+    coerceR :: HH.IProp ( visible :: Boolean | r ) i -> HH.IProp r i
     coerceR = unsafeCoerce
