@@ -83,7 +83,7 @@ component =
     render state =
       HH.div_
         [ Documentation.block_
-          { header: "DD"
+          { header: "Dropdown"
           , subheader: "A dropdown list of selectable items."
           }
           [ Backdrop.backdrop_
