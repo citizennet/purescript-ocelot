@@ -23113,32 +23113,45 @@ var PS = {};
   var Control_Applicative = PS["Control.Applicative"];
   var Control_Bind = PS["Control.Bind"];
   var Control_Category = PS["Control.Category"];
+  var Control_Comonad = PS["Control.Comonad"];
+  var Control_Comonad_Store = PS["Control.Comonad.Store"];
+  var Control_Comonad_Store_Class = PS["Control.Comonad.Store.Class"];
+  var Control_Comonad_Store_Trans = PS["Control.Comonad.Store.Trans"];
   var Control_Monad_State_Class = PS["Control.Monad.State.Class"];
-  var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
-  var Data_Array = PS["Data.Array"];
-  var Data_Boolean = PS["Data.Boolean"];
   var Data_Eq = PS["Data.Eq"];
   var Data_Function = PS["Data.Function"];
   var Data_Functor = PS["Data.Functor"];
+  var Data_Identity = PS["Data.Identity"];
   var Data_Maybe = PS["Data.Maybe"];
   var Data_Ord = PS["Data.Ord"];
-  var Data_Semigroup = PS["Data.Semigroup"];
   var Data_Unit = PS["Data.Unit"];
   var Effect_Aff_Class = PS["Effect.Aff.Class"];
   var Halogen = PS["Halogen"];
   var Halogen_Component = PS["Halogen.Component"];
   var Halogen_HTML = PS["Halogen.HTML"];
-  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
-  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
-  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Halogen_Query = PS["Halogen.Query"];
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
-  var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
-  var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
   var Prelude = PS["Prelude"];
   var Select = PS["Select"];
-  var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
+  var Select_Internal_State = PS["Select.Internal.State"];                 
+  var Selected = (function () {
+      function Selected(value0) {
+          this.value0 = value0;
+      };
+      Selected.create = function (value0) {
+          return new Selected(value0);
+      };
+      return Selected;
+  })();
+  var Emit = (function () {
+      function Emit(value0) {
+          this.value0 = value0;
+      };
+      Emit.create = function (value0) {
+          return new Emit(value0);
+      };
+      return Emit;
+  })();
   var HandleSelect = (function () {
       function HandleSelect(value0, value1) {
           this.value0 = value0;
@@ -23175,150 +23188,195 @@ var PS = {};
       };
       return SetSelection;
   })();
-  var ItemSelected = (function () {
-      function ItemSelected(value0) {
+  var Receive = (function () {
+      function Receive(value0, value1) {
           this.value0 = value0;
+          this.value1 = value1;
       };
-      ItemSelected.create = function (value0) {
-          return new ItemSelected(value0);
-      };
-      return ItemSelected;
-  })();
-  var component = function (dictMonadAff) {
-      return function (dictEq) {
-          return function (button) {
-              var render = function (state) {
-                  var selectInput = (function () {
-                      var renderDropdown = function (selectState) {
-                          var toggle = button(Select_Utils_Setters.setToggleProps([ Halogen_HTML_Properties.disabled(state.disabled), Halogen_HTML_Properties.class_("font-medium flex items-center") ]))([ Halogen_HTML_Core.text(Data_Maybe.maybe(state.label)(state.toString)(state.selectedItem)), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("ml-3 text-xs") ])([ Ocelot_Block_Icon.caratDown_ ]) ]);
-                          var renderItem = function (idx) {
-                              return function (item) {
-                                  var selectedClass = (function () {
-                                      if (Data_Eq.eq(Data_Maybe.eqMaybe(dictEq))(new Data_Maybe.Just(item))(state.selectedItem)) {
-                                          return [ "font-medium" ];
-                                      };
-                                      if (Data_Boolean.otherwise) {
-                                          return [  ];
-                                      };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 171, column 21 - line 173, column 38: " + [  ]);
-                                  })();
-                                  var itemClasses$prime = [ "px-4", "py-2" ];
-                                  var highlightClass = (function () {
-                                      if (Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(idx))(selectState.highlightedIndex)) {
-                                          return [ "bg-grey-97" ];
-                                      };
-                                      if (Data_Boolean.otherwise) {
-                                          return [  ];
-                                      };
-                                      throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 167, column 21 - line 169, column 39: " + [  ]);
-                                  })();
-                                  var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
-                                  var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
-                                  return Halogen_HTML_Elements.li(itemProps)([ Halogen_HTML_Core.text(state.toString(item)) ]);
-                              };
-                          };
-                          var containerClasses$prime = [ "bg-white", "text-black-20", "border", "cursor-pointer", "list-reset", "py-2", "rounded", "shadow", "absolute", "pin-t", "z-60" ];
-                          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
-                              if (selectState.visibility instanceof Select.Off) {
-                                  return Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "invisible" ])(containerClasses$prime);
-                              };
-                              if (selectState.visibility instanceof Select.On) {
-                                  return containerClasses$prime;
-                              };
-                              throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 134, column 53 - line 136, column 49: " + [ selectState.visibility.constructor.name ]);
-                          })());
-                          var menu = Halogen_HTML_Elements.ul(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(containerClasses) ]))(Data_Array.mapWithIndex(renderItem)(selectState.items));
-                          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])([ toggle, menu ]);
-                      };
-                      return {
-                          debounceTime: Data_Maybe.Nothing.value,
-                          initialSearch: Data_Maybe.Nothing.value,
-                          inputType: Select.Toggle.value,
-                          items: state.items,
-                          render: renderDropdown
-                      };
-                  })();
-                  return Halogen_HTML.slot(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(HandleSelect.create));
-              };
-              var $$eval = function (v) {
-                  if (v instanceof HandleSelect) {
-                      if (v.value0 instanceof Select.Selected) {
-                          return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
-                              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                  var $14 = {};
-                                  for (var $15 in v2) {
-                                      if ({}.hasOwnProperty.call(v2, $15)) {
-                                          $14[$15] = v2[$15];
-                                      };
-                                  };
-                                  $14.selectedItem = new Data_Maybe.Just(v.value0.value0);
-                                  return $14;
-                              }))(function () {
-                                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new ItemSelected(v.value0.value0)))(function () {
-                                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                                  });
-                              });
-                          });
-                      };
-                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                  };
-                  if (v instanceof SetItems) {
-                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                          var $20 = {};
-                          for (var $21 in v1) {
-                              if ({}.hasOwnProperty.call(v1, $21)) {
-                                  $20[$21] = v1[$21];
-                              };
-                          };
-                          $20.items = v.value0;
-                          return $20;
-                      }))(function () {
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                      });
-                  };
-                  if (v instanceof SetSelection) {
-                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                          var $25 = {};
-                          for (var $26 in v1) {
-                              if ({}.hasOwnProperty.call(v1, $26)) {
-                                  $25[$26] = v1[$26];
-                              };
-                          };
-                          $25.selectedItem = v.value0;
-                          return $25;
-                      }))(function () {
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                      });
-                  };
-                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 82, column 12 - line 95, column 15: " + [ v.constructor.name ]);
-              };
-              return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
-                  initialState: Control_Category.identity(Control_Category.categoryFn),
-                  render: render,
-                  "eval": $$eval,
-                  receiver: Data_Function["const"](Data_Maybe.Nothing.value)
-              });
+      Receive.create = function (value0) {
+          return function (value1) {
+              return new Receive(value0, value1);
           };
       };
-  };
-  var dropdown = function (dictMonadAff) {
-      return function (dictEq) {
-          return component(dictMonadAff)(dictEq)(Ocelot_Block_Button.button);
+      return Receive;
+  })();
+  var component = function (dictMonadAff) {
+      var initialState = function (i) {
+          return Control_Comonad_Store.store(i.render)({
+              selectedItem: i.selectedItem,
+              items: i.items
+          });
       };
-  };
-  var dropdownDark = function (dictMonadAff) {
-      return function (dictEq) {
-          return component(dictMonadAff)(dictEq)(Ocelot_Block_Button.buttonDark);
+      var $$eval = function (v) {
+          if (v instanceof HandleSelect) {
+              if (v.value0 instanceof Select.Selected) {
+                  return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v2) {
+                          var $8 = {};
+                          for (var $9 in v2) {
+                              if ({}.hasOwnProperty.call(v2, $9)) {
+                                  $8[$9] = v2[$9];
+                              };
+                          };
+                          $8.selectedItem = new Data_Maybe.Just(v.value0.value0);
+                          return $8;
+                      })))(function () {
+                          return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Selected(v.value0.value0)))(function () {
+                              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                          });
+                      });
+                  });
+              };
+              if (v.value0 instanceof Select.Emit) {
+                  return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.raise(new Emit(v.value0.value0)))(v.value1);
+              };
+              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+          };
+          if (v instanceof SetItems) {
+              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v1) {
+                  var $15 = {};
+                  for (var $16 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $16)) {
+                          $15[$16] = v1[$16];
+                      };
+                  };
+                  $15.items = v.value0;
+                  return $15;
+              })))(function () {
+                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+              });
+          };
+          if (v instanceof SetSelection) {
+              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v1) {
+                  var $20 = {};
+                  for (var $21 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $21)) {
+                          $20[$21] = v1[$21];
+                      };
+                  };
+                  $20.selectedItem = v.value0;
+                  return $20;
+              })))(function () {
+                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+              });
+          };
+          if (v instanceof Receive) {
+              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Select_Internal_State.updateStore(v.value0.render)(Control_Category.identity(Control_Category.categoryFn))))(function () {
+                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+              });
+          };
+          throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 70, column 12 - line 87, column 14: " + [ v.constructor.name ]);
       };
+      return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
+          initialState: initialState,
+          render: Control_Comonad.extract(Control_Comonad_Store_Trans.comonadStoreT(Data_Identity.comonadIdentity)),
+          "eval": $$eval,
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value)
+      });
   };
   exports["HandleSelect"] = HandleSelect;
   exports["SetItems"] = SetItems;
   exports["SetSelection"] = SetSelection;
-  exports["ItemSelected"] = ItemSelected;
-  exports["dropdown"] = dropdown;
-  exports["dropdownDark"] = dropdownDark;
+  exports["Receive"] = Receive;
+  exports["Selected"] = Selected;
+  exports["Emit"] = Emit;
   exports["component"] = component;
 })(PS["Ocelot.Components.Dropdown"] = PS["Ocelot.Components.Dropdown"] || {});
+(function(exports) {
+  // Generated by purs version 0.12.0
+  "use strict";
+  var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
+  var Data_Array = PS["Data.Array"];
+  var Data_Boolean = PS["Data.Boolean"];
+  var Data_Eq = PS["Data.Eq"];
+  var Data_Function = PS["Data.Function"];
+  var Data_Functor = PS["Data.Functor"];
+  var Data_Maybe = PS["Data.Maybe"];
+  var Data_Semigroup = PS["Data.Semigroup"];
+  var Data_Unit = PS["Data.Unit"];
+  var Effect_Aff_Class = PS["Effect.Aff.Class"];
+  var Halogen = PS["Halogen"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
+  var Ocelot_Components_Dropdown = PS["Ocelot.Components.Dropdown"];
+  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
+  var Prelude = PS["Prelude"];
+  var Select = PS["Select"];
+  var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
+  var render = function (dictMonadAff) {
+      return function (renderDropdown) {
+          return function (state) {
+              var selectInput = {
+                  debounceTime: Data_Maybe.Nothing.value,
+                  initialSearch: Data_Maybe.Nothing.value,
+                  inputType: Select.Toggle.value,
+                  items: state.items,
+                  render: renderDropdown(state)
+              };
+              return Halogen_HTML.slot(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(Ocelot_Components_Dropdown.HandleSelect.create));
+          };
+      };
+  };
+  var defDropdown = function (dictEq) {
+      return function (button) {
+          return function (props) {
+              return function (toString) {
+                  return function (label) {
+                      return function (state) {
+                          return function (selectState) {
+                              var toggle = button(Ocelot_HTML_Properties.appendIProps(Select_Utils_Setters.setToggleProps([ Halogen_HTML_Properties.class_("font-medium flex items-center") ]))(props))([ Halogen_HTML_Core.text(Data_Maybe.maybe(label)(toString)(state.selectedItem)), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("ml-3 text-xs") ])([ Ocelot_Block_Icon.caratDown_ ]) ]);
+                              var renderItem = function (idx) {
+                                  return function (item) {
+                                      var selectedClass = (function () {
+                                          if (Data_Eq.eq(Data_Maybe.eqMaybe(dictEq))(new Data_Maybe.Just(item))(state.selectedItem)) {
+                                              return [ "font-medium" ];
+                                          };
+                                          if (Data_Boolean.otherwise) {
+                                              return [  ];
+                                          };
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 90, column 9 - line 92, column 27: " + [  ]);
+                                      })();
+                                      var itemClasses$prime = [ "px-4", "py-2" ];
+                                      var highlightClass = (function () {
+                                          if (Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(new Data_Maybe.Just(idx))(selectState.highlightedIndex)) {
+                                              return [ "bg-grey-97" ];
+                                          };
+                                          if (Data_Boolean.otherwise) {
+                                              return [  ];
+                                          };
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 86, column 9 - line 88, column 27: " + [  ]);
+                                      })();
+                                      var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
+                                      var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
+                                      return Halogen_HTML_Elements.li(itemProps)([ Halogen_HTML_Core.text(toString(item)) ]);
+                                  };
+                              };
+                              var containerClasses$prime = [ "bg-white", "text-black-20", "border", "cursor-pointer", "list-reset", "py-2", "rounded", "shadow", "absolute", "pin-t", "z-60" ];
+                              var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
+                                  if (selectState.visibility instanceof Select.Off) {
+                                      return Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "invisible" ])(containerClasses$prime);
+                                  };
+                                  if (selectState.visibility instanceof Select.On) {
+                                      return containerClasses$prime;
+                                  };
+                                  throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 53, column 41 - line 55, column 37: " + [ selectState.visibility.constructor.name ]);
+                              })());
+                              var menu = Halogen_HTML_Elements.ul(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(containerClasses) ]))(Data_Array.mapWithIndex(renderItem)(selectState.items));
+                              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])([ toggle, menu ]);
+                          };
+                      };
+                  };
+              };
+          };
+      };
+  };
+  exports["defDropdown"] = defDropdown;
+  exports["render"] = render;
+})(PS["Ocelot.Components.Dropdown.Render"] = PS["Ocelot.Components.Dropdown.Render"] || {});
 (function(exports) {
   // Generated by purs version 0.12.0
   "use strict";
@@ -23354,6 +23412,7 @@ var PS = {};
   var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
   var Ocelot_Blocks_Choice = PS["Ocelot.Blocks.Choice"];
   var Ocelot_Components_Dropdown = PS["Ocelot.Components.Dropdown"];
+  var Ocelot_Components_Dropdown_Render = PS["Ocelot.Components.Dropdown.Render"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];
   var Select = PS["Select"];
@@ -23408,7 +23467,7 @@ var PS = {};
                   if (state$prime.visibility instanceof Select.Off) {
                       return Ocelot_HTML_Properties.css("hidden");
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 238, column 35 - line 242, column 15: " + [ state$prime.visibility.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 242, column 35 - line 246, column 15: " + [ state$prime.visibility.constructor.name ]);
               })();
               var renderPlatform = function (v) {
                   if (v instanceof Facebook) {
@@ -23417,7 +23476,7 @@ var PS = {};
                   if (v instanceof Twitter) {
                       return [ Halogen_HTML_Elements.div_([ Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-tw-blue text-4xl") ]) ]), Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.p([ Ocelot_HTML_Properties.css("text-black-20 font-light") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ];
                   };
-                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 266, column 32 - line 287, column 19: " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 270, column 32 - line 291, column 19: " + [ v.constructor.name ]);
               };
               var menu = Ocelot_Blocks_Choice.choice(Select_Utils_Setters.setContainerProps([ visibilityClasses ]))([ Ocelot_Blocks_Choice.header_([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("font-medium text-grey-50") ])([ Halogen_HTML_Core.text("Advertise on...") ]) ]), Ocelot_Blocks_Choice.body_(Data_Array.mapWithIndex(function (index) {
                   return function (item) {
@@ -23439,46 +23498,40 @@ var PS = {};
               items: [ Facebook.value, Twitter.value ],
               render: renderPlatformChoice
           };
+          var renderDropdown = function (btnFn) {
+              return Ocelot_Components_Dropdown_Render.render(dictMonadAff)(Ocelot_Components_Dropdown_Render.defDropdown(Data_Eq.eqString)(btnFn)([  ])(Control_Category.identity(Control_Category.categoryFn))("Pick One"));
+          };
+          var renderDisabledDropdown = function (btnFn) {
+              return Ocelot_Components_Dropdown_Render.render(dictMonadAff)(Ocelot_Components_Dropdown_Render.defDropdown(Data_Eq.eqString)(btnFn)([ Halogen_HTML_Properties.disabled(true) ])(Control_Category.identity(Control_Category.categoryFn))("Pick One"));
+          };
           var items = [ "Lagavulin 16", "Kilchoman Blue Label", "Laphroaig", "Ardbeg" ];
           return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.block_({
               header: "Dropdown",
               subheader: "A dropdown list of selectable items."
-          })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdown(dictMonadAff)(Data_Eq.eqString))({
+          })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: Data_Maybe.Nothing.value,
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: false
-          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdown(dictMonadAff)(Data_Eq.eqString))({
+              render: renderDropdown(Ocelot_Block_Button.button)
+          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: new Data_Maybe.Just("Kilchoman Blue Label"),
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: true
-          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]), UIGuide_Block_Backdrop.backdropWhite_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdown(dictMonadAff)(Data_Eq.eqString))({
+              render: renderDisabledDropdown(Ocelot_Block_Button.button)
+          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]), UIGuide_Block_Backdrop.backdropWhite_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Primary") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: Data_Maybe.Nothing.value,
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: false
-          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdown(dictMonadAff)(Data_Eq.eqString))({
+              render: renderDropdown(Ocelot_Block_Button.buttonPrimary)
+          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: new Data_Maybe.Just("Kilchoman Blue Label"),
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: true
-          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]), UIGuide_Block_Backdrop.backdropDark_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdownDark(dictMonadAff)(Data_Eq.eqString))({
+              render: renderDisabledDropdown(Ocelot_Block_Button.buttonPrimary)
+          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]), UIGuide_Block_Backdrop.backdropDark_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Dark") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: Data_Maybe.Nothing.value,
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: false
-          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.dropdownDark(dictMonadAff)(Data_Eq.eqString))({
+              render: renderDropdown(Ocelot_Block_Button.buttonDark)
+          })(Halogen_HTML_Events.input(HandleDropdown.create)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Disabled & Hydrated") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Dropdown.component(dictMonadAff))({
               selectedItem: new Data_Maybe.Just("Kilchoman Blue Label"),
               items: items,
-              label: "Pick one",
-              toString: Control_Category.identity(Control_Category.categoryFn),
-              disabled: true
+              render: renderDisabledDropdown(Ocelot_Block_Button.buttonDark)
           })(Halogen_HTML_Events.input(HandleDropdown.create)) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
               header: "Choice",
               subheader: "A specialized dropdown for making selections."
@@ -23486,11 +23539,14 @@ var PS = {};
       };
       var $$eval = function (v) {
           if (v instanceof HandleDropdown) {
-              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)(v.value0.value0)))(function () {
-                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Category.identity(Control_Category.categoryFn)))(function () {
-                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+              if (v.value0 instanceof Ocelot_Components_Dropdown.Selected) {
+                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)(v.value0.value0)))(function () {
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Category.identity(Control_Category.categoryFn)))(function () {
+                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                      });
                   });
-              });
+              };
+              return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
           };
           if (v instanceof HandleChoice) {
               if (v.value0 instanceof Select.Selected) {
@@ -23501,14 +23557,14 @@ var PS = {};
                       if (v.value0.value0 instanceof Twitter) {
                           return Effect_Class_Console.log(Effect_Class.monadEffectEffect)("Twitter");
                       };
-                      throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 70, column 26 - line 73, column 11: " + [ v.value0.value0.constructor.name ]);
+                      throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 73, column 26 - line 76, column 11: " + [ v.value0.value0.constructor.name ]);
                   })()))(function () {
                       return Halogen_Query["query'"](Data_Either.eqEither(Data_Eq.eqUnit)(Data_Either.eqEither(Data_Eq.eqUnit)(Data_Eq.eqVoid)))(Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Select.setVisibility(Select.Off.value));
                   }));
               };
               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
           };
-          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 61, column 12 - line 75, column 20: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Components.Dropdown line 62, column 12 - line 78, column 20: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid)))({
           initialState: Data_Function["const"](Data_Unit.unit),
