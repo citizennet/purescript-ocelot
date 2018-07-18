@@ -76,21 +76,30 @@ component =
             , Tuple "Close" Icon.close_
             , Tuple "Delete" Icon.delete_
             , Tuple "Delete Circle" Icon.deleteCircle_
+            , Tuple "Add" Icon.add_
+            , Tuple "Added" $ Icon.added [ css "text-blue-88" ]
+            , Tuple "Arrow Up" Icon.arrowUp_
+            , Tuple "Arrow Down" Icon.arrowDown_
+            , Tuple "Arrow Left" Icon.arrowLeft_
+            , Tuple "Arrow Right" Icon.arrowRight_
             , Tuple "Collapse" Icon.collapse_
             , Tuple "Expand" Icon.expand_
+            , Tuple "Chevron Left" Icon.chevronLeft_
+            , Tuple "Chevron Right" Icon.chevronRight_
             , Tuple "Carat Up" Icon.caratUp_
             , Tuple "Carat Down" Icon.caratDown_
             , Tuple "Carat Left" Icon.caratLeft_
             , Tuple "Carat Right" Icon.caratRight_
-            , Tuple "Error" (Icon.error [ css "text-red" ])
-            , Tuple "Tip" (Icon.tip [ css "text-yellow" ])
-            , Tuple "Info" (Icon.info [ css "text-blue" ])
-            , Tuple "Success" (Icon.success [ css "text-green" ])
-            , Tuple "Facebook" (Icon.facebook [ css "text-fb-blue" ])
-            , Tuple "Instagram" (Icon.instagram [ css "text-ig-brown" ])
-            , Tuple "Twitter" (Icon.twitter [ css "text-tw-blue" ])
+            , Tuple "Error" $ Icon.error [ css "text-red" ]
+            , Tuple "Tip" $ Icon.tip [ css "text-yellow" ]
+            , Tuple "Info" $ Icon.info [ css "text-blue" ]
+            , Tuple "Success" $ Icon.success [ css "text-green" ]
+            , Tuple "Facebook" $ Icon.facebook [ css "text-fb-blue" ]
+            , Tuple "Instagram" $ Icon.instagram [ css "text-ig-brown" ]
+            , Tuple "Twitter" $ Icon.twitter [ css "text-tw-blue" ]
             , Tuple "Timeline" Icon.timeline_
             , Tuple "Navigate" Icon.navigate_
+            , Tuple "Data Sources" Icon.dataSources_
             ]
           )
         ]

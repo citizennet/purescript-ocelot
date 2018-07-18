@@ -1,35 +1,4 @@
-module Ocelot.Block.Icon
-  ( back, back_
-  , caratDown, caratDown_
-  , caratLeft, caratLeft_
-  , caratRight, caratRight_
-  , caratUp, caratUp_
-  , chevronLeft, chevronLeft_
-  , chevronRight, chevronRight_
-  , close, close_
-  , collapse, collapse_
-  , dataSources, dataSources_
-  , delete, delete_
-  , deleteCircle, deleteCircle_
-  , download, download_
-  , error, error_
-  , expand, expand_
-  , facebook, facebook_
-  , info, info_
-  , instagram, instagram_
-  , menu, menu_
-  , navigate, navigate_
-  , options, options_
-  , refresh, refresh_
-  , search, search_
-  , settings, settings_
-  , share, share_
-  , success, success_
-  , timeline, timeline_
-  , tip, tip_
-  , twitter, twitter_
-  )
-  where
+module Ocelot.Block.Icon where
 
 import Prelude
 
@@ -63,6 +32,42 @@ icon className iprops =
         )
         []
     ]
+
+add :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+add = icon "icon-add"
+
+add_ :: ∀ p i. HH.HTML p i
+add_ = add []
+
+added :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+added = icon "icon-added"
+
+added_ :: ∀ p i. HH.HTML p i
+added_ = added []
+
+arrowDown :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowDown = icon "icon-arrow-down"
+
+arrowDown_ :: ∀ p i. HH.HTML p i
+arrowDown_ = arrowDown []
+
+arrowLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowLeft = icon "icon-arrow-left"
+
+arrowLeft_ :: ∀ p i. HH.HTML p i
+arrowLeft_ = arrowLeft []
+
+arrowRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowRight = icon "icon-arrow-right"
+
+arrowRight_ :: ∀ p i. HH.HTML p i
+arrowRight_ = arrowRight []
+
+arrowUp :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowUp = icon "icon-arrow-up"
+
+arrowUp_ :: ∀ p i. HH.HTML p i
+arrowUp_ = arrowUp []
 
 back :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 back = icon "icon-back"
@@ -201,6 +206,12 @@ search = icon "icon-search"
 
 search_ :: ∀ p i. HH.HTML p i
 search_ = search []
+
+selected :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+selected = icon "icon-selected"
+
+selected_ :: ∀ p i. HH.HTML p i
+selected_ = selected []
 
 settings :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 settings = icon "icon-settings"
