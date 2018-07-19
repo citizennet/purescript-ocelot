@@ -27361,6 +27361,7 @@ var PS = {};
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
   var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
+  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];                 
   var Clear = (function () {
       function Clear(value0) {
@@ -27413,7 +27414,7 @@ var PS = {};
   var component = function (dictMonadAff) {
       var render = function (v) {
           var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mr-3", "text-2xl", "cursor-pointer" ]);
-          var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "w-0" ]);
+          var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "h-full" ]);
           var ifOpen = function (openClasses) {
               return function (closedClasses) {
                   return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
@@ -27424,13 +27425,13 @@ var PS = {};
                   })());
               };
           };
-          var inputCondClasses = ifOpen([ "w-full" ])([  ]);
+          var inputCondClasses = ifOpen([ "w-full" ])([ "w-0" ]);
           var labelCondClasses = ifOpen([ "text-grey-50" ])([ "text-grey-70" ]);
-          var containerCondClasses = ifOpen([ "w-full" ])([  ]);
-          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "border-b-2", "border-blue-88", "no-outline", "items-stretch", "w-0", "transition-1/4" ]);
+          var containerCondClasses = ifOpen([ "w-full", "border-blue-88" ])([  ]);
+          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2", "border-transparent" ]);
           var buttonCondClasses = ifOpen([ "opacity-100", "visible" ])([ "opacity-0", "invisible" ]);
-          var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "text-grey-80", "hover:text-grey-70", "text-xs", "transition-1/4" ]);
-          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.close_ ]) ]);
+          var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "text-grey-80", "hover:text-grey-70", "text-sm", "transition-1/4", "flex-shrink" ]);
+          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-grow") ])([ Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))), Halogen_HTML_Properties.tabIndex(0) ]) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.close_ ]) ]);
       };
       var initialState = function (v) {
           return {
@@ -27576,14 +27577,14 @@ var PS = {};
                                   });
                               }));
                           };
-                          throw new Error("Failed pattern match at Ocelot.Components.SearchBar line 86, column 9 - line 106, column 67: " + [ v1.debouncer.constructor.name ]);
+                          throw new Error("Failed pattern match at Ocelot.Components.SearchBar line 87, column 9 - line 107, column 67: " + [ v1.debouncer.constructor.name ]);
                       })())(function () {
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                       });
                   });
               });
           };
-          throw new Error("Failed pattern match at Ocelot.Components.SearchBar line 66, column 12 - line 108, column 15: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Components.SearchBar line 67, column 12 - line 109, column 15: " + [ v.constructor.name ]);
       };
       return Halogen_Component.component(Halogen_HTML_Core.bifunctorHTML)({
           initialState: initialState,
@@ -27616,6 +27617,7 @@ var PS = {};
   var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
+  var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
   var Ocelot_Block_Card = PS["Ocelot.Block.Card"];
   var Ocelot_Block_FormField = PS["Ocelot.Block.FormField"];
   var Ocelot_Block_Format = PS["Ocelot.Block.Format"];
@@ -27749,9 +27751,14 @@ var PS = {};
       })([ Ocelot_Block_Input.textarea([ Halogen_HTML_Properties.value("Forest drinks on the job"), Halogen_HTML_Properties.id_("comment-disabled"), Halogen_HTML_Properties.disabled(true) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
           header: "Search Bar",
           subheader: "A component for handling searching"
-      })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("text-center") ])([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-1/3 inline-flex mb-6") ])([ Halogen_HTML.slot(Data_Unit.unit)(Ocelot_Components_SearchBar.component(dictMonadAff))({
-          debounceTime: new Data_Maybe.Just(500.0)
-      })(Halogen_HTML_Events.input(HandleSearch.create)) ]) ]) ]) ]) ]);
+      })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-1/3 pb-6") ])([ Halogen_HTML.slot(Data_Unit.unit)(Ocelot_Components_SearchBar.component(dictMonadAff))({
+          debounceTime: new Data_Maybe.Just(250.0)
+      })(Halogen_HTML_Events.input(HandleSearch.create)) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
+          header: "Search Bar - With Neighbors",
+          subheader: "A component for handling search, sharing a space with other blocks"
+      })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex items-center pb-6") ])([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mr-6") ])([ Halogen_HTML.slot(Data_Unit.unit)(Ocelot_Components_SearchBar.component(dictMonadAff))({
+          debounceTime: new Data_Maybe.Just(250.0)
+      })(Halogen_HTML_Events.input(HandleSearch.create)) ]), Ocelot_Block_Button.buttonPrimary_([ Halogen_HTML_Core.text("Neighbor") ]) ]) ]) ]) ]) ]);
   };
   var component = function (dictMonadAff) {
       var render = function (v) {
