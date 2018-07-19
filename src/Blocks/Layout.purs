@@ -56,7 +56,6 @@ containerClasses :: Array HH.ClassName
 containerClasses = HH.ClassName <$>
   [ "container"
   , "m-auto"
-  , "flex"
   , "p-8"
   ]
 
@@ -72,6 +71,24 @@ container_
    . Array (HH.HTML p i)
   -> HH.HTML p i
 container_ = container []
+
+sectionClasses :: Array HH.ClassName
+sectionClasses = HH.ClassName <$>
+  [ "pb-8"
+  ]
+
+section
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+section = blockBuilder HH.div sectionClasses
+
+section_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+section_ = section []
 
 columnClasses :: Array HH.ClassName
 columnClasses = HH.ClassName <$>
