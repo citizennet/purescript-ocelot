@@ -20,6 +20,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon (close_, search_) as Icon
+import Ocelot.HTML.Properties (css)
 
 type State =
   { query :: String
@@ -116,12 +117,16 @@ component =
           , HE.onClick (HE.input $ const Open)
           ]
           [ Icon.search_ ]
-        , HH.input
-          [ HE.onValueInput (HE.input Search)
-          , HP.placeholder "Search"
-          , HP.value query
-          , HP.classes $ inputClasses <> inputCondClasses
-          , HE.onBlur (HE.input $ const Blur)
+        , HH.div
+          [ css "flex-grow" ]
+          [ HH.input
+            [ HE.onValueInput (HE.input Search)
+            , HP.placeholder "Search"
+            , HP.value query
+            , HP.classes $ inputClasses <> inputCondClasses
+            , HE.onBlur (HE.input $ const Blur)
+            , HP.tabIndex 0
+            ]
           ]
         , HH.button
           [ HE.onClick (HE.input $ const Clear)
@@ -134,15 +139,17 @@ component =
       where
         containerClasses = HH.ClassName <$>
           [ "flex"
-          , "border-b-2"
-          , "border-blue-88"
           , "no-outline"
           , "items-stretch"
-          , "w-0"
           , "transition-1/4"
+          , "border-b-2"
+          , "border-transparent"
           ]
 
-        containerCondClasses = ifOpen [ "w-full" ] [ ]
+        containerCondClasses =
+          ifOpen
+            [ "w-full", "border-blue-88" ]
+            [ ]
 
         labelClasses = HH.ClassName <$>
           [ "mr-3"
@@ -150,26 +157,36 @@ component =
           , "cursor-pointer"
           ]
 
-        labelCondClasses = ifOpen [ "text-grey-50" ] [ "text-grey-70" ]
+        labelCondClasses =
+          ifOpen
+            [ "text-grey-50" ]
+            [ "text-grey-70" ]
 
         inputClasses = HH.ClassName <$>
           [ "no-outline"
           , "flex-1"
           , "bg-transparent"
-          , "w-0"
+          , "h-full"
           ]
 
-        inputCondClasses = ifOpen [ "w-full" ] [ ]
+        inputCondClasses =
+          ifOpen
+            [ "w-full" ]
+            [ "w-0" ]
 
         buttonClasses = HH.ClassName <$>
           [ "no-outline"
           , "text-grey-80"
           , "hover:text-grey-70"
-          , "text-xs"
+          , "text-sm"
           , "transition-1/4"
+          , "flex-shrink"
           ]
 
-        buttonCondClasses = ifOpen [ "opacity-100",  "visible" ] [ "opacity-0", "invisible" ]
+        buttonCondClasses =
+          ifOpen
+            [ "opacity-100", "visible" ]
+            [ "opacity-0", "invisible" ]
 
         ifOpen openClasses closedClasses =
           HH.ClassName <$> if open then openClasses else closedClasses

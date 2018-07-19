@@ -10,6 +10,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events (input) as HE
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
@@ -416,15 +417,32 @@ cnDocumentationBlocks =
     , subheader: "A component for handling searching"
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content
-        [ css "text-center" ]
+      [ Backdrop.content_
         [ HH.div
-          [ css "w-1/3 inline-flex mb-6" ]
-          [ HH.slot
-              unit
-              SearchBar.component
-              { debounceTime: Just (Milliseconds 500.0) }
-              (HE.input HandleSearch)
+          [ css "w-1/3 pb-6" ]
+          [ HH.slot unit SearchBar.component
+            { debounceTime: Just (Milliseconds 250.0) }
+            ( HE.input HandleSearch )
+          ]
+        ]
+      ]
+    ]
+  , Documentation.block_
+    { header: "Search Bar - With Neighbors"
+    , subheader: "A component for handling search, sharing a space with other blocks"
+    }
+    [ Backdrop.backdrop_
+      [ Backdrop.content_
+        [ HH.div
+          [ css "flex items-center pb-6" ]
+          [ HH.div
+            [ css "mr-6" ]
+            [ HH.slot unit SearchBar.component
+              { debounceTime: Just (Milliseconds 250.0) }
+              ( HE.input HandleSearch )
+            ]
+          , Button.buttonPrimary_
+            [ HH.text "Neighbor" ]
           ]
         ]
       ]
