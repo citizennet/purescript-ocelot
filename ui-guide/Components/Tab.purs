@@ -47,7 +47,7 @@ component =
                 [ HH.text "Standard Tabs" ]
               , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
-                  [ NavigationTab.navigationTabs (tabConfig defaultTabs) ]
+                  [ NavigationTab.navigationTabs_ (tabConfig defaultTabs) ]
               ]
           , Backdrop.backdrop_
               [ HH.h3
@@ -55,7 +55,7 @@ component =
                 [ HH.text "Tabs with Errors" ]
               , HH.div
                   [ HP.class_ (HH.ClassName "bg-black-10 flex items-center justify-center h-full w-full") ]
-                  [ NavigationTab.navigationTabs (tabConfig errorTabs) ]
+                  [ NavigationTab.navigationTabs_ (tabConfig errorTabs) ]
               ]
           ]
       ]
