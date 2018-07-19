@@ -43,7 +43,7 @@ stickyHeader hConfig tConfig =
     [ HH.div
       [ HP.classes Layout.stickyClasses ]
       [ formHeader hConfig
-      , NavigationTab.navigationTabs tConfig
+      , NavigationTab.navigationTabs tConfig [ HP.class_ $ HH.ClassName "px-16" ]
       ]
     ]
 

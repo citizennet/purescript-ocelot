@@ -2,9 +2,11 @@ module Ocelot.Block.NavigationTab where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
+import Ocelot.HTML.Properties ((<&>))
 
 type Tab page =
   { name :: String
@@ -32,7 +34,6 @@ innerClasses = HH.ClassName <$>
   , "items-end"
   , "mx-auto"
   , "flex"
-  , "px-16"
   , "h-16"
   , "list-reset"
   ]
@@ -85,14 +86,23 @@ navigationTabs
   :: ∀ p i page
    . Eq page
   => TabConfig page
+  -> Array (HH.IProp HTMLdiv i)
   -> HH.HTML p i
-navigationTabs { tabs, activePage } =
+navigationTabs { tabs, activePage } props =
   HH.div
     [ HP.classes outerClasses ]
     [ HH.ul
-      [ HP.classes innerClasses ]
+      ( [ HP.classes innerClasses ] <&> props )
       $ navigationTab activePage <$> tabs
     ]
+
+navigationTabs_
+  :: ∀ p i page
+   . Eq page
+  => TabConfig page
+  -> HH.HTML p i
+navigationTabs_ config = navigationTabs config []
+
 
 navigationTab
   :: ∀ p i page
