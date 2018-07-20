@@ -19,7 +19,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Icon (close_, search_) as Icon
+import Ocelot.Block.Icon as Icon
 import Ocelot.HTML.Properties (css)
 
 type State =
@@ -133,7 +133,7 @@ component =
           , HP.type_ (HP.ButtonButton)
           , HP.classes $ buttonClasses <> buttonCondClasses
           ]
-          [ Icon.close_ ]
+          [ Icon.delete_ ]
         ]
 
       where
@@ -159,8 +159,8 @@ component =
 
         labelCondClasses =
           ifOpen
-            [ "text-grey-50" ]
-            [ "text-grey-70" ]
+            [ "text-grey-50", "mb-0", "mt-0" ]
+            [ "text-grey-70", "-mb-1", "mt-1" ]
 
         inputClasses = HH.ClassName <$>
           [ "no-outline"
@@ -176,9 +176,9 @@ component =
 
         buttonClasses = HH.ClassName <$>
           [ "no-outline"
-          , "text-grey-80"
-          , "hover:text-grey-70"
-          , "text-sm"
+          , "text-grey-70"
+          , "hover:text-grey-50"
+          , "text-xs"
           , "transition-1/4"
           , "flex-shrink"
           ]

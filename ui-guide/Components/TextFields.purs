@@ -436,7 +436,7 @@ cnDocumentationBlocks =
         [ HH.div
           [ css "flex items-center pb-6" ]
           [ HH.div
-            [ css "mr-6" ]
+            [ css "mr-8" ]
             [ HH.slot unit SearchBar.component
               { debounceTime: Just (Milliseconds 250.0) }
               ( HE.input HandleSearch )
