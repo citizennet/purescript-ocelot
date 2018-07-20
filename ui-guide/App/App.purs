@@ -149,7 +149,7 @@ app =
         , "fixed"
         , "pin-y"
         , "pin-l"
-        , "overflow-y-scroll"
+        , "overflow-y-auto"
         , "md:overflow-visible"
         , "scrolling-touch"
         , "md:scrolling-auto"
@@ -165,7 +165,7 @@ app =
       )
     ]
     [ HH.div
-      [ HP.class_ $ HH.ClassName "flex-1 p-6 overflow-y-scroll" ]
+      [ HP.class_ $ HH.ClassName "flex-1 p-6 overflow-y-auto" ]
       [ HH.header_
         [ Format.heading
           [ HP.class_ $ HH.ClassName "flex" ]
@@ -177,7 +177,7 @@ app =
           ]
         ]
       , HH.nav
-        [ HP.class_ $ HH.ClassName "text-base overflow-y-scroll" ]
+        [ HP.class_ $ HH.ClassName "text-base overflow-y-auto" ]
         (renderGroups state)
       ]
     ]
