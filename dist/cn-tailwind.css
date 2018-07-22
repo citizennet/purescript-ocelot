@@ -7793,6 +7793,14 @@ dt {
   stroke: currentColor;
 }
 
+.table-auto {
+  table-layout: auto;
+}
+
+.table-fixed {
+  table-layout: fixed;
+}
+
 .text-left {
   text-align: left;
 }
@@ -16826,6 +16834,14 @@ input[type=range]::-ms-thumb {
     box-shadow: none;
   }
 
+  .sm\:table-auto {
+    table-layout: auto;
+  }
+
+  .sm\:table-fixed {
+    table-layout: fixed;
+  }
+
   .sm\:text-left {
     text-align: left;
   }
@@ -25309,6 +25325,14 @@ input[type=range]::-ms-thumb {
 
   .md\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .md\:table-auto {
+    table-layout: auto;
+  }
+
+  .md\:table-fixed {
+    table-layout: fixed;
   }
 
   .md\:text-left {
@@ -33796,6 +33820,14 @@ input[type=range]::-ms-thumb {
     box-shadow: none;
   }
 
+  .lg\:table-auto {
+    table-layout: auto;
+  }
+
+  .lg\:table-fixed {
+    table-layout: fixed;
+  }
+
   .lg\:text-left {
     text-align: left;
   }
@@ -42279,6 +42311,14 @@ input[type=range]::-ms-thumb {
 
   .xl\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .xl\:table-auto {
+    table-layout: auto;
+  }
+
+  .xl\:table-fixed {
+    table-layout: fixed;
   }
 
   .xl\:text-left {

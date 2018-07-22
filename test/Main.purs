@@ -6,29 +6,17 @@ import Effect (Effect)
 import Effect.Class (liftEffect)
 import Effect.Now (now)
 import Data.DateTime.Instant (unInstant)
-import Data.Maybe (Maybe)
 import Data.Set as Set
 import Data.Time.Duration (Milliseconds(..))
 import Data.Tuple (Tuple(..))
-import Debug.Trace (traceM)
-import Ocelot.Data.Record (makeDefaultFormInputs)
 import Ocelot.HTML.Properties (appendIProps, css, extract)
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Console (log)
 import Test.Unit.Main (runTest)
-import Type.Prelude (RProxy(..))
-
-type Fields =
-  ( email :: String
-  , password :: Maybe String
-  )
 
 main :: Effect Unit
 main = runTest do
-  suite "Validation" do
-    traceM $ makeDefaultFormInputs (RProxy :: RProxy Fields)
-    pure unit
   suite "HTML.Properties" do
     test "appendIProps" do
       let ipropsA = [ css "m-10 p-10 px-5 pb-12 min-w-80 w-full shadow overflow-hidden" ]

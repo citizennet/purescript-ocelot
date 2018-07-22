@@ -26,8 +26,6 @@ import UIGuide.Components.Tray as Tray
 import UIGuide.Components.Toast as Toast
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
-import UIGuide.Components.Validation as Validation
-
 
 ----------
 -- Routes
@@ -96,11 +94,6 @@ routes = fromFoldable
     { anchor: "Dropdowns"
     , component: proxy Dropdown.component
     , group: Components
-    }
-  , Tuple "validation"
-    { anchor: "Validation"
-    , component: proxy Validation.component
-    , group: Behaviors
     }
   , Tuple "type"
     { anchor: "Type"
