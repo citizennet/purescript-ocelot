@@ -97,6 +97,12 @@
 .icon-close:before {
   content: "\e008";
 }
+.icon-plus {
+  transform: rotate(45deg);
+}
+.icon-plus:before {
+  content: "\e004";
+}
 .icon-collapse:before {
   content: "\e004";
 }

@@ -195,6 +195,12 @@ options = icon "icon-options"
 options_ :: ∀ p i. HH.HTML p i
 options_ = options []
 
+plus :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+plus = icon "icon-plus"
+
+plus_ :: ∀ p i. HH.HTML p i
+plus_ = plus []
+
 refresh :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 refresh = icon "icon-refresh"
 

@@ -74,6 +74,7 @@ component =
             , Tuple "Menu" Icon.menu_
             , Tuple "Options" Icon.options_
             , Tuple "Close" Icon.close_
+            , Tuple "Plus" Icon.plus_
             , Tuple "Delete" Icon.delete_
             , Tuple "Delete Circle" Icon.deleteCircle_
             , Tuple "Add" Icon.add_
