@@ -143,13 +143,12 @@ component =
           , "items-stretch"
           , "transition-1/4"
           , "border-b-2"
-          , "border-transparent"
           ]
 
         containerCondClasses =
           ifOpen
-            [ "w-full", "border-blue-88" ]
-            [ ]
+            [ "max-w-160", "border-blue-88" ]
+            [ "max-w-12", "border-transparent" ]
 
         labelClasses = HH.ClassName <$>
           [ "mr-3"
@@ -167,6 +166,7 @@ component =
           , "flex-1"
           , "bg-transparent"
           , "h-full"
+          , "transition-1/4"
           ]
 
         inputCondClasses =
