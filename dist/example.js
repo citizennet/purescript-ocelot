@@ -27108,7 +27108,7 @@ var PS = {};
   var component = function (dictMonadAff) {
       var render = function (v) {
           var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mr-3", "text-2xl", "cursor-pointer" ]);
-          var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "h-full" ]);
+          var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "h-full", "transition-1/4" ]);
           var ifOpen = function (openClasses) {
               return function (closedClasses) {
                   return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
@@ -27121,8 +27121,8 @@ var PS = {};
           };
           var inputCondClasses = ifOpen([ "w-full" ])([ "w-0" ]);
           var labelCondClasses = ifOpen([ "text-grey-50", "mb-0", "mt-0" ])([ "text-grey-70", "-mb-1", "mt-1" ]);
-          var containerCondClasses = ifOpen([ "w-full", "border-blue-88" ])([  ]);
-          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2", "border-transparent" ]);
+          var containerCondClasses = ifOpen([ "max-w-160", "border-blue-88" ])([ "max-w-12", "border-transparent" ]);
+          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2" ]);
           var buttonCondClasses = ifOpen([ "opacity-100", "visible" ])([ "opacity-0", "invisible" ]);
           var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "text-grey-70", "hover:text-grey-50", "text-xs", "transition-1/4", "flex-shrink" ]);
           return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-grow") ])([ Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))), Halogen_HTML_Properties.tabIndex(0) ]) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.delete_ ]) ]);
