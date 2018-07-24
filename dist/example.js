@@ -20110,7 +20110,9 @@ var PS = {};
   var refresh = icon("icon-refresh");
   var refresh_ = refresh([  ]);
   var search = icon("icon-search");
-  var search_ = search([  ]);    
+  var search_ = search([  ]);
+  var selected = icon("icon-selected");
+  var selected_ = selected([  ]);
   var settings = icon("icon-settings");
   var settings_ = settings([  ]);
   var share = icon("icon-share");
@@ -20216,6 +20218,8 @@ var PS = {};
   exports["refresh_"] = refresh_;
   exports["search"] = search;
   exports["search_"] = search_;
+  exports["selected"] = selected;
+  exports["selected_"] = selected_;
   exports["settings"] = settings;
   exports["settings_"] = settings_;
   exports["share"] = share;
@@ -22922,6 +22926,15 @@ var PS = {};
       };
       return Selected;
   })();
+  var VisibilityChanged = (function () {
+      function VisibilityChanged(value0) {
+          this.value0 = value0;
+      };
+      VisibilityChanged.create = function (value0) {
+          return new VisibilityChanged(value0);
+      };
+      return VisibilityChanged;
+  })();
   var Emit = (function () {
       function Emit(value0) {
           this.value0 = value0;
@@ -23009,32 +23022,35 @@ var PS = {};
               if (v.value0 instanceof Select.Emit) {
                   return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.raise(new Emit(v.value0.value0)))(v.value1);
               };
+              if (v.value0 instanceof Select.VisibilityChanged) {
+                  return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.raise(new VisibilityChanged(v.value0.value0)))(v.value1);
+              };
               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
           };
           if (v instanceof SetItems) {
               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v1) {
-                  var $15 = {};
-                  for (var $16 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $16)) {
-                          $15[$16] = v1[$16];
+                  var $16 = {};
+                  for (var $17 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $17)) {
+                          $16[$17] = v1[$17];
                       };
                   };
-                  $15.items = v.value0;
-                  return $15;
+                  $16.items = v.value0;
+                  return $16;
               })))(function () {
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
           };
           if (v instanceof SetSelection) {
               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Control_Comonad_Store_Class.seeks(Control_Comonad_Store_Class.comonadStoreStoreT(Data_Identity.comonadIdentity))(function (v1) {
-                  var $20 = {};
-                  for (var $21 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $21)) {
-                          $20[$21] = v1[$21];
+                  var $21 = {};
+                  for (var $22 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $22)) {
+                          $21[$22] = v1[$22];
                       };
                   };
-                  $20.selectedItem = v.value0;
-                  return $20;
+                  $21.selectedItem = v.value0;
+                  return $21;
               })))(function () {
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
@@ -23044,7 +23060,7 @@ var PS = {};
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
           };
-          throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 70, column 12 - line 87, column 14: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Components.Dropdown line 71, column 12 - line 89, column 14: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
@@ -23058,6 +23074,7 @@ var PS = {};
   exports["SetSelection"] = SetSelection;
   exports["Receive"] = Receive;
   exports["Selected"] = Selected;
+  exports["VisibilityChanged"] = VisibilityChanged;
   exports["Emit"] = Emit;
   exports["component"] = component;
 })(PS["Ocelot.Components.Dropdown"] = PS["Ocelot.Components.Dropdown"] || {});
@@ -23117,7 +23134,7 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 90, column 9 - line 92, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 96, column 9 - line 98, column 27: " + [  ]);
                                       })();
                                       var itemClasses$prime = [ "px-4", "py-2" ];
                                       var highlightClass = (function () {
@@ -23127,11 +23144,20 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 86, column 9 - line 88, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 92, column 9 - line 94, column 27: " + [  ]);
                                       })();
                                       var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
                                       var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
-                                      return Halogen_HTML_Elements.li(itemProps)([ Halogen_HTML_Core.text(toString(item)) ]);
+                                      var checkmarkClass = (function () {
+                                          if (Data_Eq.eq(Data_Maybe.eqMaybe(dictEq))(new Data_Maybe.Just(item))(state.selectedItem)) {
+                                              return [  ];
+                                          };
+                                          if (Data_Boolean.otherwise) {
+                                              return [ "invisible" ];
+                                          };
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 100, column 9 - line 102, column 40: " + [  ]);
+                                      })();
+                                      return Halogen_HTML_Elements.li(itemProps)([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "mr-2", "text-green" ])(checkmarkClass))) ])([ Ocelot_Block_Icon.selected_ ]), Halogen_HTML_Core.text(toString(item)) ]);
                                   };
                               };
                               var containerClasses$prime = [ "bg-white", "text-black-20", "border", "cursor-pointer", "list-reset", "py-2", "rounded", "shadow", "absolute", "pin-t", "z-60" ];
