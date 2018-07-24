@@ -71,9 +71,8 @@ defDropdown button props toString label state selectState =
     renderItem idx item =
       HH.li
         itemProps
-        [ HH.span
+        [ Icon.selected
           [ HP.classes $ HH.ClassName <$> ([ "mr-2", "text-green" ] <> checkmarkClass) ]
-          [ Icon.selected_ ]
         , HH.text (toString item)
         ]
       where
