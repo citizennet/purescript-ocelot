@@ -33,6 +33,7 @@ type Input o item m =
 
 data Message o item
   = Selected item
+  | VisibilityChanged Select.Visibility
   | Emit (o Unit)
 
 type ChildSlot = Unit
@@ -75,6 +76,7 @@ component =
           H.raise $ Selected item
           pure a
         Select.Emit query -> H.raise (Emit query) $> a
+        Select.VisibilityChanged vis -> H.raise (VisibilityChanged vis) $> a
         _ -> pure a
       SetItems items a -> do
         H.modify_ $ seeks _ { items = items }

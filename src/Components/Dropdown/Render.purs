@@ -69,9 +69,15 @@ defDropdown button props toString label state selectState =
       ]
 
     renderItem idx item =
-      HH.li itemProps [HH.text (toString item)]
-
+      HH.li
+        itemProps
+        [ HH.span
+          [ HP.classes $ HH.ClassName <$> ([ "mr-2", "text-green" ] <> checkmarkClass) ]
+          [ Icon.selected_ ]
+        , HH.text (toString item)
+        ]
       where
+
         itemProps =
           setItemProps idx [ HP.classes itemClasses ]
 
@@ -90,6 +96,10 @@ defDropdown button props toString label state selectState =
         selectedClass
           | Just item == state.selectedItem = [ "font-medium" ]
           | otherwise = []
+
+        checkmarkClass
+          | Just item == state.selectedItem = []
+          | otherwise = [ "invisible" ]
 
 render
   :: ∀ o item m
