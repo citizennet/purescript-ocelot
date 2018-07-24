@@ -20094,7 +20094,7 @@ var PS = {};
   var Prelude = PS["Prelude"];                 
   var icon = function (className) {
       return function (iprops) {
-          return Halogen_HTML_Elements.span([ Halogen_HTML_Properties_ARIA.label(className), Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "inline-block" ])) ])([ Halogen_HTML_Elements.span(Ocelot_HTML_Properties.appendIProps(iprops)([ Halogen_HTML_Properties_ARIA.hidden("true"), Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ className, "inline-block", "transition-1/4-out" ])) ]))([  ]) ]);
+          return Halogen_HTML_Elements.span([ Halogen_HTML_Properties_ARIA.label(className), Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "inline-block" ])) ])([ Halogen_HTML_Elements.span(Ocelot_HTML_Properties.appendIProps(iprops)([ Halogen_HTML_Properties_ARIA.hidden("true"), Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ className, "inline-block" ])) ]))([  ]) ]);
       };
   };
   var info = icon("icon-info");
@@ -20112,7 +20112,6 @@ var PS = {};
   var search = icon("icon-search");
   var search_ = search([  ]);
   var selected = icon("icon-selected");
-  var selected_ = selected([  ]);
   var settings = icon("icon-settings");
   var settings_ = settings([  ]);
   var share = icon("icon-share");
@@ -20219,7 +20218,6 @@ var PS = {};
   exports["search"] = search;
   exports["search_"] = search_;
   exports["selected"] = selected;
-  exports["selected_"] = selected_;
   exports["settings"] = settings;
   exports["settings_"] = settings_;
   exports["share"] = share;
@@ -23134,7 +23132,7 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 96, column 9 - line 98, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 95, column 9 - line 97, column 27: " + [  ]);
                                       })();
                                       var itemClasses$prime = [ "px-4", "py-2" ];
                                       var highlightClass = (function () {
@@ -23144,7 +23142,7 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 92, column 9 - line 94, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 91, column 9 - line 93, column 27: " + [  ]);
                                       })();
                                       var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
                                       var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
@@ -23155,9 +23153,9 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [ "invisible" ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 100, column 9 - line 102, column 40: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Components.Dropdown.Render line 99, column 9 - line 101, column 40: " + [  ]);
                                       })();
-                                      return Halogen_HTML_Elements.li(itemProps)([ Halogen_HTML_Elements.span([ Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "mr-2", "text-green" ])(checkmarkClass))) ])([ Ocelot_Block_Icon.selected_ ]), Halogen_HTML_Core.text(toString(item)) ]);
+                                      return Halogen_HTML_Elements.li(itemProps)([ Ocelot_Block_Icon.selected([ Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "mr-2", "text-green" ])(checkmarkClass))) ]), Halogen_HTML_Core.text(toString(item)) ]);
                                   };
                               };
                               var containerClasses$prime = [ "bg-white", "text-black-20", "border", "cursor-pointer", "list-reset", "py-2", "rounded", "shadow", "absolute", "pin-t", "z-60" ];
