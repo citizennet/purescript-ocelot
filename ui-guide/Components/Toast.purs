@@ -1,4 +1,4 @@
-module UIGuide.Components.Toast where
+module UIGuide.Components.Dialogs where
 
 import Prelude
 
@@ -15,6 +15,7 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Toast as Toast
+import Ocelot.Block.Tooltip (tooltip_) as Tooltip
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -62,6 +63,21 @@ component =
     render state =
       HH.div_
         [ Documentation.block_
+          { header: "Tooltips"
+          , subheader: "Point out and explain UI"
+          }
+          [ Backdrop.backdrop_
+            [ Backdrop.content_
+              [ HH.div
+                [ css "mb-6 text-center" ]
+                [ Tooltip.tooltip_
+                    "This is a helpful tooltip!"
+                    (Icon.info [ css "text-2xl" ])
+                ]
+              ]
+            ]
+          ]
+        , Documentation.block_
           { header: "Toasts"
           , subheader: "Less prominent dialogs that pop up from the bottom and then fall away. Usually indicate a status change. May contain actions."
           }

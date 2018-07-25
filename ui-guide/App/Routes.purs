@@ -23,7 +23,7 @@ import UIGuide.Components.Modals as Modals
 import UIGuide.Components.Table as Table
 import UIGuide.Components.TextFields as TextFields
 import UIGuide.Components.Tray as Tray
-import UIGuide.Components.Toast as Toast
+import UIGuide.Components.Dialogs as Dialogs
 import UIGuide.Components.Type as Type
 import UIGuide.Components.Typeaheads as Typeaheads
 
@@ -110,9 +110,9 @@ routes = fromFoldable
     , component: proxy Tray.component
     , group: Components
     }
-  , Tuple "toasts"
-    { anchor: "Toasts"
-    , component: proxy Toast.component
+  , Tuple "dialogs"
+    { anchor: "Dialogs"
+    , component: proxy Dialogs.component
     , group: Components
     }
   , Tuple "badge"
