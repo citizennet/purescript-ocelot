@@ -205,7 +205,7 @@ cnDocumentationBlocks st =
               , Expandable.content_
                 st.singleLocation
                 [ FormField.field_
-                  { label: "Primary Location"
+                  { label: HH.text "Primary Location"
                   , helpText: Just "Search your favorite destination."
                   , error: Nothing
                   , inputId: "location"
@@ -221,7 +221,7 @@ cnDocumentationBlocks st =
                     ( HE.input $ HandleTypeaheadLocation 0 )
                   ]
                 , FormField.field_
-                  { label: "Secondary Location"
+                  { label: HH.text "Secondary Location"
                   , helpText: Just "Search your favorite destination."
                   , error: Nothing
                   , inputId: "location-hydrated"
@@ -251,7 +251,7 @@ cnDocumentationBlocks st =
               , Expandable.content_
                 st.singleUser
                 [ FormField.field_
-                  { label: "Primary User"
+                  { label: HH.text "Primary User"
                   , helpText: Just "Search your favorite companion."
                   , error: Nothing
                   , inputId: "user"
@@ -267,7 +267,7 @@ cnDocumentationBlocks st =
                     ( HE.input $ HandleTypeaheadUser 0 )
                   ]
                 , FormField.field_
-                  { label: "Secondary User"
+                  { label: HH.text "Secondary User"
                   , helpText: Just "Search your favorite companion."
                   , error: Nothing
                   , inputId: "user-hydrated"
@@ -300,7 +300,7 @@ cnDocumentationBlocks st =
             , Format.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
-              { label: "Enabled"
+              { label: HH.text "Enabled"
               , helpText: Nothing
               , error: Nothing
               , inputId: "enable-locations"
@@ -317,7 +317,7 @@ cnDocumentationBlocks st =
             , Expandable.content_
               st.multiLocation
               [ FormField.field_
-                { label: "Targeted Locations"
+                { label: HH.text "Targeted Locations"
                 , helpText: Just "Search your top destinations."
                 , error: Nothing
                 , inputId: "locations"
@@ -333,7 +333,7 @@ cnDocumentationBlocks st =
                   ( HE.input $ HandleTypeaheadLocation 2 )
                 ]
               , FormField.field_
-                { label: "Excluded Locations"
+                { label: HH.text "Excluded Locations"
                 , helpText: Just "Search your top destinations."
                 , error: Nothing
                 , inputId: "locations"
@@ -358,7 +358,7 @@ cnDocumentationBlocks st =
             , Format.p_
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
-              { label: "Enabled"
+              { label: HH.text "Enabled"
               , helpText: Nothing
               , error: Nothing
               , inputId: "enable-users"
@@ -375,7 +375,7 @@ cnDocumentationBlocks st =
             , Expandable.content_
               st.multiUser
               [ FormField.field_
-                { label: "Targeted Users"
+                { label: HH.text "Targeted Users"
                 , helpText: Just "Search your top companions."
                 , error: Nothing
                 , inputId: "users"
@@ -391,7 +391,7 @@ cnDocumentationBlocks st =
                   ( HE.input $ HandleTypeaheadUser 2 )
                 ]
               , FormField.field_
-                { label: "Excluded Users"
+                { label: HH.text "Excluded Users"
                 , helpText: Just "Search your top companions."
                 , error: Nothing
                 , inputId: "users-hydrated"

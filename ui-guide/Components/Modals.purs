@@ -67,7 +67,7 @@ component =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "locations"
@@ -86,7 +86,7 @@ component =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "locations"

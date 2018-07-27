@@ -82,7 +82,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.fieldMid_
-              { label: "Start"
+              { label: HH.text "Start"
               , helpText: Just "Choose a start date."
               , error: Nothing
               , inputId: "start-date"
@@ -100,7 +100,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.fieldMid_
-              { label: "End"
+              { label: HH.text "End"
               , helpText: Just "Choose an end date."
               , error: Nothing
               , inputId: "end-date"
@@ -125,7 +125,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.fieldMid_
-              { label: "Start"
+              { label: HH.text "Start"
               , helpText: Just "Choose a start time."
               , error: Nothing
               , inputId: "start-time"
@@ -142,7 +142,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.fieldMid_
-              { label: "End"
+              { label: HH.text "End"
               , helpText: Just "Choose an end time."
               , error: Nothing
               , inputId: "end-time"
@@ -166,7 +166,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.field_
-              { label: "Start"
+              { label: HH.text "Start"
               , helpText: Just "Choose a start date and time."
               , error: Nothing
               , inputId: "start"
@@ -197,7 +197,7 @@ cnDocumentationBlocks =
             [ css "flex-1" ]
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.field_
-              { label: "End"
+              { label: HH.text "End"
               , helpText: Just "Choose an end date and time."
               , error: Nothing
               , inputId: "end"

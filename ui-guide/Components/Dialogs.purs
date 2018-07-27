@@ -12,8 +12,11 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Ocelot.Block.Button as Button
+import Ocelot.Block.Card (card) as Card
+import Ocelot.Block.FormField (field) as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Input (input) as Input
 import Ocelot.Block.Toast as Toast
 import Ocelot.Block.Tooltip (tooltip_) as Tooltip
 import Ocelot.HTML.Properties (css)
@@ -67,12 +70,23 @@ component =
           , subheader: "Point out and explain UI"
           }
           [ Backdrop.backdrop_
-            [ Backdrop.content_
-              [ HH.div
-                [ css "mb-6 text-center" ]
-                [ Tooltip.tooltip_
-                    "This is a helpful tooltip!"
-                    (Icon.info [ css "text-2xl" ])
+            [ Backdrop.content
+              [ css "mt-0" ]
+              [ Card.card
+                [ css "w-1/2 m-auto" ]
+                [ FormField.field
+                  { helpText: Just "The function of this field is not clear."
+                  , label: HH.div_
+                    [ HH.text "Account Id"
+                    , Tooltip.tooltip_
+                        "This tooltip can explain more about what Account Id does"
+                        (Icon.info [ css "ml-2" ])
+                    ]
+                  , error: Nothing
+                  , inputId: "tooltip-input"
+                  }
+                  [ css "mb-6 pt-3" ]
+                  [ Input.input [] ]
                 ]
               ]
             ]
