@@ -36,8 +36,8 @@ tooltipClasses = HH.ClassName <$>
   , "group-hover:visible"
   , "text-white"
   , "bg-grey-50"
-  , "p-2"
+  , "px-2"
   , "rounded"
   , "z-60"
-  , "-my-10"
+  , "-my-8"
   ]

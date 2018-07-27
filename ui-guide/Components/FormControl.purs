@@ -90,7 +90,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Vertical List" ]
                   , FormField.fieldset_
-                    { label: "Platform"
+                    { label: HH.text "Platform"
                     , inputId: "checkbox-vertical"
                     , helpText: Just "Where do you want your ad to appear?"
                     , error: Nothing
@@ -116,7 +116,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
-                    { label: "Platform"
+                    { label: HH.text "Platform"
                     , inputId: "checkbox-horizontal"
                     , helpText: Just "Where do you want your ad to appear?"
                     , error: Nothing
@@ -152,7 +152,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Vertical List" ]
                   , FormField.fieldset_
-                    { label: "Platform"
+                    { label: HH.text "Platform"
                     , inputId: "checkbox-vertical-disabled"
                     , helpText: Just "Where do you want your ad to appear?"
                     , error: Nothing
@@ -183,7 +183,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Horizontal List" ]
                   , FormField.fieldset_
-                    { label: "Platform"
+                    { label: HH.text "Platform"
                     , inputId: "checkbox-horizontal-disabled"
                     , helpText: Just "Where do you want your ad to appear?"
                     , error: Nothing
@@ -230,7 +230,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Vertical List" ]
                   , FormField.fieldset_
-                    { label: "Optimization Goal"
+                    { label: HH.text "Optimization Goal"
                     , inputId: "radio-vertical"
                     , helpText: Just "What do you want to optimize for?"
                     , error: Nothing
@@ -256,7 +256,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
-                    { label: "Previews"
+                    { label: HH.text "Previews"
                     , inputId: "radio-horizontal"
                     , helpText: Just "What kind of preview do you want to see?"
                     , error: Nothing
@@ -292,7 +292,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Disabled Vertical List" ]
                   , FormField.fieldset_
-                    { label: "Optimization Goal"
+                    { label: HH.text "Optimization Goal"
                     , inputId: "radio-vertical-disabled"
                     , helpText: Just "What do you want to optimize for?"
                     , error: Nothing
@@ -323,7 +323,7 @@ component =
                     [ HP.classes Format.captionClasses ]
                     [ HH.text "Horizontal List" ]
                   , FormField.fieldset_
-                    { label: "Disabled Previews"
+                    { label: HH.text "Disabled Previews"
                     , inputId: "radio-horizontal-disabled"
                     , helpText: Just "What kind of preview do you want to see?"
                     , error: Nothing
@@ -375,7 +375,7 @@ component =
               -- [ HP.classes Format.captionClasses ]
               -- [ HH.text "Range Input with Form Control" ]
             -- , FormField.field_
-              -- { label: "Dave's OO Emails"
+              -- { label: HH.text "Dave's OO Emails"
               -- , helpText: Just "How many do you want?"
               -- , error: Nothing
               -- , inputId: "range"

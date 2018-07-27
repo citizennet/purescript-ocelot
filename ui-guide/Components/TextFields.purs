@@ -72,7 +72,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.field_
-            { label: "Email*"
+            { label: HH.text "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , error: Nothing
             , inputId: "email"
@@ -86,7 +86,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.field_
-            { label: "Email*"
+            { label: HH.text "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , error: Just "This field is required."
             , inputId: "email-error"
@@ -105,7 +105,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.field_
-            { label: "Email*"
+            { label: HH.text "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , error: Nothing
             , inputId: "email-hydrated"
@@ -119,7 +119,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.field_
-            { label: "Email*"
+            { label: HH.text "Email*"
             , helpText: Just "Add the email of the End Advertiser."
             , error: Nothing
             , inputId: "email-disabled"
@@ -146,7 +146,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.fieldSmall_
-            { label: "Daily Goal"
+            { label: HH.text "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , error: Nothing
             , inputId: "daily-goal"
@@ -159,7 +159,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.fieldSmall_
-            { label: "Daily Goal"
+            { label: HH.text "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , error: Just "Must be between 0 and 100"
             , inputId: "daily-goal-error"
@@ -178,7 +178,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
-            { label: "Daily Goal"
+            { label: HH.text "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , error: Nothing
             , inputId: "daily-goal-hydrated"
@@ -192,7 +192,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
-            { label: "Daily Goal"
+            { label: HH.text "Daily Goal"
             , helpText: Just "Desired daily spend as percentage of total budget."
             , error: Nothing
             , inputId: "daily-goal-disabled"
@@ -219,7 +219,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.fieldSmall_
-            { label: "Budget*"
+            { label: HH.text "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , error: Nothing
             , inputId: "budget"
@@ -232,7 +232,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.fieldSmall_
-            { label: "Budget*"
+            { label: HH.text "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , error: Just "This field is required."
             , inputId: "budget-error"
@@ -250,7 +250,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
-            { label: "Budget*"
+            { label: HH.text "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , error: Nothing
             , inputId: "budget-hydrated"
@@ -264,7 +264,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
-            { label: "Budget*"
+            { label: HH.text "Budget*"
             , helpText: Just "Total amount for campaign to spend."
             , error: Nothing
             , inputId: "budget-disabled"
@@ -291,7 +291,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.field_
-            { label: "Search"
+            { label: HH.text "Search"
             , helpText: Just "This text field shows how you might represent a search field."
             , error: Nothing
             , inputId: "search"
@@ -316,7 +316,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Loading" ]
           , FormField.field_
-            { label: "Search"
+            { label: HH.text "Search"
             , helpText: Just "This text field shows how you might represent a loading state for a search field."
             , error: Nothing
             , inputId: "search-loading"
@@ -350,7 +350,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Static" ]
           , FormField.field_
-            { label: "Comment"
+            { label: HH.text "Comment"
             , helpText: Just "Say something."
             , error: Nothing
             , inputId: "comment"
@@ -364,7 +364,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Error" ]
           , FormField.field_
-            { label: "Comment*"
+            { label: HH.text "Comment*"
             , helpText: Just "Say something."
             , error: Just "This field is required."
             , inputId: "comment-error"
@@ -383,7 +383,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Hydrated" ]
           , FormField.field_
-            { label: "Comment"
+            { label: HH.text "Comment"
             , helpText: Just "Say something."
             , error: Nothing
             , inputId: "comment-hydrated"
@@ -397,7 +397,7 @@ cnDocumentationBlocks =
             [ HP.classes Format.captionClasses ]
             [ HH.text "Disabled" ]
           , FormField.field_
-            { label: "Comment*"
+            { label: HH.text "Comment*"
             , helpText: Just "Say something."
             , error: Nothing
             , inputId: "comment-disabled"

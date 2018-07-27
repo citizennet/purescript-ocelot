@@ -55,7 +55,7 @@ labelClasses = HH.ClassName <$>
 
 type FieldConfig =
   { helpText :: Maybe String
-  , label :: String
+  , label :: HH.PlainHTML
   , error :: Maybe String
   , inputId :: String
   }
@@ -73,7 +73,7 @@ field' config iprops html =
       [ HP.classes labelClasses
       , HP.for config.inputId
       ]
-      [ HH.text config.label ]
+      [ HH.fromPlainHTML config.label ]
     , html
     , errorText_ config.error
     , helpText_ config.helpText
@@ -149,7 +149,7 @@ fieldset config iprops html =
       []
       [ HH.legend
         [ HP.classes labelClasses ]
-        [ HH.text config.label ]
+        [ HH.fromPlainHTML config.label ]
       , HH.div
         [ css "my-1" ]
         html

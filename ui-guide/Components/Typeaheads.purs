@@ -163,7 +163,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your favorite destination."
               , error: Nothing
               , inputId: "location"
@@ -182,7 +182,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your favorite destination."
               , error: Nothing
               , inputId: "location-hydrated"
@@ -206,7 +206,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your favorite companion."
               , error: Nothing
               , inputId: "user"
@@ -225,7 +225,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your favorite companion."
               , error: Nothing
               , inputId: "user-hydrated"
@@ -256,7 +256,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "locations"
@@ -275,7 +275,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "locations"
@@ -299,7 +299,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "users"
@@ -318,7 +318,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "users-hydrated"
@@ -349,7 +349,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Disabled Single Select - Empty" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "disabled-locations-empty"
@@ -369,7 +369,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Disabled Single Select - Hydrated" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "disabled-locations-hydrated"
@@ -389,7 +389,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Error Single Select" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "error-locations"
@@ -408,7 +408,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Loading Single Select" ]
             , FormField.field_
-              { label: "Locations"
+              { label: HH.text "Locations"
               , helpText: Just "Search your top destinations."
               , error: Nothing
               , inputId: "loading-locations"
@@ -432,7 +432,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Disabled Multi Select - Empty" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "disabled-users-empty"
@@ -452,7 +452,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Disabled Multi Select - Hydrated" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "disabled-users-hydrated"
@@ -472,7 +472,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Error Multi Select" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "error-users"
@@ -491,7 +491,7 @@ cnDocumentationBlocks =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Loading Multi Select" ]
             , FormField.field_
-              { label: "Users"
+              { label: HH.text "Users"
               , helpText: Just "Search your top companions."
               , error: Nothing
               , inputId: "loading-users"
