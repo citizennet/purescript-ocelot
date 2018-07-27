@@ -20022,7 +20022,7 @@ var PS = {};
   var field$prime = function (config) {
       return function (iprops) {
           return function (html) {
-              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(fieldClasses) ])(iprops))([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses), Halogen_HTML_Properties["for"](config.inputId) ])([ Halogen_HTML_Core.text(config.label) ]), html, errorText_(config.error), helpText_(config.helpText) ]);
+              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(fieldClasses) ])(iprops))([ Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(labelClasses), Halogen_HTML_Properties["for"](config.inputId) ])([ Halogen_HTML.fromPlainHTML(config.label) ]), html, errorText_(config.error), helpText_(config.helpText) ]);
           };
       };
   };
@@ -20059,7 +20059,7 @@ var PS = {};
   var fieldset = function (config) {
       return function (iprops) {
           return function (html) {
-              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(fieldClasses) ])(iprops))([ Halogen_HTML_Elements.fieldset([  ])([ Halogen_HTML_Elements.legend([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML_Core.text(config.label) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("my-1") ])(html), errorText_(config.error), helpText_(config.helpText) ]) ]);
+              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(fieldClasses) ])(iprops))([ Halogen_HTML_Elements.fieldset([  ])([ Halogen_HTML_Elements.legend([ Halogen_HTML_Properties.classes(labelClasses) ])([ Halogen_HTML.fromPlainHTML(config.label) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("my-1") ])(html), errorText_(config.error), helpText_(config.helpText) ]) ]);
           };
       };
   };
@@ -22771,7 +22771,7 @@ var PS = {};
           header: "Date Pickers",
           subheader: "It's a date picker. Deal with it."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.fieldMid_({
-          label: "Start",
+          label: Halogen_HTML_Core.text("Start"),
           helpText: new Data_Maybe.Just("Choose a start date."),
           error: Data_Maybe.Nothing.value,
           inputId: "start-date"
@@ -22779,7 +22779,7 @@ var PS = {};
           targetDate: Data_Maybe.Nothing.value,
           selection: Data_Maybe.Nothing.value
       })(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.fieldMid_({
-          label: "End",
+          label: Halogen_HTML_Core.text("End"),
           helpText: new Data_Maybe.Just("Choose an end date."),
           error: Data_Maybe.Nothing.value,
           inputId: "end-date"
@@ -22790,14 +22790,14 @@ var PS = {};
           header: "Time Pickers",
           subheader: "It's a time picker. Deal with it."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.fieldMid_({
-          label: "Start",
+          label: Halogen_HTML_Core.text("Start"),
           helpText: new Data_Maybe.Just("Choose a start time."),
           error: Data_Maybe.Nothing.value,
           inputId: "start-time"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(0)(Ocelot_Components_TimePicker.component(dictMonadAff))({
           selection: Data_Maybe.Nothing.value
       })(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.fieldMid_({
-          label: "End",
+          label: Halogen_HTML_Core.text("End"),
           helpText: new Data_Maybe.Just("Choose an end time."),
           error: Data_Maybe.Nothing.value,
           inputId: "end-time"
@@ -22807,7 +22807,7 @@ var PS = {};
           header: "DateTime Pickers",
           subheader: "We've combined them. Deal with it."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.field_({
-          label: "Start",
+          label: Halogen_HTML_Core.text("Start"),
           helpText: new Data_Maybe.Just("Choose a start date and time."),
           error: Data_Maybe.Nothing.value,
           inputId: "start"
@@ -22817,7 +22817,7 @@ var PS = {};
       })(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1 mr-16") ])([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(3)(Ocelot_Components_TimePicker.component(dictMonadAff))({
           selection: Data_Maybe.Nothing.value
       })(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "End",
+          label: Halogen_HTML_Core.text("End"),
           helpText: new Data_Maybe.Just("Choose an end date and time."),
           error: Data_Maybe.Nothing.value,
           inputId: "end"
@@ -22911,7 +22911,7 @@ var PS = {};
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];                 
-  var tooltipClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "invisible", "group-hover:visible", "text-white", "bg-grey-50", "p-2", "rounded", "z-60", "-my-10" ]);
+  var tooltipClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "invisible", "group-hover:visible", "text-white", "bg-grey-50", "px-2", "rounded", "z-60", "-my-8" ]);
   var tooltip = function (msg) {
       return function (props) {
           return function (html) {
@@ -22948,8 +22948,11 @@ var PS = {};
   var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
   var Halogen_Query_HalogenM = PS["Halogen.Query.HalogenM"];
   var Ocelot_Block_Button = PS["Ocelot.Block.Button"];
+  var Ocelot_Block_Card = PS["Ocelot.Block.Card"];
+  var Ocelot_Block_FormField = PS["Ocelot.Block.FormField"];
   var Ocelot_Block_Format = PS["Ocelot.Block.Format"];
   var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
+  var Ocelot_Block_Input = PS["Ocelot.Block.Input"];
   var Ocelot_Block_Toast = PS["Ocelot.Block.Toast"];
   var Ocelot_Block_Tooltip = PS["Ocelot.Block.Tooltip"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
@@ -22998,7 +23001,12 @@ var PS = {};
           return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.block_({
               header: "Tooltips",
               subheader: "Point out and explain UI"
-          })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6 text-center") ])([ Ocelot_Block_Tooltip.tooltip_("This is a helpful tooltip!")(Ocelot_Block_Icon.info([ Ocelot_HTML_Properties.css("text-2xl") ])) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
+          })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0") ])([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("w-1/2 m-auto") ])([ Ocelot_Block_FormField.field({
+              helpText: new Data_Maybe.Just("The function of this field is not clear."),
+              label: Halogen_HTML_Elements.div_([ Halogen_HTML_Core.text("Account Id"), Ocelot_Block_Tooltip.tooltip_("This tooltip can explain more about what Account Id does")(Ocelot_Block_Icon.info([ Ocelot_HTML_Properties.css("ml-2") ])) ]),
+              error: Data_Maybe.Nothing.value,
+              inputId: "tooltip-input"
+          })([ Ocelot_HTML_Properties.css("mb-6 pt-3") ])([ Ocelot_Block_Input.input([  ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
               header: "Toasts",
               subheader: "Less prominent dialogs that pop up from the bottom and then fall away. Usually indicate a status change. May contain actions."
           })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Success") ]), Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(Toggle.create(Success.value))) ])([ Halogen_HTML_Core.text("Success") ]), Ocelot_Block_Toast.toast([ Ocelot_Block_Toast.visible(Data_Eq.eq(Data_Maybe.eqMaybe(eqToastType))(state.toast)(new Data_Maybe.Just(Success.value))) ])([ Ocelot_Block_Icon.success([ Ocelot_HTML_Properties.css("text-green text-2xl mr-2") ]), Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("Campaign saved.") ]) ]) ]) ]) ]), UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(Toggle.create($$Error.value))) ])([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_Toast.toast([ Ocelot_Block_Toast.visible(Data_Eq.eq(Data_Maybe.eqMaybe(eqToastType))(state.toast)(new Data_Maybe.Just($$Error.value))) ])([ Ocelot_Block_Icon.error([ Ocelot_HTML_Properties.css("text-red text-2xl mr-2") ]), Halogen_HTML_Elements.p_([ Halogen_HTML_Core.text("Fix errors before saving.") ]) ]) ]) ]) ]), UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mb-6") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Info") ]) ]) ]) ]) ]) ]);
@@ -26609,24 +26617,24 @@ var PS = {};
           })([ UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdropWhite([ css("flex-col") ])([ Ocelot_Block_Format.subHeading_([ Ocelot_Block_Icon.info([ css("text-yellow pr-2") ]), Halogen_HTML_Core.text("Animation Warning") ]), Ocelot_Block_Format.p_([ Halogen_HTML_Core.text("If the expansion card or any of its parents have "), Halogen_HTML_Elements.code_([ Halogen_HTML_Core.text("overflow: hidden") ]), Halogen_HTML_Core.text(" set, it may cause the collapse and expand animations to fail in some browsers, resulting in a rougher transition.") ]) ]) ]), UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Expandable.heading([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(ToggleCard.create(function (dictStrong) {
               return _singleLocation(dictStrong);
           }))), Ocelot_Block_Expandable.status(st.singleLocation) ])([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Locations") ]), Ocelot_Block_Format.p_([ Halogen_HTML_Core.text("Here are some location typeaheads for you. Initially hidden from view since you may not be interested in them.") ]) ]), Ocelot_Block_Expandable.content_(st.singleLocation)([ Ocelot_Block_FormField.field_({
-              label: "Primary Location",
+              label: Halogen_HTML_Core.text("Primary Location"),
               helpText: new Data_Maybe.Just("Search your favorite destination."),
               error: Data_Maybe.Nothing.value,
               inputId: "location"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(0)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(0))) ]), Ocelot_Block_FormField.field_({
-              label: "Secondary Location",
+              label: Halogen_HTML_Core.text("Secondary Location"),
               helpText: new Data_Maybe.Just("Search your favorite destination."),
               error: Data_Maybe.Nothing.value,
               inputId: "location-hydrated"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(1)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(1))) ]) ]) ]) ]), UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Expandable.heading([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(ToggleCard.create(function (dictStrong) {
               return _singleUser(dictStrong);
           }))), Ocelot_Block_Expandable.status(st.singleUser) ])([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Users") ]) ]), Ocelot_Block_Expandable.content_(st.singleUser)([ Ocelot_Block_FormField.field_({
-              label: "Primary User",
+              label: Halogen_HTML_Core.text("Primary User"),
               helpText: new Data_Maybe.Just("Search your favorite companion."),
               error: Data_Maybe.Nothing.value,
               inputId: "user"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(0)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(0))) ]), Ocelot_Block_FormField.field_({
-              label: "Secondary User",
+              label: Halogen_HTML_Core.text("Secondary User"),
               helpText: new Data_Maybe.Just("Search your favorite companion."),
               error: Data_Maybe.Nothing.value,
               inputId: "user-hydrated"
@@ -26634,36 +26642,36 @@ var PS = {};
               header: "Expansion Cards - Custom",
               subheader: "Take control of how the expansion toggle looks and behaves."
           })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Optimization Rules Engine") ]), Ocelot_Block_Format.p_([ Halogen_HTML_Core.text("Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form.") ]), Ocelot_Block_FormField.field_({
-              label: "Enabled",
+              label: Halogen_HTML_Core.text("Enabled"),
               helpText: Data_Maybe.Nothing.value,
               error: Data_Maybe.Nothing.value,
               inputId: "enable-locations"
           })([ Ocelot_Block_Toggle.toggle([ Halogen_HTML_Properties.id_("enable-locations"), Halogen_HTML_Properties.checked(Ocelot_Block_Expandable.toBoolean(st.multiLocation)), Halogen_HTML_Events.onChange(Halogen_HTML_Events.input_(ToggleCard.create(function (dictStrong) {
               return _multiLocation(dictStrong);
           }))) ]) ]), Ocelot_Block_Expandable.content_(st.multiLocation)([ Ocelot_Block_FormField.field_({
-              label: "Targeted Locations",
+              label: Halogen_HTML_Core.text("Targeted Locations"),
               helpText: new Data_Maybe.Just("Search your top destinations."),
               error: Data_Maybe.Nothing.value,
               inputId: "locations"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(2)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(2))) ]), Ocelot_Block_FormField.field_({
-              label: "Excluded Locations",
+              label: Halogen_HTML_Core.text("Excluded Locations"),
               helpText: new Data_Maybe.Just("Search your top destinations."),
               error: Data_Maybe.Nothing.value,
               inputId: "locations"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(3)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(3))) ]) ]) ]) ]), UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Optimization Rules Engine") ]), Ocelot_Block_Format.p_([ Halogen_HTML_Core.text("Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form.") ]), Ocelot_Block_FormField.field_({
-              label: "Enabled",
+              label: Halogen_HTML_Core.text("Enabled"),
               helpText: Data_Maybe.Nothing.value,
               error: Data_Maybe.Nothing.value,
               inputId: "enable-users"
           })([ Ocelot_Block_Toggle.toggle([ Halogen_HTML_Properties.id_("enable-users"), Halogen_HTML_Properties.checked(Ocelot_Block_Expandable.toBoolean(st.multiUser)), Halogen_HTML_Events.onChange(Halogen_HTML_Events.input_(ToggleCard.create(function (dictStrong) {
               return _multiUser(dictStrong);
           }))) ]) ]), Ocelot_Block_Expandable.content_(st.multiUser)([ Ocelot_Block_FormField.field_({
-              label: "Targeted Users",
+              label: Halogen_HTML_Core.text("Targeted Users"),
               helpText: new Data_Maybe.Just("Search your top companions."),
               error: Data_Maybe.Nothing.value,
               inputId: "users"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(2)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("users") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(2))) ]), Ocelot_Block_FormField.field_({
-              label: "Excluded Users",
+              label: Halogen_HTML_Core.text("Excluded Users"),
               helpText: new Data_Maybe.Just("Search your top companions."),
               error: Data_Maybe.Nothing.value,
               inputId: "users-hydrated"
@@ -26904,22 +26912,22 @@ var PS = {};
               header: "Checkboxes",
               subheader: "Select one or more options."
           })([ accessibilityCallout, UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdrop_([ content([ Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Vertical List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Platform",
+              label: Halogen_HTML_Core.text("Platform"),
               inputId: "checkbox-vertical",
               helpText: new Data_Maybe.Just("Where do you want your ad to appear?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div_([ Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform"), Halogen_HTML_Properties.checked(true) ])([ Halogen_HTML_Core.text("Facebook") ]), Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform") ])([ Halogen_HTML_Core.text("Instagram") ]), Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ]) ]), Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Horizontal List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Platform",
+              label: Halogen_HTML_Core.text("Platform"),
               inputId: "checkbox-horizontal",
               helpText: new Data_Maybe.Just("Where do you want your ad to appear?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div([ css("flex") ])([ Ocelot_Block_Checkbox.checkbox([ css("pr-6") ])([ Halogen_HTML_Properties.name("platform"), Halogen_HTML_Properties.checked(true) ])([ Halogen_HTML_Core.text("Facebook") ]), Ocelot_Block_Checkbox.checkbox([ css("pr-6") ])([ Halogen_HTML_Properties.name("platform") ])([ Halogen_HTML_Core.text("Instagram") ]), Ocelot_Block_Checkbox.checkbox([ css("pr-6") ])([ Halogen_HTML_Properties.name("platform") ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdrop_([ content([ Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Vertical List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Platform",
+              label: Halogen_HTML_Core.text("Platform"),
               inputId: "checkbox-vertical-disabled",
               helpText: new Data_Maybe.Just("Where do you want your ad to appear?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div_([ Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform-disabled"), Halogen_HTML_Properties.checked(true), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Facebook") ]), Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform-disabled"), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Instagram") ]), Ocelot_Block_Checkbox.checkbox_([ Halogen_HTML_Properties.name("platform-disabled"), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Twitter") ]) ]) ]) ]), Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Horizontal List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Platform",
+              label: Halogen_HTML_Core.text("Platform"),
               inputId: "checkbox-horizontal-disabled",
               helpText: new Data_Maybe.Just("Where do you want your ad to appear?"),
               error: Data_Maybe.Nothing.value
@@ -26927,22 +26935,22 @@ var PS = {};
               header: "Radios",
               subheader: "Select one option."
           })([ accessibilityCallout, UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdrop_([ content([ Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Vertical List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Optimization Goal",
+              label: Halogen_HTML_Core.text("Optimization Goal"),
               inputId: "radio-vertical",
               helpText: new Data_Maybe.Just("What do you want to optimize for?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div_([ Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal"), Halogen_HTML_Properties.checked(true) ])([ Halogen_HTML_Core.text("Page Likes") ]), Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal") ])([ Halogen_HTML_Core.text("Impressions") ]), Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal") ])([ Halogen_HTML_Core.text("Page Engagement") ]) ]) ]) ]), Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Horizontal List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Previews",
+              label: Halogen_HTML_Core.text("Previews"),
               inputId: "radio-horizontal",
               helpText: new Data_Maybe.Just("What kind of preview do you want to see?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div([ css("flex") ])([ Ocelot_Block_Radio.radio([ css("pr-6") ])([ Halogen_HTML_Properties.name("preview"), Halogen_HTML_Properties.checked(true) ])([ Halogen_HTML_Core.text("Desktop") ]), Ocelot_Block_Radio.radio([ css("pr-6") ])([ Halogen_HTML_Properties.name("preview") ])([ Halogen_HTML_Core.text("Story") ]), Ocelot_Block_Radio.radio([ css("pr-6") ])([ Halogen_HTML_Properties.name("preview") ])([ Halogen_HTML_Core.text("Mobile") ]) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.callout_([ UIGuide_Block_Backdrop.backdrop_([ content([ Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Vertical List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Optimization Goal",
+              label: Halogen_HTML_Core.text("Optimization Goal"),
               inputId: "radio-vertical-disabled",
               helpText: new Data_Maybe.Just("What do you want to optimize for?"),
               error: Data_Maybe.Nothing.value
           })([ Halogen_HTML_Elements.div_([ Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal-disabled"), Halogen_HTML_Properties.checked(true), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Page Likes") ]), Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal-disabled"), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Impressions") ]), Ocelot_Block_Radio.radio_([ Halogen_HTML_Properties.name("goal-disabled"), Halogen_HTML_Properties.disabled(true) ])([ Halogen_HTML_Core.text("Page Engagement") ]) ]) ]) ]), Halogen_HTML_Elements.div([ css("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Horizontal List") ]), Ocelot_Block_FormField.fieldset_({
-              label: "Disabled Previews",
+              label: Halogen_HTML_Core.text("Disabled Previews"),
               inputId: "radio-horizontal-disabled",
               helpText: new Data_Maybe.Just("What kind of preview do you want to see?"),
               error: Data_Maybe.Nothing.value
@@ -27116,12 +27124,12 @@ var PS = {};
               buttons: [ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Format.linkDarkClasses)([ "mr-4" ])) ])([ Halogen_HTML_Core.text("Cancel") ]), Ocelot_Block_Button.buttonPrimary_([ Halogen_HTML_Core.text("Submit") ]) ],
               title: [ Halogen_HTML_Core.text("Editing") ]
           }), Ocelot_Block_Modal.body_([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1 m-10") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.field_({
-              label: "Locations",
+              label: Halogen_HTML_Core.text("Locations"),
               helpText: new Data_Maybe.Just("Search your top destinations."),
               error: Data_Maybe.Nothing.value,
               inputId: "locations"
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(Data_Unit.unit)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
-              label: "Locations",
+              label: Halogen_HTML_Core.text("Locations"),
               helpText: new Data_Maybe.Just("Search your top destinations."),
               error: Data_Maybe.Nothing.value,
               inputId: "locations"
@@ -27567,22 +27575,22 @@ var PS = {};
           header: "Text Fields",
           subheader: "Captures string input."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Static") ]), Ocelot_Block_FormField.field_({
-          label: "Email*",
+          label: Halogen_HTML_Core.text("Email*"),
           helpText: new Data_Maybe.Just("Add the email of the End Advertiser."),
           error: Data_Maybe.Nothing.value,
           inputId: "email"
       })([ Ocelot_Block_Input.input([ Halogen_HTML_Properties.placeholder("address@gmail.com"), Halogen_HTML_Properties.id_("email") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_FormField.field_({
-          label: "Email*",
+          label: Halogen_HTML_Core.text("Email*"),
           helpText: new Data_Maybe.Just("Add the email of the End Advertiser."),
           error: new Data_Maybe.Just("This field is required."),
           inputId: "email-error"
       })([ Ocelot_Block_Input.input([ Halogen_HTML_Properties.placeholder("address@gmail.com"), Halogen_HTML_Properties.id_("email-error") ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Email*",
+          label: Halogen_HTML_Core.text("Email*"),
           helpText: new Data_Maybe.Just("Add the email of the End Advertiser."),
           error: Data_Maybe.Nothing.value,
           inputId: "email-hydrated"
       })([ Ocelot_Block_Input.input([ Halogen_HTML_Properties.value("jeff@citizennet.com"), Halogen_HTML_Properties.id_("email-hydrated") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled") ]), Ocelot_Block_FormField.field_({
-          label: "Email*",
+          label: Halogen_HTML_Core.text("Email*"),
           helpText: new Data_Maybe.Just("Add the email of the End Advertiser."),
           error: Data_Maybe.Nothing.value,
           inputId: "email-disabled"
@@ -27590,22 +27598,22 @@ var PS = {};
           header: "Text Fields - Right Addon",
           subheader: "Captures string input while indicating to user useful information about the input type."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Static") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Daily Goal",
+          label: Halogen_HTML_Core.text("Daily Goal"),
           helpText: new Data_Maybe.Just("Desired daily spend as percentage of total budget."),
           error: Data_Maybe.Nothing.value,
           inputId: "daily-goal"
       })([ Ocelot_Block_Input.percentage_([ Halogen_HTML_Properties.id_("daily-goal") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Daily Goal",
+          label: Halogen_HTML_Core.text("Daily Goal"),
           helpText: new Data_Maybe.Just("Desired daily spend as percentage of total budget."),
           error: new Data_Maybe.Just("Must be between 0 and 100"),
           inputId: "daily-goal-error"
       })([ Ocelot_Block_Input.percentage_([ Halogen_HTML_Properties.value("200"), Halogen_HTML_Properties.id_("daily-goal-error") ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Daily Goal",
+          label: Halogen_HTML_Core.text("Daily Goal"),
           helpText: new Data_Maybe.Just("Desired daily spend as percentage of total budget."),
           error: Data_Maybe.Nothing.value,
           inputId: "daily-goal-hydrated"
       })([ Ocelot_Block_Input.percentage_([ Halogen_HTML_Properties.value("25"), Halogen_HTML_Properties.id_("daily-goal-hydrated") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Daily Goal",
+          label: Halogen_HTML_Core.text("Daily Goal"),
           helpText: new Data_Maybe.Just("Desired daily spend as percentage of total budget."),
           error: Data_Maybe.Nothing.value,
           inputId: "daily-goal-disabled"
@@ -27613,22 +27621,22 @@ var PS = {};
           header: "Text Fields - Left Addon",
           subheader: "Captures string input while indicating to user useful information about the input type."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Static") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Budget*",
+          label: Halogen_HTML_Core.text("Budget*"),
           helpText: new Data_Maybe.Just("Total amount for campaign to spend."),
           error: Data_Maybe.Nothing.value,
           inputId: "budget"
       })([ Ocelot_Block_Input.currency_([ Halogen_HTML_Properties.id_("budget") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Budget*",
+          label: Halogen_HTML_Core.text("Budget*"),
           helpText: new Data_Maybe.Just("Total amount for campaign to spend."),
           error: new Data_Maybe.Just("This field is required."),
           inputId: "budget-error"
       })([ Ocelot_Block_Input.currency_([ Halogen_HTML_Properties.id_("budget-error") ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Budget*",
+          label: Halogen_HTML_Core.text("Budget*"),
           helpText: new Data_Maybe.Just("Total amount for campaign to spend."),
           error: Data_Maybe.Nothing.value,
           inputId: "budget-hydrated"
       })([ Ocelot_Block_Input.currency_([ Halogen_HTML_Properties.value("50,000"), Halogen_HTML_Properties.id_("budget-hydrated") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled") ]), Ocelot_Block_FormField.fieldSmall_({
-          label: "Budget*",
+          label: Halogen_HTML_Core.text("Budget*"),
           helpText: new Data_Maybe.Just("Total amount for campaign to spend."),
           error: Data_Maybe.Nothing.value,
           inputId: "budget-disabled"
@@ -27636,12 +27644,12 @@ var PS = {};
           header: "Text Fields - Surrounding Addons",
           subheader: "Captures string input while indicating to user useful information about the input type."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Static") ]), Ocelot_Block_FormField.field_({
-          label: "Search",
+          label: Halogen_HTML_Core.text("Search"),
           helpText: new Data_Maybe.Just("This text field shows how you might represent a search field."),
           error: Data_Maybe.Nothing.value,
           inputId: "search"
       })([ Ocelot_Block_Input.inputGroup_([ Ocelot_Block_Input.inputCenter([ Halogen_HTML_Properties.id_("search"), Halogen_HTML_Properties.class_("focus:next:text-blue-88") ]), Ocelot_Block_Input.addonLeft_([ Ocelot_Block_Icon.search_ ]), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.linkClasses) ])([ Halogen_HTML_Core.text("Search") ]) ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Loading") ]), Ocelot_Block_FormField.field_({
-          label: "Search",
+          label: Halogen_HTML_Core.text("Search"),
           helpText: new Data_Maybe.Just("This text field shows how you might represent a loading state for a search field."),
           error: Data_Maybe.Nothing.value,
           inputId: "search-loading"
@@ -27649,22 +27657,22 @@ var PS = {};
           header: "Text Areas",
           subheader: "Captures large string input."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Static") ]), Ocelot_Block_FormField.field_({
-          label: "Comment",
+          label: Halogen_HTML_Core.text("Comment"),
           helpText: new Data_Maybe.Just("Say something."),
           error: Data_Maybe.Nothing.value,
           inputId: "comment"
       })([ Ocelot_Block_Input.textarea([ Halogen_HTML_Properties.placeholder("Be nice."), Halogen_HTML_Properties.id_("comment") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error") ]), Ocelot_Block_FormField.field_({
-          label: "Comment*",
+          label: Halogen_HTML_Core.text("Comment*"),
           helpText: new Data_Maybe.Just("Say something."),
           error: new Data_Maybe.Just("This field is required."),
           inputId: "comment-error"
       })([ Ocelot_Block_Input.textarea([ Halogen_HTML_Properties.placeholder("Be nice."), Halogen_HTML_Properties.id_("comment-error") ]) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Comment",
+          label: Halogen_HTML_Core.text("Comment"),
           helpText: new Data_Maybe.Just("Say something."),
           error: Data_Maybe.Nothing.value,
           inputId: "comment-hydrated"
       })([ Ocelot_Block_Input.textarea([ Halogen_HTML_Properties.value("Forest drinks on the job"), Halogen_HTML_Properties.id_("comment-hydrated") ]) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled") ]), Ocelot_Block_FormField.field_({
-          label: "Comment*",
+          label: Halogen_HTML_Core.text("Comment*"),
           helpText: new Data_Maybe.Just("Say something."),
           error: Data_Maybe.Nothing.value,
           inputId: "comment-disabled"
@@ -27965,22 +27973,22 @@ var PS = {};
           header: "Typeaheads - Single-Select",
           subheader: "Uses string input to search predetermined entries. User selects one of these entries."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your favorite destination."),
           error: Data_Maybe.Nothing.value,
           inputId: "location"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(0)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(0))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your favorite destination."),
           error: Data_Maybe.Nothing.value,
           inputId: "location-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(1)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(1))) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your favorite companion."),
           error: Data_Maybe.Nothing.value,
           inputId: "user"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(0)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(0))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your favorite companion."),
           error: Data_Maybe.Nothing.value,
           inputId: "user-hydrated"
@@ -27988,22 +27996,22 @@ var PS = {};
           header: "Typeaheads - Multi-Select",
           subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(2)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(2))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(3)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(3))) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "users"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(2)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("users") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(2))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "users-hydrated"
@@ -28011,42 +28019,42 @@ var PS = {};
           header: "Typeaheads - State Variants",
           subheader: "Typeaheads can also be in a disabled, loading or error state."
       })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Single Select - Empty") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-empty"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(4)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("disabled-locations-empty"), Halogen_HTML_Properties.disabled(true) ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(4))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Single Select - Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(5)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("disabled-locations-hydrated"), Halogen_HTML_Properties.disabled(true) ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(5))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error Single Select") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "error-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(6)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("error-locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(6))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Loading Single Select") ]), Ocelot_Block_FormField.field_({
-          label: "Locations",
+          label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "loading-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(7)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncSingle(dictMonadAff)(UIGuide_Utilities_Async.eqLocation)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("loading-locations") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.locations))(UIGuide_Utilities_Async.renderItemLocation))(Halogen_HTML_Events.input(HandleTypeaheadLocation.create(7))) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Multi Select - Empty") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-users-empty"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(4)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search Users..."), Halogen_HTML_Properties.id_("disabled-users-empty"), Halogen_HTML_Properties.disabled(true) ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(4))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Multi Select - Hydrated") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-users-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(5)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search Users..."), Halogen_HTML_Properties.id_("disabled-users-hydrated"), Halogen_HTML_Properties.disabled(true) ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(5))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error Multi Select") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "error-users"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(6)(Ocelot_Components_Typeahead.component(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString))(Ocelot_Components_Typeahead_Input.defAsyncMulti(dictMonadAff)(UIGuide_Utilities_Async.eqUser)(Data_Show.showString)([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("error-users") ])(UIGuide_Utilities_Async.loadFromSource(dictMonadAff)(UIGuide_Utilities_Async.users))(UIGuide_Utilities_Async.renderItemUser))(Halogen_HTML_Events.input(HandleTypeaheadUser.create(6))) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Loading Multi Select") ]), Ocelot_Block_FormField.field_({
-          label: "Users",
+          label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
           inputId: "loading-users"
