@@ -107,7 +107,7 @@ itemContainer highlightIndex itemsHTML addlHTML =
 
 
 -- Provided an array of selection items, renders them in a container
--- Make sure the array of items includes the correct click handlers:w
+-- Make sure the array of items includes the correct click handlers
 selectionContainer :: ∀ p i. Array (HH.HTML p i) -> HH.HTML p i
 selectionContainer []   =
   HH.div_ []

@@ -70,6 +70,7 @@ data Query o item err m a
   | ReplaceSelections (SelectionType item) a
   | ReplaceItems (RemoteData err (Array item)) a
   | Reset a
+  | AndThen (Query o item err m Unit) (Query o item err m Unit) a
   | Receive (Input o item err m) a
 
 -- The parent is notified when items are selected or removed and when a
@@ -243,8 +244,7 @@ component =
 
         H.modify_ $ seeks _ { selections = selections }
         H.raise $ SelectionsChanged (ItemRemoved item) selections
-        _ <- eval $ Synchronize a
-        eval $ TriggerFocus a
+        eval $ Synchronize a
 
       -- Remove all the items.
       RemoveAll a -> do
@@ -257,9 +257,7 @@ component =
 
         H.modify_ $ seeks _ { selections = selections }
         H.raise $ SelectionsChanged AllRemoved selections
-        _ <- eval $ Synchronize a
-        eval $ TriggerFocus a
-
+        eval $ Synchronize a
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
@@ -305,6 +303,8 @@ component =
               Many _ -> Many []
         H.modify_ $ seeks _ { selections = selections, items = NotAsked }
         eval $ Synchronize a
+
+      AndThen q1 q2 a -> a <$ (eval q1 *> eval q2)
 
       Receive input a -> do
         H.modify_ $ updateStore input.render identity

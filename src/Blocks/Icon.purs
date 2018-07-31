@@ -1,6 +1,6 @@
 module Ocelot.Block.Icon where
 
-import Prelude
+import Prelude hiding (add)
 
 import DOM.HTML.Indexed (HTMLspan)
 import Halogen.HTML as HH

@@ -278,7 +278,7 @@ renderTA props renderContainer renderSelectionItem st =
     renderSingleItem x =
       HH.div
         [ HP.classes if isDisabled then disabledClasses else Input.mainLeftClasses ]
-        [ renderSelectionItem' x ]
+        [ renderSelectionItemSingle x ]
 
     renderSingleSearch x =
       Input.inputGroup_
@@ -306,17 +306,18 @@ renderTA props renderContainer renderSelectionItem st =
       HH.div
         [ HP.class_ $ HH.ClassName "relative" ]
         ( removeAllBtn <>
-          [ ItemContainer.selectionContainer ( renderSelectionItem' <$> xs )
+          [ ItemContainer.selectionContainer ( renderSelectionItemMulti <$> xs )
           , slot
           ]
         )
       where
-        removeAllBtn = case st.selections of
-          TA.Many [] -> []
-          TA.Limit _ [] -> []
-          _ ->
+        removeAllBtn = case isDisabled, st.selections of
+          true, _ -> []
+          _, TA.Many [] -> []
+          _, TA.Limit _ [] -> []
+          _, _ ->
             [ HH.a
-              [ HP.class_ $ HH.ClassName "absolute -mt-7 pin-r underline text-grey-70"
+              [ HP.class_ $ HH.ClassName "absolute -mt-7 pin-r underline text-grey-70 cursor-pointer"
               , HE.onClick $ HE.input_ TA.RemoveAll ]
               [ HH.text "Remove All" ]
             ]
@@ -343,12 +344,20 @@ renderTA props renderContainer renderSelectionItem st =
           [ HH.text "Browse" ]
         ]
 
-    renderSelectionItem' x =
+    renderSelectionItemSingle x =
       if isDisabled then
         HH.fromPlainHTML $ renderSelectionItem x
       else
-        ItemContainer.selectionGroup
-          renderSelectionItem [ HE.onClick $ HE.input_ $ TA.Remove x ] x
+        ItemContainer.selectionGroup renderSelectionItem
+          [ HE.onClick $ HE.input_ $ TA.AndThen (TA.Remove x unit) (TA.TriggerFocus unit) ] x
+
+
+    renderSelectionItemMulti x =
+      if isDisabled then
+        HH.fromPlainHTML $ renderSelectionItem x
+      else
+        ItemContainer.selectionGroup renderSelectionItem
+          [ HE.onClick $ HE.input_ $ TA.Remove x ] x
 
     renderContainer'
       | isSuccess st.items = renderContainer
