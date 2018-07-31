@@ -9,6 +9,7 @@ import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
@@ -17,11 +18,14 @@ import Ocelot.Block.Modal as Modal
 import Ocelot.Block.Format as Format
 import Ocelot.Components.Typeahead.Input as TA
 import Ocelot.Components.Typeahead as TACore
+import Ocelot.HTML.Properties (css)
 import UIGuide.Utilities.Async as Async
+import UIGuide.Block.Backdrop as Backdrop
+import UIGuide.Block.Documentation as Documentation
 
-type State = Unit
+type State = Boolean
 
-data Query a = NoOp a
+data Query a = Open a | Close a
 
 type Input = Unit
 
@@ -38,7 +42,7 @@ component :: ∀ m
  => H.Component HH.HTML Query Input Message m
 component =
   H.parentComponent
-    { initialState: const unit
+    { initialState: const false
     , render
     , eval
     , receiver: const Nothing
@@ -46,17 +50,40 @@ component =
   where
     eval :: Query ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
     eval = case _ of
-      NoOp a -> pure a
+      Open a -> a <$ H.put true
+
+      Close a -> a <$ H.put false
 
     render :: State -> H.ParentHTML Query (ChildQuery m) ChildSlot m
-    render _ =
+    render isOpen =
+      HH.div_
+        [ Documentation.block_
+          { header: "Modals"
+          , subheader: "Forest's favorite UI implement"
+          }
+          [ Backdrop.backdrop_
+            [ Backdrop.content
+              [ css "mt-0 text-center" ]
+              [ Button.button
+                [ HE.onClick $ HE.input_ Open ]
+                [ HH.text "Open Modal" ]
+              ]
+            ]
+          ]
+        , if isOpen then renderModal else HH.text ""
+        ]
+
+    renderModal =
       Modal.modal_
         [ Modal.header
           { buttons:
               [ HH.a
-                [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] ) ]
+                [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] )
+                , HE.onClick $ HE.input_ Close ]
                 [ HH.text "Cancel" ]
-              , Button.buttonPrimary_ [ HH.text "Submit" ]
+              , Button.buttonPrimary
+                [ HE.onClick $ HE.input_ Close ]
+                [ HH.text "Submit" ]
               ]
           , title: [ HH.text "Editing" ]
           }
@@ -103,4 +130,4 @@ component =
               ]
             ]
           ]
-      ]
+        ]
