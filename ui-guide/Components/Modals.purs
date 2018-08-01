@@ -55,10 +55,10 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
     eval = case _ of
       HandleKey ev reply -> do
-        Modal.ifClose ev reply (H.put false)
+        Modal.ifCloseThen ev reply (H.put false)
 
       Open a -> do
-        Modal.initializeModal HandleKey
+        Modal.initializeWith HandleKey
         H.put true $> a
 
       Close a -> do

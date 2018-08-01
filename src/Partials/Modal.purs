@@ -28,12 +28,12 @@ import Web.UIEvent.KeyboardEvent.EventTypes as KET
 -- Eval Partials
 
 -- A function that will register an event source on the window
-initializeModal
+initializeWith
   :: ∀ s f g p o m
    . MonadAff m
   => (KE.KeyboardEvent -> (H.SubscribeStatus -> H.SubscribeStatus) -> f H.SubscribeStatus)
   -> H.HalogenM s f g p o m Unit
-initializeModal query = do
+initializeWith query = do
   document <- H.liftEffect $ document =<< window
   H.subscribe
     $ ES.eventSource'
@@ -52,14 +52,14 @@ initializeModal query = do
       pure $ ET.removeEventListener KET.keydown listener false target
 
 
-ifClose
+ifCloseThen
   :: ∀ s f g p o m a
    . MonadAff m
   => KE.KeyboardEvent
   -> (H.SubscribeStatus -> a)
   -> H.HalogenM s f g p o m Unit
   -> H.HalogenM s f g p o m a
-ifClose ev reply f = case KE.code ev of
+ifCloseThen ev reply f = case KE.code ev of
   "Escape" -> f $> reply H.Done
   _ -> pure (reply H.Listening)
 
