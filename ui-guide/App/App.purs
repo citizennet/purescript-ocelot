@@ -58,7 +58,6 @@ data Group
   = Basics
   | FormElements
   | Components
-  | Behaviors
 
 derive instance eqGroup :: Eq Group
 derive instance ordGroup :: Ord Group
@@ -66,7 +65,6 @@ instance showGroup :: Show Group where
   show Basics = "Basics"
   show FormElements = "Form Elements"
   show Components = "Components"
-  show Behaviors = "Behaviors"
 
 
 type Slot = String

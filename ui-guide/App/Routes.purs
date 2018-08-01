@@ -34,7 +34,6 @@ groups :: Array Group
 groups =
   [ Basics
   , Components
-  , Behaviors
   ]
 
 type RouteConfig =
