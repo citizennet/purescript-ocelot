@@ -111,11 +111,11 @@ component =
     render :: State -> H.ComponentHTML Query
     render { query, open } =
       HH.label
-        [ HP.classes $ containerClasses <> containerCondClasses ]
+        [ HP.classes $ containerClasses <> containerCondClasses
+        , HE.onClick (HE.input $ const Open)
+        ]
         [ HH.div
-          [ HP.classes $ labelClasses <> labelCondClasses
-          , HE.onClick (HE.input $ const Open)
-          ]
+          [ HP.classes $ iconClasses <> iconCondClasses ]
           [ Icon.search_ ]
         , HH.div
           [ css "flex-grow" ]
@@ -143,20 +143,22 @@ component =
           , "items-stretch"
           , "transition-1/4"
           , "border-b-2"
+          , "group"
           ]
 
         containerCondClasses =
           ifOpen
             [ "max-w-160", "border-blue-88" ]
-            [ "max-w-12", "border-transparent" ]
+            [ "max-w-12", "border-transparent", "cursor-pointer" ]
 
-        labelClasses = HH.ClassName <$>
-          [ "mr-3"
+        iconClasses = HH.ClassName <$>
+          [ "pr-3"
           , "text-2xl"
-          , "cursor-pointer"
+          , "group-hover:text-grey-50"
+          , "transition-1/4"
           ]
 
-        labelCondClasses =
+        iconCondClasses =
           ifOpen
             [ "text-grey-50", "mb-0", "mt-0" ]
             [ "text-grey-70", "-mb-1", "mt-1" ]
