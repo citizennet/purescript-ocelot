@@ -19479,13 +19479,6 @@ var PS = {};
       Components.value = new Components();
       return Components;
   })();
-  var Behaviors = (function () {
-      function Behaviors() {
-
-      };
-      Behaviors.value = new Behaviors();
-      return Behaviors;
-  })();
   var showGroup = new Data_Show.Show(function (v) {
       if (v instanceof Basics) {
           return "Basics";
@@ -19496,10 +19489,7 @@ var PS = {};
       if (v instanceof Components) {
           return "Components";
       };
-      if (v instanceof Behaviors) {
-          return "Behaviors";
-      };
-      throw new Error("Failed pattern match at UIGuide.App line 65, column 1 - line 65, column 33: " + [ v.constructor.name ]);
+      throw new Error("Failed pattern match at UIGuide.App line 64, column 1 - line 64, column 33: " + [ v.constructor.name ]);
   });
   var eqGroup = new Data_Eq.Eq(function (x) {
       return function (y) {
@@ -19510,9 +19500,6 @@ var PS = {};
               return true;
           };
           if (x instanceof Components && y instanceof Components) {
-              return true;
-          };
-          if (x instanceof Behaviors && y instanceof Behaviors) {
               return true;
           };
           return false;
@@ -19543,16 +19530,7 @@ var PS = {};
           if (x instanceof Components && y instanceof Components) {
               return Data_Ordering.EQ.value;
           };
-          if (x instanceof Components) {
-              return Data_Ordering.LT.value;
-          };
-          if (y instanceof Components) {
-              return Data_Ordering.GT.value;
-          };
-          if (x instanceof Behaviors && y instanceof Behaviors) {
-              return Data_Ordering.EQ.value;
-          };
-          throw new Error("Failed pattern match at UIGuide.App line 64, column 8 - line 64, column 38: " + [ x.constructor.name, y.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.App line 63, column 8 - line 63, column 38: " + [ x.constructor.name, y.constructor.name ]);
       };
   });
   var partitionByGroup = function (g) {
@@ -19644,7 +19622,6 @@ var PS = {};
   exports["Basics"] = Basics;
   exports["FormElements"] = FormElements;
   exports["Components"] = Components;
-  exports["Behaviors"] = Behaviors;
   exports["runStorybook"] = runStorybook;
   exports["eqGroup"] = eqGroup;
   exports["ordGroup"] = ordGroup;
@@ -27405,7 +27382,6 @@ var PS = {};
   })();
   var component = function (dictMonadAff) {
       var render = function (v) {
-          var labelClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "mr-3", "text-2xl", "cursor-pointer" ]);
           var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "h-full", "transition-1/4" ]);
           var ifOpen = function (openClasses) {
               return function (closedClasses) {
@@ -27418,12 +27394,13 @@ var PS = {};
               };
           };
           var inputCondClasses = ifOpen([ "w-full" ])([ "w-0" ]);
-          var labelCondClasses = ifOpen([ "text-grey-50", "mb-0", "mt-0" ])([ "text-grey-70", "-mb-1", "mt-1" ]);
-          var containerCondClasses = ifOpen([ "max-w-160", "border-blue-88" ])([ "max-w-12", "border-transparent" ]);
-          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2" ]);
+          var iconCondClasses = ifOpen([ "text-grey-50", "mb-0", "mt-0" ])([ "text-grey-70", "-mb-1", "mt-1" ]);
+          var iconClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "pr-3", "text-2xl", "group-hover:text-grey-50", "transition-1/4" ]);
+          var containerCondClasses = ifOpen([ "max-w-160", "border-blue-88" ])([ "max-w-12", "border-transparent", "cursor-pointer" ]);
+          var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2", "group" ]);
           var buttonCondClasses = ifOpen([ "opacity-100", "visible" ])([ "opacity-0", "invisible" ]);
           var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "text-grey-70", "hover:text-grey-50", "text-xs", "transition-1/4", "flex-shrink" ]);
-          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(labelClasses)(labelCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-grow") ])([ Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))), Halogen_HTML_Properties.tabIndex(0) ]) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.delete_ ]) ]);
+          return Halogen_HTML_Elements.label([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(containerClasses)(containerCondClasses)), Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Open.create))) ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(iconClasses)(iconCondClasses)) ])([ Ocelot_Block_Icon.search_ ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-grow") ])([ Halogen_HTML_Elements.input([ Halogen_HTML_Events.onValueInput(Halogen_HTML_Events.input(Search.create)), Halogen_HTML_Properties.placeholder("Search"), Halogen_HTML_Properties.value(v.query), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputClasses)(inputCondClasses)), Halogen_HTML_Events.onBlur(Halogen_HTML_Events.input(Data_Function["const"](Blur.create))), Halogen_HTML_Properties.tabIndex(0) ]) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input(Data_Function["const"](Clear.create))), Halogen_HTML_Properties.type_(Halogen_HTML_Core.buttonTypeIsProp)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(buttonCondClasses)) ])([ Ocelot_Block_Icon.delete_ ]) ]);
       };
       var initialState = function (v) {
           return {
@@ -28311,7 +28288,7 @@ var PS = {};
       component: Halogen_Storybook_Proxy.proxy(UIGuide_Components_Badge.component),
       group: UIGuide_App.Basics.value
   }) ]);
-  var groups = [ UIGuide_App.Basics.value, UIGuide_App.Components.value, UIGuide_App.Behaviors.value ];
+  var groups = [ UIGuide_App.Basics.value, UIGuide_App.Components.value ];
   exports["routes"] = routes;
   exports["groups"] = groups;
 })(PS["UIGuide.App.Routes"] = PS["UIGuide.App.Routes"] || {});
