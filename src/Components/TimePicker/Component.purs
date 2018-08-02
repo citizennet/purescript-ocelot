@@ -1,4 +1,4 @@
-module Ocelot.Components.TimePicker where
+module Ocelot.Component.TimePicker where
 
 import Prelude
 
@@ -13,7 +13,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.Components.TimePicker.Utils as Utils
+import Ocelot.Component.TimePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as Select

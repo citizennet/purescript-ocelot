@@ -1,4 +1,4 @@
-module Ocelot.Components.DatePicker where
+module Ocelot.Component.DatePicker where
 
 import Prelude
 
@@ -21,7 +21,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.Components.DatePicker.Utils as Utils
+import Ocelot.Component.DatePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as Select

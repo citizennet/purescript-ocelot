@@ -1,4 +1,4 @@
-module UIGuide.Components.Card where
+module UIGuide.Component.Card where
 
 import Prelude
 

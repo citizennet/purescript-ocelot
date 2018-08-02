@@ -1,4 +1,4 @@
-module Ocelot.Components.Dropdown where
+module Ocelot.Component.Dropdown where
 
 import Prelude
 

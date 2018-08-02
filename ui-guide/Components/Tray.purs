@@ -1,4 +1,4 @@
-module UIGuide.Components.Tray where
+module UIGuide.Component.Tray where
 
 import Prelude
 

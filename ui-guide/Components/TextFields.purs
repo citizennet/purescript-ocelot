@@ -1,4 +1,4 @@
-module UIGuide.Components.TextFields where
+module UIGuide.Component.TextFields where
 
 import Prelude
 
@@ -17,7 +17,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Loading as Loading
-import Ocelot.Components.SearchBar as SearchBar
+import Ocelot.Component.SearchBar as SearchBar
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

@@ -1,4 +1,4 @@
-module Ocelot.Blocks.Choice where
+module Ocelot.Block.Choice where
 
 import Prelude
 

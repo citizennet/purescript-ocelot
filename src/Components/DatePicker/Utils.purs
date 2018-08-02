@@ -1,4 +1,4 @@
-module Ocelot.Components.DatePicker.Utils where
+module Ocelot.Component.DatePicker.Utils where
 
 import Prelude
 

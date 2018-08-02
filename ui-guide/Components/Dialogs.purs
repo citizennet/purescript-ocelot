@@ -1,4 +1,4 @@
-module UIGuide.Components.Dialogs where
+module UIGuide.Component.Dialogs where
 
 import Prelude
 
