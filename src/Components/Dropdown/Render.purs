@@ -1,4 +1,4 @@
-module Ocelot.Components.Dropdown.Render where
+module Ocelot.Component.Dropdown.Render where
 
 import Prelude
 
@@ -11,7 +11,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
-import Ocelot.Components.Dropdown as DD
+import Ocelot.Component.Dropdown as DD
 import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters (setContainerProps, setItemProps, setToggleProps)

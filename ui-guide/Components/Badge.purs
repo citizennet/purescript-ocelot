@@ -1,4 +1,4 @@
-module UIGuide.Components.Badge where
+module UIGuide.Component.Badge where
 
 import Prelude
 

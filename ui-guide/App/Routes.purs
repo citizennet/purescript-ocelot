@@ -12,20 +12,20 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.Storybook.Proxy (ProxyS)
 import UIGuide.App (Group(..), proxy)
-import UIGuide.Components.Badge as Badge
-import UIGuide.Components.Button as Button
-import UIGuide.Components.DatePickers as DatePickers
-import UIGuide.Components.Dropdown as Dropdown
-import UIGuide.Components.ExpansionCards as ExpansionCards
-import UIGuide.Components.FormControl as FormControl
-import UIGuide.Components.Icons as Icons
-import UIGuide.Components.Modals as Modals
-import UIGuide.Components.Table as Table
-import UIGuide.Components.TextFields as TextFields
-import UIGuide.Components.Tray as Tray
-import UIGuide.Components.Dialogs as Dialogs
-import UIGuide.Components.Type as Type
-import UIGuide.Components.Typeaheads as Typeaheads
+import UIGuide.Component.Badge as Badge
+import UIGuide.Component.Button as Button
+import UIGuide.Component.DatePickers as DatePickers
+import UIGuide.Component.Dropdown as Dropdown
+import UIGuide.Component.ExpansionCards as ExpansionCards
+import UIGuide.Component.FormControl as FormControl
+import UIGuide.Component.Icons as Icons
+import UIGuide.Component.Modals as Modals
+import UIGuide.Component.Table as Table
+import UIGuide.Component.TextFields as TextFields
+import UIGuide.Component.Tray as Tray
+import UIGuide.Component.Dialogs as Dialogs
+import UIGuide.Component.Type as Type
+import UIGuide.Component.Typeaheads as Typeaheads
 
 ----------
 -- Routes

@@ -1,4 +1,4 @@
-module Ocelot.Components.Typeahead.Input where
+module Ocelot.Component.Typeahead.Input where
 
 import Prelude
 
@@ -21,7 +21,7 @@ import Ocelot.Block.Loading as Loading
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead as TA
+import Ocelot.Component.Typeahead as TA
 import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters

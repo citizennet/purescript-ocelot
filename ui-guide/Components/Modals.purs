@@ -1,4 +1,4 @@
-module UIGuide.Components.Modals where
+module UIGuide.Component.Modals where
 
 import Prelude
 
@@ -15,13 +15,13 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Components.Typeahead as TACore
-import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.Component.Typeahead as TACore
+import Ocelot.Component.Typeahead.Input as TA
 import Ocelot.HTML.Properties (css)
-import Ocelot.Partials.Modal as Modal
+import Ocelot.Part.Modal as Modal
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Utilities.Async as Async
+import UIGuide.Utility.Async as Async
 import Web.UIEvent.KeyboardEvent as KE
 
 type State = Boolean
@@ -55,7 +55,7 @@ component =
     eval :: Query ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
     eval = case _ of
       HandleKey ev reply -> do
-        Modal.ifCloseThen ev reply (H.put false)
+        Modal.whenClose ev reply (H.put false)
 
       Open a -> do
         Modal.initializeWith HandleKey

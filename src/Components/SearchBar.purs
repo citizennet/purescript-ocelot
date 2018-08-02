@@ -1,4 +1,4 @@
-module Ocelot.Components.SearchBar
+module Ocelot.Component.SearchBar
   ( component
   , Query
   , Message(..)

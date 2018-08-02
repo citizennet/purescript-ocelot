@@ -1,4 +1,4 @@
-module UIGuide.Components.Icons where
+module UIGuide.Component.Icons where
 
 import Prelude
 

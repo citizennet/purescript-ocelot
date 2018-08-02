@@ -1,4 +1,4 @@
-module Ocelot.Components.TimePicker.Utils where
+module Ocelot.Component.TimePicker.Utils where
 
 import Prelude
 

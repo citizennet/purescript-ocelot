@@ -1,4 +1,4 @@
-module UIGuide.Utilities.Async where
+module UIGuide.Utility.Async where
 
 import Prelude
 
@@ -21,7 +21,7 @@ import Network.HTTP.Affjax (get)
 import Network.HTTP.Affjax.Response as Response
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Components.Typeahead.Input as TA
+import Ocelot.Component.Typeahead.Input as TA
 
 
 ----------

@@ -1,4 +1,4 @@
-module UIGuide.Components.Dropdown where
+module UIGuide.Component.Dropdown where
 
 import Prelude
 
@@ -16,9 +16,9 @@ import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
-import Ocelot.Blocks.Choice as Choice
-import Ocelot.Components.Dropdown as DD
-import Ocelot.Components.Dropdown.Render as DR
+import Ocelot.Block.Choice as Choice
+import Ocelot.Component.Dropdown as DD
+import Ocelot.Component.Dropdown.Render as DR
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Utils.Setters as SelectSetters

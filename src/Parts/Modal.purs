@@ -1,7 +1,7 @@
 -- | Not an entire component, but pieces that only make sense within
 -- | the context of components that meet the constraints on these
 -- | functions.
-module Ocelot.Partials.Modal where
+module Ocelot.Part.Modal where
 
 import Prelude
 
@@ -51,17 +51,17 @@ initializeWith query = do
       ET.addEventListener KET.keydown listener false target
       pure $ ET.removeEventListener KET.keydown listener false target
 
-
-ifCloseThen
+whenClose
   :: ∀ s f g p o m a
    . MonadAff m
   => KE.KeyboardEvent
   -> (H.SubscribeStatus -> a)
   -> H.HalogenM s f g p o m Unit
   -> H.HalogenM s f g p o m a
-ifCloseThen ev reply f = case KE.code ev of
+whenClose ev reply f = case KE.code ev of
   "Escape" -> f $> reply H.Done
   _ -> pure (reply H.Listening)
+
 
 ----------
 -- Render Partials

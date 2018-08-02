@@ -1,4 +1,4 @@
-module UIGuide.Components.FormControl where
+module UIGuide.Component.FormControl where
 
 import Prelude
 

@@ -1,4 +1,4 @@
-module Ocelot.Blocks.Menu where
+module Ocelot.Block.Menu where
 
 import Prelude
 

@@ -1,4 +1,4 @@
-module UIGuide.Components.Button where
+module UIGuide.Component.Button where
 
 import Prelude
 

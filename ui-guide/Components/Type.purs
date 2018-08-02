@@ -1,4 +1,4 @@
-module UIGuide.Components.Type where
+module UIGuide.Component.Type where
 
 import Prelude
 

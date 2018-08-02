@@ -1,4 +1,4 @@
-module UIGuide.Components.Table where
+module UIGuide.Component.Table where
 
 import Prelude
 

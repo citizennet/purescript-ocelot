@@ -1,4 +1,4 @@
-module UIGuide.Components.DatePickers where
+module UIGuide.Component.DatePickers where
 
 import Prelude
 
@@ -12,8 +12,8 @@ import Halogen.HTML as HH
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Components.DatePicker as DatePicker
-import Ocelot.Components.TimePicker as TimePicker
+import Ocelot.Component.DatePicker as DatePicker
+import Ocelot.Component.TimePicker as TimePicker
 import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop

@@ -1,4 +1,4 @@
-module UIGuide.Components.ExpansionCards where
+module UIGuide.Component.ExpansionCards where
 
 import Prelude
 
@@ -22,11 +22,11 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Toggle as Toggle
 import Ocelot.Block.Format as Format
-import Ocelot.Components.Typeahead.Input as TA
-import Ocelot.Components.Typeahead as TACore
+import Ocelot.Component.Typeahead.Input as TA
+import Ocelot.Component.Typeahead as TACore
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
-import UIGuide.Utilities.Async as Async
+import UIGuide.Utility.Async as Async
 
 
 ----------

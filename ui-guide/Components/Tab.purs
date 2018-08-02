@@ -1,4 +1,4 @@
-module UIGuide.Components.Tab where
+module UIGuide.Component.Tab where
 
 import Prelude
 

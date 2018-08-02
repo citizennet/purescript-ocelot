@@ -1,4 +1,4 @@
-module Ocelot.Components.Typeahead where
+module Ocelot.Component.Typeahead where
 
 import Prelude
 

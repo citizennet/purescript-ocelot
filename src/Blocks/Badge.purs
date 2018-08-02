@@ -7,7 +7,6 @@ import Halogen.HTML (HTML, IProp)
 import Halogen.HTML as HH
 import Ocelot.Block.Builder (blockBuilder)
 
-
 baseClasses :: Array HH.ClassName
 baseClasses = HH.ClassName <$>
   [ "rounded-full"
