@@ -6,7 +6,7 @@ import Control.Alternative (class Plus, empty)
 import Data.Array (difference, filter, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Fuzz
-import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.Maybe (Maybe(..), maybe)
 import Data.Rational ((%))
 import Data.Time.Duration (Milliseconds)
 import Effect.Aff.Class (class MonadAff)
@@ -34,6 +34,7 @@ multi = base
   , runFilter: difference
   }
 
+-- A private type to save lines of constraints
 type TypeaheadComponent f =
   ∀ pq item m
    . MonadAff m
@@ -51,14 +52,19 @@ type State f item m =
   { items :: RemoteData String (Array item)
   , selections :: f item
   , search :: String
-  , config :: Config item m
+  , insertable :: Insertable item
+  , keepOpen :: Boolean
+  , itemToObject :: item -> Object String
   , ops :: Operations f item
+  , asyncConfig :: Maybe (AsyncConfig item m)
   }
 
 type Input item m =
   { items :: RemoteData String (Array item)
-  , search :: Maybe String
-  , config :: Config item m
+  , insertable :: Insertable item
+  , keepOpen :: Boolean
+  , itemToObject :: item -> Object String
+  , asyncConfig :: Maybe (AsyncConfig item m)
   }
 
 data Query pq f item a
@@ -89,13 +95,6 @@ type ChildQuery pq f item = Select.Query (Query pq f item) (Fuzzy item)
 
 ---------
 -- Data modeling
-
-type Config item m =
-  { insertable :: Insertable item
-  , keepOpen   :: Boolean
-  , toObject   :: item -> Object String
-  , asyncConfig :: Maybe (AsyncConfig item m)
-  }
 
 type AsyncConfig item m =
   { debounceTime :: Milliseconds
@@ -137,11 +136,14 @@ base ops renderSelect =
     }
   where
     initialState :: Input item m -> State f item m
-    initialState { items, search, config } =
-      { items
+    initialState i =
+      { items: i.items
       , selections: empty :: f item
-      , search: fromMaybe "" search
-      , config
+      , search: ""
+      , itemToObject: i.itemToObject
+      , insertable: i.insertable
+      , keepOpen: i.keepOpen
+      , asyncConfig: i.asyncConfig
       , ops
       }
 
@@ -157,7 +159,7 @@ base ops renderSelect =
         { inputType: Select.TextInput
         , items: []
         , initialSearch: Nothing
-        , debounceTime: (Just <<< _.debounceTime) =<< st.config.asyncConfig
+        , debounceTime: (Just <<< _.debounceTime) =<< st.asyncConfig
         , render: renderSelect st
         }
 
@@ -179,7 +181,7 @@ base ops renderSelect =
 
         Select.Selected (Fuzzy { original: item }) -> do
           st <- H.modify \st -> st { selections = st.ops.runSelect item st.selections }
-          _ <- if st.config.keepOpen
+          _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
           H.raise $ SelectionsChanged st.selections
@@ -190,7 +192,7 @@ base ops renderSelect =
           st <- H.get
           H.modify_ _ { search = text }
 
-          case st.config.asyncConfig of
+          case st.asyncConfig of
             Nothing -> pure unit
             Just { fetchItems } -> do
               H.modify_ _ { items = Loading }
@@ -278,13 +280,13 @@ getNewItems st =
   <$> (map (flip st.ops.runFilter st.selections) st.items)
   where
     matcher :: item -> Fuzzy item
-    matcher = Fuzz.match true st.config.toObject st.search
+    matcher = Fuzz.match true st.itemToObject st.search
 
     fuzzyItems :: Array item -> Array (Fuzzy item)
     fuzzyItems = map matcher
 
     applyI :: Array (Fuzzy item) -> Array (Fuzzy item)
-    applyI = applyInsertable matcher st.config.insertable st.search
+    applyI = applyInsertable matcher st.insertable st.search
 
     applyF :: Array (Fuzzy item) -> Array (Fuzzy item)
     applyF = filter (\(Fuzzy { ratio }) -> ratio > (2 % 3))
