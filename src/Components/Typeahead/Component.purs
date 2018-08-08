@@ -2,19 +2,47 @@ module Ocelot.Component.Typeahead where
 
 import Prelude
 
-import Effect.Aff.Class (class MonadAff)
-import Data.Array (filter, length, sort, (:))
+import Control.Alternative (class Plus, empty)
+import Data.Array (difference, filter, length, sort, (:))
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Fuzz
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.Rational ((%))
-import Foreign.Object (Object)
 import Data.Time.Duration (Milliseconds)
+import Effect.Aff.Class (class MonadAff)
+import Foreign.Object (Object)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Network.RemoteData (RemoteData(..))
 import Select as Select
+
+----------
+-- Components
+
+single :: TypeaheadComponent Maybe
+single = base
+  { runSelect: const <<< Just
+  , runRemove: const (const Nothing)
+  , runFilter: \items -> maybe items (\i -> filter (_ == i) items)
+  }
+
+multi :: TypeaheadComponent Array
+multi = base
+  { runSelect: (:)
+  , runRemove: filter <<< (/=)
+  , runFilter: difference
+  }
+
+type TypeaheadComponent f =
+  ∀ pq item m
+   . MonadAff m
+  => Eq item
+  => ( State f item m
+       -> Select.State (Fuzzy item)
+       -> Select.ComponentHTML (Query pq f item) (Fuzzy item)
+     )
+  -> H.Component HH.HTML (Query pq f item) (Input item m) (Message pq f item) m
 
 ----------
 -- Component types
@@ -23,14 +51,14 @@ type State f item m =
   { items :: RemoteData String (Array item)
   , selections :: f item
   , search :: String
-  , config :: Config f item m
+  , config :: Config item m
+  , ops :: Operations f item
   }
 
-type Input f item m =
+type Input item m =
   { items :: RemoteData String (Array item)
   , search :: Maybe String
-  , initialSelection :: f item
-  , config :: Config f item m
+  , config :: Config item m
   }
 
 data Query pq f item a
@@ -62,12 +90,20 @@ type ChildQuery pq f item = Select.Query (Query pq f item) (Fuzzy item)
 ---------
 -- Data modeling
 
-type Config f item m =
+type Config item m =
   { insertable :: Insertable item
   , keepOpen   :: Boolean
-  , syncMethod :: SyncMethod item m
   , toObject   :: item -> Object String
-  , runSelect  :: item -> f item -> f item
+  , asyncConfig :: Maybe (AsyncConfig item m)
+  }
+
+type AsyncConfig item m =
+  { debounceTime :: Milliseconds
+  , fetchItems   :: String -> m (RemoteData String (Array item))
+  }
+
+type Operations f item =
+  { runSelect  :: item -> f item -> f item
   , runRemove  :: item -> f item -> f item
   , runFilter  :: Array item -> f item -> Array item
   }
@@ -76,29 +112,21 @@ data Insertable item
   = NotInsertable
   | Insertable (String -> item)
 
-data SyncMethod item m
-  = Sync
-  | Async (AsyncConfig item m)
-
-type AsyncConfig item m =
-  { debounceTime :: Milliseconds
-  , fetchItems   :: String -> m (RemoteData String (Array item))
-  }
-
 ----------
 -- Component
 
-component
+base
   :: ∀ pq f item m
    . MonadAff m
   => Eq item
-  => Monoid (f item)
-  => ( State f item m
+  => Plus f
+  => Operations f item
+  -> ( State f item m
        -> Select.State (Fuzzy item)
        -> Select.ComponentHTML (Query pq f item) (Fuzzy item)
      )
-  -> H.Component HH.HTML (Query pq f item) (Input f item m) (Message pq f item) m
-component renderSelect =
+  -> H.Component HH.HTML (Query pq f item) (Input item m) (Message pq f item) m
+base ops renderSelect =
   H.lifecycleParentComponent
     { initialState
     , render
@@ -108,12 +136,13 @@ component renderSelect =
     , finalizer: Nothing
     }
   where
-    initialState :: Input f item m -> State f item m
-    initialState { items, initialSelection, search, config } =
+    initialState :: Input item m -> State f item m
+    initialState { items, search, config } =
       { items
-      , selections: initialSelection
+      , selections: empty :: f item
       , search: fromMaybe "" search
       , config
+      , ops
       }
 
     render
@@ -128,9 +157,7 @@ component renderSelect =
         { inputType: Select.TextInput
         , items: []
         , initialSearch: Nothing
-        , debounceTime: case st.config.syncMethod of
-            Sync -> Nothing
-            Async { debounceTime } -> Just debounceTime
+        , debounceTime: (Just <<< _.debounceTime) =<< st.config.asyncConfig
         , render: renderSelect st
         }
 
@@ -151,7 +178,7 @@ component renderSelect =
         Select.Emit query -> eval query $> a
 
         Select.Selected (Fuzzy { original: item }) -> do
-          st <- H.modify \st -> st { selections = st.config.runSelect item st.selections }
+          st <- H.modify \st -> st { selections = st.ops.runSelect item st.selections }
           _ <- if st.config.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
@@ -163,9 +190,9 @@ component renderSelect =
           st <- H.get
           H.modify_ _ { search = text }
 
-          case st.config.syncMethod of
-            Sync -> pure unit
-            Async { fetchItems } -> do
+          case st.config.asyncConfig of
+            Nothing -> pure unit
+            Just { fetchItems } -> do
               H.modify_ _ { items = Loading }
               _ <- eval $ Synchronize a
               newItems <- H.lift $ fetchItems text
@@ -178,13 +205,13 @@ component renderSelect =
 
       -- Remove a currently-selected item.
       Remove item a -> do
-        st <- H.modify \st -> st { selections = st.config.runRemove item st.selections }
+        st <- H.modify \st -> st { selections = st.ops.runRemove item st.selections }
         H.raise $ SelectionsChanged st.selections
         eval $ Synchronize a
 
       -- Remove all the items.
       RemoveAll a -> do
-        st <- H.modify \st -> st { selections = (mempty :: f item) }
+        st <- H.modify \st -> st { selections = empty :: f item }
         H.raise $ SelectionsChanged st.selections
         eval $ Synchronize a
 
@@ -224,7 +251,7 @@ component renderSelect =
         eval $ Synchronize a
 
       Reset a -> do
-        st <- H.modify _ { selections = mempty :: f item, items = NotAsked }
+        st <- H.modify _ { selections = empty :: f item, items = NotAsked }
         H.raise $ SelectionsChanged st.selections
         eval $ Synchronize a
 
@@ -248,7 +275,7 @@ getNewItems st =
   <<< applyF
   <<< applyI
   <<< fuzzyItems
-  <$> (map (flip st.config.runFilter st.selections) st.items)
+  <$> (map (flip st.ops.runFilter st.selections) st.items)
   where
     matcher :: item -> Fuzzy item
     matcher = Fuzz.match true st.config.toObject st.search
