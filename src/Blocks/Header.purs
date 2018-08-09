@@ -1,19 +1,14 @@
-module Ocelot.Block.FormHeader where
+module Ocelot.Block.Header where
 
 import Prelude
 
+import DOM.HTML.Indexed (HTMLdiv)
 import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Layout as Layout
 import Ocelot.Block.NavigationTab as NavigationTab
-
-type FormHeaderProps p i =
-  { buttons :: Array (HH.HTML p i)
-  , name :: Array (HH.HTML p i)
-  , title :: Array (HH.HTML p i)
-  , brand :: Maybe String
-  }
+import Ocelot.HTML.Properties (css, (<&>))
 
 outerClasses :: Array HH.ClassName
 outerClasses = HH.ClassName <$>
@@ -31,13 +26,36 @@ innerClasses = HH.ClassName <$>
   , "h-24"
   ]
 
-stickyHeader
+header
+  :: ∀ p i
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+header iprops =
+  HH.header [ HP.classes outerClasses ]
+  <<< pure
+  <<< HH.div ( [ HP.classes innerClasses ] <&> iprops )
+
+header_
+  :: ∀ p i
+   . Array (HH.HTML p i)
+  -> HH.HTML p i
+header_ = header []
+
+type FormHeaderProps p i =
+  { buttons :: Array (HH.HTML p i)
+  , name :: Array (HH.HTML p i)
+  , title :: Array (HH.HTML p i)
+  , brand :: Maybe String
+  }
+
+stickyFormHeader
   :: ∀ p i page
    . Eq page
   => FormHeaderProps p i
   -> NavigationTab.TabConfig page
   -> HH.HTML p i
-stickyHeader hConfig tConfig =
+stickyFormHeader hConfig tConfig =
   HH.div
     [ HP.class_ $ HH.ClassName "h-40" ]
     [ HH.div
@@ -58,29 +76,24 @@ stickyHeader_ config =
 
 formHeader :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
 formHeader props =
-  HH.header
-    [ HP.classes outerClasses ]
-    [ HH.div
-      [ HP.classes innerClasses ]
-      ( case props.brand of
-          Just src  ->
-            [ HH.div
-              [ HP.class_ $ HH.ClassName "w-16" ]
-              [ HH.img [ HP.src src ] ]
-            ]
-          otherwise -> []
-        <>
-        [ HH.h2
-          [ HP.class_ $ HH.ClassName "flex-1 font-medium" ]
-            [ HH.span
-                [ HP.class_ $ HH.ClassName "text-lg text-grey-70 mr-4" ]
-                props.name
-            , HH.span
-                [ HP.class_ $ HH.ClassName "text-lg text-white" ]
-                props.title
-            ]
+  header_ $
+    case props.brand of
+      Just src  ->
+        [ HH.div
+          [ css "w-16" ]
+          [ HH.img [ HP.src src ] ]
         ]
-        <>
-        props.buttons
-      )
+      Nothing -> []
+    <>
+    [ HH.h2
+      [ css "flex-1 font-medium" ]
+        [ HH.span
+            [ css "text-lg text-grey-70 mr-4" ]
+            props.name
+        , HH.span
+            [ css "text-lg text-white" ]
+            props.title
+        ]
     ]
+    <>
+    props.buttons
