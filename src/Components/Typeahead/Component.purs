@@ -50,7 +50,7 @@ type TypeaheadComponent f =
 
 type State f item m =
   { items :: RemoteData String (Array item)
-  , selections :: f item
+  , selected :: f item
   , search :: String
   , insertable :: Insertable item
   , keepOpen :: Boolean
@@ -74,8 +74,8 @@ data Query pq f item a
   | Synchronize a
   | Search String a
   | HandleSelect (Select.Message (Query pq f item) (Fuzzy item)) a
-  | GetSelections (f item -> a)
-  | ReplaceSelections (f item) a
+  | GetSelected (f item -> a)
+  | ReplaceSelected (f item) a
   | ReplaceItems (RemoteData String (Array item)) a
   | Reset a
   | AndThen (Query pq f item Unit) (Query pq f item Unit) a
@@ -83,7 +83,7 @@ data Query pq f item a
 
 data Message pq f item
   = Searched String
-  | SelectionsChanged (f item)
+  | SelectionChanged (f item)
   | Emit (pq Unit)
 
 ----------
@@ -138,7 +138,7 @@ base ops renderSelect =
     initialState :: Input item m -> State f item m
     initialState i =
       { items: i.items
-      , selections: empty :: f item
+      , selected: empty :: f item
       , search: ""
       , itemToObject: i.itemToObject
       , insertable: i.insertable
@@ -180,11 +180,11 @@ base ops renderSelect =
         Select.Emit query -> eval query $> a
 
         Select.Selected (Fuzzy { original: item }) -> do
-          st <- H.modify \st -> st { selections = st.ops.runSelect item st.selections }
+          st <- H.modify \st -> st { selected = st.ops.runSelect item st.selected }
           _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
-          H.raise $ SelectionsChanged st.selections
+          H.raise $ SelectionChanged st.selected
           eval $ Synchronize a
 
         -- Perform a new search, fetching data if Async.
@@ -207,24 +207,24 @@ base ops renderSelect =
 
       -- Remove a currently-selected item.
       Remove item a -> do
-        st <- H.modify \st -> st { selections = st.ops.runRemove item st.selections }
-        H.raise $ SelectionsChanged st.selections
+        st <- H.modify \st -> st { selected = st.ops.runRemove item st.selected }
+        H.raise $ SelectionChanged st.selected
         eval $ Synchronize a
 
       -- Remove all the items.
       RemoveAll a -> do
-        st <- H.modify \st -> st { selections = empty :: f item }
-        H.raise $ SelectionsChanged st.selections
+        st <- H.modify \st -> st { selected = empty :: f item }
+        H.raise $ SelectionChanged st.selected
         eval $ Synchronize a
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
         H.query unit Select.triggerFocus
 
-      -- Tell the parent what the current state of the Selections list is.
-      GetSelections reply -> do
-        { selections } <- H.get
-        pure $ reply selections
+      -- Tell the parent what the current state of the Selection list is.
+      GetSelected reply -> do
+        { selected } <- H.get
+        pure $ reply selected
 
       -- Update the state of Select to be in sync.
       Synchronize a -> do
@@ -248,13 +248,13 @@ base ops renderSelect =
         H.modify_ _ { items = items }
         eval $ Synchronize a
 
-      ReplaceSelections selections a -> do
-        H.modify_ _ { selections = selections }
+      ReplaceSelected selected a -> do
+        H.modify_ _ { selected = selected }
         eval $ Synchronize a
 
       Reset a -> do
-        st <- H.modify _ { selections = empty :: f item, items = NotAsked }
-        H.raise $ SelectionsChanged st.selections
+        st <- H.modify _ { selected = empty :: f item, items = NotAsked }
+        H.raise $ SelectionChanged st.selected
         eval $ Synchronize a
 
       AndThen q1 q2 a -> eval q1 *> eval q2 $> a
@@ -277,7 +277,7 @@ getNewItems st =
   <<< applyF
   <<< applyI
   <<< fuzzyItems
-  <$> (map (flip st.ops.runFilter st.selections) st.items)
+  <$> (map (flip st.ops.runFilter st.selected) st.items)
   where
     matcher :: item -> Fuzzy item
     matcher = Fuzz.match true st.itemToObject st.search

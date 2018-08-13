@@ -394,20 +394,3 @@ renderTA props renderContainer renderSelectionItem st =
       , "w-full"
       , "px-3"
       ]
-
-    spinnerClasses = HH.ClassName <$>
-      [ "w-6"
-      , "text-blue-88"
-      ]
-
-    renderError
-      | isFailure st.items =
-        HH.div
-        [ HP.class_ $ HH.ClassName "flex items-center mt-1" ]
-        [ Icon.error
-          [ HP.class_ $ HH.ClassName "text-2xl text-yellow" ]
-        , HH.p
-          [ HP.class_ $ HH.ClassName "ml-3 text-grey-50 font-light" ]
-          [ HH.text "Some data could not be retrieved here." ]
-        ]
-      | otherwise = HH.div_ []
