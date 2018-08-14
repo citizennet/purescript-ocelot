@@ -37,39 +37,43 @@ renderSingle
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
 renderSingle iprops renderItem renderContainer pst cst =
   HH.label_
-    [ Input.inputGroup
-      [ css $ maybe "offscreen" (const "") pst.selected ]
-      [ case pst.selected of
-          Just selected ->
-            if disabled
-              then
-                HH.div
-                  [ HP.classes disabledClasses ]
-                  [ HH.fromPlainHTML $ renderItem selected ]
-              else
-                HH.div
-                  [ HP.classes Input.mainLeftClasses ]
-                  [ IC.selectionGroup renderItem
-                    [ HE.onClick
-                      $ Select.always
-                      $ Select.raise
-                      $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
+    [ case pst.selected of
+        Just selected ->
+          Input.inputGroup_
+            [ if disabled
+                then
+                  HH.div
+                    [ HP.classes disabledClasses ]
+                    [ HH.fromPlainHTML $ renderItem selected ]
+                else
+                  HH.div
+                    [ HP.classes Input.mainLeftClasses ]
+                    [ IC.selectionGroup renderItem
+                      [ HE.onClick
+                        $ Select.always
+                        $ Select.raise
+                        $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
+                      ]
+                      selected
                     ]
-                    selected
-                  ]
-          Nothing -> HH.text ""
-      , Input.inputCenter $ inputProps disabled iprops
-      , Input.addonCenter
-        [ css $ if isLoading pst.items then "" else "offscreen" ]
-        [ spinner ]
-      , Input.addonLeft_
-        [ Icon.search_ ]
-      , Input.borderRight
-        [ HP.classes $ linkClasses disabled ]
-        [ HH.text "Browse" ]
-      ]
-    , conditional (cst.visibility == Select.Off)
-        [ css "relative" ]
+            , Input.borderRight
+              [ HP.classes $ linkClasses disabled ]
+              [ HH.text "Change" ]
+            ]
+        Nothing ->
+          Input.inputGroup_
+            [ Input.inputCenter $ inputProps disabled iprops
+            , Input.addonLeft_
+              [ Icon.search_ ]
+            , Input.addonCenter
+              [ css $ if isLoading pst.items then "" else "offscreen" ]
+              [ spinner ]
+            , Input.borderRight
+              [ HP.classes $ linkClasses disabled ]
+              [ HH.text "Browse" ]
+            ]
+    , conditional (cst.visibility == Select.On)
+        [ css "relative block" ]
         [ renderContainer cst ]
     , renderError $ isFailure pst.items
     ]
@@ -111,17 +115,17 @@ renderMulti iprops renderItem renderContainer pst cst =
                 selected
     , Input.inputGroup_
       [ Input.inputCenter $ inputProps disabled iprops
+      , Input.addonLeft_
+        [ Icon.search_ ]
       , Input.addonCenter
         [ css $ if isLoading pst.items then "" else "offscreen" ]
         [ spinner ]
-      , Input.addonLeft_
-        [ Icon.search_ ]
       , Input.borderRight
         [ HP.classes $ linkClasses disabled ]
         [ HH.text "Browse" ]
       ]
-    , conditional (cst.visibility == Select.Off)
-        [ css "relative" ]
+    , conditional (cst.visibility == Select.On)
+        [ css "relative block" ]
         [ renderContainer cst ]
     , renderError $ isFailure pst.items
     ]
@@ -158,7 +162,7 @@ inputProps
 inputProps disabled iprops = if disabled
   then iprops'
   else Setters.setInputProps iprops'
-  where iprops' = [ css "focus:next:text-blue-88" ] <&> iprops
+  where iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
 
 
 disabledClasses :: Array HH.ClassName
