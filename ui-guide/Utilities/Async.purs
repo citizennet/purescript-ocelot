@@ -135,14 +135,6 @@ userToObject (User { name, eyeColor, hairColor, skinColor }) =
     , Tuple "skinColor" skinColor
     ]
 
-renderUser :: ∀ p i. User -> HH.HTML p i
-renderUser u@(User { name }) =
-  HH.div
-    [ HP.classes $ HH.ClassName <$> [ "flex", "items-center" ] ]
-    [ renderUserImg u
-    , HH.text name
-    ]
-
 renderFuzzyUser :: ∀ p i. Fuzzy User -> HH.HTML p i
 renderFuzzyUser f@(Fuzzy { original: u }) =
   HH.div

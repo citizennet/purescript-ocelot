@@ -10,7 +10,6 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.Card as Card
@@ -30,10 +29,6 @@ type State = Unit
 
 data Query a
   = NoOp a
-  | SingleUser Int (TA.Message Query Maybe Async.User) a
-  | MultiUser Int (TA.Message Query Array Async.User) a
-  | SingleLocation Int (TA.Message Query Maybe Async.Location) a
-  | MultiLocation Int (TA.Message Query Array Async.Location) a
   | Initialize a
 
 ----------
@@ -76,13 +71,6 @@ component =
       :: Query
       ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Void m
     eval (NoOp next) = pure next
-
-
-    -- No longer necessary to fetch data. Treat it just like a Sync typeahead.
-    eval (SingleUser slot m next) = pure next
-    eval (MultiUser slot m next) = pure next
-    eval (SingleLocation slot m next) = pure next
-    eval (MultiLocation slot m next) = pure next
 
     eval (Initialize next) = do
       _ <- H.queryAll' CP.cp1 $ H.action $ TA.ReplaceItems Loading
@@ -171,7 +159,7 @@ cnDocumentationBlocks =
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "location" ]
                 )
-                ( HE.input $ SingleLocation 0 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -192,7 +180,7 @@ cnDocumentationBlocks =
                   , HP.id_ "location-hydrated"
                   ]
                 )
-                ( HE.input $ SingleLocation 1 )
+                ( const Nothing )
               ]
             ]
           ]
@@ -218,7 +206,7 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( HE.input $ SingleUser 0 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -239,7 +227,7 @@ cnDocumentationBlocks =
                   , HP.id_ "user-hydrated"
                   ]
                 )
-                ( HE.input $ SingleUser 1 )
+                ( const Nothing )
               ]
             ]
           ]
@@ -272,7 +260,7 @@ cnDocumentationBlocks =
                   , HP.id_ "locations"
                   ]
                 )
-                ( HE.input $ MultiLocation 0 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -293,7 +281,7 @@ cnDocumentationBlocks =
                   , HP.id_ "locations"
                   ]
                 )
-                ( HE.input $ MultiLocation 1 )
+                ( const Nothing )
               ]
             ]
           ]
@@ -319,7 +307,7 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( HE.input $ MultiUser 0 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -340,7 +328,7 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( HE.input $ MultiUser 1 )
+                ( const Nothing )
               ]
             ]
           ]
@@ -374,7 +362,7 @@ cnDocumentationBlocks =
                   , HP.disabled true
                   ]
                 )
-                ( HE.input $ SingleLocation 2 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -396,7 +384,7 @@ cnDocumentationBlocks =
                   , HP.disabled true
                   ]
                 )
-                ( HE.input $ SingleLocation 3 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -417,7 +405,7 @@ cnDocumentationBlocks =
                   , HP.id_ "error-locations"
                   ]
                 )
-                ( HE.input $ SingleLocation 4 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -438,7 +426,7 @@ cnDocumentationBlocks =
                   , HP.id_ "loading-locations"
                   ]
                 )
-                ( HE.input $ SingleLocation 5 )
+                ( const Nothing )
               ]
             ]
           ]
@@ -465,7 +453,7 @@ cnDocumentationBlocks =
                   , HP.id_ "disabled-users-empty"
                   ]
                 )
-                ( HE.input $ MultiUser 2 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -487,7 +475,7 @@ cnDocumentationBlocks =
                   , HP.id_ "disabled-users-hydrated"
                   ]
                 )
-                ( HE.input $ MultiUser 3 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -508,7 +496,7 @@ cnDocumentationBlocks =
                   , HP.id_ "error-users"
                   ]
                 )
-                ( HE.input $ MultiUser 4 )
+                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -530,7 +518,7 @@ cnDocumentationBlocks =
                   , HP.id_ "loading-users"
                   ]
                 )
-                ( HE.input $ MultiUser 5 )
+                ( const Nothing )
               ]
             ]
           ]
