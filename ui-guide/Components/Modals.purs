@@ -15,8 +15,8 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Component.Typeahead as TACore
-import Ocelot.Component.Typeahead.Input as TA
+import Ocelot.Component.Typeahead as TA
+import Ocelot.Component.Typeahead.Render as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import UIGuide.Block.Backdrop as Backdrop

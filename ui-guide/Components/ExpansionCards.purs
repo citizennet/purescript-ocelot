@@ -22,8 +22,8 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Toggle as Toggle
 import Ocelot.Block.Format as Format
-import Ocelot.Component.Typeahead.Input as TA
-import Ocelot.Component.Typeahead as TACore
+import Ocelot.Component.Typeahead as TA
+import Ocelot.Component.Typeahead.Render as TA
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
