@@ -18,7 +18,7 @@ import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as IC
 import Ocelot.Block.Loading as Loading
-import Ocelot.Component.Typeahead as TA
+import Ocelot.Component.Typeahead.Base as TA
 import Ocelot.HTML.Properties (css, (<&>))
 import Select as Select
 import Select.Utils.Setters (setInputProps) as Setters
@@ -29,12 +29,12 @@ import Unsafe.Coerce (unsafeCoerce)
 
 renderSingle
   :: ∀ pq item m
-   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Maybe item) (Fuzzy item)))
+   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Maybe item m) (Fuzzy item)))
   -> (item -> HH.PlainHTML)
-  -> (Array (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Maybe item) (Fuzzy item))
+  -> (Select.State (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item))
   -> TA.State Maybe item m
   -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Maybe item) (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
 renderSingle iprops renderItem renderContainer pst cst =
   HH.label_
     [ Input.inputGroup
@@ -68,7 +68,9 @@ renderSingle iprops renderItem renderContainer pst cst =
         [ HP.classes $ linkClasses disabled ]
         [ HH.text "Browse" ]
       ]
-    , renderContainer cst.items
+    , conditional (cst.visibility == Select.Off)
+        [ css "relative" ]
+        [ renderContainer cst ]
     , renderError $ isFailure pst.items
     ]
 
@@ -79,12 +81,12 @@ renderSingle iprops renderItem renderContainer pst cst =
 
 renderMulti
   :: ∀ pq item m
-   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Array item) (Fuzzy item)))
+   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Array item m) (Fuzzy item)))
   -> (item -> HH.PlainHTML)
-  -> (Array (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Array item) (Fuzzy item))
+  -> (Select.State (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Array item m) (Fuzzy item))
   -> TA.State Array item m
   -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Array item) (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Array item m) (Fuzzy item)
 renderMulti iprops renderItem renderContainer pst cst =
   HH.div
     [ css "relative" ]
@@ -118,7 +120,9 @@ renderMulti iprops renderItem renderContainer pst cst =
         [ HP.classes $ linkClasses disabled ]
         [ HH.text "Browse" ]
       ]
-    , renderContainer cst.items
+    , conditional (cst.visibility == Select.Off)
+        [ css "relative" ]
+        [ renderContainer cst ]
     , renderError $ isFailure pst.items
     ]
 
@@ -131,15 +135,12 @@ renderMulti iprops renderItem renderContainer pst cst =
 -- Default Renders
 
 defRenderContainer
-  :: ∀ pq f item
+  :: ∀ pq f item m
    . (Fuzzy item -> HH.PlainHTML)
   -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq f item) (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq f item m) (Fuzzy item)
 defRenderContainer renderFuzzy cst =
-  conditional (cst.visibility == Select.Off)
-    [ css "relative" ]
-    [ IC.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) [] ]
-
+  IC.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) []
 
 ----------
 -- Shared Helpers
@@ -150,10 +151,10 @@ linkClasses = if _
   else Format.linkClasses
 
 inputProps
-  :: ∀ pq f item
+  :: ∀ pq f item m
    . Boolean
-  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item) (Fuzzy item)))
-  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item) (Fuzzy item)))
+  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
+  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
 inputProps disabled iprops = if disabled
   then iprops'
   else Setters.setInputProps iprops'
