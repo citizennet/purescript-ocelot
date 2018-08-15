@@ -5,7 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr, null)
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe(..), maybe)
+import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
