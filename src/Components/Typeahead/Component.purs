@@ -43,7 +43,7 @@ syncSingle
 syncSingle { itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
-  , keepOpen: true
+  , keepOpen: false
   , itemToObject
   , asyncConfig: Nothing
   , render: TA.renderSingle
