@@ -23,22 +23,14 @@ import Select as Select
 ----------
 -- Components
 
-single
-  :: ∀ pq item m
-   . MonadAff m
-  => Eq item
-  => H.Component HH.HTML (Query pq Maybe item m) (Input pq Maybe item m) (Message pq Maybe item) m
+single :: ∀ pq item m. MonadAff m => Eq item => Component pq Maybe item m
 single = base
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
   , runFilter: \items -> maybe items (\i -> filter (_ == i) items)
   }
 
-multi
-  :: ∀ pq item m
-   . MonadAff m
-  => Eq item
-  => H.Component HH.HTML (Query pq Array item m) (Input pq Array item m) (Message pq Array item) m
+multi :: ∀ pq item m. MonadAff m => Eq item => Component pq Array item m
 multi = base
   { runSelect: (:)
   , runRemove: filter <<< (/=)
@@ -108,6 +100,7 @@ data Query pq f item m a
 
 data Message pq f item
   = Searched String
+  | Selected item
   | SelectionChanged (f item)
   | Emit (pq Unit)
 
@@ -204,6 +197,7 @@ base ops =
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
           H.raise $ SelectionChanged st.selected
+          H.raise $ Selected item
           eval $ Synchronize a
 
         -- Perform a new search, fetching data if Async.
@@ -268,7 +262,8 @@ base ops =
         eval $ Synchronize a
 
       ReplaceSelected selected a -> do
-        modifyState_ _ { selected = selected }
+        st <- modifyState _ { selected = selected }
+        H.raise $ SelectionChanged st.selected
         eval $ Synchronize a
 
       Reset a -> do
