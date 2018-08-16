@@ -15,8 +15,8 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Component.Typeahead as TACore
-import Ocelot.Component.Typeahead.Input as TA
+import Ocelot.Block.ItemContainer (boldMatches) as IC
+import Ocelot.Component.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import UIGuide.Block.Backdrop as Backdrop
@@ -38,8 +38,8 @@ type Message = Void
 type ChildSlot = Either2 Unit Unit
 type ChildQuery m =
   Coproduct2
-    (TACore.Query Query Async.Location Async.Err m)
-    (TACore.Query Query Async.User Async.Err m)
+    (TA.Query Query Array Async.Location m)
+    (TA.Query Query Array Async.User m)
 
 component :: ∀ m
   . MonadAff m
@@ -110,13 +110,15 @@ component =
               , error: Nothing
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp1 unit TACore.component
-                (TA.defAsyncMulti
+              [ HH.slot' CP.cp1 unit TA.multi
+                ( TA.asyncMulti
+                  { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                  , itemToObject: Async.locationToObject
+                  , fetchItems: Async.loadFromSource Async.locations
+                  }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
                   ]
-                  ( Async.loadFromSource Async.locations )
-                  Async.renderItemLocation
                 )
                 ( const Nothing )
               ]
@@ -129,13 +131,15 @@ component =
               , error: Nothing
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp2 unit TACore.component
-                (TA.defAsyncMulti
+              [ HH.slot' CP.cp2 unit TA.multi
+                ( TA.asyncMulti
+                  { renderFuzzy: Async.renderFuzzyUser
+                  , itemToObject: Async.userToObject
+                  , fetchItems: Async.loadFromSource Async.users
+                  }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "users"
                   ]
-                  ( Async.loadFromSource Async.users )
-                  Async.renderItemUser
                 )
                 ( const Nothing )
               ]

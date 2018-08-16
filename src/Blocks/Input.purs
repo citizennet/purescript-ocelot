@@ -19,7 +19,7 @@ inputSharedClasses = HH.ClassName <$>
   , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
-  , "transition-1/4-bounce"
+  -- , "transition-1/4-bounce"
   ]
 
 inputClasses :: Array HH.ClassName

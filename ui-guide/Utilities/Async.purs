@@ -7,7 +7,7 @@ import Data.Array (head, last)
 import Data.Either (Either)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (fromMaybe)
-import Data.Newtype (class Newtype, unwrap)
+import Data.Newtype (class Newtype)
 import Data.String (Pattern(..), split)
 import Data.Traversable (traverse)
 import Data.Tuple (Tuple(..))
@@ -21,7 +21,6 @@ import Network.HTTP.Affjax (get)
 import Network.HTTP.Affjax.Response as Response
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
-import Ocelot.Component.Typeahead.Input as TA
 
 
 ----------
@@ -127,13 +126,6 @@ decodeUser json = do
     , skinColor
     }
 
-renderItemUser :: ∀ o. TA.RenderTypeaheadItem o User
-renderItemUser =
-  { toObject: userToObject
-  , renderItem: renderUser
-  , renderContainer: TA.defRenderContainer' renderFuzzyUser
-  }
-
 userToObject :: User -> Object String
 userToObject (User { name, eyeColor, hairColor, skinColor }) =
   fromFoldable
@@ -141,14 +133,6 @@ userToObject (User { name, eyeColor, hairColor, skinColor }) =
     , Tuple "eyeColor" eyeColor
     , Tuple "hairColor" hairColor
     , Tuple "skinColor" skinColor
-    ]
-
-renderUser :: ∀ p i. User -> HH.HTML p i
-renderUser u@(User { name }) =
-  HH.div
-    [ HP.classes $ HH.ClassName <$> [ "flex", "items-center" ] ]
-    [ renderUserImg u
-    , HH.text name
     ]
 
 renderFuzzyUser :: ∀ p i. Fuzzy User -> HH.HTML p i
@@ -234,13 +218,6 @@ decodeLocation json = do
 locationToObject :: Location -> Object String
 locationToObject (Location { name, population }) =
   fromFoldable [ Tuple "name" name ]
-
-renderItemLocation :: ∀ o. TA.RenderTypeaheadItem o Location
-renderItemLocation =
-  { toObject: locationToObject
-  , renderItem: TA.defRenderItem <<< unwrap
-  , renderContainer: TA.defRenderContainer' TA.defRenderFuzzy
-  }
 
 ----------
 -- Helper for rendering user img
