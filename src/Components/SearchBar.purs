@@ -1,9 +1,4 @@
-module Ocelot.Component.SearchBar
-  ( component
-  , Query
-  , Message(..)
-  )
-  where
+module Ocelot.Component.SearchBar where
 
 import Prelude
 
