@@ -37,6 +37,7 @@ type Debouncer =
 data Query a
   = Clear a
   | Search String a
+  | SetText String a
   | Open a
   | Blur a
 
@@ -75,9 +76,14 @@ component =
         pure a
 
       Clear a -> do
-        H.modify_ _ { query = "" }
-        H.modify_ _ { open = false }
+        H.modify_ _ { query = "", open = false }
         H.raise $ Searched ""
+        pure a
+
+      -- For when there is an existing search performed, but you need to set the
+      -- field's text anyway.
+      SetText str a -> do
+        H.modify_ _ { query = str }
         pure a
 
       Search str a -> do
@@ -130,7 +136,7 @@ component =
           ]
         , HH.button
           [ HE.onClick (HE.input $ const Clear)
-          , HP.type_ (HP.ButtonButton)
+          , HP.type_ HP.ButtonButton
           , HP.classes $ buttonClasses <> buttonCondClasses
           ]
           [ Icon.delete_ ]
