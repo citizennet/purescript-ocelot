@@ -121,7 +121,7 @@ tableData =
     }
   , { name: "This is what a progress bar with a top caption looks like"
     , icon: HH.div_
-        [ HH.p [ css "text-sm" ] [ HH.text "60% of campaign spent" ]
+        [ HH.p [ css "text-sm pb-2" ] [ HH.text "60% of campaign spent" ]
         , Progress.bar 60 [ css "w-2/3 h-2" ] [ css "bg-blue h-2" ]
         ]
     }
