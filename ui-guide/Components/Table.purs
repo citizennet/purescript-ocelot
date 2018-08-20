@@ -8,6 +8,7 @@ import Halogen.HTML as HH
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Progress as Progress
 import Ocelot.Block.Table as Table
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
@@ -114,5 +115,14 @@ tableData =
     }
   , { name: "This is what the Twitter icon looks like"
     , icon: Icon.twitter [ css "text-tw-blue" ]
+    }
+  , { name: "This is what a progress bar looks like"
+    , icon: Progress.bar 60 [ css "w-2/3 h-2" ] [ css "bg-blue h-2" ]
+    }
+  , { name: "This is what a progress bar with a top caption looks like"
+    , icon: HH.div_
+        [ HH.p [ css "text-sm" ] [ HH.text "60% of campaign spent" ]
+        , Progress.bar 60 [ css "w-2/3 h-2" ] [ css "bg-blue h-2" ]
+        ]
     }
   ]
