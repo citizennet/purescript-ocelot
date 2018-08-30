@@ -66,6 +66,13 @@ convertSingleToMessageVariant = case _ of
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 -- | A subset of the input available to the typeahead
+-- | Provide:
+-- | - items: an array of objects, where all keys and values are strings
+-- | - status: a status to put the typeahead in: one of 'success', 'loading'
+-- |   'failure', or 'notAsked'
+-- | - placeholder: placeholder text to set in the field
+-- | - key: the name of the field in the object that should be displayed in the list
+-- | - keepOpen: whether the typeahead should stay open or close on selection
 type ExternalInput =
   { items :: Array (Object String)
     -- one of 'success', 'failure', 'loading', or 'notAsked'
