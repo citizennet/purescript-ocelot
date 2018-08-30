@@ -2,40 +2,27 @@
 
 This section holds the JavaScript interfaces for various Halogen components. These provide easy interop for teams who wish to use these Halogen components within JavaScript applications.
 
-### Example
+## Setup
 
-```js
-import { textField } from '.../Interface.TextField/index.js';
+To play around with the example code, follow these steps:
 
-// Mount the component at a given HTML element
-const component = textField(element);
+```sh
+# Install and build the library
+npm i && npx pulp build
 
-// Use the `subscribe` function to process outputs from the component.
-// You can match on particular outputs by name with _.type and can retrieve
-// values with _.value
-const subscription = component.subscribe((out) => {
-  switch (out.type) {
-    case "textChanged":
-      console.log("Something changed: ", out.value);
-      break;
-  }
-});
+# Move to the test/interop directory
+cd test/Interop/
 
-// If the component supports _requests_ that return a value,
-// you can use them like this:
-component.getText().then((value) => {
-  console.log("Fetched the current value: ", value);
-});
+# Now we're in a pretend project that depends on Ocelot.
+# Install Node dependencies
+npm i
 
-// You can use component _queries_ to trigger behaviors in
-// the component like this:
-component.setText("Hello, I'm Qian!").then(() => {
-  console.log("The value was set.");
-});
+# You can view the running code:
+open dist/index.html
 
-// Now, the value ought to have changed to the previous message
-// and we can retrieve it.
-component.getText().then((value) => {
-  console.log("Fetched the current value: ", value);
-});
+# You can modify the source:
+vim src/index.js
+
+# And rebuild with webpack
+npx webpack
 ```
