@@ -5,10 +5,10 @@ This section holds the JavaScript interfaces for various Halogen components. The
 ### Example
 
 ```js
-import { textField } from 'bower_components/purescript-halogen-ocelot/output/Interfaces/TextField/index.js';
+import { textField } from '.../Interface.TextField/index.js';
 
 // Mount the component at a given HTML element
-const component = textField(getElement());
+const component = textField(element);
 
 // Use the `subscribe` function to process outputs from the component.
 // You can match on particular outputs by name with _.type and can retrieve
