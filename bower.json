@@ -18,7 +18,8 @@
     "purescript-remotedata": "^4.0.0",
     "purescript-formatters": "^4.0.0",
     "purescript-read": "^1.0.1",
-    "purescript-halogen-renderless": "^0.0.3"
+    "purescript-halogen-renderless": "^0.0.3",
+    "purescript-aff-promise": "^2.0.0"
   },
   "devDependencies": {
     "purescript-affjax": "^6.0.0",
