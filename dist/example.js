@@ -23567,6 +23567,101 @@ var PS = {};
   "use strict";
   var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
   var Data_Array = PS["Data.Array"];
+  var Data_Either = PS["Data.Either"];
+  var Data_Eq = PS["Data.Eq"];
+  var Data_Function = PS["Data.Function"];
+  var Data_Functor = PS["Data.Functor"];
+  var Data_FunctorWithIndex = PS["Data.FunctorWithIndex"];
+  var Data_Fuzzy = PS["Data.Fuzzy"];
+  var Data_Maybe = PS["Data.Maybe"];
+  var Data_Monoid = PS["Data.Monoid"];
+  var Data_Semigroup = PS["Data.Semigroup"];
+  var Foreign_Object = PS["Foreign.Object"];
+  var Halogen = PS["Halogen"];
+  var Halogen_HTML = PS["Halogen.HTML"];
+  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
+  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
+  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
+  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
+  var Prelude = PS["Prelude"];
+  var Select = PS["Select"];
+  var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
+  var ulClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "list-reset" ]);
+  var selectionGroupClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "items-start", "justify-between" ]);
+  var menuClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "text-black-20", "border", "list-reset", "rounded", "shadow", "absolute", "z-60", "min-w-50" ]);
+  var liClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "px-4", "py-2", "rounded-sm", "text-black-20", "group", "hover:bg-grey-97", "cursor-pointer" ]);               
+  var dropdownClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(menuClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "pin-t-full", "pin-l" ]));
+  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "invisible", "text-grey-80", "hover:text-grey-70", "group-hover:visible" ]);
+  var selectionGroup = function (f) {
+      return function (props) {
+          return function (item) {
+              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(selectionGroupClasses) ])(props))([ Halogen_HTML.fromPlainHTML(f(item)), Halogen_HTML_Elements.button([ Halogen_HTML_Properties.classes(buttonClasses) ])([ Halogen_HTML_Core.text("\u2715") ]) ]);
+          };
+      };
+  };
+  var boldMatches = function (key) {
+      return function (v) {
+          var boldMatch = function (v1) {
+              if (v1 instanceof Data_Either.Left) {
+                  return Halogen_HTML_Core.text(v1.value0);
+              };
+              if (v1 instanceof Data_Either.Right) {
+                  return Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("font-bold") ])([ Halogen_HTML_Core.text(v1.value0) ]);
+              };
+              throw new Error("Failed pattern match at Ocelot.Block.ItemContainer line 182, column 5 - line 182, column 39: " + [ v1.constructor.name ]);
+          };
+          return Data_Functor.map(Data_Functor.functorArray)(boldMatch)(Data_Maybe.fromMaybe([ new Data_Either.Left(key) ])(Foreign_Object.lookup(key)(v.segments)));
+      };
+  };
+  var baseClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "border-grey-80", "border-l-2", "border-r-2", "w-full" ]);
+  var itemContainerClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(baseClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "shadow", "max-h-80", "overflow-y-scroll", "z-50", "border-b-2", "pin-t-full", "pin-l" ]));
+  var itemContainer = function (highlightIndex) {
+      return function (itemsHTML) {
+          return function (addlHTML) {
+              var hover = function (i) {
+                  var $9 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(highlightIndex)(new Data_Maybe.Just(i));
+                  if ($9) {
+                      return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-lighter" ]);
+                  };
+                  return Data_Monoid.mempty(Data_Monoid.monoidArray);
+              };
+              var renderItems = [ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.classes(ulClasses) ])(Data_FunctorWithIndex.mapWithIndex(Data_FunctorWithIndex.functorWithIndexArray)(function (i) {
+                  return function (h) {
+                      return Halogen_HTML_Elements.li(Select_Utils_Setters.setItemProps(i)([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(liClasses)(hover(i))) ]))([ Halogen_HTML.fromPlainHTML(h) ]);
+                  };
+              })(itemsHTML)) ];
+              return Halogen_HTML_Elements.div(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(itemContainerClasses) ]))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(renderItems)(addlHTML));
+          };
+      };
+  };
+  var selectionContainerClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(baseClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-t-2" ]));
+  var selectionContainer = function (v) {
+      if (v.length === 0) {
+          return Halogen_HTML_Elements.div_([  ]);
+      };
+      return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(selectionContainerClasses) ])([ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.classes(ulClasses) ])(Data_Functor.mapFlipped(Data_Functor.functorArray)(v)(function (h) {
+          return Halogen_HTML_Elements.li([ Halogen_HTML_Properties.classes(Data_Array.cons("py-2")(liClasses)) ])([ h ]);
+      })) ]);
+  };
+  exports["menuClasses"] = menuClasses;
+  exports["dropdownClasses"] = dropdownClasses;
+  exports["baseClasses"] = baseClasses;
+  exports["selectionContainerClasses"] = selectionContainerClasses;
+  exports["itemContainerClasses"] = itemContainerClasses;
+  exports["ulClasses"] = ulClasses;
+  exports["liClasses"] = liClasses;
+  exports["selectionGroupClasses"] = selectionGroupClasses;
+  exports["buttonClasses"] = buttonClasses;
+  exports["itemContainer"] = itemContainer;
+  exports["selectionContainer"] = selectionContainer;
+  exports["selectionGroup"] = selectionGroup;
+  exports["boldMatches"] = boldMatches;
+})(PS["Ocelot.Block.ItemContainer"] = PS["Ocelot.Block.ItemContainer"] || {});
+(function(exports) {
+  // Generated by purs version 0.12.0
+  "use strict";
+  var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
+  var Data_Array = PS["Data.Array"];
   var Data_Boolean = PS["Data.Boolean"];
   var Data_Eq = PS["Data.Eq"];
   var Data_Function = PS["Data.Function"];
@@ -23582,6 +23677,7 @@ var PS = {};
   var Halogen_HTML_Events = PS["Halogen.HTML.Events"];
   var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
   var Ocelot_Block_Icon = PS["Ocelot.Block.Icon"];
+  var Ocelot_Block_ItemContainer = PS["Ocelot.Block.ItemContainer"];
   var Ocelot_Component_Dropdown = PS["Ocelot.Component.Dropdown"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];
@@ -23608,7 +23704,7 @@ var PS = {};
                   return function (label) {
                       return function (state) {
                           return function (selectState) {
-                              var toggle = button(Ocelot_HTML_Properties.appendIProps(Select_Utils_Setters.setToggleProps([ Halogen_HTML_Properties.class_("font-medium flex items-center") ]))(props))([ Halogen_HTML_Core.text(Data_Maybe.maybe(label)(toString)(state.selectedItem)), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("ml-3 text-xs") ])([ Ocelot_Block_Icon.caratDown_ ]) ]);
+                              var toggle = button(Ocelot_HTML_Properties.appendIProps(Select_Utils_Setters.setToggleProps([ Ocelot_HTML_Properties.css("font-medium flex items-center") ]))(props))([ Halogen_HTML_Core.text(Data_Maybe.maybe(label)(toString)(state.selectedItem)), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("ml-3 text-xs") ])([ Ocelot_Block_Icon.caratDown_ ]) ]);
                               var renderItem = function (idx) {
                                   return function (item) {
                                       var selectedClass = (function () {
@@ -23618,7 +23714,7 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 95, column 9 - line 97, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 82, column 9 - line 84, column 27: " + [  ]);
                                       })();
                                       var itemClasses$prime = [ "px-4", "py-2" ];
                                       var highlightClass = (function () {
@@ -23628,7 +23724,7 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [  ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 91, column 9 - line 93, column 27: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 78, column 9 - line 80, column 27: " + [  ]);
                                       })();
                                       var itemClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(itemClasses$prime)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(highlightClass)(selectedClass)));
                                       var itemProps = Select_Utils_Setters.setItemProps(idx)([ Halogen_HTML_Properties.classes(itemClasses) ]);
@@ -23639,23 +23735,22 @@ var PS = {};
                                           if (Data_Boolean.otherwise) {
                                               return [ "invisible" ];
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 99, column 9 - line 101, column 40: " + [  ]);
+                                          throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 86, column 9 - line 88, column 40: " + [  ]);
                                       })();
                                       return Halogen_HTML_Elements.li(itemProps)([ Ocelot_Block_Icon.selected([ Halogen_HTML_Properties.classes(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "mr-2", "text-green" ])(checkmarkClass))) ]), Halogen_HTML_Core.text(toString(item)) ]);
                                   };
                               };
-                              var containerClasses$prime = [ "bg-white", "text-black-20", "border", "cursor-pointer", "list-reset", "py-2", "rounded", "shadow", "absolute", "pin-t", "z-60" ];
-                              var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
+                              var containerClasses = (function () {
                                   if (selectState.visibility instanceof Select.Off) {
-                                      return Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "invisible" ])(containerClasses$prime);
+                                      return Data_Semigroup.append(Data_Semigroup.semigroupArray)([ "invisible" ])(Ocelot_Block_ItemContainer.dropdownClasses);
                                   };
                                   if (selectState.visibility instanceof Select.On) {
-                                      return containerClasses$prime;
+                                      return Ocelot_Block_ItemContainer.dropdownClasses;
                                   };
-                                  throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 53, column 41 - line 55, column 37: " + [ selectState.visibility.constructor.name ]);
-                              })());
+                                  throw new Error("Failed pattern match at Ocelot.Component.Dropdown.Render line 54, column 24 - line 56, column 38: " + [ selectState.visibility.constructor.name ]);
+                              })();
                               var menu = Halogen_HTML_Elements.ul(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(containerClasses) ]))(Data_Array.mapWithIndex(renderItem)(selectState.items));
-                              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("relative") ])([ toggle, menu ]);
+                              return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("relative") ])([ toggle, menu ]);
                           };
                       };
                   };
@@ -24158,97 +24253,6 @@ var PS = {};
   exports["isPropStatus"] = isPropStatus;
   exports["heytingAlgebraStatus"] = heytingAlgebraStatus;
 })(PS["Ocelot.Block.Expandable"] = PS["Ocelot.Block.Expandable"] || {});
-(function(exports) {
-  // Generated by purs version 0.12.0
-  "use strict";
-  var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
-  var Data_Array = PS["Data.Array"];
-  var Data_Either = PS["Data.Either"];
-  var Data_Eq = PS["Data.Eq"];
-  var Data_Function = PS["Data.Function"];
-  var Data_Functor = PS["Data.Functor"];
-  var Data_FunctorWithIndex = PS["Data.FunctorWithIndex"];
-  var Data_Fuzzy = PS["Data.Fuzzy"];
-  var Data_Maybe = PS["Data.Maybe"];
-  var Data_Monoid = PS["Data.Monoid"];
-  var Data_Semigroup = PS["Data.Semigroup"];
-  var Foreign_Object = PS["Foreign.Object"];
-  var Halogen = PS["Halogen"];
-  var Halogen_HTML = PS["Halogen.HTML"];
-  var Halogen_HTML_Core = PS["Halogen.HTML.Core"];
-  var Halogen_HTML_Elements = PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Properties = PS["Halogen.HTML.Properties"];
-  var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
-  var Prelude = PS["Prelude"];
-  var Select = PS["Select"];
-  var Select_Utils_Setters = PS["Select.Utils.Setters"];                 
-  var ulClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "list-reset" ]);
-  var selectionGroupClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "items-start", "justify-between" ]);
-  var liClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "px-3", "rounded-sm", "text-black-20", "group", "hover:bg-grey-97", "cursor-pointer" ]);
-  var buttonClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "invisible", "text-grey-80", "hover:text-grey-70", "group-hover:visible" ]);
-  var selectionGroup = function (f) {
-      return function (props) {
-          return function (item) {
-              return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(selectionGroupClasses) ])(props))([ Halogen_HTML.fromPlainHTML(f(item)), Halogen_HTML_Elements.button([ Halogen_HTML_Properties.classes(buttonClasses) ])([ Halogen_HTML_Core.text("\u2715") ]) ]);
-          };
-      };
-  };
-  var boldMatches = function (key) {
-      return function (v) {
-          var boldMatch = function (v1) {
-              if (v1 instanceof Data_Either.Left) {
-                  return Halogen_HTML_Core.text(v1.value0);
-              };
-              if (v1 instanceof Data_Either.Right) {
-                  return Halogen_HTML_Elements.span([ Halogen_HTML_Properties.class_("font-bold") ])([ Halogen_HTML_Core.text(v1.value0) ]);
-              };
-              throw new Error("Failed pattern match at Ocelot.Block.ItemContainer line 150, column 5 - line 150, column 39: " + [ v1.constructor.name ]);
-          };
-          return Data_Functor.map(Data_Functor.functorArray)(boldMatch)(Data_Maybe.fromMaybe([ new Data_Either.Left(key) ])(Foreign_Object.lookup(key)(v.segments)));
-      };
-  };
-  var baseClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "border-grey-80", "border-l-2", "border-r-2", "w-full" ]);
-  var itemContainerClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(baseClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "shadow", "max-h-80", "overflow-y-scroll", "pin-t", "pin-l", "z-50", "border-b-2" ]));
-  var itemContainer = function (highlightIndex) {
-      return function (itemsHTML) {
-          return function (addlHTML) {
-              var hover = function (i) {
-                  var $9 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Eq.eqInt))(highlightIndex)(new Data_Maybe.Just(i));
-                  if ($9) {
-                      return Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-lighter" ]);
-                  };
-                  return Data_Monoid.mempty(Data_Monoid.monoidArray);
-              };
-              var renderItems = [ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.classes(ulClasses) ])(Data_FunctorWithIndex.mapWithIndex(Data_FunctorWithIndex.functorWithIndexArray)(function (i) {
-                  return function (h) {
-                      return Halogen_HTML_Elements.li(Select_Utils_Setters.setItemProps(i)([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Data_Array.cons("py-3")(liClasses))(hover(i))) ]))([ Halogen_HTML.fromPlainHTML(h) ]);
-                  };
-              })(itemsHTML)) ];
-              return Halogen_HTML_Elements.div(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(itemContainerClasses) ]))(Data_Semigroup.append(Data_Semigroup.semigroupArray)(renderItems)(addlHTML));
-          };
-      };
-  };
-  var selectionContainerClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(baseClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-t-2" ]));
-  var selectionContainer = function (v) {
-      if (v.length === 0) {
-          return Halogen_HTML_Elements.div_([  ]);
-      };
-      return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(selectionContainerClasses) ])([ Halogen_HTML_Elements.ul([ Halogen_HTML_Properties.classes(ulClasses) ])(Data_Functor.mapFlipped(Data_Functor.functorArray)(v)(function (h) {
-          return Halogen_HTML_Elements.li([ Halogen_HTML_Properties.classes(Data_Array.cons("py-2")(liClasses)) ])([ h ]);
-      })) ]);
-  };
-  exports["baseClasses"] = baseClasses;
-  exports["selectionContainerClasses"] = selectionContainerClasses;
-  exports["itemContainerClasses"] = itemContainerClasses;
-  exports["ulClasses"] = ulClasses;
-  exports["liClasses"] = liClasses;
-  exports["selectionGroupClasses"] = selectionGroupClasses;
-  exports["buttonClasses"] = buttonClasses;
-  exports["itemContainer"] = itemContainer;
-  exports["selectionContainer"] = selectionContainer;
-  exports["selectionGroup"] = selectionGroup;
-  exports["boldMatches"] = boldMatches;
-})(PS["Ocelot.Block.ItemContainer"] = PS["Ocelot.Block.ItemContainer"] || {});
 (function(exports) {
   // Generated by purs version 0.12.0
   "use strict";
