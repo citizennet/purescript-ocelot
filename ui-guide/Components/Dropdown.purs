@@ -183,107 +183,6 @@ component =
               ]
             ]
           ]
-        -- , Documentation.block_
-          -- { header: "Dropdown - Tiered"
-          -- , subheader: "A dropdown list of categorized, selectable items."
-          -- }
-          -- [ Backdrop.backdrop_
-            -- [ Backdrop.content_
-              -- [ HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Tiered right" ]
-                -- , HH.slot'
-                  -- CP.cp2
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Nothing
-                  -- , items
-                  -- , render: renderDropdown Button.button
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- , HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Disabled & Hydrated" ]
-                -- , HH.slot'
-                  -- CP.cp1
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Just "Kilchoman Blue Label"
-                  -- , items
-                  -- , render: renderDisabledDropdown Button.button
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- ]
-            -- ]
-          -- , Backdrop.backdropWhite_
-            -- [ Backdrop.content_
-              -- [ HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Primary" ]
-                -- , HH.slot'
-                  -- CP.cp1
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Nothing
-                  -- , items
-                  -- , render: renderDropdown Button.buttonPrimary
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- , HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Disabled & Hydrated" ]
-                -- , HH.slot'
-                  -- CP.cp1
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Just "Kilchoman Blue Label"
-                  -- , items
-                  -- , render: renderDisabledDropdown Button.buttonPrimary
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- ]
-            -- ]
-          -- , Backdrop.backdropDark_
-            -- [ Backdrop.content_
-              -- [ HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Dark" ]
-                -- , HH.slot'
-                  -- CP.cp1
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Nothing
-                  -- , items
-                  -- , render: renderDropdown Button.buttonDark
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- , HH.div
-                -- [ css "mb-6" ]
-                -- [ Format.caption_
-                  -- [ HH.text "Disabled & Hydrated" ]
-                -- , HH.slot'
-                  -- CP.cp1
-                  -- unit
-                  -- DD.component
-                  -- { selectedItem: Just "Kilchoman Blue Label"
-                  -- , items
-                  -- , render: renderDisabledDropdown Button.buttonDark
-                  -- }
-                  -- ( HE.input HandleDropdown )
-                -- ]
-              -- ]
-            -- ]
-          -- ]
         , Documentation.block_
           { header: "Choice"
           , subheader: "A specialized dropdown for making selections."
@@ -308,14 +207,6 @@ component =
           , "Laphroaig"
           , "Ardbeg"
           ]
-
-        -- itemsTieredR :: Array (Tuple String (Array String))
-        -- itemsTieredR =
-          -- [ Tuple "Chrises" [ "Chris Cornell", "Chris Cornwell", "Chris Pratt" ]
-          -- , Tuple "Daves" [ "Dave Chapelle", "Dave n Buster's", "Dave Navarro", "Dave Zuch", "Dirty Dave" ]
-          -- , Tuple "Forests" [ "Angeles National Forest", "Eldorado National Forest", "Forest Loren Toney III", "Lake Tahoe Basin National Forests" ]
-          -- , Tuple "Thomases" [ "Thomas Edison", "Thomas Honeyman" ]
-          -- ]
 
         renderDropdown
           :: (∀ p i. DR.ButtonFn p i)
