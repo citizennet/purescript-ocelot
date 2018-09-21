@@ -11,8 +11,9 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
+import Ocelot.Block.ItemContainer as IC
 import Ocelot.Component.Dropdown as DD
-import Ocelot.HTML.Properties ((<&>))
+import Ocelot.HTML.Properties (css, (<&>))
 import Select as Select
 import Select.Utils.Setters (setContainerProps, setItemProps, setToggleProps)
 
@@ -32,16 +33,16 @@ defDropdown
   -> Select.State item
   -> H.ComponentHTML (Select.Query o item)
 defDropdown button props toString label state selectState =
-  HH.div [ HP.class_ $ HH.ClassName "relative" ] [ toggle, menu ]
+  HH.div [ css "relative" ] [ toggle, menu ]
 
   where
     toggle =
       button
         ( setToggleProps
-          [ HP.class_ $ HH.ClassName "font-medium flex items-center" ] <&> props )
+          [ css "font-medium flex items-center" ] <&> props )
         [ HH.text $ maybe label toString state.selectedItem
         , HH.div
-          [ HP.class_ $ HH.ClassName "ml-3 text-xs" ]
+          [ css "ml-3 text-xs" ]
           [ Icon.caratDown_ ]
         ]
 
@@ -50,23 +51,9 @@ defDropdown button props toString label state selectState =
         ( setContainerProps [ HP.classes containerClasses ] )
         ( mapWithIndex renderItem selectState.items )
 
-    containerClasses = HH.ClassName <$> case selectState.visibility of
-      Select.Off -> [ "invisible" ] <> containerClasses'
-      Select.On -> containerClasses'
-
-    containerClasses' =
-      [ "bg-white"
-      , "text-black-20"
-      , "border"
-      , "cursor-pointer"
-      , "list-reset"
-      , "py-2"
-      , "rounded"
-      , "shadow"
-      , "absolute"
-      , "pin-t"
-      , "z-60"
-      ]
+    containerClasses = case selectState.visibility of
+      Select.Off -> [ HH.ClassName "invisible" ] <> IC.dropdownClasses
+      Select.On -> IC.dropdownClasses
 
     renderItem idx item =
       HH.li
@@ -99,6 +86,7 @@ defDropdown button props toString label state selectState =
         checkmarkClass
           | Just item == state.selectedItem = []
           | otherwise = [ "invisible" ]
+
 
 render
   :: ∀ o item m

@@ -16,6 +16,37 @@ import Ocelot.HTML.Properties ((<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
 
+menuClasses :: Array HH.ClassName
+menuClasses = HH.ClassName <$>
+  [ "bg-white"
+  , "text-black-20"
+  , "border"
+  , "list-reset"
+  , "rounded"
+  , "shadow"
+  , "absolute"
+  , "z-60"
+  , "min-w-50"
+  ]
+
+dropdownClasses :: Array HH.ClassName
+dropdownClasses = menuClasses <>
+  ( HH.ClassName <$>
+    [ "absolute"
+    , "pin-t-full"
+    , "pin-l"
+    ]
+  )
+
+droprightClasses :: Array HH.ClassName
+droprightClasses = menuClasses <>
+  ( HH.ClassName <$>
+    [ "absolute"
+    , "pin-t"
+    , "pin-l-full"
+    ]
+  )
+
 baseClasses :: Array HH.ClassName
 baseClasses = HH.ClassName <$>
   [ "bg-white"
@@ -39,10 +70,10 @@ itemContainerClasses = baseClasses <>
     , "shadow"
     , "max-h-80"
     , "overflow-y-scroll"
-    , "pin-t"
-    , "pin-l"
     , "z-50"
     , "border-b-2"
+    , "pin-t-full"
+    , "pin-l"
     ]
   )
 
@@ -51,7 +82,8 @@ ulClasses = HH.ClassName <$> [ "list-reset" ]
 
 liClasses :: Array HH.ClassName
 liClasses = HH.ClassName <$>
-  [ "px-3"
+  [ "px-4"
+  , "py-2"
   , "rounded-sm"
   , "text-black-20"
   , "group"
@@ -98,7 +130,7 @@ itemContainer highlightIndex itemsHTML addlHTML =
           ( \i h ->
               HH.li
                 ( Setters.setItemProps i
-                  [ HP.classes (HH.ClassName "py-3" : liClasses <> hover i) ]
+                  [ HP.classes $ liClasses <> hover i ]
                 )
                 [ HH.fromPlainHTML h ]
           )
