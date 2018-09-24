@@ -3,14 +3,14 @@ module Ocelot.Block.Progress where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLspan, HTMLdiv)
+import Data.Ratio (Ratio, denominator, numerator)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties (css, (<&>))
 
--- Always assumes value is out of 100; will normalize to 100 if a value is passed > 100
 -- Passed props reach the <span>.
-bar :: ∀ p i. Int -> Array (HH.IProp HTMLdiv i) -> Array (HH.IProp HTMLspan i) -> HH.HTML p i
-bar i divProps spanProps =
+bar :: ∀ p i. Ratio Number -> Array (HH.IProp HTMLdiv i) -> Array (HH.IProp HTMLspan i) -> HH.HTML p i
+bar r divProps spanProps =
   HH.div
     ( [ css "bg-grey-light relative" ] <&> divProps )
     [ HH.span
@@ -19,9 +19,12 @@ bar i divProps spanProps =
     ]
   where
     value :: String
-    value = show $ if i > 100 then 100 else i
+    value = show $ if percentage > 100.0 then 100.0 else percentage
+
+    percentage :: Number
+    percentage = numerator r / denominator r * 100.0
 
 -- Defaults
-bar_ :: ∀ p i. Int -> HH.HTML p i
-bar_ i = bar i [] [ css "bg-blue" ]
+bar_ :: ∀ p i. Ratio Number -> HH.HTML p i
+bar_ r = bar r [] [ css "bg-blue" ]
 
