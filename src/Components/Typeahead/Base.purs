@@ -27,7 +27,7 @@ single :: ∀ pq item m. MonadAff m => Eq item => Component pq Maybe item m
 single = base
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
-  , runFilter: \items -> maybe items (\i -> filter (_ == i) items)
+  , runFilter: \items -> maybe items (\i -> filter (_ /= i) items)
   }
 
 multi :: ∀ pq item m. MonadAff m => Eq item => Component pq Array item m
