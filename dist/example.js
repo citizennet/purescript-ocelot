@@ -24917,7 +24917,7 @@ var PS = {};
               runFilter: function (items) {
                   return Data_Maybe.maybe(items)(function (i) {
                       return Data_Array.filter(function (v) {
-                          return Data_Eq.eq(dictEq)(v)(i);
+                          return Data_Eq.notEq(dictEq)(v)(i);
                       })(items);
                   });
               }
