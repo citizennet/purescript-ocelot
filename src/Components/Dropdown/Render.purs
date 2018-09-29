@@ -3,19 +3,17 @@ module Ocelot.Component.Dropdown.Render where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLbutton)
-import Data.Array (mapWithIndex)
 import Data.Maybe (Maybe(..), maybe)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer as IC
 import Ocelot.Component.Dropdown as DD
-import Ocelot.HTML.Properties (css, (<&>))
+import Ocelot.HTML.Properties (css)
 import Select as Select
-import Select.Utils.Setters (setContainerProps, setItemProps, setToggleProps)
+import Select.Utils.Setters (setToggleProps)
 
 type ButtonFn p i
    = Array (HH.IProp HTMLbutton i)
@@ -32,61 +30,22 @@ defDropdown
   -> DD.State item
   -> Select.State item
   -> H.ComponentHTML (Select.Query o item)
-defDropdown button props toString label state selectState =
+defDropdown button props toString label pst cst =
   HH.div [ css "relative" ] [ toggle, menu ]
 
   where
-    toggle =
-      button
-        ( setToggleProps
-          [ css "font-medium flex items-center" ] <&> props )
-        [ HH.text $ maybe label toString state.selectedItem
-        , HH.div
-          [ css "ml-3 text-xs" ]
-          [ Icon.caratDown_ ]
-        ]
+    toggle = IC.dropdownButton
+      button (setToggleProps props) [ HH.text $ maybe label toString pst.selectedItem ]
 
-    menu =
-      HH.ul
-        ( setContainerProps [ HP.classes containerClasses ] )
-        ( mapWithIndex renderItem selectState.items )
+    menu = HH.div
+      [ HP.classes containerClasses ]
+      [ IC.dropdownContainer
+        [] (HH.text <<< toString) ((==) pst.selectedItem <<< Just) cst.items cst.highlightedIndex
+      ]
 
-    containerClasses = case selectState.visibility of
-      Select.Off -> [ HH.ClassName "invisible" ] <> IC.dropdownClasses
-      Select.On -> IC.dropdownClasses
-
-    renderItem idx item =
-      HH.li
-        itemProps
-        [ Icon.selected
-          [ HP.classes $ HH.ClassName <$> ([ "mr-2", "text-green" ] <> checkmarkClass) ]
-        , HH.text (toString item)
-        ]
-      where
-
-        itemProps =
-          setItemProps idx [ HP.classes itemClasses ]
-
-        itemClasses =
-          HH.ClassName <$> (itemClasses' <> highlightClass <> selectedClass)
-
-        itemClasses' =
-          [ "px-4"
-          , "py-2"
-          ]
-
-        highlightClass
-          | Just idx == selectState.highlightedIndex = [ "bg-grey-97" ]
-          | otherwise = []
-
-        selectedClass
-          | Just item == state.selectedItem = [ "font-medium" ]
-          | otherwise = []
-
-        checkmarkClass
-          | Just item == state.selectedItem = []
-          | otherwise = [ "invisible" ]
-
+    containerClasses = case cst.visibility of
+      Select.Off -> [ HH.ClassName "invisible" ]
+      Select.On -> []
 
 render
   :: ∀ o item m
