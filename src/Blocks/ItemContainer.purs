@@ -2,7 +2,7 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv)
+import DOM.HTML.Indexed (HTMLdiv, HTMLbutton)
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
@@ -12,9 +12,21 @@ import Foreign.Object (lookup)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.HTML.Properties ((<&>))
+import Ocelot.Block.Icon as Icon
+import Ocelot.HTML.Properties (css, (<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
+
+dropdownButton
+  :: ∀ p i
+   . (Array (HH.IProp HTMLbutton i) -> Array (HH.HTML p i) -> HH.HTML p i)
+  -> Array (HH.IProp HTMLbutton i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+dropdownButton button iprops html =
+  button
+    ( [ css "font-medium flex items-center" ] <&> iprops )
+    $ html <> [ Icon.caratDown [ css "ml-3 text-xs" ] ]
 
 menuClasses :: Array HH.ClassName
 menuClasses = HH.ClassName <$>
@@ -35,6 +47,8 @@ dropdownClasses = menuClasses <>
     [ "absolute"
     , "pin-t-full"
     , "pin-l"
+    , "max-h-120"
+    , "overflow-y-auto"
     ]
   )
 
@@ -68,8 +82,8 @@ itemContainerClasses = baseClasses <>
   ( HH.ClassName <$>
     [ "absolute"
     , "shadow"
-    , "max-h-80"
-    , "overflow-y-scroll"
+    , "max-h-120"
+    , "overflow-y-auto"
     , "z-50"
     , "border-b-2"
     , "pin-t-full"
@@ -105,6 +119,49 @@ buttonClasses = HH.ClassName <$>
   , "hover:text-grey-70"
   , "group-hover:visible"
   ]
+
+dropdownContainer
+  :: ∀ t o item
+   . Array (H.HTML t (Select.Query o item))
+  -> (item -> HH.PlainHTML)
+  -> (item -> Boolean)
+  -> Array item
+  -> Maybe Int
+  -> H.HTML t (Select.Query o item)
+dropdownContainer addlHTML renderItem selected items hix =
+  HH.div
+    ( Setters.setContainerProps [ HP.classes dropdownClasses ] )
+    ( addlHTML <> renderItems )
+  where
+    renderItems :: Array (H.HTML t (Select.Query o item))
+    renderItems =
+      [ HH.ul
+        [ HP.classes ulClasses ]
+        $ mapWithIndex renderItem' items
+      ]
+
+    renderItem' :: Int -> item -> H.HTML t (Select.Query o item)
+    renderItem' idx item =
+      HH.li
+        ( Setters.setItemProps idx [ HP.classes itemClasses ] )
+        [ Icon.selected [ HP.classes checkmarkClass ]
+        , HH.fromPlainHTML $ renderItem item
+        ]
+      where
+        sel :: Boolean
+        sel = selected item
+
+        itemClasses :: Array HH.ClassName
+        itemClasses =
+          liClasses
+          <> [ HH.ClassName "flex" ]
+          <> (if hix == Just idx then [ HH.ClassName "bg-grey-lighter" ] else [])
+          <> if sel then [ HH.ClassName "font-medium" ] else []
+
+        checkmarkClass :: Array HH.ClassName
+        checkmarkClass =
+          (HH.ClassName <$> [ "mr-2", "text-green" ])
+          <> if sel then [] else [ HH.ClassName "invisible" ]
 
 -- Provided an array of items and any additional HTML, renders the container
 -- Items should have already been treated with `boldMatches` by this point.
