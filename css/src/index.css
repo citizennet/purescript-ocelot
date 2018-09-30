@@ -67,11 +67,11 @@ dt {
 .content-box { box-sizing: content-box; }
 .order-start { order: -1; }
 .rotate-315 { @apply .transform; --rotate: 315deg; }
-.pin-b--20 { bottom: -5rem; }
 .pin-t-full { top: 100%; }
 .pin-r-full { right: 100%; }
 .pin-b-full { bottom: 100%; }
 .pin-l-full { left: 100%; }
+.-pin-b-40 { bottom: -10rem; }
 
 /* variant & pseudo utilities
  *
