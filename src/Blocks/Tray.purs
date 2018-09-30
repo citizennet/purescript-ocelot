@@ -24,7 +24,7 @@ trayClasses = HH.ClassName <$>
   [ "fixed"
   , "bg-white"
   , "p-6"
-  , "pin-b"
+  , "pin-t-full"
   , "pin-l"
   , "shadow"
   , "border-t"
