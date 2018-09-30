@@ -101,8 +101,15 @@ data Query pq f item m a
 data Message pq f item
   = Searched String
   | Selected item
-  | SelectionChanged (f item)
+  | SelectionChanged (f item) ActionTrigger
   | Emit (pq Unit)
+
+data ActionTrigger
+  = RemovalQuery
+  | ReplacementQuery
+  | ResetQuery
+  | SelectionMessage
+derive instance eqActionTrigger :: Eq ActionTrigger
 
 ----------
 -- Child types
@@ -196,7 +203,7 @@ base ops =
           _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
-          H.raise $ SelectionChanged st.selected
+          H.raise $ SelectionChanged st.selected SelectionMessage
           H.raise $ Selected item
           eval $ Synchronize a
 
@@ -221,13 +228,13 @@ base ops =
       -- Remove a currently-selected item.
       Remove item a -> do
         st <- modifyState \st -> st { selected = st.ops.runRemove item st.selected }
-        H.raise $ SelectionChanged st.selected
+        H.raise $ SelectionChanged st.selected RemovalQuery
         eval $ Synchronize a
 
       -- Remove all the items.
       RemoveAll a -> do
         st <- modifyState \st -> st { selected = empty :: f item }
-        H.raise $ SelectionChanged st.selected
+        H.raise $ SelectionChanged st.selected RemovalQuery
         eval $ Synchronize a
 
       -- Tell the Select to trigger focus on the input
@@ -263,12 +270,12 @@ base ops =
 
       ReplaceSelected selected a -> do
         st <- modifyState _ { selected = selected }
-        H.raise $ SelectionChanged st.selected
+        H.raise $ SelectionChanged st.selected ReplacementQuery
         eval $ Synchronize a
 
       Reset a -> do
         st <- modifyState _ { selected = empty :: f item, items = NotAsked }
-        H.raise $ SelectionChanged st.selected
+        H.raise $ SelectionChanged st.selected ResetQuery
         eval $ Synchronize a
 
       Receive { render } a -> do

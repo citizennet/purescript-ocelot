@@ -4,9 +4,7 @@ import Prelude
 
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.HTML.Properties ((<&>))
-
-type IProp r i = HH.IProp ("class" :: String | r) i
+import Ocelot.HTML.Properties (IProp(..), css, (<&>))
 
 blockBuilder
   :: ∀ r p i

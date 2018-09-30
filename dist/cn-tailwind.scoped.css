@@ -10053,6 +10053,10 @@ body .ocelot-scoped {
   cursor: default;
 }
 
+.ocelot-scoped .\!disabled\:cursor-pointer:not(:disabled) {
+  cursor: pointer;
+}
+
 .ocelot-scoped .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {
   background-color: rgba(102, 113, 128, .3);
 }

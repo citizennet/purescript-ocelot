@@ -10053,6 +10053,10 @@ dt {
   cursor: default;
 }
 
+.\!disabled\:cursor-pointer:not(:disabled) {
+  cursor: pointer;
+}
+
 .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {
   background-color: rgba(102, 113, 128, .3);
 }
