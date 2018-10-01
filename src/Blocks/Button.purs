@@ -16,6 +16,7 @@ buttonSharedClasses = HH.ClassName <$>
   , "active:border-t"
   , "disabled:opacity-50"
   , "disabled:cursor-default"
+  , "!disabled:cursor-pointer"
   ]
 
 buttonMainClasses :: Array HH.ClassName

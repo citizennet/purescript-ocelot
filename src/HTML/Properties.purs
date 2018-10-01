@@ -1,5 +1,6 @@
 module Ocelot.HTML.Properties
-  ( testId
+  ( IProp(..)
+  , testId
   , css
   , appendIProps
   , extract

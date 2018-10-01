@@ -22,12 +22,13 @@ open = HP.prop (HH.PropName "open")
 trayClasses :: Array HH.ClassName
 trayClasses = HH.ClassName <$>
   [ "fixed"
-  , "bg-grey-95"
-  , "h-20"
-  , "p-5"
+  , "bg-white"
+  , "p-6"
   , "pin-b"
   , "pin-l"
-  , "shadow-inner"
+  , "shadow"
+  , "border-t"
+  , "border-grey-90"
   , "transition-1/4-out"
   , "w-full"
   , "flex"
@@ -40,7 +41,7 @@ trayOpenClasses = HH.ClassName <$>
 
 trayClosedClasses :: Array HH.ClassName
 trayClosedClasses = HH.ClassName <$>
-  [ "pin-b--20" ]
+  [ "-pin-b-40" ]
 
 tray
   :: ∀ p i

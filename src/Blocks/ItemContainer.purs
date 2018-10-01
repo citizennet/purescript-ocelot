@@ -2,7 +2,7 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLbutton)
+import DOM.HTML.Indexed (HTMLdiv)
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
@@ -13,20 +13,9 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
-import Ocelot.HTML.Properties (css, (<&>))
+import Ocelot.HTML.Properties (IProp, css, (<&>))
 import Select as Select
 import Select.Utils.Setters as Setters
-
-dropdownButton
-  :: ∀ p i
-   . (Array (HH.IProp HTMLbutton i) -> Array (HH.HTML p i) -> HH.HTML p i)
-  -> Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
-dropdownButton button iprops html =
-  button
-    ( [ css "font-medium flex items-center" ] <&> iprops )
-    $ html <> [ Icon.caratDown [ css "ml-3 text-xs" ] ]
 
 menuClasses :: Array HH.ClassName
 menuClasses = HH.ClassName <$>
@@ -47,7 +36,7 @@ dropdownClasses = menuClasses <>
     [ "absolute"
     , "pin-t-full"
     , "pin-l"
-    , "max-h-120"
+    , "max-h-160"
     , "overflow-y-auto"
     ]
   )
@@ -120,6 +109,17 @@ buttonClasses = HH.ClassName <$>
   , "group-hover:visible"
   ]
 
+dropdownButton
+  :: ∀ p r i
+   . (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i)
+  -> Array (IProp r i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+dropdownButton button iprops html =
+  button
+    ( [ css "font-medium flex items-center" ] <&> iprops )
+    $ html <> [ Icon.caratDown [ css "ml-3 text-xs" ] ]
+
 dropdownContainer
   :: ∀ t o item
    . Array (H.HTML t (Select.Query o item))
@@ -142,26 +142,36 @@ dropdownContainer addlHTML renderItem selected items hix =
 
     renderItem' :: Int -> item -> H.HTML t (Select.Query o item)
     renderItem' idx item =
-      HH.li
-        ( Setters.setItemProps idx [ HP.classes itemClasses ] )
-        [ Icon.selected [ HP.classes checkmarkClass ]
-        , HH.fromPlainHTML $ renderItem item
-        ]
-      where
-        sel :: Boolean
-        sel = selected item
+      dropdownItem HH.li
+        ( Setters.setItemProps idx [] )
+        [ HH.fromPlainHTML $ renderItem item ]
+        ( selected item )
+        ( hix == Just idx )
 
-        itemClasses :: Array HH.ClassName
-        itemClasses =
-          liClasses
-          <> [ HH.ClassName "flex" ]
-          <> (if hix == Just idx then [ HH.ClassName "bg-grey-lighter" ] else [])
-          <> if sel then [ HH.ClassName "font-medium" ] else []
+dropdownItem
+  :: ∀ p r i
+   . (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i)
+  -> Array (IProp r i)
+  -> Array (HH.HTML p i)
+  -> Boolean
+  -> Boolean
+  -> HH.HTML p i
+dropdownItem elem props html selected highlighted =
+  elem
+    ( props <&> [ HP.classes itemClasses ] )
+    $ [ Icon.selected [ HP.classes checkmarkClass ] ] <> html
+  where
+    itemClasses :: Array HH.ClassName
+    itemClasses =
+      liClasses
+      <> [ HH.ClassName "flex" ]
+      <> ( if highlighted then [ HH.ClassName "bg-grey-lighter" ] else [] )
+      <> if selected then [ HH.ClassName "font-medium" ] else []
 
-        checkmarkClass :: Array HH.ClassName
-        checkmarkClass =
-          (HH.ClassName <$> [ "mr-2", "text-green" ])
-          <> if sel then [] else [ HH.ClassName "invisible" ]
+    checkmarkClass :: Array HH.ClassName
+    checkmarkClass =
+      (HH.ClassName <$> [ "mr-2", "text-green" ])
+      <> if selected then [] else [ HH.ClassName "invisible" ]
 
 -- Provided an array of items and any additional HTML, renders the container
 -- Items should have already been treated with `boldMatches` by this point.

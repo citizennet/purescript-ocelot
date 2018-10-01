@@ -67,11 +67,11 @@ dt {
 .content-box { box-sizing: content-box; }
 .order-start { order: -1; }
 .rotate-315 { @apply .transform; --rotate: 315deg; }
-.pin-b--20 { bottom: -5rem; }
 .pin-t-full { top: 100%; }
 .pin-r-full { right: 100%; }
 .pin-b-full { bottom: 100%; }
 .pin-l-full { left: 100%; }
+.-pin-b-40 { bottom: -10rem; }
 
 /* variant & pseudo utilities
  *
@@ -156,6 +156,7 @@ dt {
 .active\:border-t:active { @apply .border-t; }
 .disabled\:opacity-50:disabled { @apply .opacity-50; }
 .disabled\:cursor-default:disabled { @apply .cursor-default; }
+.\!disabled\:cursor-pointer:not(:disabled) { @apply .cursor-pointer; }
 .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) { @apply .bg-grey-50-a30; }
 .hover\:\!disabled\:bg-grey-70-a40:hover:not(:disabled) { @apply .bg-grey-70-a40; }
 .hover\:\!disabled\:bg-blue-82:hover:not(:disabled) { @apply .bg-blue-82; }
