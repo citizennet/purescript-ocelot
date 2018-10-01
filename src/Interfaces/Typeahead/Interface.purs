@@ -54,15 +54,15 @@ convertMultiToMessageVariant :: ∀ pq. Message pq Array (Object String) -> Mess
 convertMultiToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
-  SelectionChanged arr _ -> inj (SProxy :: SProxy "selectionChanged") arr
+  SelectionChanged _ arr -> inj (SProxy :: SProxy "selectionChanged") arr
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 convertSingleToMessageVariant :: ∀ pq. Message pq Maybe (Object String) -> MessageVariant
 convertSingleToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
-  SelectionChanged (Just i) _ -> inj (SProxy :: SProxy "selectionChanged") [i]
-  SelectionChanged Nothing _ -> inj (SProxy :: SProxy "selectionChanged") []
+  SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [i]
+  SelectionChanged _ Nothing -> inj (SProxy :: SProxy "selectionChanged") []
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 -- | A subset of the input available to the typeahead
