@@ -9767,10 +9767,6 @@ dt {
   --rotate: 315deg;
 }
 
-.pin-b--20 {
-  bottom: -5rem;
-}
-
 .pin-t-full {
   top: 100%;
 }
@@ -9785,6 +9781,10 @@ dt {
 
 .pin-l-full {
   left: 100%;
+}
+
+.-pin-b-40 {
+  bottom: -10rem;
 }
 
 /* variant & pseudo utilities
@@ -10059,6 +10059,10 @@ dt {
 
 .disabled\:cursor-default:disabled {
   cursor: default;
+}
+
+.\!disabled\:cursor-pointer:not(:disabled) {
+  cursor: pointer;
 }
 
 .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {

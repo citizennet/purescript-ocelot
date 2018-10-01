@@ -9767,10 +9767,6 @@ body .ocelot-scoped {
   --rotate: 315deg;
 }
 
-.ocelot-scoped .pin-b--20 {
-  bottom: -5rem;
-}
-
 .ocelot-scoped .pin-t-full {
   top: 100%;
 }
@@ -9785,6 +9781,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .pin-l-full {
   left: 100%;
+}
+
+.ocelot-scoped .-pin-b-40 {
+  bottom: -10rem;
 }
 
 /* variant & pseudo utilities
@@ -10059,6 +10059,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .disabled\:cursor-default:disabled {
   cursor: default;
+}
+
+.ocelot-scoped .\!disabled\:cursor-pointer:not(:disabled) {
+  cursor: pointer;
 }
 
 .ocelot-scoped .hover\:\!disabled\:bg-grey-50-a30:hover:not(:disabled) {
