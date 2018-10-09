@@ -25,6 +25,7 @@ import Web.UIEvent.KeyboardEvent as KE
 type State =
   { selection :: Maybe Time
   , search :: String
+  , timeUnits :: Array TimeUnit
   }
 
 type Input =
@@ -39,7 +40,6 @@ data Query a
   | SetSelection (Maybe Time) a
   | Key KeyboardEvent a
   | Search String a
-  | Receive Input a
 
 data Message
   = SelectionChanged (Maybe Time)
@@ -85,7 +85,7 @@ component =
     { initialState
     , render
     , eval
-    , receiver: HE.input Receive
+    , receiver: const Nothing
     , initializer: Nothing
     , finalizer: Nothing
     }
@@ -94,6 +94,7 @@ component =
     initialState { selection } =
       { selection
       , search: ""
+      , timeUnits: generateTimes selection
       }
 
     eval
@@ -137,12 +138,12 @@ component =
 
       Synchronize a -> do
         { selection } <- H.get
-        _ <- H.query unit
-          $ Select.replaceItems
-          $ generateTimes selection
-        _ <- case selection of
-          Just time -> H.modify_ _ { search = ODT.formatTime time }
-          otherwise -> pure unit
+        let timeUnits = generateTimes selection
+        _ <- H.query unit $ Select.replaceItems timeUnits
+        let update = case selection of
+              Just time -> _ { search = ODT.formatTime time }
+              otherwise -> identity
+        H.modify_ (update <<< _ { timeUnits = timeUnits })
         pure a
 
       GetSelection reply -> do
@@ -167,10 +168,6 @@ component =
             pure a
           otherwise -> pure a
 
-      Receive { selection } a -> do
-        H.modify_ _ { selection = selection }
-        pure a
-
     render :: State -> H.ParentHTML Query ChildQuery Unit m
     render st = HH.div_
         [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
@@ -179,7 +176,7 @@ component =
           { initialSearch: Nothing
           , debounceTime: Nothing
           , inputType: Select.TextInput
-          , items: generateTimes Nothing
+          , items: st.timeUnits
           , render: \s -> HH.div_ [ renderSearch, renderSelect s ]
           }
 
@@ -196,63 +193,64 @@ component =
           HH.div
             [ css "relative" ]
             $ if tst.visibility == Select.On
-              then [ renderTimes ]
+              then [ renderTimes tst ]
               else [ ]
-          where
-            -- The overall container for the time dropdown
-            renderTimes =
-              Layout.popover
-                ( Setters.setContainerProps
-                  [ HP.classes dropdownClasses ]
-                )
-                ( mapWithIndex renderItem tst.items )
 
-            renderItem :: Int -> TimeUnit -> Select.ComponentHTML Query TimeUnit
-            renderItem index item =
-              HH.div
-              -- Here's the place to use info from the item to render it in different
-              -- states.
-              -- if highlightedIndex == Just index then 'highlight' else 'dont'
-                ( maybeSetItemProps index item
-                  [ css
-                    $ trim
-                    $ "relative p-3 transition-1/4 "
-                      <> (getTimeStyles item)
-                  ]
-                )
-                -- printDay will format our item correctly
-                [ HH.text $ printTime item ]
-              where
-                -- If the timeunit is selectable,
-                -- then augment the props with the correct click events.
-                -- if not, then just don't provide the props at all.
-                -- this is an easy way to "disable" functionality in the calendar.
-                maybeSetItemProps i (TimeUnit Selectable _ _) props =
-                  Setters.setItemProps i props
-                maybeSetItemProps _ _ props = props
+-- The overall container for the time dropdown
+renderTimes :: Select.State TimeUnit -> Select.ComponentHTML Query TimeUnit
+renderTimes tst =
+  Layout.popover
+    ( Setters.setContainerProps
+      [ HP.classes dropdownClasses ]
+    )
+    ( mapWithIndex renderItem tst.items )
 
-                -- Get the correct styles for a time unit, dependent on its statuses
-                getTimeStyles :: TimeUnit -> String
-                getTimeStyles i
-                  = trim $ getSelectableStyles i
-                  <> " " <> getSelectedStyles i
-                  where
-                    getSelectableStyles :: TimeUnit -> String
-                    getSelectableStyles (TimeUnit NotSelectable _ _) =
-                      mempty
-                    getSelectableStyles _ =
-                      "cursor-pointer hover:bg-grey-97"
+renderItem :: Int -> TimeUnit -> Select.ComponentHTML Query TimeUnit
+renderItem index item =
+  HH.div
+  -- Here's the place to use info from the item to render it in different
+  -- states.
+  -- if highlightedIndex == Just index then 'highlight' else 'dont'
+    ( maybeSetItemProps index item
+      [ css
+        $ trim
+        $ "relative p-3 transition-1/4 "
+          <> (getTimeStyles item)
+      ]
+    )
+    -- printDay will format our item correctly
+    [ HH.text $ printTime item ]
+  where
+    -- If the timeunit is selectable,
+    -- then augment the props with the correct click events.
+    -- if not, then just don't provide the props at all.
+    -- this is an easy way to "disable" functionality in the calendar.
+    maybeSetItemProps i (TimeUnit Selectable _ _) props =
+      Setters.setItemProps i props
+    maybeSetItemProps _ _ props = props
 
-                    getSelectedStyles :: TimeUnit -> String
-                    getSelectedStyles (TimeUnit _ Selected _) =
-                      "text-blue-88"
-                    getSelectedStyles _ =
-                      mempty
+    -- Get the correct styles for a time unit, dependent on its statuses
+    getTimeStyles :: TimeUnit -> String
+    getTimeStyles i
+      = trim $ getSelectableStyles i
+      <> " " <> getSelectedStyles i
+      where
+        getSelectableStyles :: TimeUnit -> String
+        getSelectableStyles (TimeUnit NotSelectable _ _) =
+          mempty
+        getSelectableStyles _ =
+          "cursor-pointer hover:bg-grey-97"
 
-                -- Just a simple helper to format our TimeUnit into a day
-                -- we can print out
-                printTime :: TimeUnit -> String
-                printTime (TimeUnit _ _ t) = ODT.formatTime t
+        getSelectedStyles :: TimeUnit -> String
+        getSelectedStyles (TimeUnit _ Selected _) =
+          "text-blue-88"
+        getSelectedStyles _ =
+          mempty
+
+    -- Just a simple helper to format our TimeUnit into a day
+    -- we can print out
+    printTime :: TimeUnit -> String
+    printTime (TimeUnit _ _ t) = ODT.formatTime t
 
 
 ----------
