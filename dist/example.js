@@ -22104,18 +22104,6 @@ var PS = {};
       };
       return Search;
   })();
-  var Receive = (function () {
-      function Receive(value0, value1) {
-          this.value0 = value0;
-          this.value1 = value1;
-      };
-      Receive.create = function (value0) {
-          return function (value1) {
-              return new Receive(value0, value1);
-          };
-      };
-      return Receive;
-  })();
   var generateCalendarItem = function (v) {
       return function (bound) {
           return function (i) {
@@ -22130,7 +22118,7 @@ var PS = {};
                       return new CalendarItem(Selectable.value, NotSelected.value, bound, i);
                   };
               };
-              throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 415, column 1 - line 419, column 18: " + [ v.constructor.name, bound.constructor.name, i.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 417, column 1 - line 421, column 18: " + [ v.constructor.name, bound.constructor.name, i.constructor.name ]);
           };
       };
   };
@@ -22147,6 +22135,88 @@ var PS = {};
       };
   };
   var dropdownClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "pin-t", "pin-l", "p-6", "bg-white", "text-center", "text-lg" ]);
+  var renderCalendar = function (y) {
+      return function (m) {
+          return function (cst) {
+              var renderItem = function (index) {
+                  return function (item) {
+                      var printDay = function (v) {
+                          var printDay$prime = function ($151) {
+                              return Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn))(Data_Formatter_DateTime.formatDateTime("D")(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($151))));
+                          };
+                          return printDay$prime(v.value3);
+                      };
+                      var maybeSetItemProps = function (v) {
+                          return function (v1) {
+                              return function (props) {
+                                  if (v1.value0 instanceof Selectable) {
+                                      return Select_Utils_Setters.setItemProps(v)(props);
+                                  };
+                                  return props;
+                              };
+                          };
+                      };
+                      var getCalendarStyles = function (i) {
+                          var getSelectedStyles = function (v) {
+                              if (v.value1 instanceof Selected) {
+                                  return "bg-blue-88 text-white before:scale-1";
+                              };
+                              return "before:scale-0";
+                          };
+                          var getSelectableStyles = function (v) {
+                              if (v.value0 instanceof NotSelectable) {
+                                  return Data_Monoid.mempty(Data_Monoid.monoidString);
+                              };
+                              return "cursor-pointer hover:border hover:border-blue-88";
+                          };
+                          var getBoundaryStyles = function (v) {
+                              if (v.value2 instanceof OutOfBounds) {
+                                  return "text-grey-90";
+                              };
+                              return Data_Monoid.mempty(Data_Monoid.monoidString);
+                          };
+                          return Data_String_Common.trim(getSelectableStyles(i) + (" " + (getSelectedStyles(i) + (" " + getBoundaryStyles(i)))));
+                      };
+                      return Halogen_HTML_Elements.div(maybeSetItemProps(index)(item)([ Ocelot_HTML_Properties.css(Data_String_Common.trim("w-14 h-14 rounded-full relative " + ("flex items-center justify-center " + ("transition-1/4 border border-white " + ("before:no-content before:transition-1/4 " + ("before:w-full before:h-full " + ("before:absolute before:pin-t before:pin-l " + getCalendarStyles(item)))))))) ]))([ Halogen_HTML_Core.text(printDay(item)) ]);
+                  };
+              };
+              var renderRows = (function () {
+                  var renderRow = function (offset) {
+                      return function (items) {
+                          return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex font-light") ])(Data_Array.mapWithIndex(function (column) {
+                              return function (item) {
+                                  return renderItem(column + offset | 0)(item);
+                              };
+                          })(items));
+                      };
+                  };
+                  return Data_Array.mapWithIndex(function (row) {
+                      return function (subArr) {
+                          return renderRow(row * 7 | 0)(subArr);
+                      };
+                  });
+              })();
+              var fmtMonthYear = function ($152) {
+                  return Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn))(Data_Formatter_DateTime.formatDateTime("MMMM YYYY")(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($152))));
+              };
+              var monthYear = fmtMonthYear(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
+              var calendarNav = (function () {
+                  var dateHeader = Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ Halogen_HTML_Core.text(monthYear) ]);
+                  var arrowButton = function (q) {
+                      return Ocelot_Block_Button.buttonClear([ Halogen_HTML_Events.onClick(Select.always(Select.raise(Halogen_Query.action(q)))), Ocelot_HTML_Properties.css("text-grey-70 p-3") ]);
+                  };
+                  return Ocelot_Block_Format.contentHeading([ Ocelot_HTML_Properties.css("flex") ])([ arrowButton(ToggleMonth.create(Prev.value))([ Ocelot_Block_Icon.chevronLeft_ ]), dateHeader, arrowButton(ToggleMonth.create(Next.value))([ Ocelot_Block_Icon.chevronRight_ ]) ]);
+              })();
+              var calendarHeader = (function () {
+                  var headers = [ "S", "M", "T", "W", "T", "F", "S" ];
+                  return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex text-grey-70") ])(Data_Functor.mapFlipped(Data_Functor.functorArray)(headers)(function (day) {
+                      return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-14 h-14 flex items-center justify-center") ])([ Halogen_HTML_Core.text(day) ]);
+                  }));
+              })();
+              return Ocelot_Block_Layout.popover(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(dropdownClasses) ]))([ calendarNav, calendarHeader, Halogen_HTML_Elements.div_(renderRows(Ocelot_Component_DatePicker_Utils.rowsFromArray(cst.items))) ]);
+          };
+      };
+  };
   var component = function (dictMonadAff) {
       var render = function (st) {
           var targetYear = Data_Tuple.fst(st.targetDate);
@@ -22154,100 +22224,24 @@ var PS = {};
           var renderSelect = function (y) {
               return function (m) {
                   return function (cst) {
-                      var renderItem = function (index) {
-                          return function (item) {
-                              var printDay = function (v) {
-                                  var printDay$prime = function ($158) {
-                                      return Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn))(Data_Formatter_DateTime.formatDateTime("D")(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($158))));
-                                  };
-                                  return printDay$prime(v.value3);
-                              };
-                              var maybeSetItemProps = function (v) {
-                                  return function (v1) {
-                                      return function (props) {
-                                          if (v1.value0 instanceof Selectable) {
-                                              return Select_Utils_Setters.setItemProps(v)(props);
-                                          };
-                                          return props;
-                                      };
-                                  };
-                              };
-                              var getCalendarStyles = function (i) {
-                                  var getSelectedStyles = function (v) {
-                                      if (v.value1 instanceof Selected) {
-                                          return "bg-blue-88 text-white before:scale-1";
-                                      };
-                                      return "before:scale-0";
-                                  };
-                                  var getSelectableStyles = function (v) {
-                                      if (v.value0 instanceof NotSelectable) {
-                                          return Data_Monoid.mempty(Data_Monoid.monoidString);
-                                      };
-                                      return "cursor-pointer hover:border hover:border-blue-88";
-                                  };
-                                  var getBoundaryStyles = function (v) {
-                                      if (v.value2 instanceof OutOfBounds) {
-                                          return "text-grey-90";
-                                      };
-                                      return Data_Monoid.mempty(Data_Monoid.monoidString);
-                                  };
-                                  return Data_String_Common.trim(getSelectableStyles(i) + (" " + (getSelectedStyles(i) + (" " + getBoundaryStyles(i)))));
-                              };
-                              return Halogen_HTML_Elements.div(maybeSetItemProps(index)(item)([ Ocelot_HTML_Properties.css(Data_String_Common.trim("w-14 h-14 rounded-full relative " + ("flex items-center justify-center " + ("transition-1/4 border border-white " + ("before:no-content before:transition-1/4 " + ("before:w-full before:h-full " + ("before:absolute before:pin-t before:pin-l " + getCalendarStyles(item)))))))) ]))([ Halogen_HTML_Core.text(printDay(item)) ]);
-                          };
-                      };
-                      var renderRows = (function () {
-                          var renderRow = function (offset) {
-                              return function (items) {
-                                  return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex font-light") ])(Data_Array.mapWithIndex(function (column) {
-                                      return function (item) {
-                                          return renderItem(column + offset | 0)(item);
-                                      };
-                                  })(items));
-                              };
-                          };
-                          return Data_Array.mapWithIndex(function (row) {
-                              return function (subArr) {
-                                  return renderRow(row * 7 | 0)(subArr);
-                              };
-                          });
-                      })();
-                      var fmtMonthYear = function ($159) {
-                          return Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn))(Data_Formatter_DateTime.formatDateTime("MMMM YYYY")(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($159))));
-                      };
-                      var monthYear = fmtMonthYear(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
-                      var calendarNav = (function () {
-                          var dateHeader = Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ Halogen_HTML_Core.text(monthYear) ]);
-                          var arrowButton = function (q) {
-                              return Ocelot_Block_Button.buttonClear([ Halogen_HTML_Events.onClick(Select.always(Select.raise(Halogen_Query.action(q)))), Ocelot_HTML_Properties.css("text-grey-70 p-3") ]);
-                          };
-                          return Ocelot_Block_Format.contentHeading([ Ocelot_HTML_Properties.css("flex") ])([ arrowButton(ToggleMonth.create(Prev.value))([ Ocelot_Block_Icon.chevronLeft_ ]), dateHeader, arrowButton(ToggleMonth.create(Next.value))([ Ocelot_Block_Icon.chevronRight_ ]) ]);
-                      })();
-                      var calendarHeader = (function () {
-                          var headers = [ "S", "M", "T", "W", "T", "F", "S" ];
-                          return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex text-grey-70") ])(Data_Functor.mapFlipped(Data_Functor.functorArray)(headers)(function (day) {
-                              return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-14 h-14 flex items-center justify-center") ])([ Halogen_HTML_Core.text(day) ]);
-                          }));
-                      })();
-                      var renderCalendar = Ocelot_Block_Layout.popover(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(dropdownClasses) ]))([ calendarNav, calendarHeader, Halogen_HTML_Elements.div_(renderRows(Ocelot_Component_DatePicker_Utils.rowsFromArray(cst.items))) ]);
                       return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("relative") ])((function () {
-                          var $75 = Data_Eq.eq(Select.eqVisibility)(cst.visibility)(Select.On.value);
-                          if ($75) {
-                              return [ renderCalendar ];
+                          var $73 = Data_Eq.eq(Select.eqVisibility)(cst.visibility)(Select.On.value);
+                          if ($73) {
+                              return [ renderCalendar(y)(m)(cst) ];
                           };
                           return [  ];
                       })());
                   };
               };
           };
-          var renderSearch = Ocelot_Block_Input.input(Select_Utils_Setters.setInputProps([ Halogen_HTML_Events.onKeyDown(function ($160) {
-              return Data_Maybe.Just.create(Select.raise(Halogen_Query.action(Key.create($160))));
+          var renderSearch = Ocelot_Block_Input.input(Select_Utils_Setters.setInputProps([ Halogen_HTML_Events.onKeyDown(function ($153) {
+              return Data_Maybe.Just.create(Select.raise(Halogen_Query.action(Key.create($153))));
           }), Halogen_HTML_Properties.value(st.search) ]));
           var selectInput = {
               initialSearch: Data_Maybe.Nothing.value,
               debounceTime: Data_Maybe.Nothing.value,
               inputType: Select.TextInput.value,
-              items: generateCalendarRows(st.selection)(targetYear)(targetMonth),
+              items: st.calendarItems,
               render: function (s) {
                   return Halogen_HTML_Elements.div_([ renderSearch, renderSelect(targetYear)(targetMonth)(s) ]);
               }
@@ -22255,10 +22249,12 @@ var PS = {};
           return Halogen_HTML_Elements.div_([ Halogen_HTML.slot(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(HandleSelect.create)) ]);
       };
       var initialState = function (v) {
+          var targetDate$prime = Data_Maybe.fromMaybe(new Data_Tuple.Tuple(Ocelot_Data_DateTime.unsafeMkYear(2001), Ocelot_Data_DateTime.unsafeMkMonth(1)))(v.targetDate);
           return {
-              targetDate: Data_Maybe.fromMaybe(new Data_Tuple.Tuple(Ocelot_Data_DateTime.unsafeMkYear(2001), Ocelot_Data_DateTime.unsafeMkMonth(1)))(v.targetDate),
+              targetDate: targetDate$prime,
               selection: v.selection,
-              search: ""
+              search: "",
+              calendarItems: generateCalendarRows(v.selection)(Data_Tuple.fst(targetDate$prime))(Data_Tuple.snd(targetDate$prime))
           };
       };
       var $$eval = function (v) {
@@ -22279,7 +22275,7 @@ var PS = {};
                               });
                           });
                       };
-                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 128, column 17 - line 133, column 21: " + [ v2.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 131, column 17 - line 136, column 21: " + [ v2.constructor.name ]);
                   })())(function (v2) {
                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Searched(v.value0)))(function () {
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
@@ -22293,14 +22289,14 @@ var PS = {};
               };
               if (v.value0 instanceof Select.Selected) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $88 = {};
-                      for (var $89 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $89)) {
-                              $88[$89] = v1[$89];
+                      var $86 = {};
+                      for (var $87 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $87)) {
+                              $86[$87] = v1[$87];
                           };
                       };
-                      $88.selection = new Data_Maybe.Just(v.value0.value0.value3);
-                      return $88;
+                      $86.selection = new Data_Maybe.Just(v.value0.value0.value3);
+                      return $86;
                   }))(function () {
                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(SelectionChanged.create(new Data_Maybe.Just(v.value0.value0.value3))))(function () {
@@ -22311,14 +22307,14 @@ var PS = {};
               };
               if (v.value0 instanceof Select.Searched) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $96 = {};
-                      for (var $97 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $97)) {
-                              $96[$97] = v1[$97];
+                      var $94 = {};
+                      for (var $95 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $95)) {
+                              $94[$95] = v1[$95];
                           };
                       };
-                      $96.search = v.value0.value0;
-                      return $96;
+                      $94.search = v.value0.value0;
+                      return $94;
                   }))(function () {
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                   });
@@ -22328,7 +22324,7 @@ var PS = {};
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                   });
               };
-              throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 137, column 27 - line 156, column 17: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 140, column 27 - line 159, column 17: " + [ v.value0.constructor.name ]);
           };
           if (v instanceof ToggleMonth) {
               return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value1)(Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
@@ -22341,17 +22337,17 @@ var PS = {};
                       if (v.value0 instanceof Prev) {
                           return Ocelot_Data_DateTime.prevMonth(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
                       };
-                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 163, column 23 - line 165, column 64: " + [ v.value0.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 166, column 23 - line 168, column 64: " + [ v.value0.constructor.name ]);
                   })();
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                      var $105 = {};
-                      for (var $106 in v2) {
-                          if ({}.hasOwnProperty.call(v2, $106)) {
-                              $105[$106] = v2[$106];
+                      var $103 = {};
+                      for (var $104 in v2) {
+                          if ({}.hasOwnProperty.call(v2, $104)) {
+                              $103[$104] = v2[$104];
                           };
                       };
-                      $105.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
-                      return $105;
+                      $103.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
+                      return $103;
                   }))(function () {
                       return $$eval(new Synchronize(v.value1));
                   });
@@ -22368,17 +22364,17 @@ var PS = {};
                       if (v.value0 instanceof Prev) {
                           return Ocelot_Data_DateTime.prevYear(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
                       };
-                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 174, column 23 - line 176, column 63: " + [ v.value0.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 177, column 23 - line 179, column 63: " + [ v.value0.constructor.name ]);
                   })();
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                      var $112 = {};
-                      for (var $113 in v2) {
-                          if ({}.hasOwnProperty.call(v2, $113)) {
-                              $112[$113] = v2[$113];
+                      var $110 = {};
+                      for (var $111 in v2) {
+                          if ({}.hasOwnProperty.call(v2, $111)) {
+                              $110[$111] = v2[$111];
                           };
                       };
-                      $112.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
-                      return $112;
+                      $110.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
+                      return $110;
                   }))(function () {
                       return $$eval(new Synchronize(v.value1));
                   });
@@ -22389,14 +22385,14 @@ var PS = {};
                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Now.nowDate))(function (v2) {
                       var d$prime = Data_Maybe.fromMaybe(v2)(v1.selection);
                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
-                          var $119 = {};
-                          for (var $120 in v3) {
-                              if ({}.hasOwnProperty.call(v3, $120)) {
-                                  $119[$120] = v3[$120];
+                          var $117 = {};
+                          for (var $118 in v3) {
+                              if ({}.hasOwnProperty.call(v3, $118)) {
+                                  $117[$118] = v3[$118];
                               };
                           };
-                          $119.targetDate = new Data_Tuple.Tuple(Data_Date.year(d$prime), Data_Date.month(d$prime));
-                          return $119;
+                          $117.targetDate = new Data_Tuple.Tuple(Data_Date.year(d$prime), Data_Date.month(d$prime));
+                          return $117;
                       }))(function () {
                           return $$eval(new Synchronize(v.value0));
                       });
@@ -22408,22 +22404,35 @@ var PS = {};
           };
           if (v instanceof Synchronize) {
               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
-                  return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems(generateCalendarRows(v1.selection)(v1.targetDate.value0)(v1.targetDate.value1))))(function (v2) {
-                      return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)((function () {
+                  var calendarItems = generateCalendarRows(v1.selection)(v1.targetDate.value0)(v1.targetDate.value1);
+                  return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems(calendarItems)))(function (v2) {
+                      var update = (function () {
                           if (v1.selection instanceof Data_Maybe.Just) {
-                              return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
-                                  var $127 = {};
-                                  for (var $128 in v3) {
-                                      if ({}.hasOwnProperty.call(v3, $128)) {
-                                          $127[$128] = v3[$128];
+                              return function (v3) {
+                                  var $125 = {};
+                                  for (var $126 in v3) {
+                                      if ({}.hasOwnProperty.call(v3, $126)) {
+                                          $125[$126] = v3[$126];
                                       };
                                   };
-                                  $127.search = Ocelot_Data_DateTime.formatDate(v1.selection.value0);
-                                  return $127;
-                              });
+                                  $125.search = Ocelot_Data_DateTime.formatDate(v1.selection.value0);
+                                  return $125;
+                              };
                           };
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
-                      })())(function (v3) {
+                          return Control_Category.identity(Control_Category.categoryFn);
+                      })();
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function ($154) {
+                          return update((function (v3) {
+                              var $129 = {};
+                              for (var $130 in v3) {
+                                  if ({}.hasOwnProperty.call(v3, $130)) {
+                                      $129[$130] = v3[$130];
+                                  };
+                              };
+                              $129.calendarItems = calendarItems;
+                              return $129;
+                          })($154));
+                      }))(function () {
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
                       });
                   });
@@ -22440,15 +22449,15 @@ var PS = {};
                       return new Data_Tuple.Tuple(Data_Date.year(d), Data_Date.month(d));
                   })(v.value0);
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                      var $140 = {};
-                      for (var $141 in v2) {
-                          if ({}.hasOwnProperty.call(v2, $141)) {
-                              $140[$141] = v2[$141];
+                      var $141 = {};
+                      for (var $142 in v2) {
+                          if ({}.hasOwnProperty.call(v2, $142)) {
+                              $141[$142] = v2[$142];
                           };
                       };
-                      $140.selection = v.value0;
-                      $140.targetDate = targetDate;
-                      return $140;
+                      $141.selection = v.value0;
+                      $141.targetDate = targetDate;
+                      return $141;
                   }))(function () {
                       return $$eval(new Synchronize(v.value1));
                   });
@@ -22475,30 +22484,13 @@ var PS = {};
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
           };
-          if (v instanceof Receive) {
-              return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
-                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                      var $151 = {};
-                      for (var $152 in v2) {
-                          if ({}.hasOwnProperty.call(v2, $152)) {
-                              $151[$152] = v2[$152];
-                          };
-                      };
-                      $151.targetDate = Data_Maybe.fromMaybe(v1.targetDate)(v.value0.targetDate);
-                      $151.selection = v.value0.selection;
-                      return $151;
-                  }))(function () {
-                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-                  });
-              });
-          };
-          throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 123, column 12 - line 229, column 15: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Component.DatePicker line 126, column 12 - line 226, column 30: " + [ v.constructor.name ]);
       };
       return Halogen_Component.lifecycleParentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
           render: render,
           "eval": $$eval,
-          receiver: Halogen_HTML_Events.input(Receive.create),
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value),
           initializer: Data_Maybe.Just.create(Halogen_Query.action(Initialize.create)),
           finalizer: Data_Maybe.Nothing.value
       });
@@ -22513,7 +22505,6 @@ var PS = {};
   exports["SetSelection"] = SetSelection;
   exports["Key"] = Key;
   exports["Search"] = Search;
-  exports["Receive"] = Receive;
   exports["SelectionChanged"] = SelectionChanged;
   exports["VisibilityChanged"] = VisibilityChanged;
   exports["Searched"] = Searched;
@@ -22528,6 +22519,7 @@ var PS = {};
   exports["InBounds"] = InBounds;
   exports["dropdownClasses"] = dropdownClasses;
   exports["component"] = component;
+  exports["renderCalendar"] = renderCalendar;
   exports["generateCalendarRows"] = generateCalendarRows;
   exports["generateCalendarItem"] = generateCalendarItem;
 })(PS["Ocelot.Component.DatePicker"] = PS["Ocelot.Component.DatePicker"] || {});
@@ -22594,6 +22586,7 @@ var PS = {};
   var Control_Applicative = PS["Control.Applicative"];
   var Control_Apply = PS["Control.Apply"];
   var Control_Bind = PS["Control.Bind"];
+  var Control_Category = PS["Control.Category"];
   var Control_Monad_State_Class = PS["Control.Monad.State.Class"];
   var Control_Semigroupoid = PS["Control.Semigroupoid"];
   var Data_Boolean = PS["Data.Boolean"];
@@ -22673,33 +22666,6 @@ var PS = {};
       };
       return TimeUnit;
   })();
-  var SelectionChanged = (function () {
-      function SelectionChanged(value0) {
-          this.value0 = value0;
-      };
-      SelectionChanged.create = function (value0) {
-          return new SelectionChanged(value0);
-      };
-      return SelectionChanged;
-  })();
-  var VisibilityChanged = (function () {
-      function VisibilityChanged(value0) {
-          this.value0 = value0;
-      };
-      VisibilityChanged.create = function (value0) {
-          return new VisibilityChanged(value0);
-      };
-      return VisibilityChanged;
-  })();
-  var Searched = (function () {
-      function Searched(value0) {
-          this.value0 = value0;
-      };
-      Searched.create = function (value0) {
-          return new Searched(value0);
-      };
-      return Searched;
-  })();
   var HandleSelect = (function () {
       function HandleSelect(value0, value1) {
           this.value0 = value0;
@@ -22775,18 +22741,66 @@ var PS = {};
       };
       return Search;
   })();
-  var Receive = (function () {
-      function Receive(value0, value1) {
+  var SelectionChanged = (function () {
+      function SelectionChanged(value0) {
           this.value0 = value0;
-          this.value1 = value1;
       };
-      Receive.create = function (value0) {
-          return function (value1) {
-              return new Receive(value0, value1);
-          };
+      SelectionChanged.create = function (value0) {
+          return new SelectionChanged(value0);
       };
-      return Receive;
+      return SelectionChanged;
   })();
+  var VisibilityChanged = (function () {
+      function VisibilityChanged(value0) {
+          this.value0 = value0;
+      };
+      VisibilityChanged.create = function (value0) {
+          return new VisibilityChanged(value0);
+      };
+      return VisibilityChanged;
+  })();
+  var Searched = (function () {
+      function Searched(value0) {
+          this.value0 = value0;
+      };
+      Searched.create = function (value0) {
+          return new Searched(value0);
+      };
+      return Searched;
+  })();
+  var renderItem = function (index) {
+      return function (item) {
+          var printTime = function (v) {
+              return Ocelot_Data_DateTime.formatTime(v.value2);
+          };
+          var maybeSetItemProps = function (v) {
+              return function (v1) {
+                  return function (props) {
+                      if (v1.value0 instanceof Selectable) {
+                          return Select_Utils_Setters.setItemProps(v)(props);
+                      };
+                      return props;
+                  };
+              };
+          };
+          var getTimeStyles = function (i) {
+              var getSelectedStyles = function (v) {
+                  if (v.value1 instanceof Selected) {
+                      return "text-blue-88";
+                  };
+                  return Data_Monoid.mempty(Data_Monoid.monoidString);
+              };
+              var getSelectableStyles = function (v) {
+                  if (v.value0 instanceof NotSelectable) {
+                      return Data_Monoid.mempty(Data_Monoid.monoidString);
+                  };
+                  return "cursor-pointer hover:bg-grey-97";
+              };
+              return Data_String_Common.trim(getSelectableStyles(i) + (" " + getSelectedStyles(i)));
+          };
+          return Halogen_HTML_Elements.div(maybeSetItemProps(index)(item)([ Ocelot_HTML_Properties.css(Data_String_Common.trim("relative p-3 transition-1/4 " + getTimeStyles(item))) ]))([ Halogen_HTML_Core.text(printTime(item)) ]);
+      };
+  };
   var generateTimeUnit = function (v) {
       return function (i) {
           if (v instanceof Data_Maybe.Nothing) {
@@ -22800,66 +22814,35 @@ var PS = {};
                   return new TimeUnit(Selectable.value, NotSelected.value, i);
               };
           };
-          throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 268, column 1 - line 271, column 14: " + [ v.constructor.name, i.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 266, column 1 - line 269, column 14: " + [ v.constructor.name, i.constructor.name ]);
       };
   };
   var generateTimes = function (selection) {
       return Data_Functor.mapFlipped(Data_Functor.functorArray)(Ocelot_Data_DateTime.defaultTimeRange)(generateTimeUnit(selection));
   };
   var dropdownClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "max-h-80", "w-full", "overflow-y-scroll", "pin-t", "pin-l", "bg-white", "text-center" ]);
+  var renderTimes = function (tst) {
+      return Ocelot_Block_Layout.popover(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(dropdownClasses) ]))(Data_FunctorWithIndex.mapWithIndex(Data_FunctorWithIndex.functorWithIndexArray)(renderItem)(tst.items));
+  };
   var component = function (dictMonadAff) {
       var render = function (st) {
           var renderSelect = function (tst) {
-              var renderItem = function (index) {
-                  return function (item) {
-                      var printTime = function (v) {
-                          return Ocelot_Data_DateTime.formatTime(v.value2);
-                      };
-                      var maybeSetItemProps = function (v) {
-                          return function (v1) {
-                              return function (props) {
-                                  if (v1.value0 instanceof Selectable) {
-                                      return Select_Utils_Setters.setItemProps(v)(props);
-                                  };
-                                  return props;
-                              };
-                          };
-                      };
-                      var getTimeStyles = function (i) {
-                          var getSelectedStyles = function (v) {
-                              if (v.value1 instanceof Selected) {
-                                  return "text-blue-88";
-                              };
-                              return Data_Monoid.mempty(Data_Monoid.monoidString);
-                          };
-                          var getSelectableStyles = function (v) {
-                              if (v.value0 instanceof NotSelectable) {
-                                  return Data_Monoid.mempty(Data_Monoid.monoidString);
-                              };
-                              return "cursor-pointer hover:bg-grey-97";
-                          };
-                          return Data_String_Common.trim(getSelectableStyles(i) + (" " + getSelectedStyles(i)));
-                      };
-                      return Halogen_HTML_Elements.div(maybeSetItemProps(index)(item)([ Ocelot_HTML_Properties.css(Data_String_Common.trim("relative p-3 transition-1/4 " + getTimeStyles(item))) ]))([ Halogen_HTML_Core.text(printTime(item)) ]);
-                  };
-              };
-              var renderTimes = Ocelot_Block_Layout.popover(Select_Utils_Setters.setContainerProps([ Halogen_HTML_Properties.classes(dropdownClasses) ]))(Data_FunctorWithIndex.mapWithIndex(Data_FunctorWithIndex.functorWithIndexArray)(renderItem)(tst.items));
               return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("relative") ])((function () {
-                  var $48 = Data_Eq.eq(Select.eqVisibility)(tst.visibility)(Select.On.value);
-                  if ($48) {
-                      return [ renderTimes ];
+                  var $47 = Data_Eq.eq(Select.eqVisibility)(tst.visibility)(Select.On.value);
+                  if ($47) {
+                      return [ renderTimes(tst) ];
                   };
                   return [  ];
               })());
           };
-          var renderSearch = Ocelot_Block_Input.input(Select_Utils_Setters.setInputProps([ Halogen_HTML_Events.onKeyDown(function ($101) {
-              return Data_Maybe.Just.create(Select.raise(Halogen_Query.action(Key.create($101))));
+          var renderSearch = Ocelot_Block_Input.input(Select_Utils_Setters.setInputProps([ Halogen_HTML_Events.onKeyDown(function ($97) {
+              return Data_Maybe.Just.create(Select.raise(Halogen_Query.action(Key.create($97))));
           }), Halogen_HTML_Properties.value(st.search) ]));
           var selectInput = {
               initialSearch: Data_Maybe.Nothing.value,
               debounceTime: Data_Maybe.Nothing.value,
               inputType: Select.TextInput.value,
-              items: generateTimes(Data_Maybe.Nothing.value),
+              items: st.timeUnits,
               render: function (s) {
                   return Halogen_HTML_Elements.div_([ renderSearch, renderSelect(s) ]);
               }
@@ -22869,7 +22852,8 @@ var PS = {};
       var initialState = function (v) {
           return {
               selection: v.selection,
-              search: ""
+              search: "",
+              timeUnits: generateTimes(v.selection)
           };
       };
       var $$eval = function (v) {
@@ -22889,7 +22873,7 @@ var PS = {};
                           });
                       });
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 106, column 17 - line 111, column 21: " + [ v1.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 107, column 17 - line 112, column 21: " + [ v1.constructor.name ]);
               })())(function (v1) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Searched(v.value0)))(function () {
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
@@ -22902,14 +22886,14 @@ var PS = {};
               };
               if (v.value0 instanceof Select.Selected) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $59 = {};
-                      for (var $60 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $60)) {
-                              $59[$60] = v1[$60];
+                      var $58 = {};
+                      for (var $59 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $59)) {
+                              $58[$59] = v1[$59];
                           };
                       };
-                      $59.selection = new Data_Maybe.Just(v.value0.value0.value2);
-                      return $59;
+                      $58.selection = new Data_Maybe.Just(v.value0.value0.value2);
+                      return $58;
                   }))(function () {
                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.setVisibility(Select.Off.value)))(function (v1) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(SelectionChanged.create(new Data_Maybe.Just(v.value0.value0.value2))))(function () {
@@ -22920,14 +22904,14 @@ var PS = {};
               };
               if (v.value0 instanceof Select.Searched) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $66 = {};
-                      for (var $67 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $67)) {
-                              $66[$67] = v1[$67];
+                      var $65 = {};
+                      for (var $66 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $66)) {
+                              $65[$66] = v1[$66];
                           };
                       };
-                      $66.search = v.value0.value0;
-                      return $66;
+                      $65.search = v.value0.value0;
+                      return $65;
                   }))(function () {
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                   });
@@ -22937,29 +22921,42 @@ var PS = {};
                       return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                   });
               };
-              throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 115, column 27 - line 134, column 17: " + [ v.value0.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 116, column 27 - line 135, column 17: " + [ v.value0.constructor.name ]);
           };
           if (v instanceof TriggerFocus) {
               return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(v.value0)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.triggerFocus));
           };
           if (v instanceof Synchronize) {
               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
-                  return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems(generateTimes(v1.selection))))(function (v2) {
-                      return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)((function () {
+                  var timeUnits = generateTimes(v1.selection);
+                  return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems(timeUnits)))(function (v2) {
+                      var update = (function () {
                           if (v1.selection instanceof Data_Maybe.Just) {
-                              return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
-                                  var $76 = {};
-                                  for (var $77 in v3) {
-                                      if ({}.hasOwnProperty.call(v3, $77)) {
-                                          $76[$77] = v3[$77];
+                              return function (v3) {
+                                  var $75 = {};
+                                  for (var $76 in v3) {
+                                      if ({}.hasOwnProperty.call(v3, $76)) {
+                                          $75[$76] = v3[$76];
                                       };
                                   };
-                                  $76.search = Ocelot_Data_DateTime.formatTime(v1.selection.value0);
-                                  return $76;
-                              });
+                                  $75.search = Ocelot_Data_DateTime.formatTime(v1.selection.value0);
+                                  return $75;
+                              };
                           };
-                          return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
-                      })())(function (v3) {
+                          return Control_Category.identity(Control_Category.categoryFn);
+                      })();
+                      return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function ($98) {
+                          return update((function (v3) {
+                              var $79 = {};
+                              for (var $80 in v3) {
+                                  if ({}.hasOwnProperty.call(v3, $80)) {
+                                      $79[$80] = v3[$80];
+                                  };
+                              };
+                              $79.timeUnits = timeUnits;
+                              return $79;
+                          })($98));
+                      }))(function () {
                           return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
                       });
                   });
@@ -22972,14 +22969,14 @@ var PS = {};
           };
           if (v instanceof SetSelection) {
               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                  var $85 = {};
-                  for (var $86 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $86)) {
-                          $85[$86] = v1[$86];
+                  var $87 = {};
+                  for (var $88 in v1) {
+                      if ({}.hasOwnProperty.call(v1, $88)) {
+                          $87[$88] = v1[$88];
                       };
                   };
-                  $85.selection = v.value0;
-                  return $85;
+                  $87.selection = v.value0;
+                  return $87;
               }))(function () {
                   return $$eval(new Synchronize(v.value1));
               });
@@ -23005,27 +23002,13 @@ var PS = {};
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
           };
-          if (v instanceof Receive) {
-              return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                  var $95 = {};
-                  for (var $96 in v1) {
-                      if ({}.hasOwnProperty.call(v1, $96)) {
-                          $95[$96] = v1[$96];
-                      };
-                  };
-                  $95.selection = v.value0.selection;
-                  return $95;
-              }))(function () {
-                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
-              });
-          };
-          throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 102, column 12 - line 172, column 15: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Component.TimePicker line 103, column 12 - line 169, column 30: " + [ v.constructor.name ]);
       };
       return Halogen_Component.lifecycleParentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
           render: render,
           "eval": $$eval,
-          receiver: Halogen_HTML_Events.input(Receive.create),
+          receiver: Data_Function["const"](Data_Maybe.Nothing.value),
           initializer: Data_Maybe.Nothing.value,
           finalizer: Data_Maybe.Nothing.value
       });
@@ -23037,7 +23020,6 @@ var PS = {};
   exports["SetSelection"] = SetSelection;
   exports["Key"] = Key;
   exports["Search"] = Search;
-  exports["Receive"] = Receive;
   exports["SelectionChanged"] = SelectionChanged;
   exports["VisibilityChanged"] = VisibilityChanged;
   exports["Searched"] = Searched;
@@ -23048,6 +23030,8 @@ var PS = {};
   exports["Selected"] = Selected;
   exports["dropdownClasses"] = dropdownClasses;
   exports["component"] = component;
+  exports["renderTimes"] = renderTimes;
+  exports["renderItem"] = renderItem;
   exports["generateTimes"] = generateTimes;
   exports["generateTimeUnit"] = generateTimeUnit;
 })(PS["Ocelot.Component.TimePicker"] = PS["Ocelot.Component.TimePicker"] || {});
