@@ -9,8 +9,7 @@
     "build-ui": "pulp build -I ui-guide --to dist/example.js",
     "watch-ui": "pulp -w --then 'yarn run build-css' build -I ui-guide --to dist/example.js",
     "install-css": "cd css && yarn install",
-    "build-css": "cd css && yarn run build-all",
-    "tag-release": "func() { yarn version --new-version $1 && git commit -am 'Bumping version to: $1' && git push && git tag -a v$1; }; func"
+    "build-css": "cd css && yarn run build-all"
   },
   "devDependencies": {
     "bower": "^1.8.4",
