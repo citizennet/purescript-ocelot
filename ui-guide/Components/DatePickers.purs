@@ -2,6 +2,7 @@ module UIGuide.Component.DatePickers where
 
 import Prelude
 
+import Data.DateTime (DateTime(..))
 import Data.Either.Nested (Either3)
 import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
@@ -176,8 +177,7 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp3 0 DateTimePicker.component
                 { targetDate: Nothing
-                , time: Nothing
-                , date: Nothing
+                , selection: Nothing
                 }
                 (const Nothing)
               ]
@@ -195,8 +195,7 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp3 1 DateTimePicker.component
                 { targetDate: Nothing
-                , date: Just $ unsafeMkDate 2019 1 1
-                , time: Just $ unsafeMkTime 12 0 0 0
+                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                 }
                 (const Nothing)
               ]
