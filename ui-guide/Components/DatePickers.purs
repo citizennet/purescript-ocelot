@@ -2,8 +2,8 @@ module UIGuide.Component.DatePickers where
 
 import Prelude
 
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
+import Data.Either.Nested (Either3)
+import Data.Functor.Coproduct.Nested (Coproduct3)
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -13,6 +13,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Component.DatePicker as DatePicker
+import Ocelot.Component.DateTimePicker as DateTimePicker
 import Ocelot.Component.TimePicker as TimePicker
 import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
@@ -31,10 +32,12 @@ data Query a
 ----------
 -- Child paths
 
-type ChildSlot = Either2 Int Int
-type ChildQuery = Coproduct2
+type ChildSlot = Either3 Int Int Int
+
+type ChildQuery = Coproduct3
   (DatePicker.Query)
   (TimePicker.Query)
+  (DateTimePicker.Query)
 
 ----------
 -- Component definition
@@ -148,7 +151,7 @@ cnDocumentationBlocks =
               , inputId: "end-time"
               }
               [ HH.slot' CP.cp2 1 TimePicker.component
-                { selection: Just $ unsafeMkTime 0 0 0 0
+                { selection: Just $ unsafeMkTime 12 0 0 0
                 }
                 (const Nothing)
               ]
@@ -171,24 +174,12 @@ cnDocumentationBlocks =
               , error: Nothing
               , inputId: "start"
               }
-              [ HH.div
-                [ css "flex" ]
-                [ HH.div
-                  [ css "flex-2 mr-4" ]
-                  [ HH.slot' CP.cp1 3 DatePicker.component
-                    { targetDate: Nothing
-                    , selection: Nothing
-                    }
-                    (const Nothing)
-                  ]
-                , HH.div
-                  [ css "flex-1 mr-16" ]
-                  [ HH.slot' CP.cp2 3 TimePicker.component
-                    { selection: Nothing
-                    }
-                    (const Nothing)
-                  ]
-                ]
+              [ HH.slot' CP.cp3 0 DateTimePicker.component
+                { targetDate: Nothing
+                , time: Nothing
+                , date: Nothing
+                }
+                (const Nothing)
               ]
             ]
           ]
@@ -202,24 +193,12 @@ cnDocumentationBlocks =
               , error: Nothing
               , inputId: "end"
               }
-              [ HH.div
-                [ css "flex" ]
-                [ HH.div
-                  [ css "flex-2 mr-4" ]
-                  [ HH.slot' CP.cp1 4 DatePicker.component
-                    { targetDate: Nothing
-                    , selection: Just $ unsafeMkDate 2019 1 1
-                    }
-                    (const Nothing)
-                  ]
-                , HH.div
-                  [ css "flex-1 mr-16" ]
-                  [ HH.slot' CP.cp2 3 TimePicker.component
-                    { selection: Just $ unsafeMkTime 0 0 0 0
-                    }
-                    (const Nothing)
-                  ]
-                ]
+              [ HH.slot' CP.cp3 1 DateTimePicker.component
+                { targetDate: Nothing
+                , date: Just $ unsafeMkDate 2019 1 1
+                , time: Just $ unsafeMkTime 12 0 0 0
+                }
+                (const Nothing)
               ]
             ]
           ]

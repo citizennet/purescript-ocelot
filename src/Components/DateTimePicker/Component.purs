@@ -100,15 +100,15 @@ component =
       HH.div
         [ css "flex" ]
         [ HH.div
-          [ css "flex-2 mr-2" ]
+          [ css "flex-1 mr-2" ]
           [ HH.slot' CP.cp1 unit DP.component
-            { targetDate: targetDate
+            { targetDate
             , selection: date
             }
             (HE.input HandleDate)
           ]
         , HH.div
-          [ css "flex-1" ]
+          [ css "flex-2" ]
           [ HH.slot' CP.cp2 unit TP.component
             { selection: time }
             (HE.input HandleTime)
