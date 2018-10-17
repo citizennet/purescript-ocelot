@@ -22,7 +22,10 @@ type State =
   , targetDate :: Maybe (Tuple Year Month)
   }
 
-type Input = State
+type Input =
+  { selection :: Maybe DateTime
+  , targetDate :: Maybe (Tuple Year Month)
+  }
 
 data Query a
   = HandleDate DP.Message a
@@ -55,9 +58,9 @@ component =
     }
   where
     initialState :: Input -> State
-    initialState { date, time, targetDate } =
-      { date
-      , time
+    initialState { selection, targetDate } =
+      { date: date <$> selection
+      , time: time <$> selection
       , targetDate
       }
 
@@ -100,7 +103,7 @@ component =
       HH.div
         [ css "flex" ]
         [ HH.div
-          [ css "flex-1 mr-2" ]
+          [ css "flex-2 mr-2" ]
           [ HH.slot' CP.cp1 unit DP.component
             { targetDate
             , selection: date
@@ -108,7 +111,7 @@ component =
             (HE.input HandleDate)
           ]
         , HH.div
-          [ css "flex-2" ]
+          [ css "flex-1" ]
           [ HH.slot' CP.cp2 unit TP.component
             { selection: time }
             (HE.input HandleTime)
