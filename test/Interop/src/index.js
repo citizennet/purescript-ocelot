@@ -49,13 +49,23 @@ const subscription = component.subscribe((out) => {
   }
 });
 
-// Example: imperatively set selections
-component.replaceSelected([{ name: "Thomas" }]).then(() => {
-  console.log("New selections set");
-});
+// Example: imperatively set status
+component.setLoading().then(() => {
+  console.log("Now in loading status...");
+  setTimeout(() => {
+    // Example: imperatively set selections
+    component.setSelected([{ name: "Thomas" }]).then(() => {
+      console.log("New selections set");
+    });
 
-// Example: imperatively get selections
-component.getSelected().then((selections) => {
-  console.log("These are the selections: ", selections);
-});
+    // Example: imperatively get selections
+    component.getSelected().then((selections) => {
+      console.log("These are the selections: ", selections);
+    });
 
+    // Example: imperatively set status
+    component.setItems(input.items).then(() => {
+      console.log("Now in loaded status...");
+    });
+  }, 3000);
+});
