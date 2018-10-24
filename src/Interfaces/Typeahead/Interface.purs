@@ -9,8 +9,10 @@ import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head, length)
 import Data.Fuzzy (match)
+import Data.Int (toNumber)
 import Data.Maybe (Maybe(..), maybe)
 import Data.Symbol (SProxy(..))
+import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
@@ -21,7 +23,7 @@ import Effect.Class (liftEffect)
 import Foreign.Object (Object)
 import Halogen (HalogenIO)
 import Halogen.HTML (span_)
-import Halogen.HTML.Properties (placeholder) as HP
+import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
@@ -77,6 +79,8 @@ type ExternalInput =
   { items :: Array (Object String)
     -- one of 'success', 'failure', 'loading', or 'notAsked'
   , status :: String
+    -- measured in milliseconds; use 0 for no debounce
+  , debounceTime :: Int
   , placeholder :: String
   , key :: String
   , keepOpen :: Boolean
@@ -93,7 +97,8 @@ externalInputToSingleInput r =
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> a
-  , asyncConfig: Nothing
+  , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
+  , async: Nothing
   , render: renderSingle
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")
@@ -111,7 +116,8 @@ externalInputToMultiInput r =
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> a
-  , asyncConfig: Nothing
+  , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
+  , async: Nothing
   , render: renderMulti
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")

@@ -68,7 +68,8 @@ type State f item m =
   , keepOpen :: Boolean
   , itemToObject :: item -> Object String
   , ops :: Operations f item
-  , asyncConfig :: Maybe (AsyncConfig item m)
+  , debounceTime :: Maybe Milliseconds
+  , async :: Maybe (String -> m (RemoteData String (Array item)))
   }
 
 type Input pq f item m =
@@ -76,7 +77,8 @@ type Input pq f item m =
   , insertable :: Insertable item
   , keepOpen :: Boolean
   , itemToObject :: item -> Object String
-  , asyncConfig :: Maybe (AsyncConfig item m)
+  , debounceTime :: Maybe Milliseconds
+  , async :: Maybe (String -> m (RemoteData String (Array item)))
   , render :: -- All rendering will happen in Select, but with access to parent state
       State f item m
       -> Select.State (Fuzzy item)
@@ -121,11 +123,6 @@ type ChildQuery pq f item m = Select.Query (Query pq f item m) (Fuzzy item)
 ---------
 -- Data modeling
 
-type AsyncConfig item m =
-  { debounceTime :: Milliseconds
-  , fetchItems   :: String -> m (RemoteData String (Array item))
-  }
-
 type Operations f item =
   { runSelect  :: item -> f item -> f item
   , runRemove  :: item -> f item -> f item
@@ -166,7 +163,8 @@ base ops =
           , itemToObject: i.itemToObject
           , insertable: i.insertable
           , keepOpen: i.keepOpen
-          , asyncConfig: i.asyncConfig
+          , debounceTime: i.debounceTime
+          , async: i.async
           , ops
           }
 
@@ -186,7 +184,7 @@ base ops =
         { inputType: Select.TextInput
         , items: []
         , initialSearch: Nothing
-        , debounceTime: (Just <<< _.debounceTime) =<< st.asyncConfig
+        , debounceTime: st.debounceTime
         , render: renderSelect st
         }
 
@@ -212,9 +210,9 @@ base ops =
           st <- getState
           modifyState_ _ { search = text }
 
-          case st.asyncConfig of
+          case st.async of
             Nothing -> pure unit
-            Just { fetchItems } -> do
+            Just fetchItems -> do
               modifyState_ _ { items = Loading }
               _ <- eval $ Synchronize a
               newItems <- H.lift $ fetchItems text

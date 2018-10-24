@@ -174,7 +174,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "location-hydrated"
@@ -200,7 +200,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user"
@@ -221,7 +221,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user-hydrated"
@@ -254,7 +254,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
@@ -275,7 +275,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
@@ -301,7 +301,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user"
@@ -322,7 +322,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user"
@@ -355,7 +355,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "disabled-locations-empty"
@@ -377,7 +377,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "disabled-locations-hydrated"
@@ -399,7 +399,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "error-locations"
@@ -420,7 +420,7 @@ cnDocumentationBlocks =
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "loading-locations"
@@ -446,7 +446,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.disabled true
@@ -468,7 +468,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.disabled true
@@ -490,7 +490,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "error-users"
@@ -511,7 +511,7 @@ cnDocumentationBlocks =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.disabled true

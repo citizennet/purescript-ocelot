@@ -12,7 +12,7 @@ module Ocelot.Component.Typeahead
 
 import Ocelot.Component.Typeahead.Base
 
-import Prelude (class Eq, (<<<))
+import Prelude (class Eq, (<<<), ($))
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Fuzzy (Fuzzy, match)
 import Data.Maybe (Maybe(..))
@@ -45,7 +45,8 @@ syncSingle { itemToObject, renderFuzzy } props =
   , insertable: NotInsertable
   , keepOpen: false
   , itemToObject
-  , asyncConfig: Nothing
+  , debounceTime: Nothing
+  , async: Nothing
   , render: TA.renderSingle
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -64,7 +65,8 @@ syncMulti { itemToObject, renderFuzzy } props =
   , insertable: NotInsertable
   , keepOpen: true
   , itemToObject
-  , asyncConfig: Nothing
+  , debounceTime: Nothing
+  , async: Nothing
   , render: TA.renderMulti
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -77,7 +79,7 @@ syncMulti { itemToObject, renderFuzzy } props =
 type DefaultAsyncTypeaheadInput item m =
   { itemToObject :: item -> Object String
   , renderFuzzy :: Fuzzy item -> HH.PlainHTML
-  , fetchItems :: String -> m (RemoteData String (Array item))
+  , async :: String -> m (RemoteData String (Array item))
   }
 
 asyncSingle
@@ -87,15 +89,13 @@ asyncSingle
   => DefaultAsyncTypeaheadInput item m
   -> Array (H.IProp HTMLinput (Select.Query (Query pq Maybe item m) (Fuzzy item)))
   -> Input pq Maybe item m
-asyncSingle { itemToObject, renderFuzzy, fetchItems } props =
+asyncSingle { async, itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
   , keepOpen: true
   , itemToObject
-  , asyncConfig: Just
-      { debounceTime: Milliseconds 300.0
-      , fetchItems
-      }
+  , debounceTime: Just $ Milliseconds 300.0
+  , async: Just async
   , render: TA.renderSingle
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -109,15 +109,13 @@ asyncMulti
   => DefaultAsyncTypeaheadInput item m
   -> Array (H.IProp HTMLinput (Select.Query (Query pq Array item m) (Fuzzy item)))
   -> Input pq Array item m
-asyncMulti { itemToObject, renderFuzzy, fetchItems } props =
+asyncMulti { async, itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
   , keepOpen: true
   , itemToObject
-  , asyncConfig: Just
-      { debounceTime: Milliseconds 300.0
-      , fetchItems
-      }
+  , debounceTime: Just $ Milliseconds 300.0
+  , async: Just async
   , render: TA.renderMulti
       props
       (renderFuzzy <<< match false itemToObject "")
