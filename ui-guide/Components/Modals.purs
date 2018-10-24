@@ -114,7 +114,7 @@ component =
                 ( TA.asyncMulti
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
-                  , fetchItems: Async.loadFromSource Async.locations
+                  , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
                   , HP.id_ "locations"
@@ -135,7 +135,7 @@ component =
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
-                  , fetchItems: Async.loadFromSource Async.users
+                  , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
                   , HP.id_ "users"

@@ -7,21 +7,23 @@ import Prelude
 import Control.Coroutine (consumer)
 import Control.Promise (Promise)
 import Control.Promise as Promise
-import Data.Array (head, length)
+import Data.Array (head)
 import Data.Fuzzy (match)
+import Data.Int (toNumber)
 import Data.Maybe (Maybe(..), maybe)
 import Data.Symbol (SProxy(..))
+import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
 import Effect.Aff (Aff, error, killFiber, launchAff, launchAff_)
 import Effect.Aff.AVar as AffAVar
-import Effect.Aff.Compat (EffectFn1, EffectFn2, EffectFn3, mkEffectFn1, mkEffectFn2, mkEffectFn3, runEffectFn1)
+import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
 import Effect.Class (liftEffect)
 import Foreign.Object (Object)
 import Halogen (HalogenIO)
 import Halogen.HTML (span_)
-import Halogen.HTML.Properties (placeholder) as HP
+import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
@@ -36,8 +38,10 @@ type QueryRow =
   , triggerFocus :: Effect (Promise Unit)
   , search :: EffectFn1 String (Promise Unit)
   , getSelected :: Effect (Promise (Array (Object String)))
-  , replaceSelected :: EffectFn1 (Array (Object String)) (Promise Unit)
-  , replaceItems :: EffectFn3 String String (Array (Object String)) (Promise Unit)
+  , setSelected :: EffectFn1 (Array (Object String)) (Promise Unit)
+  , setItems :: EffectFn1 (Array (Object String)) (Promise Unit)
+  , setError :: EffectFn1 String (Promise Unit)
+  , setLoading :: Effect (Promise Unit)
   , reset :: Effect (Promise Unit)
   )
 
@@ -75,8 +79,7 @@ convertSingleToMessageVariant = case _ of
 -- | - keepOpen: whether the typeahead should stay open or close on selection
 type ExternalInput =
   { items :: Array (Object String)
-    -- one of 'success', 'failure', 'loading', or 'notAsked'
-  , status :: String
+  , debounceTime :: Int
   , placeholder :: String
   , key :: String
   , keepOpen :: Boolean
@@ -89,11 +92,12 @@ externalInputToSingleInput
    . ExternalInput
   -> Input pq Maybe (Object String) m
 externalInputToSingleInput r =
-  { items: getStatus r.status "Failed to load some data." r.items
+  { items: Success r.items
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> a
-  , asyncConfig: Nothing
+  , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
+  , async: Nothing
   , render: renderSingle
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")
@@ -107,11 +111,12 @@ externalInputToMultiInput
    . ExternalInput
   -> Input pq Array (Object String) m
 externalInputToMultiInput r =
-  { items: getStatus r.status "Failed to load some data." r.items
+  { items: Success r.items
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> a
-  , asyncConfig: Nothing
+  , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
+  , async: Nothing
   , render: renderMulti
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")
@@ -119,20 +124,6 @@ externalInputToMultiInput r =
   }
   where
     renderFuzzy = span_ <<< boldMatches r.key
-
-
--- A helper function for parsing strings to status types
-getStatus
-  :: String
-  -> String
-  -> Array (Object String)
-  -> RemoteData String (Array (Object String))
-getStatus s e i
-  | s == "success" || s == "Success" = Success i
-  | s == "failure" || s == "Failure" = Failure e
-  | s == "loading" || s == "Loading" = Loading
-  | s == "notAsked" || s == "NotAsked" = NotAsked
-  | otherwise = Success i
 
 mountMultiTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
 mountMultiTypeahead = mkEffectFn2 \el ext -> do
@@ -157,12 +148,21 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
     , getSelected: Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ GetSelected identity
-    , replaceSelected: mkEffectFn1 \arr -> Promise.fromAff do
+    -- Different from underlying implementation because no algebraic data types
+    -- in JS
+    , setSelected: mkEffectFn1 \arr -> Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ ReplaceSelected arr unit
-    , replaceItems: mkEffectFn3 \status err arr -> Promise.fromAff do
+    -- New queries to support setting status, error, and items separately
+    , setItems: mkEffectFn1 \arr -> Promise.fromAff do
         io <- AffAVar.read ioVar
-        io.query $ ReplaceItems (getStatus status err arr) unit
+        io.query $ ReplaceItems (Success arr) unit
+    , setError: mkEffectFn1 \str -> Promise.fromAff do
+        io <- AffAVar.read ioVar
+        io.query $ ReplaceItems (Failure str) unit
+    , setLoading: Promise.fromAff do
+        io <- AffAVar.read ioVar
+        io.query $ ReplaceItems Loading unit
     , reset: Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ Reset unit
@@ -193,12 +193,19 @@ mountSingleTypeahead = mkEffectFn2 \el ext -> do
         io <- AffAVar.read ioVar
         res <- io.query $ GetSelected identity
         pure $ maybe [] pure res
-    , replaceSelected: mkEffectFn1 \arr -> Promise.fromAff do
+    , setSelected: mkEffectFn1 \arr -> Promise.fromAff do
         io <- AffAVar.read ioVar
-        io.query $ ReplaceSelected (if length arr > 0 then head arr else Nothing) unit
-    , replaceItems: mkEffectFn3 \status err arr -> Promise.fromAff do
+        io.query $ ReplaceSelected (head arr) unit
+    -- New queries to support setting status, error, and items separately
+    , setItems: mkEffectFn1 \arr -> Promise.fromAff do
         io <- AffAVar.read ioVar
-        io.query $ ReplaceItems (getStatus status err arr) unit
+        io.query $ ReplaceItems (Success arr) unit
+    , setError: mkEffectFn1 \str -> Promise.fromAff do
+        io <- AffAVar.read ioVar
+        io.query $ ReplaceItems (Failure str) unit
+    , setLoading: Promise.fromAff do
+        io <- AffAVar.read ioVar
+        io.query $ ReplaceItems Loading unit
     , reset: Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ Reset unit
