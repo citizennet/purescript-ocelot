@@ -15,9 +15,10 @@ function mkElement(id) {
 }
 
 // Create a valid input
+const items = [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian" }, { name: "Jeff" } ]
 const input =
-  { items: [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian" }, { name: "Jeff" } ]
-  , status: "success"
+  { items: [] // empty to start
+  , debounceTime: 300
   , placeholder: "Type to search..."
   , key: "name"
   , keepOpen: false
@@ -64,7 +65,7 @@ component.setLoading().then(() => {
     });
 
     // Example: imperatively set status
-    component.setItems(input.items).then(() => {
+    component.setItems(items).then(() => {
       console.log("Now in loaded status...");
     });
   }, 3000);
