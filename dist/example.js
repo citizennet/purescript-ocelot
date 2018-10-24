@@ -24893,7 +24893,7 @@ var PS = {};
                           return Data_Array.cons(match(insertable.value0(text)))(items);
                       };
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 326, column 47 - line 329, column 65: " + [ insertable.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 324, column 47 - line 327, column 65: " + [ insertable.constructor.name ]);
               };
           };
       };
@@ -24907,8 +24907,8 @@ var PS = {};
               var applyF = Data_Array.filter(function (v) {
                   return Data_Ord.greaterThan(Data_Ratio.ordRatio(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt))(v.ratio)(Data_Ratio.reduce(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt)(2)(3));
               });
-              return Data_Functor.map(Network_RemoteData.functorRemoteData)(function ($122) {
-                  return Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq))(applyF(applyI(fuzzyItems($122))));
+              return Data_Functor.map(Network_RemoteData.functorRemoteData)(function ($120) {
+                  return Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq))(applyF(applyI(fuzzyItems($120))));
               })(Data_Functor.map(Network_RemoteData.functorRemoteData)(Data_Function.flip(st.ops.runFilter)(st.selected))(st.items));
           };
       };
@@ -24923,11 +24923,7 @@ var PS = {};
                               inputType: Select.TextInput.value,
                               items: [  ],
                               initialSearch: Data_Maybe.Nothing.value,
-                              debounceTime: Control_Bind.bindFlipped(Data_Maybe.bindMaybe)(function ($123) {
-                                  return Data_Maybe.Just.create((function (v) {
-                                      return v.debounceTime;
-                                  })($123));
-                              })(st.asyncConfig),
+                              debounceTime: st.debounceTime,
                               render: renderSelect(st)
                           };
                           return Halogen_HTML.slot(Data_Unit.unit)(Select.component(dictMonadAff))(selectInput)(Halogen_HTML_Events.input(HandleSelect.create));
@@ -24941,7 +24937,8 @@ var PS = {};
                           itemToObject: i.itemToObject,
                           insertable: i.insertable,
                           keepOpen: i.keepOpen,
-                          asyncConfig: i.asyncConfig,
+                          debounceTime: i.debounceTime,
+                          async: i.async,
                           ops: ops
                       };
                       return Control_Comonad_Store.store(render$prime(i.render))(st);
@@ -24956,14 +24953,14 @@ var PS = {};
                           };
                           if (v.value0 instanceof Select.Selected) {
                               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                                  var $53 = {};
-                                  for (var $54 in st) {
-                                      if ({}.hasOwnProperty.call(st, $54)) {
-                                          $53[$54] = st[$54];
+                                  var $52 = {};
+                                  for (var $53 in st) {
+                                      if ({}.hasOwnProperty.call(st, $53)) {
+                                          $52[$53] = st[$53];
                                       };
                                   };
-                                  $53.selected = st.ops.runSelect(v.value0.value0.original)(st.selected);
-                                  return $53;
+                                  $52.selected = st.ops.runSelect(v.value0.value0.original)(st.selected);
+                                  return $52;
                               }))(function (v1) {
                                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)((function () {
                                       if (v1.keepOpen) {
@@ -24982,47 +24979,47 @@ var PS = {};
                           if (v.value0 instanceof Select.Searched) {
                               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.getState(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                      var $61 = {};
-                                      for (var $62 in v2) {
-                                          if ({}.hasOwnProperty.call(v2, $62)) {
-                                              $61[$62] = v2[$62];
+                                      var $60 = {};
+                                      for (var $61 in v2) {
+                                          if ({}.hasOwnProperty.call(v2, $61)) {
+                                              $60[$61] = v2[$61];
                                           };
                                       };
-                                      $61.search = v.value0.value0;
-                                      return $61;
+                                      $60.search = v.value0.value0;
+                                      return $60;
                                   }))(function () {
                                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)((function () {
-                                          if (v1.asyncConfig instanceof Data_Maybe.Nothing) {
+                                          if (v1.async instanceof Data_Maybe.Nothing) {
                                               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
                                           };
-                                          if (v1.asyncConfig instanceof Data_Maybe.Just) {
+                                          if (v1.async instanceof Data_Maybe.Just) {
                                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                                  var $65 = {};
-                                                  for (var $66 in v2) {
-                                                      if ({}.hasOwnProperty.call(v2, $66)) {
-                                                          $65[$66] = v2[$66];
+                                                  var $64 = {};
+                                                  for (var $65 in v2) {
+                                                      if ({}.hasOwnProperty.call(v2, $65)) {
+                                                          $64[$65] = v2[$65];
                                                       };
                                                   };
-                                                  $65.items = Network_RemoteData.Loading.value;
-                                                  return $65;
+                                                  $64.items = Network_RemoteData.Loading.value;
+                                                  return $64;
                                               }))(function () {
                                                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)($$eval(new Synchronize(v.value1)))(function (v2) {
-                                                      return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Trans_Class.lift(Halogen_Query_HalogenM.monadTransHalogenM)((dictMonadAff.MonadEffect0()).Monad0())(v1.asyncConfig.value0.fetchItems(v.value0.value0)))(function (v3) {
+                                                      return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Trans_Class.lift(Halogen_Query_HalogenM.monadTransHalogenM)((dictMonadAff.MonadEffect0()).Monad0())(v1.async.value0(v.value0.value0)))(function (v3) {
                                                           return Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v4) {
-                                                              var $69 = {};
-                                                              for (var $70 in v4) {
-                                                                  if ({}.hasOwnProperty.call(v4, $70)) {
-                                                                      $69[$70] = v4[$70];
+                                                              var $68 = {};
+                                                              for (var $69 in v4) {
+                                                                  if ({}.hasOwnProperty.call(v4, $69)) {
+                                                                      $68[$69] = v4[$69];
                                                                   };
                                                               };
-                                                              $69.items = v3;
-                                                              return $69;
+                                                              $68.items = v3;
+                                                              return $68;
                                                           });
                                                       });
                                                   });
                                               });
                                           };
-                                          throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 215, column 11 - line 221, column 50: " + [ v1.asyncConfig.constructor.name ]);
+                                          throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 213, column 11 - line 219, column 50: " + [ v1.async.constructor.name ]);
                                       })())(function () {
                                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Searched(v.value0.value0)))(function () {
                                               return $$eval(new Synchronize(v.value1));
@@ -25034,18 +25031,18 @@ var PS = {};
                           if (v.value0 instanceof Select.VisibilityChanged) {
                               return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
                           };
-                          throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 198, column 33 - line 226, column 45: " + [ v.value0.constructor.name ]);
+                          throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 196, column 33 - line 224, column 45: " + [ v.value0.constructor.name ]);
                       };
                       if (v instanceof Remove) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                              var $78 = {};
-                              for (var $79 in st) {
-                                  if ({}.hasOwnProperty.call(st, $79)) {
-                                      $78[$79] = st[$79];
+                              var $76 = {};
+                              for (var $77 in st) {
+                                  if ({}.hasOwnProperty.call(st, $77)) {
+                                      $76[$77] = st[$77];
                                   };
                               };
-                              $78.selected = st.ops.runRemove(v.value0)(st.selected);
-                              return $78;
+                              $76.selected = st.ops.runRemove(v.value0)(st.selected);
+                              return $76;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value1));
@@ -25054,14 +25051,14 @@ var PS = {};
                       };
                       if (v instanceof RemoveAll) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                              var $84 = {};
-                              for (var $85 in st) {
-                                  if ({}.hasOwnProperty.call(st, $85)) {
-                                      $84[$85] = st[$85];
+                              var $82 = {};
+                              for (var $83 in st) {
+                                  if ({}.hasOwnProperty.call(st, $83)) {
+                                      $82[$83] = st[$83];
                                   };
                               };
-                              $84.selected = Control_Plus.empty(dictPlus);
-                              return $84;
+                              $82.selected = Control_Plus.empty(dictPlus);
+                              return $82;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value0));
@@ -25096,7 +25093,7 @@ var PS = {};
                                   if (v2 instanceof Network_RemoteData.Loading) {
                                       return Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems([  ]));
                                   };
-                                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 253, column 14 - line 263, column 50: " + [ v2.constructor.name ]);
+                                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 251, column 14 - line 261, column 50: " + [ v2.constructor.name ]);
                               })())(function (v2) {
                                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value0);
                               });
@@ -25104,28 +25101,28 @@ var PS = {};
                       };
                       if (v instanceof ReplaceItems) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $98 = {};
-                              for (var $99 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $99)) {
-                                      $98[$99] = v1[$99];
+                              var $96 = {};
+                              for (var $97 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $97)) {
+                                      $96[$97] = v1[$97];
                                   };
                               };
-                              $98.items = v.value0;
-                              return $98;
+                              $96.items = v.value0;
+                              return $96;
                           }))(function () {
                               return $$eval(new Synchronize(v.value1));
                           });
                       };
                       if (v instanceof ReplaceSelected) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $103 = {};
-                              for (var $104 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $104)) {
-                                      $103[$104] = v1[$104];
+                              var $101 = {};
+                              for (var $102 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $102)) {
+                                      $101[$102] = v1[$102];
                                   };
                               };
-                              $103.selected = v.value0;
-                              return $103;
+                              $101.selected = v.value0;
+                              return $101;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ReplacementQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value1));
@@ -25134,15 +25131,15 @@ var PS = {};
                       };
                       if (v instanceof Reset) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $109 = {};
-                              for (var $110 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $110)) {
-                                      $109[$110] = v1[$110];
+                              var $107 = {};
+                              for (var $108 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $108)) {
+                                      $107[$108] = v1[$108];
                                   };
                               };
-                              $109.selected = Control_Plus.empty(dictPlus);
-                              $109.items = Network_RemoteData.NotAsked.value;
-                              return $109;
+                              $107.selected = Control_Plus.empty(dictPlus);
+                              $107.items = Network_RemoteData.NotAsked.value;
+                              return $107;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ResetQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value0));
@@ -25160,7 +25157,7 @@ var PS = {};
                       if (v instanceof Raise) {
                           return Data_Functor.voidLeft(Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query_HalogenM.raise(new Emit(v.value0)))(v.value1);
                       };
-                      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 194, column 12 - line 287, column 43: " + [ v.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 192, column 12 - line 285, column 43: " + [ v.constructor.name ]);
                   };
                   return Halogen_Component.lifecycleParentComponent(Data_Ord.ordUnit)({
                       initialState: initialState,
@@ -25178,8 +25175,8 @@ var PS = {};
       return function (dictEq) {
           return base(dictMonadAff)(dictEq)(Control_Plus.plusArray)({
               runSelect: Data_Array.cons,
-              runRemove: function ($124) {
-                  return Data_Array.filter(Data_Eq.notEq(dictEq)($124));
+              runRemove: function ($121) {
+                  return Data_Array.filter(Data_Eq.notEq(dictEq)($121));
               },
               runFilter: Data_Array.difference(dictEq)
           });
@@ -25188,8 +25185,8 @@ var PS = {};
   var single = function (dictMonadAff) {
       return function (dictEq) {
           return base(dictMonadAff)(dictEq)(Data_Maybe.plusMaybe)({
-              runSelect: function ($125) {
-                  return Data_Function["const"](Data_Maybe.Just.create($125));
+              runSelect: function ($122) {
+                  return Data_Function["const"](Data_Maybe.Just.create($122));
               },
               runRemove: Data_Function["const"](Data_Function["const"](Data_Maybe.Nothing.value)),
               runFilter: function (items) {
@@ -26040,6 +26037,7 @@ var PS = {};
   "use strict";
   var Control_Semigroupoid = PS["Control.Semigroupoid"];
   var DOM_HTML_Indexed = PS["DOM.HTML.Indexed"];
+  var Data_Function = PS["Data.Function"];
   var Data_Fuzzy = PS["Data.Fuzzy"];
   var Data_Maybe = PS["Data.Maybe"];
   var Data_Time_Duration = PS["Data.Time.Duration"];
@@ -26061,7 +26059,8 @@ var PS = {};
                       insertable: Ocelot_Component_Typeahead_Base.NotInsertable.value,
                       keepOpen: false,
                       itemToObject: v.itemToObject,
-                      asyncConfig: Data_Maybe.Nothing.value,
+                      debounceTime: Data_Maybe.Nothing.value,
+                      async: Data_Maybe.Nothing.value,
                       render: Ocelot_Component_Typeahead_Render.renderSingle(props)(function ($30) {
                           return v.renderFuzzy(Data_Fuzzy.match(false)(v.itemToObject)("")($30));
                       })(Ocelot_Component_Typeahead_Render.defRenderContainer(v.renderFuzzy))
@@ -26079,10 +26078,8 @@ var PS = {};
                       insertable: Ocelot_Component_Typeahead_Base.NotInsertable.value,
                       keepOpen: true,
                       itemToObject: v.itemToObject,
-                      asyncConfig: new Data_Maybe.Just({
-                          debounceTime: 300.0,
-                          fetchItems: v.fetchItems
-                      }),
+                      debounceTime: Data_Maybe.Just.create(300.0),
+                      async: new Data_Maybe.Just(v.async),
                       render: Ocelot_Component_Typeahead_Render.renderSingle(props)(function ($32) {
                           return v.renderFuzzy(Data_Fuzzy.match(false)(v.itemToObject)("")($32));
                       })(Ocelot_Component_Typeahead_Render.defRenderContainer(v.renderFuzzy))
@@ -26100,10 +26097,8 @@ var PS = {};
                       insertable: Ocelot_Component_Typeahead_Base.NotInsertable.value,
                       keepOpen: true,
                       itemToObject: v.itemToObject,
-                      asyncConfig: new Data_Maybe.Just({
-                          debounceTime: 300.0,
-                          fetchItems: v.fetchItems
-                      }),
+                      debounceTime: Data_Maybe.Just.create(300.0),
+                      async: new Data_Maybe.Just(v.async),
                       render: Ocelot_Component_Typeahead_Render.renderMulti(props)(function ($33) {
                           return v.renderFuzzy(Data_Fuzzy.match(false)(v.itemToObject)("")($33));
                       })(Ocelot_Component_Typeahead_Render.defRenderContainer(v.renderFuzzy))
@@ -27061,7 +27056,7 @@ var PS = {};
                   return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
           })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Ocelot_Block_FormField.field_({
               label: Halogen_HTML_Core.text("Secondary Location"),
               helpText: new Data_Maybe.Just("Search your favorite destination."),
@@ -27072,7 +27067,7 @@ var PS = {};
                   return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($51));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
           })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]), UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Expandable.heading([ Halogen_HTML_Events.onClick(Halogen_HTML_Events.input_(ToggleCard.create(function (dictStrong) {
               return _singleUser(dictStrong);
           }))), Ocelot_Block_Expandable.status(st.singleUser) ])([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Users") ]) ]), Ocelot_Block_Expandable.content_(st.singleUser)([ Ocelot_Block_FormField.field_({
@@ -27083,7 +27078,7 @@ var PS = {};
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(0)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
               renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
               itemToObject: UIGuide_Utility_Async.userToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
           })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Ocelot_Block_FormField.field_({
               label: Halogen_HTML_Core.text("Secondary User"),
               helpText: new Data_Maybe.Just("Search your favorite companion."),
@@ -27092,7 +27087,7 @@ var PS = {};
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(1)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
               renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
               itemToObject: UIGuide_Utility_Async.userToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
           })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
               header: "Expansion Cards - Custom",
               subheader: "Take control of how the expansion toggle looks and behaves."
@@ -27113,7 +27108,7 @@ var PS = {};
                   return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($52));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
           })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Ocelot_Block_FormField.field_({
               label: Halogen_HTML_Core.text("Excluded Locations"),
               helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -27124,7 +27119,7 @@ var PS = {};
                   return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($53));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
           })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]), UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Ocelot_Block_Format.subHeading_([ Halogen_HTML_Core.text("Optimization Rules Engine") ]), Ocelot_Block_Format.p_([ Halogen_HTML_Core.text("Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form.") ]), Ocelot_Block_FormField.field_({
               label: Halogen_HTML_Core.text("Enabled"),
               helpText: Data_Maybe.Nothing.value,
@@ -27140,7 +27135,7 @@ var PS = {};
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(0)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
               renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
               itemToObject: UIGuide_Utility_Async.userToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
           })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Ocelot_Block_FormField.field_({
               label: Halogen_HTML_Core.text("Excluded Users"),
               helpText: new Data_Maybe.Just("Search your top companions."),
@@ -27149,7 +27144,7 @@ var PS = {};
           })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(1)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
               renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
               itemToObject: UIGuide_Utility_Async.userToObject,
-              fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
           })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("users-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]) ]) ]);
       };
   };
@@ -27710,7 +27705,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($8));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -27719,7 +27714,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(Data_Unit.unit)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]);
       var render = function (isOpen) {
           return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.block_({
@@ -28640,7 +28635,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($44));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your favorite companion."),
@@ -28649,7 +28644,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(0)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your favorite companion."),
@@ -28658,7 +28653,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp1)(1)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
           header: "Typeaheads - Multi-Select",
           subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
@@ -28672,7 +28667,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($45));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -28683,7 +28678,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($46));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28692,7 +28687,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(0)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28701,7 +28696,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(1)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("user") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
           header: "Typeaheads - State Variants",
           subheader: "Typeaheads can also be in a disabled, loading or error state."
@@ -28715,7 +28710,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($47));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("disabled-locations-empty"), Halogen_HTML_Properties.disabled(true) ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Single Select - Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -28726,7 +28721,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($48));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("disabled-locations-hydrated"), Halogen_HTML_Properties.disabled(true) ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error Single Select") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -28737,7 +28732,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($49));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("error-locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Loading Single Select") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
@@ -28748,7 +28743,7 @@ var PS = {};
               return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
       })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("loading-locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Multi Select - Empty") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28757,7 +28752,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(2)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.disabled(true), Halogen_HTML_Properties.id_("disabled-users-empty") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Disabled Multi Select - Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28766,7 +28761,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(3)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.disabled(true), Halogen_HTML_Properties.id_("disabled-users-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Error Multi Select") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28775,7 +28770,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(4)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.id_("error-users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Loading Multi Select") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
@@ -28784,7 +28779,7 @@ var PS = {};
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp2)(5)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqUser))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqUser)({
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
-          fetchItems: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
+          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
       })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.disabled(true), Halogen_HTML_Properties.id_("loading-users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]) ]);
   };
   var component = function (dictMonadAff) {
