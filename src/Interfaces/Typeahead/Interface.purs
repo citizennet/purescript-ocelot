@@ -10,7 +10,7 @@ import Control.Promise as Promise
 import Data.Array (head)
 import Data.Fuzzy (match)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..), maybe)
+import Data.Maybe (Maybe(..), fromJust, maybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
@@ -21,6 +21,7 @@ import Effect.Aff.AVar as AffAVar
 import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
 import Effect.Class (liftEffect)
 import Foreign.Object (Object)
+import Foreign.Object as Object
 import Halogen (HalogenIO)
 import Halogen.HTML (span_)
 import Halogen.HTML.Properties as HP
@@ -28,6 +29,7 @@ import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
+import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
 
 -- | A subset of the queries available to the typeahead, restricted
@@ -95,7 +97,7 @@ externalInputToSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: \a -> a
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderSingle
@@ -114,7 +116,7 @@ externalInputToMultiInput r =
   { items: Success r.items
   , insertable: NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: \a -> a
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderMulti
