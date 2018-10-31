@@ -201,7 +201,6 @@ base ops =
           _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
-          H.raise $ SelectionChanged SelectionMessage st.selected
           H.raise $ Selected item
           eval $ Synchronize a
 
@@ -221,7 +220,12 @@ base ops =
           H.raise $ Searched text
           eval $ Synchronize a
 
-        Select.VisibilityChanged _ -> pure a
+        Select.VisibilityChanged vis -> case vis of
+          Select.On -> pure a
+          Select.Off -> do
+            st <- getState
+            H.raise $ SelectionChanged SelectionMessage st.selected
+            pure a
 
       -- Remove a currently-selected item.
       Remove item a -> do
