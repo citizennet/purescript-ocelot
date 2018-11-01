@@ -63,6 +63,7 @@ type StateStore pq f item m = Store
 type State f item m =
   { items :: RemoteData String (Array item)
   , selected :: f item
+  , previous :: f item
   , search :: String
   , insertable :: Insertable item
   , keepOpen :: Boolean
@@ -104,6 +105,7 @@ data Message pq f item
   = Searched String
   | Selected item
   | SelectionChanged SelectionCause (f item)
+  | InteractionComplete (f item) (f item)
   | Emit (pq Unit)
 
 data SelectionCause
@@ -159,6 +161,7 @@ base ops =
         st =
           { items: i.items
           , selected: empty :: f item
+          , previous: empty :: f item
           , search: ""
           , itemToObject: i.itemToObject
           , insertable: i.insertable
@@ -197,11 +200,12 @@ base ops =
         Select.Emit query -> eval query $> a
 
         Select.Selected (Fuzzy { original: item }) -> do
-          st <- modifyState \st -> st { selected = st.ops.runSelect item st.selected }
+          st <- modifyState \st -> st { selected = st.ops.runSelect item st.selected, previous = st.selected }
           _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
           H.raise $ Selected item
+          H.raise $ SelectionChanged SelectionMessage st.selected
           eval $ Synchronize a
 
         -- Perform a new search, fetching data if Async.
@@ -224,18 +228,18 @@ base ops =
           Select.On -> pure a
           Select.Off -> do
             st <- getState
-            H.raise $ SelectionChanged SelectionMessage st.selected
+            H.raise $ InteractionComplete st.previous st.selected
             pure a
 
       -- Remove a currently-selected item.
       Remove item a -> do
-        st <- modifyState \st -> st { selected = st.ops.runRemove item st.selected }
+        st <- modifyState \st -> st { selected = st.ops.runRemove item st.selected, previous = st.selected }
         H.raise $ SelectionChanged RemovalQuery st.selected
         eval $ Synchronize a
 
       -- Remove all the items.
       RemoveAll a -> do
-        st <- modifyState \st -> st { selected = empty :: f item }
+        st <- modifyState \st -> st { selected = empty :: f item, previous = st.selected }
         H.raise $ SelectionChanged RemovalQuery st.selected
         eval $ Synchronize a
 
@@ -271,12 +275,12 @@ base ops =
         eval $ Synchronize a
 
       ReplaceSelected selected a -> do
-        st <- modifyState _ { selected = selected }
+        st <- modifyState \st -> st { selected = selected, previous = st.selected }
         H.raise $ SelectionChanged ReplacementQuery st.selected
         eval $ Synchronize a
 
       Reset a -> do
-        st <- modifyState _ { selected = empty :: f item, items = NotAsked }
+        st <- modifyState _ { selected = empty :: f item, previous = empty :: f item, items = NotAsked }
         H.raise $ SelectionChanged ResetQuery st.selected
         eval $ Synchronize a
 

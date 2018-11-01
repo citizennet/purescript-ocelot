@@ -7,12 +7,13 @@ import Prelude
 import Control.Coroutine (consumer)
 import Control.Promise (Promise)
 import Control.Promise as Promise
-import Data.Array (head)
+import Data.Array (head, singleton)
 import Data.Fuzzy (match)
 import Data.Int (toNumber)
 import Data.Maybe (Maybe(..), fromJust, maybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
+import Data.Tuple (Tuple(..))
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
@@ -53,6 +54,7 @@ type MessageVariant = Variant
   ( searched :: String
   , selected :: Object String
   , selectionChanged :: Array (Object String)
+  , interactionComplete :: Tuple (Array (Object String)) (Array (Object String))
   , emit :: String
   )
 
@@ -61,6 +63,7 @@ convertMultiToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ arr -> inj (SProxy :: SProxy "selectionChanged") arr
+  InteractionComplete old new -> inj (SProxy :: SProxy "interactionComplete") (Tuple old new)
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 convertSingleToMessageVariant :: ∀ pq. Message pq Maybe (Object String) -> MessageVariant
@@ -69,6 +72,9 @@ convertSingleToMessageVariant = case _ of
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [i]
   SelectionChanged _ Nothing -> inj (SProxy :: SProxy "selectionChanged") []
+  InteractionComplete old new -> inj
+    (SProxy :: SProxy "interactionComplete")
+    (Tuple (maybe [] singleton old) (maybe [] singleton new))
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 -- | A subset of the input available to the typeahead
