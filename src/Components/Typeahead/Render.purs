@@ -5,14 +5,14 @@ import Prelude
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr, null)
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), isJust, isNothing, maybe)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (isFailure, isLoading)
-import Ocelot.Block.Conditional (conditional)
+import Ocelot.Block.Conditional (conditional, conditional_)
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
@@ -36,10 +36,11 @@ renderSingle
   -> Select.State (Fuzzy item)
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
 renderSingle iprops renderItem renderContainer pst cst =
-  HH.label_
-    [ case pst.selected of
-        Just selected ->
-          Input.inputGroup_
+  HH.div_
+    [ case pst.selected, cst.visibility of
+        Just selected, Select.Off ->
+          Input.inputGroup
+            [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit ]
             [ if disabled
                 then
                   HH.div
@@ -57,10 +58,12 @@ renderSingle iprops renderItem renderContainer pst cst =
                       selected
                     ]
             , Input.borderRight
-              [ HP.classes $ linkClasses disabled ]
+              [ HP.classes $ linkClasses disabled
+              , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+              ]
               [ HH.text "Change" ]
             ]
-        Nothing ->
+        _, _ ->
           Input.inputGroup_
             [ Input.inputCenter $ inputProps disabled iprops
             , Input.addonLeft_
