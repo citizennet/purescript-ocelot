@@ -2,7 +2,7 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLbutton)
+import DOM.HTML.Indexed (HTMLbutton)
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
@@ -15,7 +15,7 @@ import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
 import Ocelot.HTML.Properties (IProp, css, (<&>))
 import Select as Select
-import Select.Utils.Setters as Setters
+import Select.Setters as Setters
 
 menuClasses :: Array HH.ClassName
 menuClasses = HH.ClassName <$>

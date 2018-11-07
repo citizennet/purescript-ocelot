@@ -2,7 +2,7 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea, HTMLdiv)
+import DOM.HTML.Indexed (HTMLdiv, HTMLinput, HTMLspan, HTMLtextarea)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
@@ -19,7 +19,6 @@ inputSharedClasses = HH.ClassName <$>
   , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
-  -- , "transition-1/4-bounce"
   ]
 
 inputClasses :: Array HH.ClassName

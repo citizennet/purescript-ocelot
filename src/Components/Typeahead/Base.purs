@@ -11,7 +11,6 @@ import Data.Fuzzy as Fuzz
 import Data.Maybe (Maybe(..), maybe)
 import Data.Rational ((%))
 import Data.Time.Duration (Milliseconds)
-import Debug.Trace (spy)
 import Effect.Aff.Class (class MonadAff)
 import Foreign.Object (Object)
 import Halogen as H
@@ -238,7 +237,6 @@ base ops =
 
       -- Tell the Select to trigger focus on the input
       TriggerFocus a -> a <$ do
-        _ <- H.query unit $ Select.setVisibility Select.On
         H.query unit Select.triggerFocus
 
       -- Tell the parent what the current state of the Selection list is.

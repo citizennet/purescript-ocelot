@@ -5,14 +5,14 @@ import Prelude
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr, null)
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe(..), isJust, isNothing, maybe)
+import Data.Maybe (Maybe, isJust, maybe)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (isFailure, isLoading)
-import Ocelot.Block.Conditional (conditional, conditional_)
+import Ocelot.Block.Conditional (conditional)
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
@@ -21,7 +21,7 @@ import Ocelot.Block.Loading as Loading
 import Ocelot.Component.Typeahead.Base as TA
 import Ocelot.HTML.Properties (css, (<&>))
 import Select as Select
-import Select.Utils.Setters (setInputProps) as Setters
+import Select.Setters (setInputProps) as Setters
 import Unsafe.Coerce (unsafeCoerce)
 
 ----------
@@ -37,44 +37,49 @@ renderSingle
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
 renderSingle iprops renderItem renderContainer pst cst =
   HH.div_
-    [ case pst.selected, cst.visibility of
-        Just selected, Select.Off ->
-          Input.inputGroup
-            [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit ]
-            [ if disabled
-                then
-                  HH.div
-                    [ HP.classes disabledClasses ]
-                    [ HH.fromPlainHTML $ renderItem selected ]
-                else
-                  HH.div
-                    [ HP.classes Input.mainLeftClasses ]
-                    [ IC.selectionGroup renderItem
-                      [ HE.onClick
-                        $ Select.always
-                        $ Select.raise
-                        $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
-                      ]
-                      selected
-                    ]
-            , Input.borderRight
-              [ HP.classes $ linkClasses disabled
-              , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
-              ]
-              [ HH.text "Change" ]
-            ]
-        _, _ ->
-          Input.inputGroup_
-            [ Input.inputCenter $ inputProps disabled iprops
-            , Input.addonLeft_
-              [ Icon.search_ ]
-            , Input.addonCenter
-              [ css $ if isLoading pst.items then "" else "offscreen" ]
-              [ spinner ]
-            , Input.borderRight
-              [ HP.classes $ linkClasses disabled ]
-              [ HH.text "Browse" ]
-            ]
+    [ Input.inputGroup
+      [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+      , HP.class_ $ HH.ClassName (if showSelected then "" else "offscreen")
+      ]
+      [ if disabled
+          then
+            maybe (HH.text "")
+              ( \selected -> HH.div
+                [ HP.classes disabledClasses ]
+                [ HH.fromPlainHTML $ renderItem selected ]
+              )
+            pst.selected
+          else
+            maybe (HH.text "")
+            ( \selected -> HH.div
+              [ HP.classes Input.mainLeftClasses ]
+              [ IC.selectionGroup renderItem
+                [ HE.onClick
+                  $ Select.always
+                  $ Select.raise
+                  $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
+                ]
+                selected
+              ])
+            pst.selected
+      , Input.borderRight
+        [ HP.classes $ linkClasses disabled ]
+        [ HH.text "Change" ]
+      ]
+    , Input.inputGroup
+      [ HP.class_ $ HH.ClassName (if showSelected then "offscreen" else "")
+      , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+      ]
+      [ Input.inputCenter $ inputProps cst disabled iprops
+      , Input.addonLeft_
+        [ Icon.search_ ]
+      , Input.addonCenter
+        [ css $ if isLoading pst.items then "" else "offscreen" ]
+        [ spinner ]
+      , Input.borderRight
+        [ HP.classes $ linkClasses disabled ]
+        [ HH.text "Browse" ]
+      ]
     , conditional (cst.visibility == Select.On)
         [ css "relative block" ]
         [ renderContainer cst ]
@@ -84,6 +89,7 @@ renderSingle iprops renderItem renderContainer pst cst =
   where
 
   disabled = isDisabled iprops
+  showSelected = isJust pst.selected && cst.visibility == Select.Off
 
 
 renderMulti
@@ -117,14 +123,15 @@ renderMulti iprops renderItem renderContainer pst cst =
                 [ HE.onClick $ Select.always $ Select.raise $ TA.Remove selected unit ]
                 selected
     , Input.inputGroup_
-      [ Input.inputCenter $ inputProps disabled iprops
+      [ Input.inputCenter $ inputProps cst disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
       , Input.addonCenter
         [ css $ if isLoading pst.items then "" else "offscreen" ]
         [ spinner ]
       , Input.borderRight
-        [ HP.classes $ linkClasses disabled ]
+        [ HP.classes $ linkClasses disabled
+        , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit ]
         [ HH.text "Browse" ]
       ]
     , conditional (cst.visibility == Select.On)
@@ -159,12 +166,13 @@ linkClasses = if _
 
 inputProps
   :: ∀ pq f item m
-   . Boolean
+   . Select.State (Fuzzy item)
+  -> Boolean
   -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
   -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
-inputProps disabled iprops = if disabled
+inputProps cst disabled iprops = if disabled
   then iprops'
-  else Setters.setInputProps iprops'
+  else Setters.setInputProps cst iprops'
   where iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
 
 

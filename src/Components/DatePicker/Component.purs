@@ -25,7 +25,7 @@ import Ocelot.Component.DatePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as Select
-import Select.Utils.Setters as Setters
+import Select.Setters as Setters
 import Web.Event.Event (preventDefault)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 import Web.UIEvent.KeyboardEvent as KE
@@ -234,16 +234,16 @@ component =
           , debounceTime: Nothing
           , inputType: Select.TextInput
           , items: st.calendarItems
-          , render: \s -> HH.div_ [ renderSearch, renderSelect targetYear targetMonth s ]
+          , render: \s -> HH.div_ [ renderSearch s, renderSelect targetYear targetMonth s ]
           }
 
         targetYear  = fst st.targetDate
         targetMonth = snd st.targetDate
 
         -- The page element that will hold focus, capture key events, etcetera
-        renderSearch =
+        renderSearch cst =
           Input.input
-            ( Setters.setInputProps
+            ( Setters.setInputProps cst
               [ HE.onKeyDown $ Just <<< Select.raise <<< H.action <<< Key
               , HP.value st.search
               ]

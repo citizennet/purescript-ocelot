@@ -13,7 +13,7 @@ import Ocelot.Block.ItemContainer as IC
 import Ocelot.Component.Dropdown as DD
 import Ocelot.HTML.Properties (css)
 import Select as Select
-import Select.Utils.Setters (setToggleProps)
+import Select.Setters (setToggleProps)
 
 type ButtonFn p i
    = Array (HH.IProp HTMLbutton i)
@@ -35,7 +35,7 @@ defDropdown button props toString label pst cst =
 
   where
     toggle = IC.dropdownButton
-      button (setToggleProps props) [ HH.text $ maybe label toString pst.selectedItem ]
+      button (setToggleProps cst props) [ HH.text $ maybe label toString pst.selectedItem ]
 
     menu = HH.div
       [ HP.classes containerClasses ]
