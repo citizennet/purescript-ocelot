@@ -37,7 +37,7 @@ renderSingle
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
 renderSingle iprops renderItem renderContainer pst cst =
   HH.div_
-    [ Input.inputGroup
+    [ Input.inputGroup' HH.div
       [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
       , HP.class_ $ HH.ClassName (if showSelected then "" else "offscreen")
       ]

@@ -2,7 +2,7 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLinput, HTMLspan, HTMLtextarea)
+import DOM.HTML.Indexed (GlobalAttributes, HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
@@ -145,11 +145,19 @@ input iprops =
 
 inputGroup
   :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
+   . Array (HH.IProp HTMLlabel i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-inputGroup iprops html =
-  HH.div
+inputGroup = inputGroup' HH.label
+
+inputGroup'
+  :: ∀ p r i
+   . (Array (HH.IProp (GlobalAttributes r) i) -> Array (HH.HTML p i) -> HH.HTML p i)
+  -> Array (HH.IProp (GlobalAttributes r) i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+inputGroup' elem iprops html =
+  elem
     ( [ HP.classes inputGroupClasses ] <&> iprops )
     html
 
@@ -269,7 +277,7 @@ borderRight_ = borderRight []
 
 percentage
   :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
+   . Array (HH.IProp HTMLlabel i)
   -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 percentage lprops iprops =
@@ -283,7 +291,7 @@ percentage_ = percentage []
 
 currency
   :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
+   . Array (HH.IProp HTMLlabel i)
   -> Array (HH.IProp HTMLinput i)
   -> HH.HTML p i
 currency lprops iprops =
