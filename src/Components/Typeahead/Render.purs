@@ -53,7 +53,7 @@ renderSingle iprops renderItem renderContainer pst cst =
             maybe (HH.text "")
             ( \selected -> HH.div
               [ HP.classes Input.mainLeftClasses ]
-              [ IC.selectionGroup renderItem
+              [ IC.selectionGroup renderItem []
                 [ HE.onClick
                   $ Select.always
                   $ Select.raise
@@ -120,6 +120,7 @@ renderMulti iprops renderItem renderContainer pst cst =
             \selected ->
               IC.selectionGroup
                 renderItem
+                []
                 [ HE.onClick $ Select.always $ Select.raise $ TA.Remove selected unit ]
                 selected
     , Input.inputGroup_

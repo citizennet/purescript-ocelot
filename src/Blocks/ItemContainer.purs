@@ -2,7 +2,7 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLbutton)
+import DOM.HTML.Indexed (HTMLbutton, HTMLdiv)
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
@@ -227,15 +227,16 @@ selectionContainer html =
 selectionGroup
   :: ∀ item i p
    . (item -> HH.PlainHTML)
+  -> Array (HH.IProp HTMLdiv p)
   -> Array (HH.IProp HTMLbutton p)
   -> item
   -> HH.HTML i p
-selectionGroup f props item =
+selectionGroup f divprops btnprops item =
   HH.div
-    [ HP.classes $ selectionGroupClasses ]
+    ([ HP.classes $ selectionGroupClasses ] <&> divprops)
     [ HH.fromPlainHTML (f item)
     , HH.button
-      ([ HP.classes buttonClasses ] <&> props)
+      ([ HP.classes buttonClasses ] <&> btnprops)
       [ HH.text "✕" ]
     ]
 
