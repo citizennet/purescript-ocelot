@@ -35,7 +35,7 @@ defDropdown button props toString label pst cst =
 
   where
     toggle = IC.dropdownButton
-      button (setToggleProps cst props) [ HH.text $ maybe label toString pst.selectedItem ]
+      button (setToggleProps props) [ HH.text $ maybe label toString pst.selectedItem ]
 
     menu = HH.div
       [ HP.classes containerClasses ]

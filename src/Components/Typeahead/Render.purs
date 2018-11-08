@@ -70,7 +70,7 @@ renderSingle iprops renderItem renderContainer pst cst =
       [ HP.class_ $ HH.ClassName (if showSelected then "offscreen" else "")
       , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
       ]
-      [ Input.inputCenter $ inputProps cst disabled iprops
+      [ Input.inputCenter $ inputProps disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
       , Input.addonCenter
@@ -123,7 +123,7 @@ renderMulti iprops renderItem renderContainer pst cst =
                 [ HE.onClick $ Select.always $ Select.raise $ TA.Remove selected unit ]
                 selected
     , Input.inputGroup_
-      [ Input.inputCenter $ inputProps cst disabled iprops
+      [ Input.inputCenter $ inputProps disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
       , Input.addonCenter
@@ -166,13 +166,12 @@ linkClasses = if _
 
 inputProps
   :: ∀ pq f item m
-   . Select.State (Fuzzy item)
-  -> Boolean
+   . Boolean
   -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
   -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
-inputProps cst disabled iprops = if disabled
+inputProps disabled iprops = if disabled
   then iprops'
-  else Setters.setInputProps cst iprops'
+  else Setters.setInputProps iprops'
   where iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
 
 

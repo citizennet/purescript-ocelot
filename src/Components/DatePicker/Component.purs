@@ -234,16 +234,16 @@ component =
           , debounceTime: Nothing
           , inputType: Select.TextInput
           , items: st.calendarItems
-          , render: \s -> HH.div_ [ renderSearch s, renderSelect targetYear targetMonth s ]
+          , render: \s -> HH.div_ [ renderSearch, renderSelect targetYear targetMonth s ]
           }
 
         targetYear  = fst st.targetDate
         targetMonth = snd st.targetDate
 
         -- The page element that will hold focus, capture key events, etcetera
-        renderSearch cst =
+        renderSearch =
           Input.input
-            ( Setters.setInputProps cst
+            ( Setters.setInputProps
               [ HE.onKeyDown $ Just <<< Select.raise <<< H.action <<< Key
               , HP.value st.search
               ]
