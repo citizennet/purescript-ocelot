@@ -201,8 +201,8 @@ base ops =
           _ <- if st.keepOpen
                then pure Nothing
                else H.query unit $ Select.setVisibility Select.Off
-          H.raise $ Selected item
           H.raise $ SelectionChanged SelectionMessage st.selected
+          H.raise $ Selected item
           eval $ Synchronize a
 
         -- Perform a new search, fetching data if Async.
@@ -267,7 +267,7 @@ base ops =
         eval $ Synchronize a
 
       ReplaceSelected selected a -> do
-        st <- modifyState \st -> st { selected = selected }
+        st <- modifyState _ { selected = selected }
         H.raise $ SelectionChanged ReplacementQuery st.selected
         eval $ Synchronize a
 
