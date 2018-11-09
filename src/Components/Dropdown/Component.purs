@@ -9,7 +9,7 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Select as Select
-import Select.Internal.State (updateStore)
+import Renderless.State (updateStore)
 
 data Query o item m a
   = HandleSelect (Select.Message o item) a

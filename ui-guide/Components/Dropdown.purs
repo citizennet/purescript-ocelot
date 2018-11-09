@@ -21,7 +21,7 @@ import Ocelot.Component.Dropdown as DD
 import Ocelot.Component.Dropdown.Render as DR
 import Ocelot.HTML.Properties (css)
 import Select as Select
-import Select.Utils.Setters as SelectSetters
+import Select.Setters as SelectSetters
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 

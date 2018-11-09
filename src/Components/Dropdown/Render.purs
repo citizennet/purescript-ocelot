@@ -13,7 +13,7 @@ import Ocelot.Block.ItemContainer as IC
 import Ocelot.Component.Dropdown as DD
 import Ocelot.HTML.Properties (css)
 import Select as Select
-import Select.Utils.Setters (setToggleProps)
+import Select.Setters (setToggleProps)
 
 type ButtonFn p i
    = Array (HH.IProp HTMLbutton i)

@@ -2,7 +2,7 @@ module Ocelot.Block.ItemContainer where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv)
+import DOM.HTML.Indexed (HTMLbutton, HTMLdiv)
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.FunctorWithIndex (mapWithIndex)
@@ -15,7 +15,7 @@ import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
 import Ocelot.HTML.Properties (IProp, css, (<&>))
 import Select as Select
-import Select.Utils.Setters as Setters
+import Select.Setters as Setters
 
 menuClasses :: Array HH.ClassName
 menuClasses = HH.ClassName <$>
@@ -228,14 +228,15 @@ selectionGroup
   :: ∀ item i p
    . (item -> HH.PlainHTML)
   -> Array (HH.IProp HTMLdiv p)
+  -> Array (HH.IProp HTMLbutton p)
   -> item
   -> HH.HTML i p
-selectionGroup f props item =
+selectionGroup f divprops btnprops item =
   HH.div
-    ( [ HP.classes $ selectionGroupClasses ] <&> props )
+    ([ HP.classes $ selectionGroupClasses ] <&> divprops)
     [ HH.fromPlainHTML (f item)
     , HH.button
-      [ HP.classes buttonClasses ]
+      ([ HP.classes buttonClasses ] <&> btnprops)
       [ HH.text "✕" ]
     ]
 

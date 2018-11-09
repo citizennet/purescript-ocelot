@@ -2,7 +2,7 @@ module Ocelot.Block.Input where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea)
+import DOM.HTML.Indexed (GlobalAttributes, HTMLinput, HTMLlabel, HTMLspan, HTMLtextarea)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
@@ -19,7 +19,6 @@ inputSharedClasses = HH.ClassName <$>
   , "disabled:text-grey-70"
   , "focus:no-outline"
   , "py-2"
-  -- , "transition-1/4-bounce"
   ]
 
 inputClasses :: Array HH.ClassName
@@ -149,8 +148,16 @@ inputGroup
    . Array (HH.IProp HTMLlabel i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-inputGroup iprops html =
-  HH.label
+inputGroup = inputGroup' HH.label
+
+inputGroup'
+  :: ∀ p r i
+   . (Array (HH.IProp (GlobalAttributes r) i) -> Array (HH.HTML p i) -> HH.HTML p i)
+  -> Array (HH.IProp (GlobalAttributes r) i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
+inputGroup' elem iprops html =
+  elem
     ( [ HP.classes inputGroupClasses ] <&> iprops )
     html
 
