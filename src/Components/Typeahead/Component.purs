@@ -92,7 +92,7 @@ asyncSingle
 asyncSingle { async, itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
-  , keepOpen: true
+  , keepOpen: false
   , itemToObject
   , debounceTime: Just $ Milliseconds 300.0
   , async: Just async
