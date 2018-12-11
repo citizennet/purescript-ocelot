@@ -85,6 +85,7 @@ type ExternalInput =
   , placeholder :: String
   , key :: String
   , keepOpen :: Boolean
+  , insertable :: Boolean
   }
 
 -- | An adapter to simplify types necessary in JS to control the typeahead
@@ -95,7 +96,7 @@ externalInputToSingleInput
   -> Input pq Maybe (Object String) m
 externalInputToSingleInput r =
   { items: Success r.items
-  , insertable: NotInsertable
+  , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
@@ -114,7 +115,7 @@ externalInputToMultiInput
   -> Input pq Array (Object String) m
 externalInputToMultiInput r =
   { items: Success r.items
-  , insertable: NotInsertable
+  , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing

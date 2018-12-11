@@ -15,13 +15,14 @@ function mkElement(id) {
 }
 
 // Create a valid input
-const items = [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian" }, { name: "Jeff" } ]
+const items = [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian", email: "qian@cn.com" }, { name: "Jeff" } ]
 const input =
   { items: [] // empty to start
   , debounceTime: 300
   , placeholder: "Type to search..."
   , key: "name"
   , keepOpen: false
+  , insertable: true
   }
 
 // Mount the component at the given element
@@ -66,7 +67,7 @@ component.setLoading().then(() => {
 
     // Example: imperatively set status
     component.setItems(items).then(() => {
-      console.log("Now in loaded status...");
+      console.log("Items set to: ", items);
     });
   }, 3000);
 });

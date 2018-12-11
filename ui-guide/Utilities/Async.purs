@@ -219,6 +219,9 @@ locationToObject :: Location -> Object String
 locationToObject (Location { name, population }) =
   fromFoldable [ Tuple "name" name ]
 
+stringToLocation :: String -> Location
+stringToLocation name = Location { name, population: "1" }
+
 ----------
 -- Helper for rendering user img
 

@@ -16,6 +16,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
+import Ocelot.Component.Typeahead (Insertable(..))
 import Ocelot.Component.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
@@ -152,12 +153,14 @@ cnDocumentationBlocks =
               , inputId: "location"
               }
               [ HH.slot' CP.cp3 0 TA.single
-                ( TA.syncSingle
-                  { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
-                  , itemToObject: Async.locationToObject
-                  }
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "location" ]
+                ( ( TA.syncSingle
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Async.locationToObject
+                    }
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "location"
+                    ]
+                  ) { insertable = Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -171,14 +174,15 @@ cnDocumentationBlocks =
               , inputId: "location-hydrated"
               }
               [ HH.slot' CP.cp3 1 TA.single
-                ( TA.asyncSingle
-                  { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
-                  , itemToObject: Async.locationToObject
-                  , async: Async.loadFromSource Async.locations
-                  }
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "location-hydrated"
-                  ]
+                ( ( TA.asyncSingle
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Async.locationToObject
+                    , async: Async.loadFromSource Async.locations
+                    }
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "location-hydrated"
+                    ]
+                  ) { insertable = Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -251,14 +255,15 @@ cnDocumentationBlocks =
               , inputId: "locations"
               }
               [ HH.slot' CP.cp4 0 TA.multi
-                ( TA.asyncMulti
-                  { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
-                  , itemToObject: Async.locationToObject
-                  , async: Async.loadFromSource Async.locations
-                  }
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "locations"
-                  ]
+                ( ( TA.asyncMulti
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Async.locationToObject
+                    , async: Async.loadFromSource Async.locations
+                    }
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "locations"
+                    ]
+                  ) { insertable = Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -272,14 +277,15 @@ cnDocumentationBlocks =
               , inputId: "locations"
               }
               [ HH.slot' CP.cp4 1 TA.multi
-                ( TA.asyncMulti
-                  { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
-                  , itemToObject: Async.locationToObject
-                  , async: Async.loadFromSource Async.locations
-                  }
-                  [ HP.placeholder "Search locations..."
-                  , HP.id_ "locations"
-                  ]
+                ( ( TA.asyncMulti
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Async.locationToObject
+                    , async: Async.loadFromSource Async.locations
+                    }
+                    [ HP.placeholder "Search locations..."
+                    , HP.id_ "locations"
+                    ]
+                  ) { insertable = Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
