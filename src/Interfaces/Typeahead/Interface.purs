@@ -4,7 +4,6 @@ module Ocelot.Interface.Typeahead where
 
 import Prelude
 
-import Control.Coroutine (consumer)
 import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head)
@@ -16,20 +15,18 @@ import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
-import Effect.Aff (Aff, error, killFiber, launchAff, launchAff_)
+import Effect.Aff (launchAff_)
 import Effect.Aff.AVar as AffAVar
-import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
-import Effect.Class (liftEffect)
+import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object)
 import Foreign.Object as Object
-import Halogen (HalogenIO)
 import Halogen.HTML (span_)
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
-import Ocelot.Interface.Utilities (mkSubscription, WithHalogen, Interface)
+import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
 
