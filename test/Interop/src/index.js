@@ -67,7 +67,7 @@ component.setLoading().then(() => {
 
     // Example: imperatively set status
     component.setItems(items).then(() => {
-      console.log("Now in loaded status...");
+      console.log("Items set to: ", items);
     });
   }, 3000);
 });

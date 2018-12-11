@@ -321,6 +321,7 @@ applyInsertable
   -> String
   -> Array (Fuzzy item)
   -> Array (Fuzzy item)
+applyInsertable _ _ "" items = items
 applyInsertable match insertable text items = case insertable of
   NotInsertable -> items
   Insertable mkItem | length (filter isExactMatch items) > 0 -> items
