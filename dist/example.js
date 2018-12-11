@@ -24828,25 +24828,28 @@ var PS = {};
       };
       return Raise;
   })();
-  var applyInsertable = function (match) {
-      return function (insertable) {
-          return function (text) {
+  var applyInsertable = function (v) {
+      return function (v1) {
+          return function (v2) {
               return function (items) {
-                  var isExactMatch = function (v) {
-                      return Data_Eq.eq(Data_Fuzzy.eqDistance)(v.distance)(new Data_Fuzzy.Distance(0, 0, 0, 0, 0, 0));
-                  };
-                  if (insertable instanceof NotInsertable) {
+                  if (v2 === "") {
                       return items;
                   };
-                  if (insertable instanceof Insertable) {
+                  var isExactMatch = function (v3) {
+                      return Data_Eq.eq(Data_Fuzzy.eqDistance)(v3.distance)(new Data_Fuzzy.Distance(0, 0, 0, 0, 0, 0));
+                  };
+                  if (v1 instanceof NotInsertable) {
+                      return items;
+                  };
+                  if (v1 instanceof Insertable) {
                       if (Data_Array.length(Data_Array.filter(isExactMatch)(items)) > 0) {
                           return items;
                       };
                       if (Data_Boolean.otherwise) {
-                          return Data_Array.cons(match(insertable.value0(text)))(items);
+                          return Data_Array.cons(v(v1.value0(v2)))(items);
                       };
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 324, column 47 - line 327, column 65: " + [ insertable.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base line 325, column 47 - line 328, column 65: " + [ v1.constructor.name ]);
               };
           };
       };
@@ -24860,8 +24863,8 @@ var PS = {};
               var applyF = Data_Array.filter(function (v) {
                   return Data_Ord.greaterThan(Data_Ratio.ordRatio(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt))(v.ratio)(Data_Ratio.reduce(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt)(2)(3));
               });
-              return Data_Functor.map(Network_RemoteData.functorRemoteData)(function ($120) {
-                  return Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq))(applyF(applyI(fuzzyItems($120))));
+              return Data_Functor.map(Network_RemoteData.functorRemoteData)(function ($127) {
+                  return Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq))(applyF(applyI(fuzzyItems($127))));
               })(Data_Functor.map(Network_RemoteData.functorRemoteData)(Data_Function.flip(st.ops.runFilter)(st.selected))(st.items));
           };
       };
@@ -24906,14 +24909,14 @@ var PS = {};
                           };
                           if (v.value0 instanceof Select.Selected) {
                               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                                  var $52 = {};
-                                  for (var $53 in st) {
-                                      if ({}.hasOwnProperty.call(st, $53)) {
-                                          $52[$53] = st[$53];
+                                  var $59 = {};
+                                  for (var $60 in st) {
+                                      if ({}.hasOwnProperty.call(st, $60)) {
+                                          $59[$60] = st[$60];
                                       };
                                   };
-                                  $52.selected = st.ops.runSelect(v.value0.value0.original)(st.selected);
-                                  return $52;
+                                  $59.selected = st.ops.runSelect(v.value0.value0.original)(st.selected);
+                                  return $59;
                               }))(function (v1) {
                                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)((function () {
                                       if (v1.keepOpen) {
@@ -24932,14 +24935,14 @@ var PS = {};
                           if (v.value0 instanceof Select.Searched) {
                               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.getState(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                      var $60 = {};
-                                      for (var $61 in v2) {
-                                          if ({}.hasOwnProperty.call(v2, $61)) {
-                                              $60[$61] = v2[$61];
+                                      var $67 = {};
+                                      for (var $68 in v2) {
+                                          if ({}.hasOwnProperty.call(v2, $68)) {
+                                              $67[$68] = v2[$68];
                                           };
                                       };
-                                      $60.search = v.value0.value0;
-                                      return $60;
+                                      $67.search = v.value0.value0;
+                                      return $67;
                                   }))(function () {
                                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)((function () {
                                           if (v1.async instanceof Data_Maybe.Nothing) {
@@ -24947,26 +24950,26 @@ var PS = {};
                                           };
                                           if (v1.async instanceof Data_Maybe.Just) {
                                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                                                  var $64 = {};
-                                                  for (var $65 in v2) {
-                                                      if ({}.hasOwnProperty.call(v2, $65)) {
-                                                          $64[$65] = v2[$65];
+                                                  var $71 = {};
+                                                  for (var $72 in v2) {
+                                                      if ({}.hasOwnProperty.call(v2, $72)) {
+                                                          $71[$72] = v2[$72];
                                                       };
                                                   };
-                                                  $64.items = Network_RemoteData.Loading.value;
-                                                  return $64;
+                                                  $71.items = Network_RemoteData.Loading.value;
+                                                  return $71;
                                               }))(function () {
                                                   return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)($$eval(new Synchronize(v.value1)))(function (v2) {
                                                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Trans_Class.lift(Halogen_Query_HalogenM.monadTransHalogenM)((dictMonadAff.MonadEffect0()).Monad0())(v1.async.value0(v.value0.value0)))(function (v3) {
                                                           return Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v4) {
-                                                              var $68 = {};
-                                                              for (var $69 in v4) {
-                                                                  if ({}.hasOwnProperty.call(v4, $69)) {
-                                                                      $68[$69] = v4[$69];
+                                                              var $75 = {};
+                                                              for (var $76 in v4) {
+                                                                  if ({}.hasOwnProperty.call(v4, $76)) {
+                                                                      $75[$76] = v4[$76];
                                                                   };
                                                               };
-                                                              $68.items = v3;
-                                                              return $68;
+                                                              $75.items = v3;
+                                                              return $75;
                                                           });
                                                       });
                                                   });
@@ -24988,14 +24991,14 @@ var PS = {};
                       };
                       if (v instanceof Remove) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                              var $76 = {};
-                              for (var $77 in st) {
-                                  if ({}.hasOwnProperty.call(st, $77)) {
-                                      $76[$77] = st[$77];
+                              var $83 = {};
+                              for (var $84 in st) {
+                                  if ({}.hasOwnProperty.call(st, $84)) {
+                                      $83[$84] = st[$84];
                                   };
                               };
-                              $76.selected = st.ops.runRemove(v.value0)(st.selected);
-                              return $76;
+                              $83.selected = st.ops.runRemove(v.value0)(st.selected);
+                              return $83;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value1));
@@ -25004,14 +25007,14 @@ var PS = {};
                       };
                       if (v instanceof RemoveAll) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                              var $82 = {};
-                              for (var $83 in st) {
-                                  if ({}.hasOwnProperty.call(st, $83)) {
-                                      $82[$83] = st[$83];
+                              var $89 = {};
+                              for (var $90 in st) {
+                                  if ({}.hasOwnProperty.call(st, $90)) {
+                                      $89[$90] = st[$90];
                                   };
                               };
-                              $82.selected = Control_Plus.empty(dictPlus);
-                              return $82;
+                              $89.selected = Control_Plus.empty(dictPlus);
+                              return $89;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value0));
@@ -25054,28 +25057,28 @@ var PS = {};
                       };
                       if (v instanceof ReplaceItems) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $96 = {};
-                              for (var $97 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $97)) {
-                                      $96[$97] = v1[$97];
+                              var $103 = {};
+                              for (var $104 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $104)) {
+                                      $103[$104] = v1[$104];
                                   };
                               };
-                              $96.items = v.value0;
-                              return $96;
+                              $103.items = v.value0;
+                              return $103;
                           }))(function () {
                               return $$eval(new Synchronize(v.value1));
                           });
                       };
                       if (v instanceof ReplaceSelected) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $101 = {};
-                              for (var $102 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $102)) {
-                                      $101[$102] = v1[$102];
+                              var $108 = {};
+                              for (var $109 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $109)) {
+                                      $108[$109] = v1[$109];
                                   };
                               };
-                              $101.selected = v.value0;
-                              return $101;
+                              $108.selected = v.value0;
+                              return $108;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ReplacementQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value1));
@@ -25084,15 +25087,15 @@ var PS = {};
                       };
                       if (v instanceof Reset) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Renderless_State.modifyState(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                              var $107 = {};
-                              for (var $108 in v1) {
-                                  if ({}.hasOwnProperty.call(v1, $108)) {
-                                      $107[$108] = v1[$108];
+                              var $114 = {};
+                              for (var $115 in v1) {
+                                  if ({}.hasOwnProperty.call(v1, $115)) {
+                                      $114[$115] = v1[$115];
                                   };
                               };
-                              $107.selected = Control_Plus.empty(dictPlus);
-                              $107.items = Network_RemoteData.NotAsked.value;
-                              return $107;
+                              $114.selected = Control_Plus.empty(dictPlus);
+                              $114.items = Network_RemoteData.NotAsked.value;
+                              return $114;
                           }))(function (v1) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ResetQuery.value, v1.selected)))(function () {
                                   return $$eval(new Synchronize(v.value0));
@@ -25128,8 +25131,8 @@ var PS = {};
       return function (dictEq) {
           return base(dictMonadAff)(dictEq)(Control_Plus.plusArray)({
               runSelect: Data_Array.cons,
-              runRemove: function ($121) {
-                  return Data_Array.filter(Data_Eq.notEq(dictEq)($121));
+              runRemove: function ($128) {
+                  return Data_Array.filter(Data_Eq.notEq(dictEq)($128));
               },
               runFilter: Data_Array.difference(dictEq)
           });
@@ -25138,8 +25141,8 @@ var PS = {};
   var single = function (dictMonadAff) {
       return function (dictEq) {
           return base(dictMonadAff)(dictEq)(Data_Maybe.plusMaybe)({
-              runSelect: function ($122) {
-                  return Data_Function["const"](Data_Maybe.Just.create($122));
+              runSelect: function ($129) {
+                  return Data_Function["const"](Data_Maybe.Just.create($129));
               },
               runRemove: Data_Function["const"](Data_Function["const"](Data_Maybe.Nothing.value)),
               runFilter: function (items) {
@@ -26693,6 +26696,12 @@ var PS = {};
   })();
   var userToObject = function (v) {
       return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([ new Data_Tuple.Tuple("name", v.name), new Data_Tuple.Tuple("eyeColor", v.eyeColor), new Data_Tuple.Tuple("hairColor", v.hairColor), new Data_Tuple.Tuple("skinColor", v.skinColor) ]);
+  };
+  var stringToLocation = function (name) {
+      return {
+          name: name,
+          population: "1"
+      };
   };           
   var locationToObject = function (v) {
       return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([ new Data_Tuple.Tuple("name", v.name) ]);
@@ -26897,6 +26906,7 @@ var PS = {};
   exports["renderUserImg"] = renderUserImg;
   exports["decodeLocation"] = decodeLocation;
   exports["locationToObject"] = locationToObject;
+  exports["stringToLocation"] = stringToLocation;
   exports["colorToCSSColor"] = colorToCSSColor;
   exports["eqUser"] = eqUser;
   exports["eqLocation"] = eqLocation;
@@ -28580,23 +28590,45 @@ var PS = {};
           helpText: new Data_Maybe.Just("Search your favorite destination."),
           error: Data_Maybe.Nothing.value,
           inputId: "location"
-      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(0)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.syncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($43) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($43));
-          },
-          itemToObject: UIGuide_Utility_Async.locationToObject
-      })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
+      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(0)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
+          var v = Ocelot_Component_Typeahead.syncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
+              renderFuzzy: function ($47) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($47));
+              },
+              itemToObject: UIGuide_Utility_Async.locationToObject
+          })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ]);
+          return {
+              items: v.items,
+              insertable: new Ocelot_Component_Typeahead_Base.Insertable(UIGuide_Utility_Async.stringToLocation),
+              keepOpen: v.keepOpen,
+              itemToObject: v.itemToObject,
+              debounceTime: v.debounceTime,
+              async: v.async,
+              render: v.render
+          };
+      })())(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your favorite destination."),
           error: Data_Maybe.Nothing.value,
           inputId: "location-hydrated"
-      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(1)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($44) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($44));
-          },
-          itemToObject: UIGuide_Utility_Async.locationToObject,
-          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
-      })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
+      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(1)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
+          var v = Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
+              renderFuzzy: function ($48) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($48));
+              },
+              itemToObject: UIGuide_Utility_Async.locationToObject,
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location-hydrated") ]);
+          return {
+              items: v.items,
+              insertable: new Ocelot_Component_Typeahead_Base.Insertable(UIGuide_Utility_Async.stringToLocation),
+              keepOpen: v.keepOpen,
+              itemToObject: v.itemToObject,
+              debounceTime: v.debounceTime,
+              async: v.async,
+              render: v.render
+          };
+      })())(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your favorite companion."),
           error: Data_Maybe.Nothing.value,
@@ -28622,24 +28654,46 @@ var PS = {};
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "locations"
-      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(0)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($45) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($45));
-          },
-          itemToObject: UIGuide_Utility_Async.locationToObject,
-          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
-      })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
+      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(0)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
+          var v = Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
+              renderFuzzy: function ($49) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($49));
+              },
+              itemToObject: UIGuide_Utility_Async.locationToObject,
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]);
+          return {
+              items: v.items,
+              insertable: new Ocelot_Component_Typeahead_Base.Insertable(UIGuide_Utility_Async.stringToLocation),
+              keepOpen: v.keepOpen,
+              itemToObject: v.itemToObject,
+              debounceTime: v.debounceTime,
+              async: v.async,
+              render: v.render
+          };
+      })())(Data_Function["const"](Data_Maybe.Nothing.value)) ]), Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard Hydrated") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Locations"),
           helpText: new Data_Maybe.Just("Search your top destinations."),
           error: Data_Maybe.Nothing.value,
           inputId: "locations"
-      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(1)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($46) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($46));
-          },
-          itemToObject: UIGuide_Utility_Async.locationToObject,
-          async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
-      })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
+      })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(1)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
+          var v = Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
+              renderFuzzy: function ($50) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
+              },
+              itemToObject: UIGuide_Utility_Async.locationToObject,
+              async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
+          })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("locations") ]);
+          return {
+              items: v.items,
+              insertable: new Ocelot_Component_Typeahead_Base.Insertable(UIGuide_Utility_Async.stringToLocation),
+              keepOpen: v.keepOpen,
+              itemToObject: v.itemToObject,
+              debounceTime: v.debounceTime,
+              async: v.async,
+              render: v.render
+          };
+      })())(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Custom Render") ]), Ocelot_Block_FormField.field_({
           label: Halogen_HTML_Core.text("Users"),
           helpText: new Data_Maybe.Just("Search your top companions."),
           error: Data_Maybe.Nothing.value,
@@ -28666,8 +28720,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-empty"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(2)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($47) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($47));
+          renderFuzzy: function ($51) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($51));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28677,8 +28731,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(3)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($48) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($48));
+          renderFuzzy: function ($52) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($52));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28688,8 +28742,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "error-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(4)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($49) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($49));
+          renderFuzzy: function ($53) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($53));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28699,8 +28753,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "loading-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(5)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($50) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
+          renderFuzzy: function ($54) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($54));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28821,7 +28875,7 @@ var PS = {};
                   });
               });
           };
-          throw new Error("Failed pattern match at UIGuide.Component.Typeaheads line 70, column 5 - line 72, column 65: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Component.Typeaheads line 71, column 5 - line 73, column 65: " + [ v.constructor.name ]);
       };
       return Halogen_Component.lifecycleParentComponent(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid))))))({
           initialState: Data_Function["const"](Data_Unit.unit),
