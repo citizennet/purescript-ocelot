@@ -10,7 +10,7 @@ import Control.Promise as Promise
 import Data.Array (head)
 import Data.Fuzzy (match)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..), maybe)
+import Data.Maybe (Maybe(..), fromJust, maybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
@@ -29,6 +29,7 @@ import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
+import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
 
 -- | A subset of the queries available to the typeahead, restricted
@@ -97,7 +98,7 @@ externalInputToSingleInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: identity
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderSingle
@@ -116,7 +117,7 @@ externalInputToMultiInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: identity
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderMulti
