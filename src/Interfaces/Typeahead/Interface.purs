@@ -10,7 +10,7 @@ import Control.Promise as Promise
 import Data.Array (head)
 import Data.Fuzzy (match)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..), fromJust, maybe)
+import Data.Maybe (Maybe(..), maybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
@@ -29,7 +29,6 @@ import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
-import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
 
 -- | A subset of the queries available to the typeahead, restricted
@@ -85,6 +84,7 @@ type ExternalInput =
   , placeholder :: String
   , key :: String
   , keepOpen :: Boolean
+  , insertable :: Boolean
   }
 
 -- | An adapter to simplify types necessary in JS to control the typeahead
@@ -95,9 +95,9 @@ externalInputToSingleInput
   -> Input pq Maybe (Object String) m
 externalInputToSingleInput r =
   { items: Success r.items
-  , insertable: NotInsertable
+  , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , itemToObject: identity
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderSingle
@@ -114,9 +114,9 @@ externalInputToMultiInput
   -> Input pq Array (Object String) m
 externalInputToMultiInput r =
   { items: Success r.items
-  , insertable: NotInsertable
+  , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
-  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , itemToObject: identity
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
   , render: renderMulti
