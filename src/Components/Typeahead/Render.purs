@@ -159,8 +159,7 @@ defRenderContainer
 defRenderContainer renderFuzzy cst =
   IC.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) []
 
-
-renderSearchDropdown
+renderToolbarSearchDropdown
   :: ∀ pq item m
    . Eq item
   => String
@@ -170,16 +169,50 @@ renderSearchDropdown
   -> TA.State Maybe item m
   -> Select.State (Fuzzy item)
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderSearchDropdown label resetLabel renderItem renderFuzzy pst cst =
-  HH.label
-    [ css "relative" ]
-    [ IC.dropdownButton
+renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  where
+    label = IC.dropdownButton
       HH.span
       [ HP.classes
-        $ HH.ClassName "whitespace-no-wrap" :
-          Button.buttonMainClasses <> Button.buttonClearClasses
+        $ HH.ClassName "whitespace-no-wrap"
+        : Button.buttonMainClasses
+        <> Button.buttonClearClasses
       ]
-      [ maybe (HH.text label) (HH.fromPlainHTML <<< renderItem) pst.selected ]
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected ]
+
+renderHeaderSearchDropdown
+  :: ∀ pq item m
+   . Eq item
+  => String
+  -> String
+  -> (item -> HH.PlainHTML)
+  -> (Fuzzy item -> HH.PlainHTML)
+  -> TA.State Maybe item m
+  -> Select.State (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
+renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  where
+    label = HH.span
+      [ css "text-white text-3xl font-thin cursor-pointer whitespace-no-wrap" ]
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected
+      , Icon.collapse [ css "ml-3 text-xl text-grey-50 align-middle" ]
+      ]
+
+renderSearchDropdown
+  :: ∀ pq item m
+   . Eq item
+  => String
+  -> HH.PlainHTML
+  -> (Fuzzy item -> HH.PlainHTML)
+  -> TA.State Maybe item m
+  -> Select.State (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
+renderSearchDropdown resetLabel label renderFuzzy pst cst =
+  HH.label
+    [ css "relative" ]
+    [ HH.fromPlainHTML label
     , HH.div
       [ HP.classes
         $ HH.ClassName "min-w-80" :

@@ -4,7 +4,7 @@ import Prelude
 
 import Control.Promise (Promise, fromAff)
 import Data.Array (head)
-import Data.Maybe (fromMaybe, maybe)
+import Data.Maybe (fromMaybe)
 import Data.Symbol (SProxy(..))
 import Data.Variant (Variant, inj)
 import Effect.AVar (empty) as AVar
@@ -17,7 +17,7 @@ import Halogen.VDom.Driver (runUI)
 import Ocelot.Block.Button (button)
 import Ocelot.Component.Dropdown (Input, Message(..), Query(..), component)
 import Ocelot.Component.Dropdown.Render (defDropdown, render)
-import Ocelot.Interface.Utilities (mkSubscription, WithHalogen, Interface)
+import Ocelot.Interface.Utilities (mkSubscription, Interface)
 import Select (Visibility(..)) as Select
 import Web.HTML (HTMLElement)
 
