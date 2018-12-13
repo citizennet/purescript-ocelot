@@ -1,4 +1,6 @@
 import { mountSingleTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
+import { mountHeaderTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
+import { mountToolbarTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
 import { mountDropdown } from '../../../output/Ocelot.Interface.Dropdown/index.js';
 
 // Create a div to hold the Halogen component

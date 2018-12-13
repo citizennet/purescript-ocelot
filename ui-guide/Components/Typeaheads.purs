@@ -6,6 +6,7 @@ import Data.Array (head, take)
 import Data.Either.Nested (Either5)
 import Data.Functor.Coproduct.Nested (Coproduct5)
 import Data.Maybe (Maybe(..))
+import Data.Newtype (unwrap)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.Component.ChildPath as CP
@@ -18,6 +19,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Component.Typeahead (Insertable(..))
 import Ocelot.Component.Typeahead as TA
+import Ocelot.Component.Typeahead.Render as TARender
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -526,6 +528,74 @@ cnDocumentationBlocks =
                 )
                 ( const Nothing )
               ]
+            ]
+          ]
+        ]
+      ]
+
+
+    , Documentation.block_
+      { header: "Typeaheads - Alternate Renderings"
+      , subheader: "Renderless allows the typeahead to take on a variety of appearances"
+      }
+      [ Backdrop.backdrop_
+        [ content
+          [ HH.div
+            [ HP.class_ $ HH.ClassName "flex-1 bg-black mb-6 rounded clearfix" ]
+            [ HH.div
+              [ HP.class_ $ HH.ClassName "m-6" ]
+              [ HH.h3
+                [ HP.classes Format.captionClasses ]
+                [ HH.text "Searchable Dropdown in a Header (e.g. for filtering)" ]
+              , HH.slot' CP.cp3 9
+                ( TA.base
+                  { runSelect: const <<< Just
+                  , runRemove: const (const Nothing)
+                  , runFilter: const
+                  }
+                )
+                { items: NotAsked
+                , insertable: NotInsertable
+                , keepOpen: false
+                , debounceTime: Nothing
+                , async: Nothing
+                , itemToObject: Async.locationToObject
+                , render: TARender.renderHeaderSearchDropdown
+                  "All Locations"
+                  "All Locations"
+                  (HH.text <<< _.name <<< unwrap)
+                  (HH.span_ <<< IC.boldMatches "name")
+                }
+                ( const Nothing )
+              ]
+            ]
+          ]
+        , content
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Searchable Dropdown in a Toolbar (e.g. for filtering)" ]
+            , HH.slot' CP.cp3 10
+              ( TA.base
+                { runSelect: const <<< Just
+                , runRemove: const (const Nothing)
+                , runFilter: const
+                }
+              )
+              { items: NotAsked
+              , insertable: NotInsertable
+              , keepOpen: false
+              , debounceTime: Nothing
+              , async: Nothing
+              , itemToObject: Async.locationToObject
+              , render: TARender.renderToolbarSearchDropdown
+                "All Locations"
+                "All Locations"
+                (HH.text <<< _.name <<< unwrap)
+                (HH.span_ <<< IC.boldMatches "name")
+              }
+              ( const Nothing )
             ]
           ]
         ]
