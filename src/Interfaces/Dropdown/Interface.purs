@@ -23,7 +23,7 @@ import Web.HTML (HTMLElement)
 
 type QueryRow =
   ( setItems :: EffectFn1 (Array (Object String)) (Promise Unit)
-  , setSelection :: EffectFn1 (Array (Object String)) (Promise Unit)
+  , setSelected :: EffectFn1 (Array (Object String)) (Promise Unit)
   )
 
 type MessageVariant = Variant
@@ -68,7 +68,7 @@ mountDropdown = mkEffectFn2 \el ext -> do
     , setItems: mkEffectFn1 \arr -> fromAff do
        io <- AffAVar.read ioVar
        io.query $ SetItems arr unit
-    , setSelection: mkEffectFn1 \arr -> fromAff do
+    , setSelected: mkEffectFn1 \arr -> fromAff do
        io <- AffAVar.read ioVar
        io.query $ SetSelection (head arr) unit
     }

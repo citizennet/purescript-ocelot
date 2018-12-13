@@ -80,6 +80,7 @@ component =
         _ -> pure a
       SetItems items a -> do
         H.modify_ $ seeks _ { items = items }
+        void $ H.query unit $ Select.replaceItems items
         pure a
       SetSelection item a -> do
         H.modify_ $ seeks _ { selectedItem = item }
