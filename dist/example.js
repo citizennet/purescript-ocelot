@@ -25946,6 +25946,71 @@ var PS = {};
           };
       };
   };
+  var renderSearchDropdown = function (dictEq) {
+      return function (resetLabel) {
+          return function (label) {
+              return function (renderFuzzy) {
+                  return function (pst) {
+                      return function (cst) {
+                          var renderReset = Ocelot_Block_ItemContainer.dropdownItem(Halogen_HTML_Elements.div)([ Halogen_HTML_Events.onClick(function (v) {
+                              return new Data_Maybe.Just(Control_Bind.discard(Control_Bind.discardUnit)(Control_Monad_Free.freeBind)(Select.raise(new Ocelot_Component_Typeahead_Base.RemoveAll(Data_Unit.unit)))(function () {
+                                  return Select.setVisibility(Select.Off.value);
+                              }));
+                          }) ])([ Halogen_HTML_Core.text(resetLabel) ])(Data_Maybe.isNothing(pst.selected))(false);
+                          var renderInput = Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("m-4 border-b-2 border-blue-88 pb-2 flex") ])([ Ocelot_Block_Icon.search([ Ocelot_HTML_Properties.css("mr-4 text-xl text-grey-70") ]), Halogen_HTML_Elements.input(inputProps(false)([ Ocelot_HTML_Properties.css("no-outline w-full"), Halogen_HTML_Properties.placeholder("Search") ])) ]);
+                          return Halogen_HTML_Elements.label([ Ocelot_HTML_Properties.css("relative") ])([ Halogen_HTML.fromPlainHTML(label), Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Data_Array.cons("min-w-80")((function () {
+                              var $15 = Data_Eq.eq(Select.eqVisibility)(cst.visibility)(Select.Off.value);
+                              if ($15) {
+                                  return [ "offscreen" ];
+                              };
+                              return [  ];
+                          })())) ])([ Ocelot_Block_ItemContainer.dropdownContainer([ renderInput, renderReset ])(renderFuzzy)(function ($21) {
+                              return Data_Eq.eq(Data_Maybe.eqMaybe(dictEq))(pst.selected)(Data_Maybe.Just.create((function (v) {
+                                  return v.original;
+                              })(Data_Newtype.unwrap(Data_Fuzzy.newtypeFuzzy)($21))));
+                          })(cst.items)(cst.highlightedIndex) ]) ]);
+                      };
+                  };
+              };
+          };
+      };
+  };
+  var renderHeaderSearchDropdown = function (dictEq) {
+      return function (defaultLabel) {
+          return function (resetLabel) {
+              return function (renderItem) {
+                  return function (renderFuzzy) {
+                      return function (pst) {
+                          return function (cst) {
+                              var label = Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("text-white text-3xl font-thin cursor-pointer whitespace-no-wrap") ])([ Data_Maybe.maybe(Halogen_HTML_Core.text(defaultLabel))(function ($22) {
+                                  return Halogen_HTML.fromPlainHTML(renderItem($22));
+                              })(pst.selected), Ocelot_Block_Icon.collapse([ Ocelot_HTML_Properties.css("ml-3 text-xl text-grey-50 align-middle") ]) ]);
+                              return renderSearchDropdown(dictEq)(resetLabel)(label)(renderFuzzy)(pst)(cst);
+                          };
+                      };
+                  };
+              };
+          };
+      };
+  };
+  var renderToolbarSearchDropdown = function (dictEq) {
+      return function (defaultLabel) {
+          return function (resetLabel) {
+              return function (renderItem) {
+                  return function (renderFuzzy) {
+                      return function (pst) {
+                          return function (cst) {
+                              var label = Ocelot_Block_ItemContainer.dropdownButton(Halogen_HTML_Elements.span)([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Data_Array.cons("whitespace-no-wrap")(Ocelot_Block_Button.buttonMainClasses))(Ocelot_Block_Button.buttonClearClasses)) ])([ Data_Maybe.maybe(Halogen_HTML_Core.text(defaultLabel))(function ($23) {
+                                  return Halogen_HTML.fromPlainHTML(renderItem($23));
+                              })(pst.selected) ]);
+                              return renderSearchDropdown(dictEq)(resetLabel)(label)(renderFuzzy)(pst)(cst);
+                          };
+                      };
+                  };
+              };
+          };
+      };
+  };
   var disabledClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-95", "text-grey-70", "sibling:bg-grey-95", "sibling:text-grey-50", "border-t-2", "border-b-2", "font-light", "focus:no-outline", "py-2", "border-l-2", "w-full", "px-3" ]);
   var renderSingle = function (iprops) {
       return function (renderItem) {
@@ -25993,6 +26058,9 @@ var PS = {};
   exports["renderSingle"] = renderSingle;
   exports["renderMulti"] = renderMulti;
   exports["defRenderContainer"] = defRenderContainer;
+  exports["renderToolbarSearchDropdown"] = renderToolbarSearchDropdown;
+  exports["renderHeaderSearchDropdown"] = renderHeaderSearchDropdown;
+  exports["renderSearchDropdown"] = renderSearchDropdown;
   exports["linkClasses"] = linkClasses;
   exports["inputProps"] = inputProps;
   exports["disabledClasses"] = disabledClasses;
@@ -26699,6 +26767,9 @@ var PS = {};
       Fail.value = new Fail();
       return Fail;
   })();
+  var Location = function (x) {
+      return x;
+  };
   var userToObject = function (v) {
       return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([ new Data_Tuple.Tuple("name", v.name), new Data_Tuple.Tuple("eyeColor", v.eyeColor), new Data_Tuple.Tuple("hairColor", v.hairColor), new Data_Tuple.Tuple("skinColor", v.skinColor) ]);
   };
@@ -26707,7 +26778,10 @@ var PS = {};
           name: name,
           population: "1"
       };
-  };           
+  };       
+  var newtypeLocation = new Data_Newtype.Newtype(function (n) {
+      return n;
+  }, Location);
   var locationToObject = function (v) {
       return Foreign_Object.fromFoldable(Data_Foldable.foldableArray)([ new Data_Tuple.Tuple("name", v.name) ]);
   };
@@ -26909,11 +26983,13 @@ var PS = {};
   exports["userToObject"] = userToObject;
   exports["renderFuzzyUser"] = renderFuzzyUser;
   exports["renderUserImg"] = renderUserImg;
+  exports["Location"] = Location;
   exports["decodeLocation"] = decodeLocation;
   exports["locationToObject"] = locationToObject;
   exports["stringToLocation"] = stringToLocation;
   exports["colorToCSSColor"] = colorToCSSColor;
   exports["eqUser"] = eqUser;
+  exports["newtypeLocation"] = newtypeLocation;
   exports["eqLocation"] = eqLocation;
 })(PS["UIGuide.Utility.Async"] = PS["UIGuide.Utility.Async"] || {});
 (function(exports) {
@@ -28543,6 +28619,7 @@ var PS = {};
   var Data_Function = PS["Data.Function"];
   var Data_Functor_Coproduct_Nested = PS["Data.Functor.Coproduct.Nested"];
   var Data_Maybe = PS["Data.Maybe"];
+  var Data_Newtype = PS["Data.Newtype"];
   var Data_Ord = PS["Data.Ord"];
   var Data_Unit = PS["Data.Unit"];
   var Effect_Aff_Class = PS["Effect.Aff.Class"];
@@ -28562,6 +28639,7 @@ var PS = {};
   var Ocelot_Block_ItemContainer = PS["Ocelot.Block.ItemContainer"];
   var Ocelot_Component_Typeahead = PS["Ocelot.Component.Typeahead"];
   var Ocelot_Component_Typeahead_Base = PS["Ocelot.Component.Typeahead.Base"];
+  var Ocelot_Component_Typeahead_Render = PS["Ocelot.Component.Typeahead.Render"];
   var Ocelot_HTML_Properties = PS["Ocelot.HTML.Properties"];
   var Prelude = PS["Prelude"];
   var UIGuide_Block_Backdrop = PS["UIGuide.Block.Backdrop"];
@@ -28597,8 +28675,8 @@ var PS = {};
           inputId: "location"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(0)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
           var v = Ocelot_Component_Typeahead.syncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-              renderFuzzy: function ($47) {
-                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($47));
+              renderFuzzy: function ($49) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($49));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject
           })([ Halogen_HTML_Properties.placeholder("Search locations..."), Halogen_HTML_Properties.id_("location") ]);
@@ -28618,8 +28696,8 @@ var PS = {};
           inputId: "location-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(1)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
           var v = Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-              renderFuzzy: function ($48) {
-                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($48));
+              renderFuzzy: function ($50) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
               async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28661,8 +28739,8 @@ var PS = {};
           inputId: "locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(0)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
           var v = Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-              renderFuzzy: function ($49) {
-                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($49));
+              renderFuzzy: function ($51) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($51));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
               async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28683,8 +28761,8 @@ var PS = {};
           inputId: "locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp4)(1)(Ocelot_Component_Typeahead_Base.multi(dictMonadAff)(UIGuide_Utility_Async.eqLocation))((function () {
           var v = Ocelot_Component_Typeahead.asyncMulti(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-              renderFuzzy: function ($50) {
-                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($50));
+              renderFuzzy: function ($52) {
+                  return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($52));
               },
               itemToObject: UIGuide_Utility_Async.locationToObject,
               async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28725,8 +28803,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-empty"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(2)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($51) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($51));
+          renderFuzzy: function ($53) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($53));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28736,8 +28814,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "disabled-locations-hydrated"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(3)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($52) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($52));
+          renderFuzzy: function ($54) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($54));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28747,8 +28825,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "error-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(4)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($53) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($53));
+          renderFuzzy: function ($55) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($55));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28758,8 +28836,8 @@ var PS = {};
           error: Data_Maybe.Nothing.value,
           inputId: "loading-locations"
       })([ Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(5)(Ocelot_Component_Typeahead_Base.single(dictMonadAff)(UIGuide_Utility_Async.eqLocation))(Ocelot_Component_Typeahead.asyncSingle(dictMonadAff)(UIGuide_Utility_Async.eqLocation)({
-          renderFuzzy: function ($54) {
-              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($54));
+          renderFuzzy: function ($56) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($56));
           },
           itemToObject: UIGuide_Utility_Async.locationToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.locations)
@@ -28799,7 +28877,50 @@ var PS = {};
           renderFuzzy: UIGuide_Utility_Async.renderFuzzyUser,
           itemToObject: UIGuide_Utility_Async.userToObject,
           async: UIGuide_Utility_Async.loadFromSource(dictMonadAff)(UIGuide_Utility_Async.users)
-      })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.disabled(true), Halogen_HTML_Properties.id_("loading-users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]) ]);
+      })([ Halogen_HTML_Properties.placeholder("Search users..."), Halogen_HTML_Properties.disabled(true), Halogen_HTML_Properties.id_("loading-users") ]))(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
+          header: "Typeaheads - Alternate Renderings",
+          subheader: "Renderless allows the typeahead to take on a variety of appearances"
+      })([ UIGuide_Block_Backdrop.backdrop_([ content([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("flex-1 bg-black mb-6 rounded clearfix") ])([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.class_("m-6") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Searchable Dropdown in a Header (e.g. for filtering)") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(9)(Ocelot_Component_Typeahead_Base.base(dictMonadAff)(UIGuide_Utility_Async.eqLocation)(Data_Maybe.plusMaybe)({
+          runSelect: function ($57) {
+              return Data_Function["const"](Data_Maybe.Just.create($57));
+          },
+          runRemove: Data_Function["const"](Data_Function["const"](Data_Maybe.Nothing.value)),
+          runFilter: Data_Function["const"]
+      }))({
+          items: Network_RemoteData.NotAsked.value,
+          insertable: Ocelot_Component_Typeahead_Base.NotInsertable.value,
+          keepOpen: false,
+          debounceTime: Data_Maybe.Nothing.value,
+          async: Data_Maybe.Nothing.value,
+          itemToObject: UIGuide_Utility_Async.locationToObject,
+          render: Ocelot_Component_Typeahead_Render.renderHeaderSearchDropdown(UIGuide_Utility_Async.eqLocation)("All Locations")("All Locations")(function ($58) {
+              return Halogen_HTML_Core.text((function (v) {
+                  return v.name;
+              })(Data_Newtype.unwrap(UIGuide_Utility_Async.newtypeLocation)($58)));
+          })(function ($59) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($59));
+          })
+      })(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Searchable Dropdown in a Toolbar (e.g. for filtering)") ]), Halogen_HTML["slot'"](Halogen_Component_ChildPath.cp3)(10)(Ocelot_Component_Typeahead_Base.base(dictMonadAff)(UIGuide_Utility_Async.eqLocation)(Data_Maybe.plusMaybe)({
+          runSelect: function ($60) {
+              return Data_Function["const"](Data_Maybe.Just.create($60));
+          },
+          runRemove: Data_Function["const"](Data_Function["const"](Data_Maybe.Nothing.value)),
+          runFilter: Data_Function["const"]
+      }))({
+          items: Network_RemoteData.NotAsked.value,
+          insertable: Ocelot_Component_Typeahead_Base.NotInsertable.value,
+          keepOpen: false,
+          debounceTime: Data_Maybe.Nothing.value,
+          async: Data_Maybe.Nothing.value,
+          itemToObject: UIGuide_Utility_Async.locationToObject,
+          render: Ocelot_Component_Typeahead_Render.renderToolbarSearchDropdown(UIGuide_Utility_Async.eqLocation)("All Locations")("All Locations")(function ($61) {
+              return Halogen_HTML_Core.text((function (v) {
+                  return v.name;
+              })(Data_Newtype.unwrap(UIGuide_Utility_Async.newtypeLocation)($61)));
+          })(function ($62) {
+              return Halogen_HTML_Elements.span_(Ocelot_Block_ItemContainer.boldMatches("name")($62));
+          })
+      })(Data_Function["const"](Data_Maybe.Nothing.value)) ]) ]) ]) ]) ]);
   };
   var component = function (dictMonadAff) {
       var render = function (v) {
@@ -28880,7 +29001,7 @@ var PS = {};
                   });
               });
           };
-          throw new Error("Failed pattern match at UIGuide.Component.Typeaheads line 71, column 5 - line 73, column 65: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Component.Typeaheads line 73, column 5 - line 75, column 65: " + [ v.constructor.name ]);
       };
       return Halogen_Component.lifecycleParentComponent(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordInt)(Data_Either.ordEither(Data_Ord.ordUnit)(Data_Ord.ordVoid))))))({
           initialState: Data_Function["const"](Data_Unit.unit),
