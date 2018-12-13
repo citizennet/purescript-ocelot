@@ -26,8 +26,8 @@ import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
-import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown)
+import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
+import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
@@ -167,7 +167,7 @@ searchDropdownInputToToolbarSingleInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: Nothing
   , async: Nothing
-  , render: renderHeaderSearchDropdown
+  , render: renderToolbarSearchDropdown
       r.placeholder
       r.resetLabel
       renderLabel
@@ -224,12 +224,13 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
 
 mkSingleTypeaheadMounter
   :: ∀ input pq
-   . (input -> Input pq Maybe (Object String) Aff)
+   . Component pq Maybe (Object String) Aff
+  -> (input -> Input pq Maybe (Object String) Aff)
   -> EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
-mkSingleTypeaheadMounter inputTransformer = mkEffectFn2 \el ext -> do
+mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
   launchAff_ do
-    io <- runUI single (inputTransformer ext) el
+    io <- runUI component (inputTransformer ext) el
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertSingleToMessageVariant
@@ -268,10 +269,17 @@ mkSingleTypeaheadMounter inputTransformer = mkEffectFn2 \el ext -> do
     }
 
 mountSingleTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
-mountSingleTypeahead = mkSingleTypeaheadMounter externalInputToSingleInput
+mountSingleTypeahead = mkSingleTypeaheadMounter single externalInputToSingleInput
 
 mountHeaderTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
-mountHeaderTypeahead = mkSingleTypeaheadMounter searchDropdownInputToHeaderSingleInput
+mountHeaderTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToHeaderSingleInput
 
 mountToolbarTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
-mountToolbarTypeahead = mkSingleTypeaheadMounter searchDropdownInputToToolbarSingleInput
+mountToolbarTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToToolbarSingleInput
+
+single' :: ∀ pq item. Eq item => Component pq Maybe item Aff
+single' = base
+  { runSelect: const <<< Just
+  , runRemove: const (const Nothing)
+  , runFilter: const
+  }
