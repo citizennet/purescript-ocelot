@@ -23786,7 +23786,9 @@ var PS = {};
                   $16.items = v.value0;
                   return $16;
               })))(function () {
-                  return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                  return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query.query(Data_Eq.eqUnit)(Data_Unit.unit)(Select.replaceItems(v.value0))))(function () {
+                      return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
+                  });
               });
           };
           if (v instanceof SetSelection) {
@@ -23808,7 +23810,7 @@ var PS = {};
                   return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(v.value1);
               });
           };
-          throw new Error("Failed pattern match at Ocelot.Component.Dropdown line 71, column 12 - line 89, column 14: " + [ v.constructor.name ]);
+          throw new Error("Failed pattern match at Ocelot.Component.Dropdown line 71, column 12 - line 90, column 14: " + [ v.constructor.name ]);
       };
       return Halogen_Component.parentComponent(Data_Ord.ordUnit)({
           initialState: initialState,
