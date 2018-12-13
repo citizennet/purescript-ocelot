@@ -8,8 +8,8 @@ import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Select as Select
 import Renderless.State (updateStore)
+import Select as Select
 
 data Query o item m a
   = HandleSelect (Select.Message o item) a

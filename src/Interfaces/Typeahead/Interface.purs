@@ -4,31 +4,31 @@ module Ocelot.Interface.Typeahead where
 
 import Prelude
 
-import Control.Coroutine (consumer)
 import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head)
 import Data.Fuzzy (match)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..), fromJust, maybe)
+import Data.Maybe (Maybe(..), fromJust, fromMaybe, maybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
-import Effect.Aff (Aff, error, killFiber, launchAff, launchAff_)
+import Effect.Aff (Aff, launchAff_)
 import Effect.Aff.AVar as AffAVar
-import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2, runEffectFn1)
-import Effect.Class (liftEffect)
+import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object)
 import Foreign.Object as Object
-import Halogen (HalogenIO)
 import Halogen.HTML (span_)
+import Halogen.HTML (text) as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Component.Typeahead (Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single)
+import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
+import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
 import Web.HTML (HTMLElement)
 
@@ -74,8 +74,7 @@ convertSingleToMessageVariant = case _ of
 -- | A subset of the input available to the typeahead
 -- | Provide:
 -- | - items: an array of objects, where all keys and values are strings
--- | - status: a status to put the typeahead in: one of 'success', 'loading'
--- |   'failure', or 'notAsked'
+-- | - debounceTime: how long to debounce user input, in milliseconds
 -- | - placeholder: placeholder text to set in the field
 -- | - key: the name of the field in the object that should be displayed in the list
 -- | - keepOpen: whether the typeahead should stay open or close on selection
@@ -86,6 +85,13 @@ type ExternalInput =
   , key :: String
   , keepOpen :: Boolean
   , insertable :: Boolean
+  }
+
+type SearchDropdownInput =
+  { items :: Array (Object String)
+  , placeholder :: String
+  , resetLabel :: String
+  , key :: String
   }
 
 -- | An adapter to simplify types necessary in JS to control the typeahead
@@ -127,6 +133,52 @@ externalInputToMultiInput r =
   }
   where
     renderFuzzy = span_ <<< boldMatches r.key
+
+searchDropdownInputToHeaderSingleInput
+  :: ∀ pq m
+   . SearchDropdownInput
+  -> Input pq Maybe (Object String) m
+searchDropdownInputToHeaderSingleInput r =
+  { items: Success r.items
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , debounceTime: Nothing
+  , async: Nothing
+  , render: renderHeaderSearchDropdown
+      r.placeholder
+      r.resetLabel
+      renderLabel
+      renderFuzzy
+  }
+  where
+    renderFuzzy = span_ <<< boldMatches r.key
+
+    renderLabel item =
+      HH.text (fromMaybe "" $ Object.lookup r.key item)
+
+searchDropdownInputToToolbarSingleInput
+  :: ∀ pq m
+   . SearchDropdownInput
+  -> Input pq Maybe (Object String) m
+searchDropdownInputToToolbarSingleInput r =
+  { items: Success r.items
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , debounceTime: Nothing
+  , async: Nothing
+  , render: renderToolbarSearchDropdown
+      r.placeholder
+      r.resetLabel
+      renderLabel
+      renderFuzzy
+  }
+  where
+    renderFuzzy = span_ <<< boldMatches r.key
+
+    renderLabel item =
+      HH.text (fromMaybe "" $ Object.lookup r.key item)
 
 mountMultiTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
 mountMultiTypeahead = mkEffectFn2 \el ext -> do
@@ -171,12 +223,15 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-
-mountSingleTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
-mountSingleTypeahead = mkEffectFn2 \el ext -> do
+mkSingleTypeaheadMounter
+  :: ∀ input pq
+   . Component pq Maybe (Object String) Aff
+  -> (input -> Input pq Maybe (Object String) Aff)
+  -> EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
+mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
   launchAff_ do
-    io <- runUI single (externalInputToSingleInput ext) el
+    io <- runUI component (inputTransformer ext) el
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertSingleToMessageVariant
@@ -214,33 +269,18 @@ mountSingleTypeahead = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-----------
--- Utilities
+mountSingleTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
+mountSingleTypeahead = mkSingleTypeaheadMounter single externalInputToSingleInput
 
--- | A row containing the 'subscribe' function from Halogen so it
--- | may be used to subscribe to the message variant in JS.
-type WithHalogen out r =
-  ( subscribe :: EffectFn1 (EffectFn1 out Unit) (Effect Unit) | r )
+mountHeaderTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
+mountHeaderTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToHeaderSingleInput
 
--- | A record containing the various queries available to be
--- | triggered in JS and the various messages that may be passed
--- | via the subscribe() function.
-type Interface messages queries =
-  { | WithHalogen messages queries }
+mountToolbarTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
+mountToolbarTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToToolbarSingleInput
 
--- | A helper to construct a coroutine for the `subscribe` function, allowing
--- | JS callers to consume a stream of outputs from the component. For now this
--- | is specialized to Aff.
-mkSubscription
-  :: ∀ f o o'
-   . AffAVar.AVar (HalogenIO f o Aff)
-  -> (o -> o')
-  -> EffectFn1 (EffectFn1 o' Unit) (Effect Unit)
-mkSubscription ioVar convertMessage = mkEffectFn1 \cb -> do
-  fiber <- launchAff do
-    io <- AffAVar.read ioVar
-    io.subscribe $ consumer \msg -> do
-      let msgVariant = convertMessage msg
-      liftEffect $ runEffectFn1 cb msgVariant
-      pure Nothing
-  pure $ launchAff_ $ killFiber (error "unsubscribed") fiber
+single' :: ∀ pq item. Eq item => Component pq Maybe item Aff
+single' = base
+  { runSelect: const <<< Just
+  , runRemove: const (const Nothing)
+  , runFilter: const
+  }

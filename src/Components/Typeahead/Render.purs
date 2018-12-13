@@ -3,15 +3,17 @@ module Ocelot.Component.Typeahead.Render where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLinput)
-import Data.Array (foldr, null)
+import Data.Array (foldr, null, (:))
 import Data.Fuzzy (Fuzzy)
-import Data.Maybe (Maybe, isJust, maybe)
+import Data.Maybe (Maybe(..), isJust, isNothing, maybe)
+import Data.Newtype (unwrap)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (isFailure, isLoading)
+import Ocelot.Block.Button as Button
 import Ocelot.Block.Conditional (conditional)
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
@@ -157,6 +159,94 @@ defRenderContainer
 defRenderContainer renderFuzzy cst =
   IC.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) []
 
+renderToolbarSearchDropdown
+  :: ∀ pq item m
+   . Eq item
+  => String
+  -> String
+  -> (item -> HH.PlainHTML)
+  -> (Fuzzy item -> HH.PlainHTML)
+  -> TA.State Maybe item m
+  -> Select.State (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
+renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  where
+    label = IC.dropdownButton
+      HH.span
+      [ HP.classes
+        $ HH.ClassName "whitespace-no-wrap"
+        : Button.buttonMainClasses
+        <> Button.buttonClearClasses
+      ]
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected ]
+
+renderHeaderSearchDropdown
+  :: ∀ pq item m
+   . Eq item
+  => String
+  -> String
+  -> (item -> HH.PlainHTML)
+  -> (Fuzzy item -> HH.PlainHTML)
+  -> TA.State Maybe item m
+  -> Select.State (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
+renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  where
+    label = HH.span
+      [ css "text-white text-3xl font-thin cursor-pointer whitespace-no-wrap" ]
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected
+      , Icon.collapse [ css "ml-3 text-xl text-grey-50 align-middle" ]
+      ]
+
+renderSearchDropdown
+  :: ∀ pq item m
+   . Eq item
+  => String
+  -> HH.PlainHTML
+  -> (Fuzzy item -> HH.PlainHTML)
+  -> TA.State Maybe item m
+  -> Select.State (Fuzzy item)
+  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
+renderSearchDropdown resetLabel label renderFuzzy pst cst =
+  HH.label
+    [ css "relative" ]
+    [ HH.fromPlainHTML label
+    , HH.div
+      [ HP.classes
+        $ HH.ClassName "min-w-80" :
+          if cst.visibility == Select.Off
+            then [ HH.ClassName "offscreen" ]
+            else []
+      ]
+      [ IC.dropdownContainer
+        [ renderInput, renderReset ]
+        renderFuzzy
+        ((==) pst.selected <<< Just <<< _.original <<< unwrap)
+        cst.items
+        cst.highlightedIndex
+      ]
+    ]
+  where
+    renderInput =
+      HH.div
+        [ css "m-4 border-b-2 border-blue-88 pb-2 flex" ]
+        [ Icon.search [ css "mr-4 text-xl text-grey-70" ]
+        , HH.input
+          $ inputProps false [ css "no-outline w-full", HP.placeholder "Search" ]
+        ]
+
+    renderReset =
+      IC.dropdownItem
+        HH.div
+        [ HE.onClick \_ -> Just do
+          Select.raise $ TA.RemoveAll unit
+          Select.setVisibility Select.Off
+        ]
+        [ HH.text resetLabel ]
+        ( isNothing pst.selected )
+        false
 ----------
 -- Shared Helpers
 
