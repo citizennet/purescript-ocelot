@@ -155,7 +155,7 @@
 }
 
 .icon-chevron-left {
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
 }
 
 .icon-chevron-left:before {
@@ -163,7 +163,7 @@
 }
 
 .icon-chevron-right {
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
 }
 
 .icon-chevron-right:before {
