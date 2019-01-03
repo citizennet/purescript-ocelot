@@ -9,7 +9,7 @@ module Ocelot.HTML.Properties
 
 import Prelude
 
-import Data.Array (elem, foldr, nubByEq, snoc)
+import Data.Array (elem, foldl, nubByEq)
 import Data.Bifunctor (lmap, rmap)
 import Data.String (Pattern(..), null, split)
 import Data.String.CodeUnits (length, take, drop)
@@ -58,11 +58,11 @@ extract
    . Array (IProp r i)
   -> Tuple (Array String) (Array (IProp r i))
 extract =
-  foldr f (Tuple [] [])
+  foldl f (Tuple [] [])
   where
-    f (HP.IProp (Property "className" className)) =
-      lmap (\_ -> (split (Pattern " ") <<< coerceClassName) className)
-    f iprop =  rmap $ (flip snoc) iprop
+    f acc (HP.IProp (Property "className" className)) =
+      lmap (_ <> (split (Pattern " ") $ coerceClassName className)) acc
+    f acc iprop = rmap (_ <> [iprop]) acc
 
     coerceClassName :: PropValue -> String
     coerceClassName = unsafeCoerce

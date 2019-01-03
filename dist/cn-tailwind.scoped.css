@@ -8021,14 +8021,6 @@ body .ocelot-scoped {
   stroke: currentColor;
 }
 
-.ocelot-scoped .table-auto {
-  table-layout: auto;
-}
-
-.ocelot-scoped .table-fixed {
-  table-layout: fixed;
-}
-
 .ocelot-scoped .text-left {
   text-align: left;
 }
@@ -17310,14 +17302,6 @@ body .ocelot-scoped {
     box-shadow: none;
   }
 
-  .ocelot-scoped .sm\:table-auto {
-    table-layout: auto;
-  }
-
-  .ocelot-scoped .sm\:table-fixed {
-    table-layout: fixed;
-  }
-
   .ocelot-scoped .sm\:text-left {
     text-align: left;
   }
@@ -26029,14 +26013,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:shadow-none:focus {
     box-shadow: none;
-  }
-
-  .ocelot-scoped .md\:table-auto {
-    table-layout: auto;
-  }
-
-  .ocelot-scoped .md\:table-fixed {
-    table-layout: fixed;
   }
 
   .ocelot-scoped .md\:text-left {
@@ -34752,14 +34728,6 @@ body .ocelot-scoped {
     box-shadow: none;
   }
 
-  .ocelot-scoped .lg\:table-auto {
-    table-layout: auto;
-  }
-
-  .ocelot-scoped .lg\:table-fixed {
-    table-layout: fixed;
-  }
-
   .ocelot-scoped .lg\:text-left {
     text-align: left;
   }
@@ -43471,14 +43439,6 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:shadow-none:focus {
     box-shadow: none;
-  }
-
-  .ocelot-scoped .xl\:table-auto {
-    table-layout: auto;
-  }
-
-  .ocelot-scoped .xl\:table-fixed {
-    table-layout: fixed;
   }
 
   .ocelot-scoped .xl\:text-left {
