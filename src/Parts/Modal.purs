@@ -167,7 +167,7 @@ outerHeaderClasses = HH.ClassName <$>
 
 innerHeaderClasses :: Array HH.ClassName
 innerHeaderClasses = HH.ClassName <$>
-  [ "container"
+  [ "w-full"
   , "items-center"
   , "mx-auto"
   , "flex"

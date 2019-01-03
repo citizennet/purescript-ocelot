@@ -103,7 +103,7 @@ component =
       HH.div
         [ css "flex" ]
         [ HH.div
-          [ css "flex-2 mr-2" ]
+          [ css "w-1/2 mr-2" ]
           [ HH.slot' CP.cp1 unit DP.component
             { targetDate
             , selection: date

@@ -83,13 +83,13 @@
   content: "\e003";
 }
 .icon-chevron-left {
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
 }
 .icon-chevron-left:before {
   content: "\e004";
 }
 .icon-chevron-right {
-  transform: rotate(90deg);
+  transform: rotate(-90deg);
 }
 .icon-chevron-right:before {
   content: "\e004";
