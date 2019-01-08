@@ -94,6 +94,7 @@ data Query pq f item m a
   | HandleSelect (Select.Message (Query pq f item m) (Fuzzy item)) a
   | GetSelected (f item -> a)
   | ReplaceSelected (f item) a
+  | ReplaceSelectedBy (Array item -> f item) a
   | ReplaceItems (RemoteData String (Array item)) a
   | Reset a
   | AndThen (Query pq f item m Unit) (Query pq f item m Unit) a
@@ -270,6 +271,12 @@ base ops =
         st <- modifyState _ { selected = selected }
         H.raise $ SelectionChanged ReplacementQuery st.selected
         eval $ Synchronize a
+
+      ReplaceSelectedBy f a -> do
+        { items } <- getState
+        case items of
+          Success items' -> eval $ ReplaceSelected (f items') a
+          _ -> pure a
 
       Reset a -> do
         st <- modifyState _ { selected = empty :: f item, items = NotAsked }
