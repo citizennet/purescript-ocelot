@@ -163,14 +163,13 @@ renderToolbarSearchDropdown
   :: ∀ pq item m
    . Eq item
   => String
-  -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
   -> TA.State Maybe item m
   -> Select.State (Fuzzy item)
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
-  renderSearchDropdown resetLabel label renderFuzzy pst cst
+renderToolbarSearchDropdown defaultLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown label renderFuzzy pst cst
   where
     label = IC.dropdownButton
       HH.span
@@ -185,14 +184,13 @@ renderHeaderSearchDropdown
   :: ∀ pq item m
    . Eq item
   => String
-  -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
   -> TA.State Maybe item m
   -> Select.State (Fuzzy item)
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
-  renderSearchDropdown resetLabel label renderFuzzy pst cst
+renderHeaderSearchDropdown defaultLabel renderItem renderFuzzy pst cst =
+  renderSearchDropdown label renderFuzzy pst cst
   where
     label = HH.span
       [ css "text-white text-3xl font-thin cursor-pointer whitespace-no-wrap" ]
@@ -203,13 +201,12 @@ renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cs
 renderSearchDropdown
   :: ∀ pq item m
    . Eq item
-  => String
-  -> HH.PlainHTML
+  => HH.PlainHTML
   -> (Fuzzy item -> HH.PlainHTML)
   -> TA.State Maybe item m
   -> Select.State (Fuzzy item)
   -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderSearchDropdown resetLabel label renderFuzzy pst cst =
+renderSearchDropdown label renderFuzzy pst cst =
   HH.label
     [ css "relative" ]
     [ HH.fromPlainHTML label
@@ -221,7 +218,7 @@ renderSearchDropdown resetLabel label renderFuzzy pst cst =
             else []
       ]
       [ IC.dropdownContainer
-        [ renderInput, renderReset ]
+        [ renderInput ]
         renderFuzzy
         ((==) pst.selected <<< Just <<< _.original <<< unwrap)
         cst.items
@@ -237,16 +234,6 @@ renderSearchDropdown resetLabel label renderFuzzy pst cst =
           $ inputProps false [ css "no-outline w-full", HP.placeholder "Search" ]
         ]
 
-    renderReset =
-      IC.dropdownItem
-        HH.div
-        [ HE.onClick \_ -> Just do
-          Select.raise $ TA.RemoveAll unit
-          Select.setVisibility Select.Off
-        ]
-        [ HH.text resetLabel ]
-        ( isNothing pst.selected )
-        false
 ----------
 -- Shared Helpers
 

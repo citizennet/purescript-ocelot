@@ -161,7 +161,6 @@ dropdownInputToSingleInput r =
     renderFuzzy = span_ <<< boldMatches r.key
 
     render pst = renderSearchDropdown
-      r.resetLabel
       (Parser.render $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
       renderFuzzy
       pst
@@ -290,7 +289,6 @@ searchDropdownInputToHeaderSingleInput r =
   , async: Nothing
   , render: renderHeaderSearchDropdown
       r.placeholder
-      r.resetLabel
       renderLabel
       renderFuzzy
   }
@@ -313,7 +311,6 @@ searchDropdownInputToToolbarSingleInput r =
   , async: Nothing
   , render: renderToolbarSearchDropdown
       r.placeholder
-      r.resetLabel
       renderLabel
       renderFuzzy
   }
