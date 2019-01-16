@@ -562,7 +562,6 @@ cnDocumentationBlocks =
                 , itemToObject: Async.locationToObject
                 , render: TARender.renderHeaderSearchDropdown
                   "All Locations"
-                  "All Locations"
                   (HH.text <<< _.name <<< unwrap)
                   (HH.span_ <<< IC.boldMatches "name")
                 }
@@ -590,7 +589,6 @@ cnDocumentationBlocks =
               , async: Nothing
               , itemToObject: Async.locationToObject
               , render: TARender.renderToolbarSearchDropdown
-                "All Locations"
                 "All Locations"
                 (HH.text <<< _.name <<< unwrap)
                 (HH.span_ <<< IC.boldMatches "name")
