@@ -1,6 +1,5 @@
 import { mountSingleTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
-import { mountHeaderTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
-import { mountToolbarTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
+import { mountDropdownTypeahead } from '../../../output/Ocelot.Interface.Typeahead/index.js';
 import { mountDropdown } from '../../../output/Ocelot.Interface.Dropdown/index.js';
 
 // Create a div to hold the Halogen component
@@ -70,6 +69,69 @@ component.setLoading().then(() => {
 
     // Example: imperatively set status
     component.setItems(items).then(() => {
+      console.log("Items set to: ", items);
+    });
+  }, 3000);
+});
+
+
+// Example: Dropdown Typeahead
+// This component supports passing the HTML to be rendered as the toggling element
+// The labelHTML key must be a function (String -> String), where the output string
+// should be valid HTML. (Usually it will include the input string, which will be the
+// currently selected element)
+
+const dropdownTAInput =
+  { items,
+    defaultLabel: "All The Things",
+    resetLabel: "Use All The Things",
+    key: "name",
+    labelHTML: (item) => `
+      <span class="text-black text-3xl font-thin cursor-pointer whitespace-no-wrap">
+        ${item}
+        <span class="icon-collapse text-2xl"></span>
+      </span>`
+  }
+
+const dropdownTAComponent = mountDropdownTypeahead(mkElement("dropdown-ta"), dropdownTAInput);
+
+// It supports all of the same operations as the standard typeaheads
+
+const dropdownTAsubscription = dropdownTAComponent.subscribe((out) => {
+  switch (out.type) {
+    case "searched":
+      console.log("The user performed a search: ", out.value);
+      break;
+
+    case "selected":
+      console.log("The user selected an item: ", out.value);
+      break;
+
+    case "selectionChanged":
+      console.log("The selections have changed: ", out.value);
+      break;
+
+    case "emit":
+      console.log("Something was emitted, which I'll likely ignore: ", out.value);
+      break;
+  }
+});
+
+dropdownTAComponent.setLoading().then(() => {
+  console.log("Now in loading status...");
+  setTimeout(() => {
+    // Example: imperatively set selections
+    dropdownTAComponent.setSelected([{ name: "Thomas" }]).then(() => {
+      console.log("New selections set");
+    });
+
+    // Example: imperatively get selections
+    dropdownTAComponent.getSelected().then((selections) => {
+      console.log("These are the selections: ", selections);
+    });
+
+    // Example: imperatively set status
+    dropdownTAComponent.setItems(items).then(() => {
       console.log("Items set to: ", items);
     });
   }, 3000);

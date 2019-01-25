@@ -24,12 +24,14 @@ import Halogen.HTML (span_)
 import Halogen.HTML (text) as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
+import Html.Parser.Halogen as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
-import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
+import Prim.TypeError (class Warn, Text)
 import Web.HTML (HTMLElement)
 
 -- | A subset of the queries available to the typeahead, restricted
@@ -78,7 +80,7 @@ convertSingleToMessageVariant = case _ of
 -- | - placeholder: placeholder text to set in the field
 -- | - key: the name of the field in the object that should be displayed in the list
 -- | - keepOpen: whether the typeahead should stay open or close on selection
-type ExternalInput =
+type TypeaheadInput =
   { items :: Array (Object String)
   , debounceTime :: Int
   , placeholder :: String
@@ -87,20 +89,29 @@ type ExternalInput =
   , insertable :: Boolean
   }
 
-type SearchDropdownInput =
+-- | Another subset of the input available to the typeahead, for the dropdown variant
+-- | Provide:
+-- | - items: an array of objects, where all keys and values are strings
+-- | - labelHTML: a function that takes a String (the selected item) and returns a string of HTML
+-- |   (the toggling element)
+-- | - key: the name of the field in the object that should be displayed in the list
+-- | - defaultLabel: the string to display when no item is selected
+-- | - resetLabel: the name of the container element which resets the selection to Nothing
+type DropdownInput =
   { items :: Array (Object String)
-  , placeholder :: String
-  , resetLabel :: String
+  , labelHTML :: (String -> String)
   , key :: String
+  , defaultLabel :: String
+  , resetLabel :: String
   }
 
 -- | An adapter to simplify types necessary in JS to control the typeahead
 -- | component. Items are specialized to Object String.
-externalInputToSingleInput
+typeaheadInputToSingleInput
   :: ∀ pq m
-   . ExternalInput
+   . TypeaheadInput
   -> Input pq Maybe (Object String) m
-externalInputToSingleInput r =
+typeaheadInputToSingleInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
@@ -115,11 +126,11 @@ externalInputToSingleInput r =
   where
     renderFuzzy = span_ <<< boldMatches r.key
 
-externalInputToMultiInput
+typeaheadInputToMultiInput
   :: ∀ pq m
-   . ExternalInput
+   . TypeaheadInput
   -> Input pq Array (Object String) m
-externalInputToMultiInput r =
+typeaheadInputToMultiInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
   , keepOpen: r.keepOpen
@@ -134,57 +145,33 @@ externalInputToMultiInput r =
   where
     renderFuzzy = span_ <<< boldMatches r.key
 
-searchDropdownInputToHeaderSingleInput
+dropdownInputToSingleInput
   :: ∀ pq m
-   . SearchDropdownInput
+   . DropdownInput
   -> Input pq Maybe (Object String) m
-searchDropdownInputToHeaderSingleInput r =
+dropdownInputToSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
   , keepOpen: false
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: Nothing
   , async: Nothing
-  , render: renderHeaderSearchDropdown
-      r.placeholder
-      r.resetLabel
-      renderLabel
-      renderFuzzy
+  , render
   }
   where
     renderFuzzy = span_ <<< boldMatches r.key
 
-    renderLabel item =
-      HH.text (fromMaybe "" $ Object.lookup r.key item)
-
-searchDropdownInputToToolbarSingleInput
-  :: ∀ pq m
-   . SearchDropdownInput
-  -> Input pq Maybe (Object String) m
-searchDropdownInputToToolbarSingleInput r =
-  { items: Success r.items
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
-  , debounceTime: Nothing
-  , async: Nothing
-  , render: renderToolbarSearchDropdown
-      r.placeholder
+    render pst = renderSearchDropdown
       r.resetLabel
-      renderLabel
+      (Parser.render $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
       renderFuzzy
-  }
-  where
-    renderFuzzy = span_ <<< boldMatches r.key
+      pst
 
-    renderLabel item =
-      HH.text (fromMaybe "" $ Object.lookup r.key item)
-
-mountMultiTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
+mountMultiTypeahead :: EffectFn2 HTMLElement TypeaheadInput (Interface MessageVariant QueryRow)
 mountMultiTypeahead = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
   launchAff_ do
-    io <- runUI multi (externalInputToMultiInput ext) el
+    io <- runUI multi (typeaheadInputToMultiInput ext) el
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertMultiToMessageVariant
@@ -222,6 +209,12 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
         io <- AffAVar.read ioVar
         io.query $ Reset unit
     }
+
+mountSingleTypeahead :: EffectFn2 HTMLElement TypeaheadInput (Interface MessageVariant QueryRow)
+mountSingleTypeahead = mkSingleTypeaheadMounter single typeaheadInputToSingleInput
+
+mountDropdownTypeahead :: EffectFn2 HTMLElement DropdownInput (Interface MessageVariant QueryRow)
+mountDropdownTypeahead = mkSingleTypeaheadMounter single' dropdownInputToSingleInput
 
 mkSingleTypeaheadMounter
   :: ∀ input pq
@@ -269,18 +262,73 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-mountSingleTypeahead :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
-mountSingleTypeahead = mkSingleTypeaheadMounter single externalInputToSingleInput
-
-mountHeaderTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
-mountHeaderTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToHeaderSingleInput
-
-mountToolbarTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
-mountToolbarTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToToolbarSingleInput
-
 single' :: ∀ pq item. Eq item => Component pq Maybe item Aff
 single' = base
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
   , runFilter: const
   }
+
+-- DEPRECATED
+-- Use DropdownInput with dropdownInputToSingleInput
+type SearchDropdownInput =
+  { items :: Array (Object String)
+  , placeholder :: String
+  , resetLabel :: String
+  , key :: String
+  }
+
+searchDropdownInputToHeaderSingleInput
+  :: ∀ pq m
+   . Warn (Text "This function is deprecated")
+  => SearchDropdownInput
+  -> Input pq Maybe (Object String) m
+searchDropdownInputToHeaderSingleInput r =
+  { items: Success r.items
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , debounceTime: Nothing
+  , async: Nothing
+  , render: renderHeaderSearchDropdown
+      r.placeholder
+      r.resetLabel
+      renderLabel
+      renderFuzzy
+  }
+  where
+    renderFuzzy = span_ <<< boldMatches r.key
+
+    renderLabel item =
+      HH.text (fromMaybe "" $ Object.lookup r.key item)
+
+searchDropdownInputToToolbarSingleInput
+  :: ∀ pq m
+   . Warn (Text "This function is deprecated")
+  => SearchDropdownInput
+  -> Input pq Maybe (Object String) m
+searchDropdownInputToToolbarSingleInput r =
+  { items: Success r.items
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
+  , debounceTime: Nothing
+  , async: Nothing
+  , render: renderToolbarSearchDropdown
+      r.placeholder
+      r.resetLabel
+      renderLabel
+      renderFuzzy
+  }
+  where
+    renderFuzzy = span_ <<< boldMatches r.key
+
+    renderLabel item =
+      HH.text (fromMaybe "" $ Object.lookup r.key item)
+
+
+mountHeaderTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
+mountHeaderTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToHeaderSingleInput
+
+mountToolbarTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
+mountToolbarTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToToolbarSingleInput
