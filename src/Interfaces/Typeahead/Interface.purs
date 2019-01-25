@@ -31,6 +31,7 @@ import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..)
 import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
+import Prim.TypeError (class Warn, Text)
 import Web.HTML (HTMLElement)
 
 -- | A subset of the queries available to the typeahead, restricted
@@ -279,7 +280,8 @@ type SearchDropdownInput =
 
 searchDropdownInputToHeaderSingleInput
   :: ∀ pq m
-   . SearchDropdownInput
+   . Warn (Text "This function is deprecated")
+  => SearchDropdownInput
   -> Input pq Maybe (Object String) m
 searchDropdownInputToHeaderSingleInput r =
   { items: Success r.items
@@ -302,7 +304,8 @@ searchDropdownInputToHeaderSingleInput r =
 
 searchDropdownInputToToolbarSingleInput
   :: ∀ pq m
-   . SearchDropdownInput
+   . Warn (Text "This function is deprecated")
+  => SearchDropdownInput
   -> Input pq Maybe (Object String) m
 searchDropdownInputToToolbarSingleInput r =
   { items: Success r.items
