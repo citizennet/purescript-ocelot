@@ -27,7 +27,7 @@
     "postcss-prefix-selector": "^1.6.0",
     "purgecss-webpack-plugin": "^1.2.0",
     "style-loader": "^0.21.0",
-    "tailwindcss": "^0.6.4",
+    "tailwindcss": "0.6.4",
     "webpack": "^4.16.1",
     "webpack-cli": "^3.1.0",
     "webpack-merge": "^4.1.3",
