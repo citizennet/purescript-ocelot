@@ -53,6 +53,8 @@ config.colors = Object.assign(config.colors, {
   'grey-50': '#5C6573',
   'grey-50-a20': 'rgba(102,113,128,0.2)',
   'grey-50-a30': 'rgba(102,113,128,0.3)',
+  'grey-50-a80': 'rgba(102,113,128,0.8)',
+  'grey-50-a90': 'rgba(102,113,128,0.9)',
   'grey-70': 'rgb(143,158,179)',
   'grey-70-a30': 'rgba(143,158,179,0.3)',
   'grey-70-a40': 'rgba(143,158,179,0.4)',
@@ -89,7 +91,7 @@ config.modules = Object.assign(config.modules, {
   'visibility': ['responsive', 'hover', 'focus', 'group-hover'],
   'borderColors': ['responsive', 'hover', 'focus', 'group-hover'],
   'textColors': ['responsive', 'hover', 'group-hover'],
-  'backgroundColors': ['responsive', 'hover', 'focus', 'active'],
+  'backgroundColors': ['responsive', 'hover', 'focus', 'active', 'group-hover'],
 })
 
 // Export the new configuration
