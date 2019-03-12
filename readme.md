@@ -32,7 +32,7 @@ One of the major goals of this project is to provide a minimal environment to te
 Both the PureScript and CSS folders have convenience scripts that will watch and rebuild files on save.
 
 ### Publishing
-One of the primary aims of this project is to provide a way for non-PureScript developers to view and test our components. That ability is provided by the generated [documentation site](https://citizennet.github.io/purescript-ocelot/). This site is automatically built by Circle CI on the `gh-pages` branch. 
+One of the primary aims of this project is to provide a way for non-PureScript developers to view and test our components. That ability is provided by the generated [documentation site](https://citizennet.github.io/purescript-ocelot/). This site is automatically built by Circle CI on the `gh-pages` branch.
 
 Our CSS, however, is not automatically built because it's on our master branch so we can bower install into Wildcat. We have to generate it on new builds to master.
 
@@ -45,3 +45,23 @@ git push origin master
 ```
 
 If you haven't changed the CSS, then feel free to use just `yarn build-ui`.
+
+### Releasing
+
+To create a new release:
+
+1. Adjust the version in `package.json`.
+    Some of our dependents rely on this version being correct.
+1. Commit the changes to `master`.
+1. Create a tag for the version.
+    ```sh
+    $ git tag $NEW_VERSION
+    ```
+1. Push `master` and the tag to the repo.
+    ```sh
+    $ git push --tags origin master
+    ```
+1. Create a release on [GitHub][releases] for the tag.
+    The description should document the changes in this new version.
+
+[releases]: https://github.com/citizennet/purescript-ocelot/releases
