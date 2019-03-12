@@ -2,14 +2,15 @@ module Test.Main where
 
 import Prelude
 
-import Effect (Effect)
-import Effect.Class (liftEffect)
-import Effect.Now (now)
 import Data.DateTime.Instant (unInstant)
 import Data.Set as Set
 import Data.Time.Duration (Milliseconds(..))
 import Data.Tuple (Tuple(..))
+import Effect (Effect)
+import Effect.Class (liftEffect)
+import Effect.Now (now)
 import Ocelot.HTML.Properties (appendIProps, css, extract)
+import Test.Currency (currencyCheck)
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Console (log)
@@ -17,6 +18,7 @@ import Test.Unit.Main (runTest)
 
 main :: Effect Unit
 main = runTest do
+  suite "Currency" currencyCheck
   suite "HTML.Properties" do
     test "appendIProps" do
       let ipropsA = [ css "m-10 p-10 px-5 pb-12 min-w-80 w-full shadow overflow-hidden" ]
