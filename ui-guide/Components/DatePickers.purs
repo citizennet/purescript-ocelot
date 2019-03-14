@@ -87,8 +87,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.fieldMid_
               { label: HH.text "Start"
-              , helpText: Just "Choose a start date."
-              , error: Nothing
+              , helpText: [ HH.text "Choose a start date." ]
+              , error: []
               , inputId: "start-date"
               }
               [ HH.slot' CP.cp1 0 DatePicker.component
@@ -105,8 +105,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.fieldMid_
               { label: HH.text "End"
-              , helpText: Just "Choose an end date."
-              , error: Nothing
+              , helpText: [ HH.text "Choose an end date." ]
+              , error: []
               , inputId: "end-date"
               }
               [ HH.slot' CP.cp1 1 DatePicker.component
@@ -130,8 +130,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.fieldMid_
               { label: HH.text "Start"
-              , helpText: Just "Choose a start time."
-              , error: Nothing
+              , helpText: [ HH.text "Choose a start time." ]
+              , error: []
               , inputId: "start-time"
               }
               [ HH.slot' CP.cp2 0 TimePicker.component
@@ -147,8 +147,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.fieldMid_
               { label: HH.text "End"
-              , helpText: Just "Choose an end time."
-              , error: Nothing
+              , helpText: [ HH.text "Choose an end time." ]
+              , error: []
               , inputId: "end-time"
               }
               [ HH.slot' CP.cp2 1 TimePicker.component
@@ -171,8 +171,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Standard" ]
             , FormField.field_
               { label: HH.text "Start"
-              , helpText: Just "Choose a start date and time."
-              , error: Nothing
+              , helpText: [ HH.text "Choose a start date and time." ]
+              , error: []
               , inputId: "start"
               }
               [ HH.slot' CP.cp3 0 DateTimePicker.component
@@ -189,8 +189,8 @@ cnDocumentationBlocks =
             [ Format.caption_ [ HH.text "Hydrated" ]
             , FormField.field_
               { label: HH.text "End"
-              , helpText: Just "Choose an end date and time."
-              , error: Nothing
+              , helpText: [ HH.text "Choose an end date and time." ]
+              , error: []
               , inputId: "end"
               }
               [ HH.slot' CP.cp3 1 DateTimePicker.component

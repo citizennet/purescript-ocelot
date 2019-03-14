@@ -106,8 +106,8 @@ component =
               [ HH.text "Standard" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "locations"
               }
               [ HH.slot' CP.cp1 unit TA.multi
@@ -127,8 +127,8 @@ component =
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "locations"
               }
               [ HH.slot' CP.cp2 unit TA.multi
