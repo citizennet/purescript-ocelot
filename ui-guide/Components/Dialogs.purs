@@ -75,14 +75,14 @@ component =
               [ Card.card
                 [ css "w-1/2 m-auto" ]
                 [ FormField.field
-                  { helpText: Just "The function of this field is not clear."
+                  { helpText: [ HH.text "The function of this field is not clear." ]
                   , label: HH.div_
                     [ HH.text "Account Id"
                     , Tooltip.tooltip_
                         "This tooltip can explain more about what Account Id does"
                         (Icon.info [ css "ml-2" ])
                     ]
-                  , error: Nothing
+                  , error: []
                   , inputId: "tooltip-input"
                   }
                   [ css "mb-6 pt-3" ]

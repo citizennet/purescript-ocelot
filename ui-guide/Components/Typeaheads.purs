@@ -150,8 +150,8 @@ cnDocumentationBlocks =
               [ HH.text "Standard" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your favorite destination."
-              , error: Nothing
+              , helpText: [ HH.text "Search your favorite destination." ]
+              , error: []
               , inputId: "location"
               }
               [ HH.slot' CP.cp3 0 TA.single
@@ -171,8 +171,8 @@ cnDocumentationBlocks =
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your favorite destination."
-              , error: Nothing
+              , helpText: [ HH.text "Search your favorite destination." ]
+              , error: []
               , inputId: "location-hydrated"
               }
               [ HH.slot' CP.cp3 1 TA.single
@@ -198,8 +198,8 @@ cnDocumentationBlocks =
               [ HH.text "Custom Render" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your favorite companion."
-              , error: Nothing
+              , helpText: [ HH.text "Search your favorite companion." ]
+              , error: []
               , inputId: "user"
               }
               [ HH.slot' CP.cp1 0 TA.single
@@ -219,8 +219,8 @@ cnDocumentationBlocks =
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your favorite companion."
-              , error: Nothing
+              , helpText: [ HH.text "Search your favorite companion." ]
+              , error: []
               , inputId: "user-hydrated"
               }
               [ HH.slot' CP.cp1 1 TA.single
@@ -252,8 +252,8 @@ cnDocumentationBlocks =
               [ HH.text "Standard" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "locations"
               }
               [ HH.slot' CP.cp4 0 TA.multi
@@ -274,8 +274,8 @@ cnDocumentationBlocks =
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "locations"
               }
               [ HH.slot' CP.cp4 1 TA.multi
@@ -301,8 +301,8 @@ cnDocumentationBlocks =
               [ HH.text "Custom Render" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "users"
               }
               [ HH.slot' CP.cp2 0 TA.multi
@@ -322,8 +322,8 @@ cnDocumentationBlocks =
               [ HH.text "Custom Render Hydrated" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "users-hydrated"
               }
               [ HH.slot' CP.cp2 1 TA.multi
@@ -355,8 +355,8 @@ cnDocumentationBlocks =
               [ HH.text "Disabled Single Select - Empty" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "disabled-locations-empty"
               }
               [ HH.slot' CP.cp3 2 TA.single
@@ -377,8 +377,8 @@ cnDocumentationBlocks =
               [ HH.text "Disabled Single Select - Hydrated" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "disabled-locations-hydrated"
               }
               [ HH.slot' CP.cp3 3 TA.single
@@ -399,8 +399,8 @@ cnDocumentationBlocks =
               [ HH.text "Error Single Select" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "error-locations"
               }
               [ HH.slot' CP.cp3 4 TA.single
@@ -420,8 +420,8 @@ cnDocumentationBlocks =
               [ HH.text "Loading Single Select" ]
             , FormField.field_
               { label: HH.text "Locations"
-              , helpText: Just "Search your top destinations."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top destinations." ]
+              , error: []
               , inputId: "loading-locations"
               }
               [ HH.slot' CP.cp3 5 TA.single
@@ -446,8 +446,8 @@ cnDocumentationBlocks =
               [ HH.text "Disabled Multi Select - Empty" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "disabled-users-empty"
               }
               [ HH.slot' CP.cp2 2 TA.multi
@@ -468,8 +468,8 @@ cnDocumentationBlocks =
               [ HH.text "Disabled Multi Select - Hydrated" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "disabled-users-hydrated"
               }
               [ HH.slot' CP.cp2 3 TA.multi
@@ -490,8 +490,8 @@ cnDocumentationBlocks =
               [ HH.text "Error Multi Select" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "error-users"
               }
               [ HH.slot' CP.cp2 4 TA.multi
@@ -511,8 +511,8 @@ cnDocumentationBlocks =
               [ HH.text "Loading Multi Select" ]
             , FormField.field_
               { label: HH.text "Users"
-              , helpText: Just "Search your top companions."
-              , error: Nothing
+              , helpText: [ HH.text "Search your top companions." ]
+              , error: []
               , inputId: "loading-users"
               }
               [ HH.slot' CP.cp2 5 TA.multi

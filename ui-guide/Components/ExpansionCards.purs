@@ -192,8 +192,8 @@ cnDocumentationBlocks st =
                 st.singleLocation
                 [ FormField.field_
                   { label: HH.text "Primary Location"
-                  , helpText: Just "Search your favorite destination."
-                  , error: Nothing
+                  , helpText: [ HH.text "Search your favorite destination." ]
+                  , error: []
                   , inputId: "location"
                   }
                   [ HH.slot' CP.cp3 0 TA.single
@@ -210,8 +210,8 @@ cnDocumentationBlocks st =
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary Location"
-                  , helpText: Just "Search your favorite destination."
-                  , error: Nothing
+                  , helpText: [ HH.text "Search your favorite destination." ]
+                  , error: []
                   , inputId: "location-hydrated"
                   }
                   [ HH.slot' CP.cp3 1 TA.single
@@ -242,8 +242,8 @@ cnDocumentationBlocks st =
                 st.singleUser
                 [ FormField.field_
                   { label: HH.text "Primary User"
-                  , helpText: Just "Search your favorite companion."
-                  , error: Nothing
+                  , helpText: [ HH.text "Search your favorite companion." ]
+                  , error: []
                   , inputId: "user"
                   }
                   [ HH.slot' CP.cp1 0 TA.single
@@ -260,8 +260,8 @@ cnDocumentationBlocks st =
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary User"
-                  , helpText: Just "Search your favorite companion."
-                  , error: Nothing
+                  , helpText: [ HH.text "Search your favorite companion." ]
+                  , error: []
                   , inputId: "user-hydrated"
                   }
                   [ HH.slot' CP.cp1 1 TA.single
@@ -295,8 +295,8 @@ cnDocumentationBlocks st =
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
               { label: HH.text "Enabled"
-              , helpText: Nothing
-              , error: Nothing
+              , helpText: []
+              , error: []
               , inputId: "enable-locations"
               }
               [ Toggle.toggle
@@ -312,8 +312,8 @@ cnDocumentationBlocks st =
               st.multiLocation
               [ FormField.field_
                 { label: HH.text "Targeted Locations"
-                , helpText: Just "Search your top destinations."
-                , error: Nothing
+                , helpText: [ HH.text "Search your top destinations." ]
+                , error: []
                 , inputId: "locations"
                 }
                 [ HH.slot' CP.cp4 0 TA.multi
@@ -330,8 +330,8 @@ cnDocumentationBlocks st =
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Locations"
-                , helpText: Just "Search your top destinations."
-                , error: Nothing
+                , helpText: [ HH.text "Search your top destinations." ]
+                , error: []
                 , inputId: "locations"
                 }
                 [ HH.slot' CP.cp4 1 TA.multi
@@ -357,8 +357,8 @@ cnDocumentationBlocks st =
               [ HH.text "Unlock even more optimizations with customizable controls and preferences. You'll be able to tailor optimizations with greater precision towards achieving your goal. Best suited for campaigns with flexible budgets per campaign, instead use the budget optimization setting located on the Spend Tab off the Campaign Form." ]
             , FormField.field_
               { label: HH.text "Enabled"
-              , helpText: Nothing
-              , error: Nothing
+              , helpText: []
+              , error: []
               , inputId: "enable-users"
               }
               [ Toggle.toggle
@@ -374,8 +374,8 @@ cnDocumentationBlocks st =
               st.multiUser
               [ FormField.field_
                 { label: HH.text "Targeted Users"
-                , helpText: Just "Search your top companions."
-                , error: Nothing
+                , helpText: [ HH.text "Search your top companions." ]
+                , error: []
                 , inputId: "users"
                 }
                 [ HH.slot' CP.cp2 0 TA.multi
@@ -392,8 +392,8 @@ cnDocumentationBlocks st =
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Users"
-                , helpText: Just "Search your top companions."
-                , error: Nothing
+                , helpText: [ HH.text "Search your top companions." ]
+                , error: []
                 , inputId: "users-hydrated"
                 }
                 [ HH.slot' CP.cp2 1 TA.multi
