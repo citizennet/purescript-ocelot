@@ -2,7 +2,7 @@ module Ocelot.Block.FormField where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLp)
+import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
@@ -153,7 +153,7 @@ fieldset_ config = fieldset config []
 
 error
   :: ∀ p i
-   . Array (HH.IProp HTMLp i)
+   . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 error iprops = HH.div $ [ HP.classes errorTextClasses ] <&> iprops
@@ -166,7 +166,7 @@ error_ = error []
 
 helpText
   :: ∀ p i
-   . Array (HH.IProp HTMLp i)
+   . Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 helpText iprops = HH.div $ [ HP.classes helpTextClasses ] <&> iprops
