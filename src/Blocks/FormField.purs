@@ -3,7 +3,6 @@ module Ocelot.Block.FormField where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv, HTMLp)
-import Data.Maybe (Maybe(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
