@@ -157,9 +157,7 @@ error
    . Array (HH.IProp HTMLp i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-error iprops =
-  HH.p
-    ( [ HP.classes errorTextClasses ] <&> iprops )
+error iprops = HH.div $ [ HP.classes errorTextClasses ] <&> iprops
 
 error_
   :: ∀ p i
@@ -172,9 +170,7 @@ helpText
    . Array (HH.IProp HTMLp i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
-helpText iprops =
-  HH.p
-    ( [ HP.classes helpTextClasses ] <&> iprops )
+helpText iprops = HH.div $ [ HP.classes helpTextClasses ] <&> iprops
 
 helpText_
   :: ∀ p i
