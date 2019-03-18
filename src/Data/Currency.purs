@@ -28,6 +28,22 @@ instance encodeJsonCents :: EncodeJson Cents where
 instance showCents :: Show Cents where
   show (Cents n) = "Cents " <> BigInt.toString n
 
+----------------
+-- MICRO DOLLARS
+
+newtype MicroDollars = MicroDollars BigInt
+derive instance newtypeMicroDollars :: Newtype MicroDollars _
+derive newtype instance eqMicroDollars :: Eq MicroDollars
+
+instance encodeJsonMicroDollars :: EncodeJson MicroDollars where
+  encodeJson = encodeJson <<< BigInt.toNumber <<< unwrap
+
+instance showMicroDollars :: Show MicroDollars where
+  show (MicroDollars n) = "MicroDollars " <> BigInt.toString n
+
+-------------------------
+-- Parsing Functions
+
 -- | Will parse cents from a 32bit int
 parseCentsFromNumber :: Number -> Maybe Cents
 parseCentsFromNumber = map Cents <<< BigInt.fromNumber
@@ -38,45 +54,37 @@ parseCentsFromMicroDollars = parseCentsFromNumber <<< flip (/) 10000.0
 centsToMaybeInt :: Cents -> Maybe Int
 centsToMaybeInt = Int.fromString <<< BigInt.toString <<< unwrap
 
+parseCentsFromDollarStr :: String -> Maybe Cents
+parseCentsFromDollarStr = map Cents <<< parseCurrencyFromDollarStr 100
+
+parseMicroDollarsFromDollarStr :: String -> Maybe MicroDollars
+parseMicroDollarsFromDollarStr = map MicroDollars <<< parseCurrencyFromDollarStr 1000000
+
 -- | Will attempt to parse cents from a string representing a dollar amount. It will
 -- strip any trailing cents beyond the hundredths place. WARNING: Do not use this on
--- a string meant to represent cents! It will overstate by 100x.
-parseCentsFromDollarStr :: String -> Maybe Cents
-parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
-  -- There is no decimal; treat as a full dollar string
-  [ dollars ] -> bigIntIs64Bit =<< dollarsPlace dollars
+-- a string meant to represent cents! It assumes non-decimal numbers are whole dollars.
+parseCurrencyFromDollarStr :: Int -> String -> Maybe BigInt
+parseCurrencyFromDollarStr multiplier str =
+  case splitDecimal $ stripCommas str of
+    [ whole ] ->
+      convertCurrency whole
 
-  -- There is one decimal; truncate the cents to 2 places and
-  -- add them to the dollars
-  [ dollars, cents ] ->
-    bigIntIs64Bit
-    =<< (+) <$> dollarsPlace dollars <*> BigInt.fromString (take 2 $ cents <> "0")
+    [ whole, d ] ->
+      let decimal = padRight 2 "0" d
+      in convertCurrency whole `fPlus` (convertCurrency decimal `bigDiv` 100)
 
-  -- Unable to parse
-  otherwise -> Nothing
-
+    _ ->
+      Nothing
   where
-    -- Expects only the dollars place, no cents. Cents will overstate
-    -- by 100x! Verifies within 64 bit bounds.
-    dollarsPlace :: String -> Maybe BigInt
-    dollarsPlace s
-      | null s = Nothing
-      | otherwise = pure
-          <<< (*) (BigInt.fromInt 100)
-          =<< BigInt.fromString
-          =<< cleanDollars s
-
-    cleanDollars :: String -> Maybe String
-    cleanDollars s =
-      let split = splitCommas s
-          verified = noCommas s || checkHead split && checkTail split
-       in if verified then Just (stripCommas s) else Nothing
-
-    noCommas s = s == stripCommas s
-    splitCommas = split (Pattern ",")
     stripCommas = replaceAll (Pattern ",") (Replacement "")
-    checkHead = fromMaybe false <<< map ((_ <= 3) <<< length) <<< head
-    checkTail = all (_ == 3) <<< map length <<< drop 1
+    splitDecimal = split (Pattern ".")
+    convertCurrency c = bigIntIs64Bit =<< (BigInt.fromInt multiplier) `fMult` (BigInt.fromString c)
+    padRight n char s = take n $ s <> char
+
+    fMult a b = (*) a <$> b
+    fPlus a b = (+) <$> a <*> b -- Best grade
+    bigDiv a b = BigInt.quot <$> a <*> (Just $ BigInt.fromInt b)
+
 
 -- Given some cents, format a string representation
 -- in dollars.
