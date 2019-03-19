@@ -67,7 +67,7 @@ component =
 
       Blur a -> do
         query <- H.gets _.query
-        if null query then H.modify_ _ { open = false } else pure unit
+        closeIfNullQuery query
         pure a
 
       Clear a -> do
@@ -79,10 +79,12 @@ component =
       -- field's text anyway.
       SetText str a -> do
         H.modify_ _ { query = str }
+        openIfHasQuery str
         pure a
 
       Search str a -> do
         H.modify_ _ { query = str }
+        openIfHasQuery str
         st <- H.get
 
         case st.debouncer of
@@ -108,6 +110,13 @@ component =
             H.modify_ _ { debouncer = Just { var, fiber: fiber' }}
 
         pure a
+
+      where
+        openIfHasQuery q =
+          if null q then pure unit else H.modify_ _ { open = true }
+
+        closeIfNullQuery q =
+          if null q then H.modify_ _ { open = false } else pure unit
 
     render :: State -> H.ComponentHTML Query
     render { query, open } =
