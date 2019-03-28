@@ -146,6 +146,8 @@ pathToLens path lastProp = (<<<) _items <$> pathToLens'
     last :: Int -> Optic' p (Array (Node a)) Boolean
     last ix = Lens.ix ix <<< lastProp
 
+-- TODO : update this to use lenses, possibly using pathToLens on increasing subsections of array
+--   e.g. [pathToLens [0] _expanded, pathToLens [0, 2] _expanded, pathToLens [0, 2, 1] _checked]
 expandPath :: ∀ a. IndexPath -> Array (Node a) -> Array (Node a)
 expandPath path traits = do
   expandPath' (A.head path) (A.tail path) traits
