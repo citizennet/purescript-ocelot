@@ -1,5 +1,25 @@
 {
   "name": "purescript-ocelot",
+  "homepage": "https://github.com/citizennet/purescript-ocelot",
+  "authors": [
+    "Dave Zuch <https://github.com/whoadave>",
+    "Chris Cornwell <https://github.com/crcornwell>",
+    "Thomas Honeyman <https://github.com/thomashoneyman>",
+    "Forest Toney <https://github.com/foresttoney>",
+    "Hardy Jones <https://github.com/joneshf-cn>",
+    "Vance Palacio <https://github.com/vanceism7>"
+  ],
+  "description": "An opinionated UI library for PureScript Halogen",
+  "keywords": [
+    "purescript",
+    "halogen",
+    "ui"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:citizennet/purescript-ocelot.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
