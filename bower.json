@@ -9,7 +9,7 @@
     "Hardy Jones <https://github.com/joneshf-cn>",
     "Vance Palacio <https://github.com/vanceism7>"
   ],
-  "description": "An opinionated UI library for PureScript Halogen",
+  "description": "An opinionated component library for Halogen apps",
   "keywords": [
     "purescript",
     "halogen",
