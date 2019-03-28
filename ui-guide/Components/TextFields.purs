@@ -73,8 +73,8 @@ cnDocumentationBlocks =
             [ HH.text "Static" ]
           , FormField.field_
             { label: HH.text "Email*"
-            , helpText: Just "Add the email of the End Advertiser."
-            , error: Nothing
+            , helpText: [ HH.text "Add the email of the End Advertiser." ]
+            , error: []
             , inputId: "email"
             }
             [ Input.input
@@ -87,8 +87,11 @@ cnDocumentationBlocks =
             [ HH.text "Error" ]
           , FormField.field_
             { label: HH.text "Email*"
-            , helpText: Just "Add the email of the End Advertiser."
-            , error: Just "This field is required."
+            , helpText: [ HH.text "Add the email of the End Advertiser." ]
+            , error:
+              [ HH.ul_ $
+                HH.li_ <<< pure <<< HH.text <$> [ "This field is required", "Must be a valid email" ]
+              ]
             , inputId: "email-error"
             }
             [ Input.input
@@ -106,8 +109,8 @@ cnDocumentationBlocks =
             [ HH.text "Hydrated" ]
           , FormField.field_
             { label: HH.text "Email*"
-            , helpText: Just "Add the email of the End Advertiser."
-            , error: Nothing
+            , helpText: [ HH.text "Add the email of the End Advertiser." ]
+            , error: []
             , inputId: "email-hydrated"
             }
             [ Input.input
@@ -120,8 +123,8 @@ cnDocumentationBlocks =
             [ HH.text "Disabled" ]
           , FormField.field_
             { label: HH.text "Email*"
-            , helpText: Just "Add the email of the End Advertiser."
-            , error: Nothing
+            , helpText: [ HH.text "Add the email of the End Advertiser." ]
+            , error: []
             , inputId: "email-disabled"
             }
             [ Input.input
@@ -147,8 +150,8 @@ cnDocumentationBlocks =
             [ HH.text "Static" ]
           , FormField.fieldSmall_
             { label: HH.text "Daily Goal"
-            , helpText: Just "Desired daily spend as percentage of total budget."
-            , error: Nothing
+            , helpText: [ HH.text "Desired daily spend as percentage of total budget." ]
+            , error: []
             , inputId: "daily-goal"
             }
             [ Input.percentage_
@@ -160,8 +163,8 @@ cnDocumentationBlocks =
             [ HH.text "Error" ]
           , FormField.fieldSmall_
             { label: HH.text "Daily Goal"
-            , helpText: Just "Desired daily spend as percentage of total budget."
-            , error: Just "Must be between 0 and 100"
+            , helpText: [ HH.text "Desired daily spend as percentage of total budget." ]
+            , error: [ HH.text "Must be between 0 and 100" ]
             , inputId: "daily-goal-error"
             }
             [ Input.percentage_
@@ -179,8 +182,8 @@ cnDocumentationBlocks =
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
             { label: HH.text "Daily Goal"
-            , helpText: Just "Desired daily spend as percentage of total budget."
-            , error: Nothing
+            , helpText: [ HH.text "Desired daily spend as percentage of total budget." ]
+            , error: []
             , inputId: "daily-goal-hydrated"
             }
             [ Input.percentage_
@@ -193,8 +196,8 @@ cnDocumentationBlocks =
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
             { label: HH.text "Daily Goal"
-            , helpText: Just "Desired daily spend as percentage of total budget."
-            , error: Nothing
+            , helpText: [ HH.text "Desired daily spend as percentage of total budget." ]
+            , error: []
             , inputId: "daily-goal-disabled"
             }
             [ Input.percentage_
@@ -220,8 +223,8 @@ cnDocumentationBlocks =
             [ HH.text "Static" ]
           , FormField.fieldSmall_
             { label: HH.text "Budget*"
-            , helpText: Just "Total amount for campaign to spend."
-            , error: Nothing
+            , helpText: [ HH.text "Total amount for campaign to spend." ]
+            , error: []
             , inputId: "budget"
             }
             [ Input.currency_
@@ -233,8 +236,8 @@ cnDocumentationBlocks =
             [ HH.text "Error" ]
           , FormField.fieldSmall_
             { label: HH.text "Budget*"
-            , helpText: Just "Total amount for campaign to spend."
-            , error: Just "This field is required."
+            , helpText: [ HH.text "Total amount for campaign to spend." ]
+            , error: [ HH.text "This field is required." ]
             , inputId: "budget-error"
             }
             [ Input.currency_
@@ -251,8 +254,8 @@ cnDocumentationBlocks =
             [ HH.text "Hydrated" ]
           , FormField.fieldSmall_
             { label: HH.text "Budget*"
-            , helpText: Just "Total amount for campaign to spend."
-            , error: Nothing
+            , helpText: [ HH.text "Total amount for campaign to spend." ]
+            , error: []
             , inputId: "budget-hydrated"
             }
             [ Input.currency_
@@ -265,8 +268,8 @@ cnDocumentationBlocks =
             [ HH.text "Disabled" ]
           , FormField.fieldSmall_
             { label: HH.text "Budget*"
-            , helpText: Just "Total amount for campaign to spend."
-            , error: Nothing
+            , helpText: [ HH.text "Total amount for campaign to spend." ]
+            , error: []
             , inputId: "budget-disabled"
             }
             [ Input.currency_
@@ -292,8 +295,8 @@ cnDocumentationBlocks =
             [ HH.text "Static" ]
           , FormField.field_
             { label: HH.text "Search"
-            , helpText: Just "This text field shows how you might represent a search field."
-            , error: Nothing
+            , helpText: [ HH.text "This text field shows how you might represent a search field." ]
+            , error: []
             , inputId: "search"
             }
             [ Input.inputGroup_
@@ -317,8 +320,8 @@ cnDocumentationBlocks =
             [ HH.text "Loading" ]
           , FormField.field_
             { label: HH.text "Search"
-            , helpText: Just "This text field shows how you might represent a loading state for a search field."
-            , error: Nothing
+            , helpText: [ HH.text "This text field shows how you might represent a loading state for a search field." ]
+            , error: []
             , inputId: "search-loading"
             }
             [ Input.inputGroup_
@@ -351,8 +354,8 @@ cnDocumentationBlocks =
             [ HH.text "Static" ]
           , FormField.field_
             { label: HH.text "Comment"
-            , helpText: Just "Say something."
-            , error: Nothing
+            , helpText: [ HH.text "Say something." ]
+            , error: []
             , inputId: "comment"
             }
             [ Input.textarea
@@ -365,8 +368,8 @@ cnDocumentationBlocks =
             [ HH.text "Error" ]
           , FormField.field_
             { label: HH.text "Comment*"
-            , helpText: Just "Say something."
-            , error: Just "This field is required."
+            , helpText: [ HH.text "Say something." ]
+            , error: [ HH.text "This field is required." ]
             , inputId: "comment-error"
             }
             [ Input.textarea
@@ -384,8 +387,8 @@ cnDocumentationBlocks =
             [ HH.text "Hydrated" ]
           , FormField.field_
             { label: HH.text "Comment"
-            , helpText: Just "Say something."
-            , error: Nothing
+            , helpText: [ HH.text "Say something." ]
+            , error: []
             , inputId: "comment-hydrated"
             }
             [ Input.textarea
@@ -398,8 +401,8 @@ cnDocumentationBlocks =
             [ HH.text "Disabled" ]
           , FormField.field_
             { label: HH.text "Comment*"
-            , helpText: Just "Say something."
-            , error: Nothing
+            , helpText: [ HH.text "Say something." ]
+            , error: []
             , inputId: "comment-disabled"
             }
             [ Input.textarea

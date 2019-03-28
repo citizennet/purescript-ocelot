@@ -1,6 +1,6 @@
 ## Precheck
 
-* For help and support, please don't use the issue tracker. Instead, try the [PureScript user forum](https://purescript-users.ml) or the [functional programming chat (#fpchat)](https://functionalprogramming.slack.com).
+* For help and support, please don't use the issue tracker. Instead, try the [PureScript user forum](https://discourse.purescript.org) or the [functional programming chat (#fpchat)](https://functionalprogramming.slack.com).
 * For bug reports, do a quick search to ensure the bug has not yet been reported.
 * For new feature requests, please remember to describe the feature you would like to see, why you need it, and how it might be implemented.
 

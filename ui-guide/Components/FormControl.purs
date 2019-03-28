@@ -92,8 +92,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Platform"
                     , inputId: "checkbox-vertical"
-                    , helpText: Just "Where do you want your ad to appear?"
-                    , error: Nothing
+                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
+                    , error: []
                     }
                     [ HH.div_
                       [ Checkbox.checkbox_
@@ -118,8 +118,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Platform"
                     , inputId: "checkbox-horizontal"
-                    , helpText: Just "Where do you want your ad to appear?"
-                    , error: Nothing
+                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
+                    , error: []
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -154,8 +154,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Platform"
                     , inputId: "checkbox-vertical-disabled"
-                    , helpText: Just "Where do you want your ad to appear?"
-                    , error: Nothing
+                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
+                    , error: []
                     }
                     [ HH.div_
                       [ Checkbox.checkbox_
@@ -185,8 +185,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Platform"
                     , inputId: "checkbox-horizontal-disabled"
-                    , helpText: Just "Where do you want your ad to appear?"
-                    , error: Nothing
+                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
+                    , error: []
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -232,8 +232,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Optimization Goal"
                     , inputId: "radio-vertical"
-                    , helpText: Just "What do you want to optimize for?"
-                    , error: Nothing
+                    , helpText: [ HH.text "What do you want to optimize for?" ]
+                    , error: []
                     }
                     [ HH.div_
                       [ Radio.radio_
@@ -258,8 +258,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Previews"
                     , inputId: "radio-horizontal"
-                    , helpText: Just "What kind of preview do you want to see?"
-                    , error: Nothing
+                    , helpText: [ HH.text "What kind of preview do you want to see?" ]
+                    , error: []
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -294,8 +294,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Optimization Goal"
                     , inputId: "radio-vertical-disabled"
-                    , helpText: Just "What do you want to optimize for?"
-                    , error: Nothing
+                    , helpText: [ HH.text "What do you want to optimize for?" ]
+                    , error: []
                     }
                     [ HH.div_
                       [ Radio.radio_
@@ -325,8 +325,8 @@ component =
                   , FormField.fieldset_
                     { label: HH.text "Disabled Previews"
                     , inputId: "radio-horizontal-disabled"
-                    , helpText: Just "What kind of preview do you want to see?"
-                    , error: Nothing
+                    , helpText: [ HH.text "What kind of preview do you want to see?" ]
+                    , error: []
                     }
                     [ HH.div
                       [ css "flex" ]
@@ -376,8 +376,8 @@ component =
               -- [ HH.text "Range Input with Form Control" ]
             -- , FormField.field_
               -- { label: HH.text "Dave's OO Emails"
-              -- , helpText: Just "How many do you want?"
-              -- , error: Nothing
+              -- , helpText: [ HH.text "How many do you want?" ]
+              -- , error: []
               -- , inputId: "range"
               -- }
               -- [ Range.range

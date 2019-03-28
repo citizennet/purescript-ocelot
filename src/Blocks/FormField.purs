@@ -1,22 +1,8 @@
-module Ocelot.Block.FormField
-  ( fieldClasses
-  , helpTextClasses
-  , errorTextClasses
-  , labelClasses
-  , field
-  , field_
-  , fieldMid
-  , fieldMid_
-  , fieldSmall
-  , fieldSmall_
-  , fieldset
-  , fieldset_
-  ) where
+module Ocelot.Block.FormField where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLp)
-import Data.Maybe (Maybe(..))
+import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
@@ -53,16 +39,16 @@ labelClasses = HH.ClassName <$>
   , "text-black-20"
   ]
 
-type FieldConfig =
-  { helpText :: Maybe String
-  , label :: HH.PlainHTML
-  , error :: Maybe String
+type FieldConfig p i =
+  { label :: HH.PlainHTML
   , inputId :: String
+  , helpText :: Array (HH.HTML p i)
+  , error :: Array (HH.HTML p i)
   }
 
 field'
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.IProp HTMLdiv i)
   -> HH.HTML p i
   -> HH.HTML p i
@@ -75,13 +61,13 @@ field' config iprops html =
       ]
       [ HH.fromPlainHTML config.label ]
     , html
-    , errorText_ config.error
+    , error_ config.error
     , helpText_ config.helpText
     ]
 
 field
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -93,14 +79,14 @@ field config iprops html =
 
 field_
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 field_ config = field config []
 
 fieldSmall
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -112,14 +98,14 @@ fieldSmall config iprops html =
 
 fieldSmall_
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldSmall_ config = fieldSmall config []
 
 fieldMid
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -131,14 +117,14 @@ fieldMid config iprops html =
 
 fieldMid_
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldMid_ config = fieldMid config []
 
 fieldset
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.IProp HTMLdiv i)
   -> Array (HH.HTML p i)
   -> HH.HTML p i
@@ -153,48 +139,40 @@ fieldset config iprops html =
       , HH.div
         [ css "my-1" ]
         html
-      , errorText_ config.error
+      , error_ config.error
       , helpText_ config.helpText
       ]
     ]
 
 fieldset_
   :: ∀ p i
-   . FieldConfig
+   . FieldConfig p i
   -> Array (HH.HTML p i)
   -> HH.HTML p i
 fieldset_ config = fieldset config []
 
-errorText
+error
   :: ∀ p i
-   . Maybe String
-  -> Array (HH.IProp HTMLp i)
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-errorText Nothing _ = HH.span_ []
-errorText (Just e) iprops =
-  HH.p
-    ( [ HP.classes errorTextClasses ] <&> iprops )
-    [ HH.text e ]
+error iprops = HH.div $ [ HP.classes errorTextClasses ] <&> iprops
 
-errorText_
+error_
   :: ∀ p i
-   . Maybe String
+   . Array (HH.HTML p i)
   -> HH.HTML p i
-errorText_ v = errorText v []
+error_ = error []
 
 helpText
   :: ∀ p i
-   . Maybe String
-  -> Array (HH.IProp HTMLp i)
+   . Array (HH.IProp HTMLdiv i)
+  -> Array (HH.HTML p i)
   -> HH.HTML p i
-helpText Nothing _ = HH.span_ []
-helpText (Just t) iprops =
-  HH.p
-    ( [ HP.classes helpTextClasses ] <&> iprops )
-    [ HH.text t ]
+helpText iprops = HH.div $ [ HP.classes helpTextClasses ] <&> iprops
 
 helpText_
   :: ∀ p i
-   . Maybe String
+   . Array (HH.HTML p i)
   -> HH.HTML p i
-helpText_ t = helpText t []
+helpText_ = helpText []

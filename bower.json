@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "purescript-ocelot",
   "ignore": [
     "**/.*",
@@ -20,7 +19,8 @@
     "purescript-read": "^1.0.1",
     "purescript-halogen-renderless": "^0.0.3",
     "purescript-aff-promise": "^2.0.0",
-    "purescript-html-parser-halogen": "^0.3.0"
+    "purescript-html-parser-halogen": "^0.3.0",
+    "purescript-bigints": "^4.0.0"
   },
   "devDependencies": {
     "purescript-affjax": "^6.0.0",
