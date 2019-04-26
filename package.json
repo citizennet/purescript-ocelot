@@ -18,6 +18,7 @@
     "webpack-cli": "^3.0.6"
   },
   "dependencies": {
-    "big-integer": "^1.6.31"
+    "big-integer": "^1.6.31",
+    "request": "^2.88.0"
   }
 }
