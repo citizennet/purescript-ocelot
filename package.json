@@ -6,8 +6,8 @@
     "build-all": "yarn run build-ui && yarn run build-css",
     "postinstall": "bower i --silent",
     "clean": "rm -rf output bower_components node_modules && cd css && rm -rf node_modules",
-    "build-ui": "pulp build -I ui-guide --to dist/example.js",
-    "watch-ui": "pulp -w --then 'yarn run build-css' build -I ui-guide --to dist/example.js",
+    "build-ui": "yarn run pulp build -I ui-guide --to dist/example.js",
+    "watch-ui": "yarn run pulp -w --then 'yarn run build-css' build -I ui-guide --to dist/example.js",
     "install-css": "cd css && yarn install",
     "build-css": "cd css && yarn run build-all"
   },
