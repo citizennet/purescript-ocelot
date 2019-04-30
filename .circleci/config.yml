@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/ocelot
   docker:
-    - image: davezuch/purescript:0.12.3
+    - image: circleci/node:10.8-browsers
 
 jobs:
   test:
