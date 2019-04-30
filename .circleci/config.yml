@@ -4,6 +4,8 @@ defaults: &defaults
   working_directory: ~/ocelot
   docker:
     - image: circleci/node:10.8-browsers
+  environment:
+    RTS_ARGS: +RTS -N2 -RTS
 
 jobs:
   test:
