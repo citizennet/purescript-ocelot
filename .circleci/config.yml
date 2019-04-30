@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/ocelot
   docker:
-    - image: thomashoneyman/purescript:0.0.3
+    - image: hakoai/purescript:latest
 
 jobs:
   test:
