@@ -13,9 +13,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v0.2.1-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
-            - v0.2.1-yarn-cache-{{ .Branch }}
-            - v0.2.1-yarn-cache
+            - v0.2.2-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - v0.2.2-yarn-cache-{{ .Branch }}
+            - v0.2.2-yarn-cache
 
       - restore_cache:
           keys:
@@ -32,7 +32,7 @@ jobs:
           command: yarn run build-ui
 
       - save_cache:
-          key: v0.2.1-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v0.2.2-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/ocelot/node_modules
 
