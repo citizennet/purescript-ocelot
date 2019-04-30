@@ -10169,6 +10169,14 @@ dt {
   --bounce: .3, .3, .7, 1.4;
 }
 
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
 .transform {
   transform: scale(var(--scale)) rotate(var(--rotate));
 }

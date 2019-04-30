@@ -10169,6 +10169,14 @@ body .ocelot-scoped {
   --bounce: .3, .3, .7, 1.4;
 }
 
+.ocelot-scoped .flex-2 {
+  flex: 2;
+}
+
+.ocelot-scoped .flex-3 {
+  flex: 3;
+}
+
 .ocelot-scoped .transform {
   transform: scale(var(--scale)) rotate(var(--rotate));
 }
