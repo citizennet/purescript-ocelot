@@ -16,13 +16,13 @@ popover
   -> HH.HTML p i
 popover props anchors trigger hoverHtml =
   Hover.hover
-  props
-  anchors
-  trigger
-  ( HH.div
-    [ HP.classes hoverClasses ]
-    hoverHtml
-  )
+    props
+    anchors
+    trigger
+    ( HH.div
+      [ HP.classes hoverClasses ]
+      hoverHtml
+    )
 
 popover_
   :: forall p i
