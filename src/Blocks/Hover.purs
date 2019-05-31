@@ -1,4 +1,4 @@
-module CN.Components.Hover where
+module Ocelot.Block.Hover where
 
 import Prelude
 
