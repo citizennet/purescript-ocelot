@@ -16,6 +16,8 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
 import Ocelot.HTML.Properties (css)
+import Web.Event.Event (stopPropagation)
+import Web.UIEvent.MouseEvent as ME
 
 type State =
   { query :: String
@@ -30,7 +32,7 @@ type Debouncer =
   }
 
 data Query a
-  = Clear a
+  = Clear ME.MouseEvent a
   | Search String a
   | SetText String a
   | Open a
@@ -70,7 +72,8 @@ component =
         closeIfNullQuery query
         pure a
 
-      Clear a -> do
+      Clear ev a -> do
+        H.liftEffect $ stopPropagation $ ME.toEvent ev
         H.modify_ _ { query = "", open = false }
         H.raise $ Searched ""
         pure a
@@ -112,11 +115,11 @@ component =
         pure a
 
       where
-        openIfHasQuery q =
-          if null q then pure unit else H.modify_ _ { open = true }
+      openIfHasQuery q =
+        if null q then pure unit else H.modify_ _ { open = true }
 
-        closeIfNullQuery q =
-          if null q then H.modify_ _ { open = false } else pure unit
+      closeIfNullQuery q =
+        if null q then H.modify_ _ { open = false } else pure unit
 
     render :: State -> H.ComponentHTML Query
     render { query, open } =
@@ -139,7 +142,7 @@ component =
             ]
           ]
         , HH.button
-          [ HE.onClick (HE.input $ const Clear)
+          [ HE.onClick (\ev -> Just $ Clear ev unit)
           , HP.type_ HP.ButtonButton
           , HP.classes $ buttonClasses <> buttonCondClasses
           ]
