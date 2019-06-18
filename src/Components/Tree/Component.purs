@@ -106,13 +106,15 @@ component =
               ]
             ]
           ] <>
-          [ HH.div
-            [ css $ if expanded then "" else "hidden" ]
-            ( A.concat
-              $ A.mapWithIndex
-                (renderRow (depth + 1) (A.cons ix indexPath) (A.snoc itemPath value))
-                children )
-          ]
+          ( if not expanded then [] else
+            [ HH.div_
+              ( A.concat
+                $ A.mapWithIndex
+                  (renderRow (depth + 1) (A.cons ix indexPath) (A.snoc itemPath value))
+                  children
+              )
+            ]
+          )
 
         renderCarat children expanded path =
           carat
