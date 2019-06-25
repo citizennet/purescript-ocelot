@@ -56,21 +56,7 @@ module.exports = (env='') => {
     const merged = merge
       ( config
       , { plugins:
-          [ // Remove class names not used in any source files
-            new PurgecssPlugin
-            ( { // Locations of any files to scan
-                paths: glob.sync([
-                  path.join(__dirname, "../dist/**/*.js")
-                ])
-              , whitelist: [ 'ocelot-scoped' ]
-              , extractors:
-                [ { extractor: TailwindExtractor
-                  , extensions: [ "js" ]
-                  }
-                ]
-              }
-            )
-          , // Minify the CSS after processing
+          [ // Minify the CSS after processing
             new OptimizeCssAssetsPlugin()
           ]
         }
