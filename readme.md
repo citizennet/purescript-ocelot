@@ -52,7 +52,7 @@ To create a new release:
 
 1. Adjust the version in `package.json`.
     Some of our dependents rely on this version being correct.
-1. Commit the changes to `master`.
+1. Submit the changes to `master` via a PR.
 1. Create a tag for the version.
     ```sh
     $ git tag $NEW_VERSION
