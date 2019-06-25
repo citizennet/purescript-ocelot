@@ -5,9 +5,7 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Icon as Icon
 import Ocelot.Block.TabControl as TabControl
-import Ocelot.HTML.Properties ((<&>))
 
 type Tab page =
   { name :: String
