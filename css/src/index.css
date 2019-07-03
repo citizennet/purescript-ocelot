@@ -116,7 +116,6 @@ dt {
 .\!checked\:neighbor\:hover\:bg-grey-80:not(:checked) + :hover { @apply .bg-grey-80; }
 .\!checked\:neighbor\:hover\:text-black-10:not(:checked) + :hover { @apply .text-black-10; }
 
-
 /* added for datepicker */
 .before\:scale-0:before { @apply .scale-0; }
 .before\:scale-1:before { @apply .scale-1; }
