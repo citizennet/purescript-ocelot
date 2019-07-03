@@ -10348,6 +10348,28 @@ dt {
   border-color: #c2c6cc;
 }
 
+/* toggle button styles */
+
+.checked\:neighbor\:bg-grey-50:checked + * {
+  background-color: #5c6573;
+}
+
+.checked\:neighbor\:text-white:checked + * {
+  color: #fff;
+}
+
+.checked\:neighbor\:border-grey-50:checked + * {
+  border-color: #5c6573;
+}
+
+.\!checked\:neighbor\:hover\:bg-grey-80:not(:checked) + :hover {
+  background-color: #c2c6cc;
+}
+
+.\!checked\:neighbor\:hover\:text-black-10:not(:checked) + :hover {
+  color: #00091a;
+}
+
 /* added for datepicker */
 
 .before\:scale-0:before {
