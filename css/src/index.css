@@ -108,6 +108,14 @@ dt {
 .checked\:disabled\:sibling\:before\:bg-grey-80:checked:disabled ~ *:before { @apply .bg-grey-80; }
 .checked\:disabled\:sibling\:border-grey-80:checked:disabled ~ * { @apply .border-grey-80; }
 
+/* toggle button styles */
+.checked\:neighbor\:bg-grey-50:checked + * { @apply .bg-grey-50; }
+.checked\:neighbor\:text-white:checked + * { @apply .text-white; }
+.checked\:neighbor\:border-grey-50:checked + * { @apply .border-grey-50; }
+
+.\!checked\:neighbor\:hover\:bg-grey-80:not(:checked) + :hover { @apply .bg-grey-80; }
+.\!checked\:neighbor\:hover\:text-black-10:not(:checked) + :hover { @apply .text-black-10; }
+
 /* added for datepicker */
 .before\:scale-0:before { @apply .scale-0; }
 .before\:scale-1:before { @apply .scale-1; }
