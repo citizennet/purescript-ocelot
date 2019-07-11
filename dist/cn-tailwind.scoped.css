@@ -10169,6 +10169,10 @@ body .ocelot-scoped {
   --bounce: .3, .3, .7, 1.4;
 }
 
+.ocelot-scoped .container {
+  max-width: 1200px;
+}
+
 .ocelot-scoped .flex-2 {
   flex: 2;
 }
