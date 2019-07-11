@@ -10169,6 +10169,10 @@ dt {
   --bounce: .3, .3, .7, 1.4;
 }
 
+.container {
+  max-width: 1200px;
+}
+
 .flex-2 {
   flex: 2;
 }
