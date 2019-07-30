@@ -333,5 +333,5 @@ applyInsertable match insertable text items = case insertable of
   NotInsertable -> items
   Insertable mkItem | length (filter isExactMatch items) > 0 -> items
                     | otherwise -> (match $ mkItem text) : items
-    where
-      isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
+  where
+    isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
