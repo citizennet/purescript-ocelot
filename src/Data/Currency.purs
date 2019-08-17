@@ -7,7 +7,7 @@ import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Array (all, drop, head, (:))
 import Data.BigInt (BigInt)
 import Data.BigInt as BigInt
-import Data.Either (note
+import Data.Either (note)
 import Data.Foldable (foldr)
 import Data.Int (fromString) as Int
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
