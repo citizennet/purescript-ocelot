@@ -2,10 +2,12 @@ module Ocelot.Data.Currency where
 
 import Prelude
 
+import Data.Argonaut (class DecodeJson, decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Array (all, drop, head, (:))
 import Data.BigInt (BigInt)
 import Data.BigInt as BigInt
+import Data.Either (note)
 import Data.Foldable (foldr)
 import Data.Int (fromString) as Int
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
@@ -13,6 +15,7 @@ import Data.Newtype (class Newtype, unwrap)
 import Data.String (Pattern(..), Replacement(..), length, replaceAll, split, take, null)
 import Data.String.CodeUnits (toCharArray, fromCharArray)
 import Data.Tuple (Tuple(..), snd)
+import Prim.TypeError (class Warn, Text)
 
 ----------
 -- CENTS
@@ -23,20 +26,48 @@ derive instance newtypeCents :: Newtype Cents _
 derive newtype instance eqCents :: Eq Cents
 
 instance encodeJsonCents :: EncodeJson Cents where
-  encodeJson = encodeJson <<< BigInt.toNumber <<< unwrap
+  encodeJson = encodeJson <<< centsToNumber
+
+instance decodeJsonCents :: DecodeJson Cents where
+  decodeJson json = do
+    num <- decodeJson json
+    note ("Could not convert value to `Cents`: " <> show num) (parseCentsFromNumber num)
 
 instance showCents :: Show Cents where
-  show (Cents n) = "Cents " <> BigInt.toString n
+  show (Cents n) = "(Cents " <> BigInt.toString n <> ")"
 
--- | Will parse cents from a 32bit int
-parseCentsFromNumber :: Number -> Maybe Cents
-parseCentsFromNumber = map Cents <<< BigInt.fromNumber
-
-parseCentsFromMicroDollars :: Number -> Maybe Cents
-parseCentsFromMicroDollars = parseCentsFromNumber <<< flip (/) 10000.0
+----------
+-- FROM CENTS
 
 centsToMaybeInt :: Cents -> Maybe Int
 centsToMaybeInt = Int.fromString <<< BigInt.toString <<< unwrap
+
+centsToNumber :: Cents -> Number
+centsToNumber = BigInt.toNumber <<< unwrap
+
+centsToString :: Cents -> String
+centsToString = BigInt.toString <<< unwrap
+
+----------
+-- TO CENTS
+
+centsFromInt :: Int -> Cents
+centsFromInt = Cents <<< BigInt.fromInt
+
+parseCentsFromNumber :: Number -> Maybe Cents
+parseCentsFromNumber = map Cents <<< BigInt.fromNumber
+
+parseCentsFromString :: String -> Maybe Cents
+parseCentsFromString = map Cents <<< BigInt.fromString
+
+parseCentsFromMicroDollars
+  :: Warn (Text "parseCentsFromMicroDollars is deprecated and will be removed in a future release")
+  => Number
+  -> Maybe Cents
+parseCentsFromMicroDollars = parseCentsFromNumber <<< (_ / 10000.0)
+
+-----------
+-- STRING FORMATTING
 
 -- | Will attempt to parse cents from a string representing a dollar amount. It will
 -- strip any trailing cents beyond the hundredths place. WARNING: Do not use this on
