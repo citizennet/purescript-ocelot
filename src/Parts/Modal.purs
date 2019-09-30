@@ -108,6 +108,7 @@ backgroundClasses = HH.ClassName <$>
   , "pin"
   , "bg-black-modal-a90"
   , "fade-in"
+  , "z-10"
   ]
 
 modalClasses :: Array HH.ClassName
@@ -119,6 +120,7 @@ modalClasses = HH.ClassName <$>
   , "m-auto"
   , "max-w-lg"
   , "slide-down"
+  , "z-10"
   ]
 
 bodyClasses :: Array HH.ClassName
