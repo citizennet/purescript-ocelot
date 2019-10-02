@@ -1496,15 +1496,15 @@ var PS = {};
                   $tco_done = true;
                   return v.value0;
               };
-              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 91, column 3 - line 91, column 25): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 93, column 3 - line 93, column 25): " + [ v.constructor.name ]);
           };
           while (!$tco_done) {
               $tco_result = $tco_loop($copy_v);
           };
           return $tco_result;
       };
-      return function ($53) {
-          return go(f($53));
+      return function ($63) {
+          return go(f($63));
       };
   }; 
   var monadRecEither = new MonadRec(function () {
@@ -1521,7 +1521,7 @@ var PS = {};
               if (v instanceof Data_Either.Right && v.value0 instanceof Done) {
                   return new Done(new Data_Either.Right(v.value0.value0));
               };
-              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 119, column 7 - line 119, column 33): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 121, column 7 - line 121, column 33): " + [ v.constructor.name ]);
           };
           return tailRec(g)(f(a0));
       };
@@ -1534,7 +1534,7 @@ var PS = {};
               if (v instanceof Done) {
                   return v.value0;
               };
-              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 111, column 30 - line 111, column 44): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 113, column 30 - line 113, column 44): " + [ v.constructor.name ]);
           };
           return function __do() {
               var v = Control_Bind.bindFlipped(Effect.bindEffect)(Effect_Ref["new"])(f(a))();
@@ -1549,7 +1549,7 @@ var PS = {};
                       if (v1 instanceof Done) {
                           return true;
                       };
-                      throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 102, column 22 - line 107, column 28): " + [ v1.constructor.name ]);
+                      throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 104, column 22 - line 109, column 28): " + [ v1.constructor.name ]);
                   })()) {
 
                   };
@@ -1568,7 +1568,7 @@ var PS = {};
               if (v2 instanceof Done) {
                   return new Done(v1(v2.value0));
               };
-              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 27, column 1 - line 27, column 41): " + [ v.constructor.name, v1.constructor.name, v2.constructor.name ]);
+              throw new Error("Failed pattern match at Control.Monad.Rec.Class (line 29, column 1 - line 29, column 41): " + [ v.constructor.name, v1.constructor.name, v2.constructor.name ]);
           };
       };
   });
@@ -2276,11 +2276,65 @@ var PS = {};
   var NonEmptyList = function (x) {
       return x;
   };
+  var listMap = function (f) {
+      var chunkedRevMap = function ($copy_chunksAcc) {
+          return function ($copy_v) {
+              var $tco_var_chunksAcc = $copy_chunksAcc;
+              var $tco_done = false;
+              var $tco_result;
+              function $tco_loop(chunksAcc, v) {
+                  if (v instanceof Cons && (v.value1 instanceof Cons && v.value1.value1 instanceof Cons)) {
+                      $tco_var_chunksAcc = new Cons(v, chunksAcc);
+                      $copy_v = v.value1.value1.value1;
+                      return;
+                  };
+                  var unrolledMap = function (v1) {
+                      if (v1 instanceof Cons && (v1.value1 instanceof Cons && v1.value1.value1 instanceof Nil)) {
+                          return new Cons(f(v1.value0), new Cons(f(v1.value1.value0), Nil.value));
+                      };
+                      if (v1 instanceof Cons && v1.value1 instanceof Nil) {
+                          return new Cons(f(v1.value0), Nil.value);
+                      };
+                      return Nil.value;
+                  };
+                  var reverseUnrolledMap = function ($copy_v1) {
+                      return function ($copy_acc) {
+                          var $tco_var_v1 = $copy_v1;
+                          var $tco_done = false;
+                          var $tco_result;
+                          function $tco_loop(v1, acc) {
+                              if (v1 instanceof Cons && (v1.value0 instanceof Cons && (v1.value0.value1 instanceof Cons && v1.value0.value1.value1 instanceof Cons))) {
+                                  $tco_var_v1 = v1.value1;
+                                  $copy_acc = new Cons(f(v1.value0.value0), new Cons(f(v1.value0.value1.value0), new Cons(f(v1.value0.value1.value1.value0), acc)));
+                                  return;
+                              };
+                              $tco_done = true;
+                              return acc;
+                          };
+                          while (!$tco_done) {
+                              $tco_result = $tco_loop($tco_var_v1, $copy_acc);
+                          };
+                          return $tco_result;
+                      };
+                  };
+                  $tco_done = true;
+                  return reverseUnrolledMap(chunksAcc)(unrolledMap(v));
+              };
+              while (!$tco_done) {
+                  $tco_result = $tco_loop($tco_var_chunksAcc, $copy_v);
+              };
+              return $tco_result;
+          };
+      };
+      return chunkedRevMap(Nil.value);
+  };
+  var functorList = new Data_Functor.Functor(listMap);
+  var functorNonEmptyList = Data_NonEmpty.functorNonEmpty(functorList);
   var foldableList = new Data_Foldable.Foldable(function (dictMonoid) {
       return function (f) {
           return Data_Foldable.foldl(foldableList)(function (acc) {
-              return function ($174) {
-                  return Data_Semigroup.append(dictMonoid.Semigroup0())(acc)(f($174));
+              return function ($202) {
+                  return Data_Semigroup.append(dictMonoid.Semigroup0())(acc)(f($202));
               };
           })(Data_Monoid.mempty(dictMonoid));
       };
@@ -2300,7 +2354,7 @@ var PS = {};
                       $copy_v = v.value1;
                       return;
                   };
-                  throw new Error("Failed pattern match at Data.List.Types (line 81, column 12 - line 83, column 30): " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Data.List.Types (line 109, column 12 - line 111, column 30): " + [ v.constructor.name ]);
               };
               while (!$tco_done) {
                   $tco_result = $tco_loop($tco_var_b, $copy_v);
@@ -2312,20 +2366,12 @@ var PS = {};
   }, function (f) {
       return function (b) {
           var rev = Data_Foldable.foldl(foldableList)(Data_Function.flip(Cons.create))(Nil.value);
-          return function ($175) {
-              return Data_Foldable.foldl(foldableList)(Data_Function.flip(f))(b)(rev($175));
+          return function ($203) {
+              return Data_Foldable.foldl(foldableList)(Data_Function.flip(f))(b)(rev($203));
           };
       };
   });
   var foldableNonEmptyList = Data_NonEmpty.foldableNonEmpty(foldableList);
-  var functorList = new Data_Functor.Functor(function (f) {
-      return Data_Foldable.foldr(foldableList)(function (x) {
-          return function (acc) {
-              return new Cons(f(x), acc);
-          };
-      })(Nil.value);
-  });
-  var functorNonEmptyList = Data_NonEmpty.functorNonEmpty(functorList);
   var semigroupList = new Data_Semigroup.Semigroup(function (xs) {
       return function (ys) {
           return Data_Foldable.foldr(foldableList)(Cons.create)(ys)(xs);
@@ -2339,12 +2385,12 @@ var PS = {};
       return Data_Traversable.traverse(traversableList)(dictApplicative)(Control_Category.identity(Control_Category.categoryFn));
   }, function (dictApplicative) {
       return function (f) {
-          return function ($182) {
+          return function ($210) {
               return Data_Functor.map((dictApplicative.Apply0()).Functor0())(Data_Foldable.foldl(foldableList)(Data_Function.flip(Cons.create))(Nil.value))(Data_Foldable.foldl(foldableList)(function (acc) {
-                  return function ($183) {
-                      return Control_Apply.lift2(dictApplicative.Apply0())(Data_Function.flip(Cons.create))(acc)(f($183));
+                  return function ($211) {
+                      return Control_Apply.lift2(dictApplicative.Apply0())(Data_Function.flip(Cons.create))(acc)(f($211));
                   };
-              })(Control_Applicative.pure(dictApplicative)(Nil.value))($182));
+              })(Control_Applicative.pure(dictApplicative)(Nil.value))($210));
           };
       };
   });
@@ -2358,7 +2404,7 @@ var PS = {};
           if (v instanceof Cons) {
               return Data_Semigroup.append(semigroupList)(Data_Functor.map(functorList)(v.value0)(v1))(Control_Apply.apply(applyList)(v.value1)(v1));
           };
-          throw new Error("Failed pattern match at Data.List.Types (line 127, column 1 - line 127, column 33): " + [ v.constructor.name, v1.constructor.name ]);
+          throw new Error("Failed pattern match at Data.List.Types (line 155, column 1 - line 155, column 33): " + [ v.constructor.name, v1.constructor.name ]);
       };
   });
   var applyNonEmptyList = new Control_Apply.Apply(function () {
@@ -2381,8 +2427,8 @@ var PS = {};
   }, Nil.value);
   var applicativeNonEmptyList = new Control_Applicative.Applicative(function () {
       return applyNonEmptyList;
-  }, function ($188) {
-      return NonEmptyList(Data_NonEmpty.singleton(plusList)($188));
+  }, function ($216) {
+      return NonEmptyList(Data_NonEmpty.singleton(plusList)($216));
   });
   exports["Nil"] = Nil;
   exports["Cons"] = Cons;
@@ -3453,12 +3499,12 @@ var PS = {};
                   };
                   if (v instanceof Bind) {
                       return Data_Exists.runExists(function (v1) {
-                          return bound(v1.value0)(function ($104) {
-                              return Data_Functor.map(functorFreeT(dictFunctor)(dictFunctor1))(f)(v1.value1($104));
+                          return bound(v1.value0)(function ($123) {
+                              return Data_Functor.map(functorFreeT(dictFunctor)(dictFunctor1))(f)(v1.value1($123));
                           });
                       })(v.value0);
                   };
-                  throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 57, column 1 - line 57, column 71): " + [ f.constructor.name, v.constructor.name ]);
+                  throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 59, column 1 - line 59, column 71): " + [ f.constructor.name, v.constructor.name ]);
               };
           });
       };
@@ -3470,21 +3516,21 @@ var PS = {};
                   return function (v) {
                       if (v instanceof Bind) {
                           return Data_Exists.runExists(function (v1) {
-                              return bound(function ($105) {
-                                  return bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm)(v1.value0($105));
-                              })(function ($106) {
-                                  return bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm)(v1.value1($106));
+                              return bound(function ($124) {
+                                  return bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm)(v1.value0($124));
+                              })(function ($125) {
+                                  return bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm)(v1.value1($125));
                               });
                           })(v.value0);
                       };
                       if (v instanceof FreeT) {
                           return new FreeT(function (v1) {
-                              return Data_Functor.map(dictFunctor1)(Data_Functor.map(Data_Either.functorEither)(function ($107) {
-                                  return nf(Data_Functor.map(dictFunctor)(bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm))($107));
+                              return Data_Functor.map(dictFunctor1)(Data_Functor.map(Data_Either.functorEither)(function ($126) {
+                                  return nf(Data_Functor.map(dictFunctor)(bimapFreeT(dictFunctor)(dictFunctor1)(nf)(nm))($126));
                               }))(nm(v.value0(Data_Unit.unit)));
                           });
                       };
-                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 118, column 1 - line 118, column 109): " + [ nf.constructor.name, nm.constructor.name, v.constructor.name ]);
+                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 123, column 1 - line 123, column 109): " + [ nf.constructor.name, nm.constructor.name, v.constructor.name ]);
                   };
               };
           };
@@ -3572,7 +3618,7 @@ var PS = {};
                                       return Control_Bind.bind(bindFreeT(dictFunctor)(dictMonadRec.Monad0()))(h)(v1.value1);
                                   })(v3.value0))));
                               };
-                              throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 52, column 20 - line 54, column 67): " + [ v3.constructor.name ]);
+                              throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 54, column 20 - line 56, column 67): " + [ v3.constructor.name ]);
                           });
                       };
                       if (v2 instanceof Bind) {
@@ -3582,10 +3628,10 @@ var PS = {};
                               })));
                           })(v2.value0);
                       };
-                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 50, column 5 - line 55, column 98): " + [ v2.constructor.name ]);
+                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 52, column 5 - line 57, column 98): " + [ v2.constructor.name ]);
                   })(v.value0);
               };
-              throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 47, column 3 - line 47, column 75): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 49, column 3 - line 49, column 75): " + [ v.constructor.name ]);
           };
           return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(go);
       };
@@ -3600,7 +3646,7 @@ var PS = {};
                   if (v instanceof Data_Either.Right) {
                       return Data_Functor.map((((dictMonadRec.Monad0()).Bind1()).Apply0()).Functor0())(Control_Monad_Rec_Class.Loop.create)(interp(v.value0));
                   };
-                  throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 126, column 3 - line 126, column 63): " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 141, column 3 - line 141, column 63): " + [ v.constructor.name ]);
               };
               return Control_Monad_Rec_Class.tailRecM(dictMonadRec)(Control_Bind.composeKleisliFlipped((dictMonadRec.Monad0()).Bind1())(go)(resume(dictFunctor)(dictMonadRec)));
           };
@@ -3619,7 +3665,7 @@ var PS = {};
                       if (v instanceof Control_Monad_Rec_Class.Done) {
                           return Control_Applicative.pure(applicativeFreeT(dictFunctor)(dictMonad))(v.value0);
                       };
-                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 80, column 15 - line 82, column 25): " + [ v.constructor.name ]);
+                      throw new Error("Failed pattern match at Control.Monad.Free.Trans (line 82, column 15 - line 84, column 25): " + [ v.constructor.name ]);
                   });
               };
               return go;
@@ -4051,7 +4097,7 @@ var PS = {};
                 delete fibers[fid];
               };
             }
-          });
+          })();
           fibers[fid] = fiber;
           count++;
         },
@@ -4165,12 +4211,18 @@ var PS = {};
           switch (status) {
           case STEP_BIND:
             status = CONTINUE;
-            step   = bhead(step);
-            if (btail === null) {
-              bhead = null;
-            } else {
-              bhead = btail._1;
-              btail = btail._2;
+            try {
+              step   = bhead(step);
+              if (btail === null) {
+                bhead = null;
+              } else {
+                bhead = btail._1;
+                btail = btail._2;
+              }
+            } catch (e) {
+              status = RETURN;
+              fail   = util.left(e);
+              step   = null;
             }
             break;
 
@@ -26352,7 +26404,7 @@ var PS = {};
       };
   };
   var outerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "w-full", "px-6", "items-center", "flex", "rounded-t" ]);
-  var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down" ]);
+  var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down", "z-10" ]);
   var innerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full", "items-center", "mx-auto", "flex" ]);
   var initializeWith = function (dictMonadAff) {
       return function (query) {
@@ -26388,7 +26440,7 @@ var PS = {};
       };
   };
   var body_ = body([  ]);
-  var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in" ]);
+  var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in", "z-10" ]);
   var modal = function (click) {
       return function (iprops) {
           return function (html) {
