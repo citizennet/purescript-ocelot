@@ -29,6 +29,7 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
 import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
 import Prim.TypeError (class Warn, Text)
@@ -127,7 +128,7 @@ typeaheadInputToSingleInput r =
   }
   where
     renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
-      Just src -> span_ ([ img [HP.src src, HP.width 10] ] <> boldMatches r.key item)
+      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
       Nothing -> span_ (boldMatches r.key item)
 
 typeaheadInputToMultiInput
@@ -148,7 +149,7 @@ typeaheadInputToMultiInput r =
   }
   where
     renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
-      Just src -> span_ ([ img [HP.src src, HP.width 10] ] <> boldMatches r.key item)
+      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
       Nothing -> span_ (boldMatches r.key item)
 
 dropdownInputToSingleInput
