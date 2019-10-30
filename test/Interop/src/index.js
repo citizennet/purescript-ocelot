@@ -17,7 +17,7 @@ function mkElement(id) {
 }
 
 // Create a valid input
-const items = [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian", email: "qian@cn.com" }, { name: "Jeff" } ]
+const items = [ { name: "Thomas" }, { name: "Chris" }, { name: "Qian", email: "qian@cn.com", icon: "https://www.citizennet.com/hubfs/images/website/icons/icn-facebook-glyph.svg" }, { name: "Jeff" } ]
 const input =
   { items: [] // empty to start
   , debounceTime: 300
@@ -25,6 +25,7 @@ const input =
   , key: "name"
   , keepOpen: false
   , insertable: true
+  , imageSource: "icon"
   }
 
 // Mount the component at the given element

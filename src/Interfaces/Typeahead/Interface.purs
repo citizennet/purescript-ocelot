@@ -7,7 +7,7 @@ import Prelude
 import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head)
-import Data.Fuzzy (match)
+import Data.Fuzzy (Fuzzy(..), match)
 import Data.Int (toNumber)
 import Data.Maybe (Maybe(..), fromJust, fromMaybe, maybe)
 import Data.Symbol (SProxy(..))
@@ -20,7 +20,7 @@ import Effect.Aff.AVar as AffAVar
 import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object)
 import Foreign.Object as Object
-import Halogen.HTML (span_)
+import Halogen.HTML (img, span_)
 import Halogen.HTML (text) as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
@@ -29,6 +29,7 @@ import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
 import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
 import Prim.TypeError (class Warn, Text)
@@ -80,6 +81,7 @@ convertSingleToMessageVariant = case _ of
 -- | - placeholder: placeholder text to set in the field
 -- | - key: the name of the field in the object that should be displayed in the list
 -- | - keepOpen: whether the typeahead should stay open or close on selection
+-- | - imageSource: the name of the field in the object that displays an image next to the key
 type TypeaheadInput =
   { items :: Array (Object String)
   , debounceTime :: Int
@@ -87,6 +89,7 @@ type TypeaheadInput =
   , key :: String
   , keepOpen :: Boolean
   , insertable :: Boolean
+  , imageSource :: String
   }
 
 -- | Another subset of the input available to the typeahead, for the dropdown variant
@@ -124,7 +127,9 @@ typeaheadInputToSingleInput r =
       (defRenderContainer renderFuzzy)
   }
   where
-    renderFuzzy = span_ <<< boldMatches r.key
+    renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
+      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
+      Nothing -> span_ (boldMatches r.key item)
 
 typeaheadInputToMultiInput
   :: ∀ pq m
@@ -143,7 +148,9 @@ typeaheadInputToMultiInput r =
       (defRenderContainer renderFuzzy)
   }
   where
-    renderFuzzy = span_ <<< boldMatches r.key
+    renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
+      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
+      Nothing -> span_ (boldMatches r.key item)
 
 dropdownInputToSingleInput
   :: ∀ pq m
