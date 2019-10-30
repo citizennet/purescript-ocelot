@@ -8,7 +8,7 @@ import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Renderless.State (updateStore)
+import Halogen.HTML.Events as HE
 import Select as Select
 
 data Query o item m a
@@ -49,7 +49,7 @@ component =
     { initialState
     , render: extract
     , eval
-    , receiver: const Nothing
+    , receiver: HE.input Receive
     }
 
   where
@@ -86,6 +86,6 @@ component =
         H.modify_ $ seeks _ { selectedItem = item }
         pure a
       Receive input a -> do
-        H.modify_ $ updateStore input.render identity
+        H.put $ initialState input
         pure a
 

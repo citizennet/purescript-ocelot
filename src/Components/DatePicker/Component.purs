@@ -47,6 +47,7 @@ data Query a
   | ToggleYear  Direction a
   | ToggleMonth Direction a
   | Initialize a
+  | Receive Input a
   | TriggerFocus a
   | Synchronize a
   | GetSelection (Maybe Date -> a)
@@ -105,7 +106,7 @@ component =
     { initialState
     , render
     , eval
-    , receiver: const Nothing
+    , receiver: HE.input Receive
     , initializer: Just $ H.action Initialize
     , finalizer: Nothing
     }
@@ -188,6 +189,10 @@ component =
         let d' = fromMaybe d selection
         H.modify_ _ { targetDate = Tuple (year d') (month d') }
         eval $ Synchronize a
+
+      Receive i a -> do
+        H.put $ initialState i
+        eval $ Initialize a
 
       TriggerFocus a -> a <$ H.query unit Select.triggerFocus
 
