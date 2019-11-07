@@ -15,8 +15,9 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
-import Halogen.HTML.Properties (checked) as HP
+import Halogen.HTML.Properties as HP
 import Ocelot.Block.Checkbox as Checkbox
+import Ocelot.Block.Conditional as Conditional
 import Ocelot.Block.Icon as Icon
 import Ocelot.Data.Tree (ItemPath, Node(..), IndexPath, _expanded, _selected, _children)
 import Ocelot.HTML.Properties (css)
@@ -25,6 +26,7 @@ type State item =
   { items :: Array (Node item)
   , initial :: Array (Node item)
   , renderItem :: item -> HH.PlainHTML
+  , checkable :: item -> Boolean
   }
 
 data Query item a
@@ -34,7 +36,9 @@ data Query item a
   | SetSelections (Array (ItemPath item)) a
 
 type Input item =
-  { renderItem :: item -> HH.PlainHTML }
+  { renderItem :: item -> HH.PlainHTML
+  , checkable :: item -> Boolean
+  }
 
 data Message item
   = ItemAdded item (ItemPath item)
@@ -53,10 +57,11 @@ component =
     , receiver: const Nothing
     }
   where
-    initialState { renderItem } =
+    initialState { renderItem, checkable } =
       { items: []
       , initial: []
       , renderItem
+      , checkable
       }
 
     eval :: Query item ~> H.ComponentDSL (State item) (Query item) (Message item) m
@@ -89,7 +94,7 @@ component =
         pure a
 
     render :: State item -> H.ComponentHTML (Query item)
-    render { items, renderItem } =
+    render { items, renderItem, checkable } =
       HH.div_ $ A.concat $ A.mapWithIndex (renderRow 0 [] []) items
       where
         renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) =
@@ -98,9 +103,12 @@ component =
             [ renderCarat children expanded (A.cons ix indexPath)
             , HH.div
               [ css "inline-flex" ]
-              [ Checkbox.checkbox_
-                [ HE.onChecked $ HE.input $ ToggleItem value itemPath (A.cons ix indexPath)
-                , HP.checked selected
+              [ Conditional.alt_ (checkable value)
+                [ Checkbox.checkbox_
+                  [ HE.onChecked $ HE.input $ ToggleItem value itemPath (A.cons ix indexPath)
+                  , HP.checked selected
+                  ]
+                  [ HH.fromPlainHTML $ renderItem value ]
                 ]
                 [ HH.fromPlainHTML $ renderItem value ]
               ]
