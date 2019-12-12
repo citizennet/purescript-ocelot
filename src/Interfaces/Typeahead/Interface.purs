@@ -24,7 +24,7 @@ import Halogen.HTML (img, span_)
 import Halogen.HTML (text) as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
-import Html.Parser.Halogen as Parser
+import Html.Parser as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
 import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
