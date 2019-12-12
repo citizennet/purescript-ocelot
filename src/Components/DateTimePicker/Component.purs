@@ -9,7 +9,6 @@ import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Ocelot.Component.DatePicker as DP
@@ -44,7 +43,14 @@ data Message
 
 type ParentHTML m = H.ParentHTML Query ChildQuery Input m
 
-type ChildSlot = Either2 Unit Unit
+-- type ChildSlot = Either2 Unit Unit
+type ChildSlots =
+  ( a :: H.Slot DP.Query Void Unit
+  , b :: H.Slot TP.Query Void Unit
+  )
+
+_a = SProxy :: SProxy "a"
+_b = SProxy :: SProxy "b"
 
 type ChildQuery = Coproduct2 DP.Query TP.Query
 
@@ -92,13 +98,13 @@ component =
       SetSelection dateTime a -> a <$ do
         let date' = date <$> dateTime
             time' = time <$> dateTime
-        void $ H.query' CP.cp1 unit $ DP.SetSelection date' a
-        void $ H.query' CP.cp2 unit $ TP.SetSelection time' a
+        void $ H.query _a unit $ DP.SetSelection date' a
+        void $ H.query _b unit $ TP.SetSelection time' a
         H.modify_ _ { date = date', time = time' }
 
-      SendDateQuery q a -> a <$ H.query' CP.cp1 unit q
+      SendDateQuery q a -> a <$ H.query _a unit q
 
-      SendTimeQuery q a -> a <$ H.query' CP.cp2 unit q
+      SendTimeQuery q a -> a <$ H.query _b unit q
 
 
     render :: State -> H.ParentHTML Query ChildQuery ChildSlot m
@@ -107,7 +113,7 @@ component =
         [ css "flex" ]
         [ HH.div
           [ css "w-1/2 mr-2" ]
-          [ HH.slot' CP.cp1 unit DP.component
+          [ HH.slot _a unit DP.component
             { targetDate
             , selection: date
             , disabled
@@ -116,7 +122,7 @@ component =
           ]
         , HH.div
           [ css "flex-1" ]
-          [ HH.slot' CP.cp2 unit TP.component
+          [ HH.slot _b unit TP.component
             { selection: time
             , disabled
             }
