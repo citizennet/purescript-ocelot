@@ -97,10 +97,11 @@ component =
     render { items, renderItem, checkable } =
       HH.div_ $ A.concat $ A.mapWithIndex (renderRow 0 [] []) items
       where
-        renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) =
+        renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) = do
+          let path = A.cons ix indexPath
           [ HH.div
             [ css $ "border-b py-2 " <> ("pl-" <> (show (depth * 10))) ]
-            [ renderCarat children expanded (A.cons ix indexPath)
+            [ renderCarat children expanded path
             , HH.div
               [ css "inline-flex" ]
               [ Conditional.alt_ (checkable value)
@@ -110,7 +111,12 @@ component =
                   ]
                   [ HH.fromPlainHTML $ renderItem value ]
                 ]
-                [ HH.fromPlainHTML $ renderItem value ]
+                [ HH.span
+                  [ css "cursor-pointer"
+                  , HE.onClick $ HE.input_ (ToggleChildren path)
+                  ]
+                  [ HH.fromPlainHTML $ renderItem value ]
+                ]
               ]
             ]
           ] <>
