@@ -100,7 +100,7 @@ component =
         renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) = do
           let path = A.cons ix indexPath
           [ HH.div
-            [ css $ "border-b py-2 " <> ("pl-" <> (show (depth * 10))) ]
+            [ css $ "flex border-b py-2 pr-2 " <> ("pl-" <> (show (depth * 10))) ]
             [ renderCarat children expanded path
             , HH.div
               [ css "inline-flex" ]
