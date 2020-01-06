@@ -50,7 +50,7 @@ buttonDarkClasses = HH.ClassName <$>
   , "border-grey-70-a30"
   , "hover:!disabled:bg-grey-70-a40"
   , "focus:bg-grey-70-a40"
-  , "text-grey-70"
+  , "text-white"
   ]
 
 buttonClearClasses :: Array HH.ClassName
