@@ -19085,7 +19085,7 @@ var PS = {};
       return Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(buttonGroupClasses) ])(iprops));
   };
   var buttonGroup_ = buttonGroup([  ]);
-  var buttonDarkClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-70-a30", "border-grey-70-a30", "hover:!disabled:bg-grey-70-a40", "focus:bg-grey-70-a40", "text-grey-70" ]);
+  var buttonDarkClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-grey-70-a30", "border-grey-70-a30", "hover:!disabled:bg-grey-70-a40", "focus:bg-grey-70-a40", "text-white" ]);
   var buttonDarkLeft = buttonGroupBuilder(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonDarkClasses)(leftClasses));
   var buttonDarkLeft_ = buttonDarkLeft([  ]);
   var buttonDarkRight = buttonGroupBuilder(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonDarkClasses)(rightClasses));
