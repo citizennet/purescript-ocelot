@@ -35,11 +35,13 @@ type State =
   , selection :: Maybe Date
   , search :: String
   , calendarItems :: Array CalendarItem
+  , disabled :: Boolean
   }
 
 type Input =
   { targetDate :: Maybe (Tuple Year Month)
   , selection :: Maybe Date
+  , disabled :: Boolean
   }
 
 data Query a
@@ -111,13 +113,14 @@ component =
     }
   where
     initialState :: Input -> State
-    initialState { targetDate, selection } =
+    initialState { targetDate, selection, disabled } =
       let targetDate' = fromMaybe (Tuple (ODT.unsafeMkYear 2001) (ODT.unsafeMkMonth 1)) targetDate
         in
       { targetDate: targetDate'
       , selection
       , search: ""
       , calendarItems: generateCalendarRows selection (fst targetDate') (snd targetDate')
+      , disabled
       }
 
     eval
@@ -227,7 +230,9 @@ component =
 
     render :: State -> H.ParentHTML Query ChildQuery Unit m
     render st = HH.div_
-        [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
+      if st.disabled
+        then [ Input.input [ HP.disabled true, HP.value st.search ] ]
+        else [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
       where
         selectInput =
           { initialSearch: Nothing

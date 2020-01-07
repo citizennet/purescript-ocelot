@@ -20,11 +20,13 @@ type State =
   { date :: Maybe Date
   , time :: Maybe Time
   , targetDate :: Maybe (Tuple Year Month)
+  , disabled :: Boolean
   }
 
 type Input =
   { selection :: Maybe DateTime
   , targetDate :: Maybe (Tuple Year Month)
+  , disabled :: Boolean
   }
 
 data Query a
@@ -58,10 +60,11 @@ component =
     }
   where
     initialState :: Input -> State
-    initialState { selection, targetDate } =
+    initialState { selection, targetDate, disabled } =
       { date: date <$> selection
       , time: time <$> selection
       , targetDate
+      , disabled
       }
 
     eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
@@ -99,7 +102,7 @@ component =
 
 
     render :: State -> H.ParentHTML Query ChildQuery ChildSlot m
-    render { date, time, targetDate } =
+    render { date, time, targetDate, disabled } =
       HH.div
         [ css "flex" ]
         [ HH.div
@@ -107,6 +110,7 @@ component =
           [ HH.slot' CP.cp1 unit DP.component
             { targetDate
             , selection: date
+            , disabled
             }
             (HE.input HandleDate)
           ]
