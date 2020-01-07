@@ -98,7 +98,7 @@ cnDocumentationBlocks =
                 }
                 (const Nothing)
               ]
-            , Format.caption_ [ HH.text "Disabled" ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
               { label: HH.text "Start"
               , helpText: [ HH.text "Choose a start date." ]
@@ -166,6 +166,20 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp2 0 TimePicker.component
                 { selection: Nothing
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "Start"
+              , helpText: [ HH.text "Choose a start time." ]
+              , error: []
+              , inputId: "start-time-disabled"
+              }
+              [ HH.slot' CP.cp2 2 TimePicker.component
+                { selection: Nothing
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -183,6 +197,20 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp2 1 TimePicker.component
                 { selection: Just $ unsafeMkTime 12 0 0 0
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Hydrated Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "End"
+              , helpText: [ HH.text "Choose an end time." ]
+              , error: []
+              , inputId: "end-time-disabled"
+              }
+              [ HH.slot' CP.cp2 1 TimePicker.component
+                { selection: Just $ unsafeMkTime 12 0 0 0
+                , disabled: true
                 }
                 (const Nothing)
               ]

@@ -26,10 +26,12 @@ type State =
   { selection :: Maybe Time
   , search :: String
   , timeUnits :: Array TimeUnit
+  , disabled :: Boolean
   }
 
 type Input =
   { selection :: Maybe Time
+  , disabled :: Boolean
   }
 
 data Query a
@@ -91,10 +93,11 @@ component =
     }
   where
     initialState :: Input -> State
-    initialState { selection } =
+    initialState { selection, disabled } =
       { selection
       , search: ""
       , timeUnits: generateTimes selection
+      , disabled
       }
 
     eval
@@ -170,7 +173,9 @@ component =
 
     render :: State -> H.ParentHTML Query ChildQuery Unit m
     render st = HH.div_
-        [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
+      if st.disabled
+        then [ Input.input [ HP.disabled true, HP.value st.search ] ]
+        else [ HH.slot unit Select.component selectInput (HE.input HandleSelect) ]
       where
         selectInput =
           { initialSearch: Nothing

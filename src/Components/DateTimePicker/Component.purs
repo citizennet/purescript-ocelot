@@ -117,7 +117,9 @@ component =
         , HH.div
           [ css "flex-1" ]
           [ HH.slot' CP.cp2 unit TP.component
-            { selection: time }
+            { selection: time
+            , disabled
+            }
             (HE.input HandleTime)
           ]
         ]
