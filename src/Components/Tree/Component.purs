@@ -97,8 +97,7 @@ component =
     render { items, renderItem, checkable } =
       HH.div_ $ A.concat $ A.mapWithIndex (renderRow 0 [] []) items
       where
-        renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) = do
-          let path = A.cons ix indexPath
+        renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) =
           [ HH.div
             [ css $ "flex border-b py-2 pr-2 " <> ("pl-" <> (show (depth * 10))) ]
             [ renderCarat children expanded path
@@ -129,6 +128,8 @@ component =
               )
             ]
           )
+          where
+            path = A.cons ix indexPath
 
         renderCarat children expanded path =
           carat
