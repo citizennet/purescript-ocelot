@@ -7,8 +7,6 @@ import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
 import Data.Maybe (Maybe(..))
-import Data.Traversable (traverse_)
-import Effect (Effect)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -17,8 +15,7 @@ import Halogen.HTML.Properties as HP
 import Halogen.Query.EventSource as ES
 import Ocelot.Block.Format as Format
 import Ocelot.HTML.Properties (css, (<&>))
-import Web.Event.EventTarget as ET
-import Web.HTML (window, HTMLDocument)
+import Web.HTML (window)
 import Web.HTML.HTMLDocument as HTMLDocument
 import Web.HTML.Window (document)
 import Web.UIEvent.KeyboardEvent as KE
@@ -29,39 +26,29 @@ import Web.UIEvent.KeyboardEvent.EventTypes as KET
 
 -- A function that will register an event source on the window
 initializeWith
-  :: ∀ s f g p o m
+  :: ∀ state action slots output m
    . MonadAff m
-  => (KE.KeyboardEvent -> (H.SubscribeStatus -> H.SubscribeStatus) -> f H.SubscribeStatus)
-  -> H.HalogenM s f g p o m Unit
-initializeWith query = do
+  => (KE.KeyboardEvent -> Maybe action)
+  -> H.HalogenM state action slots output m H.SubscriptionId
+initializeWith toAction = do
   document <- H.liftEffect $ document =<< window
   H.subscribe
-    $ ES.eventSource'
-      (onKeyDown document)
-      (Just <<< H.request <<< query)
-  pure unit
-  where
-    onKeyDown
-      :: HTMLDocument
-      -> (KE.KeyboardEvent -> Effect Unit)
-      -> Effect (Effect Unit)
-    onKeyDown doc fn = do
-      let target = HTMLDocument.toEventTarget doc
-      listener <- ET.eventListener (traverse_ fn <<< KE.fromEvent)
-      ET.addEventListener KET.keydown listener false target
-      pure $ ET.removeEventListener KET.keydown listener false target
+    $ ES.eventListenerEventSource
+      KET.keydown
+      (HTMLDocument.toEventTarget document)
+      (toAction <=< KE.fromEvent)
 
 whenClose
-  :: ∀ s f g p o m a
+  :: ∀ state action slots output m
    . MonadAff m
   => KE.KeyboardEvent
-  -> (H.SubscribeStatus -> a)
-  -> H.HalogenM s f g p o m Unit
-  -> H.HalogenM s f g p o m a
-whenClose ev reply f = case KE.code ev of
-  "Escape" -> f $> reply H.Done
-  _ -> pure (reply H.Listening)
-
+  -> H.SubscriptionId
+  -> H.HalogenM state action slots output m Unit
+  -> H.HalogenM state action slots output m Unit
+whenClose ev sid close =
+  when (KE.code ev == "Escape") do
+    H.unsubscribe sid
+    close
 
 ----------
 -- Render Partials
@@ -69,16 +56,16 @@ whenClose ev reply f = case KE.code ev of
 -- Modals already come with the ClickOutside event baked in, while
 -- end users are responsible for handling it somehow.
 modal
-  :: ∀ f g p m
-   . (Unit -> f Unit)
-  -> Array (HH.IProp HTMLdiv (f Unit))
-  -> Array (H.ParentHTML f g p m)
-  -> H.ParentHTML f g p m
+  :: ∀ action slots m
+   . action
+  -> Array (HH.IProp HTMLdiv action)
+  -> Array (H.ComponentHTML action slots m)
+  -> H.ComponentHTML action slots m
 modal click iprops html =
   HH.div_
     [ HH.div
         [ HP.classes backgroundClasses
-        , HE.onClick $ HE.input_ click
+        , HE.onClick $ Just <<< const click
         ]
         []
     , HH.div
@@ -87,10 +74,10 @@ modal click iprops html =
     ]
 
 modal_
-  :: ∀ f g p m
-   . (Unit -> f Unit)
-  -> Array (H.ParentHTML f g p m)
-  -> H.ParentHTML f g p m
+  :: ∀ action slots m
+   . action
+  -> Array (H.ComponentHTML action slots m)
+  -> H.ComponentHTML action slots m
 modal_ query = modal query []
 
 
