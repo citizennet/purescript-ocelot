@@ -86,7 +86,7 @@ component =
     , render
     , eval
     , receiver: const Nothing
-    , initializer: Nothing
+    , initializer: Just (Synchronize unit)
     , finalizer: Nothing
     }
   where
