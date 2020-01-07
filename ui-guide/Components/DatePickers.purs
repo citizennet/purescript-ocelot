@@ -240,6 +240,20 @@ cnDocumentationBlocks =
                 }
                 (const Nothing)
               ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
+            , FormField.field_
+              { label: HH.text "Start"
+              , helpText: [ HH.text "Choose a start date and time." ]
+              , error: []
+              , inputId: "start-disabled"
+              }
+              [ HH.slot' CP.cp3 2 DateTimePicker.component
+                { targetDate: Nothing
+                , selection: Nothing
+                , disabled: true
+                }
+                (const Nothing)
+              ]
             ]
           ]
         , content
@@ -256,6 +270,20 @@ cnDocumentationBlocks =
                 { targetDate: Nothing
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                 , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Hydrated Disabled" ]
+            , FormField.field_
+              { label: HH.text "End"
+              , helpText: [ HH.text "Choose an end date and time." ]
+              , error: []
+              , inputId: "end-disabled"
+              }
+              [ HH.slot' CP.cp3 3 DateTimePicker.component
+                { targetDate: Nothing
+                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                , disabled: true
                 }
                 (const Nothing)
               ]
