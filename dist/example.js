@@ -21940,7 +21940,7 @@ var PS = {};
           render: render,
           "eval": $$eval,
           receiver: Data_Function["const"](Data_Maybe.Nothing.value),
-          initializer: Data_Maybe.Nothing.value,
+          initializer: new Data_Maybe.Just(new Synchronize(Data_Unit.unit)),
           finalizer: Data_Maybe.Nothing.value
       });
   };
