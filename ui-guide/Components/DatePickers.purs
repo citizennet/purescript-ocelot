@@ -94,6 +94,21 @@ cnDocumentationBlocks =
               [ HH.slot' CP.cp1 0 DatePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "Start"
+              , helpText: [ HH.text "Choose a start date." ]
+              , error: []
+              , inputId: "start-date-disabled"
+              }
+              [ HH.slot' CP.cp1 2 DatePicker.component
+                { targetDate: Nothing
+                , selection: Nothing
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -112,6 +127,21 @@ cnDocumentationBlocks =
               [ HH.slot' CP.cp1 1 DatePicker.component
                 { targetDate: Nothing
                 , selection: Just $ unsafeMkDate 2019 1 1
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Hydrated Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "End"
+              , helpText: [ HH.text "Choose an end date." ]
+              , error: []
+              , inputId: "end-date-disabled"
+              }
+              [ HH.slot' CP.cp1 3 DatePicker.component
+                { targetDate: Nothing
+                , selection: Just $ unsafeMkDate 2019 1 1
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -136,6 +166,20 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp2 0 TimePicker.component
                 { selection: Nothing
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "Start"
+              , helpText: [ HH.text "Choose a start time." ]
+              , error: []
+              , inputId: "start-time-disabled"
+              }
+              [ HH.slot' CP.cp2 2 TimePicker.component
+                { selection: Nothing
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -153,6 +197,20 @@ cnDocumentationBlocks =
               }
               [ HH.slot' CP.cp2 1 TimePicker.component
                 { selection: Just $ unsafeMkTime 12 0 0 0
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Hydrated Disabled" ]
+            , FormField.fieldMid_
+              { label: HH.text "End"
+              , helpText: [ HH.text "Choose an end time." ]
+              , error: []
+              , inputId: "end-time-disabled"
+              }
+              [ HH.slot' CP.cp2 1 TimePicker.component
+                { selection: Just $ unsafeMkTime 12 0 0 0
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -178,6 +236,21 @@ cnDocumentationBlocks =
               [ HH.slot' CP.cp3 0 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Standard Disabled" ]
+            , FormField.field_
+              { label: HH.text "Start"
+              , helpText: [ HH.text "Choose a start date and time." ]
+              , error: []
+              , inputId: "start-disabled"
+              }
+              [ HH.slot' CP.cp3 2 DateTimePicker.component
+                { targetDate: Nothing
+                , selection: Nothing
+                , disabled: true
                 }
                 (const Nothing)
               ]
@@ -196,6 +269,21 @@ cnDocumentationBlocks =
               [ HH.slot' CP.cp3 1 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                , disabled: false
+                }
+                (const Nothing)
+              ]
+            , Format.caption_ [ HH.text "Hydrated Disabled" ]
+            , FormField.field_
+              { label: HH.text "End"
+              , helpText: [ HH.text "Choose an end date and time." ]
+              , error: []
+              , inputId: "end-disabled"
+              }
+              [ HH.slot' CP.cp3 3 DateTimePicker.component
+                { targetDate: Nothing
+                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                , disabled: true
                 }
                 (const Nothing)
               ]
