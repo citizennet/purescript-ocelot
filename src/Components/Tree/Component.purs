@@ -29,10 +29,12 @@ type State item =
   , checkable :: item -> Boolean
   }
 
+data Action item
+  = ToggleItem item (ItemPath item) IndexPath Boolean
+  | ToggleChildren IndexPath
+
 data Query item a
-  = ToggleItem item (ItemPath item) IndexPath Boolean a
-  | SetItems (Array (Node item)) a
-  | ToggleChildren IndexPath a
+  = SetItems (Array (Node item)) a
   | SetSelections (Array (ItemPath item)) a
 
 type Input item =
@@ -44,17 +46,15 @@ data Message item
   = ItemAdded item (ItemPath item)
   | ItemRemoved item (ItemPath item)
 
-component
-  :: ∀ m item
-   . MonadAff m
-  => Eq item
-  => H.Component HH.HTML (Query item) (Input item) (Message item) m
+component :: ∀ m item.
+  MonadAff m =>
+  Eq item =>
+  H.Component HH.HTML (Query item) (Input item) (Message item) m
 component =
-  H.component
+  H.mkComponent
     { initialState
-    , eval
     , render
-    , receiver: const Nothing
+    , eval: H.mkEval (H.defaultEval { handleAction = handleAction, handleQuery = handleQuery })
     }
   where
     initialState { renderItem, checkable } =
@@ -64,81 +64,92 @@ component =
       , checkable
       }
 
-    eval :: Query item ~> H.ComponentDSL (State item) (Query item) (Message item) m
-    eval = case _ of
-      ToggleItem item itemPath indexPath checked a -> do
-        let pathLens = pathToLens indexPath _selected
-        traverse_ (\l -> H.modify $ set l checked) pathLens
-        if checked
-          then
-            H.raise (ItemAdded item itemPath)
-          else
-            H.raise (ItemRemoved item itemPath)
-        pure a
-
-      SetItems items a -> do
-        H.modify_ _ { items = items, initial = items }
-        pure a
-
-      ToggleChildren indexPath a -> do
-        let pathLens = pathToLens indexPath _expanded
-        traverse_ (\l -> H.modify $ over l not) pathLens
-        pure a
-
-      SetSelections itemPaths a -> do
-        { items, initial } <- H.get
-        let paths = flip itemPathToIndexPath items <$> itemPaths
-            updates = (\p r -> r { items = expandPath p r.items }) <$> paths
-            updater = A.foldl (>>>) (_ { items = initial }) updates
-        H.modify_ updater
-        pure a
-
-    render :: State item -> H.ComponentHTML (Query item)
-    render { items, renderItem, checkable } =
-      HH.div_ $ A.concat $ A.mapWithIndex (renderRow 0 [] []) items
-      where
-        renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) =
-          [ HH.div
-            [ css $ "flex border-b py-2 pr-2 " <> ("pl-" <> (show (depth * 10))) ]
-            [ renderCarat children expanded path
-            , HH.div
-              [ css "inline-flex" ]
-              [ Conditional.alt_ (checkable value)
-                [ Checkbox.checkbox_
-                  [ HE.onChecked $ HE.input $ ToggleItem value itemPath (A.cons ix indexPath)
-                  , HP.checked selected
-                  ]
-                  [ HH.fromPlainHTML $ renderItem value ]
-                ]
-                [ HH.span
-                  [ css "cursor-pointer"
-                  , HE.onClick $ HE.input_ (ToggleChildren path)
-                  ]
-                  [ HH.fromPlainHTML $ renderItem value ]
-                ]
+render :: ∀ m item.
+  MonadAff m =>
+  Eq item =>
+  State item ->
+  H.ComponentHTML (Action item) () m
+render { items, renderItem, checkable } =
+  HH.div_ $ A.concat $ A.mapWithIndex (renderRow 0 [] []) items
+  where
+    renderRow depth indexPath itemPath ix (Node { selected, expanded, children, value }) =
+      [ HH.div
+        [ css $ "flex border-b py-2 pr-2 " <> ("pl-" <> (show (depth * 10))) ]
+        [ renderCarat children expanded path
+        , HH.div
+          [ css "inline-flex" ]
+          [ Conditional.alt_ (checkable value)
+            [ Checkbox.checkbox_
+              [ HE.onChecked $ Just <<< ToggleItem value itemPath (A.cons ix indexPath)
+              , HP.checked selected
               ]
+              [ HH.fromPlainHTML $ renderItem value ]
             ]
-          ] <>
-          ( if not expanded then [] else
-            [ HH.div_
-              ( A.concat
-                $ A.mapWithIndex
-                  (renderRow (depth + 1) (A.cons ix indexPath) (A.snoc itemPath value))
-                  children
-              )
+            [ HH.span
+              [ css "cursor-pointer"
+              , HE.onClick $ Just <<< const (ToggleChildren path)
+              ]
+              [ HH.fromPlainHTML $ renderItem value ]
             ]
+          ]
+        ]
+      ] <>
+      ( if not expanded then [] else
+        [ HH.div_
+          ( A.concat
+            $ A.mapWithIndex
+              (renderRow (depth + 1) (A.cons ix indexPath) (A.snoc itemPath value))
+              children
           )
-          where
-            path = A.cons ix indexPath
+        ]
+      )
+      where
+        path = A.cons ix indexPath
 
-        renderCarat children expanded path =
-          carat
-            [ HE.onClick $ HE.input_ (ToggleChildren path)
-            , css $ "mr-3 text-xl align-text-bottom cursor-pointer " <> visible
-            ]
-          where
-            carat = if expanded then Icon.caratDown else Icon.caratRight
-            visible = if A.length children > 0 then "visible" else "invisible"
+    renderCarat children expanded path =
+      carat
+        [ HE.onClick $ Just <<< const (ToggleChildren path)
+        , css $ "mr-3 text-xl align-text-bottom cursor-pointer " <> visible
+        ]
+      where
+        carat = if expanded then Icon.caratDown else Icon.caratRight
+        visible = if A.length children > 0 then "visible" else "invisible"
+
+handleAction :: forall item m.
+  MonadAff m =>
+  Action item ->
+  H.HalogenM (State item) (Action item) () (Message item) m Unit
+handleAction = case _ of
+  ToggleItem item itemPath indexPath checked -> do
+    let pathLens = pathToLens indexPath _selected
+    traverse_ (\l -> H.modify $ set l checked) pathLens
+    if checked
+      then
+      H.raise (ItemAdded item itemPath)
+      else
+      H.raise (ItemRemoved item itemPath)
+
+  ToggleChildren indexPath -> do
+    let pathLens = pathToLens indexPath _expanded
+    traverse_ (\l -> H.modify $ over l not) pathLens
+
+
+handleQuery :: forall item m a.
+  Eq item =>
+  Query item a ->
+  H.HalogenM (State item) (Action item) () (Message item) m (Maybe a)
+handleQuery = case _ of
+  SetItems items a -> do
+    H.modify_ _ { items = items, initial = items }
+    pure $ Just a
+
+  SetSelections itemPaths a -> do
+    { items, initial } <- H.get
+    let paths = flip itemPathToIndexPath items <$> itemPaths
+        updates = (\p r -> r { items = expandPath p r.items }) <$> paths
+        updater = A.foldl (>>>) (_ { items = initial }) updates
+    H.modify_ updater
+    pure $ Just a
 
 -----
 -- Helper functions for expanding paths, toggling checkboxes, etc.
