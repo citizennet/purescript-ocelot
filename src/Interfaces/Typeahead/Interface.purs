@@ -9,9 +9,10 @@ import Control.Promise as Promise
 import Data.Array (head)
 import Data.Fuzzy (Fuzzy(..), match)
 import Data.Int (toNumber)
-import Data.Maybe (Maybe(..), fromJust, fromMaybe, maybe)
+import Data.Maybe (Maybe(..), fromJust, fromMaybe)
 import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
+import Data.Unfoldable as Uf
 import Data.Variant (Variant, inj)
 import Effect (Effect)
 import Effect.AVar as AVar
@@ -24,10 +25,10 @@ import Halogen.HTML (img, span_)
 import Halogen.HTML (text) as HH
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
-import Html.Parser as Parser
+import Html.Renderer.Halogen as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Message(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, base)
+import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, component)
 import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
@@ -38,16 +39,12 @@ import Web.HTML (HTMLElement)
 -- | A subset of the queries available to the typeahead, restricted
 -- | to queries that would be sensible to trigger externally.
 type QueryRow =
-  ( remove :: EffectFn1 (Object String) (Promise Unit)
-  , removeAll :: Effect (Promise Unit)
-  , triggerFocus :: Effect (Promise Unit)
-  , search :: EffectFn1 String (Promise Unit)
-  , getSelected :: Effect (Promise (Array (Object String)))
-  , setSelected :: EffectFn1 (Array (Object String)) (Promise Unit)
-  , setItems :: EffectFn1 (Array (Object String)) (Promise Unit)
-  , setError :: EffectFn1 String (Promise Unit)
-  , setLoading :: Effect (Promise Unit)
-  , reset :: Effect (Promise Unit)
+  ( getSelected :: Effect (Promise (Maybe (Array (Object String))))
+  , setSelected :: EffectFn1 (Array (Object String)) (Promise (Maybe Unit))
+  , setItems :: EffectFn1 (Array (Object String)) (Promise (Maybe Unit))
+  , setError :: EffectFn1 String (Promise (Maybe Unit))
+  , setLoading :: Effect (Promise (Maybe Unit))
+  , reset :: Effect (Promise (Maybe Unit))
   )
 
 -- | A subset of the messages available to the typeahead, restricted
@@ -59,20 +56,20 @@ type MessageVariant = Variant
   , emit :: String
   )
 
-convertMultiToMessageVariant :: ∀ pq. Message pq Array (Object String) -> MessageVariant
+convertMultiToMessageVariant :: Output Array (Object String) -> MessageVariant
 convertMultiToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ arr -> inj (SProxy :: SProxy "selectionChanged") arr
-  Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
+  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
-convertSingleToMessageVariant :: ∀ pq. Message pq Maybe (Object String) -> MessageVariant
+convertSingleToMessageVariant :: Output Maybe (Object String) -> MessageVariant
 convertSingleToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [i]
   SelectionChanged _ Nothing -> inj (SProxy :: SProxy "selectionChanged") []
-  Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
+  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 -- | A subset of the input available to the typeahead
 -- | Provide:
@@ -111,9 +108,9 @@ type DropdownInput =
 -- | An adapter to simplify types necessary in JS to control the typeahead
 -- | component. Items are specialized to Object String.
 typeaheadInputToSingleInput
-  :: ∀ pq m
+  :: ∀ m
    . TypeaheadInput
-  -> Input pq Maybe (Object String) m
+  -> Input Maybe (Object String) m
 typeaheadInputToSingleInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -132,9 +129,9 @@ typeaheadInputToSingleInput r =
       Nothing -> span_ (boldMatches r.key item)
 
 typeaheadInputToMultiInput
-  :: ∀ pq m
+  :: ∀ m
    . TypeaheadInput
-  -> Input pq Array (Object String) m
+  -> Input Array (Object String) m
 typeaheadInputToMultiInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -153,9 +150,9 @@ typeaheadInputToMultiInput r =
       Nothing -> span_ (boldMatches r.key item)
 
 dropdownInputToSingleInput
-  :: ∀ pq m
+  :: ∀ m
    . DropdownInput
-  -> Input pq Maybe (Object String) m
+  -> Input Maybe (Object String) m
 dropdownInputToSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -170,7 +167,7 @@ dropdownInputToSingleInput r =
 
     render pst = renderSearchDropdown
       r.resetLabel
-      (Parser.render $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
+      (Parser.render [] $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
       renderFuzzy
       pst
 
@@ -182,21 +179,22 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertMultiToMessageVariant
-    , remove: mkEffectFn1 \obj -> Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ Remove obj unit
-    , removeAll: Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ RemoveAll unit
-    , triggerFocus: Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ TriggerFocus unit
-    , search: mkEffectFn1 \str -> Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ Search str unit
+    -- , remove: mkEffectFn1 \obj -> Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TA.Remove obj unit
+    -- , removeAll: Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TA.RemoveAll unit
+    -- , triggerFocus: Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TriggerFocus unit
+    -- , search: mkEffectFn1 \str -> Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ Search str unit
     , getSelected: Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ GetSelected identity
+        -- pure $ sequence res
     -- Different from underlying implementation because no algebraic data types
     -- in JS
     , setSelected: mkEffectFn1 \arr -> Promise.fromAff do
@@ -224,9 +222,9 @@ mountDropdownTypeahead :: EffectFn2 HTMLElement DropdownInput (Interface Message
 mountDropdownTypeahead = mkSingleTypeaheadMounter single' dropdownInputToSingleInput
 
 mkSingleTypeaheadMounter
-  :: ∀ input pq
-   . Component pq Maybe (Object String) Aff
-  -> (input -> Input pq Maybe (Object String) Aff)
+  :: ∀ input
+   . Component Maybe (Object String) Aff
+  -> (input -> Input Maybe (Object String) Aff)
   -> EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
 mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
@@ -235,22 +233,22 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertSingleToMessageVariant
-    , remove: mkEffectFn1 \obj -> Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ Remove obj unit
-    , removeAll: Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ RemoveAll unit
-    , triggerFocus: Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ TriggerFocus unit
-    , search: mkEffectFn1 \str -> Promise.fromAff do
-        io <- AffAVar.read ioVar
-        io.query $ Search str unit
+    -- , remove: mkEffectFn1 \obj -> Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TA.Remove obj unit
+    -- , removeAll: Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TA.RemoveAll unit
+    -- , triggerFocus: Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ TriggerFocus unit
+    -- , search: mkEffectFn1 \str -> Promise.fromAff do
+    --     io <- AffAVar.read ioVar
+    --     io.query $ Search str unit
     , getSelected: Promise.fromAff do
         io <- AffAVar.read ioVar
         res <- io.query $ GetSelected identity
-        pure $ maybe [] pure res
+        pure $ Uf.fromMaybe <$> res
     , setSelected: mkEffectFn1 \arr -> Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ ReplaceSelected (head arr) unit
@@ -269,8 +267,8 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-single' :: ∀ pq item. Eq item => Component pq Maybe item Aff
-single' = base
+single' :: ∀ item. Eq item => Component Maybe item Aff
+single' = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
   , runFilter: const
@@ -286,10 +284,10 @@ type SearchDropdownInput =
   }
 
 searchDropdownInputToHeaderSingleInput
-  :: ∀ pq m
+  :: ∀ m
    . Warn (Text "This function is deprecated")
   => SearchDropdownInput
-  -> Input pq Maybe (Object String) m
+  -> Input Maybe (Object String) m
 searchDropdownInputToHeaderSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -310,10 +308,10 @@ searchDropdownInputToHeaderSingleInput r =
       HH.text (fromMaybe "" $ Object.lookup r.key item)
 
 searchDropdownInputToToolbarSingleInput
-  :: ∀ pq m
+  :: ∀ m
    . Warn (Text "This function is deprecated")
   => SearchDropdownInput
-  -> Input pq Maybe (Object String) m
+  -> Input Maybe (Object String) m
 searchDropdownInputToToolbarSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable

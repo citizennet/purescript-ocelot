@@ -3,11 +3,11 @@ module Ocelot.Component.Typeahead.Render where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLinput)
-import Data.Array (foldr, null, (:))
+import Data.Array (foldr, (:))
+import Data.Array as Array
 import Data.Fuzzy (Fuzzy)
 import Data.Maybe (Maybe(..), isJust, isNothing, maybe)
 import Data.Newtype (unwrap)
-import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Events as HE
@@ -22,7 +22,7 @@ import Ocelot.Block.ItemContainer as IC
 import Ocelot.Block.Loading as Loading
 import Ocelot.Component.Typeahead.Base as TA
 import Ocelot.HTML.Properties (css, (<&>))
-import Select as Select
+import Select as S
 import Select.Setters (setInputProps) as Setters
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -30,18 +30,16 @@ import Unsafe.Coerce (unsafeCoerce)
 -- Overall Rendering
 
 renderSingle
-  :: ∀ pq item m
-   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Maybe item m) (Fuzzy item)))
+  :: ∀ item m
+  . Array (HP.IProp HTMLinput (TA.CompositeAction Maybe item m))
   -> (item -> HH.PlainHTML)
-  -> (Select.State (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item))
-  -> TA.State Maybe item m
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderSingle iprops renderItem renderContainer pst cst =
+  -> TA.CompositeComponentRender Maybe item m
+  -> TA.CompositeComponentRender Maybe item m
+renderSingle iprops renderItem renderContainer st =
   HH.div_
     [ Input.inputGroup' HH.div
-      [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
-      , HP.class_ $ HH.ClassName (if showSelected then "" else "offscreen")
+      -- [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+      [ css $ if showSelected then "" else "offscreen"
       ]
       [ if disabled
           then
@@ -50,71 +48,69 @@ renderSingle iprops renderItem renderContainer pst cst =
                 [ HP.classes disabledClasses ]
                 [ HH.fromPlainHTML $ renderItem selected ]
               )
-            pst.selected
+            st.selected
           else
             maybe (HH.text "")
             ( \selected -> HH.div
               [ HP.classes Input.mainLeftClasses ]
               [ IC.selectionGroup renderItem []
-                [ HE.onClick
-                  $ Select.always
-                  $ Select.raise
-                  $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
+                [ HE.onClick $ const <<< Just <<< S.Action $ TA.Remove selected
+                  -- $ Select.always
+                  -- $ Select.raise
+                  -- $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
                 ]
                 selected
               ])
-            pst.selected
+            st.selected
       , Input.borderRight
         [ HP.classes $ linkClasses disabled ]
         [ HH.text "Change" ]
       ]
     , Input.inputGroup
-      [ HP.class_ $ HH.ClassName (if showSelected then "offscreen" else "")
-      , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+      [ css $ if showSelected then "offscreen" else ""
+      -- , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
       ]
       [ Input.inputCenter $ inputProps disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
       , Input.addonCenter
-        [ css $ if isLoading pst.items then "" else "offscreen" ]
+        [ css $ if isLoading st.items then "" else "offscreen" ]
         [ spinner ]
       , Input.borderRight
         [ HP.classes $ linkClasses disabled ]
         [ HH.text "Browse" ]
       ]
-    , conditional (cst.visibility == Select.On)
+    , conditional (st.visibility == S.On)
         [ css "relative block" ]
-        [ renderContainer cst ]
-    , renderError $ isFailure pst.items
+        [ renderContainer st ]
+    , renderError $ isFailure st.items
     ]
 
   where
 
   disabled = isDisabled iprops
-  showSelected = isJust pst.selected && cst.visibility == Select.Off
+  showSelected = isJust st.selected && st.visibility == S.Off
 
 
 renderMulti
-  :: ∀ pq item m
-   . Array (H.IProp HTMLinput (Select.Query (TA.Query pq Array item m) (Fuzzy item)))
+  :: ∀ item m
+  . Array (HP.IProp HTMLinput (TA.CompositeAction Array item m))
   -> (item -> HH.PlainHTML)
-  -> (Select.State (Fuzzy item) -> Select.ComponentHTML (TA.Query pq Array item m) (Fuzzy item))
-  -> TA.State Array item m
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Array item m) (Fuzzy item)
-renderMulti iprops renderItem renderContainer pst cst =
+  -> TA.CompositeComponentRender Array item m
+  -> TA.CompositeComponentRender Array item m
+renderMulti iprops renderItem renderContainer st =
   HH.div
     [ css "relative" ]
-    [ if (not disabled && not null pst.selected)
+    [ if (not disabled && not Array.null st.selected)
         then
           HH.a
             [ css "absolute -mt-7 pin-r underline text-grey-70 cursor-pointer"
-            , HE.onClick $ Select.always $ Select.raise $ TA.RemoveAll unit
+            , HE.onClick $ const <<< Just <<< S.Action $ TA.RemoveAll
             ]
             [ HH.text "Remove All" ]
         else
           HH.text ""
-    , IC.selectionContainer $ pst.selected <#>
+    , IC.selectionContainer $ st.selected <#>
         if disabled
           then
             HH.fromPlainHTML <<< renderItem
@@ -123,24 +119,25 @@ renderMulti iprops renderItem renderContainer pst cst =
               IC.selectionGroup
                 renderItem
                 []
-                [ HE.onClick $ Select.always $ Select.raise $ TA.Remove selected unit ]
+                [ HE.onClick $ const <<< Just <<< S.Action $ TA.Remove selected ]
                 selected
     , Input.inputGroup_
       [ Input.inputCenter $ inputProps disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
       , Input.addonCenter
-        [ css $ if isLoading pst.items then "" else "offscreen" ]
+        [ css $ if isLoading st.items then "" else "offscreen" ]
         [ spinner ]
       , Input.borderRight
         [ HP.classes $ linkClasses disabled
-        , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit ]
+        -- , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
+        ]
         [ HH.text "Browse" ]
       ]
-    , conditional (cst.visibility == Select.On)
+    , conditional (st.visibility == S.On)
         [ css "relative block" ]
-        [ renderContainer cst ]
-    , renderError $ isFailure pst.items
+        [ renderContainer st ]
+    , renderError $ isFailure st.items
     ]
 
   where
@@ -152,25 +149,23 @@ renderMulti iprops renderItem renderContainer pst cst =
 -- Default Renders
 
 defRenderContainer
-  :: ∀ pq f item m
-   . (Fuzzy item -> HH.PlainHTML)
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq f item m) (Fuzzy item)
-defRenderContainer renderFuzzy cst =
-  IC.itemContainer cst.highlightedIndex (renderFuzzy <$> cst.items) []
+    :: ∀ f item m
+  . (Fuzzy item -> HH.PlainHTML)
+  -> TA.CompositeComponentRender f item m
+defRenderContainer renderFuzzy st =
+  IC.itemContainer st.highlightedIndex (renderFuzzy <$> st.fuzzyItems) []
+
 
 renderToolbarSearchDropdown
-  :: ∀ pq item m
+  :: ∀ item m
    . Eq item
   => String
   -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.State Maybe item m
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
-  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  -> TA.CompositeComponentRender Maybe item m
+renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
+  renderSearchDropdown resetLabel label renderFuzzy st
   where
     label = IC.dropdownButton
       HH.span
@@ -179,53 +174,49 @@ renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst c
         : Button.buttonMainClasses
         <> Button.buttonClearClasses
       ]
-      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected ]
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) st.selected ]
 
 renderHeaderSearchDropdown
-  :: ∀ pq item m
+  :: ∀ item m
    . Eq item
   => String
   -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.State Maybe item m
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy pst cst =
-  renderSearchDropdown resetLabel label renderFuzzy pst cst
+  -> TA.CompositeComponentRender Maybe item m
+renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
+  renderSearchDropdown resetLabel label renderFuzzy st
   where
     label = HH.span
       [ css "text-white text-3xl font-thin cursor-pointer whitespace-no-wrap" ]
-      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) pst.selected
+      [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) st.selected
       , Icon.collapse [ css "ml-3 text-xl text-grey-50 align-middle" ]
       ]
 
 renderSearchDropdown
-  :: ∀ pq item m
+  :: ∀ item m
    . Eq item
   => String
   -> HH.PlainHTML
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.State Maybe item m
-  -> Select.State (Fuzzy item)
-  -> Select.ComponentHTML (TA.Query pq Maybe item m) (Fuzzy item)
-renderSearchDropdown resetLabel label renderFuzzy pst cst =
+  -> TA.CompositeComponentRender Maybe item m
+renderSearchDropdown resetLabel label renderFuzzy st =
   HH.label
     [ css "relative" ]
     [ HH.fromPlainHTML label
     , HH.div
       [ HP.classes
         $ HH.ClassName "min-w-80" :
-          if cst.visibility == Select.Off
+          if st.visibility == S.Off
             then [ HH.ClassName "offscreen" ]
             else []
       ]
       [ IC.dropdownContainer
         [ renderInput, renderReset ]
         renderFuzzy
-        ((==) pst.selected <<< Just <<< _.original <<< unwrap)
-        cst.items
-        cst.highlightedIndex
+        ((==) st.selected <<< Just <<< _.original <<< unwrap)
+        st.fuzzyItems
+        st.highlightedIndex
       ]
     ]
   where
@@ -240,13 +231,12 @@ renderSearchDropdown resetLabel label renderFuzzy pst cst =
     renderReset =
       IC.dropdownItem
         HH.div
-        [ HE.onClick \_ -> Just do
-          Select.raise $ TA.RemoveAll unit
-          Select.setVisibility Select.Off
+        [ HE.onClick $ const <<< Just <<< S.Action $ TA.RemoveAll
         ]
         [ HH.text resetLabel ]
-        ( isNothing pst.selected )
+        ( isNothing st.selected )
         false
+
 ----------
 -- Shared Helpers
 
@@ -255,15 +245,17 @@ linkClasses = if _
   then HH.ClassName <$> [ "text-grey-70", "no-underline", "font-medium" ]
   else Format.linkClasses
 
+
 inputProps
-  :: ∀ pq f item m
+  :: ∀ f item m
    . Boolean
-  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
-  -> Array (H.IProp HTMLinput (Select.Query (TA.Query pq f item m) (Fuzzy item)))
+  -> Array (HP.IProp HTMLinput (TA.CompositeAction f item m))
+  -> Array (HP.IProp HTMLinput (TA.CompositeAction f item m))
 inputProps disabled iprops = if disabled
   then iprops'
   else Setters.setInputProps iprops'
-  where iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
+  where
+    iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
 
 
 disabledClasses :: Array HH.ClassName
