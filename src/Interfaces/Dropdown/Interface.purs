@@ -4,7 +4,7 @@ import Prelude
 
 import Control.Promise (Promise, fromAff)
 import Data.Array (head)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (Maybe, fromMaybe)
 import Data.Symbol (SProxy(..))
 import Data.Variant (Variant, inj)
 import Effect.AVar (empty) as AVar
@@ -15,15 +15,15 @@ import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object, lookup)
 import Halogen.VDom.Driver (runUI)
 import Ocelot.Block.Button (button)
-import Ocelot.Component.Dropdown (Input, Message(..), Query(..), component)
-import Ocelot.Component.Dropdown.Render (defDropdown, render)
+import Ocelot.Components.Dropdown.Component (Input, Output(..), Query(..), component)
+import Ocelot.Components.Dropdown.Render (defDropdown)
 import Ocelot.Interface.Utilities (mkSubscription, Interface)
 import Select (Visibility(..)) as Select
 import Web.HTML (HTMLElement)
 
 type QueryRow =
-  ( setItems :: EffectFn1 (Array (Object String)) (Promise Unit)
-  , setSelected :: EffectFn1 (Array (Object String)) (Promise Unit)
+  ( setItems :: EffectFn1 (Array (Object String)) (Promise (Maybe Unit))
+  , setSelected :: EffectFn1 (Array (Object String)) (Promise (Maybe Unit))
   )
 
 type MessageVariant = Variant
@@ -32,11 +32,11 @@ type MessageVariant = Variant
   , emit :: String
   )
 
-convertMessageToVariant :: ∀ pq. Message pq (Object String) -> MessageVariant
+convertMessageToVariant :: Output (Object String) -> MessageVariant
 convertMessageToVariant = case _ of
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   VisibilityChanged vis -> inj (SProxy :: SProxy "visibilityChanged") (vis == Select.On)
-  Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
+  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 type ExternalInput =
   { selectedItem :: Array (Object String)
@@ -47,14 +47,14 @@ type ExternalInput =
 
 
 externalInputToInput
-  :: ∀ pq m
+  :: ∀ m
    . MonadAff m
   => ExternalInput
-  -> Input pq (Object String) m
+  -> Input (Object String) m
 externalInputToInput { items, selectedItem, key, placeholder } =
   { items
   , selectedItem: head selectedItem
-  , render: render $ defDropdown button [] (fromMaybe placeholder <<< (lookup key)) placeholder
+  , render: defDropdown button [] (fromMaybe placeholder <<< (lookup key)) placeholder
   }
 
 mountDropdown :: EffectFn2 HTMLElement ExternalInput (Interface MessageVariant QueryRow)
