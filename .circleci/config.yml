@@ -21,9 +21,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v3-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
-            - v3-bower-cache-{{ .Branch }}
-            - v3-bower-cache
+            - v4-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+            - v4-bower-cache-{{ .Branch }}
+            - v4-bower-cache
 
       - run:
           name: Install Bower and Node dependencies
@@ -39,7 +39,7 @@ jobs:
             - ~/ocelot/node_modules
 
       - save_cache:
-          key: v3-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          key: v4-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
           paths:
             - ~/ocelot/bower_components
             - ~/ocelot/output
