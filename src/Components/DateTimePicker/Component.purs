@@ -1,131 +1,133 @@
-module Ocelot.Component.DateTimePicker where
+module Ocelot.Components.DateTimePicker.Component where
 
 import Prelude
 
 import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
 import Data.Maybe (Maybe(..))
-import Data.Tuple (Tuple)
+import Data.Tuple.Nested (type (/\))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
-import Ocelot.Component.DatePicker as DP
-import Ocelot.Component.TimePicker as TP
+import Ocelot.Components.DatePicker.Component as DatePicker
+import Ocelot.Components.TimePicker.Component as TimePicker
 import Ocelot.HTML.Properties (css)
+import Type.Data.Symbol (SProxy(..))
+
+
+type Slot = H.Slot Query Output
+
+type Component m = H.Component HH.HTML Query Input Output m
+type ComponentHTML m = H.ComponentHTML Action ChildSlots m
+type ComponentRender m = State -> ComponentHTML m
+type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 
 type State =
   { date :: Maybe Date
   , time :: Maybe Time
-  , targetDate :: Maybe (Tuple Year Month)
-  , disabled :: Boolean
+  , targetDate :: Maybe (Year /\ Month)
   }
 
 type Input =
   { selection :: Maybe DateTime
-  , targetDate :: Maybe (Tuple Year Month)
-  , disabled :: Boolean
+  , targetDate :: Maybe (Year /\ Month)
   }
 
+defaultInput :: Input
+defaultInput =
+  { selection: Nothing
+  , targetDate: Nothing
+  }
+
+data Action
+  = HandleDate DatePicker.Output
+  | HandleTime TimePicker.Output
+
 data Query a
-  = HandleDate DP.Message a
-  | HandleTime TP.Message a
-  | GetSelection (Maybe DateTime -> a)
+  = GetSelection (DateTime -> a)
   | SetSelection (Maybe DateTime) a
-  | SendDateQuery (DP.Query Unit) a
-  | SendTimeQuery (TP.Query Unit) a
+  | SendDateQuery (DatePicker.Query Unit) a
+  | SendTimeQuery (TimePicker.Query Unit) a
 
-data Message
+data Output
   = SelectionChanged (Maybe DateTime)
-  | DateMessage DP.Message
-  | TimeMessage TP.Message
+  | DateOutput DatePicker.Output
+  | TimeOutput TimePicker.Output
 
-type ParentHTML m = H.ParentHTML Query ChildQuery Input m
-
--- type ChildSlot = Either2 Unit Unit
 type ChildSlots =
-  ( a :: H.Slot DP.Query Void Unit
-  , b :: H.Slot TP.Query Void Unit
+  ( datepicker :: DatePicker.Slot Unit
+  , timepicker :: TimePicker.Slot Unit
   )
+_datepicker = SProxy :: SProxy "datepicker"
+_timepicker = SProxy :: SProxy "timepicker"
 
-_a = SProxy :: SProxy "a"
-_b = SProxy :: SProxy "b"
+component :: forall m. MonadAff m => Component m
+component = H.mkComponent
+  { initialState
+  , render
+  , eval: H.mkEval H.defaultEval
+      { handleAction = handleAction
+      , handleQuery = handleQuery
+      }
+  }
 
-type ChildQuery = Coproduct2 DP.Query TP.Query
-
-component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
-component =
-  H.lifecycleParentComponent
-    { initialState
-    , render
-    , eval
-    , receiver: const Nothing
-    , initializer: Nothing
-    , finalizer: Nothing
-    }
-  where
-    initialState :: Input -> State
-    initialState { selection, targetDate, disabled } =
+initialState :: Input -> State
+initialState { selection, targetDate } =
       { date: date <$> selection
       , time: time <$> selection
       , targetDate
-      , disabled
       }
 
-    eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
-    eval = case _ of
-      HandleDate msg a -> a <$ case msg of
-        DP.SelectionChanged date' -> do
-          time' <- H.gets _.time
-          H.raise $ SelectionChanged (DateTime <$> date' <*> time')
-          H.modify_ _ { date = date' }
+render :: forall m. MonadAff m => ComponentRender m
+render { date, time, targetDate } =
+  HH.div
+    [ css "flex" ]
+    [ HH.div
+      [ css "w-1/2 mr-2" ]
+      [ HH.slot _datepicker unit DatePicker.component
+        { targetDate
+        , selection: date
+        }
+        (Just <<< HandleDate)
+      ]
+    , HH.div
+      [ css "flex-1" ]
+      [ HH.slot _timepicker unit TimePicker.component
+        { selection: time }
+        (Just <<< HandleTime)
+      ]
+    ]
 
-        _ -> H.raise $ DateMessage msg
+handleAction :: forall m. Action -> ComponentM m Unit
+handleAction = case _ of
+  HandleDate msg -> case msg of
+    DatePicker.SelectionChanged date' -> do
+      time' <- H.gets _.time
+      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      H.modify_ _ { date = date' }
 
-      HandleTime msg a -> a <$ case msg of
-        TP.SelectionChanged time' -> do
-          date' <- H.gets _.date
-          H.raise $ SelectionChanged (DateTime <$> date' <*> time')
-          H.modify_ _ { time = time' }
+    _ -> H.raise $ DateOutput msg
 
-        _ -> H.raise $ TimeMessage msg
+  HandleTime msg -> case msg of
+    TimePicker.SelectionChanged time' -> do
+      date' <- H.gets _.date
+      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      H.modify_ _ { time = time' }
 
-      GetSelection reply -> do
-        { time, date } <- H.get
-        pure $ reply (DateTime <$> date <*> time)
+    _ -> H.raise $ TimeOutput msg
 
-      SetSelection dateTime a -> a <$ do
-        let date' = date <$> dateTime
-            time' = time <$> dateTime
-        void $ H.query _a unit $ DP.SetSelection date' a
-        void $ H.query _b unit $ TP.SetSelection time' a
-        H.modify_ _ { date = date', time = time' }
+handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
+handleQuery = case _ of
+  GetSelection reply -> do
+    ({ time, date }) <- H.get
+    pure $ reply <$> (DateTime <$> date <*> time)
 
-      SendDateQuery q a -> a <$ H.query _a unit q
+  SetSelection dateTime a -> Just a <$ do
+    let date' = date <$> dateTime
+        time' = time <$> dateTime
+    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetSelection date'
+    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetSelection time'
+    H.modify_ _ { date = date', time = time' }
 
-      SendTimeQuery q a -> a <$ H.query _b unit q
+  SendDateQuery q a -> Just a <$ H.query _datepicker unit q
 
-
-    render :: State -> H.ParentHTML Query ChildQuery ChildSlot m
-    render { date, time, targetDate, disabled } =
-      HH.div
-        [ css "flex" ]
-        [ HH.div
-          [ css "w-1/2 mr-2" ]
-          [ HH.slot _a unit DP.component
-            { targetDate
-            , selection: date
-            , disabled
-            }
-            (HE.input HandleDate)
-          ]
-        , HH.div
-          [ css "flex-1" ]
-          [ HH.slot _b unit TP.component
-            { selection: time
-            , disabled
-            }
-            (HE.input HandleTime)
-          ]
-        ]
+  SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
