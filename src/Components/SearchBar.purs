@@ -42,6 +42,8 @@ data Action
 data Query a
   = SetText String a
 
+type Slot = H.Slot Query Message
+
 type Input = { debounceTime :: Maybe Milliseconds }
 
 data Message
