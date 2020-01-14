@@ -44,18 +44,21 @@ type StateRow =
   ( targetDate :: Year /\ Month
   , selection :: Maybe Date
   , calendarItems :: Array CalendarItem
+  , disabled :: Boolean
   )
 type State = Record StateRow
 
 type Input =
   { targetDate :: Maybe (Year /\ Month)
   , selection :: Maybe Date
+  , disabled :: Boolean
   }
 
 defaultInput :: Input
 defaultInput =
   { targetDate: Nothing
   , selection: Nothing
+  , disabled: false
   }
 
 -- NOTE overhead of component abstraction, need an action to re-raise output messages from the embedded component
@@ -139,13 +142,14 @@ component = H.mkComponent
   }
 
 initialState :: Input -> State
-initialState { targetDate, selection } =
+initialState { targetDate, selection, disabled } =
   let targetDate'
         = fromMaybe ((ODT.unsafeMkYear 2001) /\ (ODT.unsafeMkMonth 1)) targetDate
   in
     { targetDate: targetDate'
     , selection
     , calendarItems: generateCalendarRows selection (fst targetDate') (snd targetDate')
+    , disabled
     }
 
 render :: forall m. MonadAff m => ComponentRender m
@@ -164,7 +168,7 @@ spec =
 
 -- NOTE configure Select
 embeddedInput :: State -> CompositeInput
-embeddedInput { targetDate, selection, calendarItems } =
+embeddedInput { targetDate, selection, calendarItems, disabled } =
   { inputType: S.Text
   , search: Nothing
   , debounceTime: Nothing
@@ -173,6 +177,7 @@ embeddedInput { targetDate, selection, calendarItems } =
   , targetDate
   , selection
   , calendarItems
+  , disabled
   }
 
 -- NOTE re-raise output messages from the embedded component
@@ -354,10 +359,13 @@ embeddedInitialize = Just $ Initialize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender st =
-  HH.div_
-  [ renderSearch st.search
-  , renderSelect (fst st.targetDate) (snd st.targetDate) st.visibility st.calendarItems
-  ]
+  if st.disabled
+    then Input.input [ HP.disabled true, HP.value st.search ]
+    else
+      HH.div_
+      [ renderSearch st.search
+      , renderSelect (fst st.targetDate) (snd st.targetDate) st.visibility st.calendarItems
+      ]
 
 renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =

@@ -38,16 +38,19 @@ type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 type StateRow =
   ( selection :: Maybe Time
   , timeUnits :: Array TimeUnit
+  , disabled :: Boolean
   )
 type State = Record StateRow
 
 type Input =
   { selection :: Maybe Time
+  , disabled :: Boolean
   }
 
 defaultInput :: Input
 defaultInput =
   { selection: Nothing
+  , disabled: false
   }
 
 data Action
@@ -124,9 +127,10 @@ component = H.mkComponent
   }
 
 initialState :: Input -> State
-initialState { selection } =
+initialState { selection, disabled } =
   { selection
   , timeUnits: generateTimes selection
+  , disabled
   }
 
 render :: forall m. MonadAff m => ComponentRender m
@@ -156,7 +160,7 @@ handleQuery = case _ of
     H.query _select unit (S.Query $ H.tell $ SetSelection selection)
 
 embeddedInput :: State -> CompositeInput
-embeddedInput { selection, timeUnits } =
+embeddedInput { selection, timeUnits, disabled } =
   { inputType: S.Text
   , search: Nothing
   , debounceTime: Nothing
@@ -164,6 +168,7 @@ embeddedInput { selection, timeUnits } =
 
   , selection
   , timeUnits
+  , disabled
   }
 
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
@@ -231,10 +236,13 @@ embeddedHandleQuery = case _ of
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
-  HH.div_
-    [ renderSearch s.search
-    , renderSelect s.visibility s.timeUnits
-    ]
+  if s.disabled
+    then Input.input [ HP.disabled true, HP.value s.search ]
+    else
+      HH.div_
+        [ renderSearch s.search
+        , renderSelect s.visibility s.timeUnits
+        ]
 
 -- The page element that will hold focus, capture key events, etcetera
 renderSearch :: forall m. String -> CompositeComponentHTML m

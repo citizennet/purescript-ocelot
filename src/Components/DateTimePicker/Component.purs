@@ -25,17 +25,20 @@ type State =
   { date :: Maybe Date
   , time :: Maybe Time
   , targetDate :: Maybe (Year /\ Month)
+  , disabled :: Boolean
   }
 
 type Input =
   { selection :: Maybe DateTime
   , targetDate :: Maybe (Year /\ Month)
+  , disabled :: Boolean
   }
 
 defaultInput :: Input
 defaultInput =
   { selection: Nothing
   , targetDate: Nothing
+  , disabled: false
   }
 
 data Action
@@ -71,14 +74,15 @@ component = H.mkComponent
   }
 
 initialState :: Input -> State
-initialState { selection, targetDate } =
+initialState { selection, targetDate, disabled } =
       { date: date <$> selection
       , time: time <$> selection
       , targetDate
+      , disabled
       }
 
 render :: forall m. MonadAff m => ComponentRender m
-render { date, time, targetDate } =
+render { date, time, targetDate, disabled } =
   HH.div
     [ css "flex" ]
     [ HH.div
@@ -86,13 +90,14 @@ render { date, time, targetDate } =
       [ HH.slot _datepicker unit DatePicker.component
         { targetDate
         , selection: date
+        , disabled
         }
         (Just <<< HandleDate)
       ]
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
-        { selection: time }
+        { selection: time, disabled }
         (Just <<< HandleTime)
       ]
     ]
