@@ -2,12 +2,11 @@ module UIGuide.Component.Modals where
 
 import Prelude
 
-import Data.Either.Nested (Either2)
-import Data.Functor.Coproduct.Nested (Coproduct2)
-import Data.Maybe (Maybe(..))
+import Data.Foldable (traverse_)
+import Data.Maybe (Maybe(..), isJust)
+import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
@@ -24,49 +23,52 @@ import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
 import Web.UIEvent.KeyboardEvent as KE
 
-type State = Boolean
+type State = Maybe H.SubscriptionId
 
 data Query a
-  = Open a
-  | Close a
-  | HandleKey KE.KeyboardEvent (H.SubscribeStatus -> a)
+data Action
+  = Open
+  | Close
+  | HandleKey KE.KeyboardEvent -- (H.SubscribeStatus -> a)
 
 type Input = Unit
 
 type Message = Void
 
-type ChildSlot = Either2 Unit Unit
-type ChildQuery m =
-  Coproduct2
-    (TA.Query Query Array Async.Location m)
-    (TA.Query Query Array Async.User m)
+type ChildSlot =
+  ( cp1 :: TA.Slot Array Async.Location Unit
+  , cp2 :: TA.Slot Array Async.User Unit
+  )
+
+_cp1 = SProxy :: SProxy "cp1"
+_cp2 = SProxy :: SProxy "cp2"
 
 component :: ∀ m
   . MonadAff m
  => H.Component HH.HTML Query Input Message m
 component =
-  H.parentComponent
-    { initialState: const false
+  H.mkComponent
+    { initialState: const Nothing
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
   where
-    eval :: Query ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Message m
-    eval = case _ of
-      HandleKey ev reply -> do
-        Modal.whenClose ev reply (H.put false)
+    handleAction :: Action -> H.HalogenM State Action ChildSlot Message m Unit
+    handleAction = case _ of
+      HandleKey ev -> do
+        id <- H.get
+        traverse_ (\sid -> Modal.whenClose ev sid $ handleAction Close) id
+        H.put Nothing
 
-      Open a -> do
-        Modal.initializeWith HandleKey
-        H.put true $> a
+      Open -> do
+        id <- Modal.initializeWith (Just <<< HandleKey)
+        H.put $ Just id
 
-      Close a -> do
-        H.put false
-        pure a
+      Close -> do
+        H.put Nothing
 
-    render :: State -> H.ParentHTML Query (ChildQuery m) ChildSlot m
-    render isOpen =
+    render :: State -> H.ComponentHTML Action ChildSlot m
+    render st =
       HH.div_
         [ Documentation.block_
           { header: "Modals"
@@ -76,13 +78,15 @@ component =
             [ Backdrop.content
               [ css "mt-0 text-center" ]
               [ Button.button
-                [ HE.onClick $ HE.input_ Open ]
+                [ HE.onClick $ const $ Just Open ]
                 [ HH.text "Open Modal" ]
               ]
             ]
           ]
         , if isOpen then renderModal else HH.text ""
         ]
+      where
+      isOpen = isJust st
 
     renderModal =
       Modal.modal_ Close
@@ -90,10 +94,10 @@ component =
           { buttons:
               [ HH.a
                 [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] )
-                , HE.onClick $ HE.input_ Close ]
+                , HE.onClick $ const $ Just Close ]
                 [ HH.text "Cancel" ]
               , Button.buttonPrimary
-                [ HE.onClick $ HE.input_ Close ]
+                [ HE.onClick $ const $ Just Close ]
                 [ HH.text "Submit" ]
               ]
           , title: [ HH.text "Editing" ]
@@ -110,7 +114,7 @@ component =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp1 unit TA.multi
+              [ HH.slot _cp1 unit TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -131,7 +135,7 @@ component =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp2 unit TA.multi
+              [ HH.slot _cp2 unit TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
