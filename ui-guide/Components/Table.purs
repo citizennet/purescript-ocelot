@@ -2,7 +2,6 @@ module UIGuide.Component.Table where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
 import Data.Ratio ((%))
 import Halogen as H
 import Halogen.HTML as HH
@@ -17,7 +16,8 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a = NoOp a
+data Query a
+type Action = Unit
 
 type Input = Unit
 
@@ -27,23 +27,14 @@ component
   :: ∀ m
    . H.Component HH.HTML Query Input Message m
 component =
-  H.component
+  H.mkComponent
     { initialState: const unit
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval H.defaultEval
     }
   where
-    eval
-      :: Query
-      ~> H.ComponentDSL State Query Message m
-    eval = case _ of
-      NoOp a -> do
-        pure a
 
-    render
-      :: State
-      -> H.ComponentHTML Query
+    render :: State -> H.ComponentHTML Action () m
     render _ =
       HH.div_
         [ Documentation.block_

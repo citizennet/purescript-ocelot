@@ -3,12 +3,12 @@ module UIGuide.Component.TextFields where
 import Prelude
 
 import Data.Maybe (Maybe(..))
+import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events (input) as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
@@ -24,39 +24,41 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a = HandleSearch SearchBar.Message a
+data Query a
+data Action = HandleSearch SearchBar.Message
 
 type Input = Unit
 
 type Message = Void
 
-type ChildSlot = Unit
+type ChildSlot =
+  ( search :: SearchBar.Slot Unit )
+
+_search = SProxy :: SProxy "search"
 
 type ChildQuery = SearchBar.Query
 
 component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
 component =
-  H.parentComponent
+  H.mkComponent
     { initialState: const unit
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
   where
-    eval :: Query ~> H.ParentDSL State Query ChildQuery ChildSlot Message m
-    eval = case _ of
-      HandleSearch (SearchBar.Searched str) a -> do
-        H.liftEffect $ log str
-        pure a
+    handleAction :: Action -> H.HalogenM State Action ChildSlot Message m Unit
+    handleAction = case _ of
+      HandleSearch (SearchBar.Searched str) -> do
+        void $ H.liftEffect $ log str
 
-    render :: State -> H.ParentHTML Query ChildQuery ChildSlot m
+    render :: State -> H.ComponentHTML Action ChildSlot m
     render _ = cnDocumentationBlocks
 
 
 ----------
 -- HTML
 
-cnDocumentationBlocks :: ∀ m. MonadAff m => H.ParentHTML Query ChildQuery ChildSlot m
+cnDocumentationBlocks :: ∀ m. MonadAff m => H.ComponentHTML Action ChildSlot m
 cnDocumentationBlocks =
   let content = Backdrop.content [ css "flex" ] in
   HH.div_
@@ -423,9 +425,9 @@ cnDocumentationBlocks =
       [ Backdrop.content_
         [ HH.div
           [ css "w-1/3 pb-6" ]
-          [ HH.slot unit SearchBar.component
+          [ HH.slot _search unit SearchBar.component
             { debounceTime: Just (Milliseconds 250.0) }
-            ( HE.input HandleSearch )
+            ( Just <<< HandleSearch )
           ]
         ]
       ]
@@ -440,9 +442,9 @@ cnDocumentationBlocks =
           [ css "flex items-center pb-6" ]
           [ HH.div
             [ css "mr-8" ]
-            [ HH.slot unit SearchBar.component
+            [ HH.slot _search unit SearchBar.component
               { debounceTime: Just (Milliseconds 250.0) }
-              ( HE.input HandleSearch )
+              ( Just <<< HandleSearch )
             ]
           , Button.buttonPrimary_
             [ HH.text "Neighbor" ]
