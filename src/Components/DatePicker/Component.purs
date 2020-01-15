@@ -377,10 +377,11 @@ renderSearch search =
 
 renderSelect :: forall m. Year -> Month -> S.Visibility -> Array CalendarItem -> CompositeComponentHTML m
 renderSelect y m visibility calendarItems =
-  HH.div_
-  $ if visibility == S.On
-    then [ renderCalendar y m calendarItems ]
-    else []
+  HH.div
+    [ css "relative" ]
+    $ if visibility == S.On
+      then [ renderCalendar y m calendarItems ]
+      else []
 
 renderCalendar :: forall m. Year -> Month -> Array CalendarItem -> CompositeComponentHTML m
 renderCalendar y m calendarItems =
