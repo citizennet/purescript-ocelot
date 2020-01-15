@@ -36,15 +36,12 @@ type Input = Unit
 
 type Message = Void
 
--- type ChildSlot = Either2 Unit Unit
 type ChildSlot =
   ( dropdown :: DD.Slot String Unit
   , select :: Select.Slot (Const Query) () Select.Event Unit
   )
 _dropdown = SProxy :: SProxy "dropdown"
 _select = SProxy :: SProxy "select"
-
--- type ChildQuery m = Coproduct2 (DD.Query Query String m) (Select.Query Query Platform)
 
 data Platform
   = Facebook
@@ -236,7 +233,7 @@ component =
           }
 
         choiceSpec = Select.defaultSpec
-          { render = renderPlatformChoice }
+          { render = renderPlatformChoice, handleEvent = H.raise }
 
         renderPlatformChoice state' =
           HH.div

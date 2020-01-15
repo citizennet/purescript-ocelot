@@ -58,7 +58,6 @@ component =
       HandleKey ev -> do
         id <- H.get
         traverse_ (\sid -> Modal.whenClose ev sid $ handleAction Close) id
-        H.put Nothing
 
       Open -> do
         id <- Modal.initializeWith (Just <<< HandleKey)
@@ -130,10 +129,10 @@ component =
               [ HP.classes Format.captionClasses ]
               [ HH.text "Standard Hydrated" ]
             , FormField.field_
-              { label: HH.text "Locations"
-              , helpText: [ HH.text "Search your top destinations." ]
+              { label: HH.text "Users"
+              , helpText: [ HH.text "Search your favorite companion." ]
               , error: []
-              , inputId: "locations"
+              , inputId: "users"
               }
               [ HH.slot _cp2 unit TA.multi
                 ( TA.asyncMulti

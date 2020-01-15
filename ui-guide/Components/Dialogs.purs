@@ -50,7 +50,7 @@ component =
   H.mkComponent
     { initialState: const { toast: Nothing }
     , render
-    , eval: H.mkEval H.defaultEval
+    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
 
   where
