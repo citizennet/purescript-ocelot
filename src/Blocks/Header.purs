@@ -68,7 +68,7 @@ stickyFormHeader hConfig tConfig =
 stickyHeader_ :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
 stickyHeader_ config =
   HH.div
-    [ HP.class_ $ HH.ClassName "h-20" ]
+    [ HP.class_ $ HH.ClassName "h-24" ]
     [ HH.div
       [ HP.classes Layout.stickyClasses ]
       [ formHeader config ]
