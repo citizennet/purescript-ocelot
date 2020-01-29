@@ -51,6 +51,12 @@ dt {
 
 .container { max-width: 1200px; }
 
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
 .flex-2 { flex: 2 }
 .flex-3 { flex: 3 }
 
