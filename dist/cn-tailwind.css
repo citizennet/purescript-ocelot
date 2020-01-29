@@ -10173,6 +10173,12 @@ dt {
   max-width: 1200px;
 }
 
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
 .flex-2 {
   flex: 2;
 }
