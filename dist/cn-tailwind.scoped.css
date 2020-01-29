@@ -10173,6 +10173,12 @@ body .ocelot-scoped {
   max-width: 1200px;
 }
 
+.ocelot-scoped .clearfix::before,
+.ocelot-scoped .clearfix::after {
+  content: "";
+  display: table;
+}
+
 .ocelot-scoped .flex-2 {
   flex: 2;
 }
