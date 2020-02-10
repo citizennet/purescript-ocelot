@@ -47,7 +47,7 @@
     "purescript-affjax": "^10.0.0",
     "purescript-argonaut": "^6.0.0",
     "purescript-halogen-storybook": "https://github.com/rnons/purescript-halogen-storybook.git#de336410dde6e59ad4930f7e4296d066cb236628",
-    "purescript-email-validate": "^4.0.0",
+    "purescript-email-validate": "^5.0.0",
     "purescript-numbers": "^6.0.0",
     "purescript-js-timers": "^4.0.0",
     "purescript-test-unit": "^14.0.0",
