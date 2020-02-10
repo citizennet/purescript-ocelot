@@ -30,11 +30,11 @@ import Unsafe.Coerce (unsafeCoerce)
 -- Overall Rendering
 
 renderSingle
-  :: ∀ item m
-  . Array (HP.IProp HTMLinput (TA.CompositeAction Maybe item m))
+  :: ∀ action item m
+  . Array (HP.IProp HTMLinput (TA.CompositeAction action Maybe item m))
   -> (item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender Maybe item m
-  -> TA.CompositeComponentRender Maybe item m
+  -> TA.CompositeComponentRender action Maybe item m
+  -> TA.CompositeComponentRender action Maybe item m
 renderSingle iprops renderItem renderContainer st =
   HH.div_
     [ Input.inputGroup' HH.div
@@ -93,11 +93,11 @@ renderSingle iprops renderItem renderContainer st =
 
 
 renderMulti
-  :: ∀ item m
-  . Array (HP.IProp HTMLinput (TA.CompositeAction Array item m))
+  :: ∀ action item m
+  . Array (HP.IProp HTMLinput (TA.CompositeAction action Array item m))
   -> (item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender Array item m
-  -> TA.CompositeComponentRender Array item m
+  -> TA.CompositeComponentRender action Array item m
+  -> TA.CompositeComponentRender action Array item m
 renderMulti iprops renderItem renderContainer st =
   HH.div
     [ css "relative" ]
@@ -149,21 +149,21 @@ renderMulti iprops renderItem renderContainer st =
 -- Default Renders
 
 defRenderContainer
-    :: ∀ f item m
+    :: ∀ action f item m
   . (Fuzzy item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender f item m
+  -> TA.CompositeComponentRender action f item m
 defRenderContainer renderFuzzy st =
   IC.itemContainer st.highlightedIndex (renderFuzzy <$> st.fuzzyItems) []
 
 
 renderToolbarSearchDropdown
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => String
   -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender Maybe item m
+  -> TA.CompositeComponentRender action Maybe item m
 renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
   renderSearchDropdown resetLabel label renderFuzzy st
   where
@@ -177,13 +177,13 @@ renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
       [ maybe (HH.text defaultLabel) (HH.fromPlainHTML <<< renderItem) st.selected ]
 
 renderHeaderSearchDropdown
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => String
   -> String
   -> (item -> HH.PlainHTML)
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender Maybe item m
+  -> TA.CompositeComponentRender action Maybe item m
 renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
   renderSearchDropdown resetLabel label renderFuzzy st
   where
@@ -194,12 +194,12 @@ renderHeaderSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
       ]
 
 renderSearchDropdown
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => String
   -> HH.PlainHTML
   -> (Fuzzy item -> HH.PlainHTML)
-  -> TA.CompositeComponentRender Maybe item m
+  -> TA.CompositeComponentRender action Maybe item m
 renderSearchDropdown resetLabel label renderFuzzy st =
   HH.label
     [ css "relative" ]
@@ -247,10 +247,10 @@ linkClasses = if _
 
 
 inputProps
-  :: ∀ f item m
+  :: ∀ action f item m
    . Boolean
-  -> Array (HP.IProp HTMLinput (TA.CompositeAction f item m))
-  -> Array (HP.IProp HTMLinput (TA.CompositeAction f item m))
+  -> Array (HP.IProp HTMLinput (TA.CompositeAction action f item m))
+  -> Array (HP.IProp HTMLinput (TA.CompositeAction action f item m))
 inputProps disabled iprops = if disabled
   then iprops'
   else Setters.setInputProps iprops'

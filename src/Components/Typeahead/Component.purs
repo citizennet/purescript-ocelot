@@ -32,12 +32,12 @@ type DefaultSyncTypeaheadInput item =
   }
 
 syncSingle
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => MonadAff m
   => DefaultSyncTypeaheadInput item
-  -> Array (HH.IProp HTMLinput (CompositeAction Maybe item m))
-  -> Input Maybe item m
+  -> Array (HH.IProp HTMLinput (CompositeAction action Maybe item m))
+  -> Input action Maybe item m
 syncSingle { itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
@@ -52,12 +52,12 @@ syncSingle { itemToObject, renderFuzzy } props =
   }
 
 syncMulti
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => MonadAff m
   => DefaultSyncTypeaheadInput item
-  -> Array (HH.IProp HTMLinput (CompositeAction Array item m))
-  -> Input Array item m
+  -> Array (HH.IProp HTMLinput (CompositeAction action Array item m))
+  -> Input action Array item m
 syncMulti { itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
@@ -81,12 +81,12 @@ type DefaultAsyncTypeaheadInput item m =
   }
 
 asyncSingle
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => MonadAff m
   => DefaultAsyncTypeaheadInput item m
-  -> Array (HH.IProp HTMLinput (CompositeAction Maybe item m))
-  -> Input Maybe item m
+  -> Array (HH.IProp HTMLinput (CompositeAction action Maybe item m))
+  -> Input action Maybe item m
 asyncSingle { async, itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable
@@ -101,12 +101,12 @@ asyncSingle { async, itemToObject, renderFuzzy } props =
   }
 
 asyncMulti
-  :: ∀ item m
+  :: ∀ action item m
    . Eq item
   => MonadAff m
   => DefaultAsyncTypeaheadInput item m
-  -> Array (HH.IProp HTMLinput (CompositeAction Array item m))
-  -> Input Array item m
+  -> Array (HH.IProp HTMLinput (CompositeAction action Array item m))
+  -> Input action Array item m
 asyncMulti { async, itemToObject, renderFuzzy } props =
   { items: NotAsked
   , insertable: NotInsertable

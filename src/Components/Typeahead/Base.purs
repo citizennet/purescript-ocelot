@@ -26,10 +26,10 @@ import Type.Data.Symbol (SProxy(..))
 -- Components
 
 single
-  :: forall item m
+  :: forall action item m
   . Eq item
   => MonadAff m
-  => Component Maybe item m
+  => Component action Maybe item m
 single = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
@@ -37,10 +37,10 @@ single = component
   }
 
 multi
-  :: forall item m
+  :: forall action item m
   . Eq item
   => MonadAff m
-  => Component Array item m
+  => Component action Array item m
 multi = component
   { runSelect: (:)
   , runRemove: Array.filter <<< (/=)
@@ -50,12 +50,12 @@ multi = component
 --------
 -- Types
 
-type Slot f item id = H.Slot (Query f item) (Output f item) id
+type Slot action f item id = H.Slot (Query f item) (Output action f item) id
 
-type Component f item m = H.Component HH.HTML (Query f item) (Input f item m) (Output f item) m
-type ComponentHTML f item m = H.ComponentHTML (Action f item m) (ChildSlots f item) m
-type ComponentRender f item m = State f item m -> ComponentHTML f item m
-type ComponentM f item m a = H.HalogenM (StateStore f item m) (Action f item m) (ChildSlots f item) (Output f item) m a
+type Component action f item m = H.Component HH.HTML (Query f item) (Input action f item m) (Output action f item) m
+type ComponentHTML action f item m = H.ComponentHTML (Action action f item m) (ChildSlots action f item) m
+type ComponentRender action f item m = State f item m -> ComponentHTML action f item m
+type ComponentM action f item m a = H.HalogenM (StateStore action f item m) (Action action f item m) (ChildSlots action f item) (Output action f item) m a
 
 type StateRow f item m =
   ( items :: RemoteData String (Array item) -- NOTE pst.items, Parent(Typeahead)
@@ -72,9 +72,9 @@ type StateRow f item m =
 
 type State f item m = Record (StateRow f item m)
 
-type StateStore f item m = Store (State f item m) (ComponentHTML f item m)
+type StateStore action f item m = Store (State f item m) (ComponentHTML action f item m)
 
-type Input f item m =
+type Input action f item m =
   { items :: RemoteData String (Array item)
   , insertable :: Insertable item
   , keepOpen :: Boolean
@@ -82,17 +82,18 @@ type Input f item m =
   , async :: Maybe (String -> m (RemoteData String (Array item)))
 
   , debounceTime :: Maybe Milliseconds
-  , render :: CompositeComponentRender f item m
+  , render :: CompositeComponentRender action f item m
   }
 
-data Action f item (m :: Type -> Type)
-  = PassingOutput (Output f item)
-  | ReceiveRender (Input f item m)
+data Action action (f :: Type -> Type) item (m :: Type -> Type)
+  = PassingOutput (Output action f item)
+  | ReceiveRender (Input action f item m)
 
-data EmbeddedAction (f :: Type -> Type) item (m :: Type -> Type)
+data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
   = Initialize
   | Remove item
   | RemoveAll
+  | Raise action
   -- | Receive CompositeInput
 -- NOTE internal actions, moved to Util functions
   -- | Synchronize a
@@ -110,28 +111,28 @@ data Query f item a
   | ReplaceItems (RemoteData String (Array item)) a
   | Reset a
 
-data Output (f :: Type -> Type) item
+data Output action (f :: Type -> Type) item
   = Searched String
   | Selected item
   | SelectionChanged SelectionCause (f item)
-  -- | Emit (pq Unit)
+  | Emit action
 
-type ChildSlots f item =
-  ( select :: S.Slot (Query f item) EmbeddedChildSlots (Output f item) Unit
+type ChildSlots action f item =
+  ( select :: S.Slot (Query f item) EmbeddedChildSlots (Output action f item) Unit
   )
 _select = SProxy :: SProxy "select"
 
 type CompositeState f item m = S.State (StateRow f item m)
-type CompositeAction f item m = S.Action (EmbeddedAction f item m)
+type CompositeAction action f item m = S.Action (EmbeddedAction action f item m)
 type CompositeQuery f item = S.Query (Query f item) EmbeddedChildSlots
 type CompositeInput f item m = S.Input (StateRow f item m)
 type EmbeddedChildSlots = () -- NOTE no extension
 
-type Spec f item m = S.Spec (StateRow f item m) (Query f item) (EmbeddedAction f item m) EmbeddedChildSlots (CompositeInput f item m) (Output f item) m
-type CompositeComponent f item m = H.Component HH.HTML (CompositeQuery f item) (CompositeInput f item m) (Output f item) m
-type CompositeComponentHTML f item m = H.ComponentHTML (CompositeAction f item m) EmbeddedChildSlots m
-type CompositeComponentRender f item m = (CompositeState f item m) -> CompositeComponentHTML f item m
-type CompositeComponentM f item m a = H.HalogenM (CompositeState f item m) (CompositeAction f item m) EmbeddedChildSlots (Output f item) m a
+type Spec action f item m = S.Spec (StateRow f item m) (Query f item) (EmbeddedAction action f item m) EmbeddedChildSlots (CompositeInput f item m) (Output action f item) m
+type CompositeComponent action f item m = H.Component HH.HTML (CompositeQuery f item) (CompositeInput f item m) (Output action f item) m
+type CompositeComponentHTML action f item m = H.ComponentHTML (CompositeAction action f item m) EmbeddedChildSlots m
+type CompositeComponentRender action f item m = (CompositeState f item m) -> CompositeComponentHTML action f item m
+type CompositeComponentM action f item m a = H.HalogenM (CompositeState f item m) (CompositeAction action f item m) EmbeddedChildSlots (Output action f item) m a
 
 -------
 -- Data
@@ -157,12 +158,12 @@ data Insertable item
 -- Container
 
 component
-  :: forall f item m
+  :: forall action f item m
   . Plus f
   => Eq item
   => MonadAff m
   => Operations f item
-  -> Component f item m
+  -> Component action f item m
 component ops = H.mkComponent
   { initialState: initialState ops
   , render: extract
@@ -173,13 +174,13 @@ component ops = H.mkComponent
   }
 
 initialState
-  :: forall f item m
+  :: forall action f item m
   . Plus f
   => Eq item
   => MonadAff m
   => Operations f item
-  -> Input f item m
-  -> StateStore f item m
+  -> Input action f item m
+  -> StateStore action f item m
 initialState ops
   { items, insertable, keepOpen, itemToObject, async, debounceTime, render }
   = store (renderAdapter render)
@@ -196,24 +197,24 @@ initialState ops
       }
 
 renderAdapter
-  :: forall f item m
+  :: forall action f item m
   . Plus f
   => Eq item
   => MonadAff m
-  => CompositeComponentRender f item m
-  -> ComponentRender f item m
+  => CompositeComponentRender action f item m
+  -> ComponentRender action f item m
 renderAdapter render state =
   HH.slot _select unit (S.component identity $ spec render)
     (embeddedInput state)
     (Just <<< PassingOutput)
 
 spec
-  :: forall f item m
+  :: forall action f item m
   . Plus f
   => Eq item
   => MonadAff m
-  => CompositeComponentRender f item m
-  -> Spec f item m
+  => CompositeComponentRender action f item m
+  -> Spec action f item m
 spec embeddedRender =
   S.defaultSpec
   { render = embeddedRender
@@ -246,12 +247,12 @@ embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async,
 -- NOTE re-raise output messages from the embedded component
 -- NOTE update Dropdown render function if it relies on external state
 handleAction
-  :: forall f item m
+  :: forall action f item m
   . Plus f
   => Eq item
   => MonadAff m
-  => Action f item m
-  -> ComponentM f item m Unit
+  => Action action f item m
+  -> ComponentM action f item m Unit
 handleAction = case _ of
   PassingOutput output ->
     H.raise output
@@ -259,7 +260,7 @@ handleAction = case _ of
     modifyStore_ (renderAdapter render) identity
 
 -- NOTE passing query to the embedded component
-handleQuery :: forall f item m a. Query f item a -> ComponentM f item m (Maybe a)
+handleQuery :: forall action f item m a. Query f item a -> ComponentM action f item m (Maybe a)
 handleQuery = case _ of
   GetSelected reply -> do
     response <- H.query _select unit (S.Query $ H.request GetSelected)
@@ -317,10 +318,10 @@ applyInsertable match insertable text items = case insertable of
     isExactMatch (Fuzzy { distance }) = distance == Fuzz.Distance 0 0 0 0 0 0
 
 synchronize
-  :: forall f item m
+  :: forall action f item m
   . Eq item
   => MonadAff m
-  => CompositeComponentM f item m Unit
+  => CompositeComponentM action f item m Unit
 synchronize = do
   st <- H.get
   case getNewItems st of
@@ -340,11 +341,11 @@ synchronize = do
       H.modify_ _ { fuzzyItems = [] }
 
 replaceSelected
-  :: forall f item m
+  :: forall action f item m
   . Eq item
   => MonadAff m
   => f item
-  -> CompositeComponentM f item m Unit
+  -> CompositeComponentM action f item m Unit
 replaceSelected selected = do
   st <- H.modify _ { selected = selected }
   H.raise $ SelectionChanged ReplacementQuery st.selected
@@ -354,12 +355,12 @@ replaceSelected selected = do
 -- Embedded > handleAction
 
 embeddedHandleAction
-  :: forall f item m
+  :: forall action f item m
   . Eq item
   => Plus f
   => MonadAff m
-  => EmbeddedAction f item m
-  -> CompositeComponentM f item m Unit
+  => EmbeddedAction action f item m
+  -> CompositeComponentM action f item m Unit
 embeddedHandleAction = case _ of
   Initialize -> do
     synchronize
@@ -374,6 +375,8 @@ embeddedHandleAction = case _ of
          }
     H.raise $ SelectionChanged RemovalQuery st.selected
     synchronize
+  Raise action -> do
+    H.raise $ Emit action
 
   -- Receive input a -> do
   --   H.modify_ $ updateStore input.render identity
@@ -383,12 +386,12 @@ embeddedHandleAction = case _ of
 -- Embedded > handleQuery
 
 embeddedHandleQuery
-  :: forall f item m a
+  :: forall action f item m a
   . Plus f
   => Eq item
   => MonadAff m
   => Query f item a
-  -> CompositeComponentM f item m (Maybe a)
+  -> CompositeComponentM action f item m (Maybe a)
 embeddedHandleQuery = case _ of
   GetSelected reply -> do
     selected  <- H.gets _.selected
@@ -416,11 +419,11 @@ embeddedHandleQuery = case _ of
 -- Embedded > handleMessage
 
 embeddedHandleMessage
-  :: forall f item m
+  :: forall action f item m
    . Eq item
   => MonadAff m
   => S.Event
-  -> CompositeComponentM f item m Unit
+  -> CompositeComponentM action f item m Unit
 embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- (Fuzzy { original: item })
@@ -459,5 +462,5 @@ embeddedHandleMessage = case _ of
 ------------------------
 -- Embedded > initialize
 
-embeddedInitialize :: forall f item m. Maybe (EmbeddedAction f item m)
+embeddedInitialize :: forall action f item m. Maybe (EmbeddedAction action f item m)
 embeddedInitialize = Just $ Initialize

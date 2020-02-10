@@ -56,20 +56,20 @@ type MessageVariant = Variant
   , emit :: String
   )
 
-convertMultiToMessageVariant :: Output Array (Object String) -> MessageVariant
+convertMultiToMessageVariant :: forall action. Output action Array (Object String) -> MessageVariant
 convertMultiToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ arr -> inj (SProxy :: SProxy "selectionChanged") arr
-  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
+  Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
-convertSingleToMessageVariant :: Output Maybe (Object String) -> MessageVariant
+convertSingleToMessageVariant :: forall action. Output action Maybe (Object String) -> MessageVariant
 convertSingleToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [i]
   SelectionChanged _ Nothing -> inj (SProxy :: SProxy "selectionChanged") []
-  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
+  Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 -- | A subset of the input available to the typeahead
 -- | Provide:
@@ -108,9 +108,9 @@ type DropdownInput =
 -- | An adapter to simplify types necessary in JS to control the typeahead
 -- | component. Items are specialized to Object String.
 typeaheadInputToSingleInput
-  :: ∀ m
+  :: ∀ m action
    . TypeaheadInput
-  -> Input Maybe (Object String) m
+  -> Input action Maybe (Object String) m
 typeaheadInputToSingleInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -129,9 +129,9 @@ typeaheadInputToSingleInput r =
       Nothing -> span_ (boldMatches r.key item)
 
 typeaheadInputToMultiInput
-  :: ∀ m
+  :: ∀ m action
    . TypeaheadInput
-  -> Input Array (Object String) m
+  -> Input action Array (Object String) m
 typeaheadInputToMultiInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -150,9 +150,9 @@ typeaheadInputToMultiInput r =
       Nothing -> span_ (boldMatches r.key item)
 
 dropdownInputToSingleInput
-  :: ∀ m
+  :: ∀ m action
    . DropdownInput
-  -> Input Maybe (Object String) m
+  -> Input action Maybe (Object String) m
 dropdownInputToSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -222,9 +222,9 @@ mountDropdownTypeahead :: EffectFn2 HTMLElement DropdownInput (Interface Message
 mountDropdownTypeahead = mkSingleTypeaheadMounter single' dropdownInputToSingleInput
 
 mkSingleTypeaheadMounter
-  :: ∀ input
-   . Component Maybe (Object String) Aff
-  -> (input -> Input Maybe (Object String) Aff)
+  :: ∀ input action
+   . Component action Maybe (Object String) Aff
+  -> (input -> Input action Maybe (Object String) Aff)
   -> EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
 mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
@@ -267,7 +267,7 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-single' :: ∀ item. Eq item => Component Maybe item Aff
+single' :: ∀ action item. Eq item => Component action Maybe item Aff
 single' = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
@@ -284,10 +284,10 @@ type SearchDropdownInput =
   }
 
 searchDropdownInputToHeaderSingleInput
-  :: ∀ m
+  :: ∀ m action
    . Warn (Text "This function is deprecated")
   => SearchDropdownInput
-  -> Input Maybe (Object String) m
+  -> Input action Maybe (Object String) m
 searchDropdownInputToHeaderSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -308,10 +308,10 @@ searchDropdownInputToHeaderSingleInput r =
       HH.text (fromMaybe "" $ Object.lookup r.key item)
 
 searchDropdownInputToToolbarSingleInput
-  :: ∀ m
+  :: ∀ m action
    . Warn (Text "This function is deprecated")
   => SearchDropdownInput
-  -> Input Maybe (Object String) m
+  -> Input action Maybe (Object String) m
 searchDropdownInputToToolbarSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
