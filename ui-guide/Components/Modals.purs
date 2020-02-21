@@ -36,8 +36,8 @@ type Input = Unit
 type Message = Void
 
 type ChildSlot =
-  ( cp1 :: TA.Slot Array Async.Location Unit
-  , cp2 :: TA.Slot Array Async.User Unit
+  ( cp1 :: TA.Slot Action Array Async.Location Unit
+  , cp2 :: TA.Slot Action Array Async.User Unit
   )
 
 _cp1 = SProxy :: SProxy "cp1"

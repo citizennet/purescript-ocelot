@@ -36,10 +36,10 @@ data Action
 -- Child paths
 
 type ChildSlot = --Either5 Int Int Int Int Unit
-  ( cp1 :: TA.Slot Maybe Async.User Int
-  , cp2 :: TA.Slot Array Async.User Int
-  , cp3 :: TA.Slot Maybe Async.Location Int
-  , cp4 :: TA.Slot Array Async.Location Int
+  ( cp1 :: TA.Slot Action Maybe Async.User Int
+  , cp2 :: TA.Slot Action Array Async.User Int
+  , cp3 :: TA.Slot Action Maybe Async.Location Int
+  , cp4 :: TA.Slot Action Array Async.Location Int
   )
 
 _cp1 = SProxy :: SProxy "cp1"
