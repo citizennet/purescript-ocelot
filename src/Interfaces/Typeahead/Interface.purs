@@ -179,22 +179,9 @@ mountMultiTypeahead = mkEffectFn2 \el ext -> do
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertMultiToMessageVariant
-    -- , remove: mkEffectFn1 \obj -> Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TA.Remove obj unit
-    -- , removeAll: Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TA.RemoveAll unit
-    -- , triggerFocus: Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TriggerFocus unit
-    -- , search: mkEffectFn1 \str -> Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ Search str unit
     , getSelected: Promise.fromAff do
         io <- AffAVar.read ioVar
         io.query $ GetSelected identity
-        -- pure $ sequence res
     -- Different from underlying implementation because no algebraic data types
     -- in JS
     , setSelected: mkEffectFn1 \arr -> Promise.fromAff do
@@ -233,18 +220,6 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
     AffAVar.put io ioVar
   pure
     { subscribe: mkSubscription ioVar convertSingleToMessageVariant
-    -- , remove: mkEffectFn1 \obj -> Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TA.Remove obj unit
-    -- , removeAll: Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TA.RemoveAll unit
-    -- , triggerFocus: Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ TriggerFocus unit
-    -- , search: mkEffectFn1 \str -> Promise.fromAff do
-    --     io <- AffAVar.read ioVar
-    --     io.query $ Search str unit
     , getSelected: Promise.fromAff do
         io <- AffAVar.read ioVar
         res <- io.query $ GetSelected identity
