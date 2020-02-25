@@ -66,7 +66,10 @@ component =
   H.mkComponent
   { initialState: const unit
   , render
-  , eval: H.mkEval $ H.defaultEval { initialize = Just Initialize }
+  , eval: H.mkEval $ H.defaultEval
+    { initialize = Just Initialize
+    , handleAction = handleAction
+    }
   }
   where
     -- For the sake of testing and visual demonstration, we'll just render

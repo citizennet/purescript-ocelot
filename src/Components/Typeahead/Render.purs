@@ -38,9 +38,7 @@ renderSingle
 renderSingle iprops renderItem renderContainer st =
   HH.div_
     [ Input.inputGroup' HH.div
-      -- [ HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
-      [ css $ if showSelected then "" else "offscreen"
-      ]
+      [ css $ if showSelected then "" else "offscreen" ]
       [ if disabled
           then
             maybe (HH.text "")
@@ -54,11 +52,7 @@ renderSingle iprops renderItem renderContainer st =
             ( \selected -> HH.div
               [ HP.classes Input.mainLeftClasses ]
               [ IC.selectionGroup renderItem []
-                [ HE.onClick $ const <<< Just <<< S.Action $ TA.Remove selected
-                  -- $ Select.always
-                  -- $ Select.raise
-                  -- $ TA.AndThen (TA.Remove selected unit) (TA.TriggerFocus unit) unit
-                ]
+                [ HE.onClick $ const <<< Just <<< S.Action $ TA.Remove selected ]
                 selected
               ])
             st.selected
@@ -67,9 +61,7 @@ renderSingle iprops renderItem renderContainer st =
         [ HH.text "Change" ]
       ]
     , Input.inputGroup
-      [ css $ if showSelected then "offscreen" else ""
-      -- , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
-      ]
+      [ css $ if showSelected then "offscreen" else "" ]
       [ Input.inputCenter $ inputProps disabled iprops
       , Input.addonLeft_
         [ Icon.search_ ]
@@ -129,9 +121,7 @@ renderMulti iprops renderItem renderContainer st =
         [ css $ if isLoading st.items then "" else "offscreen" ]
         [ spinner ]
       , Input.borderRight
-        [ HP.classes $ linkClasses disabled
-        -- , HE.onClick $ Select.always $ Select.raise $ TA.TriggerFocus unit
-        ]
+        [ HP.classes $ linkClasses disabled ]
         [ HH.text "Browse" ]
       ]
     , conditional (st.visibility == S.On)

@@ -94,15 +94,6 @@ data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
   | Remove item
   | RemoveAll
   | Raise action
-  -- | Receive CompositeInput
--- NOTE internal actions, moved to Util functions
-  -- | Synchronize a
--- NOTE deprecated
-  -- | Search String
-  -- | TriggerFocus a
-  -- | HandleSelect (Select.Message (Query pq f item m) (Fuzzy item)) a
-  -- | AndThen (Query pq f item m Unit) (Query pq f item m Unit) a
-  -- | Raise (pq Unit) a
 
 data Query f item a
   = GetSelected (f item -> a)
@@ -378,10 +369,6 @@ embeddedHandleAction = case _ of
   Raise action -> do
     H.raise $ Emit action
 
-  -- Receive input a -> do
-  --   H.modify_ $ updateStore input.render identity
-  --   pure a
-
 -------------------------
 -- Embedded > handleQuery
 
@@ -426,17 +413,13 @@ embeddedHandleMessage
   -> CompositeComponentM action f item m Unit
 embeddedHandleMessage = case _ of
   S.Selected idx -> do
-    -- (Fuzzy { original: item })
     fuzzyItems <- H.gets _.fuzzyItems
     case fuzzyItems !! idx of
       Nothing -> pure unit
       Just (Fuzzy { original: item }) -> do
         st <- H.modify \st -> st { selected = st.ops.runSelect item st.selected }
-        when st.keepOpen do
+        when (not st.keepOpen) do
           H.modify_ _ { visibility = S.Off }
-        -- if st.keepOpen
-        --   then pure Nothing
-        --   else H.query unit $ Select.setVisibility Select.Off
         H.raise $ SelectionChanged SelectionMessage st.selected
         H.raise $ Selected item
         synchronize
@@ -463,4 +446,4 @@ embeddedHandleMessage = case _ of
 -- Embedded > initialize
 
 embeddedInitialize :: forall action f item m. Maybe (EmbeddedAction action f item m)
-embeddedInitialize = Just $ Initialize
+embeddedInitialize = Just Initialize
