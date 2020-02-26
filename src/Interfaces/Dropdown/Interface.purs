@@ -36,7 +36,6 @@ convertMessageToVariant :: Output (Object String) -> MessageVariant
 convertMessageToVariant = case _ of
   Selected obj -> inj (SProxy :: SProxy "selected") obj
   VisibilityChanged vis -> inj (SProxy :: SProxy "visibilityChanged") (vis == Select.On)
-  -- Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
 type ExternalInput =
   { selectedItem :: Array (Object String)
