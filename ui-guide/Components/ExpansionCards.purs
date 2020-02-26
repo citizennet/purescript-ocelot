@@ -45,7 +45,7 @@ data Action
 ----------
 -- Child paths
 
-type ChildSlot = --Either5 Int Int Int Int Unit
+type ChildSlot =
   ( cp1 :: TA.Slot Action Maybe Async.User Int
   , cp2 :: TA.Slot Action Array Async.User Int
   , cp3 :: TA.Slot Action Maybe Async.Location Int
@@ -86,10 +86,6 @@ component =
       -> H.ComponentHTML Action ChildSlot m
     render = cnDocumentationBlocks
 
-    -- eval
-    --   :: Query
-    --   ~> H.HalogenM State Action ChildSlot Void m
-    -- eval (NoOp next) = pure next
     handleAction :: Action -> H.HalogenM State Action ChildSlot Void m Unit
     handleAction = case _ of
       ToggleCard lens -> do
