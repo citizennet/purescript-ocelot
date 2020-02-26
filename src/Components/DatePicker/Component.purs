@@ -10,7 +10,7 @@ import Data.Either (either)
 import Data.Formatter.DateTime (formatDateTime)
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
 import Data.String (trim)
-import Data.Tuple (fst, snd)
+import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested (type (/\), (/\))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Now (nowDate)
@@ -64,20 +64,12 @@ defaultInput =
 -- NOTE overhead of component abstraction, need an action to re-raise output messages from the embedded component
 data Action
   = PassingOutput Output
--- TODO | Receive Input
 
 data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
   | ToggleMonth Direction
--- TODO | Receive CompositeInput
--- NOTE internal actions, moved to Util functions
--- | Search String
--- | Synchronize
--- NOTE not in use
--- | ToggleYear  Direction
--- NOTE deprecated
--- | TriggerFocus
+  | ToggleYear  Direction
 
 data Query a -- NOTE the container and the embedded components share the same query algebra
   = GetSelection (Date -> a)
@@ -293,22 +285,15 @@ embeddedHandleAction = case _ of
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
 
-  -- ToggleYear dir -> do
-  --   st <- H.get
-  --   let y = fst st.targetDate
-  --       m = snd st.targetDate
-  --       newDate = case dir of
-  --           Next -> ODT.nextYear (canonicalDate y m bottom)
-  --           Prev -> ODT.prevYear (canonicalDate y m bottom)
-  --   H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
-  --   synchronize
-
-  -- Receive { targetDate, selection } -> do
-  --   st <- H.get
-  --   H.modify_
-  --     _ { targetDate = targetDate
-  --       , selection = selection
-  --       }
+  ToggleYear dir -> do
+    st <- H.get
+    let y = fst st.targetDate
+        m = snd st.targetDate
+        newDate = case dir of
+            Next -> ODT.nextYear (canonicalDate y m bottom)
+            Prev -> ODT.prevYear (canonicalDate y m bottom)
+    H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
+    synchronize
 
 -------------------------
 -- Embedded > handleQuery
