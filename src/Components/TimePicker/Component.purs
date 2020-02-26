@@ -47,23 +47,13 @@ type Input =
   , disabled :: Boolean
   }
 
-defaultInput :: Input
-defaultInput =
-  { selection: Nothing
-  , disabled: false
-  }
-
 data Action
   = PassingOutput Output
 
 data EmbeddedAction
-  = Search String
+  = Initialize
+  | Search String
   | Key KeyboardEvent
--- TODO | Receive CompositeInput
--- NOTE internal actions, moved to Util functions
--- | Synchronize
--- NOTE deprecated
--- | TriggerFocus
 
 data Query a
   = GetSelection (Time -> a)
@@ -143,6 +133,7 @@ spec = S.defaultSpec
   , handleAction = embeddedHandleAction
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
+  , initialize = Just Initialize
   }
 
 handleAction :: forall m. Action -> ComponentM m Unit
@@ -173,6 +164,9 @@ embeddedInput { selection, timeUnits, disabled } =
 
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
 embeddedHandleAction = case _ of
+  Initialize -> do
+    synchronize
+
   Search text -> do
     case text of
       "" -> setSelection Nothing
@@ -195,11 +189,6 @@ embeddedHandleAction = case _ of
         preventIt
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
-
---       Receive { selection } a -> do
---         H.modify_ _ { selection = selection }
---         pure a
-
 
 embeddedHandleMessage
   :: forall m

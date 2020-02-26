@@ -31,7 +31,7 @@ type Action = Unit
 ----------
 -- Child paths
 
-type ChildSlot = --Either3 Int Int Int
+type ChildSlot =
   ( datePicker :: DatePicker.Slot Int
   , timePicker :: TimePicker.Slot Int
   , dtp :: DateTimePicker.Slot Int
@@ -202,7 +202,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-time-disabled"
               }
-              [ HH.slot _timePicker 1 TimePicker.component
+              [ HH.slot _timePicker 3 TimePicker.component
                 { selection: Just $ unsafeMkTime 12 0 0 0
                 , disabled: true
                 }
