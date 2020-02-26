@@ -14,7 +14,7 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a = NoOp a
+data Query a
 type Action = Unit
 
 type Input = Unit
