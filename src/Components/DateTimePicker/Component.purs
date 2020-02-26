@@ -123,7 +123,7 @@ handleAction = case _ of
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
   GetSelection reply -> do
-    ({ time, date }) <- H.get
+    { time, date } <- H.get
     pure $ reply <$> (DateTime <$> date <*> time)
 
   SetSelection dateTime a -> Just a <$ do

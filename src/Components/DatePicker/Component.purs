@@ -301,7 +301,7 @@ embeddedHandleAction = case _ of
 embeddedHandleQuery :: forall m a. MonadAff m => Query a -> CompositeComponentM m (Maybe a)
 embeddedHandleQuery = case _ of
   GetSelection reply -> do
-    selection  <- H.gets _.selection
+    { selection }  <- H.get
     pure $ reply <$> selection
   SetSelection selection a -> Just a <$ do
     setSelection selection
@@ -314,7 +314,7 @@ embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- We'll want to select the item here, set its status, and raise
     -- a message about its selection.
-    calendarItems <- H.gets _.calendarItems
+    { calendarItems } <- H.get
     case calendarItems !! idx of
       Nothing -> pure unit
       Just (CalendarItem _ _ _ date) -> do
@@ -337,7 +337,7 @@ embeddedHandleMessage = case _ of
 -- Embedded > initialize
 
 embeddedInitialize :: Maybe EmbeddedAction
-embeddedInitialize = Just $ Initialize
+embeddedInitialize = Just Initialize
 
 --------------------
 -- Embedded > render

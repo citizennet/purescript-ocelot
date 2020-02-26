@@ -198,7 +198,7 @@ embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- We'll want to select the item here, set its status, and raise
     -- a message about its selection.
-    timeUnits <- H.gets _.timeUnits
+    { timeUnits } <- H.get
     case timeUnits !! idx of
       Nothing -> pure unit
       Just (TimeUnit _ _ time) -> do
@@ -217,7 +217,7 @@ embeddedHandleMessage = case _ of
 embeddedHandleQuery :: forall m a. Query a -> CompositeComponentM m (Maybe a)
 embeddedHandleQuery = case _ of
   GetSelection reply -> do
-    selection  <- H.gets _.selection
+    { selection } <- H.get
     pure $ reply <$> selection
 
   SetSelection selection a -> Just a <$ do
@@ -329,7 +329,7 @@ generateTimeUnit (Just t) i
 
 synchronize :: forall m. CompositeComponentM m Unit
 synchronize = do
-  selection  <- H.gets _.selection
+  { selection } <- H.get
   H.modify_ _ { timeUnits = generateTimes selection }
   case selection of
     Nothing -> pure unit

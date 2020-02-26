@@ -75,7 +75,7 @@ handleAction = case _ of
     H.modify_ _ { open = true }
 
   Blur -> do
-    query <- H.gets _.query
+    { query } <- H.get
     closeIfNullQuery query
 
   Clear ev -> do

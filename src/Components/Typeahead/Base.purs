@@ -381,14 +381,14 @@ embeddedHandleQuery
   -> CompositeComponentM action f item m (Maybe a)
 embeddedHandleQuery = case _ of
   GetSelected reply -> do
-    selected  <- H.gets _.selected
+    { selected } <- H.get
     pure $ Just $ reply selected
 
   ReplaceSelected selected a -> Just a <$ do
     replaceSelected selected
 
   ReplaceSelectedBy f a -> Just a <$ do
-    items  <- H.gets _.items
+    { items } <- H.get
     case items of
       Success items' -> replaceSelected (f items')
       _ -> pure unit
@@ -413,7 +413,7 @@ embeddedHandleMessage
   -> CompositeComponentM action f item m Unit
 embeddedHandleMessage = case _ of
   S.Selected idx -> do
-    fuzzyItems <- H.gets _.fuzzyItems
+    { fuzzyItems } <- H.get
     case fuzzyItems !! idx of
       Nothing -> pure unit
       Just (Fuzzy { original: item }) -> do

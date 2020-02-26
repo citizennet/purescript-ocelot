@@ -139,8 +139,8 @@ renderMulti iprops renderItem renderContainer st =
 -- Default Renders
 
 defRenderContainer
-    :: ∀ action f item m
-  . (Fuzzy item -> HH.PlainHTML)
+  :: ∀ action f item m
+   . (Fuzzy item -> HH.PlainHTML)
   -> TA.CompositeComponentRender action f item m
 defRenderContainer renderFuzzy st =
   IC.itemContainer st.highlightedIndex (renderFuzzy <$> st.fuzzyItems) []

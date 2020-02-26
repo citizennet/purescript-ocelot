@@ -163,7 +163,7 @@ embeddedHandleMessage
   :: forall item m. MonadAff m => S.Event -> CompositeComponentM item m Unit
 embeddedHandleMessage = case _ of
   S.Selected idx -> do
-    items <- H.gets _.items
+    { items } <- H.get
     case items !! idx of
       Nothing -> pure unit
       Just item -> do
