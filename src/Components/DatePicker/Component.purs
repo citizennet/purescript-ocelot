@@ -136,7 +136,7 @@ component = H.mkComponent
 initialState :: Input -> State
 initialState { targetDate, selection, disabled } =
   let targetDate'
-        = fromMaybe ((ODT.unsafeMkYear 2001) /\ (ODT.unsafeMkMonth 1)) targetDate
+        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) targetDate
   in
     { targetDate: targetDate'
     , selection
