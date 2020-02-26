@@ -29,7 +29,7 @@ data Query a
 data Action
   = Open
   | Close
-  | HandleKey KE.KeyboardEvent -- (H.SubscribeStatus -> a)
+  | HandleKey KE.KeyboardEvent
 
 type Input = Unit
 
