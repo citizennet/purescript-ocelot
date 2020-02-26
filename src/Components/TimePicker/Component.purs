@@ -73,7 +73,7 @@ type CompositeState = S.State StateRow
 type CompositeAction = S.Action EmbeddedAction
 type CompositeQuery = S.Query Query EmbeddedChildSlots
 type CompositeInput = S.Input StateRow
-type EmbeddedChildSlots = () -- NOTE no extension, use S.Slot'
+type EmbeddedChildSlots = () -- No extension
 
 type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeInput Output m
 type CompositeComponent m = H.Component HH.HTML CompositeQuery CompositeInput Output m
