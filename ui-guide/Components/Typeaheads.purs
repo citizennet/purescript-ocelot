@@ -35,7 +35,7 @@ data Action
 ----------
 -- Child paths
 
-type ChildSlot = --Either5 Int Int Int Int Unit
+type ChildSlot =
   ( cp1 :: TA.Slot Action Maybe Async.User Int
   , cp2 :: TA.Slot Action Array Async.User Int
   , cp3 :: TA.Slot Action Maybe Async.Location Int
@@ -46,14 +46,6 @@ _cp1 = SProxy :: SProxy "cp1"
 _cp2 = SProxy :: SProxy "cp2"
 _cp3 = SProxy :: SProxy "cp3"
 _cp4 = SProxy :: SProxy "cp4"
-
--- type ChildQuery m =
---   Coproduct5
---     (TA.Query Query Maybe Async.User m)
---     (TA.Query Query Array Async.User m)
---     (TA.Query Query Maybe Async.Location m)
---     (TA.Query Query Array Async.Location m)
---     Query
 
 
 ----------
