@@ -212,13 +212,13 @@ component =
         renderDropdown
           :: (∀ p i. DR.ButtonBlock p i)
           -> DD.CompositeState String
-          -> H.ComponentHTML DD.CompositeAction DD.EmbeddedChildSlots m --(DD.Query String m) () m --(DD.ChildQuery Query String) DD.ChildSlot m
+          -> H.ComponentHTML DD.CompositeAction DD.EmbeddedChildSlots m
         renderDropdown btnFn = DR.defDropdown btnFn [ ] identity "Pick One"
 
         renderDisabledDropdown
           :: (∀ p i. DR.ButtonBlock p i)
           -> DD.CompositeState String
-          -> H.ComponentHTML DD.CompositeAction () m --(DD.ChildQuery Query String) DD.ChildSlot m
+          -> H.ComponentHTML DD.CompositeAction () m
         renderDisabledDropdown btnFn =
           DR.defDropdown btnFn [ HP.disabled true ] identity "Pick One"
 
