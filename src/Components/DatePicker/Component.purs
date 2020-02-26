@@ -242,7 +242,7 @@ setSelection selection = do
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
 embeddedHandleAction = case _ of
   Initialize -> do
-    selection <- H.gets _.selection
+    { selection } <- H.get
     d <- H.liftEffect nowDate
     let
       d' = fromMaybe d selection
