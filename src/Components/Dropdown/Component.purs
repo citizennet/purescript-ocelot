@@ -42,8 +42,7 @@ data Action item m
   = PassingOutput (Output item)
   | ReceiveRender (Input item m)
 
-data EmbeddedAction
--- | Receive CompositeInput
+type EmbeddedAction = Void
 
 data Query item a
   = SetItems (Array item) a
@@ -52,7 +51,6 @@ data Query item a
 data Output item
   = Selected item
   | VisibilityChanged S.Visibility
-  -- | Emit (o Unit)
 
 type ChildSlots item =
   ( select :: S.Slot (Query item) EmbeddedChildSlots (Output item) Unit
@@ -111,7 +109,6 @@ spec
 spec embeddedRender =
   S.defaultSpec
   { render = embeddedRender
-  -- , handleAction = embeddedHandleAction
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   }
@@ -147,13 +144,6 @@ handleQuery = case _ of
   SetSelection item a -> Just a <$ do
     H.query _select unit (S.Query $ H.tell $ SetSelection item)
 
---------------------------
--- Embedded > handleAction
-
-  -- Receive input a -> do
-  --   H.modify_ $ updateStore input.render identity
-  --   pure a
-
 -------------------------
 -- Embedded > handleQuery
 
@@ -186,5 +176,3 @@ embeddedHandleMessage = case _ of
   S.VisibilityChanged vis -> H.raise (VisibilityChanged vis)
 
   _ -> pure unit
-
-
