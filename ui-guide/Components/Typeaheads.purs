@@ -86,9 +86,8 @@ component =
 
         _ <- case remoteLocations of
           items@(Success _) -> do
-            _ <- H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
-            pure unit
+            void $ H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
+            void $ H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
           otherwise -> pure unit
 
         remoteUsers <-
@@ -96,9 +95,8 @@ component =
 
         _ <- case remoteUsers of
           items@(Success _) -> do
-            _ <- H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
-            pure unit
+            void $ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
+            void $ H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
           otherwise -> pure unit
 
         selectedLocations <-
@@ -106,23 +104,23 @@ component =
 
         _ <- case selectedLocations of
           Success xs -> do
-            _ <- H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
-            _ <- H.query _multiLocation 2 $ TA.ReplaceSelected (take 4 xs) unit
-            _ <- H.query _singleLocation 5 $ TA.ReplaceSelected (head xs) unit
-            pure unit
+            void $ H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
+            void $ H.query _multiLocation 1 $ TA.ReplaceSelected (take 4 xs) unit
+            void $ H.query _singleLocation 3 $ TA.ReplaceSelected (head xs) unit
           otherwise -> pure unit
 
         selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
         _ <- case selectedUsers of
           Success xs -> do
-            _ <- H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
-            _ <- H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
-            _ <- H.query _multiUser 5 $ TA.ReplaceSelected (take 4 xs) unit
-            pure unit
+            void $ H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
+            void $ H.query _multiUser 1 $ TA.ReplaceSelected (take 4 xs) unit
+            void $ H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
           otherwise -> pure unit
 
-        _ <- H.query _singleUser 6 $ H.tell $ TA.ReplaceItems $ Failure ""
-        _ <- H.query _singleUser 7 $ H.tell $ TA.ReplaceItems Loading
+        void $ H.query _singleLocation 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+        void $ H.query _singleLocation 5 $ H.tell $ TA.ReplaceItems Loading
+        void $ H.query _multiUser 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+        void $ H.query _multiUser 5 $ H.tell $ TA.ReplaceItems Loading
 
         pure unit
 
@@ -522,7 +520,6 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.disabled true
                   , HP.id_ "loading-users"
                   ]
                 )
