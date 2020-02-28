@@ -16,8 +16,7 @@ import UIGuide.Block.Documentation as Documentation
 type State = { open :: Boolean }
 
 data Query a
-  = NoOp a
-  | Toggle a
+data Action = Toggle
 
 type Input = Unit
 
@@ -25,23 +24,19 @@ type Message = Void
 
 component :: ∀ m . H.Component HH.HTML Query Input Message m
 component =
-  H.component
+  H.mkComponent
     { initialState: const { open: true }
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
   where
-    eval :: Query ~> H.ComponentDSL State Query Message m
-    eval = case _ of
-      NoOp a -> pure a
-
-      Toggle a -> do
+    handleAction :: Action -> H.HalogenM State Action () Message m Unit
+    handleAction = case _ of
+      Toggle -> do
         state <- H.get
         H.modify_ _ { open = not state.open }
-        pure a
 
-    render :: State -> H.ComponentHTML Query
+    render :: State -> H.ComponentHTML Action () m
     render state =
       HH.div_
       [ Documentation.customBlock_
@@ -50,7 +45,7 @@ component =
         }
         [ Backdrop.backdrop_
           [ Button.button
-            [ HE.onClick (HE.input_ Toggle) ]
+            [ HE.onClick (const $ Just Toggle) ]
             [ HH.text "toggle tray" ]
           , Tray.tray
             [ Tray.open state.open ]

@@ -15,15 +15,15 @@ jobs:
 
       - restore_cache:
           keys:
-            - v3-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
-            - v3-yarn-cache-{{ .Branch }}
-            - v3-yarn-cache
+            - v4-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+            - v4-yarn-cache-{{ .Branch }}
+            - v4-yarn-cache
 
       - restore_cache:
           keys:
-            - v3-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
-            - v3-bower-cache-{{ .Branch }}
-            - v3-bower-cache
+            - v5-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+            - v5-bower-cache-{{ .Branch }}
+            - v5-bower-cache
 
       - run:
           name: Install Bower and Node dependencies
@@ -34,12 +34,12 @@ jobs:
           command: yarn run build-ui
 
       - save_cache:
-          key: v3-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
+          key: v4-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ~/ocelot/node_modules
 
       - save_cache:
-          key: v3-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          key: v5-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
           paths:
             - ~/ocelot/bower_components
             - ~/ocelot/output

@@ -9,7 +9,6 @@ import Data.FunctorWithIndex (mapWithIndex)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Foreign.Object (lookup)
-import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
@@ -121,26 +120,26 @@ dropdownButton button iprops html =
     $ html <> [ Icon.caratDown [ css "ml-3 text-xs" ] ]
 
 dropdownContainer
-  :: ∀ t o item
-   . Array (H.HTML t (Select.Query o item))
+  :: ∀ p action item
+   . Array (HH.HTML p (Select.Action action))
   -> (item -> HH.PlainHTML)
   -> (item -> Boolean)
   -> Array item
   -> Maybe Int
-  -> H.HTML t (Select.Query o item)
+  -> HH.HTML p (Select.Action action)
 dropdownContainer addlHTML renderItem selected items hix =
   HH.div
     ( Setters.setContainerProps [ HP.classes dropdownClasses ] )
     ( addlHTML <> renderItems )
   where
-    renderItems :: Array (H.HTML t (Select.Query o item))
+    renderItems :: Array (HH.HTML p (Select.Action action))
     renderItems =
       [ HH.ul
         [ HP.classes ulClasses ]
         $ mapWithIndex renderItem' items
       ]
 
-    renderItem' :: Int -> item -> H.HTML t (Select.Query o item)
+    renderItem' :: Int -> item -> HH.HTML p (Select.Action action)
     renderItem' idx item =
       dropdownItem HH.li
         ( Setters.setItemProps idx [] )
@@ -176,11 +175,11 @@ dropdownItem elem props html selected highlighted =
 -- Provided an array of items and any additional HTML, renders the container
 -- Items should have already been treated with `boldMatches` by this point.
 itemContainer
-  :: ∀ t o item
+  :: ∀ p action
    . Maybe Int
   -> Array HH.PlainHTML
-  -> Array (H.HTML t (Select.Query o item))
-  -> H.HTML t (Select.Query o item)
+  -> Array (HH.HTML p (Select.Action action))
+  -> HH.HTML p (Select.Action action)
 itemContainer highlightIndex itemsHTML addlHTML =
   HH.div
     ( Setters.setContainerProps [ HP.classes itemContainerClasses ] )
@@ -189,7 +188,7 @@ itemContainer highlightIndex itemsHTML addlHTML =
     hover :: Int -> Array HH.ClassName
     hover i = if highlightIndex == Just i then HH.ClassName <$> [ "bg-grey-lighter" ] else mempty
 
-    renderItems :: Array (H.HTML t (Select.Query o item))
+    renderItems :: Array (HH.HTML p (Select.Action action))
     renderItems =
       [ HH.ul
         [ HP.classes ulClasses ]

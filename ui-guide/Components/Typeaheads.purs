@@ -2,14 +2,13 @@ module UIGuide.Component.Typeaheads where
 
 import Prelude
 
+import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
-import Data.Either.Nested (Either5)
-import Data.Functor.Coproduct.Nested (Coproduct5)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
+import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Network.RemoteData (RemoteData(..))
@@ -31,20 +30,23 @@ import UIGuide.Utility.Async as Async
 type State = Unit
 
 data Query a
-  = NoOp a
-  | Initialize a
+data Action
+  = Initialize
 
 ----------
 -- Child paths
 
-type ChildSlot = Either5 Int Int Int Int Unit
-type ChildQuery m =
-  Coproduct5
-    (TA.Query Query Maybe Async.User m)
-    (TA.Query Query Array Async.User m)
-    (TA.Query Query Maybe Async.Location m)
-    (TA.Query Query Array Async.Location m)
-    Query
+type ChildSlot =
+  ( cp1 :: TA.Slot Action Maybe Async.User Int
+  , cp2 :: TA.Slot Action Array Async.User Int
+  , cp3 :: TA.Slot Action Maybe Async.Location Int
+  , cp4 :: TA.Slot Action Array Async.Location Int
+  )
+
+_singleUser = SProxy :: SProxy "cp1"
+_multiUser = SProxy :: SProxy "cp2"
+_singleLocation = SProxy :: SProxy "cp3"
+_multiLocation = SProxy :: SProxy "cp4"
 
 
 ----------
@@ -54,87 +56,81 @@ component :: ∀ m
   . MonadAff m
  => H.Component HH.HTML Query Unit Void m
 component =
-  H.lifecycleParentComponent
+  H.mkComponent
   { initialState: const unit
   , render
-  , eval
-  , receiver: const Nothing
-  , initializer: Just $ H.action Initialize
-  , finalizer: Nothing
+  , eval: H.mkEval $ H.defaultEval
+    { initialize = Just Initialize
+    , handleAction = handleAction
+    }
   }
   where
     -- For the sake of testing and visual demonstration, we'll just render
     -- out a bunch of selection variants in respective slots
     render
       :: State
-      -> H.ParentHTML Query (ChildQuery m) ChildSlot m
+      -> H.ComponentHTML Action ChildSlot m
     render _ = cnDocumentationBlocks
 
-    eval
-      :: Query
-      ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Void m
-    eval (NoOp next) = pure next
+    handleAction
+      :: Action
+      -> H.HalogenM State Action ChildSlot Void m Unit
+    handleAction = case _ of
+      Initialize -> do
+        _ <- Control.Parallel.parSequence_
+          [ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _multiUser $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems Loading
+          ]
 
-    eval (Initialize next) = do
-      _ <- H.queryAll' CP.cp1 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp2 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp3 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp4 $ H.action $ TA.ReplaceItems Loading
+        _ <- Control.Parallel.parSequence_
+          [ fetchAndSetLocations, fetchAndSetUsers ]
 
-      remoteLocations <-
-        H.liftAff $ Async.loadFromSource Async.locations ""
+        _ <- Control.Parallel.parSequence_
+          [ H.query _singleLocation 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+          , H.query _singleLocation 5 $ H.tell $ TA.ReplaceItems Loading
+          , H.query _multiUser 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+          , H.query _multiUser 5 $ H.tell $ TA.ReplaceItems Loading
+          ]
 
-      _ <- case remoteLocations of
-        items@(Success _) -> do
-          _ <- H.queryAll' CP.cp3 $ H.action $ TA.ReplaceItems items
-          _ <- H.queryAll' CP.cp4 $ H.action $ TA.ReplaceItems items
-          pure unit
-        otherwise -> pure unit
+        pure unit
 
-      remoteUsers <-
-        H.liftAff $ Async.loadFromSource Async.users ""
+    fetchAndSetLocations = do
+      remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
+      selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
 
-      _ <- case remoteUsers of
-        items@(Success _) -> do
-          _ <- H.queryAll' CP.cp1 $ H.action $ TA.ReplaceItems items
-          _ <- H.queryAll' CP.cp2 $ H.action $ TA.ReplaceItems items
-          pure unit
-        otherwise -> pure unit
+      case remoteLocations, selectedLocations of
+        items@(Success _), Success xs -> do
+          void $ H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
+          void $ H.query _singleLocation 3 $ TA.ReplaceSelected (head xs) unit
+          void $ H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.query _multiLocation 1 $ TA.ReplaceSelected (take 4 xs) unit
+        _, _ -> pure unit
 
-      selectedLocations <-
-        H.liftAff $ Async.loadFromSource Async.locations "an"
-
-      _ <- case selectedLocations of
-        Success xs -> do
-          _ <- H.query' CP.cp3 1 $ TA.ReplaceSelected (head xs) unit
-          _ <- H.query' CP.cp4 2 $ TA.ReplaceSelected (take 4 xs) unit
-          _ <- H.query' CP.cp3 5 $ TA.ReplaceSelected (head xs) unit
-          pure unit
-        otherwise -> pure unit
-
+    fetchAndSetUsers = do
+      remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
       selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
-      _ <- case selectedUsers of
-        Success xs -> do
-          _ <- H.query' CP.cp1 1 $ TA.ReplaceSelected (head xs) unit
-          _ <- H.query' CP.cp2 3 $ TA.ReplaceSelected (take 4 xs) unit
-          _ <- H.query' CP.cp2 5 $ TA.ReplaceSelected (take 4 xs) unit
-          pure next
-        otherwise -> pure next
 
-      _ <- H.query' CP.cp1 6 $ H.action $ TA.ReplaceItems $ Failure ""
-      _ <- H.query' CP.cp1 7 $ H.action $ TA.ReplaceItems Loading
-
-      pure next
+      case remoteUsers, selectedUsers of
+        items@(Success _), Success xs -> do
+          void $ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
+          void $ H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
+          void $ H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
+          void $ H.query _multiUser 1 $ TA.ReplaceSelected (take 4 xs) unit
+          void $ H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
+        _, _ -> pure unit
 
 ----------
 -- HTML
 
-content :: ∀ p i. Array (HH.HTML p (i Unit)) -> HH.HTML p (i Unit)
+content :: ∀ p i. Array (HH.HTML p i) -> HH.HTML p i
 content = Backdrop.content [ css "flex" ]
 
 cnDocumentationBlocks :: ∀ m
   . MonadAff m
- => H.ParentHTML Query (ChildQuery m) ChildSlot m
+ => H.ComponentHTML Action ChildSlot m
 cnDocumentationBlocks =
   HH.div_
     [ Documentation.block_
@@ -154,7 +150,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "location"
               }
-              [ HH.slot' CP.cp3 0 TA.single
+              [ HH.slot _singleLocation 0 TA.single
                 ( ( TA.syncSingle
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -175,7 +171,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "location-hydrated"
               }
-              [ HH.slot' CP.cp3 1 TA.single
+              [ HH.slot _singleLocation 1 TA.single
                 ( ( TA.asyncSingle
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -202,7 +198,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user"
               }
-              [ HH.slot' CP.cp1 0 TA.single
+              [ HH.slot _singleUser 0 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -223,7 +219,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user-hydrated"
               }
-              [ HH.slot' CP.cp1 1 TA.single
+              [ HH.slot _singleUser 1 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -256,7 +252,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp4 0 TA.multi
+              [ HH.slot _multiLocation 0 TA.multi
                 ( ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -278,7 +274,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot' CP.cp4 1 TA.multi
+              [ HH.slot _multiLocation 1 TA.multi
                 ( ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -305,7 +301,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users"
               }
-              [ HH.slot' CP.cp2 0 TA.multi
+              [ HH.slot _multiUser 0 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -326,7 +322,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users-hydrated"
               }
-              [ HH.slot' CP.cp2 1 TA.multi
+              [ HH.slot _multiUser 1 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -359,7 +355,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-locations-empty"
               }
-              [ HH.slot' CP.cp3 2 TA.single
+              [ HH.slot _singleLocation 2 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -381,7 +377,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-locations-hydrated"
               }
-              [ HH.slot' CP.cp3 3 TA.single
+              [ HH.slot _singleLocation 3 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -403,7 +399,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "error-locations"
               }
-              [ HH.slot' CP.cp3 4 TA.single
+              [ HH.slot _singleLocation 4 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -424,7 +420,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "loading-locations"
               }
-              [ HH.slot' CP.cp3 5 TA.single
+              [ HH.slot _singleLocation 5 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -450,7 +446,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-empty"
               }
-              [ HH.slot' CP.cp2 2 TA.multi
+              [ HH.slot _multiUser 2 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -472,7 +468,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-hydrated"
               }
-              [ HH.slot' CP.cp2 3 TA.multi
+              [ HH.slot _multiUser 3 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -494,7 +490,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "error-users"
               }
-              [ HH.slot' CP.cp2 4 TA.multi
+              [ HH.slot _multiUser 4 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -515,14 +511,13 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "loading-users"
               }
-              [ HH.slot' CP.cp2 5 TA.multi
+              [ HH.slot _multiUser 5 TA.multi
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.disabled true
                   , HP.id_ "loading-users"
                   ]
                 )
@@ -547,8 +542,8 @@ cnDocumentationBlocks =
               [ HH.h3
                 [ HP.classes Format.captionClasses ]
                 [ HH.text "Searchable Dropdown in a Header (e.g. for filtering)" ]
-              , HH.slot' CP.cp3 9
-                ( TA.base
+              , HH.slot _singleLocation 9
+                ( TA.component
                   { runSelect: const <<< Just
                   , runRemove: const (const Nothing)
                   , runFilter: const
@@ -576,8 +571,8 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Format.captionClasses ]
               [ HH.text "Searchable Dropdown in a Toolbar (e.g. for filtering)" ]
-            , HH.slot' CP.cp3 10
-              ( TA.base
+            , HH.slot _singleLocation 10
+              ( TA.component
                 { runSelect: const <<< Just
                 , runRemove: const (const Nothing)
                 , runFilter: const

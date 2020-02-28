@@ -14,29 +14,26 @@ module UIGuide.App
 
 import Prelude
 
-import Effect.Aff (Aff, launchAff_)
-
-import Data.Tuple (Tuple(..))
 import Data.Const (Const)
 import Data.Functor (mapFlipped)
-import Data.Maybe (Maybe(..))
 import Data.Map as M
-import Web.HTML.HTMLElement (HTMLElement)
-
+import Data.Maybe (Maybe(..))
+import Data.Symbol (SProxy(..))
+import Data.Tuple (Tuple(..))
+import Effect.Aff (Aff, launchAff_)
 import Global.Unsafe (unsafeDecodeURI, unsafeEncodeURI)
-
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Storybook.Proxy (ProxyS, proxy)
+import Halogen.Storybook.Proxy (proxy)
 import Halogen.VDom.Driver (runUI)
 import Ocelot.Block.Format as Format
-import UIGuide.Block.Backdrop as Backdrop
-
 import Routing.Hash (hashes)
+import UIGuide.Block.Backdrop as Backdrop
+import Web.HTML.HTMLElement (HTMLElement)
 
-data Query a
-  = RouteChange String a
+data Query a = RouteChange String a
+type Action = Unit
 
 type State m =
   { route :: String
@@ -44,7 +41,7 @@ type State m =
   , partitions :: M.Map Group (Stories m)
   }
 
-type StoryQuery = ProxyS (Const Void) Unit
+type StoryQuery = Const Void
 
 type Stories m = M.Map String (Page m)
 
@@ -66,11 +63,11 @@ instance showGroup :: Show Group where
   show FormElements = "Form Elements"
   show Components = "Components"
 
+type HTML m = H.ComponentHTML Action Slots m
 
-type Slot = String
-
-type HTML m = H.ParentHTML Query StoryQuery Slot m
-
+type Slots =
+  ( child :: H.Slot StoryQuery Void String )
+_child = SProxy :: SProxy "child"
 
 -- | Takes stories config and mount element, and renders the storybook.
 runStorybook
@@ -81,7 +78,7 @@ runStorybook
 runStorybook stories groups body = do
   app' <- runUI app { stories, groups } body
   void $ H.liftEffect $ hashes $ \_ next ->
-    launchAff_ $ app'.query (H.action $ RouteChange $ unsafeDecodeURI next)
+    launchAff_ $ app'.query (H.tell $ RouteChange $ unsafeDecodeURI next)
 
 type Input m =
   { stories :: Stories m
@@ -90,11 +87,10 @@ type Input m =
 
 app :: ∀ m. H.Component HH.HTML Query (Input m) Void m
 app =
-  H.parentComponent
+  H.mkComponent
     { initialState
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval $ H.defaultEval { handleQuery = eval }
     }
   where
 
@@ -133,7 +129,7 @@ app =
   renderSlot :: State m -> HTML m
   renderSlot state =
     case M.lookup state.route state.stories of
-      Just { component } -> HH.slot state.route component unit absurd
+      Just { component } -> HH.slot _child state.route component unit absurd
       -- TODO: Fill in a home page HTML renderer
       _ -> HH.div_ []
 
@@ -206,14 +202,10 @@ app =
         ]
 
 
-  eval :: Query ~> H.ParentDSL (State m) Query StoryQuery Slot Void m
+  eval :: forall a. Query a -> H.HalogenM (State m) Action Slots Void m (Maybe a)
   eval (RouteChange route next) = do
     H.modify_ (\state -> state { route = route })
-    pure next
-
-
-
-
+    pure $ Just next
 
 ----------
 -- Helpers

@@ -3,15 +3,12 @@ module UIGuide.Component.ExpansionCards where
 import Prelude
 
 import Data.Array (head, take)
-import Data.Either.Nested (Either5)
-import Data.Functor.Coproduct.Nested (Coproduct5)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
-import Halogen.Component.ChildPath as CP
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
@@ -41,22 +38,24 @@ type State =
   }
 
 data Query a
-  = NoOp a
-  | ToggleCard (Lens' State Expandable.Status) a
-  | Initialize a
+data Action
+  = ToggleCard (Lens' State Expandable.Status)
+  | Initialize
 
 ----------
 -- Child paths
 
-type ChildSlot = Either5 Int Int Int Int Unit
-type ChildQuery m =
-  Coproduct5
-    (TA.Query Query Maybe Async.User m)
-    (TA.Query Query Array Async.User m)
-    (TA.Query Query Maybe Async.Location m)
-    (TA.Query Query Array Async.Location m)
-    Query
+type ChildSlot =
+  ( cp1 :: TA.Slot Action Maybe Async.User Int
+  , cp2 :: TA.Slot Action Array Async.User Int
+  , cp3 :: TA.Slot Action Maybe Async.Location Int
+  , cp4 :: TA.Slot Action Array Async.Location Int
+  )
 
+_cp1 = SProxy :: SProxy "cp1"
+_cp2 = SProxy :: SProxy "cp2"
+_cp3 = SProxy :: SProxy "cp3"
+_cp4 = SProxy :: SProxy "cp4"
 
 ----------
 -- Component definition
@@ -65,13 +64,13 @@ component :: ∀ m
   . MonadAff m
  => H.Component HH.HTML Query Unit Void m
 component =
-  H.lifecycleParentComponent
+  H.mkComponent
   { initialState
   , render
-  , eval
-  , receiver: const Nothing
-  , initializer: Just $ H.action Initialize
-  , finalizer: Nothing
+  , eval: H.mkEval $ H.defaultEval
+    { initialize = Just Initialize
+    , handleAction = handleAction
+    }
   }
   where
     initialState _ =
@@ -84,56 +83,52 @@ component =
     -- out a bunch of selection variants in respective slots
     render
       :: State
-      -> H.ParentHTML Query (ChildQuery m) ChildSlot m
+      -> H.ComponentHTML Action ChildSlot m
     render = cnDocumentationBlocks
 
-    eval
-      :: Query
-      ~> H.ParentDSL State Query (ChildQuery m) ChildSlot Void m
-    eval (NoOp next) = pure next
+    handleAction :: Action -> H.HalogenM State Action ChildSlot Void m Unit
+    handleAction = case _ of
+      ToggleCard lens -> do
+        st <- H.get
+        H.put (over lens not st)
 
-    eval (ToggleCard lens next) = do
-      st <- H.get
-      H.put (over lens not st)
-      pure next
+      Initialize -> do
+        _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems Loading
 
-    eval (Initialize next) = do
-      _ <- H.queryAll' CP.cp1 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp2 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp3 $ H.action $ TA.ReplaceItems Loading
-      _ <- H.queryAll' CP.cp4 $ H.action $ TA.ReplaceItems Loading
+        remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
+        _ <- case remoteLocations of
+          items@(Success _) -> do
+            _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems items
+            pure unit
+          otherwise -> pure unit
 
-      remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
-      _ <- case remoteLocations of
-        items@(Success _) -> do
-          _ <- H.queryAll' CP.cp3 $ H.action $ TA.ReplaceItems items
-          _ <- H.queryAll' CP.cp4 $ H.action $ TA.ReplaceItems items
-          pure unit
-        otherwise -> pure unit
+        remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
+        _ <- case remoteUsers of
+          items@(Success _) -> do
+            _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems items
+            pure unit
+          otherwise -> pure unit
 
-      remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
-      _ <- case remoteUsers of
-        items@(Success _) -> do
-          _ <- H.queryAll' CP.cp1 $ H.action $ TA.ReplaceItems items
-          _ <- H.queryAll' CP.cp2 $ H.action $ TA.ReplaceItems items
-          pure unit
-        otherwise -> pure unit
+        selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
+        _ <- case selectedLocations of
+          Success xs -> do
+            _ <- H.query _cp3 1 $ H.tell $ TA.ReplaceSelected (head xs)
+            _ <- H.query _cp4 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            pure unit
+          otherwise -> pure unit
 
-      selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
-      _ <- case selectedLocations of
-        Success xs -> do
-          _ <- H.query' CP.cp3 1 $ H.action $ TA.ReplaceSelected (head xs)
-          _ <- H.query' CP.cp4 3 $ H.action $ TA.ReplaceSelected (take 4 xs)
-          pure unit
-        otherwise -> pure unit
-
-      selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
-      case selectedUsers of
-        Success xs -> do
-          _ <- H.query' CP.cp1 1 $ H.action $ TA.ReplaceSelected (head xs)
-          _ <- H.query' CP.cp2 3 $ H.action $ TA.ReplaceSelected (take 4 xs)
-          pure next
-        otherwise -> pure next
+        selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
+        case selectedUsers of
+          Success xs -> do
+            _ <- H.query _cp1 1 $ H.tell $ TA.ReplaceSelected (head xs)
+            _ <- H.query _cp2 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            pure unit
+          otherwise -> pure unit
 
 
 ----------
@@ -154,7 +149,7 @@ _multiUser = prop (SProxy :: SProxy "multiUser")
 cnDocumentationBlocks :: ∀ m
   . MonadAff m
  => State
- -> H.ParentHTML Query (ChildQuery m) ChildSlot m
+ -> H.ComponentHTML Action ChildSlot m
 cnDocumentationBlocks st =
   HH.div_
     [ Documentation.customBlock_
@@ -180,9 +175,7 @@ cnDocumentationBlocks st =
           [ Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick
-                  $ HE.input_
-                  $ ToggleCard _singleLocation
+                [ HE.onClick $ const $ Just $ ToggleCard _singleLocation
                 , Expandable.status st.singleLocation
                 ]
                 [ Format.subHeading_ [ HH.text "Locations" ]
@@ -196,7 +189,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location"
                   }
-                  [ HH.slot' CP.cp3 0 TA.single
+                  [ HH.slot _cp3 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -214,7 +207,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location-hydrated"
                   }
-                  [ HH.slot' CP.cp3 1 TA.single
+                  [ HH.slot _cp3 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -232,9 +225,7 @@ cnDocumentationBlocks st =
           , Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick
-                  $ HE.input_
-                  $ ToggleCard _singleUser
+                [ HE.onClick $ const $ Just $ ToggleCard _singleUser
                 , Expandable.status st.singleUser
                 ]
                 [ Format.subHeading_ [ HH.text "Users" ] ]
@@ -246,7 +237,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user"
                   }
-                  [ HH.slot' CP.cp1 0 TA.single
+                  [ HH.slot _cp1 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -264,7 +255,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user-hydrated"
                   }
-                  [ HH.slot' CP.cp1 1 TA.single
+                  [ HH.slot _cp1 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -303,9 +294,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-locations"
                 , HP.checked
                   $ Expandable.toBoolean st.multiLocation
-                , HE.onChange
-                  $ HE.input_
-                  $ ToggleCard _multiLocation
+                , HE.onChange $ const $ Just $ ToggleCard _multiLocation
                 ]
               ]
             , Expandable.content_
@@ -316,7 +305,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot' CP.cp4 0 TA.multi
+                [ HH.slot _cp4 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -334,7 +323,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot' CP.cp4 1 TA.multi
+                [ HH.slot _cp4 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -365,9 +354,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-users"
                 , HP.checked
                   $ Expandable.toBoolean st.multiUser
-                , HE.onChange
-                  $ HE.input_
-                  $ ToggleCard _multiUser
+                , HE.onChange $ const $ Just $ ToggleCard _multiUser
                 ]
               ]
             , Expandable.content_
@@ -378,7 +365,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users"
                 }
-                [ HH.slot' CP.cp2 0 TA.multi
+                [ HH.slot _cp2 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject
@@ -396,7 +383,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users-hydrated"
                 }
-                [ HH.slot' CP.cp2 1 TA.multi
+                [ HH.slot _cp2 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject

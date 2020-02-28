@@ -2,8 +2,11 @@ module UIGuide.Utility.Async where
 
 import Prelude
 
-import Data.Argonaut (Json, decodeJson, (.?))
+import Affjax (get, printError)
+import Affjax.ResponseFormat as Response
+import Data.Argonaut (Json, decodeJson, (.:))
 import Data.Array (head, last)
+import Data.Bifunctor (bimap)
 import Data.Either (Either)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (fromMaybe)
@@ -17,8 +20,6 @@ import Effect.Timer (setTimeout)
 import Foreign.Object (Object, fromFoldable)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Network.HTTP.Affjax (get)
-import Network.HTTP.Affjax.Response as Response
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
 
@@ -75,12 +76,14 @@ loadFromSource
   -> m (RemoteData Err (Array item))
 loadFromSource (Source { path, speed, decoder }) search =
   liftAff $ case speed of
-    Fast -> get Response.json (path <> search) >>= (pure <<< decoder <<< _.response)
-    Fail -> get Response.json search >>= (pure <<< decoder <<< _.response)
+    Fast -> decodeEither <$> get Response.json (path <> search)
+    Fail -> decodeEither <$> get Response.json search
     Slow -> do
-      _ <- liftEffect $ setTimeout 5000 (pure unit)
-      res <- get Response.json (path <> search)
-      pure $ decoder res.response
+      void $ liftEffect $ setTimeout 5000 (pure unit)
+      decodeEither <$> get Response.json (path <> search)
+  where
+  decodeEither =
+    decoder <=< fromEither <<< bimap printError _.body
 
 ----------
 -- Types for the JSON API
@@ -96,7 +99,7 @@ decodeWith decoder json =
 decodeResults :: Json -> Either String (Array Json)
 decodeResults json = do
   obj <- decodeJson json
-  resultsJson <- obj .? "results"
+  resultsJson <- obj .: "results"
   results <- decodeJson resultsJson
   pure $ results
 
@@ -115,10 +118,10 @@ instance showUser :: Show User where
 decodeUser :: Json -> Either String User
 decodeUser json = do
   obj <- decodeJson json
-  name <- obj .? "name"
-  eyeColor <- obj .? "eye_color"
-  hairColor <- obj .? "hair_color"
-  skinColor <- obj .? "skin_color"
+  name <- obj .: "name"
+  eyeColor <- obj .: "eye_color"
+  hairColor <- obj .: "hair_color"
+  skinColor <- obj .: "skin_color"
   pure $ User
     { name
     , eyeColor
@@ -211,8 +214,8 @@ instance showLocation :: Show Location where
 decodeLocation :: Json -> Either String Location
 decodeLocation json = do
   obj <- decodeJson json
-  name <- obj .? "name"
-  population <- obj .? "population"
+  name <- obj .: "name"
+  population <- obj .: "population"
   pure $ Location { name, population }
 
 locationToObject :: Location -> Object String

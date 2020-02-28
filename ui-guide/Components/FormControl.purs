@@ -2,28 +2,28 @@ module UIGuide.Component.FormControl where
 
 import Prelude
 
-import Ocelot.Block.Checkbox as Checkbox
-import Ocelot.Block.FormField as FormField
-import Ocelot.Block.Icon as Icon
-import Ocelot.Block.Radio as Radio
-import Ocelot.Block.Format as Format
 import Effect.Aff (Aff)
 import Effect.Console (log)
-import Web.UIEvent.MouseEvent (MouseEvent)
-import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Ocelot.Block.Checkbox as Checkbox
+import Ocelot.Block.FormField as FormField
+import Ocelot.Block.Format as Format
+import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Radio as Radio
+import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
+import Web.UIEvent.MouseEvent (MouseEvent)
 
 type State =
   { formPanelIsOpen :: Boolean }
 
 data Query a
-  = NoOp a
-  | HandleFormHeaderClick MouseEvent a
-  | ToggleFormPanel MouseEvent a
+data Action
+  = HandleFormHeaderClick MouseEvent
+  | ToggleFormPanel MouseEvent
 
 type Input = Unit
 
@@ -31,32 +31,24 @@ type Message = Void
 
 component :: H.Component HH.HTML Query Input Message Aff
 component =
-  H.component
+  H.mkComponent
     { initialState: const { formPanelIsOpen: false }
     , render
-    , eval
-    , receiver: const Nothing
+    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
   where
-    eval :: Query ~> H.ComponentDSL State Query Message Aff
-    eval = case _ of
-      NoOp a -> do
-        pure a
-
-      HandleFormHeaderClick _ a -> do
+    handleAction :: Action -> H.HalogenM State Action () Message Aff Unit
+    handleAction = case _ of
+      HandleFormHeaderClick _ -> do
         H.liftEffect (log "submit form")
-        pure a
 
-      ToggleFormPanel _ a -> do
+      ToggleFormPanel _ -> do
         state <- H.get
         H.modify_ (_ { formPanelIsOpen = not state.formPanelIsOpen })
-        pure a
 
-    render :: State -> H.ComponentHTML Query
+    render :: State -> H.ComponentHTML Action () Aff
     render state =
-      let css :: ∀ p i. String -> H.IProp ( "class" :: String | p ) i
-          css = HP.class_ <<< HH.ClassName
-          content = Backdrop.content [ css "flex" ]
+      let content = Backdrop.content [ css "flex" ]
           accessibilityCallout =
             Documentation.callout_
               [ Backdrop.backdropWhite

@@ -7,7 +7,7 @@ import Data.Either (either)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
-import Svg.Parser.Halogen (parse)
+import Svg.Renderer.Halogen (parse)
 
 svgString :: String
 svgString =
