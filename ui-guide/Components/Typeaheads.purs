@@ -2,6 +2,7 @@ module UIGuide.Component.Typeaheads where
 
 import Prelude
 
+import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
@@ -76,53 +77,50 @@ component =
       -> H.HalogenM State Action ChildSlot Void m Unit
     handleAction = case _ of
       Initialize -> do
-        _ <- H.queryAll _singleUser $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _multiUser $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems Loading
+        _ <- Control.Parallel.parSequence_
+          [ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _multiUser $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems Loading
+          , H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems Loading
+          ]
 
-        remoteLocations <-
-          H.liftAff $ Async.loadFromSource Async.locations ""
+        _ <- Control.Parallel.parSequence_
+          [ fetchAndSetLocations, fetchAndSetUsers ]
 
-        _ <- case remoteLocations of
-          items@(Success _) -> do
-            void $ H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
-            void $ H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
-          otherwise -> pure unit
-
-        remoteUsers <-
-          H.liftAff $ Async.loadFromSource Async.users ""
-
-        _ <- case remoteUsers of
-          items@(Success _) -> do
-            void $ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
-            void $ H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
-          otherwise -> pure unit
-
-        selectedLocations <-
-          H.liftAff $ Async.loadFromSource Async.locations "an"
-
-        _ <- case selectedLocations of
-          Success xs -> do
-            void $ H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
-            void $ H.query _multiLocation 1 $ TA.ReplaceSelected (take 4 xs) unit
-            void $ H.query _singleLocation 3 $ TA.ReplaceSelected (head xs) unit
-          otherwise -> pure unit
-
-        selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
-        _ <- case selectedUsers of
-          Success xs -> do
-            void $ H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
-            void $ H.query _multiUser 1 $ TA.ReplaceSelected (take 4 xs) unit
-            void $ H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
-          otherwise -> pure unit
-
-        void $ H.query _singleLocation 4 $ H.tell $ TA.ReplaceItems $ Failure ""
-        void $ H.query _singleLocation 5 $ H.tell $ TA.ReplaceItems Loading
-        void $ H.query _multiUser 4 $ H.tell $ TA.ReplaceItems $ Failure ""
-        void $ H.query _multiUser 5 $ H.tell $ TA.ReplaceItems Loading
+        _ <- Control.Parallel.parSequence_
+          [ H.query _singleLocation 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+          , H.query _singleLocation 5 $ H.tell $ TA.ReplaceItems Loading
+          , H.query _multiUser 4 $ H.tell $ TA.ReplaceItems $ Failure ""
+          , H.query _multiUser 5 $ H.tell $ TA.ReplaceItems Loading
+          ]
 
         pure unit
+
+    fetchAndSetLocations = do
+      remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
+      selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
+
+      case remoteLocations, selectedLocations of
+        items@(Success _), Success xs -> do
+          void $ H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
+          void $ H.query _singleLocation 3 $ TA.ReplaceSelected (head xs) unit
+          void $ H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.query _multiLocation 1 $ TA.ReplaceSelected (take 4 xs) unit
+        _, _ -> pure unit
+
+    fetchAndSetUsers = do
+      remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
+      selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
+
+      case remoteUsers, selectedUsers of
+        items@(Success _), Success xs -> do
+          void $ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
+          void $ H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
+          void $ H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
+          void $ H.query _multiUser 1 $ TA.ReplaceSelected (take 4 xs) unit
+          void $ H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
+        _, _ -> pure unit
 
 ----------
 -- HTML
