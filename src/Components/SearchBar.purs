@@ -25,6 +25,7 @@ type State =
   , debouncer :: Maybe Debouncer
   , debounceTime :: Milliseconds
   , open :: Boolean
+  , keepOpen :: Boolean
   }
 
 type Debouncer =
@@ -45,10 +46,15 @@ data Query a
 type Slot = H.Slot Query Message
 
 type Input = { debounceTime :: Maybe Milliseconds }
+type Input' =
+  { debounceTime :: Maybe Milliseconds
+  , keepOpen :: Boolean
+  }
 
 data Message
  = Searched String
 
+-- | The standard search bar
 component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
 component =
   H.mkComponent
@@ -64,6 +70,27 @@ component =
       , debouncer: Nothing
       , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
       , open: false
+      , keepOpen: false
+      }
+
+-- | A search bar which allows the user to specify if it should
+-- | stay open when unfocused
+component' :: ∀ m. MonadAff m => H.Component HH.HTML Query Input' Message m
+component' =
+  H.mkComponent
+    { initialState
+    , render
+    , eval: H.mkEval (H.defaultEval { handleQuery = handleQuery, handleAction = handleAction })
+    }
+
+  where
+    initialState :: Input' -> State
+    initialState { debounceTime, keepOpen } =
+      { query: ""
+      , debouncer: Nothing
+      , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
+      , open: keepOpen
+      , keepOpen
       }
 
 handleAction :: forall m.
@@ -79,8 +106,9 @@ handleAction = case _ of
     closeIfNullQuery query
 
   Clear ev -> do
+    st <- H.get
     H.liftEffect $ stopPropagation $ ME.toEvent ev
-    H.modify_ _ { query = "", open = false }
+    H.modify_ _ { query = "", open = st.keepOpen }
     H.raise $ Searched ""
 
   Search str -> do
@@ -133,14 +161,15 @@ closeIfNullQuery :: forall m.
   MonadState State m =>
   String ->
   m Unit
-closeIfNullQuery q =
-  if null q then H.modify_ _ { open = false } else pure unit
+closeIfNullQuery q = do
+  st <- H.get
+  if null q then H.modify_ _ { open = st.keepOpen } else pure unit
 
 render :: forall m.
   MonadAff m =>
   State ->
   H.ComponentHTML Action () m
-render { query, open } =
+render st@{ query, open } =
   HH.label
     [ HP.classes $ containerClasses <> containerCondClasses
     , HE.onClick (Just <<< const Open)
@@ -162,7 +191,7 @@ render { query, open } =
     , HH.button
       [ HE.onClick $ Just <<< Clear
       , HP.type_ HP.ButtonButton
-      , HP.classes $ buttonClasses <> buttonCondClasses
+      , HP.classes $ buttonClasses <> buttonCondClasses <> keepOpenClasses
       ]
       [ Icon.delete_ ]
     ]
@@ -219,6 +248,9 @@ render { query, open } =
        ifOpen
          [ "opacity-100", "visible" ]
          [ "opacity-0", "invisible" ]
+
+     keepOpenClasses = HH.ClassName <$>
+       if st.keepOpen then ["hidden"] else []
 
      ifOpen openClasses closedClasses =
        HH.ClassName <$> if open then openClasses else closedClasses
