@@ -106,9 +106,8 @@ handleAction = case _ of
     closeIfNullQuery query
 
   Clear ev -> do
-    st <- H.get
     H.liftEffect $ stopPropagation $ ME.toEvent ev
-    H.modify_ _ { query = "", open = st.keepOpen }
+    H.modify_ \st -> st { query = "", open = st.keepOpen }
     H.raise $ Searched ""
 
   Search str -> do
@@ -162,8 +161,7 @@ closeIfNullQuery :: forall m.
   String ->
   m Unit
 closeIfNullQuery q = do
-  st <- H.get
-  if null q then H.modify_ _ { open = st.keepOpen } else pure unit
+  if null q then H.modify_ \st -> st { open = st.keepOpen } else pure unit
 
 render :: forall m.
   MonadAff m =>
