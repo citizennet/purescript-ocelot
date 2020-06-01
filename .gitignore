@@ -11,6 +11,9 @@ generated-docs
 package-lock.json
 yarn.lock
 *.tix
+.spago
+.purs-repl
+
 
 # Allow the CSS file only; Circle CI will overwrite whatever you
 # put so feel free to handle merge conflicts however you want.
