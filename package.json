@@ -7,7 +7,7 @@
     "postinstall": "",
     "setup": "npm i && cd css && npm i",
     "clean": "rm -rf output .spago node_modules && cd css && rm -rf node_modules",
-    "build-ui": "yarn run spago bundle-app -p \"ui-guide/**/*.purs\" --to dist/example.js -u \"$RTS_ARGS\"",
+    "build-ui": "yarn run spago build -p \"ui-guide/**/*.purs\" && purs bundle output/*/*.js -o dist/example.js $RTS_ARGS",
     "watch-ui": "yarn run spago bundle-app -w --then 'yarn run build-css' -p \"ui-guide/**/*.purs\" --to dist/example.js",
     "install-css": "cd css && yarn install",
     "build-css": "cd css && yarn run build-all"
