@@ -21,12 +21,12 @@ jobs:
 
       - restore_cache:
           keys:
-            - v5-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
-            - v5-bower-cache-{{ .Branch }}
-            - v5-bower-cache
+            - v1-spago-cache-{{ .Branch }}-{{ checksum "spago.dhall" }}
+            - v1-spago-cache-{{ .Branch }}
+            - v1-spago-cache
 
       - run:
-          name: Install Bower and Node dependencies
+          name: Install Spago and Node dependencies
           command: yarn # postinstall runs Bower
 
       - run:
@@ -39,9 +39,9 @@ jobs:
             - ~/ocelot/node_modules
 
       - save_cache:
-          key: v5-bower-cache-{{ .Branch }}-{{ checksum "bower.json" }}
+          key: v1-spago-cache-{{ .Branch }}-{{ checksum "spago.dhall" }}
           paths:
-            - ~/ocelot/bower_components
+            - ~/ocelot/.spago
             - ~/ocelot/output
 
       # Persist generated JS into the workspace
