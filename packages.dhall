@@ -119,54 +119,7 @@ let additions =
 -------------------------
 -- Additional Packages --
 -------------------------
-let storybook = 
-  { dependencies =
-    [ "halogen"
-    , "routing"
-    , "foreign-object"
-    ]
-  , repo =
-      "https://github.com/rnons/purescript-halogen-storybook.git"
-  , version =
-      "de336410dde6e59ad4930f7e4296d066cb236628"
-  }
-
-let html-parser = 
-  { dependencies =
-    [ "string-parsers"
-    , "halogen"
-    ]
-  , repo =
-      "https://github.com/rnons/purescript-html-parser-halogen.git"
-  , version =
-      "7d37fd6a29bff2a143d91c2ebfe5ca582ca76018"
-  }
-
-let svg-parser = 
-  { dependencies =
-    [ "prelude"
-    , "string-parsers"
-    , "generics-rep"
-    ]
-  , repo = 
-      "https://github.com/rnons/purescript-svg-parser.git"
-  , version =
-    "v1.0.0"
-  }
-
-let svg-parser-halogen =
-  { dependencies =
-    [ "svg-parser"
-    , "halogen"
-    ]
-  , repo =
-    "https://github.com/rnons/purescript-svg-parser-halogen.git"
-  , version =
-    "v2.0.0-rc.1"
-      -- "ac16a7af82d739b1f9773fbc28fc7e24f0d24550"
-  }
-
-let renderless =
+let halogen-renderless =
   { dependencies =
     [ "prelude"
     , "control"
@@ -186,12 +139,7 @@ let upstream =
 
 let overrides = {=}
 
-let additions = 
-  { storybook
-  , html-parser
-  , svg-parser
-  , svg-parser-halogen
-  , renderless
-  }
+let additions =
+  { halogen-renderless }
 
 in  upstream // overrides // additions
