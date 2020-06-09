@@ -1,0 +1,61 @@
+{
+  "name": "purescript-ocelot",
+  "homepage": "https://github.com/citizennet/purescript-ocelot",
+  "authors": [
+    "Dave Zuch <https://github.com/whoadave>",
+    "Chris Cornwell <https://github.com/crcornwell>",
+    "Thomas Honeyman <https://github.com/thomashoneyman>",
+    "Forest Toney <https://github.com/foresttoney>",
+    "Hardy Jones <https://github.com/joneshf-cn>",
+    "Vance Palacio <https://github.com/vanceism7>"
+  ],
+  "description": "An opinionated component library for Halogen apps",
+  "keywords": [
+    "purescript",
+    "halogen",
+    "ui"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:citizennet/purescript-ocelot.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output",
+    "css",
+    "ui-guide",
+    "docs"
+  ],
+  "dependencies": {
+    "purescript-halogen": "^5.0.0",
+    "purescript-svg-parser-halogen": "https://github.com/rnons/purescript-svg-parser-halogen.git#ac16a7af82d739b1f9773fbc28fc7e24f0d24550",
+    "purescript-halogen-select": "^5.0.0",
+    "purescript-fuzzy": "^0.2.1",
+    "purescript-remotedata": "4.2.0",
+    "purescript-formatters": "^4.0.0",
+    "purescript-read": "^1.0.1",
+    "purescript-halogen-renderless": "^0.0.4",
+    "purescript-aff-promise": "^2.0.0",
+    "purescript-html-parser-halogen": "https://github.com/rnons/purescript-html-parser-halogen.git#7d37fd6a29bff2a143d91c2ebfe5ca582ca76018",
+    "purescript-bigints": "^4.0.0",
+    "purescript-variant": "^6.0.1"
+  },
+  "devDependencies": {
+    "purescript-affjax": "^10.0.0",
+    "purescript-argonaut": "^6.0.0",
+    "purescript-halogen-storybook": "https://github.com/rnons/purescript-halogen-storybook.git#de336410dde6e59ad4930f7e4296d066cb236628",
+    "purescript-email-validate": "^5.0.0",
+    "purescript-numbers": "^6.0.0",
+    "purescript-js-timers": "^4.0.0",
+    "purescript-test-unit": "^14.0.0",
+    "purescript-debug": "^4.0.0"
+  },
+  "resolutions": {
+    "purescript-foreign-object": "^2.0.0",
+    "purescript-record": "^2.0.0",
+    "purescript-typelevel-prelude": ">= 4.0.0 < 6.0.0"
+  }
+}
