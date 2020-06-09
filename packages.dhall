@@ -123,9 +123,11 @@ let halogen-renderless =
   { dependencies =
     [ "prelude"
     , "control"
+    , "transformers"
+    , "tuples"
     ]
   , repo = 
-    "https://github.com/purescript-deprecated/purescript-halogen-renderless"
+    "https://github.com/purescript-deprecated/purescript-halogen-renderless.git"
   , version =
     "v0.0.4"
   }
