@@ -22987,11 +22987,13 @@ var PS = {};
   var exports = $PS["Ocelot.Block.Tooltip"];
   var Data_Function = $PS["Data.Function"];
   var Data_Functor = $PS["Data.Functor"];
+  var Data_Semigroup = $PS["Data.Semigroup"];
   var Halogen_HTML_Core = $PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = $PS["Halogen.HTML.Elements"];
   var Halogen_HTML_Properties = $PS["Halogen.HTML.Properties"];
   var Ocelot_HTML_Properties = $PS["Ocelot.HTML.Properties"];                
-  var tooltipClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "invisible", "group-hover:visible", "text-white", "bg-grey-50", "px-2", "rounded", "z-60", "-my-8" ]);
+  var classesArr = [ "absolute", "invisible", "group-hover:visible", "text-white", "bg-grey-50", "px-2", "rounded", "z-60" ];
+  var tooltipClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(classesArr)([ "-my-8" ]));
   var tooltip = function (msg) {
       return function (props) {
           return function (html) {
