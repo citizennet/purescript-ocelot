@@ -7,6 +7,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties (css, (<&>))
 
+-- | A tooltip block which allows styling on the container
 tooltip
   :: ∀ p i
    . String
@@ -22,6 +23,7 @@ tooltip msg props html =
     , html
     ]
 
+-- | A tooltip block which gives access to inner and outer styling
 tooltip_
   :: ∀ p i
    . String
@@ -29,8 +31,34 @@ tooltip_
   -> HH.HTML p i
 tooltip_ = flip tooltip []
 
+-- | A tooltip block which gives access to inner and outer styling
+tooltip' ::
+  ∀ p i.
+  String ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.IProp HTMLdiv i) ->
+  HH.HTML p i ->
+  HH.HTML p i
+tooltip' msg outerProps innerProps html =
+  HH.div
+    ([ css "group cursor-pointer inline-block" ] <&> outerProps)
+    [ html
+    , HH.div
+        ([ css "relative" ])
+        [ HH.div
+            ([ HP.classes tooltipClasses' ] <&> innerProps)
+            [ HH.text msg ]
+        ]
+    ]
+
 tooltipClasses :: Array HH.ClassName
-tooltipClasses = HH.ClassName <$>
+tooltipClasses = HH.ClassName <$> classesArr <> [ "-my-8" ]
+
+tooltipClasses' :: Array HH.ClassName
+tooltipClasses' = HH.ClassName <$> classesArr
+
+classesArr :: Array String
+classesArr =
   [ "absolute"
   , "invisible"
   , "group-hover:visible"
@@ -39,5 +67,4 @@ tooltipClasses = HH.ClassName <$>
   , "px-2"
   , "rounded"
   , "z-60"
-  , "-my-8"
   ]
