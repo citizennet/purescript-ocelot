@@ -7,7 +7,7 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties (css, (<&>))
 
--- | A tooltip block which allows styling on the container
+-- | A tooltip which allows styling on the outer container
 tooltip
   :: ∀ p i
    . String
@@ -23,7 +23,7 @@ tooltip msg props html =
     , html
     ]
 
--- | A tooltip block which gives access to inner and outer styling
+-- | A tooltip with no extra styling
 tooltip_
   :: ∀ p i
    . String
@@ -31,7 +31,7 @@ tooltip_
   -> HH.HTML p i
 tooltip_ = flip tooltip []
 
--- | A tooltip block which gives access to inner and outer styling
+-- | A tooltip which gives access to inner and outer styling
 tooltip' ::
   ∀ p i.
   String ->
