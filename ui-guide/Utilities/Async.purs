@@ -4,9 +4,9 @@ import Prelude
 
 import Affjax (get, printError)
 import Affjax.ResponseFormat as Response
-import Data.Argonaut (Json, decodeJson, (.:))
+import Data.Argonaut (Json, JsonDecodeError, decodeJson, printJsonDecodeError, (.:))
 import Data.Array (head, last)
-import Data.Bifunctor (bimap)
+import Data.Bifunctor (bimap, lmap)
 import Data.Either (Either)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Maybe (fromMaybe)
@@ -90,13 +90,13 @@ loadFromSource (Source { path, speed, decoder }) search =
 
 decodeWith
   :: ∀ item
-   . (Json -> Either String item)
+   . (Json -> Either JsonDecodeError item)
   -> Json
   -> RemoteData Err (Array item)
 decodeWith decoder json =
-  fromEither $ traverse decoder =<< decodeResults =<< decodeJson json
+  fromEither $ lmap printJsonDecodeError $ traverse decoder =<< decodeResults =<< decodeJson json
 
-decodeResults :: Json -> Either String (Array Json)
+decodeResults :: Json -> Either JsonDecodeError (Array Json)
 decodeResults json = do
   obj <- decodeJson json
   resultsJson <- obj .: "results"
@@ -115,7 +115,7 @@ derive instance eqUser :: Eq User
 instance showUser :: Show User where
   show (User { name }) = name
 
-decodeUser :: Json -> Either String User
+decodeUser :: Json -> Either JsonDecodeError User
 decodeUser json = do
   obj <- decodeJson json
   name <- obj .: "name"
@@ -211,7 +211,7 @@ instance showLocation :: Show Location where
   show (Location { name, population }) =
     name <> " (" <> show population <> " population)"
 
-decodeLocation :: Json -> Either String Location
+decodeLocation :: Json -> Either JsonDecodeError Location
 decodeLocation json = do
   obj <- decodeJson json
   name <- obj .: "name"
