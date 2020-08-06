@@ -80,7 +80,7 @@ renderSingle iprops renderItem renderContainer st =
 
   where
 
-  disabled = isDisabled iprops
+  disabled = st.disabled
   showSelected = isJust st.selected && st.visibility == S.Off
 
 
@@ -132,7 +132,7 @@ renderMulti iprops renderItem renderContainer st =
 
   where
 
-  disabled = isDisabled iprops
+  disabled = st.disabled
 
 
 ----------
@@ -245,7 +245,7 @@ inputProps disabled iprops = if disabled
   then iprops'
   else Setters.setInputProps iprops'
   where
-    iprops' = [ HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
+    iprops' = [ HP.disabled disabled, HP.autocomplete false, css "focus:next:text-blue-88" ] <&> iprops
 
 
 disabledClasses :: Array HH.ClassName

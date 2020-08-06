@@ -21,7 +21,7 @@ import Effect.Aff.Class (class MonadAff)
 import Foreign.Object (Object)
 import Halogen.HTML as HH
 import Network.RemoteData (RemoteData(..))
-import Ocelot.Component.Typeahead.Render (defRenderContainer, renderMulti, renderSingle) as TA
+import Ocelot.Component.Typeahead.Render (defRenderContainer, isDisabled, renderMulti, renderSingle) as TA
 
 -- | Forgive the long name; it provides clarity into what exactly
 -- | this type represents and you don't ordinarily need to write
@@ -45,6 +45,7 @@ syncSingle { itemToObject, renderFuzzy } props =
   , itemToObject
   , debounceTime: Nothing
   , async: Nothing
+  , disabled: TA.isDisabled props
   , render: TA.renderSingle
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -65,6 +66,7 @@ syncMulti { itemToObject, renderFuzzy } props =
   , itemToObject
   , debounceTime: Nothing
   , async: Nothing
+  , disabled: TA.isDisabled props
   , render: TA.renderMulti
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -94,6 +96,7 @@ asyncSingle { async, itemToObject, renderFuzzy } props =
   , itemToObject
   , debounceTime: Just $ Milliseconds 300.0
   , async: Just async
+  , disabled: TA.isDisabled props
   , render: TA.renderSingle
       props
       (renderFuzzy <<< match false itemToObject "")
@@ -114,6 +117,7 @@ asyncMulti { async, itemToObject, renderFuzzy } props =
   , itemToObject
   , debounceTime: Just $ Milliseconds 300.0
   , async: Just async
+  , disabled: TA.isDisabled props
   , render: TA.renderMulti
       props
       (renderFuzzy <<< match false itemToObject "")
