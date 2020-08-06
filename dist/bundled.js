@@ -24289,6 +24289,18 @@ var PS = {};
       };
       return Reset;
   })();
+  var SetDisabled = (function () {
+      function SetDisabled(value0, value1) {
+          this.value0 = value0;
+          this.value1 = value1;
+      };
+      SetDisabled.create = function (value0) {
+          return function (value1) {
+              return new SetDisabled(value0, value1);
+          };
+      };
+      return SetDisabled;
+  })();
   var Searched = (function () {
       function Searched(value0) {
           this.value0 = value0;
@@ -24399,10 +24411,10 @@ var PS = {};
           inputType: Select.Text.value,
           search: Data_Maybe.Nothing.value,
           debounceTime: v.config.debounceTime,
-          getItemCount: function ($189) {
+          getItemCount: function ($199) {
               return Data_Array.length((function (v1) {
                   return v1.fuzzyItems;
-              })($189));
+              })($199));
           },
           items: v.items,
           selected: v.selected,
@@ -24412,6 +24424,7 @@ var PS = {};
           ops: v.ops,
           async: v.async,
           fuzzyItems: v.fuzzyItems,
+          disabled: v.disabled,
           config: {
               debounceTime: v.config.debounceTime
           }
@@ -24439,7 +24452,7 @@ var PS = {};
                           return Data_Array.cons(v(v1.value0(v2)))(items);
                       };
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 304, column 47 - line 307, column 65): " + [ v1.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 311, column 47 - line 314, column 65): " + [ v1.constructor.name ]);
               };
           };
       };
@@ -24454,9 +24467,9 @@ var PS = {};
                   return Data_Ord.greaterThan(Data_Ratio.ordRatio(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt))(v.ratio)(Data_Ratio.reduce(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt)(2)(3));
               });
               return Data_Functor.map(Network_RemoteData.functorRemoteData)((function () {
-                  var $190 = Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq));
-                  return function ($191) {
-                      return $190(applyF(applyI(fuzzyItems($191))));
+                  var $200 = Data_Array.sort(Data_Fuzzy.ordFuzzy(dictEq));
+                  return function ($201) {
+                      return $200(applyF(applyI(fuzzyItems($201))));
                   };
               })())(Data_Functor.map(Network_RemoteData.functorRemoteData)(Data_Function.flip(st.ops.runFilter)(st.selected))(st.items));
           };
@@ -24468,55 +24481,55 @@ var PS = {};
               var v = getNewItems(dictMonadAff)(dictEq)(st);
               if (v instanceof Network_RemoteData.Success) {
                   return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $95 = {};
-                      for (var $96 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $96)) {
-                              $95[$96] = v1[$96];
+                      var $97 = {};
+                      for (var $98 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $98)) {
+                              $97[$98] = v1[$98];
                           };
                       };
-                      $95.fuzzyItems = v.value0;
-                      return $95;
+                      $97.fuzzyItems = v.value0;
+                      return $97;
                   });
               };
               if (v instanceof Network_RemoteData.Failure) {
                   return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $99 = {};
-                      for (var $100 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $100)) {
-                              $99[$100] = v1[$100];
+                      var $101 = {};
+                      for (var $102 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $102)) {
+                              $101[$102] = v1[$102];
                           };
                       };
-                      $99.visibility = Select.Off.value;
-                      $99.fuzzyItems = [  ];
-                      return $99;
+                      $101.visibility = Select.Off.value;
+                      $101.fuzzyItems = [  ];
+                      return $101;
                   });
               };
               if (v instanceof Network_RemoteData.NotAsked) {
                   return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $103 = {};
-                      for (var $104 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $104)) {
-                              $103[$104] = v1[$104];
+                      var $105 = {};
+                      for (var $106 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $106)) {
+                              $105[$106] = v1[$106];
                           };
                       };
-                      $103.visibility = Select.Off.value;
-                      $103.fuzzyItems = [  ];
-                      return $103;
+                      $105.visibility = Select.Off.value;
+                      $105.fuzzyItems = [  ];
+                      return $105;
                   });
               };
               if (v instanceof Network_RemoteData.Loading) {
                   return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $106 = {};
-                      for (var $107 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $107)) {
-                              $106[$107] = v1[$107];
+                      var $108 = {};
+                      for (var $109 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $109)) {
+                              $108[$109] = v1[$109];
                           };
                       };
-                      $106.fuzzyItems = [  ];
-                      return $106;
+                      $108.fuzzyItems = [  ];
+                      return $108;
                   });
               };
-              throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 318, column 3 - line 332, column 38): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 325, column 3 - line 339, column 38): " + [ v.constructor.name ]);
           });
       };
   };
@@ -24529,14 +24542,14 @@ var PS = {};
                   };
                   if (v instanceof Remove) {
                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                          var $110 = {};
-                          for (var $111 in st) {
-                              if ({}.hasOwnProperty.call(st, $111)) {
-                                  $110[$111] = st[$111];
+                          var $112 = {};
+                          for (var $113 in st) {
+                              if ({}.hasOwnProperty.call(st, $113)) {
+                                  $112[$113] = st[$113];
                               };
                           };
-                          $110.selected = st.ops.runRemove(v.value0)(st.selected);
-                          return $110;
+                          $112.selected = st.ops.runRemove(v.value0)(st.selected);
+                          return $112;
                       }))(function (st) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, st.selected)))(function () {
                               return synchronize(dictEq)(dictMonadAff);
@@ -24545,15 +24558,15 @@ var PS = {};
                   };
                   if (v instanceof RemoveAll) {
                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                          var $114 = {};
-                          for (var $115 in st) {
-                              if ({}.hasOwnProperty.call(st, $115)) {
-                                  $114[$115] = st[$115];
+                          var $116 = {};
+                          for (var $117 in st) {
+                              if ({}.hasOwnProperty.call(st, $117)) {
+                                  $116[$117] = st[$117];
                               };
                           };
-                          $114.selected = Control_Plus.empty(dictPlus);
-                          $114.visibility = Select.Off.value;
-                          return $114;
+                          $116.selected = Control_Plus.empty(dictPlus);
+                          $116.visibility = Select.Off.value;
+                          return $116;
                       }))(function (st) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(RemovalQuery.value, st.selected)))(function () {
                               return synchronize(dictEq)(dictMonadAff);
@@ -24563,7 +24576,7 @@ var PS = {};
                   if (v instanceof Raise) {
                       return Halogen_Query_HalogenM.raise(new Emit(v.value0));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 355, column 24 - line 370, column 26): " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 362, column 24 - line 377, column 26): " + [ v.constructor.name ]);
               };
           };
       };
@@ -24579,24 +24592,24 @@ var PS = {};
                       };
                       if (v2 instanceof Data_Maybe.Just) {
                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (st) {
-                              var $121 = {};
-                              for (var $122 in st) {
-                                  if ({}.hasOwnProperty.call(st, $122)) {
-                                      $121[$122] = st[$122];
+                              var $123 = {};
+                              for (var $124 in st) {
+                                  if ({}.hasOwnProperty.call(st, $124)) {
+                                      $123[$124] = st[$124];
                                   };
                               };
-                              $121.selected = st.ops.runSelect(v2.value0.original)(st.selected);
-                              return $121;
+                              $123.selected = st.ops.runSelect(v2.value0.original)(st.selected);
+                              return $123;
                           }))(function (st) {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Applicative.when(Halogen_Query_HalogenM.applicativeHalogenM)(!st.keepOpen)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
-                                  var $124 = {};
-                                  for (var $125 in v3) {
-                                      if ({}.hasOwnProperty.call(v3, $125)) {
-                                          $124[$125] = v3[$125];
+                                  var $126 = {};
+                                  for (var $127 in v3) {
+                                      if ({}.hasOwnProperty.call(v3, $127)) {
+                                          $126[$127] = v3[$127];
                                       };
                                   };
-                                  $124.visibility = Select.Off.value;
-                                  return $124;
+                                  $126.visibility = Select.Off.value;
+                                  return $126;
                               })))(function () {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(SelectionMessage.value, st.selected)))(function () {
                                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Selected(v2.value0.original)))(function () {
@@ -24606,19 +24619,19 @@ var PS = {};
                               });
                           });
                       };
-                      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 417, column 5 - line 425, column 20): " + [ v2.constructor.name ]);
+                      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 427, column 5 - line 435, column 20): " + [ v2.constructor.name ]);
                   });
               };
               if (v instanceof Select.Searched) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                      var $131 = {};
-                      for (var $132 in v1) {
-                          if ({}.hasOwnProperty.call(v1, $132)) {
-                              $131[$132] = v1[$132];
+                      var $133 = {};
+                      for (var $134 in v1) {
+                          if ({}.hasOwnProperty.call(v1, $134)) {
+                              $133[$134] = v1[$134];
                           };
                       };
-                      $131.search = v.value0;
-                      return $131;
+                      $133.search = v.value0;
+                      return $133;
                   }))(function () {
                       return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
                           return v1.async;
@@ -24629,32 +24642,32 @@ var PS = {};
                               };
                               if (async instanceof Data_Maybe.Just) {
                                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                                      var $135 = {};
-                                      for (var $136 in v1) {
-                                          if ({}.hasOwnProperty.call(v1, $136)) {
-                                              $135[$136] = v1[$136];
+                                      var $137 = {};
+                                      for (var $138 in v1) {
+                                          if ({}.hasOwnProperty.call(v1, $138)) {
+                                              $137[$138] = v1[$138];
                                           };
                                       };
-                                      $135.items = Network_RemoteData.Loading.value;
-                                      return $135;
+                                      $137.items = Network_RemoteData.Loading.value;
+                                      return $137;
                                   }))(function () {
                                       return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(synchronize(dictEq)(dictMonadAff))(function () {
                                           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_Trans_Class.lift(Halogen_Query_HalogenM.monadTransHalogenM)((dictMonadAff.MonadEffect0()).Monad0())(async.value0(v.value0)))(function (newItems) {
                                               return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                                                  var $138 = {};
-                                                  for (var $139 in v1) {
-                                                      if ({}.hasOwnProperty.call(v1, $139)) {
-                                                          $138[$139] = v1[$139];
+                                                  var $140 = {};
+                                                  for (var $141 in v1) {
+                                                      if ({}.hasOwnProperty.call(v1, $141)) {
+                                                          $140[$141] = v1[$141];
                                                       };
                                                   };
-                                                  $138.items = newItems;
-                                                  return $138;
+                                                  $140.items = newItems;
+                                                  return $140;
                                               });
                                           });
                                       });
                                   });
                               };
-                              throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 432, column 5 - line 438, column 41): " + [ async.constructor.name ]);
+                              throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 442, column 5 - line 448, column 41): " + [ async.constructor.name ]);
                           })())(function () {
                               return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new Searched(v.value0)))(function () {
                                   return synchronize(dictEq)(dictMonadAff);
@@ -24671,14 +24684,14 @@ var PS = {};
       return function (dictMonadAff) {
           return function (selected) {
               return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
-                  var $143 = {};
-                  for (var $144 in v) {
-                      if ({}.hasOwnProperty.call(v, $144)) {
-                          $143[$144] = v[$144];
+                  var $145 = {};
+                  for (var $146 in v) {
+                      if ({}.hasOwnProperty.call(v, $146)) {
+                          $145[$146] = v[$146];
                       };
                   };
-                  $143.selected = selected;
-                  return $143;
+                  $145.selected = selected;
+                  return $145;
               }))(function (st) {
                   return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ReplacementQuery.value, st.selected)))(function () {
                       return synchronize(dictEq)(dictMonadAff);
@@ -24709,36 +24722,48 @@ var PS = {};
                   };
                   if (v instanceof ReplaceItems) {
                       return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                          var $158 = {};
-                          for (var $159 in v1) {
-                              if ({}.hasOwnProperty.call(v1, $159)) {
-                                  $158[$159] = v1[$159];
+                          var $160 = {};
+                          for (var $161 in v1) {
+                              if ({}.hasOwnProperty.call(v1, $161)) {
+                                  $160[$161] = v1[$161];
                               };
                           };
-                          $158.items = v.value0;
-                          return $158;
+                          $160.items = v.value0;
+                          return $160;
                       }))(function () {
                           return synchronize(dictEq)(dictMonadAff);
                       }));
                   };
                   if (v instanceof Reset) {
                       return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value0))(Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                          var $163 = {};
-                          for (var $164 in v1) {
-                              if ({}.hasOwnProperty.call(v1, $164)) {
-                                  $163[$164] = v1[$164];
+                          var $165 = {};
+                          for (var $166 in v1) {
+                              if ({}.hasOwnProperty.call(v1, $166)) {
+                                  $165[$166] = v1[$166];
                               };
                           };
-                          $163.selected = Control_Plus.empty(dictPlus);
-                          $163.items = Network_RemoteData.NotAsked.value;
-                          return $163;
+                          $165.selected = Control_Plus.empty(dictPlus);
+                          $165.items = Network_RemoteData.NotAsked.value;
+                          return $165;
                       }))(function (st) {
                           return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(ResetQuery.value, st.selected)))(function () {
                               return synchronize(dictEq)(dictMonadAff);
                           });
                       }));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 382, column 23 - line 403, column 16): " + [ v.constructor.name ]);
+                  if (v instanceof SetDisabled) {
+                      return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
+                          var $169 = {};
+                          for (var $170 in v1) {
+                              if ({}.hasOwnProperty.call(v1, $170)) {
+                                  $169[$170] = v1[$170];
+                              };
+                          };
+                          $169.disabled = v.value0;
+                          return $169;
+                      }));
+                  };
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 389, column 23 - line 413, column 40): " + [ v.constructor.name ]);
               };
           };
       };
@@ -24789,7 +24814,12 @@ var PS = {};
               return "select";
           }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(Select.Query.create(Halogen_Query.tell(Reset.create))));
       };
-      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 255, column 15 - line 266, column 52): " + [ v.constructor.name ]);
+      if (v instanceof SetDisabled) {
+          return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Halogen_Query_HalogenM.query()(new Data_Symbol.IsSymbol(function () {
+              return "select";
+          }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(Select.Query.create(Halogen_Query.tell(SetDisabled.create(v.value0)))));
+      };
+      throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 260, column 15 - line 273, column 67): " + [ v.constructor.name ]);
   };
   var renderAdapter = function (dictPlus) {
       return function (dictEq) {
@@ -24798,8 +24828,8 @@ var PS = {};
                   return function (state) {
                       return Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
                           return "select";
-                      }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(Select.component(dictMonadAff)()()()(Control_Category.identity(Control_Category.categoryFn))(spec(dictPlus)(dictEq)(dictMonadAff)(render)))(embeddedInput(state))(function ($192) {
-                          return Data_Maybe.Just.create(PassingOutput.create($192));
+                      }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(Select.component(dictMonadAff)()()()(Control_Category.identity(Control_Category.categoryFn))(spec(dictPlus)(dictEq)(dictMonadAff)(render)))(embeddedInput(state))(function ($202) {
+                          return Data_Maybe.Just.create(PassingOutput.create($202));
                       });
                   };
               };
@@ -24816,7 +24846,7 @@ var PS = {};
                   if (v instanceof ReceiveRender) {
                       return Renderless_State.modifyStore_(Halogen_Query_HalogenM.monadStateHalogenM)(renderAdapter(dictPlus)(dictEq)(dictMonadAff)(v.value0.render))(Control_Category.identity(Control_Category.categoryFn));
                   };
-                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 247, column 16 - line 251, column 49): " + [ v.constructor.name ]);
+                  throw new Error("Failed pattern match at Ocelot.Component.Typeahead.Base (line 252, column 16 - line 256, column 49): " + [ v.constructor.name ]);
               };
           };
       };
@@ -24832,6 +24862,7 @@ var PS = {};
                           keepOpen: v.keepOpen,
                           itemToObject: v.itemToObject,
                           async: v.async,
+                          disabled: v.disabled,
                           ops: ops,
                           config: {
                               debounceTime: v.debounceTime
@@ -24868,9 +24899,9 @@ var PS = {};
           return component(Control_Plus.plusArray)(dictEq)(dictMonadAff)({
               runSelect: Data_Array.cons,
               runRemove: (function () {
-                  var $193 = Data_Eq.notEq(dictEq);
-                  return function ($194) {
-                      return Data_Array.filter($193($194));
+                  var $203 = Data_Eq.notEq(dictEq);
+                  return function ($204) {
+                      return Data_Array.filter($203($204));
                   };
               })(),
               runFilter: Data_Array.difference(dictEq)
@@ -24880,8 +24911,8 @@ var PS = {};
   var single = function (dictEq) {
       return function (dictMonadAff) {
           return component(Data_Maybe.plusMaybe)(dictEq)(dictMonadAff)({
-              runSelect: function ($195) {
-                  return Data_Function["const"](Data_Maybe.Just.create($195));
+              runSelect: function ($205) {
+                  return Data_Function["const"](Data_Maybe.Just.create($205));
               },
               runRemove: Data_Function["const"](Data_Function["const"](Data_Maybe.Nothing.value)),
               runFilter: function (items) {
@@ -25578,7 +25609,7 @@ var PS = {};
   })();
   var inputProps = function (disabled) {
       return function (iprops) {
-          var iprops$prime = Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.autocomplete(false), Ocelot_HTML_Properties.css("focus:next:text-blue-88") ])(iprops);
+          var iprops$prime = Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.disabled(disabled), Halogen_HTML_Properties.autocomplete(false), Ocelot_HTML_Properties.css("focus:next:text-blue-88") ])(iprops);
           if (disabled) {
               return iprops$prime;
           };
@@ -25589,15 +25620,14 @@ var PS = {};
       return function (renderItem) {
           return function (renderContainer) {
               return function (st) {
-                  var disabled = isDisabled(iprops);
                   return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("relative") ])([ (function () {
-                      var $11 = !disabled && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_Array["null"])(st.selected);
+                      var $11 = !st.disabled && Data_HeytingAlgebra.not(Data_HeytingAlgebra.heytingAlgebraFunction(Data_HeytingAlgebra.heytingAlgebraBoolean))(Data_Array["null"])(st.selected);
                       if ($11) {
                           return Halogen_HTML_Elements.a([ Ocelot_HTML_Properties.css("absolute -mt-7 pin-r underline text-grey-70 cursor-pointer"), Halogen_HTML_Events.onClick(Data_Function["const"](Data_Maybe.Just.create(Select.Action.create(Ocelot_Component_Typeahead_Base.RemoveAll.value)))) ])([ Halogen_HTML_Core.text("Remove All") ]);
                       };
                       return Halogen_HTML_Core.text("");
                   })(), Ocelot_Block_ItemContainer.selectionContainer(Data_Functor.mapFlipped(Data_Functor.functorArray)(st.selected)((function () {
-                      if (disabled) {
+                      if (st.disabled) {
                           return function ($19) {
                               return Halogen_HTML.fromPlainHTML(renderItem($19));
                           };
@@ -25605,13 +25635,13 @@ var PS = {};
                       return function (selected) {
                           return Ocelot_Block_ItemContainer.selectionGroup(renderItem)([  ])([ Halogen_HTML_Events.onClick(Data_Function["const"](Data_Maybe.Just.create(Select.Action.create(new Ocelot_Component_Typeahead_Base.Remove(selected))))) ])(selected);
                       };
-                  })())), Ocelot_Block_Input.inputGroup_([ Ocelot_Block_Input.inputCenter(inputProps(disabled)(iprops)), Ocelot_Block_Input.addonLeft_([ Ocelot_Block_Icon.search_ ]), Ocelot_Block_Input.addonCenter([ Ocelot_HTML_Properties.css((function () {
+                  })())), Ocelot_Block_Input.inputGroup_([ Ocelot_Block_Input.inputCenter(inputProps(st.disabled)(iprops)), Ocelot_Block_Input.addonLeft_([ Ocelot_Block_Icon.search_ ]), Ocelot_Block_Input.addonCenter([ Ocelot_HTML_Properties.css((function () {
                       var $13 = Network_RemoteData.isLoading(st.items);
                       if ($13) {
                           return "";
                       };
                       return "offscreen";
-                  })()) ])([ spinner ]), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(disabled)) ])([ Halogen_HTML_Core.text("Browse") ]) ]), Ocelot_Block_Conditional.conditional(Data_Eq.eq(Select.eqVisibility)(st.visibility)(Select.On.value))([ Ocelot_HTML_Properties.css("relative block") ])([ renderContainer(st) ]), renderError(Network_RemoteData.isFailure(st.items)) ]);
+                  })()) ])([ spinner ]), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(st.disabled)) ])([ Halogen_HTML_Core.text("Browse") ]) ]), Ocelot_Block_Conditional.conditional(Data_Eq.eq(Select.eqVisibility)(st.visibility)(Select.On.value))([ Ocelot_HTML_Properties.css("relative block") ])([ renderContainer(st) ]), renderError(Network_RemoteData.isFailure(st.items)) ]);
               };
           };
       };
@@ -25681,14 +25711,13 @@ var PS = {};
           return function (renderContainer) {
               return function (st) {
                   var showSelected = Data_Maybe.isJust(st.selected) && Data_Eq.eq(Select.eqVisibility)(st.visibility)(Select.Off.value);
-                  var disabled = isDisabled(iprops);
                   return Halogen_HTML_Elements.div_([ Ocelot_Block_Input["inputGroup'"](Halogen_HTML_Elements.div)([ Ocelot_HTML_Properties.css((function () {
                       if (showSelected) {
                           return "";
                       };
                       return "offscreen";
                   })()) ])([ (function () {
-                      if (disabled) {
+                      if (st.disabled) {
                           return Data_Maybe.maybe(Halogen_HTML_Core.text(""))(function (selected) {
                               return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(disabledClasses) ])([ Halogen_HTML.fromPlainHTML(renderItem(selected)) ]);
                           })(st.selected);
@@ -25696,18 +25725,18 @@ var PS = {};
                       return Data_Maybe.maybe(Halogen_HTML_Core.text(""))(function (selected) {
                           return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Ocelot_Block_Input.mainLeftClasses) ])([ Ocelot_Block_ItemContainer.selectionGroup(renderItem)([  ])([ Halogen_HTML_Events.onClick(Data_Function["const"](Data_Maybe.Just.create(Select.Action.create(new Ocelot_Component_Typeahead_Base.Remove(selected))))) ])(selected) ]);
                       })(st.selected);
-                  })(), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(disabled)) ])([ Halogen_HTML_Core.text("Change") ]) ]), Ocelot_Block_Input.inputGroup([ Ocelot_HTML_Properties.css((function () {
+                  })(), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(st.disabled)) ])([ Halogen_HTML_Core.text("Change") ]) ]), Ocelot_Block_Input.inputGroup([ Ocelot_HTML_Properties.css((function () {
                       if (showSelected) {
                           return "offscreen";
                       };
                       return "";
-                  })()) ])([ Ocelot_Block_Input.inputCenter(inputProps(disabled)(iprops)), Ocelot_Block_Input.addonLeft_([ Ocelot_Block_Icon.search_ ]), Ocelot_Block_Input.addonCenter([ Ocelot_HTML_Properties.css((function () {
+                  })()) ])([ Ocelot_Block_Input.inputCenter(inputProps(st.disabled)(iprops)), Ocelot_Block_Input.addonLeft_([ Ocelot_Block_Icon.search_ ]), Ocelot_Block_Input.addonCenter([ Ocelot_HTML_Properties.css((function () {
                       var $18 = Network_RemoteData.isLoading(st.items);
                       if ($18) {
                           return "";
                       };
                       return "offscreen";
-                  })()) ])([ spinner ]), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(disabled)) ])([ Halogen_HTML_Core.text("Browse") ]) ]), Ocelot_Block_Conditional.conditional(Data_Eq.eq(Select.eqVisibility)(st.visibility)(Select.On.value))([ Ocelot_HTML_Properties.css("relative block") ])([ renderContainer(st) ]), renderError(Network_RemoteData.isFailure(st.items)) ]);
+                  })()) ])([ spinner ]), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(st.disabled)) ])([ Halogen_HTML_Core.text("Browse") ]) ]), Ocelot_Block_Conditional.conditional(Data_Eq.eq(Select.eqVisibility)(st.visibility)(Select.On.value))([ Ocelot_HTML_Properties.css("relative block") ])([ renderContainer(st) ]), renderError(Network_RemoteData.isFailure(st.items)) ]);
               };
           };
       };
@@ -25722,6 +25751,7 @@ var PS = {};
   exports["defRenderContainer"] = defRenderContainer;
   exports["renderToolbarSearchDropdown"] = renderToolbarSearchDropdown;
   exports["renderHeaderSearchDropdown"] = renderHeaderSearchDropdown;
+  exports["isDisabled"] = isDisabled;
 })(PS);
 (function($PS) {
   // Generated by purs version 0.13.8
@@ -25744,6 +25774,7 @@ var PS = {};
                       itemToObject: v.itemToObject,
                       debounceTime: Data_Maybe.Nothing.value,
                       async: Data_Maybe.Nothing.value,
+                      disabled: Ocelot_Component_Typeahead_Render.isDisabled(props),
                       render: Ocelot_Component_Typeahead_Render.renderSingle(props)((function () {
                           var $30 = Data_Fuzzy.match(false)(v.itemToObject)("");
                           return function ($31) {
@@ -25766,6 +25797,7 @@ var PS = {};
                       itemToObject: v.itemToObject,
                       debounceTime: Data_Maybe.Just.create(300.0),
                       async: new Data_Maybe.Just(v.async),
+                      disabled: Ocelot_Component_Typeahead_Render.isDisabled(props),
                       render: Ocelot_Component_Typeahead_Render.renderSingle(props)((function () {
                           var $34 = Data_Fuzzy.match(false)(v.itemToObject)("");
                           return function ($35) {
@@ -25788,6 +25820,7 @@ var PS = {};
                       itemToObject: v.itemToObject,
                       debounceTime: Data_Maybe.Just.create(300.0),
                       async: new Data_Maybe.Just(v.async),
+                      disabled: Ocelot_Component_Typeahead_Render.isDisabled(props),
                       render: Ocelot_Component_Typeahead_Render.renderMulti(props)((function () {
                           var $36 = Data_Fuzzy.match(false)(v.itemToObject)("");
                           return function ($37) {
@@ -27692,6 +27725,7 @@ var PS = {};
               keepOpen: v.keepOpen,
               itemToObject: v.itemToObject,
               async: v.async,
+              disabled: v.disabled,
               debounceTime: v.debounceTime,
               render: v.render
           };
@@ -27719,6 +27753,7 @@ var PS = {};
               keepOpen: v.keepOpen,
               itemToObject: v.itemToObject,
               async: v.async,
+              disabled: v.disabled,
               debounceTime: v.debounceTime,
               render: v.render
           };
@@ -27771,6 +27806,7 @@ var PS = {};
               keepOpen: v.keepOpen,
               itemToObject: v.itemToObject,
               async: v.async,
+              disabled: v.disabled,
               debounceTime: v.debounceTime,
               render: v.render
           };
@@ -27798,6 +27834,7 @@ var PS = {};
               keepOpen: v.keepOpen,
               itemToObject: v.itemToObject,
               async: v.async,
+              disabled: v.disabled,
               debounceTime: v.debounceTime,
               render: v.render
           };
@@ -27952,6 +27989,7 @@ var PS = {};
           debounceTime: Data_Maybe.Nothing.value,
           async: Data_Maybe.Nothing.value,
           itemToObject: UIGuide_Utility_Async.locationToObject,
+          disabled: false,
           render: Ocelot_Component_Typeahead_Render.renderHeaderSearchDropdown(UIGuide_Utility_Async.eqLocation)("All Locations")("All Locations")((function () {
               var $37 = Data_Newtype.unwrap(UIGuide_Utility_Async.newtypeLocation);
               return function ($38) {
@@ -27980,6 +28018,7 @@ var PS = {};
           debounceTime: Data_Maybe.Nothing.value,
           async: Data_Maybe.Nothing.value,
           itemToObject: UIGuide_Utility_Async.locationToObject,
+          disabled: false,
           render: Ocelot_Component_Typeahead_Render.renderToolbarSearchDropdown(UIGuide_Utility_Async.eqLocation)("All Locations")("All Locations")((function () {
               var $42 = Data_Newtype.unwrap(UIGuide_Utility_Async.newtypeLocation);
               return function ($43) {
