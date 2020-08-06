@@ -555,6 +555,7 @@ cnDocumentationBlocks =
                 , debounceTime: Nothing
                 , async: Nothing
                 , itemToObject: Async.locationToObject
+                , disabled: false
                 , render: TARender.renderHeaderSearchDropdown
                   "All Locations"
                   "All Locations"
@@ -584,6 +585,7 @@ cnDocumentationBlocks =
               , debounceTime: Nothing
               , async: Nothing
               , itemToObject: Async.locationToObject
+              , disabled: false
               , render: TARender.renderToolbarSearchDropdown
                 "All Locations"
                 "All Locations"
