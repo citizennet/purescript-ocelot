@@ -60,6 +60,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: ocelot-social-icon;
+  src: url('data:application/octet-stream;base64,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') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .ocelot-scoped [data-icon],
 .ocelot-scoped [class^="icon-"],
 .ocelot-scoped [class*=" icon-"] {
@@ -82,9 +89,66 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ocelot-scoped .icon-facebook:before,
+.ocelot-scoped .icon-google:before,
+.ocelot-scoped .icon-instagram:before,
+.ocelot-scoped .icon-linkedin:before,
+.ocelot-scoped .icon-pinterest:before,
+.ocelot-scoped .icon-snapchat:before,
+.ocelot-scoped .icon-taboola:before,
+.ocelot-scoped .icon-tiktok:before,
+.ocelot-scoped .icon-twitter:before,
+.ocelot-scoped .icon-youtube:before {
+  font-family: "ocelot-social-icon" !important;
+}
+
 .ocelot-scoped [data-icon]:before {
   content: attr(data-icon);
 }
+
+/* 2020-08-31 icon updates */
+
+.ocelot-scoped .icon-facebook:before {
+  content: '\E800';
+}
+
+.ocelot-scoped .icon-google:before {
+  content: '\E801';
+}
+
+.ocelot-scoped .icon-instagram:before {
+  content: '\E802';
+}
+
+.ocelot-scoped .icon-linkedin:before {
+  content: '\E803';
+}
+
+.ocelot-scoped .icon-pinterest:before {
+  content: '\E804';
+}
+
+.ocelot-scoped .icon-snapchat:before {
+  content: '\E805';
+}
+
+.ocelot-scoped .icon-taboola:before {
+  content: '\E806';
+}
+
+.ocelot-scoped .icon-tiktok:before {
+  content: '\E807';
+}
+
+.ocelot-scoped .icon-twitter:before {
+  content: '\E808';
+}
+
+.ocelot-scoped .icon-youtube:before {
+  content: '\E809';
+}
+
+/* legacy icons */
 
 .ocelot-scoped .icon-add:before {
   content: "\E018";
@@ -214,16 +278,8 @@
   content: "\E004";
 }
 
-.ocelot-scoped .icon-facebook:before {
-  content: "\E006";
-}
-
 .ocelot-scoped .icon-info:before {
   content: "\E005";
-}
-
-.ocelot-scoped .icon-instagram:before {
-  content: "\E009";
 }
 
 .ocelot-scoped .icon-menu:before {
@@ -268,10 +324,6 @@
 
 .ocelot-scoped .icon-tip:before {
   content: "\E010";
-}
-
-.ocelot-scoped .icon-twitter:before {
-  content: "\E007";
 }
 /* Import preflight before any of our CSS so we can override it. */
 
@@ -1327,16 +1379,56 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .bg-facebook-blue {
+  background-color: #3b5998;
+}
+
 .ocelot-scoped .bg-fb-blue {
   background-color: #3b5998;
 }
 
-.ocelot-scoped .bg-tw-blue {
-  background-color: #00aced;
+.ocelot-scoped .bg-google-blue {
+  background-color: #4285f4;
 }
 
 .ocelot-scoped .bg-ig-brown {
   background-color: #675144;
+}
+
+.ocelot-scoped .bg-instagram-purple {
+  background-color: #c13584;
+}
+
+.ocelot-scoped .bg-linkedin-blue {
+  background-color: #0e76a8;
+}
+
+.ocelot-scoped .bg-pinterest-red {
+  background-color: #c8232c;
+}
+
+.ocelot-scoped .bg-snapchat-yellow {
+  background-color: #fffc00;
+}
+
+.ocelot-scoped .bg-taboola-blue {
+  background-color: #00659f;
+}
+
+.ocelot-scoped .bg-tiktok-green {
+  background-color: #69c9d0;
+}
+
+.ocelot-scoped .bg-tw-blue {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .bg-twitter-blue {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .bg-youtube-red {
+  background-color: #c4302b;
 }
 
 .ocelot-scoped .bg-steel-75 {
@@ -1719,16 +1811,56 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .group:hover .group-hover\:bg-facebook-blue {
+  background-color: #3b5998;
+}
+
 .ocelot-scoped .group:hover .group-hover\:bg-fb-blue {
   background-color: #3b5998;
 }
 
-.ocelot-scoped .group:hover .group-hover\:bg-tw-blue {
-  background-color: #00aced;
+.ocelot-scoped .group:hover .group-hover\:bg-google-blue {
+  background-color: #4285f4;
 }
 
 .ocelot-scoped .group:hover .group-hover\:bg-ig-brown {
   background-color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-instagram-purple {
+  background-color: #c13584;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-linkedin-blue {
+  background-color: #0e76a8;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-pinterest-red {
+  background-color: #c8232c;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-snapchat-yellow {
+  background-color: #fffc00;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-taboola-blue {
+  background-color: #00659f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-tiktok-green {
+  background-color: #69c9d0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-tw-blue {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-twitter-blue {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-youtube-red {
+  background-color: #c4302b;
 }
 
 .ocelot-scoped .group:hover .group-hover\:bg-steel-75 {
@@ -2111,16 +2243,56 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .hover\:bg-facebook-blue:hover {
+  background-color: #3b5998;
+}
+
 .ocelot-scoped .hover\:bg-fb-blue:hover {
   background-color: #3b5998;
 }
 
-.ocelot-scoped .hover\:bg-tw-blue:hover {
-  background-color: #00aced;
+.ocelot-scoped .hover\:bg-google-blue:hover {
+  background-color: #4285f4;
 }
 
 .ocelot-scoped .hover\:bg-ig-brown:hover {
   background-color: #675144;
+}
+
+.ocelot-scoped .hover\:bg-instagram-purple:hover {
+  background-color: #c13584;
+}
+
+.ocelot-scoped .hover\:bg-linkedin-blue:hover {
+  background-color: #0e76a8;
+}
+
+.ocelot-scoped .hover\:bg-pinterest-red:hover {
+  background-color: #c8232c;
+}
+
+.ocelot-scoped .hover\:bg-snapchat-yellow:hover {
+  background-color: #fffc00;
+}
+
+.ocelot-scoped .hover\:bg-taboola-blue:hover {
+  background-color: #00659f;
+}
+
+.ocelot-scoped .hover\:bg-tiktok-green:hover {
+  background-color: #69c9d0;
+}
+
+.ocelot-scoped .hover\:bg-tw-blue:hover {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .hover\:bg-twitter-blue:hover {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .hover\:bg-youtube-red:hover {
+  background-color: #c4302b;
 }
 
 .ocelot-scoped .hover\:bg-steel-75:hover {
@@ -2503,16 +2675,56 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .focus\:bg-facebook-blue:focus {
+  background-color: #3b5998;
+}
+
 .ocelot-scoped .focus\:bg-fb-blue:focus {
   background-color: #3b5998;
 }
 
-.ocelot-scoped .focus\:bg-tw-blue:focus {
-  background-color: #00aced;
+.ocelot-scoped .focus\:bg-google-blue:focus {
+  background-color: #4285f4;
 }
 
 .ocelot-scoped .focus\:bg-ig-brown:focus {
   background-color: #675144;
+}
+
+.ocelot-scoped .focus\:bg-instagram-purple:focus {
+  background-color: #c13584;
+}
+
+.ocelot-scoped .focus\:bg-linkedin-blue:focus {
+  background-color: #0e76a8;
+}
+
+.ocelot-scoped .focus\:bg-pinterest-red:focus {
+  background-color: #c8232c;
+}
+
+.ocelot-scoped .focus\:bg-snapchat-yellow:focus {
+  background-color: #fffc00;
+}
+
+.ocelot-scoped .focus\:bg-taboola-blue:focus {
+  background-color: #00659f;
+}
+
+.ocelot-scoped .focus\:bg-tiktok-green:focus {
+  background-color: #69c9d0;
+}
+
+.ocelot-scoped .focus\:bg-tw-blue:focus {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .focus\:bg-twitter-blue:focus {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .focus\:bg-youtube-red:focus {
+  background-color: #c4302b;
 }
 
 .ocelot-scoped .focus\:bg-steel-75:focus {
@@ -2895,16 +3107,56 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .active\:bg-facebook-blue:active {
+  background-color: #3b5998;
+}
+
 .ocelot-scoped .active\:bg-fb-blue:active {
   background-color: #3b5998;
 }
 
-.ocelot-scoped .active\:bg-tw-blue:active {
-  background-color: #00aced;
+.ocelot-scoped .active\:bg-google-blue:active {
+  background-color: #4285f4;
 }
 
 .ocelot-scoped .active\:bg-ig-brown:active {
   background-color: #675144;
+}
+
+.ocelot-scoped .active\:bg-instagram-purple:active {
+  background-color: #c13584;
+}
+
+.ocelot-scoped .active\:bg-linkedin-blue:active {
+  background-color: #0e76a8;
+}
+
+.ocelot-scoped .active\:bg-pinterest-red:active {
+  background-color: #c8232c;
+}
+
+.ocelot-scoped .active\:bg-snapchat-yellow:active {
+  background-color: #fffc00;
+}
+
+.ocelot-scoped .active\:bg-taboola-blue:active {
+  background-color: #00659f;
+}
+
+.ocelot-scoped .active\:bg-tiktok-green:active {
+  background-color: #69c9d0;
+}
+
+.ocelot-scoped .active\:bg-tw-blue:active {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .active\:bg-twitter-blue:active {
+  background-color: #00acee;
+}
+
+.ocelot-scoped .active\:bg-youtube-red:active {
+  background-color: #c4302b;
 }
 
 .ocelot-scoped .active\:bg-steel-75:active {
@@ -3359,16 +3611,56 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .border-facebook-blue {
+  border-color: #3b5998;
+}
+
 .ocelot-scoped .border-fb-blue {
   border-color: #3b5998;
 }
 
-.ocelot-scoped .border-tw-blue {
-  border-color: #00aced;
+.ocelot-scoped .border-google-blue {
+  border-color: #4285f4;
 }
 
 .ocelot-scoped .border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .border-instagram-purple {
+  border-color: #c13584;
+}
+
+.ocelot-scoped .border-linkedin-blue {
+  border-color: #0e76a8;
+}
+
+.ocelot-scoped .border-pinterest-red {
+  border-color: #c8232c;
+}
+
+.ocelot-scoped .border-snapchat-yellow {
+  border-color: #fffc00;
+}
+
+.ocelot-scoped .border-taboola-blue {
+  border-color: #00659f;
+}
+
+.ocelot-scoped .border-tiktok-green {
+  border-color: #69c9d0;
+}
+
+.ocelot-scoped .border-tw-blue {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .border-twitter-blue {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .border-youtube-red {
+  border-color: #c4302b;
 }
 
 .ocelot-scoped .border-steel-75 {
@@ -3751,16 +4043,56 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .group:hover .group-hover\:border-facebook-blue {
+  border-color: #3b5998;
+}
+
 .ocelot-scoped .group:hover .group-hover\:border-fb-blue {
   border-color: #3b5998;
 }
 
-.ocelot-scoped .group:hover .group-hover\:border-tw-blue {
-  border-color: #00aced;
+.ocelot-scoped .group:hover .group-hover\:border-google-blue {
+  border-color: #4285f4;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-ig-brown {
   border-color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-instagram-purple {
+  border-color: #c13584;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-linkedin-blue {
+  border-color: #0e76a8;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-pinterest-red {
+  border-color: #c8232c;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-snapchat-yellow {
+  border-color: #fffc00;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-taboola-blue {
+  border-color: #00659f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-tiktok-green {
+  border-color: #69c9d0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-tw-blue {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-twitter-blue {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-youtube-red {
+  border-color: #c4302b;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-steel-75 {
@@ -4143,16 +4475,56 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .hover\:border-facebook-blue:hover {
+  border-color: #3b5998;
+}
+
 .ocelot-scoped .hover\:border-fb-blue:hover {
   border-color: #3b5998;
 }
 
-.ocelot-scoped .hover\:border-tw-blue:hover {
-  border-color: #00aced;
+.ocelot-scoped .hover\:border-google-blue:hover {
+  border-color: #4285f4;
 }
 
 .ocelot-scoped .hover\:border-ig-brown:hover {
   border-color: #675144;
+}
+
+.ocelot-scoped .hover\:border-instagram-purple:hover {
+  border-color: #c13584;
+}
+
+.ocelot-scoped .hover\:border-linkedin-blue:hover {
+  border-color: #0e76a8;
+}
+
+.ocelot-scoped .hover\:border-pinterest-red:hover {
+  border-color: #c8232c;
+}
+
+.ocelot-scoped .hover\:border-snapchat-yellow:hover {
+  border-color: #fffc00;
+}
+
+.ocelot-scoped .hover\:border-taboola-blue:hover {
+  border-color: #00659f;
+}
+
+.ocelot-scoped .hover\:border-tiktok-green:hover {
+  border-color: #69c9d0;
+}
+
+.ocelot-scoped .hover\:border-tw-blue:hover {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .hover\:border-twitter-blue:hover {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .hover\:border-youtube-red:hover {
+  border-color: #c4302b;
 }
 
 .ocelot-scoped .hover\:border-steel-75:hover {
@@ -4535,16 +4907,56 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .focus\:border-facebook-blue:focus {
+  border-color: #3b5998;
+}
+
 .ocelot-scoped .focus\:border-fb-blue:focus {
   border-color: #3b5998;
 }
 
-.ocelot-scoped .focus\:border-tw-blue:focus {
-  border-color: #00aced;
+.ocelot-scoped .focus\:border-google-blue:focus {
+  border-color: #4285f4;
 }
 
 .ocelot-scoped .focus\:border-ig-brown:focus {
   border-color: #675144;
+}
+
+.ocelot-scoped .focus\:border-instagram-purple:focus {
+  border-color: #c13584;
+}
+
+.ocelot-scoped .focus\:border-linkedin-blue:focus {
+  border-color: #0e76a8;
+}
+
+.ocelot-scoped .focus\:border-pinterest-red:focus {
+  border-color: #c8232c;
+}
+
+.ocelot-scoped .focus\:border-snapchat-yellow:focus {
+  border-color: #fffc00;
+}
+
+.ocelot-scoped .focus\:border-taboola-blue:focus {
+  border-color: #00659f;
+}
+
+.ocelot-scoped .focus\:border-tiktok-green:focus {
+  border-color: #69c9d0;
+}
+
+.ocelot-scoped .focus\:border-tw-blue:focus {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .focus\:border-twitter-blue:focus {
+  border-color: #00acee;
+}
+
+.ocelot-scoped .focus\:border-youtube-red:focus {
+  border-color: #c4302b;
 }
 
 .ocelot-scoped .focus\:border-steel-75:focus {
@@ -8869,16 +9281,56 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .text-facebook-blue {
+  color: #3b5998;
+}
+
 .ocelot-scoped .text-fb-blue {
   color: #3b5998;
 }
 
-.ocelot-scoped .text-tw-blue {
-  color: #00aced;
+.ocelot-scoped .text-google-blue {
+  color: #4285f4;
 }
 
 .ocelot-scoped .text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .text-instagram-purple {
+  color: #c13584;
+}
+
+.ocelot-scoped .text-linkedin-blue {
+  color: #0e76a8;
+}
+
+.ocelot-scoped .text-pinterest-red {
+  color: #c8232c;
+}
+
+.ocelot-scoped .text-snapchat-yellow {
+  color: #fffc00;
+}
+
+.ocelot-scoped .text-taboola-blue {
+  color: #00659f;
+}
+
+.ocelot-scoped .text-tiktok-green {
+  color: #69c9d0;
+}
+
+.ocelot-scoped .text-tw-blue {
+  color: #00acee;
+}
+
+.ocelot-scoped .text-twitter-blue {
+  color: #00acee;
+}
+
+.ocelot-scoped .text-youtube-red {
+  color: #c4302b;
 }
 
 .ocelot-scoped .text-steel-75 {
@@ -9261,16 +9713,56 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-facebook-blue {
+  color: #3b5998;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-fb-blue {
   color: #3b5998;
 }
 
-.ocelot-scoped .group:hover .group-hover\:text-tw-blue {
-  color: #00aced;
+.ocelot-scoped .group:hover .group-hover\:text-google-blue {
+  color: #4285f4;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-ig-brown {
   color: #675144;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-instagram-purple {
+  color: #c13584;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-linkedin-blue {
+  color: #0e76a8;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-pinterest-red {
+  color: #c8232c;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-snapchat-yellow {
+  color: #fffc00;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-taboola-blue {
+  color: #00659f;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-tiktok-green {
+  color: #69c9d0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-tw-blue {
+  color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-twitter-blue {
+  color: #00acee;
+}
+
+.ocelot-scoped .group:hover .group-hover\:text-youtube-red {
+  color: #c4302b;
 }
 
 .ocelot-scoped .group:hover .group-hover\:text-steel-75 {
@@ -9653,16 +10145,56 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .hover\:text-facebook-blue:hover {
+  color: #3b5998;
+}
+
 .ocelot-scoped .hover\:text-fb-blue:hover {
   color: #3b5998;
 }
 
-.ocelot-scoped .hover\:text-tw-blue:hover {
-  color: #00aced;
+.ocelot-scoped .hover\:text-google-blue:hover {
+  color: #4285f4;
 }
 
 .ocelot-scoped .hover\:text-ig-brown:hover {
   color: #675144;
+}
+
+.ocelot-scoped .hover\:text-instagram-purple:hover {
+  color: #c13584;
+}
+
+.ocelot-scoped .hover\:text-linkedin-blue:hover {
+  color: #0e76a8;
+}
+
+.ocelot-scoped .hover\:text-pinterest-red:hover {
+  color: #c8232c;
+}
+
+.ocelot-scoped .hover\:text-snapchat-yellow:hover {
+  color: #fffc00;
+}
+
+.ocelot-scoped .hover\:text-taboola-blue:hover {
+  color: #00659f;
+}
+
+.ocelot-scoped .hover\:text-tiktok-green:hover {
+  color: #69c9d0;
+}
+
+.ocelot-scoped .hover\:text-tw-blue:hover {
+  color: #00acee;
+}
+
+.ocelot-scoped .hover\:text-twitter-blue:hover {
+  color: #00acee;
+}
+
+.ocelot-scoped .hover\:text-youtube-red:hover {
+  color: #c4302b;
 }
 
 .ocelot-scoped .hover\:text-steel-75:hover {
@@ -11160,16 +11692,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .sm\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:bg-steel-75 {
@@ -11552,16 +12124,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .sm\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .sm\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:bg-steel-75 {
@@ -11944,16 +12556,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .ocelot-scoped .sm\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:hover\:bg-steel-75:hover {
@@ -12336,16 +12988,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .ocelot-scoped .sm\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:focus\:bg-steel-75:focus {
@@ -12728,16 +13420,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .ocelot-scoped .sm\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:active\:bg-steel-75:active {
@@ -13184,16 +13916,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .sm\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:border-steel-75 {
@@ -13576,16 +14348,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .sm\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .sm\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:border-steel-75 {
@@ -13968,16 +14780,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .ocelot-scoped .sm\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:hover\:border-steel-75:hover {
@@ -14360,16 +15212,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .ocelot-scoped .sm\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .sm\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .sm\:focus\:border-steel-75:focus {
@@ -18678,16 +19570,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .sm\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .sm\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .sm\:text-steel-75 {
@@ -19070,16 +20002,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .sm\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .sm\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:text-steel-75 {
@@ -19462,16 +20434,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .sm\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .ocelot-scoped .sm\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .ocelot-scoped .sm\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .ocelot-scoped .sm\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .ocelot-scoped .sm\:hover\:text-steel-75:hover {
@@ -20361,16 +21373,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .md\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .md\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .md\:bg-steel-75 {
@@ -20753,16 +21805,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .md\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .md\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:bg-steel-75 {
@@ -21145,16 +22237,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .ocelot-scoped .md\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .md\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .md\:hover\:bg-steel-75:hover {
@@ -21537,16 +22669,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .ocelot-scoped .md\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .md\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .md\:focus\:bg-steel-75:focus {
@@ -21929,16 +23101,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .ocelot-scoped .md\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .md\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .md\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .md\:active\:bg-steel-75:active {
@@ -22385,16 +23597,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .md\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .md\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .md\:border-steel-75 {
@@ -22777,16 +24029,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .md\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .md\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .md\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .group:hover .md\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:border-steel-75 {
@@ -23169,16 +24461,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .ocelot-scoped .md\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .md\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .md\:hover\:border-steel-75:hover {
@@ -23561,16 +24893,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .md\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .md\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .ocelot-scoped .md\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .md\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .md\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .md\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .md\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .md\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .md\:focus\:border-steel-75:focus {
@@ -27879,16 +29251,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .md\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .md\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .md\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .md\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .md\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .md\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .md\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .md\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .md\:text-steel-75 {
@@ -28271,16 +29683,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .md\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .md\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .md\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .group:hover .md\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:text-steel-75 {
@@ -28663,16 +30115,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .md\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .ocelot-scoped .md\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .ocelot-scoped .md\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .ocelot-scoped .md\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .md\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .md\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .md\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .md\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .md\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .md\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .md\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .md\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .ocelot-scoped .md\:hover\:text-steel-75:hover {
@@ -29562,16 +31054,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .lg\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:bg-steel-75 {
@@ -29954,16 +31486,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .lg\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .lg\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:bg-steel-75 {
@@ -30346,16 +31918,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .ocelot-scoped .lg\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:hover\:bg-steel-75:hover {
@@ -30738,16 +32350,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .ocelot-scoped .lg\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:focus\:bg-steel-75:focus {
@@ -31130,16 +32782,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .ocelot-scoped .lg\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:active\:bg-steel-75:active {
@@ -31586,16 +33278,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .lg\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:border-steel-75 {
@@ -31978,16 +33710,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .lg\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .lg\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:border-steel-75 {
@@ -32370,16 +34142,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .ocelot-scoped .lg\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:hover\:border-steel-75:hover {
@@ -32762,16 +34574,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .ocelot-scoped .lg\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .lg\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .lg\:focus\:border-steel-75:focus {
@@ -37080,16 +38932,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .lg\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .lg\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .lg\:text-steel-75 {
@@ -37472,16 +39364,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .lg\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .lg\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:text-steel-75 {
@@ -37864,16 +39796,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .lg\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .ocelot-scoped .lg\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .ocelot-scoped .lg\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .ocelot-scoped .lg\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .ocelot-scoped .lg\:hover\:text-steel-75:hover {
@@ -38763,16 +40735,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .xl\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:bg-steel-75 {
@@ -39155,16 +41167,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .xl\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .xl\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:bg-steel-75 {
@@ -39547,16 +41599,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .ocelot-scoped .xl\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:hover\:bg-steel-75:hover {
@@ -39939,16 +42031,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .ocelot-scoped .xl\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:focus\:bg-steel-75:focus {
@@ -40331,16 +42463,56 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .ocelot-scoped .xl\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:active\:bg-steel-75:active {
@@ -40787,16 +42959,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .xl\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:border-steel-75 {
@@ -41179,16 +43391,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .xl\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .xl\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:border-steel-75 {
@@ -41571,16 +43823,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .ocelot-scoped .xl\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:hover\:border-steel-75:hover {
@@ -41963,16 +44255,56 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .ocelot-scoped .xl\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .ocelot-scoped .xl\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .ocelot-scoped .xl\:focus\:border-steel-75:focus {
@@ -46281,16 +48613,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .xl\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .xl\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .xl\:text-steel-75 {
@@ -46673,16 +49045,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .group:hover .xl\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .ocelot-scoped .group:hover .xl\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:text-steel-75 {
@@ -47065,16 +49477,56 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .ocelot-scoped .xl\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .ocelot-scoped .xl\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .ocelot-scoped .xl\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .ocelot-scoped .xl\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .ocelot-scoped .xl\:hover\:text-steel-75:hover {

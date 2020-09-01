@@ -60,6 +60,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: ocelot-social-icon;
+  src: url('data:application/octet-stream;base64,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') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 [data-icon],
 [class^="icon-"],
 [class*=" icon-"] {
@@ -82,9 +89,66 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-facebook:before,
+.icon-google:before,
+.icon-instagram:before,
+.icon-linkedin:before,
+.icon-pinterest:before,
+.icon-snapchat:before,
+.icon-taboola:before,
+.icon-tiktok:before,
+.icon-twitter:before,
+.icon-youtube:before {
+  font-family: "ocelot-social-icon" !important;
+}
+
 [data-icon]:before {
   content: attr(data-icon);
 }
+
+/* 2020-08-31 icon updates */
+
+.icon-facebook:before {
+  content: '\E800';
+}
+
+.icon-google:before {
+  content: '\E801';
+}
+
+.icon-instagram:before {
+  content: '\E802';
+}
+
+.icon-linkedin:before {
+  content: '\E803';
+}
+
+.icon-pinterest:before {
+  content: '\E804';
+}
+
+.icon-snapchat:before {
+  content: '\E805';
+}
+
+.icon-taboola:before {
+  content: '\E806';
+}
+
+.icon-tiktok:before {
+  content: '\E807';
+}
+
+.icon-twitter:before {
+  content: '\E808';
+}
+
+.icon-youtube:before {
+  content: '\E809';
+}
+
+/* legacy icons */
 
 .icon-add:before {
   content: "\E018";
@@ -214,16 +278,8 @@
   content: "\E004";
 }
 
-.icon-facebook:before {
-  content: "\E006";
-}
-
 .icon-info:before {
   content: "\E005";
-}
-
-.icon-instagram:before {
-  content: "\E009";
 }
 
 .icon-menu:before {
@@ -268,10 +324,6 @@
 
 .icon-tip:before {
   content: "\E010";
-}
-
-.icon-twitter:before {
-  content: "\E007";
 }
 /* Import preflight before any of our CSS so we can override it. */
 
@@ -1327,16 +1379,56 @@ dt {
   background-color: #00bbe0;
 }
 
+.bg-facebook-blue {
+  background-color: #3b5998;
+}
+
 .bg-fb-blue {
   background-color: #3b5998;
 }
 
-.bg-tw-blue {
-  background-color: #00aced;
+.bg-google-blue {
+  background-color: #4285f4;
 }
 
 .bg-ig-brown {
   background-color: #675144;
+}
+
+.bg-instagram-purple {
+  background-color: #c13584;
+}
+
+.bg-linkedin-blue {
+  background-color: #0e76a8;
+}
+
+.bg-pinterest-red {
+  background-color: #c8232c;
+}
+
+.bg-snapchat-yellow {
+  background-color: #fffc00;
+}
+
+.bg-taboola-blue {
+  background-color: #00659f;
+}
+
+.bg-tiktok-green {
+  background-color: #69c9d0;
+}
+
+.bg-tw-blue {
+  background-color: #00acee;
+}
+
+.bg-twitter-blue {
+  background-color: #00acee;
+}
+
+.bg-youtube-red {
+  background-color: #c4302b;
 }
 
 .bg-steel-75 {
@@ -1719,16 +1811,56 @@ dt {
   background-color: #00bbe0;
 }
 
+.group:hover .group-hover\:bg-facebook-blue {
+  background-color: #3b5998;
+}
+
 .group:hover .group-hover\:bg-fb-blue {
   background-color: #3b5998;
 }
 
-.group:hover .group-hover\:bg-tw-blue {
-  background-color: #00aced;
+.group:hover .group-hover\:bg-google-blue {
+  background-color: #4285f4;
 }
 
 .group:hover .group-hover\:bg-ig-brown {
   background-color: #675144;
+}
+
+.group:hover .group-hover\:bg-instagram-purple {
+  background-color: #c13584;
+}
+
+.group:hover .group-hover\:bg-linkedin-blue {
+  background-color: #0e76a8;
+}
+
+.group:hover .group-hover\:bg-pinterest-red {
+  background-color: #c8232c;
+}
+
+.group:hover .group-hover\:bg-snapchat-yellow {
+  background-color: #fffc00;
+}
+
+.group:hover .group-hover\:bg-taboola-blue {
+  background-color: #00659f;
+}
+
+.group:hover .group-hover\:bg-tiktok-green {
+  background-color: #69c9d0;
+}
+
+.group:hover .group-hover\:bg-tw-blue {
+  background-color: #00acee;
+}
+
+.group:hover .group-hover\:bg-twitter-blue {
+  background-color: #00acee;
+}
+
+.group:hover .group-hover\:bg-youtube-red {
+  background-color: #c4302b;
 }
 
 .group:hover .group-hover\:bg-steel-75 {
@@ -2111,16 +2243,56 @@ dt {
   background-color: #00bbe0;
 }
 
+.hover\:bg-facebook-blue:hover {
+  background-color: #3b5998;
+}
+
 .hover\:bg-fb-blue:hover {
   background-color: #3b5998;
 }
 
-.hover\:bg-tw-blue:hover {
-  background-color: #00aced;
+.hover\:bg-google-blue:hover {
+  background-color: #4285f4;
 }
 
 .hover\:bg-ig-brown:hover {
   background-color: #675144;
+}
+
+.hover\:bg-instagram-purple:hover {
+  background-color: #c13584;
+}
+
+.hover\:bg-linkedin-blue:hover {
+  background-color: #0e76a8;
+}
+
+.hover\:bg-pinterest-red:hover {
+  background-color: #c8232c;
+}
+
+.hover\:bg-snapchat-yellow:hover {
+  background-color: #fffc00;
+}
+
+.hover\:bg-taboola-blue:hover {
+  background-color: #00659f;
+}
+
+.hover\:bg-tiktok-green:hover {
+  background-color: #69c9d0;
+}
+
+.hover\:bg-tw-blue:hover {
+  background-color: #00acee;
+}
+
+.hover\:bg-twitter-blue:hover {
+  background-color: #00acee;
+}
+
+.hover\:bg-youtube-red:hover {
+  background-color: #c4302b;
 }
 
 .hover\:bg-steel-75:hover {
@@ -2503,16 +2675,56 @@ dt {
   background-color: #00bbe0;
 }
 
+.focus\:bg-facebook-blue:focus {
+  background-color: #3b5998;
+}
+
 .focus\:bg-fb-blue:focus {
   background-color: #3b5998;
 }
 
-.focus\:bg-tw-blue:focus {
-  background-color: #00aced;
+.focus\:bg-google-blue:focus {
+  background-color: #4285f4;
 }
 
 .focus\:bg-ig-brown:focus {
   background-color: #675144;
+}
+
+.focus\:bg-instagram-purple:focus {
+  background-color: #c13584;
+}
+
+.focus\:bg-linkedin-blue:focus {
+  background-color: #0e76a8;
+}
+
+.focus\:bg-pinterest-red:focus {
+  background-color: #c8232c;
+}
+
+.focus\:bg-snapchat-yellow:focus {
+  background-color: #fffc00;
+}
+
+.focus\:bg-taboola-blue:focus {
+  background-color: #00659f;
+}
+
+.focus\:bg-tiktok-green:focus {
+  background-color: #69c9d0;
+}
+
+.focus\:bg-tw-blue:focus {
+  background-color: #00acee;
+}
+
+.focus\:bg-twitter-blue:focus {
+  background-color: #00acee;
+}
+
+.focus\:bg-youtube-red:focus {
+  background-color: #c4302b;
 }
 
 .focus\:bg-steel-75:focus {
@@ -2895,16 +3107,56 @@ dt {
   background-color: #00bbe0;
 }
 
+.active\:bg-facebook-blue:active {
+  background-color: #3b5998;
+}
+
 .active\:bg-fb-blue:active {
   background-color: #3b5998;
 }
 
-.active\:bg-tw-blue:active {
-  background-color: #00aced;
+.active\:bg-google-blue:active {
+  background-color: #4285f4;
 }
 
 .active\:bg-ig-brown:active {
   background-color: #675144;
+}
+
+.active\:bg-instagram-purple:active {
+  background-color: #c13584;
+}
+
+.active\:bg-linkedin-blue:active {
+  background-color: #0e76a8;
+}
+
+.active\:bg-pinterest-red:active {
+  background-color: #c8232c;
+}
+
+.active\:bg-snapchat-yellow:active {
+  background-color: #fffc00;
+}
+
+.active\:bg-taboola-blue:active {
+  background-color: #00659f;
+}
+
+.active\:bg-tiktok-green:active {
+  background-color: #69c9d0;
+}
+
+.active\:bg-tw-blue:active {
+  background-color: #00acee;
+}
+
+.active\:bg-twitter-blue:active {
+  background-color: #00acee;
+}
+
+.active\:bg-youtube-red:active {
+  background-color: #c4302b;
 }
 
 .active\:bg-steel-75:active {
@@ -3359,16 +3611,56 @@ dt {
   border-color: #00bbe0;
 }
 
+.border-facebook-blue {
+  border-color: #3b5998;
+}
+
 .border-fb-blue {
   border-color: #3b5998;
 }
 
-.border-tw-blue {
-  border-color: #00aced;
+.border-google-blue {
+  border-color: #4285f4;
 }
 
 .border-ig-brown {
   border-color: #675144;
+}
+
+.border-instagram-purple {
+  border-color: #c13584;
+}
+
+.border-linkedin-blue {
+  border-color: #0e76a8;
+}
+
+.border-pinterest-red {
+  border-color: #c8232c;
+}
+
+.border-snapchat-yellow {
+  border-color: #fffc00;
+}
+
+.border-taboola-blue {
+  border-color: #00659f;
+}
+
+.border-tiktok-green {
+  border-color: #69c9d0;
+}
+
+.border-tw-blue {
+  border-color: #00acee;
+}
+
+.border-twitter-blue {
+  border-color: #00acee;
+}
+
+.border-youtube-red {
+  border-color: #c4302b;
 }
 
 .border-steel-75 {
@@ -3751,16 +4043,56 @@ dt {
   border-color: #00bbe0;
 }
 
+.group:hover .group-hover\:border-facebook-blue {
+  border-color: #3b5998;
+}
+
 .group:hover .group-hover\:border-fb-blue {
   border-color: #3b5998;
 }
 
-.group:hover .group-hover\:border-tw-blue {
-  border-color: #00aced;
+.group:hover .group-hover\:border-google-blue {
+  border-color: #4285f4;
 }
 
 .group:hover .group-hover\:border-ig-brown {
   border-color: #675144;
+}
+
+.group:hover .group-hover\:border-instagram-purple {
+  border-color: #c13584;
+}
+
+.group:hover .group-hover\:border-linkedin-blue {
+  border-color: #0e76a8;
+}
+
+.group:hover .group-hover\:border-pinterest-red {
+  border-color: #c8232c;
+}
+
+.group:hover .group-hover\:border-snapchat-yellow {
+  border-color: #fffc00;
+}
+
+.group:hover .group-hover\:border-taboola-blue {
+  border-color: #00659f;
+}
+
+.group:hover .group-hover\:border-tiktok-green {
+  border-color: #69c9d0;
+}
+
+.group:hover .group-hover\:border-tw-blue {
+  border-color: #00acee;
+}
+
+.group:hover .group-hover\:border-twitter-blue {
+  border-color: #00acee;
+}
+
+.group:hover .group-hover\:border-youtube-red {
+  border-color: #c4302b;
 }
 
 .group:hover .group-hover\:border-steel-75 {
@@ -4143,16 +4475,56 @@ dt {
   border-color: #00bbe0;
 }
 
+.hover\:border-facebook-blue:hover {
+  border-color: #3b5998;
+}
+
 .hover\:border-fb-blue:hover {
   border-color: #3b5998;
 }
 
-.hover\:border-tw-blue:hover {
-  border-color: #00aced;
+.hover\:border-google-blue:hover {
+  border-color: #4285f4;
 }
 
 .hover\:border-ig-brown:hover {
   border-color: #675144;
+}
+
+.hover\:border-instagram-purple:hover {
+  border-color: #c13584;
+}
+
+.hover\:border-linkedin-blue:hover {
+  border-color: #0e76a8;
+}
+
+.hover\:border-pinterest-red:hover {
+  border-color: #c8232c;
+}
+
+.hover\:border-snapchat-yellow:hover {
+  border-color: #fffc00;
+}
+
+.hover\:border-taboola-blue:hover {
+  border-color: #00659f;
+}
+
+.hover\:border-tiktok-green:hover {
+  border-color: #69c9d0;
+}
+
+.hover\:border-tw-blue:hover {
+  border-color: #00acee;
+}
+
+.hover\:border-twitter-blue:hover {
+  border-color: #00acee;
+}
+
+.hover\:border-youtube-red:hover {
+  border-color: #c4302b;
 }
 
 .hover\:border-steel-75:hover {
@@ -4535,16 +4907,56 @@ dt {
   border-color: #00bbe0;
 }
 
+.focus\:border-facebook-blue:focus {
+  border-color: #3b5998;
+}
+
 .focus\:border-fb-blue:focus {
   border-color: #3b5998;
 }
 
-.focus\:border-tw-blue:focus {
-  border-color: #00aced;
+.focus\:border-google-blue:focus {
+  border-color: #4285f4;
 }
 
 .focus\:border-ig-brown:focus {
   border-color: #675144;
+}
+
+.focus\:border-instagram-purple:focus {
+  border-color: #c13584;
+}
+
+.focus\:border-linkedin-blue:focus {
+  border-color: #0e76a8;
+}
+
+.focus\:border-pinterest-red:focus {
+  border-color: #c8232c;
+}
+
+.focus\:border-snapchat-yellow:focus {
+  border-color: #fffc00;
+}
+
+.focus\:border-taboola-blue:focus {
+  border-color: #00659f;
+}
+
+.focus\:border-tiktok-green:focus {
+  border-color: #69c9d0;
+}
+
+.focus\:border-tw-blue:focus {
+  border-color: #00acee;
+}
+
+.focus\:border-twitter-blue:focus {
+  border-color: #00acee;
+}
+
+.focus\:border-youtube-red:focus {
+  border-color: #c4302b;
 }
 
 .focus\:border-steel-75:focus {
@@ -8869,16 +9281,56 @@ dt {
   color: #00bbe0;
 }
 
+.text-facebook-blue {
+  color: #3b5998;
+}
+
 .text-fb-blue {
   color: #3b5998;
 }
 
-.text-tw-blue {
-  color: #00aced;
+.text-google-blue {
+  color: #4285f4;
 }
 
 .text-ig-brown {
   color: #675144;
+}
+
+.text-instagram-purple {
+  color: #c13584;
+}
+
+.text-linkedin-blue {
+  color: #0e76a8;
+}
+
+.text-pinterest-red {
+  color: #c8232c;
+}
+
+.text-snapchat-yellow {
+  color: #fffc00;
+}
+
+.text-taboola-blue {
+  color: #00659f;
+}
+
+.text-tiktok-green {
+  color: #69c9d0;
+}
+
+.text-tw-blue {
+  color: #00acee;
+}
+
+.text-twitter-blue {
+  color: #00acee;
+}
+
+.text-youtube-red {
+  color: #c4302b;
 }
 
 .text-steel-75 {
@@ -9261,16 +9713,56 @@ dt {
   color: #00bbe0;
 }
 
+.group:hover .group-hover\:text-facebook-blue {
+  color: #3b5998;
+}
+
 .group:hover .group-hover\:text-fb-blue {
   color: #3b5998;
 }
 
-.group:hover .group-hover\:text-tw-blue {
-  color: #00aced;
+.group:hover .group-hover\:text-google-blue {
+  color: #4285f4;
 }
 
 .group:hover .group-hover\:text-ig-brown {
   color: #675144;
+}
+
+.group:hover .group-hover\:text-instagram-purple {
+  color: #c13584;
+}
+
+.group:hover .group-hover\:text-linkedin-blue {
+  color: #0e76a8;
+}
+
+.group:hover .group-hover\:text-pinterest-red {
+  color: #c8232c;
+}
+
+.group:hover .group-hover\:text-snapchat-yellow {
+  color: #fffc00;
+}
+
+.group:hover .group-hover\:text-taboola-blue {
+  color: #00659f;
+}
+
+.group:hover .group-hover\:text-tiktok-green {
+  color: #69c9d0;
+}
+
+.group:hover .group-hover\:text-tw-blue {
+  color: #00acee;
+}
+
+.group:hover .group-hover\:text-twitter-blue {
+  color: #00acee;
+}
+
+.group:hover .group-hover\:text-youtube-red {
+  color: #c4302b;
 }
 
 .group:hover .group-hover\:text-steel-75 {
@@ -9653,16 +10145,56 @@ dt {
   color: #00bbe0;
 }
 
+.hover\:text-facebook-blue:hover {
+  color: #3b5998;
+}
+
 .hover\:text-fb-blue:hover {
   color: #3b5998;
 }
 
-.hover\:text-tw-blue:hover {
-  color: #00aced;
+.hover\:text-google-blue:hover {
+  color: #4285f4;
 }
 
 .hover\:text-ig-brown:hover {
   color: #675144;
+}
+
+.hover\:text-instagram-purple:hover {
+  color: #c13584;
+}
+
+.hover\:text-linkedin-blue:hover {
+  color: #0e76a8;
+}
+
+.hover\:text-pinterest-red:hover {
+  color: #c8232c;
+}
+
+.hover\:text-snapchat-yellow:hover {
+  color: #fffc00;
+}
+
+.hover\:text-taboola-blue:hover {
+  color: #00659f;
+}
+
+.hover\:text-tiktok-green:hover {
+  color: #69c9d0;
+}
+
+.hover\:text-tw-blue:hover {
+  color: #00acee;
+}
+
+.hover\:text-twitter-blue:hover {
+  color: #00acee;
+}
+
+.hover\:text-youtube-red:hover {
+  color: #c4302b;
 }
 
 .hover\:text-steel-75:hover {
@@ -11160,16 +11692,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .sm\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .sm\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .sm\:bg-tw-blue {
-    background-color: #00aced;
+  .sm\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .sm\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .sm\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .sm\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .sm\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .sm\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .sm\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .sm\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .sm\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .sm\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .sm\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .sm\:bg-steel-75 {
@@ -11552,16 +12124,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .group:hover .sm\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .group:hover .sm\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .group:hover .sm\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .group:hover .sm\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .group:hover .sm\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .group:hover .sm\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .group:hover .sm\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .group:hover .sm\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .group:hover .sm\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .group:hover .sm\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .group:hover .sm\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .group:hover .sm\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .group:hover .sm\:group-hover\:bg-steel-75 {
@@ -11944,16 +12556,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .sm\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .sm\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .sm\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .sm\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .sm\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .sm\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .sm\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .sm\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .sm\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .sm\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .sm\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .sm\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .sm\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .sm\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .sm\:hover\:bg-steel-75:hover {
@@ -12336,16 +12988,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .sm\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .sm\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .sm\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .sm\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .sm\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .sm\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .sm\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .sm\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .sm\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .sm\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .sm\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .sm\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .sm\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .sm\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .sm\:focus\:bg-steel-75:focus {
@@ -12728,16 +13420,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .sm\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .sm\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .sm\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .sm\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .sm\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .sm\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .sm\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .sm\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .sm\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .sm\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .sm\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .sm\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .sm\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .sm\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .sm\:active\:bg-steel-75:active {
@@ -13184,16 +13916,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .sm\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .sm\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .sm\:border-tw-blue {
-    border-color: #00aced;
+  .sm\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .sm\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .sm\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .sm\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .sm\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .sm\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .sm\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .sm\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .sm\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .sm\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .sm\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .sm\:border-steel-75 {
@@ -13576,16 +14348,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .group:hover .sm\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .group:hover .sm\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .group:hover .sm\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .group:hover .sm\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .group:hover .sm\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .group:hover .sm\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .group:hover .sm\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .group:hover .sm\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .group:hover .sm\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .group:hover .sm\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .group:hover .sm\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .group:hover .sm\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .group:hover .sm\:group-hover\:border-steel-75 {
@@ -13968,16 +14780,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .sm\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .sm\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .sm\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .sm\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .sm\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .sm\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .sm\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .sm\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .sm\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .sm\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .sm\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .sm\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .sm\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .sm\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .sm\:hover\:border-steel-75:hover {
@@ -14360,16 +15212,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .sm\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .sm\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .sm\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .sm\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .sm\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .sm\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .sm\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .sm\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .sm\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .sm\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .sm\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .sm\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .sm\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .sm\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .sm\:focus\:border-steel-75:focus {
@@ -18678,16 +19570,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .sm\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .sm\:text-fb-blue {
     color: #3b5998;
   }
 
-  .sm\:text-tw-blue {
-    color: #00aced;
+  .sm\:text-google-blue {
+    color: #4285f4;
   }
 
   .sm\:text-ig-brown {
     color: #675144;
+  }
+
+  .sm\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .sm\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .sm\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .sm\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .sm\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .sm\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .sm\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .sm\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .sm\:text-youtube-red {
+    color: #c4302b;
   }
 
   .sm\:text-steel-75 {
@@ -19070,16 +20002,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .group:hover .sm\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .group:hover .sm\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .group:hover .sm\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .group:hover .sm\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .group:hover .sm\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .group:hover .sm\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .group:hover .sm\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .group:hover .sm\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .group:hover .sm\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .group:hover .sm\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .group:hover .sm\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .group:hover .sm\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .group:hover .sm\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .group:hover .sm\:group-hover\:text-steel-75 {
@@ -19462,16 +20434,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .sm\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .sm\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .sm\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .sm\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .sm\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .sm\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .sm\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .sm\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .sm\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .sm\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .sm\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .sm\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .sm\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .sm\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .sm\:hover\:text-steel-75:hover {
@@ -20361,16 +21373,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .md\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .md\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .md\:bg-tw-blue {
-    background-color: #00aced;
+  .md\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .md\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .md\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .md\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .md\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .md\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .md\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .md\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .md\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .md\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .md\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .md\:bg-steel-75 {
@@ -20753,16 +21805,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .group:hover .md\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .group:hover .md\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .group:hover .md\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .group:hover .md\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .group:hover .md\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .group:hover .md\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .group:hover .md\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .group:hover .md\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .group:hover .md\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .group:hover .md\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .group:hover .md\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .group:hover .md\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .group:hover .md\:group-hover\:bg-steel-75 {
@@ -21145,16 +22237,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .md\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .md\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .md\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .md\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .md\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .md\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .md\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .md\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .md\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .md\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .md\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .md\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .md\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .md\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .md\:hover\:bg-steel-75:hover {
@@ -21537,16 +22669,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .md\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .md\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .md\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .md\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .md\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .md\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .md\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .md\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .md\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .md\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .md\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .md\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .md\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .md\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .md\:focus\:bg-steel-75:focus {
@@ -21929,16 +23101,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .md\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .md\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .md\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .md\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .md\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .md\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .md\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .md\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .md\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .md\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .md\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .md\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .md\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .md\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .md\:active\:bg-steel-75:active {
@@ -22385,16 +23597,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .md\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .md\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .md\:border-tw-blue {
-    border-color: #00aced;
+  .md\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .md\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .md\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .md\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .md\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .md\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .md\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .md\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .md\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .md\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .md\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .md\:border-steel-75 {
@@ -22777,16 +24029,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .group:hover .md\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .group:hover .md\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .group:hover .md\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .group:hover .md\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .group:hover .md\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .group:hover .md\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .group:hover .md\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .group:hover .md\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .group:hover .md\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .group:hover .md\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .group:hover .md\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .group:hover .md\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .group:hover .md\:group-hover\:border-steel-75 {
@@ -23169,16 +24461,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .md\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .md\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .md\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .md\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .md\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .md\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .md\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .md\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .md\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .md\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .md\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .md\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .md\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .md\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .md\:hover\:border-steel-75:hover {
@@ -23561,16 +24893,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .md\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .md\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .md\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .md\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .md\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .md\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .md\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .md\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .md\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .md\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .md\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .md\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .md\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .md\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .md\:focus\:border-steel-75:focus {
@@ -27879,16 +29251,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .md\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .md\:text-fb-blue {
     color: #3b5998;
   }
 
-  .md\:text-tw-blue {
-    color: #00aced;
+  .md\:text-google-blue {
+    color: #4285f4;
   }
 
   .md\:text-ig-brown {
     color: #675144;
+  }
+
+  .md\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .md\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .md\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .md\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .md\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .md\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .md\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .md\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .md\:text-youtube-red {
+    color: #c4302b;
   }
 
   .md\:text-steel-75 {
@@ -28271,16 +29683,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .group:hover .md\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .group:hover .md\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .group:hover .md\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .group:hover .md\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .group:hover .md\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .group:hover .md\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .group:hover .md\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .group:hover .md\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .group:hover .md\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .group:hover .md\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .group:hover .md\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .group:hover .md\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .group:hover .md\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .group:hover .md\:group-hover\:text-steel-75 {
@@ -28663,16 +30115,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .md\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .md\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .md\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .md\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .md\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .md\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .md\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .md\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .md\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .md\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .md\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .md\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .md\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .md\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .md\:hover\:text-steel-75:hover {
@@ -29562,16 +31054,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .lg\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .lg\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .lg\:bg-tw-blue {
-    background-color: #00aced;
+  .lg\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .lg\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .lg\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .lg\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .lg\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .lg\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .lg\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .lg\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .lg\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .lg\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .lg\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .lg\:bg-steel-75 {
@@ -29954,16 +31486,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .group:hover .lg\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .group:hover .lg\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .group:hover .lg\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .group:hover .lg\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .group:hover .lg\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .group:hover .lg\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .group:hover .lg\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .group:hover .lg\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .group:hover .lg\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .group:hover .lg\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .group:hover .lg\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .group:hover .lg\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .group:hover .lg\:group-hover\:bg-steel-75 {
@@ -30346,16 +31918,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .lg\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .lg\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .lg\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .lg\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .lg\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .lg\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .lg\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .lg\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .lg\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .lg\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .lg\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .lg\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .lg\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .lg\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .lg\:hover\:bg-steel-75:hover {
@@ -30738,16 +32350,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .lg\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .lg\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .lg\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .lg\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .lg\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .lg\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .lg\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .lg\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .lg\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .lg\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .lg\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .lg\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .lg\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .lg\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .lg\:focus\:bg-steel-75:focus {
@@ -31130,16 +32782,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .lg\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .lg\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .lg\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .lg\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .lg\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .lg\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .lg\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .lg\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .lg\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .lg\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .lg\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .lg\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .lg\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .lg\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .lg\:active\:bg-steel-75:active {
@@ -31586,16 +33278,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .lg\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .lg\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .lg\:border-tw-blue {
-    border-color: #00aced;
+  .lg\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .lg\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .lg\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .lg\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .lg\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .lg\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .lg\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .lg\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .lg\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .lg\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .lg\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .lg\:border-steel-75 {
@@ -31978,16 +33710,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .group:hover .lg\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .group:hover .lg\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .group:hover .lg\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .group:hover .lg\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .group:hover .lg\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .group:hover .lg\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .group:hover .lg\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .group:hover .lg\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .group:hover .lg\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .group:hover .lg\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .group:hover .lg\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .group:hover .lg\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .group:hover .lg\:group-hover\:border-steel-75 {
@@ -32370,16 +34142,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .lg\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .lg\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .lg\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .lg\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .lg\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .lg\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .lg\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .lg\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .lg\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .lg\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .lg\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .lg\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .lg\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .lg\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .lg\:hover\:border-steel-75:hover {
@@ -32762,16 +34574,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .lg\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .lg\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .lg\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .lg\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .lg\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .lg\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .lg\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .lg\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .lg\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .lg\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .lg\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .lg\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .lg\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .lg\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .lg\:focus\:border-steel-75:focus {
@@ -37080,16 +38932,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .lg\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .lg\:text-fb-blue {
     color: #3b5998;
   }
 
-  .lg\:text-tw-blue {
-    color: #00aced;
+  .lg\:text-google-blue {
+    color: #4285f4;
   }
 
   .lg\:text-ig-brown {
     color: #675144;
+  }
+
+  .lg\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .lg\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .lg\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .lg\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .lg\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .lg\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .lg\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .lg\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .lg\:text-youtube-red {
+    color: #c4302b;
   }
 
   .lg\:text-steel-75 {
@@ -37472,16 +39364,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .group:hover .lg\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .group:hover .lg\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .group:hover .lg\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .group:hover .lg\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .group:hover .lg\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .group:hover .lg\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .group:hover .lg\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .group:hover .lg\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .group:hover .lg\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .group:hover .lg\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .group:hover .lg\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .group:hover .lg\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .group:hover .lg\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .group:hover .lg\:group-hover\:text-steel-75 {
@@ -37864,16 +39796,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .lg\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .lg\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .lg\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .lg\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .lg\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .lg\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .lg\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .lg\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .lg\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .lg\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .lg\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .lg\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .lg\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .lg\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .lg\:hover\:text-steel-75:hover {
@@ -38763,16 +40735,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .xl\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .xl\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .xl\:bg-tw-blue {
-    background-color: #00aced;
+  .xl\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .xl\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .xl\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .xl\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .xl\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .xl\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .xl\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .xl\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .xl\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .xl\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .xl\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .xl\:bg-steel-75 {
@@ -39155,16 +41167,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .group:hover .xl\:group-hover\:bg-facebook-blue {
+    background-color: #3b5998;
+  }
+
   .group:hover .xl\:group-hover\:bg-fb-blue {
     background-color: #3b5998;
   }
 
-  .group:hover .xl\:group-hover\:bg-tw-blue {
-    background-color: #00aced;
+  .group:hover .xl\:group-hover\:bg-google-blue {
+    background-color: #4285f4;
   }
 
   .group:hover .xl\:group-hover\:bg-ig-brown {
     background-color: #675144;
+  }
+
+  .group:hover .xl\:group-hover\:bg-instagram-purple {
+    background-color: #c13584;
+  }
+
+  .group:hover .xl\:group-hover\:bg-linkedin-blue {
+    background-color: #0e76a8;
+  }
+
+  .group:hover .xl\:group-hover\:bg-pinterest-red {
+    background-color: #c8232c;
+  }
+
+  .group:hover .xl\:group-hover\:bg-snapchat-yellow {
+    background-color: #fffc00;
+  }
+
+  .group:hover .xl\:group-hover\:bg-taboola-blue {
+    background-color: #00659f;
+  }
+
+  .group:hover .xl\:group-hover\:bg-tiktok-green {
+    background-color: #69c9d0;
+  }
+
+  .group:hover .xl\:group-hover\:bg-tw-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:bg-twitter-blue {
+    background-color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:bg-youtube-red {
+    background-color: #c4302b;
   }
 
   .group:hover .xl\:group-hover\:bg-steel-75 {
@@ -39547,16 +41599,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .xl\:hover\:bg-facebook-blue:hover {
+    background-color: #3b5998;
+  }
+
   .xl\:hover\:bg-fb-blue:hover {
     background-color: #3b5998;
   }
 
-  .xl\:hover\:bg-tw-blue:hover {
-    background-color: #00aced;
+  .xl\:hover\:bg-google-blue:hover {
+    background-color: #4285f4;
   }
 
   .xl\:hover\:bg-ig-brown:hover {
     background-color: #675144;
+  }
+
+  .xl\:hover\:bg-instagram-purple:hover {
+    background-color: #c13584;
+  }
+
+  .xl\:hover\:bg-linkedin-blue:hover {
+    background-color: #0e76a8;
+  }
+
+  .xl\:hover\:bg-pinterest-red:hover {
+    background-color: #c8232c;
+  }
+
+  .xl\:hover\:bg-snapchat-yellow:hover {
+    background-color: #fffc00;
+  }
+
+  .xl\:hover\:bg-taboola-blue:hover {
+    background-color: #00659f;
+  }
+
+  .xl\:hover\:bg-tiktok-green:hover {
+    background-color: #69c9d0;
+  }
+
+  .xl\:hover\:bg-tw-blue:hover {
+    background-color: #00acee;
+  }
+
+  .xl\:hover\:bg-twitter-blue:hover {
+    background-color: #00acee;
+  }
+
+  .xl\:hover\:bg-youtube-red:hover {
+    background-color: #c4302b;
   }
 
   .xl\:hover\:bg-steel-75:hover {
@@ -39939,16 +42031,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .xl\:focus\:bg-facebook-blue:focus {
+    background-color: #3b5998;
+  }
+
   .xl\:focus\:bg-fb-blue:focus {
     background-color: #3b5998;
   }
 
-  .xl\:focus\:bg-tw-blue:focus {
-    background-color: #00aced;
+  .xl\:focus\:bg-google-blue:focus {
+    background-color: #4285f4;
   }
 
   .xl\:focus\:bg-ig-brown:focus {
     background-color: #675144;
+  }
+
+  .xl\:focus\:bg-instagram-purple:focus {
+    background-color: #c13584;
+  }
+
+  .xl\:focus\:bg-linkedin-blue:focus {
+    background-color: #0e76a8;
+  }
+
+  .xl\:focus\:bg-pinterest-red:focus {
+    background-color: #c8232c;
+  }
+
+  .xl\:focus\:bg-snapchat-yellow:focus {
+    background-color: #fffc00;
+  }
+
+  .xl\:focus\:bg-taboola-blue:focus {
+    background-color: #00659f;
+  }
+
+  .xl\:focus\:bg-tiktok-green:focus {
+    background-color: #69c9d0;
+  }
+
+  .xl\:focus\:bg-tw-blue:focus {
+    background-color: #00acee;
+  }
+
+  .xl\:focus\:bg-twitter-blue:focus {
+    background-color: #00acee;
+  }
+
+  .xl\:focus\:bg-youtube-red:focus {
+    background-color: #c4302b;
   }
 
   .xl\:focus\:bg-steel-75:focus {
@@ -40331,16 +42463,56 @@ input[type=range]::-ms-thumb {
     background-color: #00bbe0;
   }
 
+  .xl\:active\:bg-facebook-blue:active {
+    background-color: #3b5998;
+  }
+
   .xl\:active\:bg-fb-blue:active {
     background-color: #3b5998;
   }
 
-  .xl\:active\:bg-tw-blue:active {
-    background-color: #00aced;
+  .xl\:active\:bg-google-blue:active {
+    background-color: #4285f4;
   }
 
   .xl\:active\:bg-ig-brown:active {
     background-color: #675144;
+  }
+
+  .xl\:active\:bg-instagram-purple:active {
+    background-color: #c13584;
+  }
+
+  .xl\:active\:bg-linkedin-blue:active {
+    background-color: #0e76a8;
+  }
+
+  .xl\:active\:bg-pinterest-red:active {
+    background-color: #c8232c;
+  }
+
+  .xl\:active\:bg-snapchat-yellow:active {
+    background-color: #fffc00;
+  }
+
+  .xl\:active\:bg-taboola-blue:active {
+    background-color: #00659f;
+  }
+
+  .xl\:active\:bg-tiktok-green:active {
+    background-color: #69c9d0;
+  }
+
+  .xl\:active\:bg-tw-blue:active {
+    background-color: #00acee;
+  }
+
+  .xl\:active\:bg-twitter-blue:active {
+    background-color: #00acee;
+  }
+
+  .xl\:active\:bg-youtube-red:active {
+    background-color: #c4302b;
   }
 
   .xl\:active\:bg-steel-75:active {
@@ -40787,16 +42959,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .xl\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .xl\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .xl\:border-tw-blue {
-    border-color: #00aced;
+  .xl\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .xl\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .xl\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .xl\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .xl\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .xl\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .xl\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .xl\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .xl\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .xl\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .xl\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .xl\:border-steel-75 {
@@ -41179,16 +43391,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .group:hover .xl\:group-hover\:border-facebook-blue {
+    border-color: #3b5998;
+  }
+
   .group:hover .xl\:group-hover\:border-fb-blue {
     border-color: #3b5998;
   }
 
-  .group:hover .xl\:group-hover\:border-tw-blue {
-    border-color: #00aced;
+  .group:hover .xl\:group-hover\:border-google-blue {
+    border-color: #4285f4;
   }
 
   .group:hover .xl\:group-hover\:border-ig-brown {
     border-color: #675144;
+  }
+
+  .group:hover .xl\:group-hover\:border-instagram-purple {
+    border-color: #c13584;
+  }
+
+  .group:hover .xl\:group-hover\:border-linkedin-blue {
+    border-color: #0e76a8;
+  }
+
+  .group:hover .xl\:group-hover\:border-pinterest-red {
+    border-color: #c8232c;
+  }
+
+  .group:hover .xl\:group-hover\:border-snapchat-yellow {
+    border-color: #fffc00;
+  }
+
+  .group:hover .xl\:group-hover\:border-taboola-blue {
+    border-color: #00659f;
+  }
+
+  .group:hover .xl\:group-hover\:border-tiktok-green {
+    border-color: #69c9d0;
+  }
+
+  .group:hover .xl\:group-hover\:border-tw-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:border-twitter-blue {
+    border-color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:border-youtube-red {
+    border-color: #c4302b;
   }
 
   .group:hover .xl\:group-hover\:border-steel-75 {
@@ -41571,16 +43823,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .xl\:hover\:border-facebook-blue:hover {
+    border-color: #3b5998;
+  }
+
   .xl\:hover\:border-fb-blue:hover {
     border-color: #3b5998;
   }
 
-  .xl\:hover\:border-tw-blue:hover {
-    border-color: #00aced;
+  .xl\:hover\:border-google-blue:hover {
+    border-color: #4285f4;
   }
 
   .xl\:hover\:border-ig-brown:hover {
     border-color: #675144;
+  }
+
+  .xl\:hover\:border-instagram-purple:hover {
+    border-color: #c13584;
+  }
+
+  .xl\:hover\:border-linkedin-blue:hover {
+    border-color: #0e76a8;
+  }
+
+  .xl\:hover\:border-pinterest-red:hover {
+    border-color: #c8232c;
+  }
+
+  .xl\:hover\:border-snapchat-yellow:hover {
+    border-color: #fffc00;
+  }
+
+  .xl\:hover\:border-taboola-blue:hover {
+    border-color: #00659f;
+  }
+
+  .xl\:hover\:border-tiktok-green:hover {
+    border-color: #69c9d0;
+  }
+
+  .xl\:hover\:border-tw-blue:hover {
+    border-color: #00acee;
+  }
+
+  .xl\:hover\:border-twitter-blue:hover {
+    border-color: #00acee;
+  }
+
+  .xl\:hover\:border-youtube-red:hover {
+    border-color: #c4302b;
   }
 
   .xl\:hover\:border-steel-75:hover {
@@ -41963,16 +44255,56 @@ input[type=range]::-ms-thumb {
     border-color: #00bbe0;
   }
 
+  .xl\:focus\:border-facebook-blue:focus {
+    border-color: #3b5998;
+  }
+
   .xl\:focus\:border-fb-blue:focus {
     border-color: #3b5998;
   }
 
-  .xl\:focus\:border-tw-blue:focus {
-    border-color: #00aced;
+  .xl\:focus\:border-google-blue:focus {
+    border-color: #4285f4;
   }
 
   .xl\:focus\:border-ig-brown:focus {
     border-color: #675144;
+  }
+
+  .xl\:focus\:border-instagram-purple:focus {
+    border-color: #c13584;
+  }
+
+  .xl\:focus\:border-linkedin-blue:focus {
+    border-color: #0e76a8;
+  }
+
+  .xl\:focus\:border-pinterest-red:focus {
+    border-color: #c8232c;
+  }
+
+  .xl\:focus\:border-snapchat-yellow:focus {
+    border-color: #fffc00;
+  }
+
+  .xl\:focus\:border-taboola-blue:focus {
+    border-color: #00659f;
+  }
+
+  .xl\:focus\:border-tiktok-green:focus {
+    border-color: #69c9d0;
+  }
+
+  .xl\:focus\:border-tw-blue:focus {
+    border-color: #00acee;
+  }
+
+  .xl\:focus\:border-twitter-blue:focus {
+    border-color: #00acee;
+  }
+
+  .xl\:focus\:border-youtube-red:focus {
+    border-color: #c4302b;
   }
 
   .xl\:focus\:border-steel-75:focus {
@@ -46281,16 +48613,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .xl\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .xl\:text-fb-blue {
     color: #3b5998;
   }
 
-  .xl\:text-tw-blue {
-    color: #00aced;
+  .xl\:text-google-blue {
+    color: #4285f4;
   }
 
   .xl\:text-ig-brown {
     color: #675144;
+  }
+
+  .xl\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .xl\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .xl\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .xl\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .xl\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .xl\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .xl\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .xl\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .xl\:text-youtube-red {
+    color: #c4302b;
   }
 
   .xl\:text-steel-75 {
@@ -46673,16 +49045,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .group:hover .xl\:group-hover\:text-facebook-blue {
+    color: #3b5998;
+  }
+
   .group:hover .xl\:group-hover\:text-fb-blue {
     color: #3b5998;
   }
 
-  .group:hover .xl\:group-hover\:text-tw-blue {
-    color: #00aced;
+  .group:hover .xl\:group-hover\:text-google-blue {
+    color: #4285f4;
   }
 
   .group:hover .xl\:group-hover\:text-ig-brown {
     color: #675144;
+  }
+
+  .group:hover .xl\:group-hover\:text-instagram-purple {
+    color: #c13584;
+  }
+
+  .group:hover .xl\:group-hover\:text-linkedin-blue {
+    color: #0e76a8;
+  }
+
+  .group:hover .xl\:group-hover\:text-pinterest-red {
+    color: #c8232c;
+  }
+
+  .group:hover .xl\:group-hover\:text-snapchat-yellow {
+    color: #fffc00;
+  }
+
+  .group:hover .xl\:group-hover\:text-taboola-blue {
+    color: #00659f;
+  }
+
+  .group:hover .xl\:group-hover\:text-tiktok-green {
+    color: #69c9d0;
+  }
+
+  .group:hover .xl\:group-hover\:text-tw-blue {
+    color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:text-twitter-blue {
+    color: #00acee;
+  }
+
+  .group:hover .xl\:group-hover\:text-youtube-red {
+    color: #c4302b;
   }
 
   .group:hover .xl\:group-hover\:text-steel-75 {
@@ -47065,16 +49477,56 @@ input[type=range]::-ms-thumb {
     color: #00bbe0;
   }
 
+  .xl\:hover\:text-facebook-blue:hover {
+    color: #3b5998;
+  }
+
   .xl\:hover\:text-fb-blue:hover {
     color: #3b5998;
   }
 
-  .xl\:hover\:text-tw-blue:hover {
-    color: #00aced;
+  .xl\:hover\:text-google-blue:hover {
+    color: #4285f4;
   }
 
   .xl\:hover\:text-ig-brown:hover {
     color: #675144;
+  }
+
+  .xl\:hover\:text-instagram-purple:hover {
+    color: #c13584;
+  }
+
+  .xl\:hover\:text-linkedin-blue:hover {
+    color: #0e76a8;
+  }
+
+  .xl\:hover\:text-pinterest-red:hover {
+    color: #c8232c;
+  }
+
+  .xl\:hover\:text-snapchat-yellow:hover {
+    color: #fffc00;
+  }
+
+  .xl\:hover\:text-taboola-blue:hover {
+    color: #00659f;
+  }
+
+  .xl\:hover\:text-tiktok-green:hover {
+    color: #69c9d0;
+  }
+
+  .xl\:hover\:text-tw-blue:hover {
+    color: #00acee;
+  }
+
+  .xl\:hover\:text-twitter-blue:hover {
+    color: #00acee;
+  }
+
+  .xl\:hover\:text-youtube-red:hover {
+    color: #c4302b;
   }
 
   .xl\:hover\:text-steel-75:hover {
