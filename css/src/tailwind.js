@@ -66,16 +66,26 @@ config.colors = Object.assign(config.colors, {
   'blue-75': '#009FBF',
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
+  'facebook-blue': '#3B5998',
   'fb-blue': '#3B5998',
-  'tw-blue': '#00ACED',
+  'google-blue': '#4285F4',
   'ig-brown': '#675144',
+  'instagram-purple': '#C13584',
+  'linkedin-blue': '#0E76A8',
+  'pinterest-red': '#C8232C',
+  'snapchat-yellow': '#FFFC00',
+  'taboola-blue': '#00659F',
+  'tiktok-green': '#69C9D0',
+  'tw-blue': '#00ACEE',
+  'twitter-blue': '#00ACEE',
+  'youtube-red': '#C4302B',
   'red': '#FF5471',
   'yellow': '#FFC859',
   'green': '#66C7AF',
   'steel-75': '#A8B2BF',
   'steel-85': '#BFCAD9',
   'steel-100': '#E6F0FF'
-})
+});
 
 config.borderColors = Object.assign(
   { 'default': config.colors['grey-80'] },
