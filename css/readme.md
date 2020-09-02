@@ -16,7 +16,9 @@ Adding a new  icon is a manual process that involves a number of steps:
 
 ### 1. Prepare SVG's
 
-The SVG's need to meet certain requirements so that the resulting glyphs will look right. Tools that convert SVG's to icon fonts don't support all SVG features.
+The SVG's need to meet certain requirements so that the resulting glyphs will look right.
+
+While a developer can do all of the following preparations – provided access to the necessary tools – it's perfectly reasonable to ask the Design team to deliver the assets already prepared to those requirements.
 
 1. Remove all strokes. In fonts, strokes are ignored. If the SVG relies on strokes, those will need to be converted to paths.
     - In Illustrator you can do this conversion by selecting a glyph with a stroke, then using `Object > Expand...`.
@@ -29,8 +31,6 @@ The SVG's need to meet certain requirements so that the resulting glyphs will lo
     - In Illustrator you can do this by going to the Artboards pane (`Window > Artboards` if it's not currently shown), pressing the `Artboard Options` icon next to the current Artboard, then adjusting the smaller of the Height and Width dimensions to match the larger.
 
 For instructions using the open-source vector editor, Inkscape, see [here][Inkscape instructions].
-
-While a developer can do all of the above preparations – provided access to the necessary tools – it's perfectly reasonable to ask the Design team to deliver the assets already prepared to those requirements.
 
 ### 2. Convert to font
 
