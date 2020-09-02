@@ -18,7 +18,7 @@ Adding a new  icon is a manual process that involves a number of steps:
 
 The SVG's need to meet certain requirements so that the resulting glyphs will look right.
 
-While a developer can do all of the following preparations – provided access to the necessary tools – it's perfectly reasonable to ask the Design team to deliver the assets already prepared to those requirements.
+While a developer can do all of the following preparations – provided access to the necessary tools – it's perfectly reasonable to ask the Design team to deliver the assets already prepared to these requirements.
 
 1. Remove all strokes. In fonts, strokes are ignored. If the SVG relies on strokes, those will need to be converted to paths.
     - In Illustrator you can do this conversion by selecting a glyph with a stroke, then using `Object > Expand...`.
@@ -36,15 +36,15 @@ For instructions using the open-source vector editor, Inkscape, see [here][Inksc
 
 The next step is to convert the prepared SVG's to a font. At the time of this writing, [Fontello][] is a free online tool that's well suited for this task. 
 
-1. Drag and drop your SVG's into the web app.
-    - N.b. you'll want to upload all SVG fonts, not just the new ones, because the generated font will need to contain all icons. You'll notice the current `src/icons.css` contains two different `@font-face` definitions, because the original SVG's for the first set of icons were lost. We've introduced the `svg` directory so that we don't lose the source SVG's going forward.
+1. Drag and drop your SVG's into the [Fontello][] web app.
+    - N.B. You'll want to upload all SVG fonts, not just the new ones, because the generated font will need to contain all icons. You'll notice the current `css/src/icons.css` contains two different `@font-face` definitions, because the original SVG's for the first set of icons were lost. We've introduced the `css/svg` directory so that we don't lose the source SVG's going forward.
 1. Select all the custom icons.
 1. Select the "Customize Codes" tab.
-1. For any pre-existing icons, make sure the code matches the `content` property for that icon in `src/icons.css`.
+1. For any pre-existing icons, make sure the code matches the `content` property for that icon in `css/src/icons.css`.
 1. Press "Download webfont" to download the generated files.
 1. Unpack the downloaded zip and find the `css/fontello-embedded.css` file.
-1. Replace the `src` for the `@font-face` in `src/icons.css` with the `src` for `@font-face` in the generated CSS.
-1. Add any new icon declarations to `src/icons.css`. You can get the correct `content` code from either the bottom of the generated CSS, or from the "Customize Codes" tab in [Fontello].
+1. Replace the `src` for the `@font-face` in `css/src/icons.css` with the `src` for `@font-face` in the generated CSS.
+1. Add any new icon declarations to `css/src/icons.css`. You can get the correct `content` code from either the bottom of the generated CSS, or from the "Customize Codes" tab in [Fontello].
 
 ### 3. Add icon blocks
 
