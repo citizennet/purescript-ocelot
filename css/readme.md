@@ -54,5 +54,10 @@ If you only updated existing icons, there's nothing to do here, but if there are
 
 Again, if you only updated existing icons, there shouldn't be anything to update in UI Guide, but if you've added new icons, you'll want to update `UIGuide.Component.Icons` to showcase them.
 
+### Troubleshooting
+
+If there's an issue with the icons not displaying as expected in some or all browsers, it may be helpful to review the comments for [PR#130][].
+
 [Fontello]: http://fontello.com/
 [Inkscape instructions]: https://github.com/fontello/fontello/wiki/How-to-use-custom-images#preparing-images-in-inkscape
+[PR#130]: /citizennet/purescript-ocelot/pull/130
