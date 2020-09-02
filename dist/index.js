@@ -47826,12 +47826,16 @@ var info = icon("icon-info");
 var info_ = info([  ]);
 var instagram = icon("icon-instagram");
 var instagram_ = instagram([  ]);
+var linkedIn = icon("icon-linkedin");
+var linkedIn_ = linkedIn([  ]);
 var menu = icon("icon-menu");
 var menu_ = menu([  ]);
 var navigate = icon("icon-navigate");
 var navigate_ = navigate([  ]);
 var options = icon("icon-options");
 var options_ = options([  ]);
+var pinterest = icon("icon-pinterest");
+var pinterest_ = pinterest([  ]);
 var plus = icon("icon-plus");
 var plus_ = plus([  ]);
 var refresh = icon("icon-refresh");
@@ -47844,14 +47848,24 @@ var settings = icon("icon-settings");
 var settings_ = settings([  ]);
 var share = icon("icon-share");
 var share_ = share([  ]);
+var snapchat = icon("icon-snapchat");
+var snapchat_ = snapchat([  ]);
 var success = icon("icon-success");
 var success_ = success([  ]);
+var taboola = icon("icon-taboola");
+var taboola_ = taboola([  ]);
+var tiktok = icon("icon-tiktok");
+var tiktok_ = tiktok([  ]);
 var timeline = icon("icon-timeline");
 var timeline_ = timeline([  ]);
 var tip = icon("icon-tip");
 var tip_ = tip([  ]);
 var twitter = icon("icon-twitter");
 var twitter_ = twitter([  ]);
+var youtube = icon("icon-youtube");
+var youtube_ = youtube([  ]);
+var google = icon("icon-google");
+var google_ = google([  ]);
 var facebook = icon("icon-facebook");
 var facebook_ = facebook([  ]);
 var expand = icon("icon-expand");
@@ -47942,16 +47956,22 @@ module.exports = {
     expand_: expand_,
     facebook: facebook,
     facebook_: facebook_,
+    google: google,
+    google_: google_,
     info: info,
     info_: info_,
     instagram: instagram,
     instagram_: instagram_,
+    linkedIn: linkedIn,
+    linkedIn_: linkedIn_,
     menu: menu,
     menu_: menu_,
     navigate: navigate,
     navigate_: navigate_,
     options: options,
     options_: options_,
+    pinterest: pinterest,
+    pinterest_: pinterest_,
     plus: plus,
     plus_: plus_,
     refresh: refresh,
@@ -47964,14 +47984,22 @@ module.exports = {
     settings_: settings_,
     share: share,
     share_: share_,
+    snapchat: snapchat,
+    snapchat_: snapchat_,
     success: success,
     success_: success_,
+    taboola: taboola,
+    taboola_: taboola_,
+    tiktok: tiktok,
+    tiktok_: tiktok_,
     timeline: timeline,
     timeline_: timeline_,
     tip: tip,
     tip_: tip_,
     twitter: twitter,
-    twitter_: twitter_
+    twitter_: twitter_,
+    youtube: youtube,
+    youtube_: youtube_
 };
 
 },{"../Data.Functor/index.js":141,"../Halogen.HTML.Core/index.js":288,"../Halogen.HTML.Elements/index.js":289,"../Halogen.HTML.Properties.ARIA/index.js":291,"../Halogen.HTML.Properties/index.js":292,"../Ocelot.HTML.Properties/index.js":347}],324:[function(require,module,exports){
@@ -57905,9 +57933,12 @@ var component = (function () {
     };
     var render = function (v) {
         return Halogen_HTML_Elements.div_([ UIGuide_Block_Documentation.customBlock_({
-            header: "Icon",
-            subheader: "Represent actions."
-        })([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex flex-wrap -mx-6 justify-start") ])(Data_Functor.map(Data_Functor.functorArray)(renderIcon)([ new Data_Tuple.Tuple("Settings", Ocelot_Block_Icon.settings_), new Data_Tuple.Tuple("Share", Ocelot_Block_Icon.share_), new Data_Tuple.Tuple("Download", Ocelot_Block_Icon.download_), new Data_Tuple.Tuple("Search", Ocelot_Block_Icon.search_), new Data_Tuple.Tuple("Refresh", Ocelot_Block_Icon.refresh_), new Data_Tuple.Tuple("Back", Ocelot_Block_Icon.back_), new Data_Tuple.Tuple("Menu", Ocelot_Block_Icon.menu_), new Data_Tuple.Tuple("Options", Ocelot_Block_Icon.options_), new Data_Tuple.Tuple("Close", Ocelot_Block_Icon.close_), new Data_Tuple.Tuple("Plus", Ocelot_Block_Icon.plus_), new Data_Tuple.Tuple("Delete", Ocelot_Block_Icon.delete_), new Data_Tuple.Tuple("Delete Circle", Ocelot_Block_Icon.deleteCircle_), new Data_Tuple.Tuple("Add", Ocelot_Block_Icon.add_), Data_Tuple.Tuple.create("Added")(Ocelot_Block_Icon.added([ Ocelot_HTML_Properties.css("text-blue-88") ])), new Data_Tuple.Tuple("Arrow Up", Ocelot_Block_Icon.arrowUp_), new Data_Tuple.Tuple("Arrow Down", Ocelot_Block_Icon.arrowDown_), new Data_Tuple.Tuple("Arrow Left", Ocelot_Block_Icon.arrowLeft_), new Data_Tuple.Tuple("Arrow Right", Ocelot_Block_Icon.arrowRight_), new Data_Tuple.Tuple("Collapse", Ocelot_Block_Icon.collapse_), new Data_Tuple.Tuple("Expand", Ocelot_Block_Icon.expand_), new Data_Tuple.Tuple("Chevron Left", Ocelot_Block_Icon.chevronLeft_), new Data_Tuple.Tuple("Chevron Right", Ocelot_Block_Icon.chevronRight_), new Data_Tuple.Tuple("Carat Up", Ocelot_Block_Icon.caratUp_), new Data_Tuple.Tuple("Carat Down", Ocelot_Block_Icon.caratDown_), new Data_Tuple.Tuple("Carat Left", Ocelot_Block_Icon.caratLeft_), new Data_Tuple.Tuple("Carat Right", Ocelot_Block_Icon.caratRight_), Data_Tuple.Tuple.create("Error")(Ocelot_Block_Icon.error([ Ocelot_HTML_Properties.css("text-red") ])), Data_Tuple.Tuple.create("Tip")(Ocelot_Block_Icon.tip([ Ocelot_HTML_Properties.css("text-yellow") ])), Data_Tuple.Tuple.create("Info")(Ocelot_Block_Icon.info([ Ocelot_HTML_Properties.css("text-blue") ])), Data_Tuple.Tuple.create("Success")(Ocelot_Block_Icon.success([ Ocelot_HTML_Properties.css("text-green") ])), Data_Tuple.Tuple.create("Facebook")(Ocelot_Block_Icon.facebook([ Ocelot_HTML_Properties.css("text-fb-blue") ])), Data_Tuple.Tuple.create("Instagram")(Ocelot_Block_Icon.instagram([ Ocelot_HTML_Properties.css("text-ig-brown") ])), Data_Tuple.Tuple.create("Twitter")(Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-tw-blue") ])), new Data_Tuple.Tuple("Timeline", Ocelot_Block_Icon.timeline_), new Data_Tuple.Tuple("Navigate", Ocelot_Block_Icon.navigate_), new Data_Tuple.Tuple("Data Sources", Ocelot_Block_Icon.dataSources_) ])) ]) ]);
+            header: "Social Icons",
+            subheader: "Represent social brands."
+        })([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex flex-wrap -mx-6 justify-start") ])(Data_Functor.map(Data_Functor.functorArray)(renderIcon)([ Data_Tuple.Tuple.create("Facebook")(Ocelot_Block_Icon.facebook([ Ocelot_HTML_Properties.css("text-facebook-blue") ])), Data_Tuple.Tuple.create("Google")(Ocelot_Block_Icon.google([ Ocelot_HTML_Properties.css("text-google-blue") ])), Data_Tuple.Tuple.create("Instagram")(Ocelot_Block_Icon.instagram([ Ocelot_HTML_Properties.css("text-instagram-purple") ])), Data_Tuple.Tuple.create("LinkedIn")(Ocelot_Block_Icon.linkedIn([ Ocelot_HTML_Properties.css("text-linkedin-blue") ])), Data_Tuple.Tuple.create("Pinterest")(Ocelot_Block_Icon.pinterest([ Ocelot_HTML_Properties.css("text-pinterest-red") ])), Data_Tuple.Tuple.create("Snapchat")(Ocelot_Block_Icon.snapchat_), Data_Tuple.Tuple.create("Taboola")(Ocelot_Block_Icon.taboola([ Ocelot_HTML_Properties.css("text-taboola-blue") ])), Data_Tuple.Tuple.create("Tiktok")(Ocelot_Block_Icon.tiktok([ Ocelot_HTML_Properties.css("text-tiktok-green") ])), Data_Tuple.Tuple.create("Twitter")(Ocelot_Block_Icon.twitter([ Ocelot_HTML_Properties.css("text-twitter-blue") ])), Data_Tuple.Tuple.create("Youtube")(Ocelot_Block_Icon.youtube([ Ocelot_HTML_Properties.css("text-youtube-red") ])) ])) ]), UIGuide_Block_Documentation.customBlock_({
+            header: "Utility Icons",
+            subheader: "Represent UI actions."
+        })([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex flex-wrap -mx-6 justify-start") ])(Data_Functor.map(Data_Functor.functorArray)(renderIcon)([ new Data_Tuple.Tuple("Settings", Ocelot_Block_Icon.settings_), new Data_Tuple.Tuple("Share", Ocelot_Block_Icon.share_), new Data_Tuple.Tuple("Download", Ocelot_Block_Icon.download_), new Data_Tuple.Tuple("Search", Ocelot_Block_Icon.search_), new Data_Tuple.Tuple("Refresh", Ocelot_Block_Icon.refresh_), new Data_Tuple.Tuple("Back", Ocelot_Block_Icon.back_), new Data_Tuple.Tuple("Menu", Ocelot_Block_Icon.menu_), new Data_Tuple.Tuple("Options", Ocelot_Block_Icon.options_), new Data_Tuple.Tuple("Close", Ocelot_Block_Icon.close_), new Data_Tuple.Tuple("Plus", Ocelot_Block_Icon.plus_), new Data_Tuple.Tuple("Delete", Ocelot_Block_Icon.delete_), new Data_Tuple.Tuple("Delete Circle", Ocelot_Block_Icon.deleteCircle_), new Data_Tuple.Tuple("Add", Ocelot_Block_Icon.add_), Data_Tuple.Tuple.create("Added")(Ocelot_Block_Icon.added([ Ocelot_HTML_Properties.css("text-blue-88") ])), new Data_Tuple.Tuple("Arrow Up", Ocelot_Block_Icon.arrowUp_), new Data_Tuple.Tuple("Arrow Down", Ocelot_Block_Icon.arrowDown_), new Data_Tuple.Tuple("Arrow Left", Ocelot_Block_Icon.arrowLeft_), new Data_Tuple.Tuple("Arrow Right", Ocelot_Block_Icon.arrowRight_), new Data_Tuple.Tuple("Collapse", Ocelot_Block_Icon.collapse_), new Data_Tuple.Tuple("Expand", Ocelot_Block_Icon.expand_), new Data_Tuple.Tuple("Chevron Left", Ocelot_Block_Icon.chevronLeft_), new Data_Tuple.Tuple("Chevron Right", Ocelot_Block_Icon.chevronRight_), new Data_Tuple.Tuple("Carat Up", Ocelot_Block_Icon.caratUp_), new Data_Tuple.Tuple("Carat Down", Ocelot_Block_Icon.caratDown_), new Data_Tuple.Tuple("Carat Left", Ocelot_Block_Icon.caratLeft_), new Data_Tuple.Tuple("Carat Right", Ocelot_Block_Icon.caratRight_), Data_Tuple.Tuple.create("Error")(Ocelot_Block_Icon.error([ Ocelot_HTML_Properties.css("text-red") ])), Data_Tuple.Tuple.create("Tip")(Ocelot_Block_Icon.tip([ Ocelot_HTML_Properties.css("text-yellow") ])), Data_Tuple.Tuple.create("Info")(Ocelot_Block_Icon.info([ Ocelot_HTML_Properties.css("text-blue") ])), Data_Tuple.Tuple.create("Success")(Ocelot_Block_Icon.success([ Ocelot_HTML_Properties.css("text-green") ])), new Data_Tuple.Tuple("Timeline", Ocelot_Block_Icon.timeline_), new Data_Tuple.Tuple("Navigate", Ocelot_Block_Icon.navigate_), new Data_Tuple.Tuple("Data Sources", Ocelot_Block_Icon.dataSources_) ])) ]) ]);
     };
     return Halogen_Component.mkComponent({
         initialState: Data_Function["const"](Data_Unit.unit),
