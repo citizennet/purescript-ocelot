@@ -60,4 +60,4 @@ If there's an issue with the icons not displaying as expected in some or all bro
 
 [Fontello]: http://fontello.com/
 [Inkscape instructions]: https://github.com/fontello/fontello/wiki/How-to-use-custom-images#preparing-images-in-inkscape
-[PR#130]: /citizennet/purescript-ocelot/pull/130
+[PR#130]: https://github.com/citizennet/purescript-ocelot/pull/130
