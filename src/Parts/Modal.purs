@@ -6,11 +6,10 @@ module Ocelot.Part.Modal where
 import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Halogen.Query.EventSource as ES
 import Ocelot.Block.Format as Format
@@ -62,13 +61,9 @@ modal
   -> Array (H.ComponentHTML action slots m)
   -> H.ComponentHTML action slots m
 modal click iprops html =
-  HH.div_
+  HH.div
+    [ HP.classes backgroundClasses ]
     [ HH.div
-        [ HP.classes backgroundClasses
-        , HE.onClick $ Just <<< const click
-        ]
-        []
-    , HH.div
         ( [ HP.classes modalClasses ] <&> iprops )
         html
     ]
@@ -92,15 +87,17 @@ type HeaderProps p i =
 backgroundClasses :: Array HH.ClassName
 backgroundClasses = HH.ClassName <$>
   [ "fixed"
-  , "pin"
+  , "pin-x"
+  , "pin-y"
   , "bg-black-modal-a90"
   , "fade-in"
   , "z-10"
+  , "overflow-y-auto"
   ]
 
 modalClasses :: Array HH.ClassName
 modalClasses = HH.ClassName <$>
-  [ "fixed"
+  [ "absolute"
   , "pin-x"
   , "pin-t"
   , "my-20"
