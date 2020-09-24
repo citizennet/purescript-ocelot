@@ -87,8 +87,7 @@ type HeaderProps p i =
 backgroundClasses :: Array HH.ClassName
 backgroundClasses = HH.ClassName <$>
   [ "fixed"
-  , "pin-x"
-  , "pin-y"
+  , "pin"
   , "bg-black-modal-a90"
   , "fade-in"
   , "z-10"
