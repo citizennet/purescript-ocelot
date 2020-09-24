@@ -26680,7 +26680,6 @@ var PS = {};
   var exports = $PS["Ocelot.Part.Modal"];
   var Control_Applicative = $PS["Control.Applicative"];
   var Control_Bind = $PS["Control.Bind"];
-  var Data_Function = $PS["Data.Function"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Semigroup = $PS["Data.Semigroup"];
@@ -26688,7 +26687,6 @@ var PS = {};
   var Effect_Class = $PS["Effect.Class"];
   var Halogen_HTML_Core = $PS["Halogen.HTML.Core"];
   var Halogen_HTML_Elements = $PS["Halogen.HTML.Elements"];
-  var Halogen_HTML_Events = $PS["Halogen.HTML.Events"];
   var Halogen_HTML_Properties = $PS["Halogen.HTML.Properties"];
   var Halogen_Query_EventSource = $PS["Halogen.Query.EventSource"];
   var Halogen_Query_HalogenM = $PS["Halogen.Query.HalogenM"];
@@ -26711,7 +26709,7 @@ var PS = {};
       };
   };
   var outerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "w-full", "px-6", "items-center", "flex", "rounded-t" ]);
-  var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down", "z-10" ]);
+  var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down", "z-10" ]);
   var innerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full", "items-center", "mx-auto", "flex" ]);
   var initializeWith = function (dictMonadAff) {
       return function (toAction) {
@@ -26731,16 +26729,11 @@ var PS = {};
       };
   };
   var body_ = body([  ]);
-  var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in", "z-10" ]);
+  var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in", "z-10", "overflow-y-auto" ]);
   var modal = function (click) {
       return function (iprops) {
           return function (html) {
-              return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(backgroundClasses), Halogen_HTML_Events.onClick((function () {
-                  var $2 = Data_Function["const"](click);
-                  return function ($3) {
-                      return Data_Maybe.Just.create($2($3));
-                  };
-              })()) ])([  ]), Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(modalClasses) ])(iprops))(html) ]);
+              return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(backgroundClasses) ])([ Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(modalClasses) ])(iprops))(html) ]);
           };
       };
   };

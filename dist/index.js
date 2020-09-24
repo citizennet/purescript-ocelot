@@ -52691,7 +52691,6 @@ module.exports = {
 "use strict";
 var Control_Applicative = require("../Control.Applicative/index.js");
 var Control_Bind = require("../Control.Bind/index.js");
-var Data_Function = require("../Data.Function/index.js");
 var Data_Functor = require("../Data.Functor/index.js");
 var Data_Maybe = require("../Data.Maybe/index.js");
 var Data_Semigroup = require("../Data.Semigroup/index.js");
@@ -52699,7 +52698,6 @@ var Effect = require("../Effect/index.js");
 var Effect_Class = require("../Effect.Class/index.js");
 var Halogen_HTML_Core = require("../Halogen.HTML.Core/index.js");
 var Halogen_HTML_Elements = require("../Halogen.HTML.Elements/index.js");
-var Halogen_HTML_Events = require("../Halogen.HTML.Events/index.js");
 var Halogen_HTML_Properties = require("../Halogen.HTML.Properties/index.js");
 var Halogen_Query_EventSource = require("../Halogen.Query.EventSource/index.js");
 var Halogen_Query_HalogenM = require("../Halogen.Query.HalogenM/index.js");
@@ -52722,7 +52720,7 @@ var whenClose = function (dictMonadAff) {
     };
 };
 var outerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "bg-white", "w-full", "px-6", "items-center", "flex", "rounded-t" ]);
-var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down", "z-10" ]);
+var modalClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "absolute", "pin-x", "pin-t", "my-20", "m-auto", "max-w-lg", "slide-down", "z-10" ]);
 var innerHeaderClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "w-full", "items-center", "mx-auto", "flex" ]);
 var initializeWith = function (dictMonadAff) {
     return function (toAction) {
@@ -52742,16 +52740,11 @@ var body = function (iprops) {
     };
 };
 var body_ = body([  ]);
-var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in", "z-10" ]);
+var backgroundClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "fixed", "pin", "bg-black-modal-a90", "fade-in", "z-10", "overflow-y-auto" ]);
 var modal = function (click) {
     return function (iprops) {
         return function (html) {
-            return Halogen_HTML_Elements.div_([ Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(backgroundClasses), Halogen_HTML_Events.onClick((function () {
-                var $2 = Data_Function["const"](click);
-                return function ($3) {
-                    return Data_Maybe.Just.create($2($3));
-                };
-            })()) ])([  ]), Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(modalClasses) ])(iprops))(html) ]);
+            return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(backgroundClasses) ])([ Halogen_HTML_Elements.div(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(modalClasses) ])(iprops))(html) ]);
         };
     };
 };
@@ -52774,7 +52767,7 @@ module.exports = {
     header: header
 };
 
-},{"../Control.Applicative/index.js":13,"../Control.Bind/index.js":19,"../Data.Function/index.js":135,"../Data.Functor/index.js":141,"../Data.Maybe/index.js":174,"../Data.Semigroup/index.js":207,"../Effect.Class/index.js":254,"../Effect/index.js":268,"../Halogen.HTML.Core/index.js":288,"../Halogen.HTML.Elements/index.js":289,"../Halogen.HTML.Events/index.js":290,"../Halogen.HTML.Properties/index.js":292,"../Halogen.Query.EventSource/index.js":295,"../Halogen.Query.HalogenM/index.js":296,"../Ocelot.Block.Format/index.js":322,"../Ocelot.HTML.Properties/index.js":347,"../Web.HTML.HTMLDocument/index.js":424,"../Web.HTML.Window/index.js":433,"../Web.HTML/index.js":435,"../Web.UIEvent.KeyboardEvent.EventTypes/index.js":439,"../Web.UIEvent.KeyboardEvent/index.js":441}],349:[function(require,module,exports){
+},{"../Control.Applicative/index.js":13,"../Control.Bind/index.js":19,"../Data.Functor/index.js":141,"../Data.Maybe/index.js":174,"../Data.Semigroup/index.js":207,"../Effect.Class/index.js":254,"../Effect/index.js":268,"../Halogen.HTML.Core/index.js":288,"../Halogen.HTML.Elements/index.js":289,"../Halogen.HTML.Properties/index.js":292,"../Halogen.Query.EventSource/index.js":295,"../Halogen.Query.HalogenM/index.js":296,"../Ocelot.Block.Format/index.js":322,"../Ocelot.HTML.Properties/index.js":347,"../Web.HTML.HTMLDocument/index.js":424,"../Web.HTML.Window/index.js":433,"../Web.HTML/index.js":435,"../Web.UIEvent.KeyboardEvent.EventTypes/index.js":439,"../Web.UIEvent.KeyboardEvent/index.js":441}],349:[function(require,module,exports){
 "use strict";
 
 // module Partial.Unsafe
