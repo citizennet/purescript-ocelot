@@ -1,6 +1,6 @@
 {
   "name": "purescript-ocelot",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "private": true,
   "scripts": {
     "build-all": "yarn run build-ui && yarn run build-css",
