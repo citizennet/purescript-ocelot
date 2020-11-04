@@ -54,10 +54,29 @@ component =
     render _ =
       HH.div_
       [ Documentation.customBlock_
-        { header: "Icon"
-        , subheader: "Represent actions."
+        { header: "Social Icons"
+        , subheader: "Represent social brands."
         }
-
+        [ HH.div
+          [ css "flex flex-wrap -mx-6 justify-start" ]
+          ( renderIcon <$>
+            [ Tuple "Facebook" $ Icon.facebook [ css "text-facebook-blue" ]
+            , Tuple "Google" $ Icon.google [ css "text-google-blue" ]
+            , Tuple "Instagram" $ Icon.instagram [ css "text-instagram-purple" ]
+            , Tuple "LinkedIn" $ Icon.linkedIn [ css "text-linkedin-blue" ]
+            , Tuple "Pinterest" $ Icon.pinterest [ css "text-pinterest-red" ]
+            , Tuple "Snapchat" $ Icon.snapchat_
+            , Tuple "Taboola" $ Icon.taboola [ css "text-taboola-blue" ]
+            , Tuple "Tiktok" $ Icon.tiktok [ css "text-tiktok-green" ]
+            , Tuple "Twitter" $ Icon.twitter [ css "text-twitter-blue" ]
+            , Tuple "Youtube" $ Icon.youtube [ css "text-youtube-red" ]
+            ]
+          )
+        ]
+      , Documentation.customBlock_
+        { header: "Utility Icons"
+        , subheader: "Represent UI actions."
+        }
         [ HH.div
           [ css "flex flex-wrap -mx-6 justify-start" ]
           ( renderIcon <$>
@@ -91,9 +110,6 @@ component =
             , Tuple "Tip" $ Icon.tip [ css "text-yellow" ]
             , Tuple "Info" $ Icon.info [ css "text-blue" ]
             , Tuple "Success" $ Icon.success [ css "text-green" ]
-            , Tuple "Facebook" $ Icon.facebook [ css "text-fb-blue" ]
-            , Tuple "Instagram" $ Icon.instagram [ css "text-ig-brown" ]
-            , Tuple "Twitter" $ Icon.twitter [ css "text-tw-blue" ]
             , Tuple "Timeline" Icon.timeline_
             , Tuple "Navigate" Icon.navigate_
             , Tuple "Data Sources" Icon.dataSources_

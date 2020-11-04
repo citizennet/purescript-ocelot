@@ -164,6 +164,12 @@ facebook = icon "icon-facebook"
 facebook_ :: ∀ p i. HH.HTML p i
 facebook_ = facebook []
 
+google :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+google = icon "icon-google"
+
+google_ :: ∀ p i. HH.HTML p i
+google_ = google []
+
 info :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 info = icon "icon-info"
 
@@ -175,6 +181,12 @@ instagram = icon "icon-instagram"
 
 instagram_ :: ∀ p i. HH.HTML p i
 instagram_ = instagram []
+
+linkedIn :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+linkedIn = icon "icon-linkedin"
+
+linkedIn_ :: ∀ p i. HH.HTML p i
+linkedIn_ = linkedIn []
 
 menu :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 menu = icon "icon-menu"
@@ -193,6 +205,12 @@ options = icon "icon-options"
 
 options_ :: ∀ p i. HH.HTML p i
 options_ = options []
+
+pinterest :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+pinterest = icon "icon-pinterest"
+
+pinterest_ :: ∀ p i. HH.HTML p i
+pinterest_ = pinterest []
 
 plus :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 plus = icon "icon-plus"
@@ -230,11 +248,29 @@ share = icon "icon-share"
 share_ :: ∀ p i. HH.HTML p i
 share_ = share []
 
+snapchat :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+snapchat = icon "icon-snapchat"
+
+snapchat_ :: ∀ p i. HH.HTML p i
+snapchat_ = snapchat []
+
 success :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 success = icon "icon-success"
 
 success_ :: ∀ p i. HH.HTML p i
 success_ = success []
+
+taboola :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+taboola = icon "icon-taboola"
+
+taboola_ :: ∀ p i. HH.HTML p i
+taboola_ = taboola []
+
+tiktok :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+tiktok = icon "icon-tiktok"
+
+tiktok_ :: ∀ p i. HH.HTML p i
+tiktok_ = tiktok []
 
 timeline :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 timeline = icon "icon-timeline"
@@ -253,4 +289,10 @@ twitter = icon "icon-twitter"
 
 twitter_ :: ∀ p i. HH.HTML p i
 twitter_ = twitter []
+
+youtube :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+youtube = icon "icon-youtube"
+
+youtube_ :: ∀ p i. HH.HTML p i
+youtube_ = youtube []
 

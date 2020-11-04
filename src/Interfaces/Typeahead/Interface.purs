@@ -118,6 +118,7 @@ typeaheadInputToSingleInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
+  , disabled: false
   , render: renderSingle
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")
@@ -139,6 +140,7 @@ typeaheadInputToMultiInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: if r.debounceTime > 0 then Just (Milliseconds (toNumber r.debounceTime)) else Nothing
   , async: Nothing
+  , disabled: false
   , render: renderMulti
       [ HP.placeholder r.placeholder ]
       (renderFuzzy <<< match false identity "")
@@ -160,6 +162,7 @@ dropdownInputToSingleInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: Nothing
   , async: Nothing
+  , disabled: false
   , render
   }
   where
@@ -270,6 +273,7 @@ searchDropdownInputToHeaderSingleInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: Nothing
   , async: Nothing
+  , disabled: false
   , render: renderHeaderSearchDropdown
       r.placeholder
       r.resetLabel
@@ -294,6 +298,7 @@ searchDropdownInputToToolbarSingleInput r =
   , itemToObject: \a -> Object.singleton r.key (unsafePartial (fromJust (Object.lookup r.key a)))
   , debounceTime: Nothing
   , async: Nothing
+  , disabled: false
   , render: renderToolbarSearchDropdown
       r.placeholder
       r.resetLabel

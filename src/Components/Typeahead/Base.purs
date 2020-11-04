@@ -63,6 +63,7 @@ type StateRow f item m =
   , keepOpen :: Boolean
   , itemToObject :: item -> Object String
   , async :: Maybe (String -> m (RemoteData String (Array item)))
+  , disabled :: Boolean
 
   , ops :: Operations f item
   , config :: { debounceTime :: Maybe Milliseconds }
@@ -80,6 +81,7 @@ type Input action f item m =
   , keepOpen :: Boolean
   , itemToObject :: item -> Object String
   , async :: Maybe (String -> m (RemoteData String (Array item)))
+  , disabled :: Boolean
 
   , debounceTime :: Maybe Milliseconds
   , render :: CompositeComponentRender action f item m
@@ -101,6 +103,7 @@ data Query f item a
   | ReplaceSelectedBy (Array item -> f item) a
   | ReplaceItems (RemoteData String (Array item)) a
   | Reset a
+  | SetDisabled Boolean a
 
 data Output action (f :: Type -> Type) item
   = Searched String
@@ -173,13 +176,14 @@ initialState
   -> Input action f item m
   -> StateStore action f item m
 initialState ops
-  { items, insertable, keepOpen, itemToObject, async, debounceTime, render }
+  { items, insertable, keepOpen, itemToObject, async, debounceTime, render, disabled }
   = store (renderAdapter render)
       { items
       , insertable
       , keepOpen
       , itemToObject
       , async
+      , disabled
 
       , ops
       , config: {debounceTime}
@@ -217,7 +221,7 @@ spec embeddedRender =
 
 -- NOTE configure Select
 embeddedInput :: forall f item m. State f item m -> CompositeInput f item m
-embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async, fuzzyItems, config: { debounceTime } } =
+embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async, fuzzyItems, config: { debounceTime }, disabled } =
   { inputType: S.Text
   , search: Nothing
   , debounceTime
@@ -231,6 +235,7 @@ embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async,
   , ops
   , async
   , fuzzyItems
+  , disabled
 
   , config: { debounceTime } -- NOTE overhead
   }
@@ -264,6 +269,8 @@ handleQuery = case _ of
     H.query _select unit (S.Query $ H.tell $ ReplaceItems items)
   Reset a -> Just a <$ do
     H.query _select unit (S.Query $ H.tell $ Reset)
+  SetDisabled disabled a -> Just a <$ do
+    H.query _select unit (S.Query $ H.tell $ SetDisabled disabled)
 
 ------------------
 -- Embedded > Util
@@ -401,6 +408,9 @@ embeddedHandleQuery = case _ of
     st <- H.modify _ { selected = empty :: f item, items = NotAsked }
     H.raise $ SelectionChanged ResetQuery st.selected
     synchronize
+
+  SetDisabled disabled a -> Just a <$ do
+    H.modify_ _ { disabled = disabled }
 
 ---------------------------
 -- Embedded > handleMessage
