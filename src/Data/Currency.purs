@@ -2,9 +2,11 @@ module Ocelot.Data.Currency where
 
 import Prelude
 
-import Data.Argonaut (class DecodeJson, decodeJson)
+import Data.Argonaut (class DecodeJson, decodeJson, JsonDecodeError(..))
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Argonaut.Core as Data.Argonaut.Core
 import Data.Array (all, drop, head, (:))
+import Data.Bifunctor (lmap)
 import Data.BigInt (BigInt)
 import Data.BigInt as BigInt
 import Data.Either (note)
@@ -29,9 +31,9 @@ instance encodeJsonCents :: EncodeJson Cents where
   encodeJson = encodeJson <<< centsToNumber
 
 instance decodeJsonCents :: DecodeJson Cents where
-  decodeJson json = do
+  decodeJson json = lmap (Named "Cents") do
     num <- decodeJson json
-    note ("Could not convert value to `Cents`: " <> show num) (parseCentsFromNumber num)
+    note (UnexpectedValue $ Data.Argonaut.Core.fromNumber num) (parseCentsFromNumber num)
 
 instance showCents :: Show Cents where
   show (Cents n) = "(Cents " <> BigInt.toString n <> ")"

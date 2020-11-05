@@ -120,26 +120,17 @@ let additions =
 -- Additional Packages --
 -------------------------
 let halogen-renderless =
-  { dependencies =
-    [ "prelude"
-    , "control"
-    ]
-  , repo = 
-    "https://github.com/purescript-deprecated/purescript-halogen-renderless"
-  , version =
-    "v0.0.4"
-  }
-
------------------
--- Main Config --
------------------
+      { dependencies = [ "prelude", "control" ]
+      , repo =
+          "https://github.com/purescript-deprecated/purescript-halogen-renderless"
+      , version = "v0.0.4"
+      }
 
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.13.6-20200507/packages.dhall sha256:9c1e8951e721b79de1de551f31ecb5a339e82bbd43300eb5ccfb1bf8cf7bbd62
+      https://github.com/purescript/package-sets/releases/download/psc-0.13.8-20200724/packages.dhall sha256:bb941d30820a49345a0e88937094d2b9983d939c9fd3a46969b85ce44953d7d9
 
 let overrides = {=}
 
-let additions =
-  { halogen-renderless }
+let additions = { halogen-renderless }
 
 in  upstream // overrides // additions
