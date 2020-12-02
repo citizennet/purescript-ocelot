@@ -51,13 +51,16 @@ renderSingle iprops renderItem renderContainer st =
             maybe (HH.text "")
             ( \selected -> HH.div
               [ HP.classes Input.mainLeftClasses ]
-              [ IC.selectionGroup renderItem []
+              [ IC.selectionGroup renderItem
+                [ HE.onClick $ Just <<< S.ToggleClick ]
                 [ HE.onClick $ const <<< Just <<< S.Action $ TA.Remove selected ]
                 selected
               ])
             st.selected
       , Input.borderRight
-        [ HP.classes $ linkClasses disabled ]
+        [ HP.classes $ linkClasses disabled
+        , HE.onClick $ Just <<< S.ToggleClick
+        ]
         [ HH.text "Change" ]
       ]
     , Input.inputGroup
