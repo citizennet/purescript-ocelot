@@ -25842,9 +25842,13 @@ var PS = {};
                           })(st.selected);
                       };
                       return Data_Maybe.maybe(Halogen_HTML_Core.text(""))(function (selected) {
-                          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Ocelot_Block_Input.mainLeftClasses) ])([ Ocelot_Block_ItemContainer.selectionGroup(renderItem)([  ])([ Halogen_HTML_Events.onClick(Data_Function["const"](Data_Maybe.Just.create(Select.Action.create(new Ocelot_Component_Typeahead_Base.Remove(selected))))) ])(selected) ]);
+                          return Halogen_HTML_Elements.div([ Halogen_HTML_Properties.classes(Ocelot_Block_Input.mainLeftClasses) ])([ Ocelot_Block_ItemContainer.selectionGroup(renderItem)([ Halogen_HTML_Events.onClick(function ($25) {
+                              return Data_Maybe.Just.create(Select.ToggleClick.create($25));
+                          }) ])([ Halogen_HTML_Events.onClick(Data_Function["const"](Data_Maybe.Just.create(Select.Action.create(new Ocelot_Component_Typeahead_Base.Remove(selected))))) ])(selected) ]);
                       })(st.selected);
-                  })(), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(st.disabled)) ])([ Halogen_HTML_Core.text("Change") ]) ]), Ocelot_Block_Input.inputGroup([ Ocelot_HTML_Properties.css((function () {
+                  })(), Ocelot_Block_Input.borderRight([ Halogen_HTML_Properties.classes(linkClasses(st.disabled)), Halogen_HTML_Events.onClick(function ($26) {
+                      return Data_Maybe.Just.create(Select.ToggleClick.create($26));
+                  }) ])([ Halogen_HTML_Core.text("Change") ]) ]), Ocelot_Block_Input.inputGroup([ Ocelot_HTML_Properties.css((function () {
                       if (showSelected) {
                           return "offscreen";
                       };
