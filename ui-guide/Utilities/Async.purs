@@ -45,14 +45,14 @@ type Err = String
 
 users :: Source User
 users = Source
-  { path: "https://swapi.co/api/people/?search="
+  { path: "https://swapi.dev/api/people/?search="
   , speed: Fast
   , decoder: decodeWith decodeUser
   }
 
 locations :: Source Location
 locations = Source
-  { path: "https://swapi.co/api/planets/?search="
+  { path: "https://swapi.dev/api/planets/?search="
   , speed: Fast
   , decoder: decodeWith decodeLocation
   }
