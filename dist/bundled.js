@@ -26100,7 +26100,7 @@ var PS = {};
       };
   };
   var users = {
-      path: "https://swapi.co/api/people/?search=",
+      path: "https://swapi.dev/api/people/?search=",
       speed: Fast.value,
       decoder: decodeWith(decodeUser)
   };               
@@ -26117,7 +26117,7 @@ var PS = {};
       });
   };
   var locations = {
-      path: "https://swapi.co/api/planets/?search=",
+      path: "https://swapi.dev/api/planets/?search=",
       speed: Fast.value,
       decoder: decodeWith(decodeLocation)
   };
