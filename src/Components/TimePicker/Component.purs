@@ -52,7 +52,6 @@ data Action
 
 data EmbeddedAction
   = Initialize
-  | Search String
   | Key KeyboardEvent
 
 data Query a
@@ -167,28 +166,29 @@ embeddedHandleAction = case _ of
   Initialize -> do
     synchronize
 
-  Search text -> do
-    case text of
-      "" -> setSelection Nothing
-      _  -> case Utils.guessTime text of
-        Nothing -> pure unit
-        Just t  -> do
-          setSelection (Just t)
-          H.modify_ _ { visibility = S.Off }
-    H.raise $ Searched text
-
   Key ev -> do
     H.modify_ _ { visibility = S.Off }
     let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
     case KE.code ev of
       "Enter"   -> do
         preventIt
-        { search } <- H.get
-        embeddedHandleAction $ Search search
+        handleSearch
       "Escape" -> do
         preventIt
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
+
+handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
+handleSearch = do
+  search <- H.gets _.search
+  case search of
+    "" -> setSelection Nothing
+    _  -> case Utils.guessTime search of
+      Nothing -> pure unit
+      Just t  -> do
+        setSelection (Just t)
+        H.modify_ _ { visibility = S.Off }
+  H.raise $ Searched search
 
 embeddedHandleMessage
   :: forall m
