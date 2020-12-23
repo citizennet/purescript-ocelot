@@ -68,6 +68,7 @@ data Action
 data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
+  | OnBlur
   | ToggleMonth Direction
   | ToggleYear  Direction
 
@@ -276,6 +277,9 @@ embeddedHandleAction = case _ of
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
 
+  OnBlur -> do
+    handleSearch
+
   ToggleYear dir -> do
     st <- H.get
     let y = fst st.targetDate
@@ -360,7 +364,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
   $ SS.setInputProps
-    [ HE.onKeyDown $ Just <<< S.Action <<< Key
+    [ HE.onBlur \_ -> Just (S.Action OnBlur)
+    , HE.onKeyDown $ Just <<< S.Action <<< Key
     , HP.value search
     ]
 

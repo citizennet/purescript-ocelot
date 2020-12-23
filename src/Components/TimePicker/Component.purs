@@ -53,6 +53,7 @@ data Action
 data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
+  | OnBlur
 
 data Query a
   = GetSelection (Time -> a)
@@ -178,6 +179,9 @@ embeddedHandleAction = case _ of
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
 
+  OnBlur -> do
+    handleSearch
+
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
   search <- H.gets _.search
@@ -238,7 +242,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
     ( Setters.setInputProps
-      [ HE.onKeyDown $ Just <<< S.Action <<< Key
+      [ HE.onBlur \_ -> Just (S.Action OnBlur)
+      , HE.onKeyDown $ Just <<< S.Action <<< Key
       , HP.value search
       ]
     )
