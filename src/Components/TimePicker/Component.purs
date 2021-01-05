@@ -338,4 +338,5 @@ synchronize = do
 setSelection :: forall m. Maybe Time -> CompositeComponentM m Unit
 setSelection selection = do
   H.modify_ _ { selection = selection }
+  H.raise $ SelectionChanged selection
   synchronize

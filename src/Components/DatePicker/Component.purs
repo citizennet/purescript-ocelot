@@ -234,6 +234,7 @@ setSelection selection = do
   st <- H.get
   let targetDate = maybe st.targetDate (\d -> (year d) /\ (month d)) selection
   H.modify_ _ { selection = selection, targetDate = targetDate }
+  H.raise $ SelectionChanged selection
   synchronize
 
 --------------------------
