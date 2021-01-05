@@ -68,6 +68,7 @@ data Action
 data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
+  | OnBlur
   | ToggleMonth Direction
   | ToggleYear  Direction
 
@@ -271,20 +272,14 @@ embeddedHandleAction = case _ of
     case KE.code ev of
       "Enter" -> do
         preventIt
-        search <- H.gets _.search
-        today <- H.liftEffect nowDate
-        _ <- case search of
-          "" -> setSelection Nothing
-          _  -> case Utils.guessDate today (Utils.MaxYears 5) search of
-            Nothing -> pure unit
-            Just d  -> do
-              setSelection (Just d)
-        H.modify_ _ { visibility = S.Off }
-        H.raise $ Searched search
+        handleSearch
       "Escape" -> do
         preventIt
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
+
+  OnBlur -> do
+    handleSearch
 
   ToggleYear dir -> do
     st <- H.get
@@ -295,6 +290,19 @@ embeddedHandleAction = case _ of
             Prev -> ODT.prevYear (canonicalDate y m bottom)
     H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
     synchronize
+
+handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
+handleSearch = do
+  search <- H.gets _.search
+  today <- H.liftEffect nowDate
+  _ <- case search of
+    "" -> setSelection Nothing
+    _  -> case Utils.guessDate today (Utils.MaxYears 5) search of
+      Nothing -> pure unit
+      Just d  -> do
+        setSelection (Just d)
+  H.modify_ _ { visibility = S.Off }
+  H.raise $ Searched search
 
 -------------------------
 -- Embedded > handleQuery
@@ -357,7 +365,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
   $ SS.setInputProps
-    [ HE.onKeyDown $ Just <<< S.Action <<< Key
+    [ HE.onBlur \_ -> Just (S.Action OnBlur)
+    , HE.onKeyDown $ Just <<< S.Action <<< Key
     , HP.value search
     ]
 
