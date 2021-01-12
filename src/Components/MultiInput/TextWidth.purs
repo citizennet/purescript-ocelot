@@ -13,7 +13,6 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Properties
-import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Web.DOM.Element as Web.DOM.Element
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 
@@ -24,16 +23,19 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
 type State =
-  { text :: String
+  { input :: Input
+  , text :: String
   }
 
 data Action
+  = Receive Input
 
 data Query a
   = GetWidth String (Number -> a)
 
 type Input =
-  Unit
+  { renderText :: String -> Halogen.HTML.PlainHTML
+  }
 
 type Output =
   Void
@@ -52,11 +54,29 @@ component =
     , eval:
         Halogen.mkEval
           Halogen.defaultEval
-            { handleQuery = handleQuery }
+            { handleAction = handleAction
+            , handleQuery = handleQuery
+            }
     }
 
 initialState :: Input -> State
-initialState _ = { text: "" }
+initialState input =
+  { input
+  , text: ""
+  }
+
+receive :: Input -> State -> State
+receive input old =
+  { input
+  , text: old.text
+  }
+
+handleAction ::
+  forall m.
+  Action ->
+  ComponentM m Unit
+handleAction = case _ of
+  Receive input -> Halogen.modify_ (receive input)
 
 handleQuery ::
   forall a m.
@@ -65,7 +85,7 @@ handleQuery ::
   ComponentM m (Maybe a)
 handleQuery = case _ of
   GetWidth text reply -> do
-    Halogen.put { text }
+    Halogen.modify_ _ { text = text }
     mWidth <- Control.Monad.Maybe.Trans.runMaybeT do
       htmlElement <-
         Control.Monad.Maybe.Trans.MaybeT
@@ -84,18 +104,15 @@ render ::
 render state =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes containerClasses ]
-    [ renderGhostElement state.text ]
+    [ renderGhostElement state ]
 
-renderGhostElement :: forall m. String -> ComponentHTML m
-renderGhostElement str =
+renderGhostElement :: forall m. State -> ComponentHTML m
+renderGhostElement state =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.ref ghostRef
     , Halogen.HTML.Properties.classes ghostClasses
     ]
-    [ Halogen.HTML.span -- TODO renderless
-        [ Ocelot.HTML.Properties.css inputCss ]
-        [ Halogen.HTML.text str ]
-    ]
+    [ Halogen.HTML.fromPlainHTML (state.input.renderText state.text) ]
 
 containerClasses :: Array Halogen.ClassName
 containerClasses =
@@ -114,10 +131,6 @@ ghostClasses =
   , "whitespace-no-wrap"
   ]
     <#> Halogen.ClassName
-
--- TODO renderless
-inputCss :: String
-inputCss = "px-1 outline-none"
 
 -- | Ghost element to measure the minimum width for a no-wrap text input
 ghostRef :: Halogen.RefLabel

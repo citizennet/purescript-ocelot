@@ -216,8 +216,14 @@ renderTextWidth ::
 renderTextWidth =
   Halogen.HTML.slot _textWidth unit
     Ocelot.Components.MultiInput.TextWidth.component
-    unit
+    { renderText }
     absurd
+  where
+  renderText :: String -> Halogen.HTML.PlainHTML
+  renderText str =
+    Halogen.HTML.span
+      [ Halogen.HTML.Properties.classes inputClasses ]
+      [ Halogen.HTML.text str ]
 
 closeButtonClasses :: Array Halogen.ClassName
 closeButtonClasses =
