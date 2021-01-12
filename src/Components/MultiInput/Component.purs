@@ -11,14 +11,15 @@ import Control.Monad.Maybe.Trans as Control.Monad.Maybe.Trans
 import Data.Array as Data.Array
 import Data.FunctorWithIndex as Data.FunctorWithIndex
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.Block.Icon as Ocelot.Block.Icon
+import Ocelot.Components.MultiInput.TextWidth as Ocelot.Components.MultiInput.TextWidth
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
-import Web.DOM.Element as Web.DOM.Element
 import Web.Event.Event as Web.Event.Event
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 import Web.UIEvent.KeyboardEvent as Web.UIEvent.KeyboardEvent
@@ -53,7 +54,10 @@ type Output =
   Void
 
 type ChildSlots =
-  ()
+  ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
+  )
+
+_textWidth = SProxy :: SProxy "textWidth"
 
 component ::
   forall m.
@@ -100,13 +104,10 @@ handleOnInput ::
 handleOnInput text = do
   Halogen.modify_ _ { inputBox { text = text } }
   void $ Control.Monad.Maybe.Trans.runMaybeT do
-    htmlElement <-
-      Control.Monad.Maybe.Trans.MaybeT
-        $ Halogen.getHTMLElementRef ghostRef
     width <-
-      Halogen.liftEffect
-        $ Web.DOM.Element.clientWidth <<< Web.HTML.HTMLElement.toElement
-        $ htmlElement
+      Control.Monad.Maybe.Trans.MaybeT
+        $ Halogen.query _textWidth unit <<< Halogen.request
+        $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
     Control.Monad.Maybe.Trans.lift
       $ Halogen.modify_ _ { inputBox { width = max minWidth width } }
 
@@ -163,18 +164,19 @@ preventDefault keyboardEvent = do
 
 render ::
   forall m.
+  MonadAff m =>
   State ->
   ComponentHTML m
 render state =
   Halogen.HTML.div
-    [ Ocelot.HTML.Properties.css "relative bg-white border w-full rounded px-2" ]
+    [ Ocelot.HTML.Properties.css "bg-white border w-full rounded px-2" ]
     [ Halogen.HTML.div_
         ( [ Data.FunctorWithIndex.mapWithIndex renderItem state.selections
           , [ renderAutoSizeInput state.inputBox ]
           ]
             # join
         )
-    , renderGhostElement state.inputBox.text
+    , renderTextWidth
     ]
 
 renderItem :: forall m. Int -> String -> ComponentHTML m
@@ -207,16 +209,15 @@ renderAutoSizeInput inputBox =
   css :: String
   css = "width: " <> show inputBox.width <> "px"
 
-renderGhostElement :: forall m. String -> ComponentHTML m
-renderGhostElement str =
-  Halogen.HTML.div
-      [ Halogen.HTML.Properties.ref ghostRef
-      , Ocelot.HTML.Properties.css "absolute h-0 inline-block invisible overflow-hidden pin-t whitespace-no-wrap"
-      ]
-      [ Halogen.HTML.span
-        [ Halogen.HTML.Properties.classes inputClasses ]
-        [ Halogen.HTML.text str ]
-      ]
+renderTextWidth ::
+  forall m.
+  MonadAff m =>
+  ComponentHTML m
+renderTextWidth =
+  Halogen.HTML.slot _textWidth unit
+    Ocelot.Components.MultiInput.TextWidth.component
+    unit
+    absurd
 
 closeButtonClasses :: Array Halogen.ClassName
 closeButtonClasses =
@@ -242,10 +243,6 @@ inputClasses =
   , "px-1"
   ]
     <#> Halogen.ClassName
-
--- | Ghost element to measure the correct width for an input
-ghostRef :: Halogen.RefLabel
-ghostRef = Halogen.RefLabel "ghost"
 
 -- | Input element whose width is adjusted automatically
 inputRef :: Halogen.RefLabel
