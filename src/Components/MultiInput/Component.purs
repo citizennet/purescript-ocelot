@@ -35,6 +35,7 @@ type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 type State =
   { input :: Input
   , items :: Array InputStatus
+  , placeholder :: Placeholder
   , new :: InputStatus
   }
 
@@ -48,8 +49,14 @@ type InputBox =
   , width :: Number
   }
 
+type Placeholder =
+  { primary :: InputBox
+  , secondary :: InputBox
+  }
+
 data Action
   = EditItem Int
+  | Initialize
   | OnBlur Int
   | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
@@ -61,8 +68,15 @@ data Query a
   | SetItems (Array String) a
 
 -- | * minWidth: minimum width of input box for new item
+-- | * placeholder: placeholder text in new item input
+-- |   * primary: when there is no item
+-- |   * secondary: when there are existing items
 type Input =
   { minWidth :: Number {- px -}
+  , placeholder ::
+      { primary :: String
+      , secondary :: String
+      }
   }
 
 data Output
@@ -87,6 +101,7 @@ component =
           Halogen.defaultEval
             { handleAction = handleAction
             , handleQuery = handleQuery
+            , initialize = Just Initialize
             , receive = Just <<< Receive
             }
     }
@@ -101,9 +116,16 @@ initialState :: Input -> State
 initialState input =
   { input
   , items: [ new ]
+  , placeholder
   , new
   }
   where
+  placeholder :: Placeholder
+  placeholder =
+    { primary: { text: input.placeholder.primary, width: input.minWidth }
+    , secondary: { text: input.placeholder.secondary, width: input.minWidth }
+    }
+
   new :: InputStatus
   new = New { inputBox: emptyInputBox input.minWidth }
 
@@ -111,9 +133,16 @@ receive :: Input -> State -> State
 receive input old =
   { input
   , items: old.items
+  , placeholder
   , new
   }
   where
+  placeholder :: Placeholder
+  placeholder =
+    { primary: { text: input.placeholder.primary, width: input.minWidth }
+    , secondary: { text: input.placeholder.secondary, width: input.minWidth }
+    }
+
   new :: InputStatus
   new = New { inputBox: emptyInputBox input.minWidth }
 
@@ -124,6 +153,7 @@ handleAction ::
   ComponentM m Unit
 handleAction = case _ of
   EditItem index -> handleEditItem index
+  Initialize -> handleInitialize
   OnBlur index -> handleOnBlur index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
@@ -170,6 +200,23 @@ handleEditItem index = do
         )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
+
+handleInitialize ::
+  forall m.
+  MonadAff m =>
+  ComponentM m Unit
+handleInitialize = do
+  state <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+        $ measureTextWidth state.placeholder.primary.text
+    Halogen.modify_ _ { placeholder { primary { width = width } } }
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+        $ measureTextWidth state.placeholder.secondary.text
+    Halogen.modify_ _ { placeholder { secondary { width = width } } }
 
 handleOnBlur ::
   forall m.
@@ -423,15 +470,20 @@ render state =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes containerClasses  ]
     [ Halogen.HTML.div_
-        (Data.FunctorWithIndex.mapWithIndex renderItem state.items)
+        (Data.FunctorWithIndex.mapWithIndex (renderItem state.placeholder) state.items)
     , renderTextWidth
     ]
 
-renderItem :: forall m. Int -> InputStatus -> ComponentHTML m
-renderItem index = case _ of
+renderItem ::
+  forall m.
+  Placeholder ->
+  Int ->
+  InputStatus ->
+  ComponentHTML m
+renderItem placeholder index = case _ of
   Display { text } -> renderItemDisplay index text
-  Edit { inputBox } -> renderItemEdit index inputBox
-  New { inputBox } -> renderAutoSizeInput index inputBox
+  Edit { inputBox } -> renderItemEdit placeholder index inputBox
+  New { inputBox } -> renderAutoSizeInput placeholder index true inputBox
 
 renderItemDisplay ::
   forall m.
@@ -453,13 +505,14 @@ renderItemDisplay index text =
 
 renderItemEdit ::
   forall m.
+  Placeholder ->
   Int ->
   InputBox ->
   ComponentHTML m
-renderItemEdit index inputBox =
+renderItemEdit placeholder index inputBox =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "inline-block" ]
-    [ renderAutoSizeInput index inputBox
+    [ renderAutoSizeInput placeholder index false inputBox
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
         , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
@@ -469,10 +522,12 @@ renderItemEdit index inputBox =
 
 renderAutoSizeInput ::
   forall m.
+  Placeholder ->
   Int ->
+  Boolean ->
   InputBox ->
   ComponentHTML m
-renderAutoSizeInput index inputBox =
+renderAutoSizeInput placeholder index new inputBox =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "inline-block" ]
     [ Halogen.HTML.input
@@ -481,6 +536,11 @@ renderAutoSizeInput index inputBox =
         , Halogen.HTML.Events.onBlur \_ -> Just (OnBlur index)
         , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown index)
         , Halogen.HTML.Events.onValueInput (Just <<< OnInput index)
+        , Halogen.HTML.Properties.placeholder case new of
+            false -> ""
+            true
+              | index == 0 -> placeholder.primary.text
+              | otherwise -> placeholder.secondary.text
         , Halogen.HTML.Properties.ref (inputRef index)
         , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputText
         , Halogen.HTML.Properties.value inputBox.text
@@ -488,7 +548,16 @@ renderAutoSizeInput index inputBox =
     ]
   where
   css :: String
-  css = "width: " <> show inputBox.width <> "px"
+  css = "width: " <> show width <> "px"
+
+  width :: Number
+  width
+    | Data.String.null inputBox.text && new =
+      if index == 0 then
+        placeholder.primary.width
+      else
+        placeholder.secondary.width
+    | otherwise = inputBox.width
 
 renderTextWidth ::
   forall m.
