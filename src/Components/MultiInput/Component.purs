@@ -12,6 +12,7 @@ import Data.Array as Data.Array
 import Data.FunctorWithIndex as Data.FunctorWithIndex
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Maybe as Data.Maybe
+import Data.String as Data.String
 import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
@@ -176,15 +177,29 @@ handlePressEnter ::
   Int ->
   ComponentM m Unit
 handlePressEnter index = do
-  new <-
-    updateItem index
-      ( \item -> case item of
-          Display _ -> item
-          Edit { inputBox: { text } } -> Display { text }
-          New { inputBox: { text } } -> Display { text }
-      )
-  when (isLastIndex index new.items) do
-    appendNewItem
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    item <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        Data.Array.index old.items index
+    currentText <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        pure case item of
+          Display { text } -> text
+          Edit { inputBox: { text } } -> text
+          New { inputBox: { text } } -> text
+    if Data.String.null currentText
+    then Control.Monad.Maybe.Trans.lift do
+      removeItem index
+    else Control.Monad.Maybe.Trans.lift do
+      case item of
+        Display _ -> pure unit
+        Edit { inputBox: { text } } -> do
+          void $ updateItem index (\_ -> Display { text })
+        New { inputBox: { text } } -> do
+          new <- updateItem index (\_ -> Display { text })
+          when (isLastIndex index new.items) do
+            appendNewItem
 
 handleRemoveOne ::
   forall m.
@@ -192,9 +207,7 @@ handleRemoveOne ::
   Int ->
   ComponentM m Unit
 handleRemoveOne index = do
-  new <- removeItem index
-  when (Data.Array.null new.items) do
-    appendNewItem
+  removeItem index
 
 appendNewItem ::
   forall m.
@@ -243,15 +256,18 @@ preventDefault keyboardEvent = do
 
 removeItem ::
   forall m.
+  MonadAff m =>
   Int ->
-  ComponentM m State
+  ComponentM m Unit
 removeItem index = do
-  Halogen.modify \old ->
+  new <- Halogen.modify \old ->
     old
       { items =
           Data.Array.deleteAt index old.items
             # fromMaybe old.items
       }
+  when (Data.Array.null new.items) do
+    appendNewItem
 
 updateItem ::
   forall m.
