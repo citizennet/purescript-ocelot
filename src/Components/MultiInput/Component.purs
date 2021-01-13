@@ -11,6 +11,7 @@ import Control.Monad.Maybe.Trans as Control.Monad.Maybe.Trans
 import Data.Array as Data.Array
 import Data.FunctorWithIndex as Data.FunctorWithIndex
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe as Data.Maybe
 import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
@@ -31,9 +32,13 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
 type State =
-  { inputBox :: InputBox
-  , selections :: Array String
+  { items :: Array InputStatus
   }
+
+data InputStatus
+  = Display { text :: String }
+  | Edit { inputBox :: InputBox, previous :: String }
+  | New { inputBox :: InputBox }
 
 type InputBox =
   { text :: String
@@ -41,8 +46,8 @@ type InputBox =
   }
 
 data Action
-  = OnInput String
-  | OnKeyDown Web.UIEvent.KeyboardEvent.KeyboardEvent
+  = OnInput Int String
+  | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
   | RemoveOne Int
 
 data Query a
@@ -82,8 +87,7 @@ emptyInputBox =
 
 initialState :: Input -> State
 initialState _ =
-  { inputBox: emptyInputBox
-  , selections: []
+  { items: [ New { inputBox: emptyInputBox }]
   }
 
 handleAction ::
@@ -92,65 +96,101 @@ handleAction ::
   Action ->
   ComponentM m Unit
 handleAction = case _ of
-  OnInput text -> handleOnInput text
-  OnKeyDown keyboardEvent -> handleOnKeyDown keyboardEvent
+  OnInput index text -> handleOnInput index text
+  OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
   RemoveOne index -> handleRemoveOne index
 
 handleOnInput ::
   forall m.
   MonadAff m =>
+  Int ->
   String ->
   ComponentM m Unit
-handleOnInput text = do
-  Halogen.modify_ _ { inputBox { text = text } }
+handleOnInput index text = do
+  void
+    $ updateItem index
+      ( \item -> case item of
+          Display _ -> item
+          Edit status -> Edit status { inputBox { text = text } }
+          New status -> New status { inputBox { text = text } }
+      )
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     width <-
       Control.Monad.Maybe.Trans.MaybeT
         $ Halogen.query _textWidth unit <<< Halogen.request
         $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
     Control.Monad.Maybe.Trans.lift
-      $ Halogen.modify_ _ { inputBox { width = max minWidth width } }
+      $ updateItem index
+        ( \item -> case item of
+              Display _ -> item
+              Edit status -> Edit status { inputBox { width = max minWidth width } }
+              New status -> New status { inputBox { width = max minWidth width } }
+        )
 
 handleOnKeyDown ::
   forall m.
   MonadAff m =>
+  Int ->
   Web.UIEvent.KeyboardEvent.KeyboardEvent ->
   ComponentM m Unit
-handleOnKeyDown keyboardEvent = do
+handleOnKeyDown index keyboardEvent = do
   case Web.UIEvent.KeyboardEvent.key keyboardEvent of
     "Enter" -> do
       preventDefault keyboardEvent
-      handlePressEnter
+      handlePressEnter index
     _ -> pure unit
 
 handlePressEnter ::
   forall m.
   MonadAff m =>
+  Int ->
   ComponentM m Unit
-handlePressEnter = do
-  Halogen.modify_ \old ->
-    old
-      { inputBox = emptyInputBox
-      , selections = old.selections `Data.Array.snoc` old.inputBox.text
-      }
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    htmlElement <-
-      Control.Monad.Maybe.Trans.MaybeT
-        $ Halogen.getHTMLElementRef inputRef
-    Halogen.liftEffect
-      $ Web.HTML.HTMLElement.focus htmlElement
+handlePressEnter index = do
+  new <-
+    updateItem index
+      ( \item -> case item of
+          Display _ -> item
+          Edit { inputBox: { text } } -> Display { text }
+          New { inputBox: { text } } -> Display { text }
+      )
+  when (isLastIndex index new.items) do
+    appendNewItem
 
 handleRemoveOne ::
   forall m.
+  MonadAff m =>
   Int ->
   ComponentM m Unit
 handleRemoveOne index = do
-  Halogen.modify_ \old ->
-    old
-      { selections =
-          Data.Array.deleteAt index old.selections
-            # fromMaybe old.selections
-      }
+  new <- removeItem index
+  when (Data.Array.null new.items) do
+    appendNewItem
+
+appendNewItem ::
+  forall m.
+  MonadAff m =>
+  ComponentM m Unit
+appendNewItem = do
+  appended <-
+    Halogen.modify \old ->
+      old
+        { items =
+            old.items `Data.Array.snoc` New { inputBox: emptyInputBox }
+        }
+  focusItem (getLastIndex appended.items)
+
+focusItem ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+focusItem index = do
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    htmlElement <-
+      Control.Monad.Maybe.Trans.MaybeT
+      $ Halogen.getHTMLElementRef (inputRef index)
+    Halogen.liftEffect
+      $ Web.HTML.HTMLElement.focus htmlElement
 
 preventDefault ::
   forall m.
@@ -162,6 +202,37 @@ preventDefault keyboardEvent = do
     $ Web.Event.Event.preventDefault <<< Web.UIEvent.KeyboardEvent.toEvent
     $ keyboardEvent
 
+removeItem ::
+  forall m.
+  Int ->
+  ComponentM m State
+removeItem index = do
+  Halogen.modify \old ->
+    old
+      { items =
+          Data.Array.deleteAt index old.items
+            # fromMaybe old.items
+      }
+
+updateItem ::
+  forall m.
+  Int ->
+  (InputStatus -> InputStatus) ->
+  ComponentM m State
+updateItem index f = do
+  Halogen.modify \old ->
+    old
+      { items =
+          Data.Array.modifyAt index f old.items
+            # Data.Maybe.fromMaybe old.items
+      }
+
+isLastIndex :: forall a. Int -> Array a -> Boolean
+isLastIndex index xs = index == getLastIndex xs
+
+getLastIndex :: forall a. Array a -> Int
+getLastIndex xs = Data.Array.length xs - 1
+
 render ::
   forall m.
   MonadAff m =>
@@ -171,19 +242,25 @@ render state =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "bg-white border w-full rounded px-2" ]
     [ Halogen.HTML.div_
-        ( [ Data.FunctorWithIndex.mapWithIndex renderItem state.selections
-          , [ renderAutoSizeInput state.inputBox ]
-          ]
-            # join
-        )
+        (Data.FunctorWithIndex.mapWithIndex renderItem state.items)
     , renderTextWidth
     ]
 
-renderItem :: forall m. Int -> String -> ComponentHTML m
-renderItem index str =
+renderItem :: forall m. Int -> InputStatus -> ComponentHTML m
+renderItem index = case _ of
+  Display { text } -> renderItemDisplay index text
+  Edit { inputBox } -> renderItemEdit index inputBox
+  New { inputBox } -> renderAutoSizeInput index inputBox
+
+renderItemDisplay ::
+  forall m.
+  Int ->
+  String ->
+  ComponentHTML m
+renderItemDisplay index text =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "inline-block mx-1" ]
-    [ Halogen.HTML.text str
+    [ Halogen.HTML.text text
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
         , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
@@ -191,16 +268,36 @@ renderItem index str =
         [ Ocelot.Block.Icon.delete_ ]
     ]
 
-renderAutoSizeInput :: forall m. InputBox -> ComponentHTML m
-renderAutoSizeInput inputBox =
+renderItemEdit ::
+  forall m.
+  Int ->
+  InputBox ->
+  ComponentHTML m
+renderItemEdit index inputBox =
+  Halogen.HTML.div
+    [ Ocelot.HTML.Properties.css "inline-block" ]
+    [ renderAutoSizeInput index inputBox
+    , Halogen.HTML.button
+        [ Halogen.HTML.Properties.classes closeButtonClasses
+        , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
+        ]
+        [ Ocelot.Block.Icon.delete_ ]
+    ]
+
+renderAutoSizeInput ::
+  forall m.
+  Int ->
+  InputBox ->
+  ComponentHTML m
+renderAutoSizeInput index inputBox =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "inline-block" ]
     [ Halogen.HTML.input
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
-        , Halogen.HTML.Events.onValueInput (Just <<< OnInput)
-        , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown)
-        , Halogen.HTML.Properties.ref inputRef
+        , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown index)
+        , Halogen.HTML.Events.onValueInput (Just <<< OnInput index)
+        , Halogen.HTML.Properties.ref (inputRef index)
         , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputText
         , Halogen.HTML.Properties.value inputBox.text
         ]
@@ -251,8 +348,8 @@ inputClasses =
     <#> Halogen.ClassName
 
 -- | Input element whose width is adjusted automatically
-inputRef :: Halogen.RefLabel
-inputRef = Halogen.RefLabel "input"
+inputRef :: Int -> Halogen.RefLabel
+inputRef index = Halogen.RefLabel ("input-" <> show index)
 
 minWidth :: Number
 minWidth = 50.0
