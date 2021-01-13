@@ -5,6 +5,7 @@ import Prelude
 import Control.Monad.State (class MonadState)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String (null)
+import Data.String as Data.String
 import Data.Time.Duration (Milliseconds(..))
 import Effect.Aff (Fiber, delay, forkAff, killFiber)
 import Effect.Aff.AVar (AVar)
@@ -189,7 +190,7 @@ render st@{ query, open } =
     , HH.button
       [ HE.onClick $ Just <<< Clear
       , HP.type_ HP.ButtonButton
-      , HP.classes $ buttonClasses <> buttonCondClasses <> keepOpenClasses
+      , HP.classes $ buttonClasses <> buttonCondClasses <> hideClearClasses
       ]
       [ Icon.delete_ ]
     ]
@@ -247,8 +248,8 @@ render st@{ query, open } =
          [ "opacity-100", "visible" ]
          [ "opacity-0", "invisible" ]
 
-     keepOpenClasses = HH.ClassName <$>
-       if st.keepOpen then ["hidden"] else []
+     hideClearClasses = HH.ClassName <$>
+       if Data.String.null st.query then ["hidden"] else []
 
      ifOpen openClasses closedClasses =
        HH.ClassName <$> if open then openClasses else closedClasses
