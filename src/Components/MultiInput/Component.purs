@@ -54,6 +54,8 @@ data Action
   | RemoveOne Int
 
 data Query a
+  = GetItems (Array String -> a)
+  | SetItems (Array String) a
 
 type Input =
   Unit
@@ -79,6 +81,7 @@ component =
         Halogen.mkEval
           Halogen.defaultEval
             { handleAction = handleAction
+            , handleQuery = handleQuery
             }
     }
 
@@ -90,10 +93,7 @@ emptyInputBox =
 
 initialState :: Input -> State
 initialState _ =
-  { items:
-    [ Display { text: "abcdef" } -- TODO debug
-    , New { inputBox: emptyInputBox }
-    ]
+  { items: [ New { inputBox: emptyInputBox } ]
   }
 
 handleAction ::
@@ -107,6 +107,19 @@ handleAction = case _ of
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
   RemoveOne index -> handleRemoveOne index
+
+handleQuery ::
+  forall a m.
+  MonadAff m =>
+  Query a ->
+  ComponentM m (Maybe a)
+handleQuery = case _ of
+  GetItems reply -> do
+    items <- handleGetItems
+    pure (Just (reply items))
+  SetItems items a -> do
+    handleSetItems items
+    pure (Just a)
 
 handleEditItem ::
   forall m.
@@ -135,6 +148,17 @@ handleEditItem index = do
         )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
+
+handleGetItems :: forall m. ComponentM m (Array String)
+handleGetItems = do
+  state <- Halogen.get
+  pure (getText <$> state.items)
+  where
+  getText :: InputStatus -> String
+  getText = case _ of
+    Display { text } -> text
+    Edit { inputBox: { text } } -> text
+    New { inputBox: { text } } -> text
 
 handleOnBlur ::
   forall m.
@@ -214,6 +238,19 @@ handleRemoveOne ::
   ComponentM m Unit
 handleRemoveOne index = do
   removeItem index
+
+handleSetItems ::
+  forall m.
+  Array String ->
+  ComponentM m Unit
+handleSetItems items = do
+  Halogen.modify_ _ { items = (display <$> items) `Data.Array.snoc` new }
+  where
+  display :: String -> InputStatus
+  display text = Display { text }
+
+  new :: InputStatus
+  new = New { inputBox: emptyInputBox }
 
 appendNewItem ::
   forall m.
