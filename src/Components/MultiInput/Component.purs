@@ -295,7 +295,7 @@ render ::
   ComponentHTML m
 render state =
   Halogen.HTML.div
-    [ Ocelot.HTML.Properties.css "bg-white border w-full rounded px-2" ]
+    [ Halogen.HTML.Properties.classes containerClasses  ]
     [ Halogen.HTML.div_
         (Data.FunctorWithIndex.mapWithIndex renderItem state.items)
     , renderTextWidth
@@ -314,7 +314,7 @@ renderItemDisplay ::
   ComponentHTML m
 renderItemDisplay index text =
   Halogen.HTML.div
-    [ Ocelot.HTML.Properties.css "inline-block mx-1" ]
+    [ Halogen.HTML.Properties.classes itemDisplayClasses ]
     [ Halogen.HTML.span
         [ Halogen.HTML.Events.onClick \_ -> Just (EditItem index) ]
         [ Halogen.HTML.text text ]
@@ -384,6 +384,7 @@ closeButtonClasses =
   [ "!active:border-b"
   , "!disabled:cursor-pointer"
   , "active:border-t"
+  , "align-middle"
   , "bg-transparent"
   , "border-transparent"
   , "disabled:cursor-default"
@@ -391,16 +392,37 @@ closeButtonClasses =
   , "focus:text-grey-70-a30"
   , "hover:text-grey-70-a30"
   , "no-outline"
-  , "px-1"
+  , "pl-1"
   , "text-grey-70"
-  , "text-sm"
+  , "text-xs"
+  ]
+    <#> Halogen.ClassName
+
+containerClasses :: Array Halogen.ClassName
+containerClasses =
+  [ "bg-white"
+  , "border"
+  , "px-2"
+  , "rounded"
+  , "w-full"
   ]
     <#> Halogen.ClassName
 
 inputClasses :: Array Halogen.ClassName
 inputClasses =
-  [ "outline-none"
+  [ "my-1"
+  , "outline-none"
   , "px-1"
+  ]
+    <#> Halogen.ClassName
+
+itemDisplayClasses :: Array Halogen.ClassName
+itemDisplayClasses =
+  [ "bg-grey-95"
+  , "inline-block"
+  , "m-1"
+  , "px-2"
+  , "rounded-lg"
   ]
     <#> Halogen.ClassName
 
