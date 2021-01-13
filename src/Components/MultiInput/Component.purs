@@ -33,7 +33,9 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
 type State =
-  { items :: Array InputStatus
+  { input :: Input
+  , items :: Array InputStatus
+  , new :: InputStatus
   }
 
 data InputStatus
@@ -51,14 +53,17 @@ data Action
   | OnBlur Int
   | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
+  | Receive Input
   | RemoveOne Int
 
 data Query a
   = GetItems (Array String -> a)
   | SetItems (Array String) a
 
+-- | * minWidth: minimum width of input box for new item
 type Input =
-  Unit
+  { minWidth :: Number {- px -}
+  }
 
 type Output =
   Void
@@ -82,19 +87,35 @@ component =
           Halogen.defaultEval
             { handleAction = handleAction
             , handleQuery = handleQuery
+            , receive = Just <<< Receive
             }
     }
 
-emptyInputBox :: InputBox
-emptyInputBox =
+emptyInputBox :: Number -> InputBox
+emptyInputBox minWidth =
   { text: ""
   , width: minWidth
   }
 
 initialState :: Input -> State
-initialState _ =
-  { items: [ New { inputBox: emptyInputBox } ]
+initialState input =
+  { input
+  , items: [ new ]
+  , new
   }
+  where
+  new :: InputStatus
+  new = New { inputBox: emptyInputBox input.minWidth }
+
+receive :: Input -> State -> State
+receive input old =
+  { input
+  , items: old.items
+  , new
+  }
+  where
+  new :: InputStatus
+  new = New { inputBox: emptyInputBox input.minWidth }
 
 handleAction ::
   forall m.
@@ -106,6 +127,7 @@ handleAction = case _ of
   OnBlur index -> handleOnBlur index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
+  Receive input -> Halogen.modify_ (receive input)
   RemoveOne index -> handleRemoveOne index
 
 handleQuery ::
@@ -175,6 +197,7 @@ handleOnInput ::
   String ->
   ComponentM m Unit
 handleOnInput index text = do
+  minWidth <- Halogen.gets _.input.minWidth
   void
     $ updateItem index
       ( \item -> case item of
@@ -244,13 +267,11 @@ handleSetItems ::
   Array String ->
   ComponentM m Unit
 handleSetItems items = do
-  Halogen.modify_ _ { items = (display <$> items) `Data.Array.snoc` new }
+  Halogen.modify_ \old ->
+    old { items = (display <$> items) `Data.Array.snoc` old.new }
   where
   display :: String -> InputStatus
   display text = Display { text }
-
-  new :: InputStatus
-  new = New { inputBox: emptyInputBox }
 
 appendNewItem ::
   forall m.
@@ -260,7 +281,7 @@ appendNewItem = do
   Halogen.modify_ \old ->
     old
       { items =
-          old.items `Data.Array.snoc` New { inputBox: emptyInputBox }
+          old.items `Data.Array.snoc` old.new
       }
 
 blurItem ::
@@ -292,7 +313,7 @@ cancelEditing index = do
         Edit { previous } -> do
           void $ updateItem index (\_ -> Display { text: previous })
         New { inputBox: { text } } -> do
-          void $ updateItem index (\_ -> New { inputBox: emptyInputBox })
+          void $ updateItem index (\_ -> old.new)
 
 commitEditing ::
   forall m.
@@ -528,7 +549,4 @@ itemDisplayClasses =
 -- | Input element whose width is adjusted automatically
 inputRef :: Int -> Halogen.RefLabel
 inputRef index = Halogen.RefLabel ("input-" <> show index)
-
-minWidth :: Number
-minWidth = 50.0
 

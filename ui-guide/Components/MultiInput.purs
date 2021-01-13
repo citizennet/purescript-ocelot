@@ -72,7 +72,7 @@ render state =
           [ Ocelot.HTML.Properties.css "w-1/2" ]
           [ Halogen.HTML.slot _multiInput unit
             Ocelot.Components.MultiInput.Component.component
-            unit
+            { minWidth: 50.0 }
             (const Nothing)
           ]
       ]
