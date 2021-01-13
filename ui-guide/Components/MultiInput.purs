@@ -22,7 +22,7 @@ type State
   = {}
 
 data Action
-  = NoOp
+  = Initialize
 
 data Query a
 
@@ -45,7 +45,12 @@ component =
   Halogen.mkComponent
     { initialState
     , render
-    , eval: Halogen.mkEval $ Halogen.defaultEval { handleAction = handleAction }
+    , eval:
+      Halogen.mkEval
+        Halogen.defaultEval
+          { handleAction = handleAction
+          , initialize = Just Initialize
+          }
     }
 
 initialState :: Input -> State
@@ -53,8 +58,9 @@ initialState _ = {}
 
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
-  NoOp -> do
-    pure unit
+  Initialize -> do
+    void <<< Halogen.query _multiInput unit <<< Halogen.tell
+      $ Ocelot.Components.MultiInput.Component.SetItems items
 
 render ::
   forall m.
@@ -77,4 +83,12 @@ render state =
           ]
       ]
     ]
+  ]
+
+items :: Array String
+items =
+  [ "citizen"
+  , "net"
+  , "conde"
+  , "nast"
   ]
