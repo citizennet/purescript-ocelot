@@ -19,6 +19,7 @@ import UIGuide.Component.ExpansionCards as ExpansionCards
 import UIGuide.Component.FormControl as FormControl
 import UIGuide.Component.Icons as Icons
 import UIGuide.Component.Modals as Modals
+import UIGuide.Component.MultiInput as MultiInput
 import UIGuide.Component.Table as Table
 import UIGuide.Component.TextFields as TextFields
 import UIGuide.Component.Tray as Tray
@@ -117,5 +118,10 @@ routes = fromFoldable
     { anchor: "Badge"
     , component: proxy Badge.component
     , group: Basics
+    }
+  , Tuple "multi-input"
+    { anchor: "Multi Input"
+    , component: proxy MultiInput.component
+    , group: Components
     }
   ]
