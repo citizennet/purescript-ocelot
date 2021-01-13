@@ -48,6 +48,7 @@ type InputBox =
 
 data Action
   = EditItem Int
+  | OnBlur Int
   | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
   | RemoveOne Int
@@ -89,7 +90,10 @@ emptyInputBox =
 
 initialState :: Input -> State
 initialState _ =
-  { items: [ New { inputBox: emptyInputBox }]
+  { items:
+    [ Display { text: "abcdef" } -- TODO debug
+    , New { inputBox: emptyInputBox }
+    ]
   }
 
 handleAction ::
@@ -99,6 +103,7 @@ handleAction ::
   ComponentM m Unit
 handleAction = case _ of
   EditItem index -> handleEditItem index
+  OnBlur index -> handleOnBlur index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
   RemoveOne index -> handleRemoveOne index
@@ -131,6 +136,13 @@ handleEditItem index = do
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
 
+handleOnBlur ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+handleOnBlur index = do
+  commitEditing index
 
 handleOnInput ::
   forall m.
@@ -178,28 +190,10 @@ handlePressEnter ::
   ComponentM m Unit
 handlePressEnter index = do
   old <- Halogen.get
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    item <-
-      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
-        Data.Array.index old.items index
-    currentText <-
-      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
-        pure case item of
-          Display { text } -> text
-          Edit { inputBox: { text } } -> text
-          New { inputBox: { text } } -> text
-    if Data.String.null currentText
-    then Control.Monad.Maybe.Trans.lift do
-      removeItem index
-    else Control.Monad.Maybe.Trans.lift do
-      case item of
-        Display _ -> pure unit
-        Edit { inputBox: { text } } -> do
-          void $ updateItem index (\_ -> Display { text })
-        New { inputBox: { text } } -> do
-          new <- updateItem index (\_ -> Display { text })
-          when (isLastIndex index new.items) do
-            appendNewItem
+  commitEditing index
+  when (isLastIndex index old.items) do
+    new <- Halogen.get
+    focusItem (getLastIndex new.items)
 
 handleRemoveOne ::
   forall m.
@@ -214,13 +208,37 @@ appendNewItem ::
   MonadAff m =>
   ComponentM m Unit
 appendNewItem = do
-  appended <-
-    Halogen.modify \old ->
-      old
-        { items =
-            old.items `Data.Array.snoc` New { inputBox: emptyInputBox }
-        }
-  focusItem (getLastIndex appended.items)
+  Halogen.modify_ \old ->
+    old
+      { items =
+          old.items `Data.Array.snoc` New { inputBox: emptyInputBox }
+      }
+
+commitEditing ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+commitEditing index = do
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    item <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        Data.Array.index old.items index
+    Control.Monad.Maybe.Trans.lift do
+      case item of
+        Display _ -> pure unit
+        Edit { inputBox: { text } }
+          | Data.String.null text -> do
+            removeItem index
+          | otherwise -> do
+            void $ updateItem index (\_ -> Display { text })
+        New { inputBox: { text } }
+          | Data.String.null text -> pure unit
+          | otherwise -> do
+            new <- updateItem index (\_ -> Display { text })
+            when (isLastIndex index new.items) do
+              appendNewItem
 
 focusItem ::
   forall m.
@@ -352,6 +370,7 @@ renderAutoSizeInput index inputBox =
     [ Halogen.HTML.input
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
+        , Halogen.HTML.Events.onBlur \_ -> Just (OnBlur index)
         , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown index)
         , Halogen.HTML.Events.onValueInput (Just <<< OnInput index)
         , Halogen.HTML.Properties.ref (inputRef index)
