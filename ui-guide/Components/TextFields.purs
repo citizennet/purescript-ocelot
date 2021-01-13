@@ -422,12 +422,34 @@ cnDocumentationBlocks =
     , subheader: "A component for handling searching"
     }
     [ Backdrop.backdrop_
-      [ Backdrop.content_
-        [ HH.div
-          [ css "w-1/3 pb-6" ]
-          [ HH.slot _search unit SearchBar.component
-            { debounceTime: Just (Milliseconds 250.0) }
-            ( Just <<< HandleSearch )
+      [ content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Standard" ]
+          , HH.div
+            [ css "w-50" ]
+            [ HH.slot _search unit SearchBar.component
+              { debounceTime: Just (Milliseconds 250.0) }
+              ( Just <<< HandleSearch )
+            ]
+          ]
+        ]
+      , content
+        [ Card.card
+          [ HP.class_ $ HH.ClassName "flex-1" ]
+          [ HH.h3
+            [ HP.classes Format.captionClasses ]
+            [ HH.text "Keep Open" ]
+          , HH.div
+            [ css "w-50" ]
+            [ HH.slot _search unit SearchBar.component'
+              { debounceTime: Just (Milliseconds 250.0)
+              , keepOpen: true
+              }
+              ( Just <<< HandleSearch )
+            ]
           ]
         ]
       ]
