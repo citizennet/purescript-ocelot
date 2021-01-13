@@ -46,7 +46,8 @@ type InputBox =
   }
 
 data Action
-  = OnInput Int String
+  = EditItem Int
+  | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
   | RemoveOne Int
 
@@ -96,9 +97,39 @@ handleAction ::
   Action ->
   ComponentM m Unit
 handleAction = case _ of
+  EditItem index -> handleEditItem index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
   RemoveOne index -> handleRemoveOne index
+
+handleEditItem ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+handleEditItem index = do
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    text <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        item <- Data.Array.index old.items index
+        case item of
+          Display { text } -> Just text
+          Edit _ -> Nothing
+          New _ -> Nothing
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+        $ measureTextWidth text
+    void <<< Control.Monad.Maybe.Trans.lift
+      $ updateItem index
+        ( \item -> case item of
+            Display _ -> Edit { inputBox: { text, width }, previous: text }
+            Edit status -> item
+            New status -> item
+        )
+    Control.Monad.Maybe.Trans.lift
+      $ focusItem index
+
 
 handleOnInput ::
   forall m.
@@ -117,13 +148,12 @@ handleOnInput index text = do
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     width <-
       Control.Monad.Maybe.Trans.MaybeT
-        $ Halogen.query _textWidth unit <<< Halogen.request
-        $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
+        $ measureTextWidth text
     Control.Monad.Maybe.Trans.lift
       $ updateItem index
         ( \item -> case item of
               Display _ -> item
-              Edit status -> Edit status { inputBox { width = max minWidth width } }
+              Edit status -> Edit status { inputBox { width = width } }
               New status -> New status { inputBox { width = max minWidth width } }
         )
 
@@ -191,6 +221,15 @@ focusItem index = do
       $ Halogen.getHTMLElementRef (inputRef index)
     Halogen.liftEffect
       $ Web.HTML.HTMLElement.focus htmlElement
+
+measureTextWidth ::
+  forall m.
+  MonadAff m =>
+  String ->
+  ComponentM m (Maybe Number)
+measureTextWidth text = do
+  Halogen.query _textWidth unit <<< Halogen.request
+    $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
 
 preventDefault ::
   forall m.
@@ -260,7 +299,9 @@ renderItemDisplay ::
 renderItemDisplay index text =
   Halogen.HTML.div
     [ Ocelot.HTML.Properties.css "inline-block mx-1" ]
-    [ Halogen.HTML.text text
+    [ Halogen.HTML.span
+        [ Halogen.HTML.Events.onClick \_ -> Just (EditItem index) ]
+        [ Halogen.HTML.text text ]
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
         , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
