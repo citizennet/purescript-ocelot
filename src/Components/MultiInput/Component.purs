@@ -1,5 +1,5 @@
 module Ocelot.Components.MultiInput.Component
-  ( Output
+  ( Output(..)
   , Query(..)
   , Slot
   , component
@@ -65,8 +65,8 @@ type Input =
   { minWidth :: Number {- px -}
   }
 
-type Output =
-  Void
+data Output
+  = ItemsUpdated (Array String) -- caused by user actions
 
 type ChildSlots =
   ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
@@ -137,7 +137,7 @@ handleQuery ::
   ComponentM m (Maybe a)
 handleQuery = case _ of
   GetItems reply -> do
-    items <- handleGetItems
+    items <- Halogen.gets (getTexts <<< _.items)
     pure (Just (reply items))
   SetItems items a -> do
     handleSetItems items
@@ -170,17 +170,6 @@ handleEditItem index = do
         )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
-
-handleGetItems :: forall m. ComponentM m (Array String)
-handleGetItems = do
-  state <- Halogen.get
-  pure (getText <$> state.items)
-  where
-  getText :: InputStatus -> String
-  getText = case _ of
-    Display { text } -> text
-    Edit { inputBox: { text } } -> text
-    New { inputBox: { text } } -> text
 
 handleOnBlur ::
   forall m.
@@ -261,6 +250,7 @@ handleRemoveOne ::
   ComponentM m Unit
 handleRemoveOne index = do
   removeItem index
+  raiseItemUpdated
 
 handleSetItems ::
   forall m.
@@ -332,14 +322,17 @@ commitEditing index = do
         Edit { inputBox: { text } }
           | Data.String.null text -> do
             removeItem index
+            raiseItemUpdated
           | otherwise -> do
             void $ updateItem index (\_ -> Display { text })
+            raiseItemUpdated
         New { inputBox: { text } }
           | Data.String.null text -> pure unit
           | otherwise -> do
             new <- updateItem index (\_ -> Display { text })
             when (isLastIndex index new.items) do
               appendNewItem
+            raiseItemUpdated
 
 focusItem ::
   forall m.
@@ -372,6 +365,11 @@ preventDefault keyboardEvent = do
   Halogen.liftEffect
     $ Web.Event.Event.preventDefault <<< Web.UIEvent.KeyboardEvent.toEvent
     $ keyboardEvent
+
+raiseItemUpdated :: forall m. ComponentM m Unit
+raiseItemUpdated = do
+  items <- Halogen.gets (getTexts <<< _.items)
+  Halogen.raise (ItemsUpdated items)
 
 removeItem ::
   forall m.
@@ -406,6 +404,15 @@ isLastIndex index xs = index == getLastIndex xs
 
 getLastIndex :: forall a. Array a -> Int
 getLastIndex xs = Data.Array.length xs - 1
+
+getTexts :: Array InputStatus -> Array String
+getTexts = Data.Array.mapMaybe getText
+
+getText :: InputStatus -> Maybe String
+getText = case _ of
+  Display { text } -> Just text
+  Edit { previous } -> Just previous
+  New _ -> Nothing
 
 render ::
   forall m.
