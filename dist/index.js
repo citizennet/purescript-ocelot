@@ -49058,12 +49058,6 @@ var Blur = (function () {
 })();
 var render = function (dictMonadAff) {
     return function (v) {
-        var keepOpenClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
-            if (v.keepOpen) {
-                return [ "hidden" ];
-            };
-            return [  ];
-        })());
         var inputClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "no-outline", "flex-1", "bg-transparent", "h-full", "transition-1/4" ]);
         var ifOpen = function (openClasses) {
             return function (closedClasses) {
@@ -49078,6 +49072,13 @@ var render = function (dictMonadAff) {
         var inputCondClasses = ifOpen([ "w-full" ])([ "w-0" ]);
         var iconCondClasses = ifOpen([ "text-grey-50", "mb-0", "mt-0" ])([ "text-grey-70", "-mb-1", "mt-1" ]);
         var iconClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "pr-3", "text-2xl", "group-hover:text-grey-50", "transition-1/4" ]);
+        var hideClearClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)((function () {
+            var $26 = Data_String_Common["null"](v.query);
+            if ($26) {
+                return [ "hidden" ];
+            };
+            return [  ];
+        })());
         var containerCondClasses = ifOpen([ "max-w-160", "border-blue-88" ])([ "max-w-12", "border-transparent", "cursor-pointer" ]);
         var containerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "no-outline", "items-stretch", "transition-1/4", "border-b-2", "group" ]);
         var buttonCondClasses = ifOpen([ "opacity-100", "visible" ])([ "opacity-0", "invisible" ]);
@@ -49096,7 +49097,7 @@ var render = function (dictMonadAff) {
             };
         })()), Halogen_HTML_Properties.tabIndex(0) ]) ]), Halogen_HTML_Elements.button([ Halogen_HTML_Events.onClick(function ($80) {
             return Data_Maybe.Just.create(Clear.create($80));
-        }), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropButtonType)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonCondClasses)(keepOpenClasses))) ])([ Ocelot_Block_Icon.delete_ ]) ]);
+        }), Halogen_HTML_Properties.type_(Halogen_HTML_Core.isPropButtonType)(DOM_HTML_Indexed_ButtonType.ButtonButton.value), Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonClasses)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(buttonCondClasses)(hideClearClasses))) ])([ Ocelot_Block_Icon.delete_ ]) ]);
     };
 };
 var openIfHasQuery = function (dictMonadState) {
@@ -49259,12 +49260,12 @@ var handleAction = function (dictMonadAff) {
                                 });
                             }));
                         };
-                        throw new Error("Failed pattern match at Ocelot.Component.SearchBar (line 118, column 5 - line 138, column 63): " + [ st.debouncer.constructor.name ]);
+                        throw new Error("Failed pattern match at Ocelot.Component.SearchBar (line 119, column 5 - line 139, column 63): " + [ st.debouncer.constructor.name ]);
                     });
                 });
             });
         };
-        throw new Error("Failed pattern match at Ocelot.Component.SearchBar (line 100, column 16 - line 138, column 63): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at Ocelot.Component.SearchBar (line 101, column 16 - line 139, column 63): " + [ v.constructor.name ]);
     };
 };
 var component = function (dictMonadAff) {
@@ -58706,21 +58707,28 @@ var cnDocumentationBlocks = function (dictMonadAff) {
     })([ Ocelot_Block_Input.textarea([ Halogen_HTML_Properties.value("Forest drinks on the job"), Halogen_HTML_Properties.id_("comment-disabled"), Halogen_HTML_Properties.disabled(true) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
         header: "Search Bar",
         subheader: "A component for handling searching"
-    })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-1/3 pb-6") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+    })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Standard") ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-50") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
         return "search";
     }))(Data_Ord.ordUnit)(_search)(Data_Unit.unit)(Ocelot_Component_SearchBar.component(dictMonadAff))({
         debounceTime: new Data_Maybe.Just(250.0)
     })(function ($10) {
         return Data_Maybe.Just.create(HandleSearch.create($10));
-    }) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
+    }) ]) ]) ]), content([ Ocelot_Block_Card.card([ Halogen_HTML_Properties.class_("flex-1") ])([ Halogen_HTML_Elements.h3([ Halogen_HTML_Properties.classes(Ocelot_Block_Format.captionClasses) ])([ Halogen_HTML_Core.text("Keep Open") ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-50") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+        return "search";
+    }))(Data_Ord.ordUnit)(_search)(Data_Unit.unit)(Ocelot_Component_SearchBar["component'"](dictMonadAff))({
+        debounceTime: new Data_Maybe.Just(250.0),
+        keepOpen: true
+    })(function ($11) {
+        return Data_Maybe.Just.create(HandleSearch.create($11));
+    }) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
         header: "Search Bar - With Neighbors",
         subheader: "A component for handling search, sharing a space with other blocks"
     })([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex items-center pb-6") ])([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("mr-8") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
         return "search";
     }))(Data_Ord.ordUnit)(_search)(Data_Unit.unit)(Ocelot_Component_SearchBar.component(dictMonadAff))({
         debounceTime: new Data_Maybe.Just(250.0)
-    })(function ($11) {
-        return Data_Maybe.Just.create(HandleSearch.create($11));
+    })(function ($12) {
+        return Data_Maybe.Just.create(HandleSearch.create($12));
     }) ]), Ocelot_Block_Button.buttonPrimary_([ Halogen_HTML_Core.text("Neighbor") ]) ]) ]) ]) ]) ]);
 };
 var component = function (dictMonadAff) {
