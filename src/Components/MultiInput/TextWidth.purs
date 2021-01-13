@@ -1,3 +1,10 @@
+-- | A component to measure text width.
+-- |
+-- | Known issue:
+-- | * If GetWidth is called with a high frequency, it may run into
+-- |   race condition where `clientWidth` returns cached result before
+-- |   new text is rendered and measured.
+-- |   You may want to give every text its own slot if this happens.
 module Ocelot.Components.MultiInput.TextWidth
   ( Query(..)
   , Output

@@ -157,7 +157,7 @@ handleAction = case _ of
   OnBlur index -> handleOnBlur index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
-  Receive input -> Halogen.modify_ (receive input)
+  Receive input -> handleReceive input
   RemoveOne index -> handleRemoveOne index
 
 handleQuery ::
@@ -206,17 +206,7 @@ handleInitialize ::
   MonadAff m =>
   ComponentM m Unit
 handleInitialize = do
-  state <- Halogen.get
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    width <-
-      Control.Monad.Maybe.Trans.MaybeT
-        $ measureTextWidth state.placeholder.primary.text
-    Halogen.modify_ _ { placeholder { primary { width = width } } }
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    width <-
-      Control.Monad.Maybe.Trans.MaybeT
-        $ measureTextWidth state.placeholder.secondary.text
-    Halogen.modify_ _ { placeholder { secondary { width = width } } }
+  calibratePlaceholderWidth
 
 handleOnBlur ::
   forall m.
@@ -290,6 +280,19 @@ handlePressEsc index = do
   cancelEditing index
   blurItem index
 
+handleReceive ::
+  forall m.
+  MonadAff m =>
+  Input ->
+  ComponentM m Unit
+handleReceive input = do
+  old <- Halogen.get
+  -- NOTE a workaround to reduce rate of re-calibration
+  -- see comments in TextWidth for details
+  when (old.input /= input) do
+    Halogen.modify_ (receive input)
+    calibratePlaceholderWidth
+
 handleRemoveOne ::
   forall m.
   MonadAff m =>
@@ -333,6 +336,23 @@ blurItem index = do
       $ Halogen.getHTMLElementRef (inputRef index)
     Halogen.liftEffect
       $ Web.HTML.HTMLElement.blur htmlElement
+
+calibratePlaceholderWidth ::
+  forall m.
+  MonadAff m =>
+  ComponentM m Unit
+calibratePlaceholderWidth = do
+  state <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+      $ measureTextWidth state.placeholder.primary.text
+    Halogen.modify _ { placeholder { primary { width = width } } }
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+      $ measureTextWidth state.placeholder.secondary.text
+    Halogen.modify_ _ { placeholder { secondary { width = width } } }
 
 cancelEditing ::
   forall m.
