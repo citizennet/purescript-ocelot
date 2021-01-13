@@ -181,6 +181,9 @@ handleOnKeyDown index keyboardEvent = do
     "Enter" -> do
       preventDefault keyboardEvent
       handlePressEnter index
+    "Escape" -> do
+      preventDefault keyboardEvent
+      handlePressEsc index
     _ -> pure unit
 
 handlePressEnter ::
@@ -194,6 +197,15 @@ handlePressEnter index = do
   when (isLastIndex index old.items) do
     new <- Halogen.get
     focusItem (getLastIndex new.items)
+
+handlePressEsc ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+handlePressEsc index = do
+  cancelEditing index
+  blurItem index
 
 handleRemoveOne ::
   forall m.
@@ -213,6 +225,37 @@ appendNewItem = do
       { items =
           old.items `Data.Array.snoc` New { inputBox: emptyInputBox }
       }
+
+blurItem ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+blurItem index = do
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    htmlElement <-
+      Control.Monad.Maybe.Trans.MaybeT
+      $ Halogen.getHTMLElementRef (inputRef index)
+    Halogen.liftEffect
+      $ Web.HTML.HTMLElement.blur htmlElement
+
+cancelEditing ::
+  forall m.
+  Int ->
+  ComponentM m Unit
+cancelEditing index = do
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    item <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        Data.Array.index old.items index
+    Control.Monad.Maybe.Trans.lift do
+      case item of
+        Display _ -> pure unit
+        Edit { previous } -> do
+          void $ updateItem index (\_ -> Display { text: previous })
+        New { inputBox: { text } } -> do
+          void $ updateItem index (\_ -> New { inputBox: emptyInputBox })
 
 commitEditing ::
   forall m.
