@@ -218,6 +218,12 @@ plus = icon "icon-plus"
 plus_ :: ∀ p i. HH.HTML p i
 plus_ = plus []
 
+reddit :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+reddit = icon "icon-reddit"
+
+reddit_ :: ∀ p i. HH.HTML p i
+reddit_ = reddit []
+
 refresh :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 refresh = icon "icon-refresh"
 
