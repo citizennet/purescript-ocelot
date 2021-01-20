@@ -65,6 +65,7 @@ component =
             , Tuple "Instagram" $ Icon.instagram [ css "text-instagram-purple" ]
             , Tuple "LinkedIn" $ Icon.linkedIn [ css "text-linkedin-blue" ]
             , Tuple "Pinterest" $ Icon.pinterest [ css "text-pinterest-red" ]
+            , Tuple "Reddit" $ Icon.reddit [ css "text-reddit-orange" ]
             , Tuple "Snapchat" $ Icon.snapchat_
             , Tuple "Taboola" $ Icon.taboola [ css "text-taboola-blue" ]
             , Tuple "Tiktok" $ Icon.tiktok [ css "text-tiktok-green" ]
