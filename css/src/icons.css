@@ -40,6 +40,7 @@
 .icon-instagram:before,
 .icon-linkedin:before,
 .icon-pinterest:before,
+.icon-reddit:before,
 .icon-snapchat:before,
 .icon-taboola:before,
 .icon-tiktok:before,
@@ -52,17 +53,18 @@
   content: attr(data-icon);
 }
 
-/* 2020-08-31 icon updates */
+/* 2021-01-19 icon updates */
 .icon-facebook:before { content: '\e800'; }
 .icon-google:before { content: '\e801'; }
 .icon-instagram:before { content: '\e802'; }
 .icon-linkedin:before { content: '\e803'; }
 .icon-pinterest:before { content: '\e804'; }
-.icon-snapchat:before { content: '\e805'; }
-.icon-taboola:before { content: '\e806'; }
-.icon-tiktok:before { content: '\e807'; }
-.icon-twitter:before { content: '\e808'; }
-.icon-youtube:before { content: '\e809'; }
+.icon-reddit:before { content: '\e805'; }
+.icon-snapchat:before { content: '\e806'; }
+.icon-taboola:before { content: '\e807'; }
+.icon-tiktok:before { content: '\e808'; }
+.icon-twitter:before { content: '\e809'; }
+.icon-youtube:before { content: '\e80a'; }
 
 /* legacy icons */
 .icon-add:before {
