@@ -114,6 +114,7 @@ component =
             , Tuple "Timeline" Icon.timeline_
             , Tuple "Navigate" Icon.navigate_
             , Tuple "Data Sources" Icon.dataSources_
+            , Tuple "Demographics" Icon.demographics_
             ]
           )
         ]
