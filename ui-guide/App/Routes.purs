@@ -3,17 +3,18 @@ module UIGuide.App.Routes
 where
 
 import Prelude
-
-import Effect.Aff (Aff)
 import Data.Const (Const)
 import Data.Map (Map, fromFoldable)
 import Data.Tuple (Tuple(..))
+import Effect.Aff (Aff)
 import Halogen as H
 import Halogen.HTML as HH
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Component.Badge as Badge
 import UIGuide.Component.Button as Button
 import UIGuide.Component.DatePickers as DatePickers
+import UIGuide.Component.Diagram as Diagram
+import UIGuide.Component.Dialogs as Dialogs
 import UIGuide.Component.Dropdown as Dropdown
 import UIGuide.Component.ExpansionCards as ExpansionCards
 import UIGuide.Component.FormControl as FormControl
@@ -23,7 +24,6 @@ import UIGuide.Component.MultiInput as MultiInput
 import UIGuide.Component.Table as Table
 import UIGuide.Component.TextFields as TextFields
 import UIGuide.Component.Tray as Tray
-import UIGuide.Component.Dialogs as Dialogs
 import UIGuide.Component.Type as Type
 import UIGuide.Component.Typeaheads as Typeaheads
 
@@ -123,5 +123,10 @@ routes = fromFoldable
     { anchor: "Multi Input"
     , component: proxy MultiInput.component
     , group: Components
+    }
+  , Tuple "diagram"
+    { anchor: "Diagram"
+    , component: proxy Diagram.component
+    , group: Basics
     }
   ]
