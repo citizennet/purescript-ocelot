@@ -5,6 +5,7 @@ node_modules
 .stack-work
 
 # Generated files
+.build
 .psci
 output
 generated-docs
@@ -23,6 +24,7 @@ dist/*
 !dist/cn-tailwind.scoped.css
 !dist/cn-tailwind.scoped.min.css
 !dist/index.html
+!dist/parcel.html
 
 # IDE
 *.log

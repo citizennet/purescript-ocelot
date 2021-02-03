@@ -11,10 +11,12 @@
     "build-ui-bundle": "purs bundle output/*/*.js --main Main --module Main -o dist/bundled.js $RTS_ARGS",
     "build-ui-browserify": "yarn run browserify dist/main.js --outfile dist/index.js",
     "install-css": "cd css && yarn install",
-    "build-css": "cd css && yarn run build-all"
+    "build-css": "cd css && yarn run build-all",
+    "debug": "yarn parcel dist/parcel.html --out-dir .build/parcel --no-cache"
   },
   "devDependencies": {
     "browserify": "^16.5.1",
+    "parcel": "1.12.4",
     "purescript": "^0.13.6",
     "spago": "^0.15.2"
   },
