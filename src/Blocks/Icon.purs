@@ -140,6 +140,12 @@ deleteCircle = icon "icon-delete-circle"
 deleteCircle_ :: ∀ p i. HH.HTML p i
 deleteCircle_ = deleteCircle []
 
+demographics :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+demographics = icon "icon-demographics"
+
+demographics_ :: ∀ p i. HH.HTML p i
+demographics_ = demographics []
+
 download :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 download = icon "icon-download"
 
