@@ -1,9 +1,10 @@
 module Ocelot.HTML.Properties
   ( IProp(..)
-  , testId
-  , css
   , appendIProps
+  , css
   , extract
+  , style
+  , testId
   , (<&>)
   ) where
 
@@ -12,11 +13,15 @@ import Prelude
 import Data.Array (elem, foldl, nubByEq)
 import Data.Bifunctor (lmap, rmap)
 import Data.String (Pattern(..), null, split)
+import Data.String as Data.String
 import Data.String.CodeUnits (length, take, drop)
 import Data.Tuple (Tuple(..))
+import Foreign.Object as Foreign.Object
 import Halogen.HTML as HH
+import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Core (Prop(..), PropValue)
 import Halogen.HTML.Properties as HP
+import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
@@ -32,6 +37,13 @@ css
    . String
   -> IProp r i
 css = HP.class_ <<< HH.ClassName
+
+style :: forall r i. Foreign.Object.Object String -> IProp r i
+style =
+  Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style")
+    <<< Data.String.joinWith ";"
+    <<< Foreign.Object.foldMap
+        (\key value -> [ key <> ":" <> value ])
 
 appendIProps
   :: ∀ r i
