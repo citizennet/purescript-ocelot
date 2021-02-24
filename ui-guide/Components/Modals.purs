@@ -17,6 +17,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
+import Ocelot.Block.Toast as Ocelot.Block.Toast
 import Ocelot.Component.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
@@ -41,14 +42,17 @@ derive instance eqComponentType :: Eq ComponentType
 derive instance ordComponentType :: Ord ComponentType
 
 type State =
-  Data.Map.Map ComponentType H.SubscriptionId
+  { ids :: Data.Map.Map ComponentType H.SubscriptionId
+  , toast :: Boolean
+  }
 
 data Query a
 
 data Action
-  = Open ComponentType
-  | Close ComponentType
+  = Close ComponentType
   | HandleKey ComponentType KE.KeyboardEvent
+  | Open ComponentType
+  | Toast
 
 type Input = Unit
 
@@ -78,7 +82,10 @@ component =
     }
 
 initialState :: Input -> State
-initialState _ = Data.Map.empty
+initialState _ =
+  { ids: Data.Map.empty
+  , toast: false
+  }
 
 handleAction ::
   forall m.
@@ -89,6 +96,7 @@ handleAction = case _ of
   Close ct -> close ct
   HandleKey ct ev -> handleKey ct ev
   Open ct -> open ct
+  Toast -> toast
 
 handleKey ::
   forall m.
@@ -97,7 +105,7 @@ handleKey ::
   KE.KeyboardEvent ->
   ComponentM m Unit
 handleKey ct ev = do
-  id <- H.gets (Data.Map.lookup ct)
+  id <- H.gets (Data.Map.lookup ct <<< _.ids)
   traverse_ (\sid -> Modal.whenClose ev sid (close ct)) id
 
 close ::
@@ -105,7 +113,7 @@ close ::
   ComponentType ->
   ComponentM m Unit
 close ct = do
-  H.modify_ (Data.Map.delete ct)
+  H.modify_ \old -> old { ids = Data.Map.delete ct old.ids }
 
 open ::
   forall m.
@@ -114,7 +122,13 @@ open ::
   ComponentM m Unit
 open ct = do
   id <- Modal.initializeWith (Just <<< HandleKey ct)
-  H.modify_ (Data.Map.insert ct id)
+  H.modify_ \old -> old { ids = Data.Map.insert ct id old.ids }
+
+toast ::
+  forall m.
+  ComponentM m Unit
+toast = do
+  H.modify_ _ { toast = true }
 
 render ::
   forall m.
@@ -155,9 +169,15 @@ render st =
         ]
       ]
     ]
-  , if isJust (Data.Map.lookup Modal st) then renderModal else HH.text ""
-  , renderPanelLeft (isJust (Data.Map.lookup PanelLeft st))
-  , renderPanelRight (isJust (Data.Map.lookup PanelRight st))
+  , if isJust (Data.Map.lookup Modal st.ids) then renderModal else HH.text ""
+  , renderPanelLeft (isJust (Data.Map.lookup PanelLeft st.ids))
+  , renderPanelRight (isJust (Data.Map.lookup PanelRight st.ids))
+  , Ocelot.Block.Toast.toast
+      [ Ocelot.Block.Toast.visible st.toast ]
+      [ Icon.error
+        [ css "text-red text-2xl mr-2" ]
+      , HH.text "Failure"
+      ]
   ]
 
 renderModal ::
@@ -173,7 +193,7 @@ renderModal =
         , HE.onClick $ const $ Just (Close Modal) ]
         [ HH.text "Cancel" ]
       , Button.buttonPrimary
-        [ HE.onClick $ const $ Just (Close Modal) ]
+        [ HE.onClick $ const $ Just Toast ]
         [ HH.text "Submit" ]
       ]
     , title: [ HH.text "Editing" ]
