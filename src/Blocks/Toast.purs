@@ -31,6 +31,7 @@ toastContainerClasses = HH.ClassName <$>
   , "pin-l"
   , "pin-r"
   , "pin-b"
+  , "z-10"
   ]
 
 containerVisibleClasses :: Array HH.ClassName
