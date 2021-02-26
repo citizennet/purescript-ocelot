@@ -48869,7 +48869,7 @@ var Halogen_HTML_Properties = require("../Halogen.HTML.Properties/index.js");
 var Halogen_VDom_DOM_Prop = require("../Halogen.VDom.DOM.Prop/index.js");
 var Ocelot_HTML_Properties = require("../Ocelot.HTML.Properties/index.js");
 var visible = Halogen_HTML_Properties.prop(Halogen_HTML_Core.isPropBoolean)("visible");
-var toastContainerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "transition-1/4-in", "transition-1/2-out", "items-center", "fixed", "pin-l", "pin-r", "pin-b" ]);
+var toastContainerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "transition-1/4-in", "transition-1/2-out", "items-center", "fixed", "pin-l", "pin-r", "pin-b", "z-10" ]);
 var toastClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "shadow-md", "p-4", "ml-auto", "mr-auto", "items-center", "border", "border-grey-80", "bg-white", "rounded", "flex" ]);
 var pullVisibleProp = (function () {
     var f = function (v) {
@@ -59498,6 +59498,7 @@ var Ocelot_Block_FormField = require("../Ocelot.Block.FormField/index.js");
 var Ocelot_Block_Format = require("../Ocelot.Block.Format/index.js");
 var Ocelot_Block_Icon = require("../Ocelot.Block.Icon/index.js");
 var Ocelot_Block_ItemContainer = require("../Ocelot.Block.ItemContainer/index.js");
+var Ocelot_Block_Toast = require("../Ocelot.Block.Toast/index.js");
 var Ocelot_Component_Typeahead = require("../Ocelot.Component.Typeahead/index.js");
 var Ocelot_Component_Typeahead_Base = require("../Ocelot.Component.Typeahead.Base/index.js");
 var Ocelot_HTML_Properties = require("../Ocelot.HTML.Properties/index.js");
@@ -59527,15 +59528,6 @@ var PanelRight = (function () {
     PanelRight.value = new PanelRight();
     return PanelRight;
 })();
-var Open = (function () {
-    function Open(value0) {
-        this.value0 = value0;
-    };
-    Open.create = function (value0) {
-        return new Open(value0);
-    };
-    return Open;
-})();
 var Close = (function () {
     function Close(value0) {
         this.value0 = value0;
@@ -59557,8 +59549,37 @@ var HandleKey = (function () {
     };
     return HandleKey;
 })();
+var Open = (function () {
+    function Open(value0) {
+        this.value0 = value0;
+    };
+    Open.create = function (value0) {
+        return new Open(value0);
+    };
+    return Open;
+})();
+var Toast = (function () {
+    function Toast() {
+
+    };
+    Toast.value = new Toast();
+    return Toast;
+})();
+var toast = Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
+    var $20 = {};
+    for (var $21 in v) {
+        if ({}.hasOwnProperty.call(v, $21)) {
+            $20[$21] = v[$21];
+        };
+    };
+    $20.toast = true;
+    return $20;
+});
 var initialState = function (v) {
-    return Data_Map_Internal.empty;
+    return {
+        ids: Data_Map_Internal.empty,
+        toast: false
+    };
 };
 var eqComponentType = new Data_Eq.Eq(function (x) {
     return function (y) {
@@ -59599,28 +59620,53 @@ var ordComponentType = new Data_Ord.Ord(function () {
         if (x instanceof PanelRight && y instanceof PanelRight) {
             return Data_Ordering.EQ.value;
         };
-        throw new Error("Failed pattern match at UIGuide.Component.Modals (line 41, column 1 - line 41, column 54): " + [ x.constructor.name, y.constructor.name ]);
+        throw new Error("Failed pattern match at UIGuide.Component.Modals (line 42, column 1 - line 42, column 54): " + [ x.constructor.name, y.constructor.name ]);
     };
 });
 var open = function (dictMonadAff) {
     return function (ct) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Ocelot_Part_Modal.initializeWith(dictMonadAff)((function () {
-            var $26 = HandleKey.create(ct);
-            return function ($27) {
-                return Data_Maybe.Just.create($26($27));
+            var $39 = HandleKey.create(ct);
+            return function ($40) {
+                return Data_Maybe.Just.create($39($40));
             };
         })()))(function (id) {
-            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal.insert(ordComponentType)(ct)(id));
+            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (old) {
+                var $27 = {};
+                for (var $28 in old) {
+                    if ({}.hasOwnProperty.call(old, $28)) {
+                        $27[$28] = old[$28];
+                    };
+                };
+                $27.ids = Data_Map_Internal.insert(ordComponentType)(ct)(id)(old.ids);
+                return $27;
+            });
         });
     };
 };
 var close = function (ct) {
-    return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal["delete"](ordComponentType)(ct));
+    return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (old) {
+        var $30 = {};
+        for (var $31 in old) {
+            if ({}.hasOwnProperty.call(old, $31)) {
+                $30[$31] = old[$31];
+            };
+        };
+        $30.ids = Data_Map_Internal["delete"](ordComponentType)(ct)(old.ids);
+        return $30;
+    });
 };
 var handleKey = function (dictMonadAff) {
     return function (ct) {
         return function (ev) {
-            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal.lookup(ordComponentType)(ct)))(function (id) {
+            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)((function () {
+                var $41 = Data_Map_Internal.lookup(ordComponentType)(ct);
+                return function ($42) {
+                    return $41((function (v) {
+                        return v.ids;
+                    })($42));
+                };
+            })()))(function (id) {
                 return Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(function (sid) {
                     return Ocelot_Part_Modal.whenClose(dictMonadAff)(ev)(sid)(close(ct));
                 })(id);
@@ -59639,7 +59685,10 @@ var handleAction = function (dictMonadAff) {
         if (v instanceof Open) {
             return open(dictMonadAff)(v.value0);
         };
-        throw new Error("Failed pattern match at UIGuide.Component.Modals (line 88, column 16 - line 91, column 21): " + [ v.constructor.name ]);
+        if (v instanceof Toast) {
+            return toast;
+        };
+        throw new Error("Failed pattern match at UIGuide.Component.Modals (line 95, column 16 - line 99, column 17): " + [ v.constructor.name ]);
     };
 };
 var _cp2 = Data_Symbol.SProxy.value;
@@ -59655,9 +59704,9 @@ var renderContent = function (dictMonadAff) {
             return "cp1";
         }))(Data_Ord.ordString)(_cp1)(label)(Ocelot_Component_Typeahead_Base.multi(UIGuide_Utility_Async.eqLocation)(dictMonadAff))(Ocelot_Component_Typeahead.asyncMulti(UIGuide_Utility_Async.eqLocation)(dictMonadAff)({
             renderFuzzy: (function () {
-                var $28 = Ocelot_Block_ItemContainer.boldMatches("name");
-                return function ($29) {
-                    return Halogen_HTML_Elements.span_($28($29));
+                var $43 = Ocelot_Block_ItemContainer.boldMatches("name");
+                return function ($44) {
+                    return Halogen_HTML_Elements.span_($43($44));
                 };
             })(),
             itemToObject: UIGuide_Utility_Async.locationToObject,
@@ -59678,7 +59727,7 @@ var renderContent = function (dictMonadAff) {
 };
 var renderModal = function (dictMonadAff) {
     return Ocelot_Part_Modal.modal_(new Close(Modal.value))([ Ocelot_Part_Modal.header({
-        buttons: [ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Format.linkDarkClasses)([ "mr-4" ])), Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Cancel") ]), Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Submit") ]) ],
+        buttons: [ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Format.linkDarkClasses)([ "mr-4" ])), Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Cancel") ]), Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(Toast.value))) ])([ Halogen_HTML_Core.text("Submit") ]) ],
         title: [ Halogen_HTML_Core.text("Editing") ]
     }), Ocelot_Part_Modal.body_([ renderContent(dictMonadAff)("modal-1") ]) ]);
 };
@@ -59704,12 +59753,12 @@ var render = function (dictMonadAff) {
             header: "Modals",
             subheader: "Forest's favorite UI implement"
         })([ UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(PanelLeft.value)))) ])([ Halogen_HTML_Core.text("Open Left Panel") ]) ]) ]), UIGuide_Block_Backdrop.backdropDark([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(Modal.value)))) ])([ Halogen_HTML_Core.text("Open Modal") ]) ]) ]), UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(PanelRight.value)))) ])([ Halogen_HTML_Core.text("Open Right Panel") ]) ]) ]) ]), (function () {
-            var $25 = Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(Modal.value)(st));
-            if ($25) {
+            var $38 = Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(Modal.value)(st.ids));
+            if ($38) {
                 return renderModal(dictMonadAff);
             };
             return Halogen_HTML_Core.text("");
-        })(), renderPanelLeft(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelLeft.value)(st))), renderPanelRight(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelRight.value)(st))) ]);
+        })(), renderPanelLeft(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelLeft.value)(st.ids))), renderPanelRight(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelRight.value)(st.ids))), Ocelot_Block_Toast.toast([ Ocelot_Block_Toast.visible(st.toast) ])([ Ocelot_Block_Icon.error([ Ocelot_HTML_Properties.css("text-red text-2xl mr-2") ]), Halogen_HTML_Core.text("Failure") ]) ]);
     };
 };
 var component = function (dictMonadAff) {
@@ -59729,9 +59778,10 @@ module.exports = {
     Modal: Modal,
     PanelLeft: PanelLeft,
     PanelRight: PanelRight,
-    Open: Open,
     Close: Close,
     HandleKey: HandleKey,
+    Open: Open,
+    Toast: Toast,
     "_cp1": _cp1,
     "_cp2": _cp2,
     component: component,
@@ -59740,6 +59790,7 @@ module.exports = {
     handleKey: handleKey,
     close: close,
     open: open,
+    toast: toast,
     render: render,
     renderModal: renderModal,
     renderPanelLeft: renderPanelLeft,
@@ -59749,7 +59800,7 @@ module.exports = {
     ordComponentType: ordComponentType
 };
 
-},{"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":48,"../Data.Eq/index.js":123,"../Data.Foldable/index.js":128,"../Data.Function/index.js":137,"../Data.Map.Internal/index.js":173,"../Data.Maybe/index.js":176,"../Data.Ord/index.js":193,"../Data.Ordering/index.js":194,"../Data.Semigroup/index.js":209,"../Data.Symbol/index.js":231,"../Halogen.Component/index.js":287,"../Halogen.HTML.Core/index.js":290,"../Halogen.HTML.Elements/index.js":291,"../Halogen.HTML.Events/index.js":292,"../Halogen.HTML.Properties/index.js":294,"../Halogen.HTML/index.js":295,"../Halogen.Query.HalogenM/index.js":298,"../Ocelot.Block.Button/index.js":317,"../Ocelot.Block.Card/index.js":318,"../Ocelot.Block.FormField/index.js":324,"../Ocelot.Block.Format/index.js":325,"../Ocelot.Block.Icon/index.js":326,"../Ocelot.Block.ItemContainer/index.js":328,"../Ocelot.Component.Typeahead.Base/index.js":339,"../Ocelot.Component.Typeahead/index.js":341,"../Ocelot.HTML.Properties/index.js":352,"../Ocelot.Part.Modal/index.js":353,"../Ocelot.Part.Panel/index.js":354,"../UIGuide.Block.Backdrop/index.js":389,"../UIGuide.Block.Documentation/index.js":390,"../UIGuide.Utility.Async/index.js":407}],401:[function(require,module,exports){
+},{"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":48,"../Data.Eq/index.js":123,"../Data.Foldable/index.js":128,"../Data.Function/index.js":137,"../Data.Map.Internal/index.js":173,"../Data.Maybe/index.js":176,"../Data.Ord/index.js":193,"../Data.Ordering/index.js":194,"../Data.Semigroup/index.js":209,"../Data.Symbol/index.js":231,"../Halogen.Component/index.js":287,"../Halogen.HTML.Core/index.js":290,"../Halogen.HTML.Elements/index.js":291,"../Halogen.HTML.Events/index.js":292,"../Halogen.HTML.Properties/index.js":294,"../Halogen.HTML/index.js":295,"../Halogen.Query.HalogenM/index.js":298,"../Ocelot.Block.Button/index.js":317,"../Ocelot.Block.Card/index.js":318,"../Ocelot.Block.FormField/index.js":324,"../Ocelot.Block.Format/index.js":325,"../Ocelot.Block.Icon/index.js":326,"../Ocelot.Block.ItemContainer/index.js":328,"../Ocelot.Block.Toast/index.js":334,"../Ocelot.Component.Typeahead.Base/index.js":339,"../Ocelot.Component.Typeahead/index.js":341,"../Ocelot.HTML.Properties/index.js":352,"../Ocelot.Part.Modal/index.js":353,"../Ocelot.Part.Panel/index.js":354,"../UIGuide.Block.Backdrop/index.js":389,"../UIGuide.Block.Documentation/index.js":390,"../UIGuide.Utility.Async/index.js":407}],401:[function(require,module,exports){
 // Generated by purs version 0.13.8
 "use strict";
 var Data_Eq = require("../Data.Eq/index.js");

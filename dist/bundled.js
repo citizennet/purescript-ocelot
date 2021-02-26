@@ -23341,7 +23341,7 @@ var PS = {};
   var Halogen_VDom_DOM_Prop = $PS["Halogen.VDom.DOM.Prop"];
   var Ocelot_HTML_Properties = $PS["Ocelot.HTML.Properties"];                
   var visible = Halogen_HTML_Properties.prop(Halogen_HTML_Core.isPropBoolean)("visible");
-  var toastContainerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "transition-1/4-in", "transition-1/2-out", "items-center", "fixed", "pin-l", "pin-r", "pin-b" ]);
+  var toastContainerClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "transition-1/4-in", "transition-1/2-out", "items-center", "fixed", "pin-l", "pin-r", "pin-b", "z-10" ]);
   var toastClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "shadow-md", "p-4", "ml-auto", "mr-auto", "items-center", "border", "border-grey-80", "bg-white", "rounded", "flex" ]);
   var pullVisibleProp = (function () {
       var f = function (v) {
@@ -27251,6 +27251,7 @@ var PS = {};
   var Ocelot_Block_Format = $PS["Ocelot.Block.Format"];
   var Ocelot_Block_Icon = $PS["Ocelot.Block.Icon"];
   var Ocelot_Block_ItemContainer = $PS["Ocelot.Block.ItemContainer"];
+  var Ocelot_Block_Toast = $PS["Ocelot.Block.Toast"];
   var Ocelot_Component_Typeahead = $PS["Ocelot.Component.Typeahead"];
   var Ocelot_Component_Typeahead_Base = $PS["Ocelot.Component.Typeahead.Base"];
   var Ocelot_HTML_Properties = $PS["Ocelot.HTML.Properties"];
@@ -27280,15 +27281,6 @@ var PS = {};
       PanelRight.value = new PanelRight();
       return PanelRight;
   })();
-  var Open = (function () {
-      function Open(value0) {
-          this.value0 = value0;
-      };
-      Open.create = function (value0) {
-          return new Open(value0);
-      };
-      return Open;
-  })();
   var Close = (function () {
       function Close(value0) {
           this.value0 = value0;
@@ -27310,8 +27302,37 @@ var PS = {};
       };
       return HandleKey;
   })();
+  var Open = (function () {
+      function Open(value0) {
+          this.value0 = value0;
+      };
+      Open.create = function (value0) {
+          return new Open(value0);
+      };
+      return Open;
+  })();
+  var Toast = (function () {
+      function Toast() {
+
+      };
+      Toast.value = new Toast();
+      return Toast;
+  })();
+  var toast = Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
+      var $20 = {};
+      for (var $21 in v) {
+          if ({}.hasOwnProperty.call(v, $21)) {
+              $20[$21] = v[$21];
+          };
+      };
+      $20.toast = true;
+      return $20;
+  });
   var initialState = function (v) {
-      return Data_Map_Internal.empty;
+      return {
+          ids: Data_Map_Internal.empty,
+          toast: false
+      };
   };
   var eqComponentType = new Data_Eq.Eq(function (x) {
       return function (y) {
@@ -27352,28 +27373,53 @@ var PS = {};
           if (x instanceof PanelRight && y instanceof PanelRight) {
               return Data_Ordering.EQ.value;
           };
-          throw new Error("Failed pattern match at UIGuide.Component.Modals (line 41, column 1 - line 41, column 54): " + [ x.constructor.name, y.constructor.name ]);
+          throw new Error("Failed pattern match at UIGuide.Component.Modals (line 42, column 1 - line 42, column 54): " + [ x.constructor.name, y.constructor.name ]);
       };
   });
   var open = function (dictMonadAff) {
       return function (ct) {
           return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Ocelot_Part_Modal.initializeWith(dictMonadAff)((function () {
-              var $26 = HandleKey.create(ct);
-              return function ($27) {
-                  return Data_Maybe.Just.create($26($27));
+              var $39 = HandleKey.create(ct);
+              return function ($40) {
+                  return Data_Maybe.Just.create($39($40));
               };
           })()))(function (id) {
-              return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal.insert(ordComponentType)(ct)(id));
+              return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (old) {
+                  var $27 = {};
+                  for (var $28 in old) {
+                      if ({}.hasOwnProperty.call(old, $28)) {
+                          $27[$28] = old[$28];
+                      };
+                  };
+                  $27.ids = Data_Map_Internal.insert(ordComponentType)(ct)(id)(old.ids);
+                  return $27;
+              });
           });
       };
   };
   var close = function (ct) {
-      return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal["delete"](ordComponentType)(ct));
+      return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (old) {
+          var $30 = {};
+          for (var $31 in old) {
+              if ({}.hasOwnProperty.call(old, $31)) {
+                  $30[$31] = old[$31];
+              };
+          };
+          $30.ids = Data_Map_Internal["delete"](ordComponentType)(ct)(old.ids);
+          return $30;
+      });
   };
   var handleKey = function (dictMonadAff) {
       return function (ct) {
           return function (ev) {
-              return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(Data_Map_Internal.lookup(ordComponentType)(ct)))(function (id) {
+              return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)((function () {
+                  var $41 = Data_Map_Internal.lookup(ordComponentType)(ct);
+                  return function ($42) {
+                      return $41((function (v) {
+                          return v.ids;
+                      })($42));
+                  };
+              })()))(function (id) {
                   return Data_Foldable.traverse_(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Foldable.foldableMaybe)(function (sid) {
                       return Ocelot_Part_Modal.whenClose(dictMonadAff)(ev)(sid)(close(ct));
                   })(id);
@@ -27392,7 +27438,10 @@ var PS = {};
           if (v instanceof Open) {
               return open(dictMonadAff)(v.value0);
           };
-          throw new Error("Failed pattern match at UIGuide.Component.Modals (line 88, column 16 - line 91, column 21): " + [ v.constructor.name ]);
+          if (v instanceof Toast) {
+              return toast;
+          };
+          throw new Error("Failed pattern match at UIGuide.Component.Modals (line 95, column 16 - line 99, column 17): " + [ v.constructor.name ]);
       };
   };
   var _cp2 = Data_Symbol.SProxy.value;
@@ -27408,9 +27457,9 @@ var PS = {};
               return "cp1";
           }))(Data_Ord.ordString)(_cp1)(label)(Ocelot_Component_Typeahead_Base.multi(UIGuide_Utility_Async.eqLocation)(dictMonadAff))(Ocelot_Component_Typeahead.asyncMulti(UIGuide_Utility_Async.eqLocation)(dictMonadAff)({
               renderFuzzy: (function () {
-                  var $28 = Ocelot_Block_ItemContainer.boldMatches("name");
-                  return function ($29) {
-                      return Halogen_HTML_Elements.span_($28($29));
+                  var $43 = Ocelot_Block_ItemContainer.boldMatches("name");
+                  return function ($44) {
+                      return Halogen_HTML_Elements.span_($43($44));
                   };
               })(),
               itemToObject: UIGuide_Utility_Async.locationToObject,
@@ -27431,7 +27480,7 @@ var PS = {};
   };
   var renderModal = function (dictMonadAff) {
       return Ocelot_Part_Modal.modal_(new Close(Modal.value))([ Ocelot_Part_Modal.header({
-          buttons: [ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Format.linkDarkClasses)([ "mr-4" ])), Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Cancel") ]), Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Submit") ]) ],
+          buttons: [ Halogen_HTML_Elements.a([ Halogen_HTML_Properties.classes(Data_Semigroup.append(Data_Semigroup.semigroupArray)(Ocelot_Block_Format.linkDarkClasses)([ "mr-4" ])), Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Close(Modal.value)))) ])([ Halogen_HTML_Core.text("Cancel") ]), Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(Toast.value))) ])([ Halogen_HTML_Core.text("Submit") ]) ],
           title: [ Halogen_HTML_Core.text("Editing") ]
       }), Ocelot_Part_Modal.body_([ renderContent(dictMonadAff)("modal-1") ]) ]);
   };
@@ -27457,12 +27506,12 @@ var PS = {};
               header: "Modals",
               subheader: "Forest's favorite UI implement"
           })([ UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(PanelLeft.value)))) ])([ Halogen_HTML_Core.text("Open Left Panel") ]) ]) ]), UIGuide_Block_Backdrop.backdropDark([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.buttonPrimary([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(Modal.value)))) ])([ Halogen_HTML_Core.text("Open Modal") ]) ]) ]), UIGuide_Block_Backdrop.backdrop([ Ocelot_HTML_Properties.css("flex items-center") ])([ UIGuide_Block_Backdrop.content([ Ocelot_HTML_Properties.css("mt-0 text-center") ])([ Ocelot_Block_Button.button([ Halogen_HTML_Events.onClick(Data_Function["const"](new Data_Maybe.Just(new Open(PanelRight.value)))) ])([ Halogen_HTML_Core.text("Open Right Panel") ]) ]) ]) ]), (function () {
-              var $25 = Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(Modal.value)(st));
-              if ($25) {
+              var $38 = Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(Modal.value)(st.ids));
+              if ($38) {
                   return renderModal(dictMonadAff);
               };
               return Halogen_HTML_Core.text("");
-          })(), renderPanelLeft(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelLeft.value)(st))), renderPanelRight(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelRight.value)(st))) ]);
+          })(), renderPanelLeft(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelLeft.value)(st.ids))), renderPanelRight(dictMonadAff)(Data_Maybe.isJust(Data_Map_Internal.lookup(ordComponentType)(PanelRight.value)(st.ids))), Ocelot_Block_Toast.toast([ Ocelot_Block_Toast.visible(st.toast) ])([ Ocelot_Block_Icon.error([ Ocelot_HTML_Properties.css("text-red text-2xl mr-2") ]), Halogen_HTML_Core.text("Failure") ]) ]);
       };
   };
   var component = function (dictMonadAff) {
