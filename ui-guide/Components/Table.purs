@@ -71,7 +71,7 @@ render { page } =
       [ HH.div_
         [ renderTable
         , Ocelot.Block.Pager.pagerNew page 100
-          [ css "flex justify-end mt-2"]
+          [ css "flex justify-end mt-6"]
           (\index event -> Just (Page index event))
         ]
       ]
