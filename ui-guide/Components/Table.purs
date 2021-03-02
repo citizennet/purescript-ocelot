@@ -2,74 +2,106 @@ module UIGuide.Component.Table where
 
 import Prelude
 
+import Data.Maybe (Maybe(..))
 import Data.Ratio ((%))
+import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.Icon as Icon
+import Ocelot.Block.Pager as Ocelot.Block.Pager
 import Ocelot.Block.Progress as Progress
 import Ocelot.Block.Table as Table
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
+import Web.Event.Event as Web.Event.Event
+import Web.UIEvent.MouseEvent as Web.UIEvent.MouseEvent
 
-type State = Unit
+type State =
+  { page :: Int
+  }
 
 data Query a
-type Action = Unit
+
+data Action
+  = Page Int Web.UIEvent.MouseEvent.MouseEvent
 
 type Input = Unit
 
 type Message = Void
 
-component
-  :: ∀ m
-   . H.Component HH.HTML Query Input Message m
+component ::
+  forall m.
+  MonadAff m =>
+  H.Component HH.HTML Query Input Message m
 component =
   H.mkComponent
-    { initialState: const unit
+    { initialState
     , render
-    , eval: H.mkEval H.defaultEval
+    , eval:
+      H.mkEval
+        H.defaultEval
+          { handleAction = handleAction
+          }
     }
-  where
 
-    render :: State -> H.ComponentHTML Action () m
-    render _ =
-      HH.div_
-        [ Documentation.block_
-            { header: "Table"
-            , subheader: "Tabular Data"
-            }
-            [ Backdrop.backdrop_
-              [ renderTable ]
-            ]
+initialState :: Input -> State
+initialState _ = { page: 1 }
+
+handleAction ::
+  forall m.
+  MonadAff m =>
+  Action ->
+  H.HalogenM State Action () Message m Unit
+handleAction = case _ of
+  Page index event -> do
+    H.liftEffect $ Web.Event.Event.preventDefault (Web.UIEvent.MouseEvent.toEvent event)
+    H.modify_ _ { page = index }
+
+render :: forall m. State -> H.ComponentHTML Action () m
+render { page } =
+  HH.div_
+  [ Documentation.block_
+    { header: "Table"
+    , subheader: "Tabular Data"
+    }
+    [ Backdrop.backdrop_
+      [ HH.div_
+        [ renderTable
+        , Ocelot.Block.Pager.pagerNew page 100
+          [ css "flex justify-end mt-2"]
+          (\index event -> Just (Page index event))
         ]
-      where
-        renderTable =
-          Table.table_ $
-            [ renderHeader
-            ]
-            <> renderBody
+      ]
+    ]
+  ]
+  where
+  renderTable =
+    Table.table_ $
+      [ renderHeader
+      ]
+      <> renderBody
 
-        renderHeader =
-          Table.row_
-            [ Table.header  [ css "w-10" ] [ HH.text "" ]
-            , Table.header_ [ HH.text "Icon" ]
-            , Table.header  [ css "w-2/3 text-left" ] [ HH.text "Description" ]
-            , Table.header_ [ HH.text "" ]
-            ]
+  renderHeader =
+    Table.row_
+      [ Table.header  [ css "w-10" ] [ HH.text "" ]
+      , Table.header_ [ HH.text "Icon" ]
+      , Table.header  [ css "w-2/3 text-left" ] [ HH.text "Description" ]
+      , Table.header_ [ HH.text "" ]
+      ]
 
-        renderBody =
-          Table.row_ <$> ( renderData <$> tableData )
+  renderBody =
+    Table.row_ <$> ( renderData <$> tableData )
 
-        renderData :: ∀ p i. TestData p i -> Array (HH.HTML p i)
-        renderData { name, icon } =
-          [ Table.cell_ [ Checkbox.checkbox_ [] [] ]
-          , Table.cell  [ css "text-2xl" ] [ icon ]
-          , Table.cell  [ css "text-left" ] [ HH.text name ]
-          , Table.cell  [ css "text-right" ] [ Button.button_ [ HH.text "Do Nothing" ] ]
-          ]
+  renderData :: ∀ p i. TestData p i -> Array (HH.HTML p i)
+  renderData { name, icon } =
+    [ Table.cell_ [ Checkbox.checkbox_ [] [] ]
+    , Table.cell  [ css "text-2xl" ] [ icon ]
+    , Table.cell  [ css "text-left" ] [ HH.text name ]
+    , Table.cell  [ css "text-right" ] [ Button.button_ [ HH.text "Do Nothing" ] ]
+    ]
 
 type TestData p i = { name :: String, icon :: HH.HTML p i }
 
