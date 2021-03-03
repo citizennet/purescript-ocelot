@@ -28597,7 +28597,7 @@ var PS = {};
               })();
               var ellipsis = Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("mx-2") ])([ Halogen_HTML_Core.text("\u2026") ]);
               var button = function (btn) {
-                  var disabled = [ Ocelot_HTML_Properties.css("border border-black disabled inline-block text-center"), Ocelot_HTML_Properties.style(Foreign_Object.fromHomogeneous()({
+                  var disabled = [ Ocelot_HTML_Properties.css("border border-black disabled focus:outline-none inline-block text-center"), Ocelot_HTML_Properties.style(Foreign_Object.fromHomogeneous()({
                       "border-radius": "50%",
                       width: "2.5rem",
                       "line-height": "2.5rem"
@@ -28607,7 +28607,7 @@ var PS = {};
                       width: "2.5rem",
                       "line-height": "2.5rem"
                   })), Halogen_HTML_Events.onMouseDown(query(btn)) ];
-                  return Halogen_HTML_Elements.a((function () {
+                  return Halogen_HTML_Elements.button((function () {
                       var $8 = btn === skip;
                       if ($8) {
                           return disabled;
@@ -28617,7 +28617,7 @@ var PS = {};
               };
               var arrow = function (skip$prime) {
                   return function (label) {
-                      return Halogen_HTML_Elements.a([ Halogen_HTML_Events.onMouseDown(query(skip$prime)), Ocelot_HTML_Properties.css("mx-4"), Ocelot_HTML_Properties.style(Foreign_Object.fromHomogeneous()({
+                      return Halogen_HTML_Elements.button([ Halogen_HTML_Events.onMouseDown(query(skip$prime)), Ocelot_HTML_Properties.css("mx-4"), Ocelot_HTML_Properties.style(Foreign_Object.fromHomogeneous()({
                           "line-height": "2.5rem"
                       })) ])([ label ]);
                   };
