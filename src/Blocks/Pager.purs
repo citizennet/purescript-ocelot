@@ -163,7 +163,7 @@ makePagingButtonsNew skip last query = foldlWithIndex makePagingButtons' [] make
     ]
     where
     disabled =
-      [ Ocelot.HTML.Properties.css "border border-black disabled inline-block text-center"
+      [ Ocelot.HTML.Properties.css "border border-black disabled focus:outline-none inline-block text-center"
       , Ocelot.HTML.Properties.style <<< Foreign.Object.fromHomogeneous
         $ { "border-radius": "50%"
           , "width": "2.5rem"
