@@ -139,7 +139,7 @@ makePagingButtonsNew skip last query = foldlWithIndex makePagingButtons' [] make
 
   arrow :: Int -> HH.HTML p i -> HH.HTML p i
   arrow skip' label =
-    HH.a
+    HH.button
     [ HE.onMouseDown $ query skip'
     , Ocelot.HTML.Properties.css "mx-4"
     , Ocelot.HTML.Properties.style <<< Foreign.Object.fromHomogeneous
@@ -156,7 +156,7 @@ makePagingButtonsNew skip last query = foldlWithIndex makePagingButtons' [] make
 
   button :: Int -> HH.HTML p i
   button btn =
-    HH.a
+    HH.button
     (if btn == skip then disabled else active)
     [ HH.span_
       [ HH.text $ show btn ]
