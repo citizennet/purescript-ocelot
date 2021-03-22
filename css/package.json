@@ -8,13 +8,13 @@
     "webpack"
   ],
   "scripts": {
-    "build-all": "yarn run build-dev && yarn run build-prod",
-    "build-dev": "yarn run build-dev-global && yarn run build-dev-scoped",
-    "build-dev-global": "yarn run webpack",
-    "build-dev-scoped": "yarn run webpack --env=scoped",
-    "build-prod": "yarn run build-prod-global && yarn run build-prod-scoped",
-    "build-prod-global": "yarn run webpack --env=prod",
-    "build-prod-scoped": "yarn run webpack --env=prod,scoped"
+    "build-all": "make build-css",
+    "build-dev": "make build-css-dev",
+    "build-dev-global": "make build-css-dev-global",
+    "build-dev-scoped": "make build-css-dev-scoped",
+    "build-prod": "make build-css-prod",
+    "build-prod-global": "make build-css-prod-global",
+    "build-prod-scoped": "make build-css-prod-scoped"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
