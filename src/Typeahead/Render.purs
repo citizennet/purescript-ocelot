@@ -1,7 +1,6 @@
-module Ocelot.Component.Typeahead.Render where
+module Ocelot.Typeahead.Render where
 
 import Prelude
-
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Array (foldr, (:))
 import Data.Array as Array
@@ -20,7 +19,7 @@ import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.ItemContainer as IC
 import Ocelot.Block.Loading as Loading
-import Ocelot.Component.Typeahead.Base as TA
+import Ocelot.Typeahead.Base as TA
 import Ocelot.HTML.Properties (css, (<&>))
 import Select as S
 import Select.Setters (setInputProps) as Setters

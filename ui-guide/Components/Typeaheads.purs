@@ -1,7 +1,6 @@
 module UIGuide.Component.Typeaheads where
 
 import Prelude
-
 import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
@@ -16,9 +15,9 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
-import Ocelot.Component.Typeahead (Insertable(..))
-import Ocelot.Component.Typeahead as TA
-import Ocelot.Component.Typeahead.Render as TARender
+import Ocelot.Typeahead (Insertable(..))
+import Ocelot.Typeahead as TA
+import Ocelot.Typeahead.Render as TARender
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

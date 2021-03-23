@@ -1,7 +1,6 @@
-module Ocelot.Component.Typeahead.Base where
+module Ocelot.Typeahead.Base where
 
 import Prelude
-
 import Control.Alternative (class Plus, empty)
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store)

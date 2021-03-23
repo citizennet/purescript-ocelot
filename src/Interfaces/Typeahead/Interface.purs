@@ -3,7 +3,6 @@
 module Ocelot.Interface.Typeahead where
 
 import Prelude
-
 import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head)
@@ -28,8 +27,8 @@ import Halogen.VDom.Driver (runUI)
 import Html.Renderer.Halogen as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Component.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, component)
-import Ocelot.Component.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, component)
+import Ocelot.Typeahead.Render (renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)

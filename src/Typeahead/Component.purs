@@ -1,6 +1,6 @@
 -- | The typeahead module intended for imports
-module Ocelot.Component.Typeahead
-  ( module Ocelot.Component.Typeahead.Base
+module Ocelot.Typeahead
+  ( module Ocelot.Typeahead.Base
   , module TA
   , DefaultSyncTypeaheadInput(..)
   , DefaultAsyncTypeaheadInput(..)
@@ -10,8 +10,7 @@ module Ocelot.Component.Typeahead
   , asyncMulti
   ) where
 
-import Ocelot.Component.Typeahead.Base
-
+import Ocelot.Typeahead.Base
 import Prelude (class Eq, (<<<), ($))
 import DOM.HTML.Indexed (HTMLinput)
 import Data.Fuzzy (Fuzzy, match)
@@ -21,7 +20,7 @@ import Effect.Aff.Class (class MonadAff)
 import Foreign.Object (Object)
 import Halogen.HTML as HH
 import Network.RemoteData (RemoteData(..))
-import Ocelot.Component.Typeahead.Render (defRenderContainer, isDisabled, renderMulti, renderSingle) as TA
+import Ocelot.Typeahead.Render (defRenderContainer, isDisabled, renderMulti, renderSingle) as TA
 
 -- | Forgive the long name; it provides clarity into what exactly
 -- | this type represents and you don't ordinarily need to write

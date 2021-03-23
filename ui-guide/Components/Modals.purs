@@ -1,7 +1,6 @@
 module UIGuide.Component.Modals where
 
 import Prelude
-
 import Data.Foldable (traverse_)
 import Data.Map as Data.Map
 import Data.Maybe (Maybe(..), isJust)
@@ -18,7 +17,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toast as Ocelot.Block.Toast
-import Ocelot.Component.Typeahead as TA
+import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import Ocelot.Part.Panel as Panel
