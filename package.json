@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "build-all": "make build",
-    "postinstall": "cd css && npm i",
     "clean": "make clean",
     "build-ui": "make build-ui",
-    "install-css": "cd css && yarn install",
     "build-css": "make build-css",
     "debug": "yarn parcel dist/parcel.html --out-dir .build/parcel --no-cache"
   },
