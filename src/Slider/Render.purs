@@ -7,6 +7,12 @@ import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Halogen.Svg.Elements as Halogen.Svg.Elements
 import Halogen.Svg.Indexed as Halogen.Svg.Indexed
 
+-- | frameWidth: the width of the SVG in pixel
+-- |
+-- | SVG layout (in user space unit)
+-- | * top to bottom: margin, betweenTopAndThumb, thumbRadius * 2.0,
+-- |   betweenThumbAndAxis, axisHeight, margin
+-- | * left to right: margin, thumbRadius, trackWidth, thumbRadius, margin
 type Config =
   { axisHeight :: Number
   , betweenThumbAndAxis :: Number
@@ -210,4 +216,26 @@ track ::
   Array (Halogen.HTML.IProp Halogen.Svg.Indexed.SVGrect a) ->
   Halogen.HTML.HTML p a
 track config = interval config { start: { percent: 0.0 }, end: { percent: 100.0 } }
+
+pixelToPercent ::
+  forall config.
+  { frameWidth :: { px :: Number }
+  , margin :: Number
+  , thumbRadius :: Number
+  , trackWidth :: Number
+  | config
+  } ->
+  { px :: Number } ->
+  { percent :: Number }
+pixelToPercent { frameWidth, margin, thumbRadius, trackWidth } x = { percent }
+  where
+  frameWidthInUnit :: Number
+  frameWidthInUnit = margin + thumbRadius + trackWidth + thumbRadius + margin
+
+  scale :: Number
+  scale = frameWidthInUnit / frameWidth.px
+
+  percent :: Number
+  percent = x.px * scale / trackWidth * 100.0
+
 
