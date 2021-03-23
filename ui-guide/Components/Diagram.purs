@@ -88,6 +88,12 @@ render _ =
                   [ Ocelot.Slider.Render.track config
                     [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 229 229 229))
                     ]
+                  , Ocelot.Slider.Render.markContainer config
+                    [ Ocelot.Slider.Render.mark config { percent: 0.0 } []
+                    , Ocelot.Slider.Render.mark config { percent: 10.0 } []
+                    , Ocelot.Slider.Render.mark config { percent: 20.0 } []
+
+                    ]
                   , Ocelot.Slider.Render.interval config
                       { start: percentA , end: percentB }
                       [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]

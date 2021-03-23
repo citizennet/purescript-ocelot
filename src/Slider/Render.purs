@@ -115,6 +115,37 @@ interval { trackRadius, trackWidth } percent iprops =
         <> iprops
     )
 
+markContainer ::
+  forall a config p.
+  { trackRadius :: Number
+  | config
+  } ->
+  Array (Halogen.HTML.HTML p a) ->
+  Halogen.HTML.HTML p a
+markContainer { trackRadius } =
+  Halogen.Svg.Elements.g
+    [ Halogen.Svg.Attributes.transform
+      [ Halogen.Svg.Attributes.Translate 0.0 trackRadius ]
+    ]
+
+mark ::
+  forall a config p.
+  { trackRadius :: Number
+  , trackWidth :: Number
+  | config
+  } ->
+  { percent :: Number } ->
+  Array (Halogen.HTML.IProp Halogen.Svg.Indexed.SVGcircle a) ->
+  Halogen.HTML.HTML p a
+mark { trackRadius, trackWidth } { percent } iprops =
+  Halogen.Svg.Elements.circle
+    ( [ Halogen.Svg.Attributes.r trackRadius
+      , Halogen.Svg.Attributes.transform
+        [ Halogen.Svg.Attributes.Translate (trackWidth * percent / 100.0) 0.0 ]
+      ]
+        <> iprops
+    )
+
 thumbContainer ::
   forall a config p.
   { betweenTopAndThumb :: Number
@@ -123,7 +154,7 @@ thumbContainer ::
   } ->
   Array (Halogen.HTML.HTML p a) ->
   Halogen.HTML.HTML p a
-thumbContainer { betweenTopAndThumb, thumbRadius }=
+thumbContainer { betweenTopAndThumb, thumbRadius } =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
       [ Halogen.Svg.Attributes.Translate
