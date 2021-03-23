@@ -1,9 +1,9 @@
 # Variables that might need to be overriden.
 ROOT_DIR ?= $(shell cd .. && pwd)
-CSS_DIR ?= .
+CSS_DIR ?= $(ROOT_DIR)/css
 DIST_DIR ?= $(ROOT_DIR)/dist
 
-#Variables that we control.
+# Variables that we control.
 CSS_NODE_MODULES := $(CSS_DIR)/node_modules/.stamp
 CSS_PACKAGE_JSON := $(CSS_DIR)/package.json
 CSS_YARN_LOCK := $(CSS_DIR)/yarn.lock
@@ -13,25 +13,30 @@ DIST_CSS_DEV_SCOPED := $(DIST_DIR)/$(DIST_CSS_FILENAME).scoped.css
 DIST_CSS_PROD_GLOBAL := $(DIST_DIR)/$(DIST_CSS_FILENAME).min.css
 DIST_CSS_PROD_SCOPED := $(DIST_DIR)/$(DIST_CSS_FILENAME).scoped.min.css
 
-YARN := cd $(CSS_DIR) && yarn
+CSS_YARN := cd $(CSS_DIR) && yarn
 
 .DEFAULT_GOAL := build-css
 
+# Variables we add to
+
+BUILD_DEPS += build-css
+CLEAN_DEPS += clean-css
+
 $(CSS_NODE_MODULES): $(CSS_PACKAGE_JSON) $(CSS_YARN_LOCK)
-	$(YARN) install
+	$(CSS_YARN) install
 	touch $@
 
 $(DIST_CSS_DEV_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(YARN) run webpack
+	$(CSS_YARN) run webpack
 
 $(DIST_CSS_DEV_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(YARN) run webpack --env=scoped
+	$(CSS_YARN) run webpack --env=scoped
 
 $(DIST_CSS_PROD_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(YARN) run webpack --env=prod
+	$(CSS_YARN) run webpack --env=prod
 
 $(DIST_CSS_PROD_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(YARN) run webpack --env=prod,scoped
+	$(CSS_YARN) run webpack --env=prod,scoped
 
 $(DIST_DIR):
 	mkdir -p $@
@@ -57,10 +62,10 @@ build-css-prod-global: $(DIST_CSS_PROD_GLOBAL) ## Build minified CSS
 .PHONY: build-css-prod-scoped
 build-css-prod-scoped: $(DIST_CSS_PROD_SCOPED) ## Build minified CSS, with all rules scoped to `.ocelot-scoped` selector
 
-.PHONY: clean
-clean:
+.PHONY: clean-css
+clean-css:
 	rm -fr \
-		node_modules \
+		$(CSS_DIR)/node_modules \
 		$(DIST_CSS_DEV_GLOBAL) \
 		$(DIST_CSS_DEV_SCOPED) \
 		$(DIST_CSS_PROD_GLOBAL) \
