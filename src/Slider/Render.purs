@@ -11,6 +11,7 @@ type Config =
   { axisHeight :: Number
   , betweenThumbAndAxis :: Number
   , betweenTopAndThumb :: Number
+  , frameWidth :: { px :: Number }
   , margin :: Number
   , thumbRadius :: Number
   , trackRadius :: Number
@@ -67,6 +68,7 @@ frame ::
   { axisHeight :: Number
   , betweenThumbAndAxis :: Number
   , betweenTopAndThumb :: Number
+  , frameWidth :: { px :: Number }
   , margin :: Number
   , thumbRadius :: Number
   , trackWidth :: Number
@@ -75,9 +77,10 @@ frame ::
   Array (Halogen.HTML.IProp Halogen.Svg.Indexed.SVGsvg a) ->
   Array (Halogen.HTML.HTML p a) ->
   Halogen.HTML.HTML p a
-frame { axisHeight, betweenThumbAndAxis, betweenTopAndThumb, margin, trackWidth, thumbRadius } iprops html =
+frame { axisHeight, betweenThumbAndAxis, betweenTopAndThumb, frameWidth, margin, trackWidth, thumbRadius } iprops html =
   Halogen.Svg.Elements.svg
     ( [ Halogen.Svg.Attributes.viewBox 0.0 0.0 viewBoxWidth viewBoxHeight
+      , Halogen.Svg.Attributes.width frameWidth.px
       ]
         <> iprops
     )
@@ -100,17 +103,17 @@ interval ::
   , trackWidth :: Number
   | config
   } ->
-  { end :: Number
-  , start :: Number
+  { end :: { percent :: Number }
+  , start :: { percent :: Number }
   } ->
   Array (Halogen.HTML.IProp Halogen.Svg.Indexed.SVGrect a) ->
   Halogen.HTML.HTML p a
 interval { trackRadius, trackWidth } percent iprops =
   Halogen.Svg.Elements.rect
     ( [ Halogen.Svg.Attributes.height (trackRadius * 2.0)
-      , Halogen.Svg.Attributes.width (trackWidth * (percent.end - percent.start) / 100.0)
+      , Halogen.Svg.Attributes.width (trackWidth * (percent.end.percent - percent.start.percent) / 100.0)
       , Halogen.Svg.Attributes.transform
-        [ Halogen.Svg.Attributes.Translate (trackWidth * percent.start / 100.0) 0.0 ]
+        [ Halogen.Svg.Attributes.Translate (trackWidth * percent.start.percent / 100.0) 0.0 ]
       ]
         <> iprops
     )
@@ -206,4 +209,5 @@ track ::
   } ->
   Array (Halogen.HTML.IProp Halogen.Svg.Indexed.SVGrect a) ->
   Halogen.HTML.HTML p a
-track config = interval config { start: 0.0, end: 100.0 }
+track config = interval config { start: { percent: 0.0 }, end: { percent: 100.0 } }
+
