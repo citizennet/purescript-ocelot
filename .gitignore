@@ -9,8 +9,6 @@ node_modules
 .psci
 output
 generated-docs
-package-lock.json
-yarn.lock
 *.tix
 .spago
 .purs-repl

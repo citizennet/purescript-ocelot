@@ -26,12 +26,18 @@ jobs:
             - v1-spago-cache
 
       - run:
-          name: Install Spago and Node dependencies
-          command: yarn # postinstall runs Bower
+          name: Verify the project and all components build successfully
+          command: make build
 
       - run:
-          name: Verify the project and all components build successfully
-          command: yarn run build-ui
+          name: Verify all version-controlled artifacts are up to date
+          command: |
+            if [[ `git status <<parameters.path>> --porcelain` ]]
+            then
+              echo "ERROR: running the previous command has introduced changes. Hence, Failing the build."
+              git status --porcelain
+              exit 1
+            fi
 
       - save_cache:
           key: v4-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
@@ -79,8 +85,7 @@ jobs:
       - run:
           name: Build CSS
           command: |
-            yarn run install-css
-            yarn run build-css
+            make build-css
 
       - save_cache:
           key: v3-css-cache-{{ .Branch }}-{{ checksum "css/package.json" }}
