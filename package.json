@@ -12,6 +12,7 @@
   "devDependencies": {
     "browserify": "^16.5.1",
     "parcel": "1.12.4",
+    "parcel-bundler": "1.12.3",
     "purescript": "^0.13.8",
     "spago": "^0.15.2"
   },

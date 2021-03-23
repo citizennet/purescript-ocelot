@@ -3,6 +3,7 @@ ROOT_DIR ?= $(shell pwd)
 BUILD_DIR ?= $(ROOT_DIR)/.build
 DIST_DIR ?= $(ROOT_DIR)/dist
 OUTPUT_DIR ?= $(ROOT_DIR)/output
+PARCEL_DIR ?= $(BUILD_DIR)/parcel
 RTS_ARGS ?=
 UI_GUIDE_DIR ?= $(ROOT_DIR)/ui-guide
 
@@ -20,14 +21,14 @@ YARN := cd $(ROOT_DIR) && yarn
 
 .DEFAULT_GOAL := build
 
-$(BUILD_DIR) $(DIST_DIR):
+$(BUILD_DIR) $(DIST_DIR) $(PARCEL_DIR):
 	mkdir -p $@
 
 $(DEPS): packages.dhall spago.dhall $(NODE_MODULES) | $(BUILD_DIR)
 	$(YARN) run spago install $(RTS_ARGS)
 	touch $@
 
-$(DIST_DIR)/bundled.js: $(OUTPUT_DIR)/Main/index.js 
+$(DIST_DIR)/bundled.js: $(OUTPUT_DIR)/Main/index.js
 	$(YARN) run purs bundle $(OUTPUT_DIR)/*/*.js \
 		--main Main \
 		--module Main \
@@ -59,3 +60,7 @@ clean: $(CLEAN_DEPS)
 		$(OUTPUT_DIR) \
 		$(ROOT_DIR)/.spago \
 		$(ROOT_DIR)/node_modules
+
+.PHONY: ui-guide
+ui-guide: build-css $(OUTPUT_DIR)/Main/index.js $(NODE_MODULES) | $(PARCEL_DIR)
+	npx parcel $(DIST_DIR)/parcel.html --out-dir $(PARCEL_DIR) --no-cache
