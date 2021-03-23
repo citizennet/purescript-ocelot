@@ -42,7 +42,7 @@ $(NODE_MODULES): $(PACKAGE_JSON) $(YARN_LOCK)
 	$(YARN) install
 	touch $@
 
-$(OUTPUT_DIR)/Main/index.js: $(DEPS)
+$(OUTPUT_DIR)/Main/index.js: $(ROOT_DIR)/src/**/*.purs $(UI_GUIDE_DIR)/**/*.purs $(DEPS)
 	$(YARN) run spago build -p "$(UI_GUIDE_DIR)/**/*.purs" -u "$(RTS_ARGS)"
 
 .PHONY: build
