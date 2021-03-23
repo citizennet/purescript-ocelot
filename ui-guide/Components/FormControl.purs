@@ -2,11 +2,11 @@ module UIGuide.Component.FormControl where
 
 import Prelude
 
-import Effect.Aff (Aff)
+import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
-import Halogen as H
-import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
+import Halogen as Halogen
+import Halogen.HTML as Halogen.HTML
+import Halogen.HTML.Properties as Halogen.HTML.Propreties
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
@@ -16,6 +16,13 @@ import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.UIEvent.MouseEvent (MouseEvent)
+
+type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+
+type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
+
+type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
+
 
 type State =
   { formPanelIsOpen :: Boolean }
@@ -27,357 +34,367 @@ data Action
 
 type Input = Unit
 
-type Message = Void
+type Output = Void
 
-component :: H.Component HH.HTML Query Input Message Aff
+type ChildSlots =
+  ()
+
+component ::
+  forall m.
+  MonadAff m =>
+  Component m
 component =
-  H.mkComponent
+  Halogen.mkComponent
     { initialState: const { formPanelIsOpen: false }
     , render
-    , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
+    , eval: Halogen.mkEval $ Halogen.defaultEval { handleAction = handleAction }
     }
-  where
-    handleAction :: Action -> H.HalogenM State Action () Message Aff Unit
-    handleAction = case _ of
-      HandleFormHeaderClick _ -> do
-        H.liftEffect (log "submit form")
 
-      ToggleFormPanel _ -> do
-        state <- H.get
-        H.modify_ (_ { formPanelIsOpen = not state.formPanelIsOpen })
+handleAction ::
+  forall m.
+  MonadAff m =>
+  Action ->
+  ComponentM m Unit
+handleAction = case _ of
+  HandleFormHeaderClick _ -> do
+    Halogen.liftEffect (log "submit form")
 
-    render :: State -> H.ComponentHTML Action () Aff
-    render state =
-      let content = Backdrop.content [ css "flex" ]
-          accessibilityCallout =
-            Documentation.callout_
-              [ Backdrop.backdropWhite
-                [ css "flex-col" ]
-                [ Format.subHeading_
-                  [ Icon.tip [ css "text-yellow pr-2" ]
-                  , HH.text "Accessibility Note"
-                  ]
-                , HH.p_
-                  [ HH.text "Make sure to use "
-                  , HH.code_ [ HH.text "FormField.fieldset" ]
-                  , HH.text " instead of "
-                  , HH.code_ [ HH.text "FormField.field" ]
-                  , HH.text " with groups of radios and checkboxes."
-                  ]
-                ]
+  ToggleFormPanel _ -> do
+    state <- Halogen.get
+    Halogen.modify_ (_ { formPanelIsOpen = not state.formPanelIsOpen })
+
+render :: forall m. State -> ComponentHTML m
+render state =
+  let content = Backdrop.content [ css "flex" ]
+      accessibilityCallout =
+        Documentation.callout_
+          [ Backdrop.backdropWhite
+            [ css "flex-col" ]
+            [ Format.subHeading_
+              [ Icon.tip [ css "text-yellow pr-2" ]
+              , Halogen.HTML.text "Accessibility Note"
               ]
-        in
-      HH.div_
-        [ Documentation.customBlock_
-          { header: "Checkboxes"
-          , subheader: "Select one or more options."
-          }
-          [ accessibilityCallout
-          , Documentation.callout_
-            [ Backdrop.backdrop_
-              [ content
-                [ HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Vertical List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Platform"
-                    , inputId: "checkbox-vertical"
-                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
-                    , error: []
-                    }
-                    [ HH.div_
-                      [ Checkbox.checkbox_
-                        [ HP.name "platform"
-                        , HP.checked true
-                        ]
-                        [ HH.text "Facebook" ]
-                      , Checkbox.checkbox_
-                        [ HP.name "platform" ]
-                        [ HH.text "Instagram" ]
-                      , Checkbox.checkbox_
-                        [ HP.name "platform" ]
-                        [ HH.text "Twitter" ]
-                      ]
-                    ]
-                  ]
-                , HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Horizontal List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Platform"
-                    , inputId: "checkbox-horizontal"
-                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
-                    , error: []
-                    }
-                    [ HH.div
-                      [ css "flex" ]
-                      [ Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform"
-                        , HP.checked true
-                        ]
-                        [ HH.text "Facebook" ]
-                      , Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform" ]
-                        [ HH.text "Instagram" ]
-                      , Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform" ]
-                        [ HH.text "Twitter" ]
-                      ]
-                    ]
-                  ]
-                ]
+            , Halogen.HTML.p_
+              [ Halogen.HTML.text "Make sure to use "
+              , Halogen.HTML.code_ [ Halogen.HTML.text "FormField.fieldset" ]
+              , Halogen.HTML.text " instead of "
+              , Halogen.HTML.code_ [ Halogen.HTML.text "FormField.field" ]
+              , Halogen.HTML.text " with groups of radios and checkboxes."
               ]
             ]
-          , Documentation.callout_
-            [ Backdrop.backdrop_
-              [ content
-                [ HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Disabled Vertical List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Platform"
-                    , inputId: "checkbox-vertical-disabled"
-                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
-                    , error: []
-                    }
-                    [ HH.div_
-                      [ Checkbox.checkbox_
-                        [ HP.name "platform-disabled"
-                        , HP.checked true
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Facebook" ]
-                      , Checkbox.checkbox_
-                        [ HP.name "platform-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Instagram" ]
-                      , Checkbox.checkbox_
-                        [ HP.name "platform-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Twitter" ]
-                      ]
+          ]
+    in
+  Halogen.HTML.div_
+    [ Documentation.customBlock_
+      { header: "Checkboxes"
+      , subheader: "Select one or more options."
+      }
+      [ accessibilityCallout
+      , Documentation.callout_
+        [ Backdrop.backdrop_
+          [ content
+            [ Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Vertical List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Platform"
+                , inputId: "checkbox-vertical"
+                , helpText: [ Halogen.HTML.text "Where do you want your ad to appear?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div_
+                  [ Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform"
+                    , Halogen.HTML.Propreties.checked true
                     ]
+                    [ Halogen.HTML.text "Facebook" ]
+                  , Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform" ]
+                    [ Halogen.HTML.text "Instagram" ]
+                  , Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform" ]
+                    [ Halogen.HTML.text "Twitter" ]
                   ]
-                , HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Disabled Horizontal List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Platform"
-                    , inputId: "checkbox-horizontal-disabled"
-                    , helpText: [ HH.text "Where do you want your ad to appear?" ]
-                    , error: []
-                    }
-                    [ HH.div
-                      [ css "flex" ]
-                      [ Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform-disabled"
-                        , HP.checked true
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Facebook" ]
-                      , Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Instagram" ]
-                      , Checkbox.checkbox
-                        [ css "pr-6" ]
-                        [ HP.name "platform-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Twitter" ]
-                      ]
+                ]
+              ]
+            , Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Horizontal List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Platform"
+                , inputId: "checkbox-horizontal"
+                , helpText: [ Halogen.HTML.text "Where do you want your ad to appear?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div
+                  [ css "flex" ]
+                  [ Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform"
+                    , Halogen.HTML.Propreties.checked true
                     ]
+                    [ Halogen.HTML.text "Facebook" ]
+                  , Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform" ]
+                    [ Halogen.HTML.text "Instagram" ]
+                  , Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform" ]
+                    [ Halogen.HTML.text "Twitter" ]
                   ]
                 ]
               ]
             ]
           ]
-        , Documentation.customBlock_
-          { header: "Radios"
-          , subheader: "Select one option."
-          }
-          [ accessibilityCallout
-          , Documentation.callout_
-            [ Backdrop.backdrop_
-              [ content
-                [ HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Vertical List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Optimization Goal"
-                    , inputId: "radio-vertical"
-                    , helpText: [ HH.text "What do you want to optimize for?" ]
-                    , error: []
-                    }
-                    [ HH.div_
-                      [ Radio.radio_
-                        [ HP.name "goal"
-                        , HP.checked true
-                        ]
-                        [ HH.text "Page Likes" ]
-                      , Radio.radio_
-                        [ HP.name "goal" ]
-                        [ HH.text "Impressions" ]
-                      , Radio.radio_
-                        [ HP.name "goal" ]
-                        [ HH.text "Page Engagement" ]
-                      ]
+        ]
+      , Documentation.callout_
+        [ Backdrop.backdrop_
+          [ content
+            [ Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Disabled Vertical List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Platform"
+                , inputId: "checkbox-vertical-disabled"
+                , helpText: [ Halogen.HTML.text "Where do you want your ad to appear?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div_
+                  [ Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.checked true
+                    , Halogen.HTML.Propreties.disabled true
                     ]
-                  ]
-                , HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Horizontal List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Previews"
-                    , inputId: "radio-horizontal"
-                    , helpText: [ HH.text "What kind of preview do you want to see?" ]
-                    , error: []
-                    }
-                    [ HH.div
-                      [ css "flex" ]
-                      [ Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview"
-                        , HP.checked true
-                        ]
-                        [ HH.text "Desktop" ]
-                      , Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview" ]
-                        [ HH.text "Story" ]
-                      , Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview" ]
-                        [ HH.text "Mobile" ]
-                      ]
+                    [ Halogen.HTML.text "Facebook" ]
+                  , Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.disabled true
                     ]
+                    [ Halogen.HTML.text "Instagram" ]
+                  , Checkbox.checkbox_
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Twitter" ]
                   ]
                 ]
               ]
-            ]
-          , Documentation.callout_
-            [ Backdrop.backdrop_
-              [ content
-                [ HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Disabled Vertical List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Optimization Goal"
-                    , inputId: "radio-vertical-disabled"
-                    , helpText: [ HH.text "What do you want to optimize for?" ]
-                    , error: []
-                    }
-                    [ HH.div_
-                      [ Radio.radio_
-                        [ HP.name "goal-disabled"
-                        , HP.checked true
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Page Likes" ]
-                      , Radio.radio_
-                        [ HP.name "goal-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Impressions" ]
-                      , Radio.radio_
-                        [ HP.name "goal-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Page Engagement" ]
-                      ]
+            , Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Disabled Horizontal List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Platform"
+                , inputId: "checkbox-horizontal-disabled"
+                , helpText: [ Halogen.HTML.text "Where do you want your ad to appear?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div
+                  [ css "flex" ]
+                  [ Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.checked true
+                    , Halogen.HTML.Propreties.disabled true
                     ]
-                  ]
-                , HH.div
-                  [ css "flex-1" ]
-                  [ HH.h3
-                    [ HP.classes Format.captionClasses ]
-                    [ HH.text "Horizontal List" ]
-                  , FormField.fieldset_
-                    { label: HH.text "Disabled Previews"
-                    , inputId: "radio-horizontal-disabled"
-                    , helpText: [ HH.text "What kind of preview do you want to see?" ]
-                    , error: []
-                    }
-                    [ HH.div
-                      [ css "flex" ]
-                      [ Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview-disabled"
-                        , HP.checked true
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Desktop" ]
-                      , Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Story" ]
-                      , Radio.radio
-                        [ css "pr-6" ]
-                        [ HP.name "preview-disabled"
-                        , HP.disabled true
-                        ]
-                        [ HH.text "Mobile" ]
-                      ]
+                    [ Halogen.HTML.text "Facebook" ]
+                  , Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.disabled true
                     ]
+                    [ Halogen.HTML.text "Instagram" ]
+                  , Checkbox.checkbox
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "platform-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Twitter" ]
                   ]
                 ]
               ]
             ]
           ]
-        -- TODO
-        -- , Documentation.block_
-          -- { header: "Ranges"
-          -- , subheader: "Select a numeric value between a min and max" }
-          -- [ Backdrop.backdrop_
-            -- [ HH.h3
-              -- [ HP.classes Format.captionClasses ]
-              -- [ HH.text "Standalone Range Input" ]
-            -- , Range.range
-              -- [ HP.id_ "range_"
-              -- , HP.min 0.0
-              -- , HP.max 100.0
-              -- ]
-            -- ]
-          -- , Backdrop.backdrop_
-            -- [ HH.h3
-              -- [ HP.classes Format.captionClasses ]
-              -- [ HH.text "Range Input with Form Control" ]
-            -- , FormField.field_
-              -- { label: HH.text "Dave's OO Emails"
-              -- , helpText: [ HH.text "How many do you want?" ]
-              -- , error: []
-              -- , inputId: "range"
-              -- }
-              -- [ Range.range
-                -- [ HP.id_ "range"
-                -- , HP.min 0.0
-                -- , HP.max 100.0
-                -- ]
-              -- ]
+        ]
+      ]
+    , Documentation.customBlock_
+      { header: "Radios"
+      , subheader: "Select one option."
+      }
+      [ accessibilityCallout
+      , Documentation.callout_
+        [ Backdrop.backdrop_
+          [ content
+            [ Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Vertical List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Optimization Goal"
+                , inputId: "radio-vertical"
+                , helpText: [ Halogen.HTML.text "What do you want to optimize for?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div_
+                  [ Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal"
+                    , Halogen.HTML.Propreties.checked true
+                    ]
+                    [ Halogen.HTML.text "Page Likes" ]
+                  , Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal" ]
+                    [ Halogen.HTML.text "Impressions" ]
+                  , Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal" ]
+                    [ Halogen.HTML.text "Page Engagement" ]
+                  ]
+                ]
+              ]
+            , Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Horizontal List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Previews"
+                , inputId: "radio-horizontal"
+                , helpText: [ Halogen.HTML.text "What kind of preview do you want to see?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div
+                  [ css "flex" ]
+                  [ Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview"
+                    , Halogen.HTML.Propreties.checked true
+                    ]
+                    [ Halogen.HTML.text "Desktop" ]
+                  , Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview" ]
+                    [ Halogen.HTML.text "Story" ]
+                  , Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview" ]
+                    [ Halogen.HTML.text "Mobile" ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      , Documentation.callout_
+        [ Backdrop.backdrop_
+          [ content
+            [ Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Disabled Vertical List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Optimization Goal"
+                , inputId: "radio-vertical-disabled"
+                , helpText: [ Halogen.HTML.text "What do you want to optimize for?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div_
+                  [ Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal-disabled"
+                    , Halogen.HTML.Propreties.checked true
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Page Likes" ]
+                  , Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Impressions" ]
+                  , Radio.radio_
+                    [ Halogen.HTML.Propreties.name "goal-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Page Engagement" ]
+                  ]
+                ]
+              ]
+            , Halogen.HTML.div
+              [ css "flex-1" ]
+              [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+                [ Halogen.HTML.text "Horizontal List" ]
+              , FormField.fieldset_
+                { label: Halogen.HTML.text "Disabled Previews"
+                , inputId: "radio-horizontal-disabled"
+                , helpText: [ Halogen.HTML.text "What kind of preview do you want to see?" ]
+                , error: []
+                }
+                [ Halogen.HTML.div
+                  [ css "flex" ]
+                  [ Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview-disabled"
+                    , Halogen.HTML.Propreties.checked true
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Desktop" ]
+                  , Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Story" ]
+                  , Radio.radio
+                    [ css "pr-6" ]
+                    [ Halogen.HTML.Propreties.name "preview-disabled"
+                    , Halogen.HTML.Propreties.disabled true
+                    ]
+                    [ Halogen.HTML.text "Mobile" ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    -- TODO
+    -- , Documentation.block_
+      -- { header: "Ranges"
+      -- , subheader: "Select a numeric value between a min and max" }
+      -- [ Backdrop.backdrop_
+        -- [ Halogen.HTML.h3
+          -- [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+          -- [ Halogen.HTML.text "Standalone Range Input" ]
+        -- , Range.range
+          -- [ Halogen.HTML.Propreties.id_ "range_"
+          -- , Halogen.HTML.Propreties.min 0.0
+          -- , Halogen.HTML.Propreties.max 100.0
+          -- ]
+        -- ]
+      -- , Backdrop.backdrop_
+        -- [ Halogen.HTML.h3
+          -- [ Halogen.HTML.Propreties.classes Format.captionClasses ]
+          -- [ Halogen.HTML.text "Range Input with Form Control" ]
+        -- , FormField.field_
+          -- { label: Halogen.HTML.text "Dave's OO Emails"
+          -- , helpText: [ Halogen.HTML.text "How many do you want?" ]
+          -- , error: []
+          -- , inputId: "range"
+          -- }
+          -- [ Range.range
+            -- [ Halogen.HTML.Propreties.id_ "range"
+            -- , Halogen.HTML.Propreties.min 0.0
+            -- , Halogen.HTML.Propreties.max 100.0
             -- ]
           -- ]
-        ]
+        -- ]
+      -- ]
+    ]
