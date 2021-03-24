@@ -14,8 +14,11 @@ import Prelude
 
 import Data.Array as Data.Array
 import Data.Int as Data.Int
+import Data.Map as Data.Map
 import Data.Maybe (Maybe(..))
+import Data.Maybe as Data.Maybe
 import Data.Monoid as Data.Monoid
+import Data.Ord as Data.Ord
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console as Effect.Class.Console
 import Halogen as Halogen
@@ -225,7 +228,40 @@ calibrateValue ::
   , end :: { percent :: Number }
   } ->
   { percent :: Number }
-calibrateValue state { start, end } = trimBoundary end
+calibrateValue state { start, end } =
+  alignToMarks state.input.marks
+    <<< trimBoundary
+    $ end
+
+alignToMarks ::
+  Maybe (Array { percent :: Number }) ->
+  { percent :: Number } ->
+  { percent :: Number }
+alignToMarks mMarks x = case Data.Map.findMin sortedByDistance of
+  Nothing -> x
+  Just { value } -> value
+  where
+  marks :: Array { percent :: Number }
+  marks = Data.Maybe.fromMaybe [] mMarks
+
+  sortedByDistance :: Data.Map.Map { percent :: Number } { percent :: Number }
+  sortedByDistance = sortByDistance x marks
+
+sortByDistance ::
+  { percent :: Number } ->
+  Array { percent :: Number } ->
+  Data.Map.Map { percent :: Number } {- distance -}
+    { percent :: Number } {- mark -}
+sortByDistance x = Data.Array.foldMap reducer
+  where
+  reducer ::
+    { percent :: Number } ->
+    Data.Map.Map { percent :: Number }
+      { percent :: Number }
+  reducer mark = Data.Map.singleton (absDistance mark x) mark
+
+absDistance :: { percent :: Number } -> { percent :: Number } -> { percent :: Number }
+absDistance x y = Data.Ord.abs (x - y)
 
 trimBoundary ::
   { percent :: Number } ->
