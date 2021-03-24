@@ -5,14 +5,18 @@ DIST_DIR ?= $(ROOT_DIR)/dist
 OUTPUT_DIR ?= $(ROOT_DIR)/output
 PARCEL_DIR ?= $(BUILD_DIR)/parcel
 RTS_ARGS ?=
+SRC_DIR ?= $(ROOT_DIR)/src
 UI_GUIDE_DIR ?= $(ROOT_DIR)/ui-guide
 
 # Variables that we control
 CLEAN_DEPS :=
 BUILD_DEPS := build-ui
 DEPS := $(BUILD_DIR)/.deps
+FIND_SRC_FILES_ARGS := \( -name '*.purs' -o -name '*.js' \) -type f
 NODE_MODULES := $(ROOT_DIR)/node_modules/.stamp
 PACKAGE_JSON := $(ROOT_DIR)/package.json
+SRC_FILES := $(shell find $(SRC_DIR) $(FIND_SRC_FILES_ARGS))
+UI_GUIDE_FILES := $(shell find $(UI_GUIDE_DIR) $(FIND_SRC_FILES_ARGS))
 YARN_LOCK := $(ROOT_DIR)/yarn.lock
 
 YARN := cd $(ROOT_DIR) && yarn
@@ -42,7 +46,7 @@ $(NODE_MODULES): $(PACKAGE_JSON) $(YARN_LOCK)
 	$(YARN) install
 	touch $@
 
-$(OUTPUT_DIR)/Main/index.js: $(DEPS)
+$(OUTPUT_DIR)/Main/index.js: $(SRC_FILES) $(UI_GUIDE_FILES) $(DEPS)
 	$(YARN) run spago build -p "$(UI_GUIDE_DIR)/**/*.purs" -u "$(RTS_ARGS)"
 
 .PHONY: build

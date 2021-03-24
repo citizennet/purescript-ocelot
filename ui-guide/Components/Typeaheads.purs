@@ -1,7 +1,6 @@
 module UIGuide.Component.Typeaheads where
 
 import Prelude
-
 import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
@@ -16,9 +15,7 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
-import Ocelot.Component.Typeahead (Insertable(..))
-import Ocelot.Component.Typeahead as TA
-import Ocelot.Component.Typeahead.Render as TARender
+import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -158,7 +155,7 @@ cnDocumentationBlocks =
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "location"
                     ]
-                  ) { insertable = Insertable Async.stringToLocation }
+                  ) { insertable = TA.Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -180,7 +177,7 @@ cnDocumentationBlocks =
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "location-hydrated"
                     ]
-                  ) { insertable = Insertable Async.stringToLocation }
+                  ) { insertable = TA.Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -261,7 +258,7 @@ cnDocumentationBlocks =
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "locations"
                     ]
-                  ) { insertable = Insertable Async.stringToLocation }
+                  ) { insertable = TA.Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -283,7 +280,7 @@ cnDocumentationBlocks =
                     [ HP.placeholder "Search locations..."
                     , HP.id_ "locations"
                     ]
-                  ) { insertable = Insertable Async.stringToLocation }
+                  ) { insertable = TA.Insertable Async.stringToLocation }
                 )
                 ( const Nothing )
               ]
@@ -550,13 +547,13 @@ cnDocumentationBlocks =
                   }
                 )
                 { items: NotAsked
-                , insertable: NotInsertable
+                , insertable: TA.NotInsertable
                 , keepOpen: false
                 , debounceTime: Nothing
                 , async: Nothing
                 , itemToObject: Async.locationToObject
                 , disabled: false
-                , render: TARender.renderHeaderSearchDropdown
+                , render: TA.renderHeaderSearchDropdown
                   "All Locations"
                   "All Locations"
                   (HH.text <<< _.name <<< unwrap)
@@ -580,13 +577,13 @@ cnDocumentationBlocks =
                 }
               )
               { items: NotAsked
-              , insertable: NotInsertable
+              , insertable: TA.NotInsertable
               , keepOpen: false
               , debounceTime: Nothing
               , async: Nothing
               , itemToObject: Async.locationToObject
               , disabled: false
-              , render: TARender.renderToolbarSearchDropdown
+              , render: TA.renderToolbarSearchDropdown
                 "All Locations"
                 "All Locations"
                 (HH.text <<< _.name <<< unwrap)

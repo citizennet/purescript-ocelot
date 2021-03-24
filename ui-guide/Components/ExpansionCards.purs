@@ -1,7 +1,6 @@
 module UIGuide.Component.ExpansionCards where
 
 import Prelude
-
 import Data.Array (head, take)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
@@ -20,7 +19,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toggle as Toggle
-import Ocelot.Component.Typeahead as TA
+import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
