@@ -193,9 +193,16 @@ handleMouseMoveWithThumb mouseEvent state old@{ start } = do
     diff =
       Ocelot.Slider.Render.pixelToPercent state.input.layout
         (endPositionX - start.positionX)
+
+    end :: { percent :: Number }
+    end = start.value + diff
+
+    calibrated :: { percent :: Number }
+    calibrated = calibrateValue state { start: start.value, end }
+
   Effect.Class.Console.log $ "MouseMove: " <> show diff.percent <> "%"
   Halogen.modify_ _
-    { thumbs = Editing old { moving = start.value + diff } }
+    { thumbs = Editing old { moving = calibrated } }
 
 handleMouseUpFromThumb ::
   forall m.
@@ -211,6 +218,19 @@ getPositionX :: Web.UIEvent.MouseEvent.MouseEvent -> { px :: Number }
 getPositionX mouseEvent =
   { px: _ } <<< Data.Int.toNumber
     $ Web.UIEvent.MouseEvent.pageX mouseEvent
+
+calibrateValue ::
+  State ->
+  { start :: { percent :: Number }
+  , end :: { percent :: Number }
+  } ->
+  { percent :: Number }
+calibrateValue state { start, end } = trimBoundary end
+
+trimBoundary ::
+  { percent :: Number } ->
+  { percent :: Number }
+trimBoundary x = clamp boundary.start boundary.end x
 
 listenAll ::
   forall m.
