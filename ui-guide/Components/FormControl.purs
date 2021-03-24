@@ -2,16 +2,24 @@ module UIGuide.Component.FormControl where
 
 import Prelude
 
+import Data.Array as Data.Array
+import Data.Int as Data.Int
+import Data.Maybe (Maybe(..))
+import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Propreties
+import Halogen.Svg.Attributes as Halogen.Svg.Attributes
+import Ocelot.Block.Card as Card
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Radio as Radio
+import Ocelot.Slider as Ocelot.Slider
+import Ocelot.Slider.Render as Ocelot.Slider.Render
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -37,7 +45,9 @@ type Input = Unit
 type Output = Void
 
 type ChildSlots =
-  ()
+  ( slider :: Ocelot.Slider.Slot Unit )
+
+_slider = SProxy :: SProxy "slider"
 
 component ::
   forall m.
@@ -63,7 +73,11 @@ handleAction = case _ of
     state <- Halogen.get
     Halogen.modify_ (_ { formPanelIsOpen = not state.formPanelIsOpen })
 
-render :: forall m. State -> ComponentHTML m
+render ::
+  forall m.
+  MonadAff m =>
+  State ->
+  ComponentHTML m
 render state =
   let content = Backdrop.content [ css "flex" ]
       accessibilityCallout =
@@ -86,6 +100,26 @@ render state =
     in
   Halogen.HTML.div_
     [ Documentation.customBlock_
+      { header: "Sliders"
+      , subheader: "Select one or more values in percentage."
+      }
+      [ Backdrop.backdrop_
+        [ content
+          [ Card.card_
+            [ Halogen.HTML.slot _slider unit
+              Ocelot.Slider.component
+              { axis: Just axisData
+              , layout: config
+              , marks: Just marksData
+              , minDistance: Nothing
+              , renderIntervals: Data.Array.foldMap renderInterval
+              }
+              (const Nothing)
+            ]
+          ]
+        ]
+      ]
+    , Documentation.customBlock_
       { header: "Checkboxes"
       , subheader: "Select one or more options."
       }
@@ -398,3 +432,41 @@ render state =
         -- ]
       -- ]
     ]
+
+
+axisData :: Array { label :: String, percent :: Number }
+axisData = toLabel <$> Data.Array.range 0 10
+  where
+  toLabel :: Int -> { label :: String, percent :: Number }
+  toLabel index =
+    { label: show index <> "%"
+    , percent: (Data.Int.toNumber index) * 10.0
+    }
+
+config :: Ocelot.Slider.Render.Config
+config =
+  { axisHeight: 20.0
+  , betweenThumbAndAxis: 20.0
+  , betweenTopAndThumb: 20.0
+  , frameWidth: { px: 400.0 }
+  , margin: 5.0
+  , trackWidth: 400.0
+  , trackRadius: 2.5
+  , thumbRadius: 10.0
+  }
+
+marksData :: Array { percent :: Number }
+marksData = toMark <$> Data.Array.range 0 10
+  where
+  toMark :: Int -> { percent :: Number }
+  toMark index = { percent: (Data.Int.toNumber index) * 10.0 }
+
+renderInterval :: Ocelot.Slider.Interval -> Array Halogen.HTML.PlainHTML
+renderInterval = case _ of
+  Ocelot.Slider.StartToThumb _ -> []
+  Ocelot.Slider.BetweenThumbs { left, right } ->
+    [ Ocelot.Slider.Render.interval config
+        { start: left, end: right }
+        [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
+    ]
+  Ocelot.Slider.ThumbToEnd _ -> []
