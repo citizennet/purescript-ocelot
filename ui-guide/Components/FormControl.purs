@@ -111,7 +111,7 @@ render state =
               { axis: Just axisData
               , layout: config
               , marks: Just marksData
-              , minDistance: Nothing
+              , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
               (const Nothing)

@@ -125,7 +125,7 @@ component =
 initialState :: Input -> State
 initialState input =
   { input
-  , thumbs: Idle [ { percent: 0.0 }, { percent: 50.0 } ] -- TODO AS-1146 leave one at 0.0 to start
+  , thumbs: Idle [ { percent: 0.0 }, { percent: 50.0 }, { percent: 100.0 } ] -- TODO AS-1146 leave one at 0.0 to start
   }
 
 handleAction ::
@@ -187,7 +187,7 @@ handleMouseMoveWithThumb ::
   State ->
   EditingState ->
   ComponentM m Unit
-handleMouseMoveWithThumb mouseEvent state old@{ start } = do
+handleMouseMoveWithThumb mouseEvent state old@{ start, static } = do
   let
     endPositionX :: { px :: Number }
     endPositionX = getPositionX mouseEvent
@@ -201,7 +201,7 @@ handleMouseMoveWithThumb mouseEvent state old@{ start } = do
     end = start.value + diff
 
     calibrated :: { percent :: Number }
-    calibrated = calibrateValue state { start: start.value, end }
+    calibrated = calibrateValue state static { start: start.value, end }
 
   Effect.Class.Console.log $ "MouseMove: " <> show diff.percent <> "%"
   Halogen.modify_ _
@@ -224,28 +224,63 @@ getPositionX mouseEvent =
 
 calibrateValue ::
   State ->
+  Array { percent :: Number } ->
   { start :: { percent :: Number }
   , end :: { percent :: Number }
   } ->
   { percent :: Number }
-calibrateValue state { start, end } =
-  alignToMarks state.input.marks
-    <<< trimBoundary
-    $ end
+calibrateValue state static { start, end } = case state.input.marks of
+  Nothing ->
+    trimBoundary
+      $ end
+  Just marks ->
+    alignToMarks state.input.minDistance { marks, start, static }
+      <<< trimBoundary
+      $ end
 
 alignToMarks ::
-  Maybe (Array { percent :: Number }) ->
+  Maybe { percent :: Number } ->
+  { marks :: Array { percent :: Number }
+  , start :: { percent :: Number }
+  , static :: Array { percent :: Number }
+  } ->
   { percent :: Number } ->
   { percent :: Number }
-alignToMarks mMarks x = case Data.Map.findMin sortedByDistance of
-  Nothing -> x
-  Just { value } -> value
+alignToMarks mMinDistance { marks, start, static } x
+  | marks == [] = x
+  | otherwise =
+    Data.Maybe.fromMaybe start
+      $ findClosest x filteredByMinDistance
   where
-  marks :: Array { percent :: Number }
-  marks = Data.Maybe.fromMaybe [] mMarks
+  filteredByMinDistance :: Array { percent :: Number }
+  filteredByMinDistance = case mMinDistance of
+    Nothing -> marks
+    Just minDistance -> filterByMinDistance { minDistance, static } marks
 
-  sortedByDistance :: Data.Map.Map { percent :: Number } { percent :: Number }
-  sortedByDistance = sortByDistance x marks
+filterByMinDistance ::
+  { minDistance :: { percent :: Number }
+  , static :: Array { percent :: Number }
+  } ->
+  Array { percent :: Number } ->
+  Array { percent :: Number }
+filterByMinDistance { minDistance, static } marks =
+  Data.Array.foldl (filterOutNeighbor { minDistance }) marks static
+
+filterOutNeighbor ::
+  { minDistance :: { percent :: Number } } ->
+  Array { percent :: Number } ->
+  { percent :: Number } ->
+  Array { percent :: Number }
+filterOutNeighbor { minDistance } marks thumb = Data.Array.filter filter marks
+  where
+  filter :: { percent :: Number } -> Boolean
+  filter mark = absDistance thumb mark >= minDistance
+
+findClosest ::
+  { percent :: Number } ->
+  Array { percent :: Number } ->
+  Maybe { percent :: Number }
+findClosest x = map _.value <<< Data.Map.findMin <<< sortByDistance x
 
 sortByDistance ::
   { percent :: Number } ->
