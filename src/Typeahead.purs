@@ -40,6 +40,7 @@ module Ocelot.Typeahead
   , isDisabled
   , linkClasses
   , multi
+  , multiHighlightOnly
   , renderError
   , renderHeaderSearchDropdown
   , renderMulti
@@ -47,6 +48,7 @@ module Ocelot.Typeahead
   , renderSingle
   , renderToolbarSearchDropdown
   , single
+  , singleHighlightOnly
   , spinner
   , syncMulti
   , syncSingle
@@ -255,6 +257,19 @@ single = component
   , runFilterItems: \items -> Data.Maybe.maybe items (\i -> Data.Array.filter (_ /= i) items)
   }
 
+singleHighlightOnly ::
+  forall action item m.
+  Eq item =>
+  Effect.Aff.Class.MonadAff m =>
+  Component action Maybe item m 
+singleHighlightOnly = component
+  { runSelect: const <<< Just 
+  , runRemove: const (const Nothing)
+  , runFilterFuzzy: identity
+  , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
+  }
+
+
 multi
   :: forall action item m
   . Eq item
@@ -264,6 +279,18 @@ multi = component
   { runSelect: (:)
   , runRemove: Data.Array.filter <<< (/=)
   , runFilterFuzzy: defFilterFuzzy
+  , runFilterItems: Data.Array.difference
+  }
+
+multiHighlightOnly ::
+  forall action item m.
+  Eq item =>
+  Effect.Aff.Class.MonadAff m =>
+  Component action Array item m
+multiHighlightOnly = component 
+  { runSelect: (:)
+  , runRemove: Data.Array.filter <<< (/=)
+  , runFilterFuzzy: identity
   , runFilterItems: Data.Array.difference
   }
 
