@@ -26,7 +26,7 @@ suite =
               , search: "foo"
               , selected: ["foo", "bar"]
               }
-              ["foo", "food", "boof", "fooboo", "baz"]
+              ["foo", "boof", "fooboo", "food", "baz"]
 
           expected = ["food", "fooboo"]
         unfuzzyTestResults { actual, expected }
