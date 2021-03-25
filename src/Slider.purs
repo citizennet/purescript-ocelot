@@ -4,7 +4,7 @@
 -- | * axis
 module Ocelot.Slider
   ( Interval(..)
-  , Output
+  , Output(..)
   , Query(..)
   , Slot
   , component
@@ -20,7 +20,6 @@ import Data.Maybe as Data.Maybe
 import Data.Monoid as Data.Monoid
 import Data.Ord as Data.Ord
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console as Effect.Class.Console
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
@@ -137,7 +136,6 @@ handleAction ::
 handleAction = case _ of
   MouseDownOnThumb index mouseEvent -> do
     pauseEvent mouseEvent
-    Effect.Class.Console.log $ "MouseDown: " <> show index
     state <- Halogen.get
     case state.thumbs of
       Editing _ -> pure unit
@@ -151,7 +149,6 @@ handleAction = case _ of
         handleMouseMoveWithThumb mouseEvent state editingState
   MouseUpFromThumb mouseEvent -> do
     pauseEvent mouseEvent
-    Effect.Class.Console.log $ "MouseUp"
     state <- Halogen.get
     case state.thumbs of
       Idle _ -> pure unit
@@ -204,7 +201,6 @@ handleMouseMoveWithThumb mouseEvent state old@{ start, static } = do
     calibrated :: { percent :: Number }
     calibrated = calibrateValue state static { start: start.value, end }
 
-  Effect.Class.Console.log $ "MouseMove: " <> show diff.percent <> "%"
   Halogen.modify_ _
     { thumbs = Editing old { moving = calibrated } }
 
@@ -215,8 +211,11 @@ handleMouseUpFromThumb ::
   ComponentM m Unit
 handleMouseUpFromThumb mouseEvent { static, moving, subscriptions } = do
   muteAllListeners subscriptions
-  Halogen.modify_ \old ->
-    old { thumbs = Idle (Data.Array.sort (static <> [ moving ]))}
+  let
+    new :: Array { percent :: Number }
+    new = Data.Array.sort (static <> [ moving ])
+  Halogen.modify_ _ { thumbs = Idle new }
+  Halogen.raise (ValueChanged new)
 
 getPositionX :: Web.UIEvent.MouseEvent.MouseEvent -> { px :: Number }
 getPositionX mouseEvent =
@@ -277,7 +276,6 @@ trimNeighbor mMinDistance { start, static } x = case mMinDistance of
         Ocelot.Data.IntervalTree.EndPoint, Ocelot.Data.IntervalTree.StartPoint -> x
         _, _ -> x
       _, _ -> x
-
 
 getNeighbors ::
   { percent :: Number } ->

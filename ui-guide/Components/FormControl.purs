@@ -40,6 +40,7 @@ data Query a
 data Action
   = HandleFormHeaderClick MouseEvent
   | ToggleFormPanel MouseEvent
+  | HandleSlider Ocelot.Slider.Output
 
 type Input = Unit
 
@@ -69,6 +70,10 @@ handleAction ::
 handleAction = case _ of
   HandleFormHeaderClick _ -> do
     Halogen.liftEffect (log "submit form")
+
+  HandleSlider output -> case output of
+    Ocelot.Slider.ValueChanged xs -> do
+      Halogen.liftEffect (log ("slider: " <> show xs))
 
   ToggleFormPanel _ -> do
     state <- Halogen.get
@@ -119,7 +124,7 @@ render state =
               , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
-              (const Nothing)
+              (Just <<< HandleSlider)
             ]
           , Card.card
             [ css "flex-1" ]
@@ -134,7 +139,7 @@ render state =
               , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
-              (const Nothing)
+              (Just <<< HandleSlider)
             ]
           ]
         ]
