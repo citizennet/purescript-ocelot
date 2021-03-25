@@ -26,6 +26,10 @@ jobs:
             - v1-spago-cache
 
       - run:
+          name: Verify the tests pass
+          command: make test
+
+      - run:
           name: Verify the project and all components build successfully
           command: make build
 
