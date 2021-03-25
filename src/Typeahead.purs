@@ -34,6 +34,7 @@ module Ocelot.Typeahead
   , component
   , defRenderContainer
   , disabledClasses
+  , getNewItems'
   , inputProps
   , isDisabled
   , linkClasses
@@ -501,18 +502,40 @@ embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async,
   , config: { debounceTime } -- NOTE overhead
   }
 
-getNewItems
-  :: forall f item m
-  . Effect.Aff.Class.MonadAff m
-  => Eq item
-  => CompositeState f item m
-  -> Network.RemoteData.RemoteData String (Array (Data.Fuzzy.Fuzzy item))
-getNewItems st =
-  Data.Array.sort
-  <<< applyF
-  <<< applyI
-  <<< fuzzyItems
-  <$> (map (flip st.ops.runFilter st.selected) st.items)
+getNewItems :: 
+  forall f item m. 
+  Effect.Aff.Class.MonadAff m => 
+  Eq item => 
+  CompositeState f item m -> 
+  Network.RemoteData.RemoteData String (Array (Data.Fuzzy.Fuzzy item))
+getNewItems st = st.items <#> \items -> 
+  getNewItems' 
+    { insertable: st.insertable 
+    , itemToObject: st.itemToObject
+    , runFilter: st.ops.runFilter 
+    , search: st.search
+    , selected: st.selected
+    }
+    items
+
+getNewItems' ::
+  forall f item state.
+  Eq item =>
+  { insertable :: Insertable item
+  , itemToObject :: item -> Foreign.Object.Object String 
+  , runFilter :: Array item -> f item -> Array item
+  , search :: String
+  , selected :: f item
+  | state
+  } ->
+  Array item ->
+  Array (Data.Fuzzy.Fuzzy item)
+getNewItems' st =
+  Data.Array.sort 
+    <<< applyFilter
+    <<< applyInsert
+    <<< fuzzyItems
+    <<< flip st.runFilter st.selected
   where
     matcher :: item -> Data.Fuzzy.Fuzzy item
     matcher = Data.Fuzzy.match true st.itemToObject st.search
@@ -520,11 +543,11 @@ getNewItems st =
     fuzzyItems :: Array item -> Array (Data.Fuzzy.Fuzzy item)
     fuzzyItems = map matcher
 
-    applyI :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
-    applyI = applyInsertable matcher st.insertable st.search
+    applyInsert :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
+    applyInsert = applyInsertable matcher st.insertable st.search
 
-    applyF :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
-    applyF = Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
+    applyFilter :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
+    applyFilter = Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
 
 -- NOTE re-raise output messages from the embedded component
 -- NOTE update Dropdown render function if it relies on external state
