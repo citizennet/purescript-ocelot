@@ -373,10 +373,12 @@ applyInsertable match insertable text items = case insertable of
 
 defFilterFuzzy ::
   forall item.
+  Eq item =>
   Array (Data.Fuzzy.Fuzzy item) ->
   Array (Data.Fuzzy.Fuzzy item)
-defFilterFuzzy = Data.Array.filter do
-  \(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3)
+defFilterFuzzy = 
+  Data.Array.sort 
+    <<< Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
 
 defRenderContainer
   :: ∀ action f item m
@@ -532,7 +534,6 @@ getNewItems st = st.items <#> \items ->
 
 getNewItems' ::
   forall f item state.
-  Eq item =>
   { insertable :: Insertable item
   , itemToObject :: item -> Foreign.Object.Object String 
   , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
@@ -544,8 +545,7 @@ getNewItems' ::
   Array item ->
   Array (Data.Fuzzy.Fuzzy item)
 getNewItems' st =
-  Data.Array.sort 
-    <<< st.runFilterFuzzy
+  st.runFilterFuzzy
     <<< applyInsert
     <<< fuzzyItems
     <<< flip st.runFilterItems st.selected
