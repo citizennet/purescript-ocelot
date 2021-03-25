@@ -247,7 +247,7 @@ single' :: ∀ action item. Eq item => Component action Maybe item Aff
 single' = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
-  , runFilter: const
+  , runFilterItems: const
   }
 
 -- DEPRECATED

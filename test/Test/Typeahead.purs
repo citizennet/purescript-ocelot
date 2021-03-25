@@ -21,7 +21,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.NotInsertable 
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
-              , runFilter: Data.Array.difference 
+              , runFilterItems: Data.Array.difference 
               , search: "foo"
               , selected: ["foo", "bar"]
               }
@@ -35,7 +35,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.NotInsertable 
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
-              , runFilter: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
+              , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
               , search: "foo"
               , selected: Just "foo"
               }
@@ -49,7 +49,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.Insertable identity
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
-              , runFilter: \items _ -> items
+              , runFilterItems: \items _ -> items
               , search: "foo"
               , selected: Nothing 
               }
@@ -63,7 +63,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.Insertable identity
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
-              , runFilter: \items _ -> items
+              , runFilterItems: \items _ -> items
               , search: "foo"
               , selected: Nothing 
               }

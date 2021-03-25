@@ -170,9 +170,9 @@ data Insertable item
   | Insertable (String -> item)
 
 type Operations f item 
-  = { runSelect  :: item -> f item -> f item
-    , runRemove  :: item -> f item -> f item
-    , runFilter  :: Array item -> f item -> Array item
+  = { runSelect :: item -> f item -> f item
+    , runRemove :: item -> f item -> f item
+    , runFilterItems :: Array item -> f item -> Array item
     }
 
 data Output action (f :: Type -> Type) item
@@ -249,7 +249,7 @@ single
 single = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
-  , runFilter: \items -> Data.Maybe.maybe items (\i -> Data.Array.filter (_ /= i) items)
+  , runFilterItems: \items -> Data.Maybe.maybe items (\i -> Data.Array.filter (_ /= i) items)
   }
 
 multi
@@ -260,7 +260,7 @@ multi
 multi = component
   { runSelect: (:)
   , runRemove: Data.Array.filter <<< (/=)
-  , runFilter: Data.Array.difference
+  , runFilterItems: Data.Array.difference
   }
 
 asyncSingle
@@ -512,7 +512,7 @@ getNewItems st = st.items <#> \items ->
   getNewItems' 
     { insertable: st.insertable 
     , itemToObject: st.itemToObject
-    , runFilter: st.ops.runFilter 
+    , runFilterItems: st.ops.runFilterItems 
     , search: st.search
     , selected: st.selected
     }
@@ -523,7 +523,7 @@ getNewItems' ::
   Eq item =>
   { insertable :: Insertable item
   , itemToObject :: item -> Foreign.Object.Object String 
-  , runFilter :: Array item -> f item -> Array item
+  , runFilterItems :: Array item -> f item -> Array item
   , search :: String
   , selected :: f item
   | state
@@ -535,7 +535,7 @@ getNewItems' st =
     <<< applyFilter
     <<< applyInsert
     <<< fuzzyItems
-    <<< flip st.runFilter st.selected
+    <<< flip st.runFilterItems st.selected
   where
     matcher :: item -> Data.Fuzzy.Fuzzy item
     matcher = Data.Fuzzy.match true st.itemToObject st.search
