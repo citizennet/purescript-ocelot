@@ -195,7 +195,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user"
               }
-              [ HH.slot _singleUser 0 TA.single
+              [ HH.slot _singleUser 0 TA.singleHighlightOnly
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -216,7 +216,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user-hydrated"
               }
-              [ HH.slot _singleUser 1 TA.single
+              [ HH.slot _singleUser 1 TA.singleHighlightOnly
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -298,7 +298,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users"
               }
-              [ HH.slot _multiUser 0 TA.multi
+              [ HH.slot _multiUser 0 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -319,7 +319,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users-hydrated"
               }
-              [ HH.slot _multiUser 1 TA.multi
+              [ HH.slot _multiUser 1 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -443,7 +443,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-empty"
               }
-              [ HH.slot _multiUser 2 TA.multi
+              [ HH.slot _multiUser 2 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -465,7 +465,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-hydrated"
               }
-              [ HH.slot _multiUser 3 TA.multi
+              [ HH.slot _multiUser 3 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -487,7 +487,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "error-users"
               }
-              [ HH.slot _multiUser 4 TA.multi
+              [ HH.slot _multiUser 4 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -508,7 +508,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "loading-users"
               }
-              [ HH.slot _multiUser 5 TA.multi
+              [ HH.slot _multiUser 5 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -543,7 +543,8 @@ cnDocumentationBlocks =
                 ( TA.component
                   { runSelect: const <<< Just
                   , runRemove: const (const Nothing)
-                  , runFilter: const
+                  , runFilterFuzzy: identity
+                  , runFilterItems: const
                   }
                 )
                 { items: NotAsked
@@ -573,7 +574,8 @@ cnDocumentationBlocks =
               ( TA.component
                 { runSelect: const <<< Just
                 , runRemove: const (const Nothing)
-                , runFilter: const
+                , runFilterFuzzy: identity
+                , runFilterItems: const
                 }
               )
               { items: NotAsked

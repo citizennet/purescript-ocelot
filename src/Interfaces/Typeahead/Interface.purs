@@ -27,7 +27,7 @@ import Halogen.VDom.Driver (runUI)
 import Html.Renderer.Halogen as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defRenderContainer, multi, renderMulti, renderSingle, single, component, renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
+import Ocelot.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defFilterFuzzy, defRenderContainer, multi, renderMulti, renderSingle, single, component, renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Partial.Unsafe (unsafePartial)
@@ -247,7 +247,8 @@ single' :: ∀ action item. Eq item => Component action Maybe item Aff
 single' = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
-  , runFilter: const
+  , runFilterFuzzy: defFilterFuzzy
+  , runFilterItems: const
   }
 
 -- DEPRECATED
