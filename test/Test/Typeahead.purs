@@ -21,6 +21,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.NotInsertable 
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+              , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: Data.Array.difference 
               , search: "foo"
               , selected: ["foo", "bar"]
@@ -35,6 +36,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.NotInsertable 
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+              , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
               , search: "foo"
               , selected: Just "foo"
@@ -49,6 +51,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.Insertable identity
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+              , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items _ -> items
               , search: "foo"
               , selected: Nothing 
@@ -63,6 +66,7 @@ suite =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.Insertable identity
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+              , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items _ -> items
               , search: "foo"
               , selected: Nothing 

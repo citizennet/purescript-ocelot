@@ -32,6 +32,7 @@ module Ocelot.Typeahead
   , asyncMulti
   , asyncSingle
   , component
+  , defFilterFuzzy
   , defRenderContainer
   , disabledClasses
   , getNewItems'
@@ -172,6 +173,7 @@ data Insertable item
 type Operations f item 
   = { runSelect :: item -> f item -> f item
     , runRemove :: item -> f item -> f item
+    , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
     , runFilterItems :: Array item -> f item -> Array item
     }
 
@@ -249,6 +251,7 @@ single
 single = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
+  , runFilterFuzzy: defFilterFuzzy
   , runFilterItems: \items -> Data.Maybe.maybe items (\i -> Data.Array.filter (_ /= i) items)
   }
 
@@ -260,6 +263,7 @@ multi
 multi = component
   { runSelect: (:)
   , runRemove: Data.Array.filter <<< (/=)
+  , runFilterFuzzy: defFilterFuzzy
   , runFilterItems: Data.Array.difference
   }
 
@@ -366,6 +370,13 @@ applyInsertable match insertable text items = case insertable of
                     | otherwise -> (match $ mkItem text) : items
   where
     isExactMatch (Data.Fuzzy.Fuzzy { distance }) = distance == Data.Fuzzy.Distance 0 0 0 0 0 0
+
+defFilterFuzzy ::
+  forall item.
+  Array (Data.Fuzzy.Fuzzy item) ->
+  Array (Data.Fuzzy.Fuzzy item)
+defFilterFuzzy = Data.Array.filter do
+  \(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3)
 
 defRenderContainer
   :: ∀ action f item m
@@ -512,6 +523,7 @@ getNewItems st = st.items <#> \items ->
   getNewItems' 
     { insertable: st.insertable 
     , itemToObject: st.itemToObject
+    , runFilterFuzzy: st.ops.runFilterFuzzy
     , runFilterItems: st.ops.runFilterItems 
     , search: st.search
     , selected: st.selected
@@ -523,6 +535,7 @@ getNewItems' ::
   Eq item =>
   { insertable :: Insertable item
   , itemToObject :: item -> Foreign.Object.Object String 
+  , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
   , runFilterItems :: Array item -> f item -> Array item
   , search :: String
   , selected :: f item
@@ -532,7 +545,7 @@ getNewItems' ::
   Array (Data.Fuzzy.Fuzzy item)
 getNewItems' st =
   Data.Array.sort 
-    <<< applyFilter
+    <<< st.runFilterFuzzy
     <<< applyInsert
     <<< fuzzyItems
     <<< flip st.runFilterItems st.selected
@@ -545,9 +558,6 @@ getNewItems' st =
 
     applyInsert :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
     applyInsert = applyInsertable matcher st.insertable st.search
-
-    applyFilter :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
-    applyFilter = Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
 
 -- NOTE re-raise output messages from the embedded component
 -- NOTE update Dropdown render function if it relies on external state
