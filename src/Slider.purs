@@ -26,6 +26,7 @@ import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.Query.EventSource as Halogen.Query.EventSource
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
+import Ocelot.Data.IntervalTree as Ocelot.Data.IntervalTree
 import Ocelot.Slider.Render as Ocelot.Slider.Render
 import Web.Event.Event as Web.Event.Event
 import Web.HTML as Web.HTML
@@ -231,12 +232,61 @@ calibrateValue ::
   { percent :: Number }
 calibrateValue state static { start, end } = case state.input.marks of
   Nothing ->
-    trimBoundary
+    trimNeighbor state.input.minDistance { start, static }
+      <<< trimBoundary
       $ end
   Just marks ->
     alignToMarks state.input.minDistance { marks, start, static }
       <<< trimBoundary
       $ end
+
+trimNeighbor ::
+  Maybe { percent :: Number } ->
+  { start :: { percent :: Number }
+  , static :: Array { percent :: Number }
+  } ->
+  { percent :: Number } ->
+  { percent :: Number }
+trimNeighbor mMinDistance { start, static } x = case mMinDistance of
+  Nothing -> x
+  Just minDistance ->
+    let
+      surrounding ::
+        { left :: Maybe { key :: { percent :: Number }, value :: Ocelot.Data.IntervalTree.IntervalPoint }
+        , right :: Maybe { key :: { percent :: Number }, value :: Ocelot.Data.IntervalTree.IntervalPoint }
+        }
+      surrounding =
+        Ocelot.Data.IntervalTree.lookupInterval x
+          <<< Ocelot.Data.IntervalTree.fromIntervals
+          <<< getNeighbors minDistance
+          $ static
+    in case surrounding.left, surrounding.right of
+      Just left, Just right -> case left.value, right.value of
+        Ocelot.Data.IntervalTree.StartPoint, Ocelot.Data.IntervalTree.EndPoint
+         | absDistance x left.key <= absDistance x right.key
+            && isWithinBoundary left.key -> left.key
+         | absDistance x left.key <= absDistance x right.key
+            && not isWithinBoundary left.key
+            && isWithinBoundary right.key -> right.key
+         | absDistance x left.key >= absDistance x right.key
+            && isWithinBoundary right.key -> right.key
+         | absDistance x left.key >= absDistance x right.key
+            && not isWithinBoundary right.key
+            && isWithinBoundary left.key -> left.key
+         | otherwise -> start
+        Ocelot.Data.IntervalTree.EndPoint, Ocelot.Data.IntervalTree.StartPoint -> x
+        _, _ -> x
+      _, _ -> x
+
+
+getNeighbors ::
+  { percent :: Number } ->
+  Array { percent :: Number } ->
+  Array { start :: { percent :: Number }, end :: { percent :: Number } }
+getNeighbors minDistance thumbs = thumbs <#> \thumb ->
+  { start: thumb - minDistance
+  , end: thumb + minDistance
+  }
 
 alignToMarks ::
   Maybe { percent :: Number } ->
@@ -471,3 +521,6 @@ unsnocAt index xs = do
 ---------------
 boundary :: { start :: { percent :: Number }, end :: { percent :: Number } }
 boundary = { start: { percent: 0.0 }, end: { percent: 100.0 } }
+
+isWithinBoundary :: { percent :: Number } -> Boolean
+isWithinBoundary x = boundary.start <= x && x <= boundary.end

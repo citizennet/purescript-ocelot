@@ -16,11 +16,12 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
+import Ocelot.Block.Format as Ocelot.Block.Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Radio as Radio
+import Ocelot.HTML.Properties (css)
 import Ocelot.Slider as Ocelot.Slider
 import Ocelot.Slider.Render as Ocelot.Slider.Render
-import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.UIEvent.MouseEvent (MouseEvent)
@@ -45,7 +46,7 @@ type Input = Unit
 type Output = Void
 
 type ChildSlots =
-  ( slider :: Ocelot.Slider.Slot Unit )
+  ( slider :: Ocelot.Slider.Slot String )
 
 _slider = SProxy :: SProxy "slider"
 
@@ -104,13 +105,32 @@ render state =
       , subheader: "Select one or more values in percentage."
       }
       [ Backdrop.backdrop_
-        [ content
-          [ Card.card_
-            [ Halogen.HTML.slot _slider unit
+        [ Backdrop.content_
+          [ Card.card
+            [ css "flex-1" ]
+            [ Halogen.HTML.h3
+                [ Halogen.HTML.Propreties.classes Ocelot.Block.Format.captionClasses ]
+                [ Halogen.HTML.text "Discrete" ]
+            , Halogen.HTML.slot _slider "discrete"
               Ocelot.Slider.component
               { axis: Just axisData
               , layout: config
               , marks: Just marksData
+              , minDistance: Just { percent: 10.0 }
+              , renderIntervals: Data.Array.foldMap renderInterval
+              }
+              (const Nothing)
+            ]
+          , Card.card
+            [ css "flex-1" ]
+            [ Halogen.HTML.h3
+              [ Halogen.HTML.Propreties.classes Ocelot.Block.Format.captionClasses ]
+              [ Halogen.HTML.text "Continuous" ]
+            , Halogen.HTML.slot _slider "continuous"
+              Ocelot.Slider.component
+              { axis: Just axisData
+              , layout: config
+              , marks: Nothing
               , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
