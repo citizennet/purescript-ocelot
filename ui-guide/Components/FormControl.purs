@@ -10,6 +10,7 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
+import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as Halogen.HTML.Propreties
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Block.Card as Card
@@ -41,6 +42,7 @@ data Action
   = HandleFormHeaderClick MouseEvent
   | ToggleFormPanel MouseEvent
   | HandleSlider Ocelot.Slider.Output
+  | HandleThumbCount Int String
 
 type Input = Unit
 
@@ -74,6 +76,10 @@ handleAction = case _ of
   HandleSlider output -> case output of
     Ocelot.Slider.ValueChanged xs -> do
       Halogen.liftEffect (log ("slider: " <> show xs))
+
+  HandleThumbCount n slotKey -> do
+    void $ Halogen.query _slider slotKey <<< Halogen.tell
+      $ Ocelot.Slider.SetThumbCount n
 
   ToggleFormPanel _ -> do
     state <- Halogen.get
@@ -116,12 +122,52 @@ render state =
             [ Halogen.HTML.h3
                 [ Halogen.HTML.Propreties.classes Ocelot.Block.Format.captionClasses ]
                 [ Halogen.HTML.text "Discrete" ]
+            , Halogen.HTML.div
+              [ css "flex" ]
+              [ Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Propreties.checked true
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 1 "discrete")
+                ]
+                [ Halogen.HTML.text "1" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 2 "discrete")
+                ]
+                [ Halogen.HTML.text "2" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 3 "discrete")
+                ]
+                [ Halogen.HTML.text "3" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 4 "discrete")
+                ]
+                [ Halogen.HTML.text "4" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 5 "discrete")
+                ]
+                [ Halogen.HTML.text "5" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-discrete"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 6 "discrete")
+                ]
+                [ Halogen.HTML.text "6" ]
+              ]
             , Halogen.HTML.slot _slider "discrete"
               Ocelot.Slider.component
               { axis: Just axisData
               , layout: config
               , marks: Just marksData
-              , minDistance: Just { percent: 10.0 }
+              , minDistance: Just { percent: 9.9 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
               (Just <<< HandleSlider)
