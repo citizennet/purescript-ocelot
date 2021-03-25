@@ -257,6 +257,9 @@ single = component
   , runFilterItems: \items -> Data.Maybe.maybe items (\i -> Data.Array.filter (_ /= i) items)
   }
 
+-- | Typeahead that doesn't filter or search results, only highlights matches.
+-- |
+-- | This is useful when using an endpoint that already filters and sorts the results.
 singleHighlightOnly ::
   forall action item m.
   Eq item =>
@@ -282,6 +285,9 @@ multi = component
   , runFilterItems: Data.Array.difference
   }
 
+-- | Typeahead that doesn't filter or search results, only highlights matches.
+-- |
+-- | This is useful when using an endpoint that already filters and sorts the results.
 multiHighlightOnly ::
   forall action item m.
   Eq item =>
