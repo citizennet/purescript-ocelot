@@ -30,7 +30,7 @@ suite =
 
           expected = ["food", "fooboo"]
         unfuzzyTestResults { actual, expected }
-      Test.Unit.test "filters out selected Maybeu item and poor matches, and sorts results" do
+      Test.Unit.test "filters out selected Maybe item and poor matches, and sorts results" do
         let
           actual =
             Ocelot.Typeahead.getNewItems'
