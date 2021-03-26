@@ -178,37 +178,54 @@ handleSetThumbCount ::
   ComponentM m (Maybe a)
 handleSetThumbCount a n input thumbs = case n - Data.Array.length thumbs of
   diff
-    | diff < 0 -> do
-      let
-        new :: Array { percent :: Number }
-        new = Data.Array.take n thumbs
-      Halogen.modify_ _ { thumbs = Idle new }
-      pure (Just a)
-    | diff > 0 -> case input.minDistance of
-      Nothing -> do
-        let
-          new :: Array { percent :: Number }
-          new = (Data.Array.range 1 diff <#> \_ -> boundary.start) <> thumbs
-        Halogen.modify_ _ { thumbs = Idle new }
-        pure (Just a)
-      Just minDistance -> do
-        let
-          neighborTree :: Ocelot.Data.IntervalTree.IntervalTree { percent :: Number }
-          neighborTree =
-            Ocelot.Data.IntervalTree.fromIntervals
-              $ getNeighbors minDistance thumbs
-
-          newThumbs :: Array { percent :: Number }
-          newThumbs = case input.marks of
-            Nothing -> newThumbsContinuous minDistance diff neighborTree
-            Just marks -> newThumbsDiscrete minDistance diff neighborTree marks
-        if Data.Array.length newThumbs == diff then do
-          Halogen.modify_ _
-            { thumbs = Idle (Data.Array.sort (thumbs <> newThumbs)) }
-          pure (Just a)
-        else
-          pure Nothing
+    | diff < 0 -> removeExtraThumbs a n thumbs
+    | diff > 0 -> addNewThumbs a input diff thumbs
     | otherwise -> pure (Just a)
+
+removeExtraThumbs ::
+  forall a m.
+  a ->
+  Int ->
+  Array { percent :: Number } ->
+  ComponentM m (Maybe a)
+removeExtraThumbs a n thumbs = do
+  let
+    new :: Array { percent :: Number }
+    new = Data.Array.take n thumbs
+  Halogen.modify_ _ { thumbs = Idle new }
+  pure (Just a)
+
+addNewThumbs ::
+  forall a m.
+  a ->
+  Input ->
+  Int ->
+  Array { percent :: Number } ->
+  ComponentM m (Maybe a)
+addNewThumbs a input diff thumbs = case input.minDistance of
+  Nothing -> do
+    let
+      new :: Array { percent :: Number }
+      new = (Data.Array.range 1 diff <#> \_ -> boundary.start) <> thumbs
+    Halogen.modify_ _ { thumbs = Idle new }
+    pure (Just a)
+  Just minDistance -> do
+    let
+      neighborTree :: Ocelot.Data.IntervalTree.IntervalTree { percent :: Number }
+      neighborTree =
+        Ocelot.Data.IntervalTree.fromIntervals
+          $ getNeighbors minDistance thumbs
+
+      newThumbs :: Array { percent :: Number }
+      newThumbs = case input.marks of
+        Nothing -> newThumbsContinuous minDistance diff neighborTree
+        Just marks -> newThumbsDiscrete minDistance diff neighborTree marks
+    if Data.Array.length newThumbs == diff then do
+      Halogen.modify_ _
+        { thumbs = Idle (Data.Array.sort (thumbs <> newThumbs)) }
+      pure (Just a)
+    else
+      pure Nothing
 
 newThumbsContinuous ::
   { percent :: Number } ->
