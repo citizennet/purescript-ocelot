@@ -127,7 +127,7 @@ component =
 initialState :: Input -> State
 initialState input =
   { input
-  , thumbs: Idle [ { percent: 0.0 }, { percent: 50.0 }, { percent: 100.0 } ] -- TODO AS-1146 leave one at 0.0 to start
+  , thumbs: Idle [ { percent: 0.0 } ]
   }
 
 handleAction ::
@@ -197,19 +197,59 @@ handleSetThumbCount a n input thumbs = case n - Data.Array.length thumbs of
           neighborTree =
             Ocelot.Data.IntervalTree.fromIntervals
               $ getNeighbors minDistance thumbs
-        case input.marks of
-          Nothing -> pure Nothing -- TODO
-          Just marks ->
-            let
-              newThumbs :: Array { percent :: Number }
-              newThumbs = newThumbsDiscrete minDistance diff neighborTree marks
-            in if Data.Array.length newThumbs == diff then do
-              Halogen.modify_ _
-                { thumbs = Idle (Data.Array.sort (thumbs <> newThumbs)) }
-              pure (Just a)
-            else
-              pure Nothing
+
+          newThumbs :: Array { percent :: Number }
+          newThumbs = case input.marks of
+            Nothing -> newThumbsContinuous minDistance diff neighborTree
+            Just marks -> newThumbsDiscrete minDistance diff neighborTree marks
+        if Data.Array.length newThumbs == diff then do
+          Halogen.modify_ _
+            { thumbs = Idle (Data.Array.sort (thumbs <> newThumbs)) }
+          pure (Just a)
+        else
+          pure Nothing
     | otherwise -> pure (Just a)
+
+newThumbsContinuous ::
+  { percent :: Number } ->
+  Int ->
+  Ocelot.Data.IntervalTree.IntervalTree { percent :: Number } ->
+  Array { percent :: Number }
+newThumbsContinuous minDistance diff neighborTree =
+  Control.Monad.Rec.Class.tailRec go
+    { minDistance
+    , n: diff
+    , neighborTree
+    , newThumbs: []
+    }
+  where
+  go :: _ -> Control.Monad.Rec.Class.Step _ (Array { percent :: Number })
+  go x = case x.n of
+    0 -> Control.Monad.Rec.Class.Done x.newThumbs
+    _ ->
+      let
+        surrounding ::
+          { left :: Maybe { key :: { percent :: Number }, value :: Ocelot.Data.IntervalTree.IntervalPoint }
+          , right :: Maybe { key :: { percent :: Number }, value :: Ocelot.Data.IntervalTree.IntervalPoint }
+          }
+        surrounding = Ocelot.Data.IntervalTree.lookupInterval boundary.start x.neighborTree
+
+        newThumb :: { percent :: Number }
+        newThumb = case surrounding.right of
+          Nothing -> boundary.start
+          Just right -> case right.value of
+            Ocelot.Data.IntervalTree.StartPoint -> boundary.start
+            Ocelot.Data.IntervalTree.EndPoint -> right.key
+      in
+        Control.Monad.Rec.Class.Loop
+          { minDistance: x.minDistance
+          , n: x.n - 1
+          , neighborTree:
+              Ocelot.Data.IntervalTree.insertInterval
+                x.neighborTree
+                { start: newThumb - x.minDistance, end: newThumb + x.minDistance }
+          , newThumbs: Data.Array.snoc x.newThumbs newThumb
+          }
 
 newThumbsDiscrete ::
   { percent :: Number } ->

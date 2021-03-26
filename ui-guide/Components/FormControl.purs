@@ -177,6 +177,46 @@ render state =
             [ Halogen.HTML.h3
               [ Halogen.HTML.Propreties.classes Ocelot.Block.Format.captionClasses ]
               [ Halogen.HTML.text "Continuous" ]
+            , Halogen.HTML.div
+              [ css "flex" ]
+              [ Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Propreties.checked true
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 1 "continuous")
+                ]
+                [ Halogen.HTML.text "1" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 2 "continuous")
+                ]
+                [ Halogen.HTML.text "2" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 3 "continuous")
+                ]
+                [ Halogen.HTML.text "3" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 4 "continuous")
+                ]
+                [ Halogen.HTML.text "4" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 5 "continuous")
+                ]
+                [ Halogen.HTML.text "5" ]
+              , Radio.radio
+                [ css "pr-6" ]
+                [ Halogen.HTML.Propreties.name "slider-continuous"
+                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 6 "continuous")
+                ]
+                [ Halogen.HTML.text "6" ]
+              ]
             , Halogen.HTML.slot _slider "continuous"
               Ocelot.Slider.component
               { axis: Just axisData
