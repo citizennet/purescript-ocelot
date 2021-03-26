@@ -27,6 +27,7 @@ Authors:
   , "halogen-renderless"
   , "halogen-select"
   , "halogen-storybook"
+  , "halogen-svg-elems"
   , "html-parser-halogen"
   , "js-timers"
   , "numbers"

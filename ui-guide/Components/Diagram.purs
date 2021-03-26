@@ -2,10 +2,14 @@ module UIGuide.Component.Diagram where
 
 import Prelude
 
+import Data.Array as Data.Array
+import Data.Int as Data.Int
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
+import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Block.Card as Card
 import Ocelot.Block.Diagram as Ocelot.Block.Diagram
+import Ocelot.Slider.Render as Ocelot.Slider.Render
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -75,6 +79,33 @@ render _ =
               [ Halogen.HTML.text (show percentB <> "%")]
             ]
           ]
+        , Card.card_
+          [ Halogen.HTML.p
+            [ Ocelot.HTML.Properties.css "flex items-center" ]
+            [ Ocelot.Slider.Render.frame config []
+                [ Ocelot.Slider.Render.trackContainer config
+                  [ Ocelot.Slider.Render.track config
+                    [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 229 229 229))
+                    ]
+                  , Ocelot.Slider.Render.markContainer config
+                    [ Ocelot.Slider.Render.mark config { percent: 0.0 } []
+                    , Ocelot.Slider.Render.mark config { percent: 10.0 } []
+                    , Ocelot.Slider.Render.mark config { percent: 20.0 } []
+
+                    ]
+                  , Ocelot.Slider.Render.interval config
+                      { start: { percent: percentA } , end: { percent: percentB } }
+                      [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
+                  ]
+                , Ocelot.Slider.Render.thumbContainer config
+                  [ Ocelot.Slider.Render.thumb config { percent: percentA } []
+                  , Ocelot.Slider.Render.thumb config { percent: percentB } []
+                  ]
+                , Ocelot.Slider.Render.axisContainer config
+                    (Ocelot.Slider.Render.axis config axisData)
+                ]
+            ]
+          ]
         ]
       ]
     ]
@@ -85,3 +116,43 @@ render _ =
 
   percentB :: Number
   percentB = 100.0
+
+  trackHeight :: Number
+  trackHeight = trackRadius * 2.0
+
+  -- | NOTE assume thumbRadius > trackRadius
+  config :: Ocelot.Slider.Render.Config
+  config = { axisHeight, betweenThumbAndAxis, betweenTopAndThumb, frameWidth, margin, trackWidth, trackRadius, thumbRadius }
+
+  frameWidth :: { px :: Number }
+  frameWidth = { px: 400.0 }
+
+  margin :: Number
+  margin = 5.0
+
+  betweenTopAndThumb :: Number
+  betweenTopAndThumb = 20.0
+
+  betweenThumbAndAxis :: Number
+  betweenThumbAndAxis = 20.0
+
+  axisHeight :: Number
+  axisHeight = 20.0
+
+  thumbRadius :: Number
+  thumbRadius = 10.0
+
+  trackWidth :: Number
+  trackWidth = 400.0
+
+  trackRadius :: Number
+  trackRadius = 2.5
+
+axisData :: Array { label :: String, percent :: Number }
+axisData = toLabel <$> Data.Array.range 0 10
+  where
+  toLabel :: Int -> { label :: String, percent :: Number }
+  toLabel index =
+    { label: show index <> "%"
+    , percent: (Data.Int.toNumber index) * 10.0
+    }
