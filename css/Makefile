@@ -42,10 +42,10 @@ $(DIST_DIR):
 	mkdir -p $@
 
 .PHONY: build-css
-build-css: build-css-dev build-css-prod
+build-css: build-css-dev build-css-prod ## Build all the CSS, installing any missing dependencies along the way
 
 .PHONY: build-css-dev
-build-css-dev: build-css-dev-global build-css-dev-scoped
+build-css-dev: build-css-dev-global build-css-dev-scoped ## Build all un-minified CSS — both global and scoped
 
 .PHONY: build-css-dev-global
 build-css-dev-global: $(DIST_CSS_DEV_GLOBAL) ## Build un-minified CSS
@@ -53,7 +53,7 @@ build-css-dev-global: $(DIST_CSS_DEV_GLOBAL) ## Build un-minified CSS
 .PHONY: build-css-dev-scoped
 build-css-dev-scoped: $(DIST_CSS_DEV_SCOPED) ## Build un-minified CSS, with all rules scoped to `.ocelot-scoped` selector
 
-.PHONY: build-css-prod
+.PHONY: build-css-prod ## Build all minified CSS — both global and scoped
 build-css-prod: build-css-prod-global build-css-prod-scoped
 
 .PHONY: build-css-prod-global
@@ -63,7 +63,7 @@ build-css-prod-global: $(DIST_CSS_PROD_GLOBAL) ## Build minified CSS
 build-css-prod-scoped: $(DIST_CSS_PROD_SCOPED) ## Build minified CSS, with all rules scoped to `.ocelot-scoped` selector
 
 .PHONY: clean-css
-clean-css:
+clean-css: ## Remove all CSS dependencies and build artifacts, starting over with a clean slate
 	rm -fr \
 		$(CSS_DIR)/node_modules \
 		$(DIST_CSS_DEV_GLOBAL) \
