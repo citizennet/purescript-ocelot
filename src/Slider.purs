@@ -193,6 +193,7 @@ removeExtraThumbs a n thumbs = do
     new :: Array { percent :: Number }
     new = Data.Array.take n thumbs
   Halogen.modify_ _ { thumbs = Idle new }
+  Halogen.raise (ValueChanged new)
   pure (Just a)
 
 addNewThumbs ::
@@ -208,6 +209,7 @@ addNewThumbs a input diff thumbs = case input.minDistance of
       new :: Array { percent :: Number }
       new = (Data.Array.range 1 diff <#> \_ -> boundary.start) <> thumbs
     Halogen.modify_ _ { thumbs = Idle new }
+    Halogen.raise (ValueChanged new)
     pure (Just a)
   Just minDistance -> do
     let
@@ -220,9 +222,11 @@ addNewThumbs a input diff thumbs = case input.minDistance of
       newThumbs = case input.marks of
         Nothing -> newThumbsContinuous minDistance diff neighborTree
         Just marks -> newThumbsDiscrete minDistance diff neighborTree marks
+      new :: Array { percent :: Number }
+      new = Data.Array.sort (thumbs <> newThumbs)
     if Data.Array.length newThumbs == diff then do
-      Halogen.modify_ _
-        { thumbs = Idle (Data.Array.sort (thumbs <> newThumbs)) }
+      Halogen.modify_ _ { thumbs = Idle new }
+      Halogen.raise (ValueChanged new)
       pure (Just a)
     else
       pure Nothing
