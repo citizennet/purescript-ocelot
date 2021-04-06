@@ -76,7 +76,8 @@ data Action
   | MouseUpFromThumb Web.UIEvent.MouseEvent.MouseEvent
 
 data Query a
-  = SetDisabled Boolean a
+  = ReplaceThumbs (Array { percent :: Number }) a
+  | SetDisabled Boolean a
   | SetThumbCount Int a
 
 -- | * axis: a list of labels positioned under the track
@@ -163,6 +164,13 @@ handleQuery ::
   Query a ->
   ComponentM m (Maybe a)
 handleQuery = case _ of
+  ReplaceThumbs thumbs a -> do
+    state <- Halogen.get
+    case state.thumbs of
+      Idle _ -> pure unit
+      Editing { subscriptions } -> muteAllListeners subscriptions
+    Halogen.modify_ _ { thumbs = Idle thumbs }
+    pure (Just a)
   SetDisabled disabled a -> do
     Halogen.modify_ _ { input { disabled = disabled } }
     pure (Just a)

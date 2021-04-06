@@ -40,9 +40,10 @@ type State =
 data Query a
 data Action
   = HandleFormHeaderClick MouseEvent
-  | ToggleFormPanel MouseEvent
   | HandleSlider Ocelot.Slider.Output
   | HandleThumbCount Int String
+  | Initialize
+  | ToggleFormPanel MouseEvent
 
 type Input = Unit
 
@@ -61,7 +62,12 @@ component =
   Halogen.mkComponent
     { initialState: const { formPanelIsOpen: false }
     , render
-    , eval: Halogen.mkEval $ Halogen.defaultEval { handleAction = handleAction }
+    , eval:
+      Halogen.mkEval
+        Halogen.defaultEval
+          { handleAction = handleAction
+          , initialize = Just Initialize
+          }
     }
 
 handleAction ::
@@ -80,6 +86,10 @@ handleAction = case _ of
   HandleThumbCount n slotKey -> do
     void $ Halogen.query _slider slotKey <<< Halogen.tell
       $ Ocelot.Slider.SetThumbCount n
+
+  Initialize -> do
+    void <<< Halogen.query _slider "disabled" <<< Halogen.tell
+      $ Ocelot.Slider.ReplaceThumbs [ { percent: 30.0 }, { percent: 70.0 } ]
 
   ToggleFormPanel _ -> do
     state <- Halogen.get
