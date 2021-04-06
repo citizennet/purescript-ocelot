@@ -165,6 +165,7 @@ render state =
             , Halogen.HTML.slot _slider "discrete"
               Ocelot.Slider.component
               { axis: Just axisData
+              , disabled: false
               , layout: config
               , marks: Just marksData
               , minDistance: Just { percent: 9.9 }
@@ -220,6 +221,23 @@ render state =
             , Halogen.HTML.slot _slider "continuous"
               Ocelot.Slider.component
               { axis: Just axisData
+              , disabled: false
+              , layout: config
+              , marks: Nothing
+              , minDistance: Just { percent: 10.0 }
+              , renderIntervals: Data.Array.foldMap renderInterval
+              }
+              (Just <<< HandleSlider)
+            ]
+          , Card.card
+            [ css "flex-1" ]
+            [ Halogen.HTML.h3
+              [ Halogen.HTML.Propreties.classes Ocelot.Block.Format.captionClasses ]
+              [ Halogen.HTML.text "Disabled" ]
+            , Halogen.HTML.slot _slider "disabled"
+              Ocelot.Slider.component
+              { axis: Just axisData
+              , disabled: true
               , layout: config
               , marks: Nothing
               , minDistance: Just { percent: 10.0 }
