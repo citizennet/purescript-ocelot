@@ -76,7 +76,9 @@ data Action
   | MouseUpFromThumb Web.UIEvent.MouseEvent.MouseEvent
 
 data Query a
-  = SetThumbCount Int a
+  = ReplaceThumbs (Array { percent :: Number }) a
+  | SetDisabled Boolean a
+  | SetThumbCount Int a
 
 -- | * axis: a list of labels positioned under the track
 -- | * layout: see comments in Ocelot.Slider.Render
@@ -89,6 +91,7 @@ data Query a
 -- | * renderIntervals: customized render for intervals between thumbs
 type Input =
   { axis :: Maybe (Array { label :: String, percent :: Number })
+  , disabled :: Boolean
   , layout :: Ocelot.Slider.Render.Config
   , marks :: Maybe (Array { percent :: Number })
   , minDistance :: Maybe { percent :: Number }
@@ -161,6 +164,16 @@ handleQuery ::
   Query a ->
   ComponentM m (Maybe a)
 handleQuery = case _ of
+  ReplaceThumbs thumbs a -> do
+    state <- Halogen.get
+    case state.thumbs of
+      Idle _ -> pure unit
+      Editing { subscriptions } -> muteAllListeners subscriptions
+    Halogen.modify_ _ { thumbs = Idle thumbs }
+    pure (Just a)
+  SetDisabled disabled a -> do
+    Halogen.modify_ _ { input { disabled = disabled } }
+    pure (Just a)
   SetThumbCount n a
     | n < 1 -> pure Nothing
     | otherwise -> do
@@ -628,7 +641,10 @@ renderThumbs state =
 renderThumb :: forall m. State -> Int -> { percent :: Number } -> ComponentHTML m
 renderThumb state index percent =
   Ocelot.Slider.Render.thumb state.input.layout percent
-    [ Halogen.HTML.Events.onMouseDown  (Just <<< MouseDownOnThumb index)
+    [ Halogen.HTML.Events.onMouseDown
+        if state.input.disabled
+        then const Nothing
+        else (Just <<< MouseDownOnThumb index)
     ]
 
 renderTrack :: forall m. State -> ComponentHTML m
