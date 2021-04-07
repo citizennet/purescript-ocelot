@@ -69,7 +69,7 @@ jobs:
           name: Prepare branches locally
           command: |
             git checkout gh-pages
-            git checkout master
+            git checkout main
 
       - run:
           name: Set up gh-pages in worktree for easy artifact copying
@@ -122,11 +122,11 @@ workflows:
             branches:
               ignore: gh-pages
 
-      # On master branch, rebuild documentation site
+      # On main branch, rebuild documentation site
       - docs:
           filters:
             branches:
-              only: master
+              only: main
 
           requires:
             - test
