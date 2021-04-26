@@ -16,7 +16,6 @@ import Ocelot.Block.Choice as Choice
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Dropdown as DD
-import Ocelot.Dropdown.Render as DR
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Setters as SelectSetters
@@ -209,17 +208,17 @@ component =
           ]
 
         renderDropdown
-          :: (∀ p i. DR.ButtonBlock p i)
+          :: (∀ p i. DD.ButtonBlock p i)
           -> DD.CompositeState String
           -> H.ComponentHTML DD.CompositeAction DD.EmbeddedChildSlots m
-        renderDropdown btnFn = DR.defDropdown btnFn [ ] identity "Pick One"
+        renderDropdown btnFn = DD.defDropdown btnFn [ ] identity "Pick One"
 
         renderDisabledDropdown
-          :: (∀ p i. DR.ButtonBlock p i)
+          :: (∀ p i. DD.ButtonBlock p i)
           -> DD.CompositeState String
           -> H.ComponentHTML DD.CompositeAction () m
         renderDisabledDropdown btnFn =
-          DR.defDropdown btnFn [ HP.disabled true ] identity "Pick One"
+          DD.defDropdown btnFn [ HP.disabled true ] identity "Pick One"
 
         selectInput :: Select.Input (DD.StateRow Platform)
         selectInput =

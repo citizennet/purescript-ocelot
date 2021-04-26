@@ -1,16 +1,49 @@
-module Ocelot.Dropdown where
+module Ocelot.Dropdown 
+  ( Action
+  , ButtonBlock
+  , ChildSlots
+  , Component
+  , ComponentHTML
+  , ComponentM
+  , ComponentRender
+  , CompositeAction
+  , CompositeComponent
+  , CompositeComponentHTML
+  , CompositeComponentM
+  , CompositeComponentRender
+  , CompositeInput
+  , CompositeQuery
+  , CompositeState
+  , EmbeddedAction(..)
+  , EmbeddedChildSlots
+  , Input
+  , Output(..)
+  , Query(..)
+  , Slot
+  , Spec
+  , State
+  , StateRow
+  , StateStore
+  , component
+  , defDropdown
+  ) where
 
 import Prelude
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store)
 import Data.Array ((!!))
 import Data.Array as Array
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), maybe)
+import DOM.HTML.Indexed (HTMLbutton)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
+import Ocelot.Block.ItemContainer as IC
+import Ocelot.HTML.Properties (css)
 import Renderless.State (modifyStore_)
 import Select as S
+import Select.Setters as SS
 import Type.Data.Symbol (SProxy(..))
 
 --------
@@ -19,6 +52,11 @@ import Type.Data.Symbol (SProxy(..))
 data Action item m
   = PassingOutput (Output item)
   | ReceiveRender (Input item m)
+
+type ButtonBlock p i
+  = Array (HH.IProp HTMLbutton i)
+  -> Array (HH.HTML p i)
+  -> HH.HTML p i
 
 type ChildSlots item 
   = ( select :: S.Slot (Query item) EmbeddedChildSlots (Output item) Unit
@@ -112,6 +150,37 @@ component = H.mkComponent
 -- Values
 
 _select = SProxy :: SProxy "select"
+
+defDropdown
+  :: ∀ item m
+  . Eq item
+  => (∀ p i. ButtonBlock p i)
+  -> Array (HP.IProp HTMLbutton CompositeAction)
+  -> (item -> String)
+  -> String
+  -> CompositeComponentRender item m
+defDropdown button props toString label st =
+  HH.div [ css "relative" ] [ toggle, menu ]
+  where
+    toggle =
+      IC.dropdownButton
+        button
+        (SS.setToggleProps props)
+        [ HH.text $ maybe label toString st.selectedItem ]
+
+    menu = HH.div
+      [ HP.classes containerClasses ]
+      [ IC.dropdownContainer
+        []
+        (HH.text <<< toString)
+        ((==) st.selectedItem <<< Just)
+        st.items
+        st.highlightedIndex
+      ]
+
+    containerClasses = case st.visibility of
+      S.Off -> [ HH.ClassName "invisible" ]
+      S.On -> []
 
 -- Embedded > handleMessage
 embeddedHandleMessage
