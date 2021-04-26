@@ -9,7 +9,7 @@ import Ocelot.Block.ItemContainer as IC
 import Ocelot.HTML.Properties (css)
 import Select as S
 import Select.Setters as SS
-import Ocelot.Dropdown.Component (CompositeAction, CompositeComponentRender)
+import Ocelot.Dropdown (CompositeAction, CompositeComponentRender)
 
 --------------------
 -- Embedded > render

@@ -15,7 +15,7 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Choice as Choice
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
-import Ocelot.Dropdown.Component as DD
+import Ocelot.Dropdown as DD
 import Ocelot.Dropdown.Render as DR
 import Ocelot.HTML.Properties (css)
 import Select as Select

@@ -1,4 +1,4 @@
-module Ocelot.Dropdown.Component where
+module Ocelot.Dropdown where
 
 import Prelude
 import Control.Comonad (extract)
