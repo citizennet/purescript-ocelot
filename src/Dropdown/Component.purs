@@ -1,7 +1,6 @@
-module Ocelot.Components.Dropdown.Component where
+module Ocelot.Dropdown.Component where
 
 import Prelude
-
 import Control.Comonad (extract)
 import Control.Comonad.Store (Store, store)
 import Data.Array ((!!))

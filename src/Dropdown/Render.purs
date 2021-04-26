@@ -1,7 +1,6 @@
-module Ocelot.Components.Dropdown.Render where
+module Ocelot.Dropdown.Render where
 
 import Prelude
-
 import DOM.HTML.Indexed (HTMLbutton)
 import Data.Maybe (Maybe(..), maybe)
 import Halogen.HTML as HH
@@ -10,8 +9,7 @@ import Ocelot.Block.ItemContainer as IC
 import Ocelot.HTML.Properties (css)
 import Select as S
 import Select.Setters as SS
-
-import Ocelot.Components.Dropdown.Component (CompositeAction, CompositeComponentRender)
+import Ocelot.Dropdown.Component (CompositeAction, CompositeComponentRender)
 
 --------------------
 -- Embedded > render

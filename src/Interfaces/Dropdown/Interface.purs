@@ -1,7 +1,6 @@
 module Ocelot.Interface.Dropdown where
 
 import Prelude
-
 import Control.Promise (Promise, fromAff)
 import Data.Array (head)
 import Data.Maybe (Maybe, fromMaybe)
@@ -15,8 +14,8 @@ import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object, lookup)
 import Halogen.VDom.Driver (runUI)
 import Ocelot.Block.Button (button)
-import Ocelot.Components.Dropdown.Component (Input, Output(..), Query(..), component)
-import Ocelot.Components.Dropdown.Render (defDropdown)
+import Ocelot.Dropdown.Component (Input, Output(..), Query(..), component)
+import Ocelot.Dropdown.Render (defDropdown)
 import Ocelot.Interface.Utilities (mkSubscription, Interface)
 import Select (Visibility(..)) as Select
 import Web.HTML (HTMLElement)
