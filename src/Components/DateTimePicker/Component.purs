@@ -50,6 +50,7 @@ data Query a
   | SetSelection (Maybe DateTime) a
   | SendDateQuery (DatePicker.Query Unit) a
   | SendTimeQuery (TimePicker.Query Unit) a
+  | SetDisabled Boolean a
 
 data Output
   = SelectionChanged (Maybe DateTime)
@@ -125,6 +126,11 @@ handleQuery = case _ of
   GetSelection reply -> do
     { time, date } <- H.get
     pure $ reply <$> (DateTime <$> date <*> time)
+
+  SetDisabled disabled a -> Just a <$ do
+    H.modify_ _ { disabled = disabled }
+    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetDisabled disabled
+    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetDisabled disabled
 
   SetSelection dateTime a -> Just a <$ do
     let date' = date <$> dateTime
