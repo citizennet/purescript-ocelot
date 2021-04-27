@@ -10,34 +10,51 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console (log)
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Choice as Choice
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
-import Ocelot.Dropdown as DD
+import Ocelot.Dropdown as Ocelot.Dropdown
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Setters as SelectSetters
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
-type State = Unit
+type State 
+  = { disabled :: Boolean
+    }
 
 data Query
 
 data Action
-  = HandleDropdown (DD.Output String)
+  = HandleDropdown (Ocelot.Dropdown.Output String)
   | HandleChoice Select.Event
+  | ToggleDisabled Boolean
+
+data DropdownSlot
+  = StandardStatic
+  | StandardDynamic
+  | PrimaryStatic
+  | PrimaryDynamic
+  | DarkStatic
+  | DarkDynamic
+
+derive instance eqDropdownSlot :: Eq DropdownSlot
+
+derive instance ordDropdownSlot :: Ord DropdownSlot
 
 type Input = Unit
 
 type Message = Void
 
 type ChildSlot =
-  ( dropdown :: DD.Slot String Unit
+  ( dropdown :: Ocelot.Dropdown.Slot String DropdownSlot
   , select :: Select.Slot (Const Query) () Select.Event Unit
   )
+
 _dropdown = SProxy :: SProxy "dropdown"
 _select = SProxy :: SProxy "select"
 
@@ -51,7 +68,7 @@ component
   => H.Component HH.HTML (Const Query) Input Message m
 component =
   H.mkComponent
-    { initialState: const unit
+    { initialState
     , render
     , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
@@ -60,21 +77,23 @@ component =
     handleAction :: Action -> H.HalogenM State Action ChildSlot Message m Unit
     handleAction = case _ of
       HandleDropdown message -> case message of
-        DD.Selected x -> do
+        Ocelot.Dropdown.Selected x -> do
           H.liftEffect (log x)
           H.modify_ identity
-
         _ -> pure unit
-
       HandleChoice message -> case message of
         Select.Selected x -> do
           H.liftEffect $ case x of
             0 -> log "Facebook"
             1 -> log "Twitter"
             _ -> pure unit
-          pure unit
-
         _ -> pure unit
+      ToggleDisabled old -> do
+        let disabled = not old
+        H.modify_ \state -> state { disabled = disabled }
+
+    initialState :: Input -> State
+    initialState _ = { disabled: true }
 
     render
       :: State
@@ -93,8 +112,8 @@ component =
                   [ HH.text "Standard" ]
                 , HH.slot
                     _dropdown
-                    unit
-                    DD.component
+                    StandardStatic
+                    Ocelot.Dropdown.component
                     { selectedItem: Nothing
                     , items
                     , render: renderDropdown Button.button
@@ -105,15 +124,23 @@ component =
                 [ css "mb-6" ]
                 [ Format.caption_
                   [ HH.text "Disabled & Hydrated" ]
-                , HH.slot
-                  _dropdown
-                  unit
-                  DD.component
-                  { selectedItem: Just "Kilchoman Blue Label"
-                  , items
-                  , render: renderDisabledDropdown Button.button
-                  }
-                  ( Just <<< HandleDropdown )
+                , HH.div
+                    [ css "flex" ]
+                    [ HH.slot
+                        _dropdown
+                        StandardDynamic
+                        Ocelot.Dropdown.component
+                        { selectedItem: Just "Kilchoman Blue Label"
+                        , items
+                        , render: renderDropdown Button.button
+                        }
+                        ( Just <<< HandleDropdown )
+                    , Button.button
+                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        , css "ml-2"
+                        ]
+                        [ HH.text disableToggleText ]
+                    ]
                 ]
               ]
             ]
@@ -125,8 +152,8 @@ component =
                   [ HH.text "Primary" ]
                 , HH.slot
                   _dropdown
-                  unit
-                  DD.component
+                  PrimaryStatic
+                  Ocelot.Dropdown.component
                   { selectedItem: Nothing
                   , items
                   , render: renderDropdown Button.buttonPrimary
@@ -137,15 +164,23 @@ component =
                 [ css "mb-6" ]
                 [ Format.caption_
                   [ HH.text "Disabled & Hydrated" ]
-                , HH.slot
-                  _dropdown
-                  unit
-                  DD.component
-                  { selectedItem: Just "Kilchoman Blue Label"
-                  , items
-                  , render: renderDisabledDropdown Button.buttonPrimary
-                  }
-                  ( Just <<< HandleDropdown )
+                , HH.div
+                    [ css "flex" ]
+                    [ HH.slot
+                        _dropdown
+                        PrimaryDynamic
+                        Ocelot.Dropdown.component
+                        { selectedItem: Just "Kilchoman Blue Label"
+                        , items
+                        , render: renderDropdown Button.buttonPrimary
+                        }
+                        ( Just <<< HandleDropdown )
+                    , Button.buttonPrimary
+                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        , css "ml-2"
+                        ]
+                        [ HH.text disableToggleText ]
+                    ]
                 ]
               ]
             ]
@@ -157,8 +192,8 @@ component =
                   [ HH.text "Dark" ]
                 , HH.slot
                   _dropdown
-                  unit
-                  DD.component
+                  DarkStatic
+                  Ocelot.Dropdown.component
                   { selectedItem: Nothing
                   , items
                   , render: renderDropdown Button.buttonDark
@@ -169,15 +204,23 @@ component =
                 [ css "mb-6" ]
                 [ Format.caption_
                   [ HH.text "Disabled & Hydrated" ]
-                , HH.slot
-                  _dropdown
-                  unit
-                  DD.component
-                  { selectedItem: Just "Kilchoman Blue Label"
-                  , items
-                  , render: renderDisabledDropdown Button.buttonDark
-                  }
-                  ( Just <<< HandleDropdown )
+                , HH.div
+                    [ css "flex" ]
+                    [ HH.slot
+                        _dropdown
+                        DarkDynamic
+                        Ocelot.Dropdown.component
+                        { selectedItem: Just "Kilchoman Blue Label"
+                        , items
+                        , render: renderDropdown Button.buttonDark
+                        }
+                        ( Just <<< HandleDropdown )
+                    , Button.buttonDark
+                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        , css "ml-2"
+                        ]
+                        [ HH.text disableToggleText ]
+                    ]
                 ]
               ]
             ]
@@ -199,6 +242,11 @@ component =
         ]
 
       where
+        disableToggleText :: String
+        disableToggleText
+          | state.disabled = "Enable"
+          | otherwise = "Disable"
+
         items :: Array String
         items =
           [ "Lagavulin 16"
@@ -208,19 +256,13 @@ component =
           ]
 
         renderDropdown
-          :: (∀ p i. DD.ButtonBlock p i)
-          -> DD.CompositeState String
-          -> H.ComponentHTML DD.CompositeAction DD.EmbeddedChildSlots m
-        renderDropdown btnFn = DD.defDropdown btnFn [ ] identity "Pick One"
+          :: (∀ p i. Ocelot.Dropdown.ButtonBlock p i)
+          -> Ocelot.Dropdown.CompositeState String
+          -> H.ComponentHTML Ocelot.Dropdown.CompositeAction Ocelot.Dropdown.EmbeddedChildSlots m
+        renderDropdown btnFn = 
+          Ocelot.Dropdown.defDropdown btnFn [] identity "Pick One"
 
-        renderDisabledDropdown
-          :: (∀ p i. DD.ButtonBlock p i)
-          -> DD.CompositeState String
-          -> H.ComponentHTML DD.CompositeAction () m
-        renderDisabledDropdown btnFn =
-          DD.defDropdown btnFn [ HP.disabled true ] identity "Pick One"
-
-        selectInput :: Select.Input (DD.StateRow Platform)
+        selectInput :: Select.Input (Ocelot.Dropdown.StateRow Platform)
         selectInput =
           { debounceTime: Nothing
           , search: Nothing
