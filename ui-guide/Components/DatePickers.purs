@@ -8,6 +8,8 @@ import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
+import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
@@ -23,10 +25,13 @@ import UIGuide.Block.Documentation as Documentation
 ----------
 -- Component Types
 
-type State = Unit
+type State = 
+  { disabled :: Boolean -- | Global enable/disable toggle
+  }
 
 data Query a
-type Action = Unit
+data Action 
+  = ToggleDisabled
 
 ----------
 -- Child paths
@@ -49,11 +54,26 @@ component :: ∀ m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.mkComponent
-  { initialState: const unit
+  { initialState
   , render
   , eval: H.mkEval H.defaultEval
+    { handleAction = handleAction
+    }
   }
   where
+    handleAction = case _ of  
+      ToggleDisabled -> do
+        st <- H.modify \s -> s { disabled = not s.disabled }
+        void $ H.query _datePicker 0 $ H.tell $ DatePicker.SetDisabled st.disabled
+        void $ H.query _datePicker 1 $ H.tell $ DatePicker.SetDisabled st.disabled
+        void $ H.query _timePicker 0 $ H.tell $ TimePicker.SetDisabled st.disabled
+        void $ H.query _timePicker 1 $ H.tell $ TimePicker.SetDisabled st.disabled
+        void $ H.query _dtp 0 $ H.tell $ DateTimePicker.SetDisabled st.disabled
+        void $ H.query _dtp 1 $ H.tell $ DateTimePicker.SetDisabled st.disabled
+        
+    initialState :: Unit -> State
+    initialState _ = { disabled: false }
+
     render
       :: State
       -> H.ComponentHTML Action ChildSlot m
@@ -70,10 +90,22 @@ cnDocumentationBlocks :: ∀ m
  => H.ComponentHTML Action ChildSlot m
 cnDocumentationBlocks =
   HH.div_
-    [ Documentation.block_
-      { header: "Date Pickers"
-      , subheader: "It's a date picker. Deal with it."
-      }
+    [ HH.h1
+      [ css "font-normal mb-6" ] 
+      [ HH.text "Date Pickers" ]
+    , HH.h2
+      [ css "font-medium text-grey-50 text-xl mb-6" ]
+      [ HH.text "It's a date picker. Deal with it" ]
+    , HH.div
+      [ css "mb-6" ]
+      [ HH.p
+        [ css "inline mr-4" ]
+        [ HH.text "You can toggle between enabled/disabled states" ]
+      , Button.button
+        [ HE.onClick $ const $ Just ToggleDisabled ]
+        [ HH.text "Toggle" ]
+      ]
+    , HH.div_
       [ Backdrop.backdrop_
         [ content
           [ Card.card
@@ -90,7 +122,7 @@ cnDocumentationBlocks =
                 , selection: Nothing
                 , disabled: false
                 }
-                (const $ Just unit)
+                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_

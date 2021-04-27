@@ -74,6 +74,7 @@ data EmbeddedAction
 
 data Query a -- NOTE the container and the embedded components share the same query algebra
   = GetSelection (Date -> a)
+  | SetDisabled Boolean a
   | SetSelection (Maybe Date) a
 
 data Output
@@ -185,6 +186,8 @@ handleQuery = case _ of
   GetSelection reply -> do
     response <- H.query _select unit (S.Query $ H.request GetSelection)
     pure $ reply <$> response
+  SetDisabled disabled a -> Just a <$ do
+    H.query _select unit (S.Query $ H.tell $ SetDisabled disabled)
   SetSelection selection a -> Just a <$ do
     H.query _select unit (S.Query $ H.tell $ SetSelection selection)
 
@@ -312,6 +315,8 @@ embeddedHandleQuery = case _ of
   GetSelection reply -> do
     { selection }  <- H.get
     pure $ reply <$> selection
+  SetDisabled disabled a -> Just a <$ do
+    H.modify_ _ { disabled = disabled }
   SetSelection selection a -> Just a <$ do
     setSelection selection
 

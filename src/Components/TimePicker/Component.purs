@@ -57,6 +57,7 @@ data EmbeddedAction
 
 data Query a
   = GetSelection (Time -> a)
+  | SetDisabled Boolean a
   | SetSelection (Maybe Time) a
 
 data Output
@@ -147,6 +148,9 @@ handleQuery = case _ of
     response <- H.query _select unit (S.Query $ H.request GetSelection)
     pure $ reply <$> response
 
+  SetDisabled disabled a -> Just a <$ do
+    void $ H.query _select unit (S.Query $ H.tell $ SetDisabled disabled)
+
   SetSelection selection a -> Just a <$ do
     H.query _select unit (S.Query $ H.tell $ SetSelection selection)
 
@@ -223,6 +227,9 @@ embeddedHandleQuery = case _ of
   GetSelection reply -> do
     { selection } <- H.get
     pure $ reply <$> selection
+
+  SetDisabled disabled a -> Just a <$ do
+    H.modify_ _ { disabled = disabled }
 
   SetSelection selection a -> Just a <$ do
     setSelection selection
