@@ -23,10 +23,13 @@ import UIGuide.Block.Documentation as Documentation
 ----------
 -- Component Types
 
-type State = Unit
+type State = 
+  { disabled :: Boolean -- | Global enable/disable toggle
+  }
 
 data Query a
-type Action = Unit
+data Action 
+  = ToggleDisabled
 
 ----------
 -- Child paths
@@ -49,11 +52,14 @@ component :: ∀ m
  => H.Component HH.HTML Query Unit Void m
 component =
   H.mkComponent
-  { initialState: const unit
+  { initialState
   , render
   , eval: H.mkEval H.defaultEval
   }
   where
+    initialState :: Unit -> State
+    initialState _ = { disabled: false }
+
     render
       :: State
       -> H.ComponentHTML Action ChildSlot m
@@ -90,7 +96,7 @@ cnDocumentationBlocks =
                 , selection: Nothing
                 , disabled: false
                 }
-                (const $ Just unit)
+                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
