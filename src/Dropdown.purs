@@ -29,21 +29,22 @@ module Ocelot.Dropdown
   ) where
 
 import Prelude
-import Control.Comonad (extract)
-import Control.Comonad.Store (Store, store)
+import Control.Comonad as Control.Comonad
+import Control.Comonad.Store as Control.Comonad.Store
 import Data.Array ((!!))
-import Data.Array as Array
-import Data.Maybe (Maybe(..), maybe)
-import DOM.HTML.Indexed (HTMLbutton)
-import Effect.Aff.Class (class MonadAff)
-import Halogen as H
-import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
-import Ocelot.Block.ItemContainer as IC
-import Ocelot.HTML.Properties (css)
-import Renderless.State (modifyStore_)
-import Select as S
-import Select.Setters as SS
+import Data.Array as Data.Array
+import Data.Maybe (Maybe(..))
+import Data.Maybe as Data.Maybe
+import DOM.HTML.Indexed as DOM.HTML.Indexed
+import Effect.Aff.Class as Effect.Aff.Class
+import Halogen as Halogen
+import Halogen.HTML as Halogen.HTML
+import Halogen.HTML.Properties as Halogen.HTML.Properties
+import Ocelot.Block.ItemContainer as Ocelot.Block.ItemContainer
+import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Renderless.State as Renderless.State
+import Select as Select
+import Select.Setters as Select.Setters
 import Type.Data.Symbol (SProxy(..))
 
 --------
@@ -54,49 +55,49 @@ data Action item m
   | ReceiveRender (Input item m)
 
 type ButtonBlock p i
-  = Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+  = Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 
 type ChildSlots item 
-  = ( select :: S.Slot (Query item) EmbeddedChildSlots (Output item) Unit
+  = ( select :: Select.Slot (Query item) EmbeddedChildSlots (Output item) Unit
     )
 
 type Component item m 
-  = H.Component HH.HTML (Query item) (Input item m) (Output item) m
+  = Halogen.Component Halogen.HTML.HTML (Query item) (Input item m) (Output item) m
 
 type ComponentHTML item m 
-  = H.ComponentHTML (Action item m) (ChildSlots item) m
+  = Halogen.ComponentHTML (Action item m) (ChildSlots item) m
 
 type ComponentM item m a 
-  = H.HalogenM (StateStore item m) (Action item m) (ChildSlots item) (Output item) m a
+  = Halogen.HalogenM (StateStore item m) (Action item m) (ChildSlots item) (Output item) m a
 
 type ComponentRender item m 
   = State item -> ComponentHTML item m
 
 type CompositeAction
-  = S.Action EmbeddedAction
+  = Select.Action EmbeddedAction
 
 type CompositeComponent item m 
-  = H.Component HH.HTML (CompositeQuery item) (CompositeInput item) (Output item) m
+  = Halogen.Component Halogen.HTML.HTML (CompositeQuery item) (CompositeInput item) (Output item) m
 
 type CompositeComponentHTML m 
-  = H.ComponentHTML CompositeAction EmbeddedChildSlots m
+  = Halogen.ComponentHTML CompositeAction EmbeddedChildSlots m
 
 type CompositeComponentM item m a 
-  = H.HalogenM (CompositeState item) CompositeAction EmbeddedChildSlots (Output item) m a
+  = Halogen.HalogenM (CompositeState item) CompositeAction EmbeddedChildSlots (Output item) m a
 
 type CompositeComponentRender item m 
   = (CompositeState item) -> CompositeComponentHTML m
 
 type CompositeInput item 
-  = S.Input (StateRow item)
+  = Select.Input (StateRow item)
 
 type CompositeQuery item 
-  = S.Query (Query item) EmbeddedChildSlots
+  = Select.Query (Query item) EmbeddedChildSlots
 
 type CompositeState item 
-  = S.State (StateRow item)
+  = Select.State (StateRow item)
 
 type EmbeddedAction = Void
 
@@ -110,16 +111,16 @@ type Input item m =
 
 data Output item
   = Selected item
-  | VisibilityChanged S.Visibility
+  | VisibilityChanged Select.Visibility
 
 data Query item a
   = SetItems (Array item) a
   | SetSelection (Maybe item) a
 
-type Slot item id = H.Slot (Query item) (Output item) id
+type Slot item id = Halogen.Slot (Query item) (Output item) id
 
 type Spec item m 
-  = S.Spec (StateRow item) (Query item) EmbeddedAction EmbeddedChildSlots (CompositeInput item) (Output item) m
+  = Select.Spec (StateRow item) (Query item) EmbeddedAction EmbeddedChildSlots (CompositeInput item) (Output item) m
 
 type State item = Record (StateRow item)
 
@@ -128,19 +129,19 @@ type StateRow item =
   , items :: Array item
   )
 
-type StateStore item m = Store (State item) (ComponentHTML item m)
+type StateStore item m = Control.Comonad.Store.Store (State item) (ComponentHTML item m)
 
 ------------
 -- Component
 
 component
   :: forall item m
-  . MonadAff m
+  . Effect.Aff.Class.MonadAff m
   => Component item m
-component = H.mkComponent
+component = Halogen.mkComponent
   { initialState
-  , render: extract
-  , eval: H.mkEval H.defaultEval
+  , render: Control.Comonad.extract
+  , eval: Halogen.mkEval Halogen.defaultEval
       { handleAction = handleAction
       , handleQuery = handleQuery
       }
@@ -155,108 +156,108 @@ defDropdown
   :: ∀ item m
   . Eq item
   => (∀ p i. ButtonBlock p i)
-  -> Array (HP.IProp HTMLbutton CompositeAction)
+  -> Array (Halogen.HTML.Properties.IProp DOM.HTML.Indexed.HTMLbutton CompositeAction)
   -> (item -> String)
   -> String
   -> CompositeComponentRender item m
 defDropdown button props toString label st =
-  HH.div [ css "relative" ] [ toggle, menu ]
+  Halogen.HTML.div [ Ocelot.HTML.Properties.css "relative" ] [ toggle, menu ]
   where
     toggle =
-      IC.dropdownButton
+      Ocelot.Block.ItemContainer.dropdownButton
         button
-        (SS.setToggleProps props)
-        [ HH.text $ maybe label toString st.selectedItem ]
+        (Select.Setters.setToggleProps props)
+        [ Halogen.HTML.text $ Data.Maybe.maybe label toString st.selectedItem ]
 
-    menu = HH.div
-      [ HP.classes containerClasses ]
-      [ IC.dropdownContainer
+    menu = Halogen.HTML.div
+      [ Halogen.HTML.Properties.classes containerClasses ]
+      [ Ocelot.Block.ItemContainer.dropdownContainer
         []
-        (HH.text <<< toString)
+        (Halogen.HTML.text <<< toString)
         ((==) st.selectedItem <<< Just)
         st.items
         st.highlightedIndex
       ]
 
     containerClasses = case st.visibility of
-      S.Off -> [ HH.ClassName "invisible" ]
-      S.On -> []
+      Select.Off -> [ Halogen.HTML.ClassName "invisible" ]
+      Select.On -> []
 
 -- Embedded > handleMessage
 embeddedHandleMessage
-  :: forall item m. MonadAff m => S.Event -> CompositeComponentM item m Unit
+  :: forall item m. Effect.Aff.Class.MonadAff m => Select.Event -> CompositeComponentM item m Unit
 embeddedHandleMessage = case _ of
-  S.Selected idx -> do
-    { items } <- H.get
+  Select.Selected idx -> do
+    { items } <- Halogen.get
     case items !! idx of
       Nothing -> pure unit
       Just item -> do
-        H.modify_
-          _ { visibility = S.Off
+        Halogen.modify_
+          _ { visibility = Select.Off
             , selectedItem = Just item
             }
-        H.raise $ Selected item
-  S.VisibilityChanged vis -> H.raise (VisibilityChanged vis)
+        Halogen.raise $ Selected item
+  Select.VisibilityChanged vis -> Halogen.raise (VisibilityChanged vis)
   _ -> pure unit
 
 -- Embedded > handleQuery
 embeddedHandleQuery
-  :: forall item m a. MonadAff m => Query item a -> CompositeComponentM item m (Maybe a)
+  :: forall item m a. Effect.Aff.Class.MonadAff m => Query item a -> CompositeComponentM item m (Maybe a)
 embeddedHandleQuery = case _ of
   SetItems items a -> Just a <$ do
-    H.modify_ _ { items = items }
+    Halogen.modify_ _ { items = items }
   SetSelection item a -> Just a <$ do
-    H.modify_ _ { selectedItem = item }
+    Halogen.modify_ _ { selectedItem = item }
 
 -- NOTE configure Select
 embeddedInput :: forall item. State item -> CompositeInput item
 embeddedInput { selectedItem, items } =
-  { inputType: S.Toggle
+  { inputType: Select.Toggle
   , search: Nothing
   , debounceTime: Nothing
-  , getItemCount: Array.length <<< _.items
+  , getItemCount: Data.Array.length <<< _.items
   , selectedItem
   , items
   }
 
 -- NOTE re-raise output messages from the embedded component
 -- NOTE update Dropdown render function if it relies on external state
-handleAction :: forall item m. MonadAff m => Action item m -> ComponentM item m Unit
+handleAction :: forall item m. Effect.Aff.Class.MonadAff m => Action item m -> ComponentM item m Unit
 handleAction = case _ of
   PassingOutput output ->
-    H.raise output
+    Halogen.raise output
   ReceiveRender { render } -> do
-    modifyStore_ (renderAdapter render) identity
+    Renderless.State.modifyStore_ (renderAdapter render) identity
 
 -- NOTE passing query to the embedded component
 handleQuery :: forall item m a. Query item a -> ComponentM item m (Maybe a)
 handleQuery = case _ of
   SetItems items a -> Just a <$ do
-    H.query _select unit (S.Query $ H.tell $ SetItems items)
+    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetItems items)
   SetSelection item a -> Just a <$ do
-    H.query _select unit (S.Query $ H.tell $ SetSelection item)
+    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetSelection item)
 
-initialState :: forall item m. MonadAff m => Input item m -> StateStore item m
+initialState :: forall item m. Effect.Aff.Class.MonadAff m => Input item m -> StateStore item m
 initialState { render, selectedItem, items } =
-  store (renderAdapter render) { selectedItem, items }
+  Control.Comonad.Store.store (renderAdapter render) { selectedItem, items }
 
 renderAdapter
   :: forall item m
-  . MonadAff m
+  . Effect.Aff.Class.MonadAff m
   => CompositeComponentRender item m
   -> ComponentRender item m
 renderAdapter render state =
-  HH.slot _select unit (S.component identity $ spec render)
+  Halogen.HTML.slot _select unit (Select.component identity $ spec render)
     (embeddedInput state)
     (Just <<< PassingOutput)
 
 spec
   :: forall item m
-  . MonadAff m
+  . Effect.Aff.Class.MonadAff m
   => CompositeComponentRender item m
   -> Spec item m
 spec embeddedRender =
-  S.defaultSpec
+  Select.defaultSpec
   { render = embeddedRender
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
