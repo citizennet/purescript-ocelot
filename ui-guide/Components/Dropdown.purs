@@ -90,6 +90,9 @@ component =
         _ -> pure unit
       ToggleDisabled old -> do
         let disabled = not old
+        void $ H.query _dropdown StandardDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
+        void $ H.query _dropdown PrimaryDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
+        void $ H.query _dropdown DarkDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
         H.modify_ \state -> state { disabled = disabled }
 
     initialState :: Input -> State
@@ -114,7 +117,8 @@ component =
                     _dropdown
                     StandardStatic
                     Ocelot.Dropdown.component
-                    { selectedItem: Nothing
+                    { disabled: false
+                    , selectedItem: Nothing
                     , items
                     , render: renderDropdown Button.button
                     }
@@ -130,7 +134,8 @@ component =
                         _dropdown
                         StandardDynamic
                         Ocelot.Dropdown.component
-                        { selectedItem: Just "Kilchoman Blue Label"
+                        { disabled: state.disabled
+                        , selectedItem: Just "Kilchoman Blue Label"
                         , items
                         , render: renderDropdown Button.button
                         }
@@ -139,7 +144,7 @@ component =
                         [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
                         , css "ml-2"
                         ]
-                        [ HH.text disableToggleText ]
+                        [ HH.text "Toggle" ]
                     ]
                 ]
               ]
@@ -154,7 +159,8 @@ component =
                   _dropdown
                   PrimaryStatic
                   Ocelot.Dropdown.component
-                  { selectedItem: Nothing
+                  { disabled: false
+                  , selectedItem: Nothing
                   , items
                   , render: renderDropdown Button.buttonPrimary
                   }
@@ -170,7 +176,8 @@ component =
                         _dropdown
                         PrimaryDynamic
                         Ocelot.Dropdown.component
-                        { selectedItem: Just "Kilchoman Blue Label"
+                        { disabled: state.disabled
+                        , selectedItem: Just "Kilchoman Blue Label"
                         , items
                         , render: renderDropdown Button.buttonPrimary
                         }
@@ -179,7 +186,7 @@ component =
                         [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
                         , css "ml-2"
                         ]
-                        [ HH.text disableToggleText ]
+                        [ HH.text "Toggle" ]
                     ]
                 ]
               ]
@@ -194,7 +201,8 @@ component =
                   _dropdown
                   DarkStatic
                   Ocelot.Dropdown.component
-                  { selectedItem: Nothing
+                  { disabled: false
+                  , selectedItem: Nothing
                   , items
                   , render: renderDropdown Button.buttonDark
                   }
@@ -210,7 +218,8 @@ component =
                         _dropdown
                         DarkDynamic
                         Ocelot.Dropdown.component
-                        { selectedItem: Just "Kilchoman Blue Label"
+                        { disabled: state.disabled
+                        , selectedItem: Just "Kilchoman Blue Label"
                         , items
                         , render: renderDropdown Button.buttonDark
                         }
@@ -219,7 +228,7 @@ component =
                         [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
                         , css "ml-2"
                         ]
-                        [ HH.text disableToggleText ]
+                        [ HH.text "Toggle" ]
                     ]
                 ]
               ]
@@ -265,6 +274,7 @@ component =
         selectInput :: Select.Input (Ocelot.Dropdown.StateRow Platform)
         selectInput =
           { debounceTime: Nothing
+          , disabled: false
           , search: Nothing
           , inputType: Select.Toggle
           , getItemCount: Array.length <<< _.items

@@ -49,7 +49,8 @@ externalInputToInput
   => ExternalInput
   -> Input (Object String) m
 externalInputToInput { items, selectedItem, key, placeholder } =
-  { items
+  { disabled: false
+  , items
   , selectedItem: head selectedItem
   , render: defDropdown button [] (fromMaybe placeholder <<< (lookup key)) placeholder
   }

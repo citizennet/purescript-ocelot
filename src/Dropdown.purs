@@ -41,6 +41,7 @@ import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.Block.ItemContainer as Ocelot.Block.ItemContainer
+import Ocelot.HTML.Properties ((<&>))
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
 import Select as Select
@@ -104,9 +105,10 @@ type EmbeddedAction = Void
 type EmbeddedChildSlots = () -- NOTE no extension
 
 type Input item m =
-  { selectedItem :: Maybe item
+  { disabled :: Boolean
   , items :: Array item
   , render :: CompositeComponentRender item m
+  , selectedItem :: Maybe item
   }
 
 data Output item
@@ -114,7 +116,8 @@ data Output item
   | VisibilityChanged Select.Visibility
 
 data Query item a
-  = SetItems (Array item) a
+  = SetDisabled Boolean a
+  | SetItems (Array item) a
   | SetSelection (Maybe item) a
 
 type Slot item id = Halogen.Slot (Query item) (Output item) id
@@ -125,8 +128,9 @@ type Spec item m
 type State item = Record (StateRow item)
 
 type StateRow item =
-  ( selectedItem :: Maybe item
+  ( disabled :: Boolean
   , items :: Array item
+  , selectedItem :: Maybe item
   )
 
 type StateStore item m = Control.Comonad.Store.Store (State item) (ComponentHTML item m)
@@ -166,7 +170,7 @@ defDropdown button props toString label st =
     toggle =
       Ocelot.Block.ItemContainer.dropdownButton
         button
-        (Select.Setters.setToggleProps props)
+        (toggleProps st.disabled props)
         [ Halogen.HTML.text $ Data.Maybe.maybe label toString st.selectedItem ]
 
     menu = Halogen.HTML.div
@@ -204,6 +208,8 @@ embeddedHandleMessage = case _ of
 embeddedHandleQuery
   :: forall item m a. Effect.Aff.Class.MonadAff m => Query item a -> CompositeComponentM item m (Maybe a)
 embeddedHandleQuery = case _ of
+  SetDisabled disabled a -> Just a <$ do
+    Halogen.modify_ _ { disabled = disabled }
   SetItems items a -> Just a <$ do
     Halogen.modify_ _ { items = items }
   SetSelection item a -> Just a <$ do
@@ -211,13 +217,14 @@ embeddedHandleQuery = case _ of
 
 -- NOTE configure Select
 embeddedInput :: forall item. State item -> CompositeInput item
-embeddedInput { selectedItem, items } =
-  { inputType: Select.Toggle
-  , search: Nothing
-  , debounceTime: Nothing
+embeddedInput { disabled, items, selectedItem } =
+  { debounceTime: Nothing
+  , disabled
   , getItemCount: Data.Array.length <<< _.items
-  , selectedItem
+  , inputType: Select.Toggle
   , items
+  , search: Nothing
+  , selectedItem
   }
 
 -- NOTE re-raise output messages from the embedded component
@@ -232,14 +239,16 @@ handleAction = case _ of
 -- NOTE passing query to the embedded component
 handleQuery :: forall item m a. Query item a -> ComponentM item m (Maybe a)
 handleQuery = case _ of
+  SetDisabled disabled a -> Just a <$ do
+    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetDisabled disabled)
   SetItems items a -> Just a <$ do
     Halogen.query _select unit (Select.Query $ Halogen.tell $ SetItems items)
   SetSelection item a -> Just a <$ do
     Halogen.query _select unit (Select.Query $ Halogen.tell $ SetSelection item)
 
 initialState :: forall item m. Effect.Aff.Class.MonadAff m => Input item m -> StateStore item m
-initialState { render, selectedItem, items } =
-  Control.Comonad.Store.store (renderAdapter render) { selectedItem, items }
+initialState { disabled, items, render, selectedItem } =
+  Control.Comonad.Store.store (renderAdapter render) { disabled, items, selectedItem }
 
 renderAdapter
   :: forall item m
@@ -262,3 +271,16 @@ spec embeddedRender =
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   }
+
+toggleProps
+  :: Boolean
+  -> Array (Halogen.HTML.Properties.IProp DOM.HTML.Indexed.HTMLbutton CompositeAction)
+  -> Array (Halogen.HTML.Properties.IProp DOM.HTML.Indexed.HTMLbutton CompositeAction)
+toggleProps disabled iprops = if disabled
+  then iprops'
+  else Select.Setters.setToggleProps iprops'
+  where
+  iprops' = 
+    [ Halogen.HTML.Properties.disabled disabled
+    ] 
+    <&> iprops
