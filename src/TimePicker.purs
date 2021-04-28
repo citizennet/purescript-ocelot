@@ -1,11 +1,43 @@
-module Ocelot.TimePicker where
+module Ocelot.TimePicker
+  ( Action 
+  , ChildSlots
+  , Component
+  , ComponentHTML
+  , ComponentM
+  , ComponentRender
+  , CompositeAction
+  , CompositeComponent
+  , CompositeComponentHTML
+  , CompositeComponentM
+  , CompositeComponentRender
+  , CompositeInput
+  , CompositeState
+  , CompositeQuery
+  , EmbeddedAction(..)
+  , EmbeddedChildSlots
+  , Input
+  , Output(..)
+  , Query(..)
+  , Slot
+  , Spec
+  , State
+  , StateRow
+  , TimeUnit
+  , component
+  ) where
 
 import Prelude
-import Data.Array ((!!))
+import Control.Alt ((<|>))
+import Data.Array ((!!), length)
 import Data.Array as Array
+import Data.Array.NonEmpty (catMaybes, head)
+import Data.DateTime (time)
+import Data.Either (either, hush)
+import Data.Formatter.DateTime (unformatDateTime)
 import Data.FunctorWithIndex (mapWithIndex)
-import Data.Maybe (Maybe(..), isNothing)
-import Data.String (trim)
+import Data.Maybe (Maybe(..), fromMaybe, isNothing, maybe)
+import Data.String (joinWith, toLower, trim)
+import Data.String.Regex (match, parseFlags, regex)
 import Data.Symbol (SProxy(..))
 import Data.Time (Time)
 import Effect.Aff.Class (class MonadAff)
@@ -15,7 +47,6 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.TimePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S
@@ -69,6 +100,10 @@ type Input =
   { selection :: Maybe Time
   , disabled :: Boolean
   }
+
+data Meridiem
+  = AM
+  | PM
 
 data Output
   = SelectionChanged (Maybe Time)
@@ -221,6 +256,49 @@ generateTimeUnit (Just t) i
   | t == i = TimeUnit Selectable Selected i
   | otherwise = TimeUnit Selectable NotSelected i
 
+guessTime :: String -> Maybe Time
+guessTime ""   = Nothing
+guessTime text =
+  let meridiem :: Maybe Meridiem
+      meridiem = do
+        let
+          regexFlags = parseFlags "i"
+        regexA <- hush (regex "a" $ regexFlags)
+        regexP <- hush (regex "p" $ regexFlags)
+        matched <- match regexA text <|> match regexP text
+        meridiemString <- head matched
+        case toLower meridiemString of
+          "a" -> Just AM
+          "p" -> Just PM
+          _ -> Nothing
+
+      digits :: Array String
+      digits = either
+        (const [])
+        (\r -> fromMaybe [] (catMaybes <$> match r text))
+        (regex "\\d" $ parseFlags "g")
+
+      digits' :: String
+      digits' = joinWith "" digits
+
+      hourMin :: Maybe String
+      hourMin = case length digits of
+        1 -> pure $ "0" <> digits' <> "00"
+        2 -> pure $ digits' <> "00"
+        3 -> pure $ "0" <> digits'
+        4 -> pure $ digits'
+        _ -> Nothing
+
+      format :: String
+      format = (maybe "HHmm" (const "hhmm a") meridiem)
+
+      suffix :: String
+      suffix = maybe "" (\m -> " " <> meridiemToString m) meridiem
+
+      guess :: Maybe String
+      guess = (_ <> suffix) <$> hourMin
+   in time <$> (join $ hush <<< unformatDateTime format <$> guess)
+
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   PassingOutput output ->
@@ -241,7 +319,7 @@ handleSearch = do
   search <- H.gets _.search
   case search of
     "" -> setSelection Nothing
-    _  -> case Utils.guessTime search of
+    _  -> case guessTime search of
       Nothing -> pure unit
       Just t  -> do
         setSelection (Just t)
@@ -254,6 +332,11 @@ initialState { selection, disabled } =
   , timeUnits: generateTimes selection
   , disabled
   }
+
+meridiemToString :: Meridiem -> String
+meridiemToString = case _ of
+  AM -> "AM"
+  PM -> "PM"
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =

@@ -1,18 +1,50 @@
-module Ocelot.DatePicker where
+module Ocelot.DatePicker
+  ( Action
+  , CalendarItem
+  , ChildSlots
+  , Component
+  , ComponentHTML
+  , ComponentM
+  , ComponentRender
+  , CompositeAction
+  , CompositeComponent
+  , CompositeComponentHTML
+  , CompositeComponentM
+  , CompositeComponentRender
+  , CompositeInput
+  , CompositeQuery
+  , CompositeState
+  , Direction
+  , EmbeddedAction(..)
+  , EmbeddedChildSlots
+  , Input
+  , Output(..)
+  , Query(..)
+  , Slot
+  , State
+  , StateRow
+  , component
+  ) where
 
 import Prelude
-import Data.Array ((!!), mapWithIndex)
+import Data.Array ((!!), drop, find, mapWithIndex, reverse, sort, take)
 import Data.Array as Array
-import Data.Date (Date, Month, Year, canonicalDate, month, year)
+import Data.Date (Date, Month, Weekday(..), Year, canonicalDate, day, month, weekday, year)
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
+import Data.Enum (fromEnum)
 import Data.Formatter.DateTime (formatDateTime)
+import Data.Fuzzy (Fuzzy(..))
+import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.Rational ((%))
 import Data.String (trim)
+import Data.String.Regex (parseFlags, regex, replace)
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested (type (/\), (/\))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Now (nowDate)
+import Foreign.Object (Object, fromFoldable)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -22,7 +54,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.DatePicker.Utils as Utils
+import Ocelot.Data.DateTime (adjustDaysBy, dateRange, firstDateOfMonth, lastDateOfMonth, nextDay, nextYear, prevDay, yearsForward)
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S
@@ -39,6 +71,15 @@ import Web.UIEvent.KeyboardEvent as KE
 -- re-raise output messages from the embedded component
 data Action
   = PassingOutput Output
+
+-- A type to help assist making grid-based calendar layouts. Calendars
+-- can use dates directly or use array lengths as offsets.
+type Aligned =
+  { pre  :: Array Date   -- Dates before the first of the month
+  , body :: Array Date   -- Dates within the month
+  , post :: Array Date   -- Dates after the last of the month
+  , all  :: Array Date   -- The full 35-day range
+  }
 
 data BoundaryStatus
   = OutOfBounds
@@ -65,9 +106,9 @@ type CompositeComponent m = H.Component HH.HTML CompositeQuery CompositeInput Ou
 
 type CompositeComponentHTML m = H.ComponentHTML CompositeAction EmbeddedChildSlots m
 
-type CompositeComponentRender m = CompositeState -> CompositeComponentHTML m
-
 type CompositeComponentM m a = H.HalogenM CompositeState CompositeAction EmbeddedChildSlots Output m a
+
+type CompositeComponentRender m = CompositeState -> CompositeComponentHTML m
 
 type CompositeInput = S.Input StateRow
 
@@ -94,6 +135,11 @@ type Input =
   , disabled :: Boolean
   }
 
+-- Generates a date range to search through for search term, if it doesn't
+-- match on first past it will generate more dates to search through until
+-- a specified range limit is reached, then return Nothing
+newtype MaxYears = MaxYears Int
+
 data Output
   = SelectionChanged (Maybe Date)
   | VisibilityChanged S.Visibility
@@ -113,9 +159,9 @@ data SelectedStatus
   = NotSelected
   | Selected
 
-type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeInput Output m
-
 type Slot = H.Slot Query Output
+
+type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeInput Output m
 
 type State = Record StateRow
 
@@ -143,6 +189,26 @@ component = H.mkComponent
 -- Values
 
 _select = SProxy :: SProxy "select"
+
+-- Summary helper function that creates a full grid calendar layout
+-- from a year and a month.
+align :: Year -> Month -> Array (Array Date)
+align y m = rowsFromAligned (alignByWeek y m)
+
+-- A special case for when you need to match days of the month to a grid
+-- that's bound to weekdays Sun - Sat.
+alignByWeek :: Year -> Month -> Aligned
+alignByWeek y m = { pre: pre, body: body, post: post, all: pre <> body <> post }
+ where
+   start = firstDateOfMonth y m
+   end = lastDateOfMonth y m
+   body = dateRange start end
+   pre =
+     let pad = padPrev $ weekday start
+      in if pad == 0.0 then [] else dateRange (adjustDaysBy pad start) (prevDay start)
+   post =
+     let pad = padNext $ weekday end
+      in if pad == 0.0 then [] else dateRange (nextDay end) (adjustDaysBy pad end)
 
 calendarHeader :: forall m. CompositeComponentHTML m
 calendarHeader =
@@ -304,6 +370,11 @@ embeddedRender st =
       , renderSelect (fst st.targetDate) (snd st.targetDate) st.visibility st.calendarItems
       ]
 
+firstMatch :: Array (Tuple (Fuzzy Date) Int) -> Maybe (Fuzzy Date)
+firstMatch = maybe Nothing (Just <<< fst) <<< find match'
+  where
+    match' (Tuple (Fuzzy { ratio }) _) = ratio == (1 % 1)
+
 generateCalendarItem
   :: Maybe Date
   -> BoundaryStatus
@@ -323,11 +394,38 @@ generateCalendarRows
   -> Array CalendarItem
 generateCalendarRows selection y m = lastMonth <> thisMonth <> nextMonth
   where
-    { pre, body, post, all } = Utils.alignByWeek y m
+    { pre, body, post, all } = alignByWeek y m
     outOfBounds = map (generateCalendarItem selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post
     thisMonth = body <#> (generateCalendarItem selection InBounds)
+
+guessDate :: Date -> MaxYears -> String -> Maybe Date
+guessDate start (MaxYears max) text =
+  let text' :: String -- replace dashes and slashes with spaces
+      text' = either
+        (const text)
+        (\r -> replace r " " text)
+        (regex "-|\\/|," $ parseFlags "g")
+
+      text'' :: String -- consolidate all consecutive whitespaceg
+      text'' = either
+        (const text')
+        (\r -> replace r " " text')
+        (regex "\\s+" $ parseFlags "g")
+
+      matcher :: Int -> Date -> Tuple (Fuzzy Date) Int
+      matcher i d = Tuple (Data.Fuzzy.match true toObject text'' d) i
+
+      guess :: Array Date -> Int -> Maybe Date
+      guess dates = findIn (firstMatch $ sort $ matcher `mapWithIndex` dates)
+
+      findIn :: Maybe (Fuzzy Date) -> Int -> Maybe Date
+      findIn (Just (Fuzzy { original })) _ = Just original
+      findIn Nothing pass
+        | pass > max = Nothing
+        | otherwise  = guess (dateRange (yearsForward pass start) (yearsForward (pass + 1) start)) (pass + 1)
+   in guess (dateRange start $ nextYear start) 0
 
 -- NOTE re-raise output messages from the embedded component
 handleAction :: forall m. Action -> ComponentM m Unit
@@ -352,7 +450,7 @@ handleSearch = do
   today <- H.liftEffect nowDate
   _ <- case search of
     "" -> setSelection Nothing
-    _  -> case Utils.guessDate today (Utils.MaxYears 5) search of
+    _  -> case guessDate today (MaxYears 5) search of
       Nothing -> pure unit
       Just d  -> do
         setSelection (Just d)
@@ -370,6 +468,32 @@ initialState { targetDate, selection, disabled } =
     , disabled
     }
 
+-- Represents the number of days that will need to be "filled in"
+-- when the last day of the month is this weekday. For example, if the
+-- last day of the month is Tuesday, then Wednesday through Saturday
+-- will need to be padded
+padNext :: Weekday -> Number
+padNext Sunday    = 6.0
+padNext Monday    = 5.0
+padNext Tuesday   = 4.0
+padNext Wednesday = 3.0
+padNext Thursday  = 2.0
+padNext Friday    = 1.0
+padNext Saturday  = 0.0
+
+-- Represents the number of days that will need to be "filled in"
+-- when the first day of the month is this weekday. For example, if the
+-- first day of the month is Tuesday, then Sunday and Monday will need
+-- to be padded
+padPrev :: Weekday -> Number
+padPrev Sunday    = 0.0
+padPrev Monday    = (-1.0)
+padPrev Tuesday   = (-2.0)
+padPrev Wednesday = (-3.0)
+padPrev Thursday  = (-4.0)
+padPrev Friday    = (-5.0)
+padPrev Saturday  = (-6.0)
+
 render :: forall m. MonadAff m => ComponentRender m
 render st =
   HH.slot _select unit (S.component identity spec) (embeddedInput st) (Just <<< PassingOutput)
@@ -382,7 +506,7 @@ renderCalendar y m calendarItems =
     )
     [ calendarNav y m
     , calendarHeader
-    , HH.div_ $ renderRows $ Utils.rowsFromArray calendarItems
+    , HH.div_ $ renderRows $ rowsFromArray calendarItems
     ]
   where
     dropdownClasses :: Array HH.ClassName
@@ -490,6 +614,17 @@ renderSelect y m visibility calendarItems =
       then [ renderCalendar y m calendarItems ]
       else []
 
+-- Break a set of Sunday-aligned dates into rows, each 7 in length.
+rowsFromAligned :: Aligned -> Array (Array Date)
+rowsFromAligned { all } = rowsFromArray all
+
+-- Break a set of Sunday-aligned dates into rows, each 7 in length.
+rowsFromArray :: ∀ a. Array a -> Array (Array a)
+rowsFromArray all = go all []
+  where
+    go [] acc = reverse acc
+    go xs acc = go (drop 7 xs) ([take 7 xs] <> acc)
+
 setSelection :: forall m. MonadAff m => Maybe Date -> CompositeComponentM m Unit
 setSelection selection = do
   setSelectionWithoutRaising selection
@@ -524,3 +659,19 @@ synchronize = do
         Nothing -> identity
         Just date -> _ { search = ODT.formatDate date }
   H.modify_ (update <<< _ { calendarItems = calendarItems })
+
+toObject :: Date -> Object String
+toObject d =
+  fromFoldable
+    [ Tuple "mdy1" $ sYearMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "mdy2" $ sMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "weekday" $ sWeekDay
+    , Tuple "wmdy1" $ sWeekDay <> " " <> sYearMonth <> " " <> sDay <> " " <> sYear
+    , Tuple "ymd" $ sYear <> " " <> sMonth <> " " <> sDay
+    ]
+  where
+    sYear = show $ fromEnum $ year d
+    sMonth = show $ fromEnum $ month d
+    sYearMonth = show $ month d
+    sDay = show $ fromEnum $ day d
+    sWeekDay = show $ weekday d

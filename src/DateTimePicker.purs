@@ -1,4 +1,17 @@
-module Ocelot.DateTimePicker where
+module Ocelot.DateTimePicker 
+  ( Action
+  , ChildSlots
+  , Component
+  , ComponentHTML
+  , ComponentM
+  , ComponentRender
+  , Input
+  , Output(..)
+  , Query(..)
+  , Slot
+  , State
+  , component
+  ) where
 
 import Prelude
 import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
@@ -77,13 +90,6 @@ component = H.mkComponent
 
 _datepicker = SProxy :: SProxy "datepicker"
 _timepicker = SProxy :: SProxy "timepicker"
-
-defaultInput :: Input
-defaultInput =
-  { selection: Nothing
-  , targetDate: Nothing
-  , disabled: false
-  }
 
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
