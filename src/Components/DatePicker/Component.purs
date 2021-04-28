@@ -235,11 +235,8 @@ synchronize = do
 
 setSelection :: forall m. MonadAff m => Maybe Date -> CompositeComponentM m Unit
 setSelection selection = do
-  st <- H.get
-  let targetDate = maybe st.targetDate (\d -> (year d) /\ (month d)) selection
-  H.modify_ _ { selection = selection, targetDate = targetDate }
+  setSelectionWithoutRaising selection
   H.raise $ SelectionChanged selection
-  synchronize
 
 setSelectionWithoutRaising :: forall m. MonadAff m => Maybe Date -> CompositeComponentM m Unit
 setSelectionWithoutRaising selection = do
