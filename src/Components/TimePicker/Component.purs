@@ -234,7 +234,7 @@ embeddedHandleQuery = case _ of
     H.modify_ _ { disabled = disabled }
 
   SetSelection selection a -> Just a <$ do
-    setSelection selection
+    setSelectionWithoutRaising selection
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
@@ -351,6 +351,10 @@ synchronize = do
 
 setSelection :: forall m. Maybe Time -> CompositeComponentM m Unit
 setSelection selection = do
-  H.modify_ _ { selection = selection }
+  setSelectionWithoutRaising selection
   H.raise $ SelectionChanged selection
+
+setSelectionWithoutRaising :: forall m. Maybe Time -> CompositeComponentM m Unit
+setSelectionWithoutRaising selection = do
+  H.modify_ _ { selection = selection }
   synchronize
