@@ -1,7 +1,6 @@
-module Ocelot.Components.TimePicker.Component where
+module Ocelot.TimePicker where
 
 import Prelude
-
 import Data.Array ((!!))
 import Data.Array as Array
 import Data.FunctorWithIndex (mapWithIndex)
@@ -16,7 +15,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.Components.TimePicker.Utils as Utils
+import Ocelot.TimePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S

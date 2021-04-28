@@ -1,7 +1,6 @@
-module Ocelot.Components.TimePicker.Utils where
+module Ocelot.TimePicker.Utils where
 
 import Prelude
-
 import Control.Alt ((<|>))
 import Data.Array (length)
 import Data.Array.NonEmpty (catMaybes, head)

@@ -1,7 +1,6 @@
-module Ocelot.Components.DatePicker.Component where
+module Ocelot.DatePicker where
 
 import Prelude
-
 import Data.Array ((!!), mapWithIndex)
 import Data.Array as Array
 import Data.Date (Date, Month, Year, canonicalDate, month, year)
@@ -23,7 +22,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
-import Ocelot.Components.DatePicker.Utils as Utils
+import Ocelot.DatePicker.Utils as Utils
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S

@@ -1,7 +1,6 @@
-module Ocelot.Components.DatePicker.Utils where
+module Ocelot.DatePicker.Utils where
 
 import Prelude
-
 import Data.Array (drop, find, reverse, sort, take)
 import Data.Date (Date, Weekday(..), Year, day, month, weekday, year)
 import Data.DateTime (Month)

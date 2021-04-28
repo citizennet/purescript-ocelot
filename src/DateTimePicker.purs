@@ -1,18 +1,16 @@
-module Ocelot.Components.DateTimePicker.Component where
+module Ocelot.DateTimePicker where
 
 import Prelude
-
 import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested (type (/\))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Ocelot.Components.DatePicker.Component as DatePicker
-import Ocelot.Components.TimePicker.Component as TimePicker
+import Ocelot.DatePicker as DatePicker
+import Ocelot.TimePicker as TimePicker
 import Ocelot.HTML.Properties (css)
 import Type.Data.Symbol (SProxy(..))
-
 
 type Slot = H.Slot Query Output
 
