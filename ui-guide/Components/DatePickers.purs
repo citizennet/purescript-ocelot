@@ -1,7 +1,6 @@
 module UIGuide.Component.DatePickers where
 
 import Prelude
-
 import Data.DateTime (DateTime(..))
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
@@ -13,9 +12,9 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
-import Ocelot.Components.DatePicker.Component as DatePicker
-import Ocelot.Components.DateTimePicker.Component as DateTimePicker
-import Ocelot.Components.TimePicker.Component as TimePicker
+import Ocelot.DatePicker as DatePicker
+import Ocelot.DateTimePicker as DateTimePicker
+import Ocelot.TimePicker as TimePicker
 import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
