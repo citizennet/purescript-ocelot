@@ -241,6 +241,13 @@ setSelection selection = do
   H.raise $ SelectionChanged selection
   synchronize
 
+setSelectionWithoutRaising :: forall m. MonadAff m => Maybe Date -> CompositeComponentM m Unit
+setSelectionWithoutRaising selection = do
+  st <- H.get
+  let targetDate = maybe st.targetDate (\d -> (year d) /\ (month d)) selection
+  H.modify_ _ { selection = selection, targetDate = targetDate }
+  synchronize
+
 --------------------------
 -- Embedded > handleAction
 
@@ -318,7 +325,7 @@ embeddedHandleQuery = case _ of
   SetDisabled disabled a -> Just a <$ do
     H.modify_ _ { disabled = disabled }
   SetSelection selection a -> Just a <$ do
-    setSelection selection
+    setSelectionWithoutRaising selection
 
 ---------------------------
 -- Embedded > handleMessage
