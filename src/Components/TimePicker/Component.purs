@@ -5,7 +5,7 @@ import Prelude
 import Data.Array ((!!))
 import Data.Array as Array
 import Data.FunctorWithIndex (mapWithIndex)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), isNothing)
 import Data.String (trim)
 import Data.Symbol (SProxy(..))
 import Data.Time (Time)
@@ -184,7 +184,9 @@ embeddedHandleAction = case _ of
       otherwise -> pure unit
 
   OnBlur -> do
-    handleSearch
+    { selection } <- H.get
+    when (isNothing selection) handleSearch
+
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
@@ -215,7 +217,7 @@ embeddedHandleMessage = case _ of
         synchronize
 
   S.Searched text -> do
-    H.modify_ _ { search = text }
+    H.modify_ _ { search = text, selection = Nothing }
     -- we don't actually want to match on search, we want to wait
     -- until they hit ENTER and then we'll try to match their search
 
