@@ -9,6 +9,7 @@ Authors:
   "Forest Toney <https://github.com/foresttoney>",
   "Hardy Jones <https://github.com/joneshf-cn>",
   "Vance Palacio <https://github.com/vanceism7>"
+  "Gabe Johnson <https://github.com/citizengabe>"
 -}
 
 { name = "ocelot"
