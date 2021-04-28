@@ -12,19 +12,25 @@ import Ocelot.TimePicker as TimePicker
 import Ocelot.HTML.Properties (css)
 import Type.Data.Symbol (SProxy(..))
 
-type Slot = H.Slot Query Output
+--------
+-- Types
+
+data Action
+  = HandleDate DatePicker.Output
+  | HandleTime TimePicker.Output
+
+type ChildSlots =
+  ( datepicker :: DatePicker.Slot Unit
+  , timepicker :: TimePicker.Slot Unit
+  )
 
 type Component m = H.Component HH.HTML Query Input Output m
+
 type ComponentHTML m = H.ComponentHTML Action ChildSlots m
-type ComponentRender m = State -> ComponentHTML m
+
 type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 
-type State =
-  { date :: Maybe Date
-  , time :: Maybe Time
-  , targetDate :: Maybe (Year /\ Month)
-  , disabled :: Boolean
-  }
+type ComponentRender m = State -> ComponentHTML m
 
 type Input =
   { selection :: Maybe DateTime
@@ -32,16 +38,10 @@ type Input =
   , disabled :: Boolean
   }
 
-defaultInput :: Input
-defaultInput =
-  { selection: Nothing
-  , targetDate: Nothing
-  , disabled: false
-  }
-
-data Action
-  = HandleDate DatePicker.Output
-  | HandleTime TimePicker.Output
+data Output
+  = SelectionChanged (Maybe DateTime)
+  | DateOutput DatePicker.Output
+  | TimeOutput TimePicker.Output
 
 data Query a
   = GetSelection (DateTime -> a)
@@ -50,17 +50,17 @@ data Query a
   | SendTimeQuery (TimePicker.Query Unit) a
   | SetDisabled Boolean a
 
-data Output
-  = SelectionChanged (Maybe DateTime)
-  | DateOutput DatePicker.Output
-  | TimeOutput TimePicker.Output
+type Slot = H.Slot Query Output
 
-type ChildSlots =
-  ( datepicker :: DatePicker.Slot Unit
-  , timepicker :: TimePicker.Slot Unit
-  )
-_datepicker = SProxy :: SProxy "datepicker"
-_timepicker = SProxy :: SProxy "timepicker"
+type State =
+  { date :: Maybe Date
+  , time :: Maybe Time
+  , targetDate :: Maybe (Year /\ Month)
+  , disabled :: Boolean
+  }
+
+------------
+-- Component
 
 component :: forall m. MonadAff m => Component m
 component = H.mkComponent
@@ -72,13 +72,59 @@ component = H.mkComponent
       }
   }
 
+---------
+-- Values
+
+_datepicker = SProxy :: SProxy "datepicker"
+_timepicker = SProxy :: SProxy "timepicker"
+
+defaultInput :: Input
+defaultInput =
+  { selection: Nothing
+  , targetDate: Nothing
+  , disabled: false
+  }
+
+handleAction :: forall m. Action -> ComponentM m Unit
+handleAction = case _ of
+  HandleDate msg -> case msg of
+    DatePicker.SelectionChanged date' -> do
+      time' <- H.gets _.time
+      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      H.modify_ _ { date = date' }
+    _ -> H.raise $ DateOutput msg
+  HandleTime msg -> case msg of
+    TimePicker.SelectionChanged time' -> do
+      date' <- H.gets _.date
+      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      H.modify_ _ { time = time' }
+    _ -> H.raise $ TimeOutput msg
+
+handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
+handleQuery = case _ of
+  GetSelection reply -> do
+    { time, date } <- H.get
+    pure $ reply <$> (DateTime <$> date <*> time)
+  SetDisabled disabled a -> Just a <$ do
+    H.modify_ _ { disabled = disabled }
+    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetDisabled disabled
+    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetDisabled disabled
+  SetSelection dateTime a -> Just a <$ do
+    let date' = date <$> dateTime
+        time' = time <$> dateTime
+    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetSelection date'
+    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetSelection time'
+    H.modify_ _ { date = date', time = time' }
+  SendDateQuery q a -> Just a <$ H.query _datepicker unit q
+  SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
+
 initialState :: Input -> State
 initialState { selection, targetDate, disabled } =
-      { date: date <$> selection
-      , time: time <$> selection
-      , targetDate
-      , disabled
-      }
+  { date: date <$> selection
+  , time: time <$> selection
+  , targetDate
+  , disabled
+  }
 
 render :: forall m. MonadAff m => ComponentRender m
 render { date, time, targetDate, disabled } =
@@ -100,43 +146,3 @@ render { date, time, targetDate, disabled } =
         (Just <<< HandleTime)
       ]
     ]
-
-handleAction :: forall m. Action -> ComponentM m Unit
-handleAction = case _ of
-  HandleDate msg -> case msg of
-    DatePicker.SelectionChanged date' -> do
-      time' <- H.gets _.time
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
-      H.modify_ _ { date = date' }
-
-    _ -> H.raise $ DateOutput msg
-
-  HandleTime msg -> case msg of
-    TimePicker.SelectionChanged time' -> do
-      date' <- H.gets _.date
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
-      H.modify_ _ { time = time' }
-
-    _ -> H.raise $ TimeOutput msg
-
-handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
-handleQuery = case _ of
-  GetSelection reply -> do
-    { time, date } <- H.get
-    pure $ reply <$> (DateTime <$> date <*> time)
-
-  SetDisabled disabled a -> Just a <$ do
-    H.modify_ _ { disabled = disabled }
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetDisabled disabled
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetDisabled disabled
-
-  SetSelection dateTime a -> Just a <$ do
-    let date' = date <$> dateTime
-        time' = time <$> dateTime
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetSelection date'
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetSelection time'
-    H.modify_ _ { date = date', time = time' }
-
-  SendDateQuery q a -> Just a <$ H.query _datepicker unit q
-
-  SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
