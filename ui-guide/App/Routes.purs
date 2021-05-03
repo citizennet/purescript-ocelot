@@ -17,6 +17,7 @@ import UIGuide.Component.Diagram as Diagram
 import UIGuide.Component.Dialogs as Dialogs
 import UIGuide.Component.Dropdown as Dropdown
 import UIGuide.Component.ExpansionCards as ExpansionCards
+import UIGuide.Component.FilePicker as FilePicker
 import UIGuide.Component.FormControl as FormControl
 import UIGuide.Component.Icons as Icons
 import UIGuide.Component.Modals as Modals
@@ -128,5 +129,10 @@ routes = fromFoldable
     { anchor: "Diagram"
     , component: proxy Diagram.component
     , group: Basics
+    }
+  , Tuple "file-picker"
+    { anchor: "File Picker"
+    , component: proxy FilePicker.component
+    , group: Components
     }
   ]
