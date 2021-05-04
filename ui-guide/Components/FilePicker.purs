@@ -38,7 +38,7 @@ type Output
   = Void
 
 type ChildSlots =
-  ( filePicker :: Ocelot.FilePicker.Slot Unit
+  ( filePicker :: Ocelot.FilePicker.Slot String
   )
 
 _filePicker = SProxy :: SProxy "filePicker"
@@ -88,10 +88,28 @@ render state =
         [ Card.card
           [ Ocelot.HTML.Properties.css "flex-1" ]
           [ Halogen.HTML.h3
+            [ Halogen.HTML.Properties.classes Format.captionClasses ]
+            [ Halogen.HTML.text "Single" ]
+          , Halogen.HTML.slot _filePicker "Single"
+            ( Ocelot.FilePicker.component
+              { id: "file-single"
+              , multiple: false
+              }
+            )
+            unit
+            (Just <<< HandleFilePicker)
+          ]
+        , Card.card
+          [ Ocelot.HTML.Properties.css "flex-1" ]
+          [ Halogen.HTML.h3
               [ Halogen.HTML.Properties.classes Format.captionClasses ]
-              [ Halogen.HTML.text "Single" ]
-          , Halogen.HTML.slot _filePicker unit
-              Ocelot.FilePicker.component
+              [ Halogen.HTML.text "Multiple" ]
+          , Halogen.HTML.slot _filePicker "Multiple"
+              ( Ocelot.FilePicker.component
+                  { id: "file-multiple"
+                  , multiple: true
+                  }
+              )
               unit
               (Just <<< HandleFilePicker)
           ]

@@ -8,6 +8,7 @@ module Ocelot.FilePicker
 import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
+import Data.Array as Data.Array
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
 import Foreign.Object as Foreign.Object
@@ -23,6 +24,15 @@ import Web.File.FileList as Web.File.FileList
 import Web.HTML.Event.DataTransfer as Web.HTML.Event.DataTransfer
 import Web.HTML.Event.DragEvent as Web.HTML.Event.DragEvent
 
+-- * id: a *globally* unique identifier for the <input /> element
+-- * multiple
+--   * true: allow selecting multiple files
+--   * false: only allow selecting a single file
+type Config
+  = { id :: String
+    , multiple :: Boolean
+    }
+
 type Slot = Halogen.Slot Query Output
 
 type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
@@ -30,7 +40,8 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
 type State =
-  { dragOver :: Boolean
+  { config :: Config
+  , dragOver :: Boolean
   }
 
 data Action
@@ -52,10 +63,11 @@ type ChildSlots = ()
 component ::
   forall m.
   MonadAff m =>
+  Config ->
   Component m
-component =
+component config =
   Halogen.mkComponent
-    { initialState
+    { initialState: initialState config
     , render
     , eval:
         Halogen.mkEval
@@ -64,9 +76,10 @@ component =
             }
     }
 
-initialState :: Input -> State
-initialState input =
-  { dragOver: false
+initialState :: Config -> Input -> State
+initialState config input =
+  { config
+  , dragOver: false
   }
 
 handleAction ::
@@ -86,7 +99,11 @@ chooseFile ::
   Array Web.File.File.File ->
   ComponentM m Unit
 chooseFile files = do
-  Halogen.raise (Selected files)
+  config <- Halogen.gets _.config
+  let
+    selected :: Array Web.File.File.File
+    selected = if config.multiple then files else Data.Array.take 1 files
+  Halogen.raise (Selected selected)
 
 dragEnter ::
   forall m.
@@ -139,7 +156,7 @@ render ::
 render state =
   Halogen.HTML.div_
     [ renderDropBox state
-    , renderInput
+    , renderInput state
     ]
 
 renderDropBox ::
@@ -153,11 +170,11 @@ renderDropBox state
           [ Ocelot.HTMl.Properties.style <<< Foreign.Object.fromHomogeneous $
             { "pointer-events": "none" } -- NOTE prevent event firing from children
           ]
-          renderContent
+          (renderContent state)
       ]
   | otherwise =
     Halogen.HTML.div ipropIdle
-      renderContent
+      (renderContent state)
 
 ipropIdle :: Array (Halogen.HTML.Properties.IProp HTMLdiv Action)
 ipropIdle =
@@ -203,10 +220,11 @@ ipropDragOver =
 
 renderContent ::
   forall m.
+  State ->
   Array (ComponentHTML m)
-renderContent =
+renderContent state =
   [ renderIcon
-  , renderLabel
+  , renderLabel state
   ]
 
 
@@ -222,27 +240,33 @@ renderIcon =
 
 renderInput ::
   forall m.
+  State ->
   ComponentHTML m
-renderInput =
+renderInput state =
   Halogen.HTML.input
     [ Ocelot.HTMl.Properties.css "hidden"
-    , Halogen.HTML.Properties.id_ _file
+    , Halogen.HTML.Properties.id_ state.config.id
     , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
     , Ocelot.HTML.Events.onFileUpload (Just <<< ChooseFile)
+    , Halogen.HTML.Properties.multiple state.config.multiple
     ]
 
 renderLabel ::
   forall m.
+  State ->
   ComponentHTML m
-renderLabel =
+renderLabel state =
   Halogen.HTML.label
     [ Ocelot.HTMl.Properties.css "group text-center"
-    , Halogen.HTML.Properties.for _file
+    , Halogen.HTML.Properties.for state.config.id
     ]
     [ Halogen.HTML.span
       [ Ocelot.HTMl.Properties.css "group-hover:text-blue-88" ]
-      [ Halogen.HTML.text "Choose a file" ]
+      [ Halogen.HTML.text
+          if state.config.multiple then
+            "Choose file(s)"
+          else
+            "Choose a file"
+      ]
     , Halogen.HTML.text " or drag it here."
     ]
-
-_file = "file" :: String
