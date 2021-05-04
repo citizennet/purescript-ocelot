@@ -5,6 +5,7 @@ import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
+import Effect.Class.Console as Effect.Class.Console
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Properties
@@ -14,6 +15,7 @@ import Ocelot.FilePicker as Ocelot.FilePicker
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
+import Web.File.File as Web.File.File
 
 type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
 
@@ -25,6 +27,7 @@ type State
   = {}
 
 data Action
+  = HandleFilePicker Ocelot.FilePicker.Output
 
 data Query a
 
@@ -51,10 +54,23 @@ component =
     , eval:
       Halogen.mkEval
         Halogen.defaultEval
+          { handleAction = handleAction
+          }
     }
 
 initialState :: Input -> State
 initialState _ = {}
+
+handleAction ::
+  forall m.
+  MonadAff m =>
+  Action ->
+  ComponentM m Unit
+handleAction = case _ of
+  HandleFilePicker output -> case output of
+    Ocelot.FilePicker.Selected files -> do
+      Halogen.liftEffect <<< Effect.Class.Console.log $
+        "file selected: " <> show (map Web.File.File.name $ files)
 
 render ::
   forall m.
@@ -77,7 +93,7 @@ render state =
           , Halogen.HTML.slot _filePicker unit
               Ocelot.FilePicker.component
               unit
-              (const Nothing)
+              (Just <<< HandleFilePicker)
           ]
         ]
       ]

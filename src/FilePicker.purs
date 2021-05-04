@@ -10,7 +10,6 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console as Effect.Class.Console
 import Foreign.Object as Foreign.Object
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -35,7 +34,8 @@ type State =
   }
 
 data Action
-  = DragEnter Web.HTML.Event.DragEvent.DragEvent
+  = ChooseFile (Array Web.File.File.File)
+  | DragEnter Web.HTML.Event.DragEvent.DragEvent
   | DragLeave Web.HTML.Event.DragEvent.DragEvent
   | DropFile Web.HTML.Event.DragEvent.DragEvent
   | PreventDefault Web.Event.Event.Event
@@ -44,10 +44,10 @@ data Query a
 
 type Input = Unit
 
-type Output = Void
+data Output
+  = Selected (Array Web.File.File.File)
 
 type ChildSlots = ()
-
 
 component ::
   forall m.
@@ -75,10 +75,18 @@ handleAction ::
   Action ->
   ComponentM m Unit
 handleAction = case _ of
+  ChooseFile files -> chooseFile files
   DragEnter dragEvent -> dragEnter dragEvent
   DragLeave dragEvent -> dragLeave dragEvent
   DropFile dragEvent -> dropFile dragEvent
   PreventDefault event -> preventDefault event
+
+chooseFile ::
+  forall m.
+  Array Web.File.File.File ->
+  ComponentM m Unit
+chooseFile files = do
+  Halogen.raise (Selected files)
 
 dragEnter ::
   forall m.
@@ -112,11 +120,7 @@ dropFile dragEvent = do
       let
         files :: Array Web.File.File.File
         files = Web.File.FileList.items fileList
-      Halogen.liftEffect -- TODO debug
-        $ Effect.Class.Console.logShow
-        $ map Web.File.File.name
-        $ files
-      pure unit -- TODO handle file
+      chooseFile files
 
 preventDefault ::
   forall m.
@@ -224,6 +228,7 @@ renderInput =
     [ Ocelot.HTMl.Properties.css "hidden"
     , Halogen.HTML.Properties.id_ _file
     , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
+    , Ocelot.HTML.Events.onFileUpload (Just <<< ChooseFile)
     ]
 
 renderLabel ::
