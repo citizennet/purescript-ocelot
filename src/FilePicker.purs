@@ -8,6 +8,7 @@ module Ocelot.FilePicker
 import Prelude
 
 import DOM.HTML.Indexed (HTMLdiv)
+import DOM.HTML.Indexed.InputAcceptType as DOM.HTML.Indexed.InputAcceptType
 import Data.Array as Data.Array
 import Data.Maybe (Maybe(..))
 import Effect.Aff.Class (class MonadAff)
@@ -17,6 +18,7 @@ import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Ocelot.HTML.Events
 import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.Block.Icon as Ocelot.Block.Icon
+import Ocelot.Data.InputAcceptType as Ocelot.Data.InputAcceptType
 import Ocelot.HTML.Properties as Ocelot.HTMl.Properties
 import Web.Event.Event as Web.Event.Event
 import Web.File.File as Web.File.File
@@ -29,7 +31,8 @@ import Web.HTML.Event.DragEvent as Web.HTML.Event.DragEvent
 --   * true: allow selecting multiple files
 --   * false: only allow selecting a single file
 type Config
-  = { id :: String
+  = { accept :: Maybe DOM.HTML.Indexed.InputAcceptType.InputAcceptType
+    , id :: String
     , multiple :: Boolean
     }
 
@@ -102,8 +105,27 @@ chooseFile files = do
   config <- Halogen.gets _.config
   let
     selected :: Array Web.File.File.File
-    selected = if config.multiple then files else Data.Array.take 1 files
+    selected =
+      files
+        # filterByAccept config
+        # filterByMultiple config
   Halogen.raise (Selected selected)
+  where
+  filterByAccept ::
+    Config ->
+    Array Web.File.File.File ->
+    Array Web.File.File.File
+  filterByAccept config = case config.accept of
+    Nothing -> identity
+    Just accept -> Data.Array.filter (Ocelot.Data.InputAcceptType.validate accept)
+
+  filterByMultiple ::
+    Config ->
+    Array Web.File.File.File ->
+    Array Web.File.File.File
+  filterByMultiple config
+    | config.multiple = identity
+    | otherwise = Data.Array.take 1
 
 dragEnter ::
   forall m.
@@ -244,12 +266,16 @@ renderInput ::
   ComponentHTML m
 renderInput state =
   Halogen.HTML.input
-    [ Ocelot.HTMl.Properties.css "hidden"
-    , Halogen.HTML.Properties.id_ state.config.id
-    , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
-    , Ocelot.HTML.Events.onFileUpload (Just <<< ChooseFile)
-    , Halogen.HTML.Properties.multiple state.config.multiple
-    ]
+    ( [ Ocelot.HTMl.Properties.css "hidden"
+      , Halogen.HTML.Properties.id_ state.config.id
+      , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
+      , Ocelot.HTML.Events.onFileUpload (Just <<< ChooseFile)
+      , Halogen.HTML.Properties.multiple state.config.multiple
+      ]
+        <> case state.config.accept of
+          Nothing -> []
+          Just inputType -> [ Halogen.HTML.Properties.accept inputType ]
+    )
 
 renderLabel ::
   forall m.
