@@ -283,7 +283,7 @@ renderLabel ::
   ComponentHTML m
 renderLabel state =
   Halogen.HTML.label
-    [ Ocelot.HTMl.Properties.css "group text-center"
+    [ Ocelot.HTMl.Properties.css "group text-center w-full"
     , Halogen.HTML.Properties.for state.config.id
     ]
     [ Halogen.HTML.span
