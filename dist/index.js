@@ -54250,7 +54250,7 @@ var PreventDefault = (function () {
     return PreventDefault;
 })();
 var renderLabel = function (state) {
-    return Halogen_HTML_Elements.label([ Ocelot_HTML_Properties.css("group text-center"), Halogen_HTML_Properties["for"](state.config.id) ])([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("group-hover:text-blue-88") ])([ Halogen_HTML_Core.text((function () {
+    return Halogen_HTML_Elements.label([ Ocelot_HTML_Properties.css("group text-center w-full"), Halogen_HTML_Properties["for"](state.config.id) ])([ Halogen_HTML_Elements.span([ Ocelot_HTML_Properties.css("group-hover:text-blue-88") ])([ Halogen_HTML_Core.text((function () {
         if (state.config.multiple) {
             return "Choose file(s)";
         };
