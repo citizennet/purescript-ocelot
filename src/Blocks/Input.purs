@@ -38,7 +38,6 @@ inputGroupClasses = HH.ClassName <$>
   [ "flex"
   , "group"
   , "w-full"
-  , "items-center"
   ]
 
 mainItemClasses :: Array HH.ClassName
@@ -92,6 +91,8 @@ addonClasses :: Array HH.ClassName
 addonClasses = inputSharedClasses <>
   ( HH.ClassName <$>
     [ "cursor-pointer"
+    , "flex"
+    , "items-center"
     , "text-grey-70"
     ]
   )

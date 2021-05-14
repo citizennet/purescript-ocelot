@@ -1,6 +1,6 @@
 {
   "name": "purescript-ocelot",
-  "version": "0.28.1",
+  "version": "0.28.2",
   "private": true,
   "scripts": {
     "build-all": "make build",
