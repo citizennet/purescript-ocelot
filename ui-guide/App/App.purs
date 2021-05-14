@@ -18,16 +18,18 @@ import Data.Const (Const)
 import Data.Functor (mapFlipped)
 import Data.Map as M
 import Data.Maybe (Maybe(..))
+import Data.Maybe as Data.Maybe
 import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
 import Effect.Aff (Aff, launchAff_)
-import Global.Unsafe (unsafeDecodeURI, unsafeEncodeURI)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Storybook.Proxy (proxy)
 import Halogen.VDom.Driver (runUI)
+import JSURI as JSURI
 import Ocelot.Block.Format as Format
+import Partial.Unsafe as Partial.Unsafe
 import Routing.Hash (hashes)
 import UIGuide.Block.Backdrop as Backdrop
 import Web.HTML.HTMLElement (HTMLElement)
@@ -212,3 +214,9 @@ app =
 
 partitionByGroup :: ∀ m. Group -> Stories m -> Tuple Group (Stories m)
 partitionByGroup g = Tuple g <<< M.filter (\{ group } -> group == g)
+
+unsafeEncodeURI :: String -> String
+unsafeEncodeURI x = Partial.Unsafe.unsafePartial (Data.Maybe.fromJust (JSURI.encodeURIComponent x))
+
+unsafeDecodeURI :: String -> String
+unsafeDecodeURI x = Partial.Unsafe.unsafePartial (Data.Maybe.fromJust (JSURI.decodeURIComponent x))
