@@ -17,7 +17,7 @@ import Prelude
 import Data.Array as Data.Array
 import Data.FoldableWithIndex as Data.FoldableWithIndex
 import Data.Generic.Rep as Data.Generic.Rep
-import Data.Generic.Rep.Show as Data.Generic.Rep.Show
+import Data.Show.Generic as Data.Show.Generic
 import Data.Map as Data.Map
 import Data.Maybe (Maybe(..))
 import Data.Tuple as Data.Tuple
@@ -33,7 +33,7 @@ derive instance eqIntervalPoint :: Eq IntervalPoint
 derive instance genericIntervalPoint :: Data.Generic.Rep.Generic IntervalPoint _
 
 instance showIntervalPoint :: Show IntervalPoint where
-  show = Data.Generic.Rep.Show.genericShow
+  show = Data.Show.Generic.genericShow
 
 -- | O(n log n)
 fromIntervals ::
