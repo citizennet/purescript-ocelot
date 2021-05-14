@@ -12,7 +12,7 @@ import Foreign.Object as Foreign.Object
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Properties
-import Halogen.Query.EventSource as Halogen.Query.EventSource
+import Halogen.Query.Event as Halogen.Query.Event
 import Ocelot.Block.Format as Ocelot.Block.Format
 import Ocelot.HTML.Properties ((<&>))
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
@@ -34,7 +34,7 @@ initializeWith ::
 initializeWith toAction = do
   document <- Halogen.liftEffect $ Web.HTML.Window.document =<< Web.HTML.window
   Halogen.subscribe
-    $ Halogen.Query.EventSource.eventListenerEventSource
+    $ Halogen.Query.Event.eventListener
       Web.UIEvent.KeyboardEvent.EventTypes.keydown
       (Web.HTML.HTMLDocument.toEventTarget document)
       (toAction <=< Web.UIEvent.KeyboardEvent.fromEvent)

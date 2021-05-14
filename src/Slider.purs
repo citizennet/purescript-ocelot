@@ -24,7 +24,7 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
-import Halogen.Query.EventSource as Halogen.Query.EventSource
+import Halogen.Query.Event as Halogen.Query.Event
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Data.IntervalTree as Ocelot.Data.IntervalTree
 import Ocelot.Slider.Render as Ocelot.Slider.Render
@@ -559,7 +559,7 @@ listenOnMouseMove ::
   ComponentM m Halogen.SubscriptionId
 listenOnMouseMove window = do
   Halogen.subscribe
-    $ Halogen.Query.EventSource.eventListenerEventSource
+    $ Halogen.Query.Event.eventListener
         Web.UIEvent.MouseEvent.EventTypes.mousemove
         (Web.HTML.Window.toEventTarget window)
         toAction
@@ -574,7 +574,7 @@ listenOnMouseUp ::
   ComponentM m Halogen.SubscriptionId
 listenOnMouseUp window = do
   Halogen.subscribe
-    $ Halogen.Query.EventSource.eventListenerEventSource
+    $ Halogen.Query.Event.eventListener
         Web.UIEvent.MouseEvent.EventTypes.mouseup
         (Web.HTML.Window.toEventTarget window)
         toAction

@@ -2,7 +2,6 @@ module Ocelot.Interface.Utilities where
 
 import Prelude
 
-import Control.Coroutine (consumer)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Aff (Aff, error, killFiber, launchAff, launchAff_)
@@ -10,6 +9,7 @@ import Effect.Aff.AVar (AVar, read) as AffAVar
 import Effect.Aff.Compat (EffectFn1, mkEffectFn1, runEffectFn1)
 import Effect.Class (liftEffect)
 import Halogen (HalogenIO)
+import Halogen.Subscription as Halogen.Subscription
 
 -- | A row containing the 'subscribe' function from Halogen so it
 -- | may be used to subscribe to the message variant in JS.
@@ -33,7 +33,7 @@ mkSubscription
 mkSubscription ioVar convertMessage = mkEffectFn1 \cb -> do
   fiber <- launchAff do
     io <- AffAVar.read ioVar
-    io.subscribe $ consumer \msg -> do
+    void $ liftEffect $ Halogen.Subscription.subscribe io.messages \msg -> do
       let msgVariant = convertMessage msg
       liftEffect $ runEffectFn1 cb msgVariant
       pure Nothing
