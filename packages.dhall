@@ -126,11 +126,37 @@ let halogen-renderless =
       , version = "v0.0.4"
       }
 
+let html-parser-halogen =
+      { dependencies = [ "string-parsers", "halogen" ]
+      , repo =
+          "https://github.com/rnons/purescript-html-parser-halogen.git"
+      , version = "v1.0.0-rc.2"
+      }
+
+let svg-parser =
+      { dependencies = [ "prelude", "string-parsers" ]
+      , repo =
+          "https://github.com/citizennet/purescript-svg-parser.git"
+      , version = "v2.0.0"
+      }
+
+let svg-parser-halogen =
+      { dependencies = [ "svg-parser", "halogen" ]
+      , repo =
+          "https://github.com/rnons/purescript-svg-parser-halogen.git"
+      , version = "v2.0.0-rc.1"
+      }
+
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.13.8-20200724/packages.dhall sha256:bb941d30820a49345a0e88937094d2b9983d939c9fd3a46969b85ce44953d7d9
+      https://github.com/purescript/package-sets/releases/download/psc-0.14.1-20210506/packages.dhall sha256:d199e142515f9cc15838d8e6d724a98cd0ca776ceb426b7b36e841311643e3ef
 
 let overrides = {=}
 
-let additions = { halogen-renderless }
+let additions =
+      { halogen-renderless
+      , html-parser-halogen
+      , svg-parser
+      , svg-parser-halogen
+      }
 
 in  upstream // overrides // additions
