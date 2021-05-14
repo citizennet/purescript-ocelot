@@ -49869,7 +49869,7 @@ var inputRight = function (iprops) {
 var inputLeft = function (iprops) {
     return Halogen_HTML_Elements.input(Ocelot_HTML_Properties.appendIProps([ Halogen_HTML_Properties.classes(mainLeftClasses) ])(iprops));
 };
-var inputGroupClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "group", "w-full", "items-center" ]);
+var inputGroupClasses = Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "flex", "group", "w-full" ]);
 var inputGroup$prime = function (elem) {
     return function (iprops) {
         return function (html) {
@@ -49895,7 +49895,7 @@ var inputCenter = function (iprops) {
 var borderClasses = [  ];
 var borderLeftClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(borderClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-r", "pr-3", "order-start" ]));
 var borderRightClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(borderClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "border-l", "pl-3" ]));
-var addonClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputSharedClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "cursor-pointer", "text-grey-70" ]));
+var addonClasses = Data_Semigroup.append(Data_Semigroup.semigroupArray)(inputSharedClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "cursor-pointer", "flex", "items-center", "text-grey-70" ]));
 var addonLeftClassess = Data_Semigroup.append(Data_Semigroup.semigroupArray)(addonClasses)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(leftClasses)(Data_Functor.map(Data_Functor.functorArray)(Halogen_HTML_Core.ClassName)([ "order-start" ])));
 var addonLeft = function (iprops) {
     return function (html) {
