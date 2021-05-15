@@ -611,18 +611,18 @@ handleAction = case _ of
 handleQuery :: forall action f item m a. Query f item a -> ComponentM action f item m (Maybe a)
 handleQuery = case _ of
   GetSelected reply -> do
-    response <- Halogen.query _select unit (Select.Query $ Halogen.request GetSelected)
+    response <- Halogen.request _select unit (Select.Query <<< GetSelected)
     pure $ reply <$> response
   ReplaceSelected selected a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceSelected selected)
+    Halogen.tell _select unit (Select.Query <<< ReplaceSelected selected)
   ReplaceSelectedBy f a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceSelectedBy f)
+    Halogen.tell _select unit (Select.Query <<< ReplaceSelectedBy f)
   ReplaceItems items a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceItems items)
+    Halogen.tell _select unit (Select.Query <<< ReplaceItems items)
   Reset a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ Reset)
+    Halogen.tell _select unit (Select.Query <<< Reset)
   SetDisabled disabled a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetDisabled disabled)
+    Halogen.tell _select unit (Select.Query <<< SetDisabled disabled)
 
 initialState
   :: forall action f item m

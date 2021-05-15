@@ -11,11 +11,11 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
+import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.DatePicker as DatePicker
 import Ocelot.DateTimePicker as DateTimePicker
-import Ocelot.TimePicker as TimePicker
-import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
+import Ocelot.TimePicker as TimePicker
 import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -63,12 +63,12 @@ component =
     handleAction = case _ of  
       ToggleDisabled -> do
         st <- H.modify \s -> s { disabled = not s.disabled }
-        void $ H.query _datePicker 0 $ H.tell $ DatePicker.SetDisabled st.disabled
-        void $ H.query _datePicker 1 $ H.tell $ DatePicker.SetDisabled st.disabled
-        void $ H.query _timePicker 0 $ H.tell $ TimePicker.SetDisabled st.disabled
-        void $ H.query _timePicker 1 $ H.tell $ TimePicker.SetDisabled st.disabled
-        void $ H.query _dtp 0 $ H.tell $ DateTimePicker.SetDisabled st.disabled
-        void $ H.query _dtp 1 $ H.tell $ DateTimePicker.SetDisabled st.disabled
+        void $ H.tell _datePicker 0 $ DatePicker.SetDisabled st.disabled
+        void $ H.tell _datePicker 1 $ DatePicker.SetDisabled st.disabled
+        void $ H.tell _timePicker 0 $ TimePicker.SetDisabled st.disabled
+        void $ H.tell _timePicker 1 $ TimePicker.SetDisabled st.disabled
+        void $ H.tell _dtp 0 $ DateTimePicker.SetDisabled st.disabled
+        void $ H.tell _dtp 1 $ DateTimePicker.SetDisabled st.disabled
         
     initialState :: Unit -> State
     initialState _ = { disabled: false }

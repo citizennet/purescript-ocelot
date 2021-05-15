@@ -84,11 +84,11 @@ handleAction = case _ of
       Halogen.liftEffect (log ("slider: " <> show xs))
 
   HandleThumbCount n slotKey -> do
-    void $ Halogen.query _slider slotKey <<< Halogen.tell
+    void $ Halogen.tell _slider slotKey
       $ Ocelot.Slider.SetThumbCount n
 
   Initialize -> do
-    void <<< Halogen.query _slider "disabled" <<< Halogen.tell
+    void <<< Halogen.tell _slider "disabled"
       $ Ocelot.Slider.ReplaceThumbs [ { percent: 30.0 }, { percent: 70.0 } ]
 
   ToggleFormPanel _ -> do

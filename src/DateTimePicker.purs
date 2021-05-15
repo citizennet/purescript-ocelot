@@ -21,8 +21,8 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Ocelot.DatePicker as DatePicker
-import Ocelot.TimePicker as TimePicker
 import Ocelot.HTML.Properties (css)
+import Ocelot.TimePicker as TimePicker
 import Type.Proxy (Proxy(..))
 
 --------
@@ -113,13 +113,13 @@ handleQuery = case _ of
     pure $ reply <$> (DateTime <$> date <*> time)
   SetDisabled disabled a -> Just a <$ do
     H.modify_ _ { disabled = disabled }
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetDisabled disabled
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetDisabled disabled
+    void $ H.tell _datepicker unit $ DatePicker.SetDisabled disabled
+    void $ H.tell _timepicker unit $ TimePicker.SetDisabled disabled
   SetSelection dateTime a -> Just a <$ do
     let date' = date <$> dateTime
         time' = time <$> dateTime
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetSelection date'
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetSelection time'
+    void $ H.tell _datepicker unit $ DatePicker.SetSelection date'
+    void $ H.tell _timepicker unit $ TimePicker.SetSelection time'
     H.modify_ _ { date = date', time = time' }
   SendDateQuery q a -> Just a <$ H.query _datepicker unit q
   SendTimeQuery q a -> Just a <$ H.query _timepicker unit q

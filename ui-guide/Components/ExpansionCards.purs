@@ -19,8 +19,8 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toggle as Toggle
-import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
+import Ocelot.Typeahead as TA
 import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -93,40 +93,40 @@ component =
         H.put (over lens not st)
 
       Initialize -> do
-        _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp1 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp2 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp3 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp4 $ H.mkTell $ TA.ReplaceItems Loading
 
         remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
         _ <- case remoteLocations of
           items@(Success _) -> do
-            _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp3 $ H.mkTell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp4 $ H.mkTell $ TA.ReplaceItems items
             pure unit
           otherwise -> pure unit
 
         remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
         _ <- case remoteUsers of
           items@(Success _) -> do
-            _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp1 $ H.mkTell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp2 $ H.mkTell $ TA.ReplaceItems items
             pure unit
           otherwise -> pure unit
 
         selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
         _ <- case selectedLocations of
           Success xs -> do
-            _ <- H.query _cp3 1 $ H.tell $ TA.ReplaceSelected (head xs)
-            _ <- H.query _cp4 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            _ <- H.tell _cp3 1 $ TA.ReplaceSelected (head xs)
+            _ <- H.tell _cp4 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
           otherwise -> pure unit
 
         selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
         case selectedUsers of
           Success xs -> do
-            _ <- H.query _cp1 1 $ H.tell $ TA.ReplaceSelected (head xs)
-            _ <- H.query _cp2 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            _ <- H.tell _cp1 1 $ TA.ReplaceSelected (head xs)
+            _ <- H.tell _cp2 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
           otherwise -> pure unit
 

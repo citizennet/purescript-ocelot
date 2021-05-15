@@ -420,7 +420,7 @@ measureTextWidth ::
   String ->
   ComponentM m (Maybe Number)
 measureTextWidth text = do
-  Halogen.query _textWidth unit <<< Halogen.request
+  Halogen.request _textWidth unit
     $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
 
 preventDefault ::

@@ -90,9 +90,9 @@ component =
         _ -> pure unit
       ToggleDisabled old -> do
         let disabled = not old
-        void $ H.query _dropdown StandardDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
-        void $ H.query _dropdown PrimaryDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
-        void $ H.query _dropdown DarkDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
+        void $ H.tell _dropdown StandardDynamic (Ocelot.Dropdown.SetDisabled disabled)
+        void $ H.tell _dropdown PrimaryDynamic (Ocelot.Dropdown.SetDisabled disabled)
+        void $ H.tell _dropdown DarkDynamic (Ocelot.Dropdown.SetDisabled disabled)
         H.modify_ \state -> state { disabled = disabled }
 
     initialState :: Input -> State

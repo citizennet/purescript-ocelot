@@ -31,11 +31,11 @@ module Ocelot.Dropdown
 import Prelude
 import Control.Comonad as Control.Comonad
 import Control.Comonad.Store as Control.Comonad.Store
+import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Data.Array ((!!))
 import Data.Array as Data.Array
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
-import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Effect.Aff.Class as Effect.Aff.Class
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -240,11 +240,11 @@ handleAction = case _ of
 handleQuery :: forall item m a. Query item a -> ComponentM item m (Maybe a)
 handleQuery = case _ of
   SetDisabled disabled a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetDisabled disabled)
+    Halogen.tell _select unit (Select.Query <<< SetDisabled disabled)
   SetItems items a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetItems items)
+    Halogen.tell _select unit (Select.Query <<< SetItems items)
   SetSelection item a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetSelection item)
+    Halogen.tell _select unit (Select.Query <<< SetSelection item)
 
 initialState :: forall item m. Effect.Aff.Class.MonadAff m => Input item m -> StateStore item m
 initialState { disabled, items, render, selectedItem } =

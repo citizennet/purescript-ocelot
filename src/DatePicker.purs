@@ -437,12 +437,12 @@ handleAction = case _ of
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
   GetSelection reply -> do
-    response <- H.query _select unit (S.Query $ H.request GetSelection)
+    response <- H.request _select unit (S.Query <<< GetSelection)
     pure $ reply <$> response
   SetDisabled disabled a -> Just a <$ do
-    H.query _select unit (S.Query $ H.tell $ SetDisabled disabled)
+    H.tell _select unit (S.Query <<< SetDisabled disabled)
   SetSelection selection a -> Just a <$ do
-    H.query _select unit (S.Query $ H.tell $ SetSelection selection)
+    H.tell _select unit (S.Query <<< SetSelection selection)
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do

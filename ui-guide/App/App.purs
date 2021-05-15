@@ -80,7 +80,7 @@ runStorybook
 runStorybook stories groups body = do
   app' <- runUI app { stories, groups } body
   void $ H.liftEffect $ hashes $ \_ next ->
-    launchAff_ $ app'.query (H.tell $ RouteChange $ unsafeDecodeURI next)
+    launchAff_ $ app'.query (H.mkTell $ RouteChange $ unsafeDecodeURI next)
 
 type Input m =
   { stories :: Stories m

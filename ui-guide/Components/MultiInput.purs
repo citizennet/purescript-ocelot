@@ -71,7 +71,7 @@ initialState _ = {}
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   Initialize -> do
-    void <<< Halogen.query _multiInput WithItems <<< Halogen.tell
+    void <<< Halogen.tell _multiInput WithItems
       $ Ocelot.Components.MultiInput.Component.SetItems items
 
 render ::

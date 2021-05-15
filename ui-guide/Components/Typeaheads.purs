@@ -14,8 +14,8 @@ import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
-import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
+import Ocelot.Typeahead as TA
 import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -75,20 +75,20 @@ component =
     handleAction = case _ of
       Initialize -> do
         _ <- Control.Parallel.parSequence_
-          [ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems Loading
-          , H.queryAll _multiUser $ H.tell $ TA.ReplaceItems Loading
-          , H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems Loading
-          , H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems Loading
+          [ H.queryAll _singleUser $ H.mkTell $ TA.ReplaceItems Loading
+          , H.queryAll _multiUser $ H.mkTell $ TA.ReplaceItems Loading
+          , H.queryAll _singleLocation $ H.mkTell $ TA.ReplaceItems Loading
+          , H.queryAll _multiLocation $ H.mkTell $ TA.ReplaceItems Loading
           ]
 
         _ <- Control.Parallel.parSequence_
           [ fetchAndSetLocations, fetchAndSetUsers ]
 
         _ <- Control.Parallel.parSequence_
-          [ H.query _singleLocation 4 $ H.tell $ TA.ReplaceItems $ Failure ""
-          , H.query _singleLocation 5 $ H.tell $ TA.ReplaceItems Loading
-          , H.query _multiUser 4 $ H.tell $ TA.ReplaceItems $ Failure ""
-          , H.query _multiUser 5 $ H.tell $ TA.ReplaceItems Loading
+          [ H.query _singleLocation 4 $ H.mkTell $ TA.ReplaceItems $ Failure ""
+          , H.query _singleLocation 5 $ H.mkTell $ TA.ReplaceItems Loading
+          , H.query _multiUser 4 $ H.mkTell $ TA.ReplaceItems $ Failure ""
+          , H.query _multiUser 5 $ H.mkTell $ TA.ReplaceItems Loading
           ]
 
         pure unit
@@ -99,10 +99,10 @@ component =
 
       case remoteLocations, selectedLocations of
         items@(Success _), Success xs -> do
-          void $ H.queryAll _singleLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.queryAll _singleLocation $ H.mkTell $ TA.ReplaceItems items
           void $ H.query _singleLocation 1 $ TA.ReplaceSelected (head xs) unit
           void $ H.query _singleLocation 3 $ TA.ReplaceSelected (head xs) unit
-          void $ H.queryAll _multiLocation $ H.tell $ TA.ReplaceItems items
+          void $ H.queryAll _multiLocation $ H.mkTell $ TA.ReplaceItems items
           void $ H.query _multiLocation 1 $ TA.ReplaceSelected (take 4 xs) unit
         _, _ -> pure unit
 
@@ -112,11 +112,11 @@ component =
 
       case remoteUsers, selectedUsers of
         items@(Success _), Success xs -> do
-          void $ H.queryAll _singleUser $ H.tell $ TA.ReplaceItems items
-          void $ H.queryAll _multiUser $ H.tell $ TA.ReplaceItems items
-          void $ H.query _singleUser 1 $ TA.ReplaceSelected (head xs) unit
-          void $ H.query _multiUser 1 $ TA.ReplaceSelected (take 4 xs) unit
-          void $ H.query _multiUser 3 $ TA.ReplaceSelected (take 4 xs) unit
+          void $ H.queryAll _singleUser $ H.mkTell $ TA.ReplaceItems items
+          void $ H.queryAll _multiUser $ H.mkTell $ TA.ReplaceItems items
+          void $ H.tell _singleUser 1 $ TA.ReplaceSelected (head xs)
+          void $ H.tell _multiUser 1 $ TA.ReplaceSelected (take 4 xs)
+          void $ H.tell _multiUser 3 $ TA.ReplaceSelected (take 4 xs)
         _, _ -> pure unit
 
 ----------
