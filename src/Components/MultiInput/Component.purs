@@ -13,7 +13,6 @@ import Data.FunctorWithIndex as Data.FunctorWithIndex
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Maybe as Data.Maybe
 import Data.String as Data.String
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -22,6 +21,7 @@ import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Components.MultiInput.TextWidth as Ocelot.Components.MultiInput.TextWidth
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Type.Proxy (Proxy(..))
 import Web.Event.Event as Web.Event.Event
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 import Web.UIEvent.KeyboardEvent as Web.UIEvent.KeyboardEvent
@@ -86,7 +86,7 @@ type ChildSlots =
   ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
   )
 
-_textWidth = SProxy :: SProxy "textWidth"
+_textWidth = Proxy :: Proxy "textWidth"
 
 component ::
   forall m.

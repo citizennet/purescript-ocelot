@@ -5,7 +5,6 @@ import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -17,6 +16,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
@@ -40,10 +40,10 @@ type ChildSlot =
   , cp4 :: TA.Slot Action Array Async.Location Int
   )
 
-_singleUser = SProxy :: SProxy "cp1"
-_multiUser = SProxy :: SProxy "cp2"
-_singleLocation = SProxy :: SProxy "cp3"
-_multiLocation = SProxy :: SProxy "cp4"
+_singleUser = Proxy :: Proxy "cp1"
+_multiUser = Proxy :: Proxy "cp2"
+_singleLocation = Proxy :: Proxy "cp3"
+_multiLocation = Proxy :: Proxy "cp4"
 
 
 ----------

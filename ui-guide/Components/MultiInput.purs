@@ -3,7 +3,6 @@ module UIGuide.Component.MultiInput where
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -13,6 +12,7 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Components.MultiInput.Component as Ocelot.Components.MultiInput.Component
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -39,7 +39,7 @@ type Output
 type ChildSlots =
   ( multiInput :: Ocelot.Components.MultiInput.Component.Slot MultiInputSlot)
 
-_multiInput = SProxy :: SProxy "multiInput"
+_multiInput = Proxy :: Proxy "multiInput"
 
 data MultiInputSlot
   = NoItem

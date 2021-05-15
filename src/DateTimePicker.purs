@@ -23,7 +23,7 @@ import Halogen.HTML as HH
 import Ocelot.DatePicker as DatePicker
 import Ocelot.TimePicker as TimePicker
 import Ocelot.HTML.Properties (css)
-import Type.Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 
 --------
 -- Types
@@ -88,8 +88,8 @@ component = H.mkComponent
 ---------
 -- Values
 
-_datepicker = SProxy :: SProxy "datepicker"
-_timepicker = SProxy :: SProxy "timepicker"
+_datepicker = Proxy :: Proxy "datepicker"
+_timepicker = Proxy :: Proxy "timepicker"
 
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of

@@ -59,7 +59,7 @@ import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S
 import Select.Setters as SS
-import Type.Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 import Web.Event.Event (preventDefault)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 import Web.UIEvent.KeyboardEvent as KE
@@ -188,7 +188,7 @@ component = H.mkComponent
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 -- Summary helper function that creates a full grid calendar layout
 -- from a year and a month.

@@ -5,7 +5,6 @@ import Data.Array (mapWithIndex)
 import Data.Array as Array
 import Data.Const (Const)
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console (log)
 import Halogen as H
@@ -20,6 +19,7 @@ import Ocelot.Dropdown as Ocelot.Dropdown
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Setters as SelectSetters
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -55,8 +55,8 @@ type ChildSlot =
   , select :: Select.Slot (Const Query) () Select.Event Unit
   )
 
-_dropdown = SProxy :: SProxy "dropdown"
-_select = SProxy :: SProxy "select"
+_dropdown = Proxy :: Proxy "dropdown"
+_select = Proxy :: Proxy "select"
 
 data Platform
   = Facebook

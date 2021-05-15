@@ -3,7 +3,6 @@ module UIGuide.Component.DatePickers where
 import Prelude
 import Data.DateTime (DateTime(..))
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -17,6 +16,7 @@ import Ocelot.DateTimePicker as DateTimePicker
 import Ocelot.TimePicker as TimePicker
 import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -41,9 +41,9 @@ type ChildSlot =
   , dtp :: DateTimePicker.Slot Int
   )
 
-_datePicker = SProxy :: SProxy "datePicker"
-_timePicker = SProxy :: SProxy "timePicker"
-_dtp = SProxy :: SProxy "dtp"
+_datePicker = Proxy :: Proxy "datePicker"
+_timePicker = Proxy :: Proxy "timePicker"
+_dtp = Proxy :: Proxy "dtp"
 
 ----------
 -- Component definition

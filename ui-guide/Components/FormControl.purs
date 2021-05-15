@@ -5,7 +5,6 @@ import Prelude
 import Data.Array as Data.Array
 import Data.Int as Data.Int
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
 import Halogen as Halogen
@@ -23,6 +22,7 @@ import Ocelot.Block.Radio as Radio
 import Ocelot.HTML.Properties (css)
 import Ocelot.Slider as Ocelot.Slider
 import Ocelot.Slider.Render as Ocelot.Slider.Render
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.UIEvent.MouseEvent (MouseEvent)
@@ -52,7 +52,7 @@ type Output = Void
 type ChildSlots =
   ( slider :: Ocelot.Slider.Slot String )
 
-_slider = SProxy :: SProxy "slider"
+_slider = Proxy :: Proxy "slider"
 
 component ::
   forall m.

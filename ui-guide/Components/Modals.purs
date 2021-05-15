@@ -4,7 +4,6 @@ import Prelude
 import Data.Foldable (traverse_)
 import Data.Map as Data.Map
 import Data.Maybe (Maybe(..), isJust)
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -21,6 +20,7 @@ import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import Ocelot.Part.Panel as Panel
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
@@ -62,8 +62,8 @@ type ChildSlot =
   , cp2 :: TA.Slot Action Array Async.User String
   )
 
-_cp1 = SProxy :: SProxy "cp1"
-_cp2 = SProxy :: SProxy "cp2"
+_cp1 = Proxy :: Proxy "cp1"
+_cp2 = Proxy :: Proxy "cp2"
 
 component ::
   forall m.

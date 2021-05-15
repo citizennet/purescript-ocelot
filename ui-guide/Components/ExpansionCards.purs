@@ -6,7 +6,6 @@ import Data.Array (head, take)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -22,6 +21,7 @@ import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toggle as Toggle
 import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
@@ -52,10 +52,10 @@ type ChildSlot =
   , cp4 :: TA.Slot Action Array Async.Location Int
   )
 
-_cp1 = SProxy :: SProxy "cp1"
-_cp2 = SProxy :: SProxy "cp2"
-_cp3 = SProxy :: SProxy "cp3"
-_cp4 = SProxy :: SProxy "cp4"
+_cp1 = Proxy :: Proxy "cp1"
+_cp2 = Proxy :: Proxy "cp2"
+_cp3 = Proxy :: Proxy "cp3"
+_cp4 = Proxy :: Proxy "cp4"
 
 ----------
 -- Component definition
@@ -135,16 +135,16 @@ component =
 -- HTML
 
 _singleLocation :: Lens' State Expandable.Status
-_singleLocation = prop (SProxy :: SProxy "singleLocation")
+_singleLocation = prop (Proxy :: Proxy "singleLocation")
 
 _singleUser :: Lens' State Expandable.Status
-_singleUser = prop (SProxy :: SProxy "singleUser")
+_singleUser = prop (Proxy :: Proxy "singleUser")
 
 _multiLocation :: Lens' State Expandable.Status
-_multiLocation = prop (SProxy :: SProxy "multiLocation")
+_multiLocation = prop (Proxy :: Proxy "multiLocation")
 
 _multiUser :: Lens' State Expandable.Status
-_multiUser = prop (SProxy :: SProxy "multiUser")
+_multiUser = prop (Proxy :: Proxy "multiUser")
 
 cnDocumentationBlocks :: ∀ m
   . MonadAff m

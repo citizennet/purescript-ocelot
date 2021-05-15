@@ -19,7 +19,6 @@ import Data.Functor (mapFlipped)
 import Data.Map as M
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
-import Data.Symbol (SProxy(..))
 import Data.Tuple (Tuple(..))
 import Effect.Aff (Aff, launchAff_)
 import Halogen as H
@@ -31,6 +30,7 @@ import JSURI as JSURI
 import Ocelot.Block.Format as Format
 import Partial.Unsafe as Partial.Unsafe
 import Routing.Hash (hashes)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import Web.HTML.HTMLElement (HTMLElement)
 
@@ -69,7 +69,7 @@ type HTML m = H.ComponentHTML Action Slots m
 
 type Slots =
   ( child :: H.Slot StoryQuery Void String )
-_child = SProxy :: SProxy "child"
+_child = Proxy :: Proxy "child"
 
 -- | Takes stories config and mount element, and renders the storybook.
 runStorybook

@@ -5,7 +5,6 @@ import Prelude
 import DOM.HTML.Indexed.InputAcceptType as DOM.HTML.Indexed.InputAcceptType
 import Data.Maybe (Maybe(..))
 import Data.MediaType.Common as Data.MediaType.Common
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console as Effect.Class.Console
 import Halogen as Halogen
@@ -16,6 +15,7 @@ import Ocelot.Block.Format as Format
 import Ocelot.Data.InputAcceptType as Ocelot.Data.InputAcceptType
 import Ocelot.FilePicker as Ocelot.FilePicker
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.File.File as Web.File.File
@@ -44,7 +44,7 @@ type ChildSlots =
   ( filePicker :: Ocelot.FilePicker.Slot String
   )
 
-_filePicker = SProxy :: SProxy "filePicker"
+_filePicker = Proxy :: Proxy "filePicker"
 
 component ::
   forall m.

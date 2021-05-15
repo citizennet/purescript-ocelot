@@ -38,7 +38,6 @@ import Data.FunctorWithIndex (mapWithIndex)
 import Data.Maybe (Maybe(..), fromMaybe, isNothing, maybe)
 import Data.String (joinWith, toLower, trim)
 import Data.String.Regex (match, parseFlags, regex)
-import Data.Symbol (SProxy(..))
 import Data.Time (Time)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -51,6 +50,7 @@ import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S
 import Select.Setters as Setters
+import Type.Proxy (Proxy(..))
 import Web.Event.Event (preventDefault)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 import Web.UIEvent.KeyboardEvent as KE
@@ -154,7 +154,7 @@ component = H.mkComponent
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 dropdownClasses :: Array HH.ClassName
 dropdownClasses = HH.ClassName <$>

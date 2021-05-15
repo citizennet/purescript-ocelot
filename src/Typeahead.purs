@@ -87,7 +87,7 @@ import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
 import Select as Select
 import Select.Setters as Select.Setters
-import Type.Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 import Unsafe.Coerce as Unsafe.Coerce
 
 --------
@@ -387,7 +387,7 @@ syncMulti { itemToObject, renderFuzzy } props =
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 applyInsertable
   :: forall item

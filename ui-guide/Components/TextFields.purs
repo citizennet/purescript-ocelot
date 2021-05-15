@@ -3,7 +3,6 @@ module UIGuide.Component.TextFields where
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Data.Time.Duration (Milliseconds(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
@@ -19,6 +18,7 @@ import Ocelot.Block.Input as Input
 import Ocelot.Block.Loading as Loading
 import Ocelot.Component.SearchBar as SearchBar
 import Ocelot.HTML.Properties (css)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -34,7 +34,7 @@ type Message = Void
 type ChildSlot =
   ( search :: SearchBar.Slot Unit )
 
-_search = SProxy :: SProxy "search"
+_search = Proxy :: Proxy "search"
 
 type ChildQuery = SearchBar.Query
 
