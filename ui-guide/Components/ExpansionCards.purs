@@ -1,6 +1,7 @@
 module UIGuide.Component.ExpansionCards where
 
 import Prelude
+
 import Data.Array (head, take)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
@@ -61,7 +62,7 @@ _cp4 = SProxy :: SProxy "cp4"
 
 component :: ∀ m
   . MonadAff m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState

@@ -65,7 +65,7 @@ data Platform
 component
   :: ∀ m
    . MonadAff m
-  => H.Component HH.HTML (Const Query) Input Message m
+  => H.Component (Const Query) Input Message m
 component =
   H.mkComponent
     { initialState

@@ -51,7 +51,7 @@ _multiLocation = SProxy :: SProxy "cp4"
 
 component :: ∀ m
   . MonadAff m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState: const unit

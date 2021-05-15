@@ -37,7 +37,7 @@ type ChildSlots =
   , timepicker :: TimePicker.Slot Unit
   )
 
-type Component m = H.Component HH.HTML Query Input Output m
+type Component m = H.Component Query Input Output m
 
 type ComponentHTML m = H.ComponentHTML Action ChildSlots m
 

@@ -20,7 +20,7 @@ import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.File.File as Web.File.File
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 

@@ -26,7 +26,7 @@ import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
 import Web.UIEvent.KeyboardEvent as KE
 
-type Component m = H.Component HH.HTML Query Input Message m
+type Component m = H.Component Query Input Message m
 
 type ComponentHTML m = H.ComponentHTML Action ChildSlot m
 

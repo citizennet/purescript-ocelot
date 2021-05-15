@@ -49,7 +49,7 @@ data Message item
 component :: ∀ m item.
   MonadAff m =>
   Eq item =>
-  H.Component HH.HTML (Query item) (Input item) (Message item) m
+  H.Component (Query item) (Input item) (Message item) m
 component =
   H.mkComponent
     { initialState

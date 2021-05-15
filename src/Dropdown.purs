@@ -65,7 +65,7 @@ type ChildSlots item
     )
 
 type Component item m 
-  = Halogen.Component Halogen.HTML.HTML (Query item) (Input item m) (Output item) m
+  = Halogen.Component (Query item) (Input item m) (Output item) m
 
 type ComponentHTML item m 
   = Halogen.ComponentHTML (Action item m) (ChildSlots item) m
@@ -80,7 +80,7 @@ type CompositeAction
   = Select.Action EmbeddedAction
 
 type CompositeComponent item m 
-  = Halogen.Component Halogen.HTML.HTML (CompositeQuery item) (CompositeInput item) (Output item) m
+  = Halogen.Component (CompositeQuery item) (CompositeInput item) (Output item) m
 
 type CompositeComponentHTML m 
   = Halogen.ComponentHTML CompositeAction EmbeddedChildSlots m

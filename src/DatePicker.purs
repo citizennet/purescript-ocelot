@@ -92,7 +92,7 @@ type ChildSlots =
   ( select :: S.Slot Query EmbeddedChildSlots Output Unit
   )
 
-type Component m = H.Component HH.HTML Query Input Output m
+type Component m = H.Component Query Input Output m
 
 type ComponentHTML m = H.ComponentHTML Action ChildSlots m
 
@@ -102,7 +102,7 @@ type ComponentRender m = State -> ComponentHTML m
 
 type CompositeAction = S.Action EmbeddedAction
 
-type CompositeComponent m = H.Component HH.HTML CompositeQuery CompositeInput Output m
+type CompositeComponent m = H.Component CompositeQuery CompositeInput Output m
 
 type CompositeComponentHTML m = H.ComponentHTML CompositeAction EmbeddedChildSlots m
 

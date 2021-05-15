@@ -50,7 +50,7 @@ _dtp = SProxy :: SProxy "dtp"
 
 component :: ∀ m
   . MonadAff m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState

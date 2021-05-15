@@ -45,7 +45,7 @@ type Message = Void
 component
   :: ∀ m
    . MonadAff m
-  => H.Component HH.HTML Query Input Message m
+  => H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const { toast: Nothing }

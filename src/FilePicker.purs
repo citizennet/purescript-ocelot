@@ -38,7 +38,7 @@ type Config
 
 type Slot = Halogen.Slot Query Output
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 

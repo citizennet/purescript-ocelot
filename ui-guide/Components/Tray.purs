@@ -22,7 +22,7 @@ type Input = Unit
 
 type Message = Void
 
-component :: ∀ m . H.Component HH.HTML Query Input Message m
+component :: ∀ m . H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const { open: true }

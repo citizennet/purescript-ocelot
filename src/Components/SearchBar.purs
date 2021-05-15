@@ -56,7 +56,7 @@ data Message
  = Searched String
 
 -- | The standard search bar
-component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
+component :: ∀ m. MonadAff m => H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState
@@ -76,7 +76,7 @@ component =
 
 -- | A search bar which allows the user to specify if it should
 -- | stay open when unfocused
-component' :: ∀ m. MonadAff m => H.Component HH.HTML Query Input' Message m
+component' :: ∀ m. MonadAff m => H.Component Query Input' Message m
 component' =
   H.mkComponent
     { initialState

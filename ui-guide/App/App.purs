@@ -49,7 +49,7 @@ type Stories m = M.Map String (Page m)
 
 type Page m =
   { anchor :: String
-  , component :: H.Component HH.HTML StoryQuery Unit Void m
+  , component :: H.Component StoryQuery Unit Void m
   , group :: Group
   }
 
@@ -87,7 +87,7 @@ type Input m =
   , groups :: Array Group
   }
 
-app :: ∀ m. H.Component HH.HTML Query (Input m) Void m
+app :: ∀ m. H.Component Query (Input m) Void m
 app =
   H.mkComponent
     { initialState

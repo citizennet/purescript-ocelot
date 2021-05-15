@@ -21,7 +21,7 @@ type Message = Void
 
 card
   :: ∀ m
-  . H.Component HH.HTML Query Input Message m
+  . H.Component Query Input Message m
 card =
   H.mkComponent
     { initialState: const unit
