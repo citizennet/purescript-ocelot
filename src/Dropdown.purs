@@ -258,7 +258,7 @@ renderAdapter
 renderAdapter render state =
   Halogen.HTML.slot _select unit (Select.component identity $ spec render)
     (embeddedInput state)
-    (Just <<< PassingOutput)
+    PassingOutput
 
 spec
   :: forall item m

@@ -122,7 +122,7 @@ component =
                     , items
                     , render: renderDropdown Button.button
                     }
-                    ( Just <<< HandleDropdown )
+                    HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -139,9 +139,9 @@ component =
                         , items
                         , render: renderDropdown Button.button
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.button
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -164,7 +164,7 @@ component =
                   , items
                   , render: renderDropdown Button.buttonPrimary
                   }
-                  ( Just <<< HandleDropdown )
+                  HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -181,9 +181,9 @@ component =
                         , items
                         , render: renderDropdown Button.buttonPrimary
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.buttonPrimary
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -206,7 +206,7 @@ component =
                   , items
                   , render: renderDropdown Button.buttonDark
                   }
-                  ( Just <<< HandleDropdown )
+                  HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -223,9 +223,9 @@ component =
                         , items
                         , render: renderDropdown Button.buttonDark
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.buttonDark
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -245,7 +245,7 @@ component =
                 unit
                 (Select.component identity choiceSpec )
                 selectInput
-                ( Just <<< HandleChoice )
+                HandleChoice
             ]
           ]
         ]

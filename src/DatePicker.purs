@@ -249,7 +249,7 @@ calendarNav y m =
     -- in Raise.
     arrowButton q =
       Button.buttonClear
-        [ HE.onClick $ Just <<< S.Action <<< const q
+        [ HE.onClick $ S.Action <<< const q
         , css "text-grey-70 p-3"
         ]
 
@@ -496,7 +496,7 @@ padPrev Saturday  = (-6.0)
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =
-  HH.slot _select unit (S.component identity spec) (embeddedInput st) (Just <<< PassingOutput)
+  HH.slot _select unit (S.component identity spec) (embeddedInput st) PassingOutput
 
 renderCalendar :: forall m. Year -> Month -> Array CalendarItem -> CompositeComponentHTML m
 renderCalendar y m calendarItems =
@@ -601,8 +601,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
   $ SS.setInputProps
-    [ HE.onBlur \_ -> Just (S.Action OnBlur)
-    , HE.onKeyDown $ Just <<< S.Action <<< Key
+    [ HE.onBlur \_ -> S.Action OnBlur
+    , HE.onKeyDown $ S.Action <<< Key
     , HP.value search
     ]
 

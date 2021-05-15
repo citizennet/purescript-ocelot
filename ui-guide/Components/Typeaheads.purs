@@ -147,7 +147,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "location"
               }
-              [ HH.slot _singleLocation 0 TA.single
+              [ HH.slot_ _singleLocation 0 TA.single
                 ( ( TA.syncSingle
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -157,7 +157,7 @@ cnDocumentationBlocks =
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
-                ( const Nothing )
+
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -168,7 +168,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "location-hydrated"
               }
-              [ HH.slot _singleLocation 1 TA.single
+              [ HH.slot_ _singleLocation 1 TA.single
                 ( ( TA.asyncSingle
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -179,7 +179,6 @@ cnDocumentationBlocks =
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -195,7 +194,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user"
               }
-              [ HH.slot _singleUser 0 TA.singleHighlightOnly
+              [ HH.slot_ _singleUser 0 TA.singleHighlightOnly
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -205,7 +204,6 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -216,7 +214,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "user-hydrated"
               }
-              [ HH.slot _singleUser 1 TA.singleHighlightOnly
+              [ HH.slot_ _singleUser 1 TA.singleHighlightOnly
                 ( TA.asyncSingle
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -226,7 +224,6 @@ cnDocumentationBlocks =
                   , HP.id_ "user-hydrated"
                   ]
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -249,7 +246,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot _multiLocation 0 TA.multi
+              [ HH.slot_ _multiLocation 0 TA.multi
                 ( ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -260,7 +257,6 @@ cnDocumentationBlocks =
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -271,7 +267,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "locations"
               }
-              [ HH.slot _multiLocation 1 TA.multi
+              [ HH.slot_ _multiLocation 1 TA.multi
                 ( ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -282,7 +278,6 @@ cnDocumentationBlocks =
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -298,7 +293,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users"
               }
-              [ HH.slot _multiUser 0 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 0 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -308,7 +303,6 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -319,7 +313,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "users-hydrated"
               }
-              [ HH.slot _multiUser 1 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 1 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -329,7 +323,6 @@ cnDocumentationBlocks =
                   , HP.id_ "user"
                   ]
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -352,7 +345,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-locations-empty"
               }
-              [ HH.slot _singleLocation 2 TA.single
+              [ HH.slot_ _singleLocation 2 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -363,7 +356,6 @@ cnDocumentationBlocks =
                   , HP.disabled true
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -374,7 +366,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-locations-hydrated"
               }
-              [ HH.slot _singleLocation 3 TA.single
+              [ HH.slot_ _singleLocation 3 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -385,7 +377,6 @@ cnDocumentationBlocks =
                   , HP.disabled true
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -396,7 +387,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "error-locations"
               }
-              [ HH.slot _singleLocation 4 TA.single
+              [ HH.slot_ _singleLocation 4 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -406,7 +397,6 @@ cnDocumentationBlocks =
                   , HP.id_ "error-locations"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -417,7 +407,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "loading-locations"
               }
-              [ HH.slot _singleLocation 5 TA.single
+              [ HH.slot_ _singleLocation 5 TA.single
                 ( TA.asyncSingle
                   { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                   , itemToObject: Async.locationToObject
@@ -427,7 +417,6 @@ cnDocumentationBlocks =
                   , HP.id_ "loading-locations"
                   ]
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -443,7 +432,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-empty"
               }
-              [ HH.slot _multiUser 2 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 2 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -454,7 +443,6 @@ cnDocumentationBlocks =
                   , HP.id_ "disabled-users-empty"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -465,7 +453,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "disabled-users-hydrated"
               }
-              [ HH.slot _multiUser 3 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 3 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -476,7 +464,6 @@ cnDocumentationBlocks =
                   , HP.id_ "disabled-users-hydrated"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -487,7 +474,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "error-users"
               }
-              [ HH.slot _multiUser 4 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 4 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -497,7 +484,6 @@ cnDocumentationBlocks =
                   , HP.id_ "error-users"
                   ]
                 )
-                ( const Nothing )
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -508,7 +494,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "loading-users"
               }
-              [ HH.slot _multiUser 5 TA.multiHighlightOnly
+              [ HH.slot_ _multiUser 5 TA.multiHighlightOnly
                 ( TA.asyncMulti
                   { renderFuzzy: Async.renderFuzzyUser
                   , itemToObject: Async.userToObject
@@ -518,7 +504,6 @@ cnDocumentationBlocks =
                   , HP.id_ "loading-users"
                   ]
                 )
-                ( const Nothing )
               ]
             ]
           ]
@@ -539,7 +524,7 @@ cnDocumentationBlocks =
               [ HH.h3
                 [ HP.classes Format.captionClasses ]
                 [ HH.text "Searchable Dropdown in a Header (e.g. for filtering)" ]
-              , HH.slot _singleLocation 9
+              , HH.slot_ _singleLocation 9
                 ( TA.component
                   { runSelect: const <<< Just
                   , runRemove: const (const Nothing)
@@ -560,7 +545,6 @@ cnDocumentationBlocks =
                   (HH.text <<< _.name <<< unwrap)
                   (HH.span_ <<< IC.boldMatches "name")
                 }
-                ( const Nothing )
               ]
             ]
           ]
@@ -570,7 +554,7 @@ cnDocumentationBlocks =
             [ HH.h3
               [ HP.classes Format.captionClasses ]
               [ HH.text "Searchable Dropdown in a Toolbar (e.g. for filtering)" ]
-            , HH.slot _singleLocation 10
+            , HH.slot_ _singleLocation 10
               ( TA.component
                 { runSelect: const <<< Just
                 , runRemove: const (const Nothing)
@@ -591,7 +575,6 @@ cnDocumentationBlocks =
                 (HH.text <<< _.name <<< unwrap)
                 (HH.span_ <<< IC.boldMatches "name")
               }
-              ( const Nothing )
             ]
           ]
         ]

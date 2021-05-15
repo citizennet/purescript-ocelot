@@ -98,12 +98,11 @@ render state =
               , error: []
               , inputId: "keywords-no-item"
               }
-              [ Halogen.HTML.slot _multiInput NoItem
+              [ Halogen.HTML.slot_ _multiInput NoItem
                   Ocelot.Components.MultiInput.Component.component
                   { minWidth
                   , placeholder
                   }
-                  (const Nothing)
               ]
           , Halogen.HTML.h3
               [ Halogen.HTML.Properties.classes Format.captionClasses ]
@@ -114,12 +113,11 @@ render state =
               , error: []
               , inputId: "keywords-with-items"
               }
-              [ Halogen.HTML.slot _multiInput WithItems
+              [ Halogen.HTML.slot_ _multiInput WithItems
                   Ocelot.Components.MultiInput.Component.component
                   { minWidth
                   , placeholder
                   }
-                  (const Nothing)
               ]
           ]
         ]

@@ -16,10 +16,10 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toast as Ocelot.Block.Toast
-import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import Ocelot.Part.Panel as Panel
+import Ocelot.Typeahead as TA
 import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
@@ -145,7 +145,7 @@ render st =
       [ Backdrop.content
         [ css "mt-0 text-center" ]
         [ Button.button
-          [ HE.onClick $ const $ Just (Open PanelLeft) ]
+          [ HE.onClick \_ -> Open PanelLeft ]
           [ HH.text "Open Left Panel" ]
         ]
       ]
@@ -154,7 +154,7 @@ render st =
       [ Backdrop.content
         [ css "mt-0 text-center" ]
         [ Button.buttonPrimary
-          [ HE.onClick $ const $ Just (Open Modal) ]
+          [ HE.onClick \_ -> Open Modal ]
           [ HH.text "Open Modal" ]
         ]
       ]
@@ -163,7 +163,7 @@ render st =
       [ Backdrop.content
         [ css "mt-0 text-center" ]
         [ Button.button
-          [ HE.onClick $ const $ Just (Open PanelRight) ]
+          [ HE.onClick \_ -> Open PanelRight ]
           [ HH.text "Open Right Panel" ]
         ]
       ]
@@ -189,10 +189,10 @@ renderModal =
     { buttons:
       [ HH.a
         [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] )
-        , HE.onClick $ const $ Just (Close Modal) ]
+        , HE.onClick \_ -> Close Modal ]
         [ HH.text "Cancel" ]
       , Button.buttonPrimary
-        [ HE.onClick $ const $ Just Toast ]
+        [ HE.onClick \_ -> Toast ]
         [ HH.text "Submit" ]
       ]
     , title: [ HH.text "Editing" ]
@@ -213,7 +213,7 @@ renderPanelLeft visible =
   [ Panel.header
     { buttons:
       [ Button.buttonClear
-        [ HE.onClick $ const $ Just (Close PanelLeft) ]
+        [ HE.onClick \_ -> Close PanelLeft ]
         [ Icon.close_ ]
       ]
     , title: [ HH.text "Editing" ]
@@ -237,7 +237,7 @@ renderPanelRight visible =
   [ Panel.header
     { buttons:
       [ Button.buttonClear
-        [ HE.onClick $ const $ Just (Close PanelRight) ]
+        [ HE.onClick \_ -> Close PanelRight ]
         [ Icon.close_ ]
       ]
     , title: [ HH.text "Editing" ]
@@ -266,7 +266,7 @@ renderContent label =
     , error: []
     , inputId: "locations"
     }
-    [ HH.slot _cp1 label TA.multi
+    [ HH.slot_ _cp1 label TA.multi
       ( TA.asyncMulti
         { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
         , itemToObject: Async.locationToObject
@@ -276,7 +276,6 @@ renderContent label =
         , HP.id_ "locations"
         ]
       )
-      ( const Nothing )
     ]
   , HH.h3
     [ HP.classes Format.captionClasses ]
@@ -287,7 +286,7 @@ renderContent label =
     , error: []
     , inputId: "users"
     }
-    [ HH.slot _cp2 label TA.multi
+    [ HH.slot_ _cp2 label TA.multi
       ( TA.asyncMulti
         { renderFuzzy: Async.renderFuzzyUser
         , itemToObject: Async.userToObject
@@ -297,6 +296,5 @@ renderContent label =
         , HP.id_ "users"
         ]
       )
-      ( const Nothing )
     ]
   ]

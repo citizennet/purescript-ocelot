@@ -175,7 +175,7 @@ cnDocumentationBlocks st =
           [ Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick $ const $ Just $ ToggleCard _singleLocation
+                [ HE.onClick \_ -> ToggleCard _singleLocation
                 , Expandable.status st.singleLocation
                 ]
                 [ Format.subHeading_ [ HH.text "Locations" ]
@@ -189,7 +189,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location"
                   }
-                  [ HH.slot _cp3 0 TA.single
+                  [ HH.slot_ _cp3 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -199,7 +199,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "location"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary Location"
@@ -207,7 +206,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location-hydrated"
                   }
-                  [ HH.slot _cp3 1 TA.single
+                  [ HH.slot_ _cp3 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -217,7 +216,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "location-hydrated"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 ]
               ]
@@ -225,7 +223,7 @@ cnDocumentationBlocks st =
           , Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick $ const $ Just $ ToggleCard _singleUser
+                [ HE.onClick \_ -> ToggleCard _singleUser
                 , Expandable.status st.singleUser
                 ]
                 [ Format.subHeading_ [ HH.text "Users" ] ]
@@ -237,7 +235,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user"
                   }
-                  [ HH.slot _cp1 0 TA.single
+                  [ HH.slot_ _cp1 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -247,7 +245,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "user"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary User"
@@ -255,7 +252,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user-hydrated"
                   }
-                  [ HH.slot _cp1 1 TA.single
+                  [ HH.slot_ _cp1 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -265,7 +262,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "user-hydrated"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 ]
               ]
@@ -294,7 +290,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-locations"
                 , HP.checked
                   $ Expandable.toBoolean st.multiLocation
-                , HE.onChange $ const $ Just $ ToggleCard _multiLocation
+                , HE.onChange \_ -> ToggleCard _multiLocation
                 ]
               ]
             , Expandable.content_
@@ -305,7 +301,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot _cp4 0 TA.multi
+                [ HH.slot_ _cp4 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -315,7 +311,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "locations"
                     ]
                   )
-                  ( const Nothing )
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Locations"
@@ -323,7 +318,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot _cp4 1 TA.multi
+                [ HH.slot_ _cp4 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -333,7 +328,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "locations"
                     ]
                   )
-                  ( const Nothing )
                 ]
               ]
             ]
@@ -354,7 +348,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-users"
                 , HP.checked
                   $ Expandable.toBoolean st.multiUser
-                , HE.onChange $ const $ Just $ ToggleCard _multiUser
+                , HE.onChange \_ -> ToggleCard _multiUser
                 ]
               ]
             , Expandable.content_
@@ -365,7 +359,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users"
                 }
-                [ HH.slot _cp2 0 TA.multi
+                [ HH.slot_ _cp2 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject
@@ -375,7 +369,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "users"
                     ]
                   )
-                  ( const Nothing )
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Users"
@@ -383,7 +376,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users-hydrated"
                 }
-                [ HH.slot _cp2 1 TA.multi
+                [ HH.slot_ _cp2 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject
@@ -393,7 +386,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "users-hydrated"
                     ]
                   )
-                  ( const Nothing )
                 ]
               ]
             ]

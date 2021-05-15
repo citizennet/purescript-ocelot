@@ -18,7 +18,7 @@ import Web.UIEvent.MouseEvent (MouseEvent)
 -----
 -- old CN pager (require citizennet.css)
 
-pager :: ∀ p i. Int -> Int -> (Int -> MouseEvent -> Maybe i) -> HH.HTML p i
+pager :: ∀ p i. Int -> Int -> (Int -> MouseEvent -> i) -> HH.HTML p i
 pager skip last query =
   HH.div
     [ HP.classes
@@ -102,7 +102,7 @@ pagerNew ::
   Int ->
   Int ->
   Array (HP.IProp HTMLdiv i) ->
-  (Int -> MouseEvent -> Maybe i) ->
+  (Int -> MouseEvent -> i) ->
   HH.HTML p i
 pagerNew skip last iprops query = HH.div iprops (makePagingButtonsNew skip last query)
 
@@ -110,7 +110,7 @@ makePagingButtonsNew ::
   forall p i.
   Int ->
   Int ->
-  (Int -> MouseEvent -> Maybe i) ->
+  (Int -> MouseEvent -> i) ->
   Array (HH.HTML p i)
 makePagingButtonsNew skip last query = foldlWithIndex makePagingButtons' [] makeList
   where

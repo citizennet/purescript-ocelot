@@ -688,7 +688,7 @@ renderAdapter
 renderAdapter render state =
   Halogen.HTML.slot _select unit (Select.component identity $ spec render)
     (embeddedInput state)
-    (Just <<< PassingOutput)
+    PassingOutput
 
 renderError :: ∀ p i. Boolean -> Halogen.HTML.HTML p i
 renderError error =
@@ -731,7 +731,7 @@ renderMulti iprops renderItem renderContainer st =
         then
           Halogen.HTML.a
             [ Ocelot.HTML.Properties.css "absolute -mt-7 pin-r underline text-grey-70 cursor-pointer"
-            , Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ RemoveAll
+            , Halogen.HTML.Events.onClick \_ -> Select.Action $ RemoveAll
             ]
             [ Halogen.HTML.text "Remove All" ]
         else
@@ -745,7 +745,7 @@ renderMulti iprops renderItem renderContainer st =
               Ocelot.Block.ItemContainer.selectionGroup
                 renderItem
                 []
-                [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ Remove selected ]
+                [ Halogen.HTML.Events.onClick \_ -> Select.Action $ Remove selected ]
                 selected
     , Ocelot.Block.Input.inputGroup_
       [ Ocelot.Block.Input.inputCenter $ inputProps disabled iprops
@@ -804,7 +804,7 @@ renderSearchDropdown resetLabel label renderFuzzy st =
   renderReset =
     Ocelot.Block.ItemContainer.dropdownItem
       Halogen.HTML.div
-      [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ RemoveAll
+      [ Halogen.HTML.Events.onClick \_ -> Select.Action $ RemoveAll
       ]
       [ Halogen.HTML.text resetLabel ]
       ( Data.Maybe.isNothing st.selected )
@@ -833,14 +833,14 @@ renderSingle iprops renderItem renderContainer st =
             ( \selected -> Halogen.HTML.div
               [ Halogen.HTML.Properties.classes Ocelot.Block.Input.mainLeftClasses ]
               [ Ocelot.Block.ItemContainer.selectionGroup renderItem
-                [ Halogen.HTML.Events.onClick $ Just <<< Select.ToggleClick ]
-                [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ Remove selected ]
+                [ Halogen.HTML.Events.onClick Select.ToggleClick ]
+                [ Halogen.HTML.Events.onClick \_ -> Select.Action $ Remove selected ]
                 selected
               ])
             st.selected
       , Ocelot.Block.Input.borderRight
         [ Halogen.HTML.Properties.classes $ linkClasses disabled
-        , Halogen.HTML.Events.onClick $ Just <<< Select.ToggleClick
+        , Halogen.HTML.Events.onClick Select.ToggleClick
         ]
         [ Halogen.HTML.text "Change" ]
       ]

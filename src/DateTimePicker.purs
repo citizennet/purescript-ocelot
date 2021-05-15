@@ -143,12 +143,12 @@ render { date, time, targetDate, disabled } =
         , selection: date
         , disabled
         }
-        (Just <<< HandleDate)
+        HandleDate
       ]
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
         { selection: time, disabled }
-        (Just <<< HandleTime)
+        HandleTime
       ]
     ]

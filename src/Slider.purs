@@ -643,11 +643,11 @@ renderThumbs state =
 renderThumb :: forall m. State -> Int -> { percent :: Number } -> ComponentHTML m
 renderThumb state index percent =
   Ocelot.Slider.Render.thumb state.input.layout percent
-    [ Halogen.HTML.Events.onMouseDown
-        if state.input.disabled
-        then const Nothing
-        else (Just <<< MouseDownOnThumb index)
-    ]
+    ( Data.Monoid.guard (not state.input.disabled)
+        [ Halogen.HTML.Events.onMouseDown
+            (MouseDownOnThumb index)
+        ]
+    )
 
 renderTrack :: forall m. State -> ComponentHTML m
 renderTrack state =

@@ -101,7 +101,7 @@ component =
                 [ Format.caption_
                   [ HH.text "Success" ]
                 , Button.button
-                  [ HE.onClick $ const $ Just $ Toggle Success ]
+                  [ HE.onClick \_ -> Toggle Success ]
                   [ HH.text "Success" ]
                 , Toast.toast
                   [ Toast.visible $ state.toast == Just Success ]
@@ -120,7 +120,7 @@ component =
                 [ Format.caption_
                   [ HH.text "Error" ]
                 , Button.button
-                  [ HE.onClick $ const $ Just $ Toggle Error ]
+                  [ HE.onClick \_ -> Toggle Error ]
                   [ HH.text "Error" ]
                 , Toast.toast
                   [ Toast.visible $ state.toast == Just Error ]

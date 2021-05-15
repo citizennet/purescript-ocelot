@@ -101,7 +101,7 @@ render state =
                 }
             )
             unit
-            (Just <<< HandleFilePicker)
+            HandleFilePicker
           ]
         , Card.card
           [ Ocelot.HTML.Properties.css "flex-1" ]
@@ -116,7 +116,7 @@ render state =
                 }
             )
             unit
-            (Just <<< HandleFilePicker)
+            HandleFilePicker
           ]
         , Card.card
           [ Ocelot.HTML.Properties.css "flex-1" ]
@@ -134,7 +134,7 @@ render state =
               }
             )
             unit
-            (Just <<< HandleFilePicker)
+            HandleFilePicker
           ]
         , Card.card
           [ Ocelot.HTML.Properties.css "flex-1" ]
@@ -149,7 +149,7 @@ render state =
               }
             )
             unit
-            (Just <<< HandleFilePicker)
+            HandleFilePicker
           ]
         ]
       ]

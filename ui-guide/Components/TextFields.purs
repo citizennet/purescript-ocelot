@@ -432,7 +432,7 @@ cnDocumentationBlocks =
             [ css "w-50" ]
             [ HH.slot _search unit SearchBar.component
               { debounceTime: Just (Milliseconds 250.0) }
-              ( Just <<< HandleSearch )
+              HandleSearch
             ]
           ]
         ]
@@ -448,7 +448,7 @@ cnDocumentationBlocks =
               { debounceTime: Just (Milliseconds 250.0)
               , keepOpen: true
               }
-              ( Just <<< HandleSearch )
+              HandleSearch
             ]
           ]
         ]
@@ -466,7 +466,7 @@ cnDocumentationBlocks =
             [ css "mr-8" ]
             [ HH.slot _search unit SearchBar.component
               { debounceTime: Just (Milliseconds 250.0) }
-              ( Just <<< HandleSearch )
+              HandleSearch
             ]
           , Button.buttonPrimary_
             [ HH.text "Neighbor" ]

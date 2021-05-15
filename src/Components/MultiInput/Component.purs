@@ -514,11 +514,11 @@ renderItemDisplay index text =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes itemDisplayClasses ]
     [ Halogen.HTML.span
-        [ Halogen.HTML.Events.onClick \_ -> Just (EditItem index) ]
+        [ Halogen.HTML.Events.onClick \_ -> EditItem index ]
         [ Halogen.HTML.text text ]
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
-        , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
+        , Halogen.HTML.Events.onClick \_ -> RemoveOne index
         ]
         [ Ocelot.Block.Icon.delete_ ]
     ]
@@ -535,7 +535,7 @@ renderItemEdit placeholder index inputBox =
     [ renderAutoSizeInput placeholder index false inputBox
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
-        , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
+        , Halogen.HTML.Events.onClick \_ -> RemoveOne index
         ]
         [ Ocelot.Block.Icon.delete_ ]
     ]
@@ -553,9 +553,9 @@ renderAutoSizeInput placeholder index new inputBox =
     [ Halogen.HTML.input
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
-        , Halogen.HTML.Events.onBlur \_ -> Just (OnBlur index)
-        , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown index)
-        , Halogen.HTML.Events.onValueInput (Just <<< OnInput index)
+        , Halogen.HTML.Events.onBlur \_ -> OnBlur index
+        , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
+        , Halogen.HTML.Events.onValueInput (OnInput index)
         , Halogen.HTML.Properties.placeholder case new of
             false -> ""
             true

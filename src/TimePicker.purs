@@ -340,7 +340,7 @@ meridiemToString = case _ of
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =
-    HH.slot _select unit (S.component identity spec) (embeddedInput st) (Just <<< PassingOutput)
+    HH.slot _select unit (S.component identity spec) (embeddedInput st) PassingOutput
 
 renderItem :: forall m. Int -> TimeUnit -> CompositeComponentHTML m
 renderItem index item =
@@ -394,8 +394,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
     ( Setters.setInputProps
-      [ HE.onBlur \_ -> Just (S.Action OnBlur)
-      , HE.onKeyDown $ Just <<< S.Action <<< Key
+      [ HE.onBlur \_ -> S.Action OnBlur
+      , HE.onKeyDown $ S.Action <<< Key
       , HP.value search
       ]
     )
