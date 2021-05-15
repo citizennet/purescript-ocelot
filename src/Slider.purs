@@ -523,13 +523,15 @@ sortByDistance ::
   Array { percent :: Number } ->
   Data.Map.Map { percent :: Number } {- distance -}
     { percent :: Number } {- mark -}
-sortByDistance x = Data.Array.foldMap reducer
+sortByDistance x = Data.Array.foldl reducer Data.Map.empty
   where
   reducer ::
+    Data.Map.Map { percent :: Number }
+      { percent :: Number } ->
     { percent :: Number } ->
     Data.Map.Map { percent :: Number }
       { percent :: Number }
-  reducer mark = Data.Map.singleton (absDistance mark x) mark
+  reducer old mark = Data.Map.insert (absDistance mark x) mark old
 
 absDistance :: { percent :: Number } -> { percent :: Number } -> { percent :: Number }
 absDistance x y = Data.Ord.abs (x - y)

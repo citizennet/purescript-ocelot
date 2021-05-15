@@ -41,7 +41,7 @@ fromIntervals ::
   Ord a =>
   Array { start :: a, end :: a } ->
   IntervalTree a
-fromIntervals = Data.Array.foldl insertInterval mempty
+fromIntervals = Data.Array.foldl insertInterval Data.Map.empty
 
 -- | O(log n)
 -- |
@@ -85,7 +85,7 @@ insertInterval old { start, end }
   clearBetween :: IntervalTree a -> IntervalTree a
   clearBetween xs =
     Data.Map.submap Nothing (Just lowerBound) xs
-      <> Data.Map.submap (Just upperBound) Nothing xs
+      `Data.Map.union` Data.Map.submap (Just upperBound) Nothing xs
 
   lowerBound :: a
   lowerBound = case findGreatestLowerBound start old of

@@ -235,7 +235,7 @@ lookupIntervalTests =
     Test.Unit.test "empty tree" do
       let
         emptyTree :: Ocelot.Data.IntervalTree.IntervalTree Int
-        emptyTree = mempty
+        emptyTree = Data.Map.empty
 
         expected ::
           { left :: Maybe { key :: Int, value :: Ocelot.Data.IntervalTree.IntervalPoint }
