@@ -3,9 +3,8 @@ version: 2
 defaults: &defaults
   working_directory: ~/ocelot
   docker:
-    - image: circleci/node:10.15-browsers
+    - image: circleci/node:10.24-buster-browsers
   environment:
-    GLIBC_VERSION: 2.27-r0
     RTS_ARGS: +RTS -N2 -RTS
 
 jobs:
