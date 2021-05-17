@@ -13,6 +13,10 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install libtinfo (required until purescript 0.14.2)
+          command: sudo apt install libtinfo5 libncurses5-dev
+
       - restore_cache:
           keys:
             - v4-yarn-cache-{{ .Branch }}-{{ checksum "package.json" }}
