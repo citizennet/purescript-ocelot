@@ -5,6 +5,7 @@ defaults: &defaults
   docker:
     - image: circleci/node:10.15-browsers
   environment:
+    GLIBC_VERSION: 2.27-r0
     RTS_ARGS: +RTS -N2 -RTS
 
 jobs:
