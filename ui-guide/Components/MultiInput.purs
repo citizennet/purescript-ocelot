@@ -3,7 +3,6 @@ module UIGuide.Component.MultiInput where
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -13,10 +12,11 @@ import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Components.MultiInput.Component as Ocelot.Components.MultiInput.Component
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 
@@ -39,7 +39,7 @@ type Output
 type ChildSlots =
   ( multiInput :: Ocelot.Components.MultiInput.Component.Slot MultiInputSlot)
 
-_multiInput = SProxy :: SProxy "multiInput"
+_multiInput = Proxy :: Proxy "multiInput"
 
 data MultiInputSlot
   = NoItem
@@ -71,7 +71,7 @@ initialState _ = {}
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   Initialize -> do
-    void <<< Halogen.query _multiInput WithItems <<< Halogen.tell
+    void <<< Halogen.tell _multiInput WithItems
       $ Ocelot.Components.MultiInput.Component.SetItems items
 
 render ::
@@ -98,12 +98,11 @@ render state =
               , error: []
               , inputId: "keywords-no-item"
               }
-              [ Halogen.HTML.slot _multiInput NoItem
+              [ Halogen.HTML.slot_ _multiInput NoItem
                   Ocelot.Components.MultiInput.Component.component
                   { minWidth
                   , placeholder
                   }
-                  (const Nothing)
               ]
           , Halogen.HTML.h3
               [ Halogen.HTML.Properties.classes Format.captionClasses ]
@@ -114,12 +113,11 @@ render state =
               , error: []
               , inputId: "keywords-with-items"
               }
-              [ Halogen.HTML.slot _multiInput WithItems
+              [ Halogen.HTML.slot_ _multiInput WithItems
                   Ocelot.Components.MultiInput.Component.component
                   { minWidth
                   , placeholder
                   }
-                  (const Nothing)
               ]
           ]
         ]

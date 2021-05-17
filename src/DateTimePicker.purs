@@ -21,9 +21,9 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Ocelot.DatePicker as DatePicker
-import Ocelot.TimePicker as TimePicker
 import Ocelot.HTML.Properties (css)
-import Type.Data.Symbol (SProxy(..))
+import Ocelot.TimePicker as TimePicker
+import Type.Proxy (Proxy(..))
 
 --------
 -- Types
@@ -37,7 +37,7 @@ type ChildSlots =
   , timepicker :: TimePicker.Slot Unit
   )
 
-type Component m = H.Component HH.HTML Query Input Output m
+type Component m = H.Component Query Input Output m
 
 type ComponentHTML m = H.ComponentHTML Action ChildSlots m
 
@@ -88,8 +88,8 @@ component = H.mkComponent
 ---------
 -- Values
 
-_datepicker = SProxy :: SProxy "datepicker"
-_timepicker = SProxy :: SProxy "timepicker"
+_datepicker = Proxy :: Proxy "datepicker"
+_timepicker = Proxy :: Proxy "timepicker"
 
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
@@ -113,13 +113,13 @@ handleQuery = case _ of
     pure $ reply <$> (DateTime <$> date <*> time)
   SetDisabled disabled a -> Just a <$ do
     H.modify_ _ { disabled = disabled }
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetDisabled disabled
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetDisabled disabled
+    void $ H.tell _datepicker unit $ DatePicker.SetDisabled disabled
+    void $ H.tell _timepicker unit $ TimePicker.SetDisabled disabled
   SetSelection dateTime a -> Just a <$ do
     let date' = date <$> dateTime
         time' = time <$> dateTime
-    void $ H.query _datepicker unit $ H.tell $ DatePicker.SetSelection date'
-    void $ H.query _timepicker unit $ H.tell $ TimePicker.SetSelection time'
+    void $ H.tell _datepicker unit $ DatePicker.SetSelection date'
+    void $ H.tell _timepicker unit $ TimePicker.SetSelection time'
     H.modify_ _ { date = date', time = time' }
   SendDateQuery q a -> Just a <$ H.query _datepicker unit q
   SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
@@ -143,12 +143,12 @@ render { date, time, targetDate, disabled } =
         , selection: date
         , disabled
         }
-        (Just <<< HandleDate)
+        HandleDate
       ]
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
         { selection: time, disabled }
-        (Just <<< HandleTime)
+        HandleTime
       ]
     ]

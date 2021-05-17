@@ -8,7 +8,6 @@ import Data.Map (Map, fromFoldable)
 import Data.Tuple (Tuple(..))
 import Effect.Aff (Aff)
 import Halogen as H
-import Halogen.HTML as HH
 import UIGuide.App (Group(..), proxy)
 import UIGuide.Component.Badge as Badge
 import UIGuide.Component.Button as Button
@@ -39,7 +38,7 @@ groups =
 
 type RouteConfig =
   { anchor :: String
-  , component :: H.Component HH.HTML (Const Void) Unit Void Aff
+  , component :: H.Component (Const Void) Unit Void Aff
   , group :: Group
   }
 

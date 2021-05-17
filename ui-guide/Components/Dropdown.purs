@@ -5,7 +5,6 @@ import Data.Array (mapWithIndex)
 import Data.Array as Array
 import Data.Const (Const)
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class.Console (log)
 import Halogen as H
@@ -20,6 +19,7 @@ import Ocelot.Dropdown as Ocelot.Dropdown
 import Ocelot.HTML.Properties (css)
 import Select as Select
 import Select.Setters as SelectSetters
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -55,8 +55,8 @@ type ChildSlot =
   , select :: Select.Slot (Const Query) () Select.Event Unit
   )
 
-_dropdown = SProxy :: SProxy "dropdown"
-_select = SProxy :: SProxy "select"
+_dropdown = Proxy :: Proxy "dropdown"
+_select = Proxy :: Proxy "select"
 
 data Platform
   = Facebook
@@ -65,7 +65,7 @@ data Platform
 component
   :: ∀ m
    . MonadAff m
-  => H.Component HH.HTML (Const Query) Input Message m
+  => H.Component (Const Query) Input Message m
 component =
   H.mkComponent
     { initialState
@@ -90,9 +90,9 @@ component =
         _ -> pure unit
       ToggleDisabled old -> do
         let disabled = not old
-        void $ H.query _dropdown StandardDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
-        void $ H.query _dropdown PrimaryDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
-        void $ H.query _dropdown DarkDynamic (H.tell (Ocelot.Dropdown.SetDisabled disabled))
+        void $ H.tell _dropdown StandardDynamic (Ocelot.Dropdown.SetDisabled disabled)
+        void $ H.tell _dropdown PrimaryDynamic (Ocelot.Dropdown.SetDisabled disabled)
+        void $ H.tell _dropdown DarkDynamic (Ocelot.Dropdown.SetDisabled disabled)
         H.modify_ \state -> state { disabled = disabled }
 
     initialState :: Input -> State
@@ -122,7 +122,7 @@ component =
                     , items
                     , render: renderDropdown Button.button
                     }
-                    ( Just <<< HandleDropdown )
+                    HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -139,9 +139,9 @@ component =
                         , items
                         , render: renderDropdown Button.button
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.button
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -164,7 +164,7 @@ component =
                   , items
                   , render: renderDropdown Button.buttonPrimary
                   }
-                  ( Just <<< HandleDropdown )
+                  HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -181,9 +181,9 @@ component =
                         , items
                         , render: renderDropdown Button.buttonPrimary
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.buttonPrimary
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -206,7 +206,7 @@ component =
                   , items
                   , render: renderDropdown Button.buttonDark
                   }
-                  ( Just <<< HandleDropdown )
+                  HandleDropdown
                 ]
               , HH.div
                 [ css "mb-6" ]
@@ -223,9 +223,9 @@ component =
                         , items
                         , render: renderDropdown Button.buttonDark
                         }
-                        ( Just <<< HandleDropdown )
+                        HandleDropdown
                     , Button.buttonDark
-                        [ Halogen.HTML.Events.onClick (const (Just (ToggleDisabled state.disabled)))
+                        [ Halogen.HTML.Events.onClick \_ -> ToggleDisabled state.disabled
                         , css "ml-2"
                         ]
                         [ HH.text "Toggle" ]
@@ -245,7 +245,7 @@ component =
                 unit
                 (Select.component identity choiceSpec )
                 selectInput
-                ( Just <<< HandleChoice )
+                HandleChoice
             ]
           ]
         ]

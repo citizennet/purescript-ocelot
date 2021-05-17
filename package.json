@@ -1,6 +1,6 @@
 {
   "name": "purescript-ocelot",
-  "version": "0.28.2",
+  "version": "0.29.0",
   "private": true,
   "scripts": {
     "build-all": "make build",
@@ -13,7 +13,7 @@
     "browserify": "^16.5.1",
     "parcel": "1.12.4",
     "parcel-bundler": "1.12.3",
-    "purescript": "^0.13.8",
+    "purescript": "0.14.1",
     "spago": "^0.15.2"
   },
   "dependencies": {

@@ -2,7 +2,6 @@ module UIGuide.Component.Tray where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
@@ -22,7 +21,7 @@ type Input = Unit
 
 type Message = Void
 
-component :: ∀ m . H.Component HH.HTML Query Input Message m
+component :: ∀ m . H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const { open: true }
@@ -45,7 +44,7 @@ component =
         }
         [ Backdrop.backdrop_
           [ Button.button
-            [ HE.onClick (const $ Just Toggle) ]
+            [ HE.onClick \_ -> Toggle ]
             [ HH.text "toggle tray" ]
           , Tray.tray
             [ Tray.open state.open ]

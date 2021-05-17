@@ -2,7 +2,6 @@ module UIGuide.Component.Table where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
 import Data.Ratio ((%))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -35,7 +34,7 @@ type Message = Void
 component ::
   forall m.
   MonadAff m =>
-  H.Component HH.HTML Query Input Message m
+  H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState
@@ -72,7 +71,7 @@ render { page } =
         [ renderTable
         , Ocelot.Block.Pager.pagerNew page 100
           [ css "flex justify-end mt-6"]
-          (\index event -> Just (Page index event))
+          (\index event -> Page index event)
         ]
       ]
     ]

@@ -31,6 +31,7 @@ Authors:
   , "halogen-svg-elems"
   , "html-parser-halogen"
   , "js-timers"
+  , "js-uri"
   , "numbers"
   , "psci-support"
   , "read"

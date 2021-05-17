@@ -38,7 +38,7 @@ type Config
 
 type Slot = Halogen.Slot Query Output
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
@@ -202,10 +202,10 @@ ipropIdle :: Array (Halogen.HTML.Properties.IProp HTMLdiv Action)
 ipropIdle =
   [ Ocelot.HTMl.Properties.css cssIdle
   , Ocelot.HTMl.Properties.style styleIdle
-  , Ocelot.HTML.Events.onDrag (Just <<< PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
-  , Ocelot.HTML.Events.onDragEnter (Just <<< DragEnter)
-  , Ocelot.HTML.Events.onDragOver (Just <<< PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
-  , Ocelot.HTML.Events.onDragStart (Just <<< PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
+  , Ocelot.HTML.Events.onDrag (PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
+  , Ocelot.HTML.Events.onDragEnter DragEnter
+  , Ocelot.HTML.Events.onDragOver (PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
+  , Ocelot.HTML.Events.onDragStart (PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
   ]
   where
   cssIdle :: String
@@ -223,10 +223,10 @@ ipropDragOver :: Array (Halogen.HTML.Properties.IProp HTMLdiv Action)
 ipropDragOver =
   [ Ocelot.HTMl.Properties.css cssDragOver
   , Ocelot.HTMl.Properties.style styleDragOver
-  , Ocelot.HTML.Events.onDragEnd (Just <<< PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
-  , Ocelot.HTML.Events.onDragLeave (Just <<< DragLeave)
-  , Ocelot.HTML.Events.onDragOver (Just <<< PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
-  , Ocelot.HTML.Events.onDrop (Just <<< DropFile)
+  , Ocelot.HTML.Events.onDragEnd (PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
+  , Ocelot.HTML.Events.onDragLeave DragLeave
+  , Ocelot.HTML.Events.onDragOver (PreventDefault <<< Web.HTML.Event.DragEvent.toEvent)
+  , Ocelot.HTML.Events.onDrop DropFile
   ]
   where
   cssDragOver :: String
@@ -269,7 +269,7 @@ renderInput state =
     ( [ Ocelot.HTMl.Properties.css "hidden"
       , Halogen.HTML.Properties.id_ state.config.id
       , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
-      , Ocelot.HTML.Events.onFileUpload (Just <<< ChooseFile)
+      , Ocelot.HTML.Events.onFileUpload ChooseFile
       , Halogen.HTML.Properties.multiple state.config.multiple
       ]
         <> case state.config.accept of

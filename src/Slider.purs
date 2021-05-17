@@ -24,7 +24,7 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
-import Halogen.Query.EventSource as Halogen.Query.EventSource
+import Halogen.Query.Event as Halogen.Query.Event
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Data.IntervalTree as Ocelot.Data.IntervalTree
 import Ocelot.Slider.Render as Ocelot.Slider.Render
@@ -36,7 +36,7 @@ import Web.UIEvent.MouseEvent.EventTypes as Web.UIEvent.MouseEvent.EventTypes
 
 type Slot = Halogen.Slot Query Output
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
@@ -523,13 +523,15 @@ sortByDistance ::
   Array { percent :: Number } ->
   Data.Map.Map { percent :: Number } {- distance -}
     { percent :: Number } {- mark -}
-sortByDistance x = Data.Array.foldMap reducer
+sortByDistance x = Data.Array.foldl reducer Data.Map.empty
   where
   reducer ::
+    Data.Map.Map { percent :: Number }
+      { percent :: Number } ->
     { percent :: Number } ->
     Data.Map.Map { percent :: Number }
       { percent :: Number }
-  reducer mark = Data.Map.singleton (absDistance mark x) mark
+  reducer old mark = Data.Map.insert (absDistance mark x) mark old
 
 absDistance :: { percent :: Number } -> { percent :: Number } -> { percent :: Number }
 absDistance x y = Data.Ord.abs (x - y)
@@ -559,7 +561,7 @@ listenOnMouseMove ::
   ComponentM m Halogen.SubscriptionId
 listenOnMouseMove window = do
   Halogen.subscribe
-    $ Halogen.Query.EventSource.eventListenerEventSource
+    $ Halogen.Query.Event.eventListener
         Web.UIEvent.MouseEvent.EventTypes.mousemove
         (Web.HTML.Window.toEventTarget window)
         toAction
@@ -574,7 +576,7 @@ listenOnMouseUp ::
   ComponentM m Halogen.SubscriptionId
 listenOnMouseUp window = do
   Halogen.subscribe
-    $ Halogen.Query.EventSource.eventListenerEventSource
+    $ Halogen.Query.Event.eventListener
         Web.UIEvent.MouseEvent.EventTypes.mouseup
         (Web.HTML.Window.toEventTarget window)
         toAction
@@ -641,11 +643,11 @@ renderThumbs state =
 renderThumb :: forall m. State -> Int -> { percent :: Number } -> ComponentHTML m
 renderThumb state index percent =
   Ocelot.Slider.Render.thumb state.input.layout percent
-    [ Halogen.HTML.Events.onMouseDown
-        if state.input.disabled
-        then const Nothing
-        else (Just <<< MouseDownOnThumb index)
-    ]
+    ( Data.Monoid.guard (not state.input.disabled)
+        [ Halogen.HTML.Events.onMouseDown
+            (MouseDownOnThumb index)
+        ]
+    )
 
 renderTrack :: forall m. State -> ComponentHTML m
 renderTrack state =

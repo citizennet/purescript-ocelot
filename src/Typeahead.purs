@@ -87,7 +87,7 @@ import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
 import Select as Select
 import Select.Setters as Select.Setters
-import Type.Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 import Unsafe.Coerce as Unsafe.Coerce
 
 --------
@@ -102,7 +102,7 @@ type ChildSlots action f item =
   )
 
 type Component action f item m 
-  = Halogen.Component Halogen.HTML.HTML (Query f item) (Input action f item m) (Output action f item) m
+  = Halogen.Component (Query f item) (Input action f item m) (Output action f item) m
 
 type ComponentHTML action f item m 
   = Halogen.ComponentHTML (Action action f item m) (ChildSlots action f item) m
@@ -117,7 +117,7 @@ type CompositeAction action f item m
   = Select.Action (EmbeddedAction action f item m)
 
 type CompositeComponent action f item m 
-  = Halogen.Component Halogen.HTML.HTML (CompositeQuery f item) (CompositeInput f item m) (Output action f item) m
+  = Halogen.Component (CompositeQuery f item) (CompositeInput f item m) (Output action f item) m
 
 type CompositeComponentHTML action f item m 
   = Halogen.ComponentHTML (CompositeAction action f item m) EmbeddedChildSlots m
@@ -387,7 +387,7 @@ syncMulti { itemToObject, renderFuzzy } props =
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 applyInsertable
   :: forall item
@@ -611,18 +611,18 @@ handleAction = case _ of
 handleQuery :: forall action f item m a. Query f item a -> ComponentM action f item m (Maybe a)
 handleQuery = case _ of
   GetSelected reply -> do
-    response <- Halogen.query _select unit (Select.Query $ Halogen.request GetSelected)
+    response <- Halogen.request _select unit (Select.Query <<< GetSelected)
     pure $ reply <$> response
   ReplaceSelected selected a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceSelected selected)
+    Halogen.tell _select unit (Select.Query <<< ReplaceSelected selected)
   ReplaceSelectedBy f a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceSelectedBy f)
+    Halogen.tell _select unit (Select.Query <<< ReplaceSelectedBy f)
   ReplaceItems items a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ ReplaceItems items)
+    Halogen.tell _select unit (Select.Query <<< ReplaceItems items)
   Reset a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ Reset)
+    Halogen.tell _select unit (Select.Query <<< Reset)
   SetDisabled disabled a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetDisabled disabled)
+    Halogen.tell _select unit (Select.Query <<< SetDisabled disabled)
 
 initialState
   :: forall action f item m
@@ -688,7 +688,7 @@ renderAdapter
 renderAdapter render state =
   Halogen.HTML.slot _select unit (Select.component identity $ spec render)
     (embeddedInput state)
-    (Just <<< PassingOutput)
+    PassingOutput
 
 renderError :: ∀ p i. Boolean -> Halogen.HTML.HTML p i
 renderError error =
@@ -731,7 +731,7 @@ renderMulti iprops renderItem renderContainer st =
         then
           Halogen.HTML.a
             [ Ocelot.HTML.Properties.css "absolute -mt-7 pin-r underline text-grey-70 cursor-pointer"
-            , Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ RemoveAll
+            , Halogen.HTML.Events.onClick \_ -> Select.Action $ RemoveAll
             ]
             [ Halogen.HTML.text "Remove All" ]
         else
@@ -745,7 +745,7 @@ renderMulti iprops renderItem renderContainer st =
               Ocelot.Block.ItemContainer.selectionGroup
                 renderItem
                 []
-                [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ Remove selected ]
+                [ Halogen.HTML.Events.onClick \_ -> Select.Action $ Remove selected ]
                 selected
     , Ocelot.Block.Input.inputGroup_
       [ Ocelot.Block.Input.inputCenter $ inputProps disabled iprops
@@ -804,7 +804,7 @@ renderSearchDropdown resetLabel label renderFuzzy st =
   renderReset =
     Ocelot.Block.ItemContainer.dropdownItem
       Halogen.HTML.div
-      [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ RemoveAll
+      [ Halogen.HTML.Events.onClick \_ -> Select.Action $ RemoveAll
       ]
       [ Halogen.HTML.text resetLabel ]
       ( Data.Maybe.isNothing st.selected )
@@ -833,14 +833,14 @@ renderSingle iprops renderItem renderContainer st =
             ( \selected -> Halogen.HTML.div
               [ Halogen.HTML.Properties.classes Ocelot.Block.Input.mainLeftClasses ]
               [ Ocelot.Block.ItemContainer.selectionGroup renderItem
-                [ Halogen.HTML.Events.onClick $ Just <<< Select.ToggleClick ]
-                [ Halogen.HTML.Events.onClick $ const <<< Just <<< Select.Action $ Remove selected ]
+                [ Halogen.HTML.Events.onClick Select.ToggleClick ]
+                [ Halogen.HTML.Events.onClick \_ -> Select.Action $ Remove selected ]
                 selected
               ])
             st.selected
       , Ocelot.Block.Input.borderRight
         [ Halogen.HTML.Properties.classes $ linkClasses disabled
-        , Halogen.HTML.Events.onClick $ Just <<< Select.ToggleClick
+        , Halogen.HTML.Events.onClick Select.ToggleClick
         ]
         [ Halogen.HTML.text "Change" ]
       ]

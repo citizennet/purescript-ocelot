@@ -31,11 +31,11 @@ module Ocelot.Dropdown
 import Prelude
 import Control.Comonad as Control.Comonad
 import Control.Comonad.Store as Control.Comonad.Store
+import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Data.Array ((!!))
 import Data.Array as Data.Array
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
-import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Effect.Aff.Class as Effect.Aff.Class
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -46,7 +46,7 @@ import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
 import Select as Select
 import Select.Setters as Select.Setters
-import Type.Data.Symbol (SProxy(..))
+import Type.Proxy (Proxy(..))
 
 --------
 -- Types
@@ -65,7 +65,7 @@ type ChildSlots item
     )
 
 type Component item m 
-  = Halogen.Component Halogen.HTML.HTML (Query item) (Input item m) (Output item) m
+  = Halogen.Component (Query item) (Input item m) (Output item) m
 
 type ComponentHTML item m 
   = Halogen.ComponentHTML (Action item m) (ChildSlots item) m
@@ -80,7 +80,7 @@ type CompositeAction
   = Select.Action EmbeddedAction
 
 type CompositeComponent item m 
-  = Halogen.Component Halogen.HTML.HTML (CompositeQuery item) (CompositeInput item) (Output item) m
+  = Halogen.Component (CompositeQuery item) (CompositeInput item) (Output item) m
 
 type CompositeComponentHTML m 
   = Halogen.ComponentHTML CompositeAction EmbeddedChildSlots m
@@ -154,7 +154,7 @@ component = Halogen.mkComponent
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 defDropdown
   :: ∀ item m
@@ -240,11 +240,11 @@ handleAction = case _ of
 handleQuery :: forall item m a. Query item a -> ComponentM item m (Maybe a)
 handleQuery = case _ of
   SetDisabled disabled a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetDisabled disabled)
+    Halogen.tell _select unit (Select.Query <<< SetDisabled disabled)
   SetItems items a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetItems items)
+    Halogen.tell _select unit (Select.Query <<< SetItems items)
   SetSelection item a -> Just a <$ do
-    Halogen.query _select unit (Select.Query $ Halogen.tell $ SetSelection item)
+    Halogen.tell _select unit (Select.Query <<< SetSelection item)
 
 initialState :: forall item m. Effect.Aff.Class.MonadAff m => Input item m -> StateStore item m
 initialState { disabled, items, render, selectedItem } =
@@ -258,7 +258,7 @@ renderAdapter
 renderAdapter render state =
   Halogen.HTML.slot _select unit (Select.component identity $ spec render)
     (embeddedInput state)
-    (Just <<< PassingOutput)
+    PassingOutput
 
 spec
   :: forall item m

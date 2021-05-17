@@ -38,7 +38,6 @@ import Data.FunctorWithIndex (mapWithIndex)
 import Data.Maybe (Maybe(..), fromMaybe, isNothing, maybe)
 import Data.String (joinWith, toLower, trim)
 import Data.String.Regex (match, parseFlags, regex)
-import Data.Symbol (SProxy(..))
 import Data.Time (Time)
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -51,6 +50,7 @@ import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)
 import Select as S
 import Select.Setters as Setters
+import Type.Proxy (Proxy(..))
 import Web.Event.Event (preventDefault)
 import Web.UIEvent.KeyboardEvent (KeyboardEvent)
 import Web.UIEvent.KeyboardEvent as KE
@@ -65,7 +65,7 @@ type ChildSlots =
   ( select :: S.Slot Query EmbeddedChildSlots Output Unit
   )
 
-type Component m = H.Component HH.HTML Query Input Output m
+type Component m = H.Component Query Input Output m
 
 type ComponentHTML m = H.ComponentHTML Action ChildSlots m
 
@@ -75,7 +75,7 @@ type ComponentRender m = State -> ComponentHTML m
 
 type CompositeAction = S.Action EmbeddedAction
 
-type CompositeComponent m = H.Component HH.HTML CompositeQuery CompositeInput Output m
+type CompositeComponent m = H.Component CompositeQuery CompositeInput Output m
 
 type CompositeComponentHTML m = H.ComponentHTML CompositeAction EmbeddedChildSlots m
 
@@ -154,7 +154,7 @@ component = H.mkComponent
 ---------
 -- Values
 
-_select = SProxy :: SProxy "select"
+_select = Proxy :: Proxy "select"
 
 dropdownClasses :: Array HH.ClassName
 dropdownClasses = HH.ClassName <$>
@@ -307,12 +307,12 @@ handleAction = case _ of
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
   GetSelection reply -> do
-    response <- H.query _select unit (S.Query $ H.request GetSelection)
+    response <- H.request _select unit (S.Query <<< GetSelection)
     pure $ reply <$> response
   SetDisabled disabled a -> Just a <$ do
-    void $ H.query _select unit (S.Query $ H.tell $ SetDisabled disabled)
+    void $ H.tell _select unit (S.Query <<<  SetDisabled disabled)
   SetSelection selection a -> Just a <$ do
-    H.query _select unit (S.Query $ H.tell $ SetSelection selection)
+    H.tell _select unit (S.Query <<< SetSelection selection)
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
@@ -340,7 +340,7 @@ meridiemToString = case _ of
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =
-    HH.slot _select unit (S.component identity spec) (embeddedInput st) (Just <<< PassingOutput)
+    HH.slot _select unit (S.component identity spec) (embeddedInput st) PassingOutput
 
 renderItem :: forall m. Int -> TimeUnit -> CompositeComponentHTML m
 renderItem index item =
@@ -394,8 +394,8 @@ renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
     ( Setters.setInputProps
-      [ HE.onBlur \_ -> Just (S.Action OnBlur)
-      , HE.onKeyDown $ Just <<< S.Action <<< Key
+      [ HE.onBlur \_ -> S.Action OnBlur
+      , HE.onKeyDown $ S.Action <<< Key
       , HP.value search
       ]
     )

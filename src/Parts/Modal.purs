@@ -11,7 +11,7 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Query.EventSource as ES
+import Halogen.Query.Event as ES
 import Ocelot.Block.Format as Format
 import Ocelot.HTML.Properties (css, (<&>))
 import Web.HTML (window)
@@ -32,7 +32,7 @@ initializeWith
 initializeWith toAction = do
   document <- H.liftEffect $ document =<< window
   H.subscribe
-    $ ES.eventListenerEventSource
+    $ ES.eventListener
       KET.keydown
       (HTMLDocument.toEventTarget document)
       (toAction <=< KE.fromEvent)

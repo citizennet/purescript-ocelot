@@ -5,7 +5,6 @@ import Prelude
 import Data.Array as Data.Array
 import Data.Int as Data.Int
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Effect.Console (log)
 import Halogen as Halogen
@@ -23,11 +22,12 @@ import Ocelot.Block.Radio as Radio
 import Ocelot.HTML.Properties (css)
 import Ocelot.Slider as Ocelot.Slider
 import Ocelot.Slider.Render as Ocelot.Slider.Render
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import Web.UIEvent.MouseEvent (MouseEvent)
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 
@@ -52,7 +52,7 @@ type Output = Void
 type ChildSlots =
   ( slider :: Ocelot.Slider.Slot String )
 
-_slider = SProxy :: SProxy "slider"
+_slider = Proxy :: Proxy "slider"
 
 component ::
   forall m.
@@ -84,11 +84,11 @@ handleAction = case _ of
       Halogen.liftEffect (log ("slider: " <> show xs))
 
   HandleThumbCount n slotKey -> do
-    void $ Halogen.query _slider slotKey <<< Halogen.tell
+    void $ Halogen.tell _slider slotKey
       $ Ocelot.Slider.SetThumbCount n
 
   Initialize -> do
-    void <<< Halogen.query _slider "disabled" <<< Halogen.tell
+    void <<< Halogen.tell _slider "disabled"
       $ Ocelot.Slider.ReplaceThumbs [ { percent: 30.0 }, { percent: 70.0 } ]
 
   ToggleFormPanel _ -> do
@@ -138,37 +138,37 @@ render state =
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
                 , Halogen.HTML.Propreties.checked true
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 1 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 1 "discrete"
                 ]
                 [ Halogen.HTML.text "1" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 2 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 2 "discrete"
                 ]
                 [ Halogen.HTML.text "2" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 3 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 3 "discrete"
                 ]
                 [ Halogen.HTML.text "3" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 4 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 4 "discrete"
                 ]
                 [ Halogen.HTML.text "4" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 5 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 5 "discrete"
                 ]
                 [ Halogen.HTML.text "5" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-discrete"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 6 "discrete")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 6 "discrete"
                 ]
                 [ Halogen.HTML.text "6" ]
               ]
@@ -181,7 +181,7 @@ render state =
               , minDistance: Just { percent: 9.9 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
-              (Just <<< HandleSlider)
+              HandleSlider
             ]
           , Card.card
             [ css "flex-1" ]
@@ -194,37 +194,37 @@ render state =
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
                 , Halogen.HTML.Propreties.checked true
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 1 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 1 "continuous"
                 ]
                 [ Halogen.HTML.text "1" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 2 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 2 "continuous"
                 ]
                 [ Halogen.HTML.text "2" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 3 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 3 "continuous"
                 ]
                 [ Halogen.HTML.text "3" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 4 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 4 "continuous"
                 ]
                 [ Halogen.HTML.text "4" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 5 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 5 "continuous"
                 ]
                 [ Halogen.HTML.text "5" ]
               , Radio.radio
                 [ css "pr-6" ]
                 [ Halogen.HTML.Propreties.name "slider-continuous"
-                , Halogen.HTML.Events.onClick \_ -> Just (HandleThumbCount 6 "continuous")
+                , Halogen.HTML.Events.onClick \_ -> HandleThumbCount 6 "continuous"
                 ]
                 [ Halogen.HTML.text "6" ]
               ]
@@ -237,7 +237,7 @@ render state =
               , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
-              (Just <<< HandleSlider)
+              HandleSlider
             ]
           , Card.card
             [ css "flex-1" ]
@@ -253,7 +253,7 @@ render state =
               , minDistance: Just { percent: 10.0 }
               , renderIntervals: Data.Array.foldMap renderInterval
               }
-              (Just <<< HandleSlider)
+              HandleSlider
             ]
           ]
         ]

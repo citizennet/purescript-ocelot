@@ -3,7 +3,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/ocelot
   docker:
-    - image: circleci/node:10.15-browsers
+    - image: circleci/node:10.24-buster-browsers
   environment:
     RTS_ARGS: +RTS -N2 -RTS
 
@@ -12,6 +12,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+
+      - run:
+          name: Install libtinfo (required until purescript 0.14.2)
+          command: sudo apt install libtinfo5 libncurses5-dev
 
       - restore_cache:
           keys:

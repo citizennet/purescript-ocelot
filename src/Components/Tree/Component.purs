@@ -49,7 +49,7 @@ data Message item
 component :: ∀ m item.
   MonadAff m =>
   Eq item =>
-  H.Component HH.HTML (Query item) (Input item) (Message item) m
+  H.Component (Query item) (Input item) (Message item) m
 component =
   H.mkComponent
     { initialState
@@ -80,14 +80,14 @@ render { items, renderItem, checkable } =
           [ css "inline-flex" ]
           [ Conditional.alt_ (checkable value)
             [ Checkbox.checkbox_
-              [ HE.onChecked $ Just <<< ToggleItem value itemPath (A.cons ix indexPath)
+              [ HE.onChecked $ ToggleItem value itemPath (A.cons ix indexPath)
               , HP.checked selected
               ]
               [ HH.fromPlainHTML $ renderItem value ]
             ]
             [ HH.span
               [ css "cursor-pointer"
-              , HE.onClick $ Just <<< const (ToggleChildren path)
+              , HE.onClick \_ -> ToggleChildren path
               ]
               [ HH.fromPlainHTML $ renderItem value ]
             ]
@@ -108,7 +108,7 @@ render { items, renderItem, checkable } =
 
     renderCarat children expanded path =
       carat
-        [ HE.onClick $ Just <<< const (ToggleChildren path)
+        [ HE.onClick \_ -> ToggleChildren path
         , css $ "mr-3 text-xl align-text-bottom cursor-pointer " <> visible
         ]
       where

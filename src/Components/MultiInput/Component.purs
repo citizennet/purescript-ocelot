@@ -13,7 +13,6 @@ import Data.FunctorWithIndex as Data.FunctorWithIndex
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Maybe as Data.Maybe
 import Data.String as Data.String
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
@@ -22,13 +21,14 @@ import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Components.MultiInput.TextWidth as Ocelot.Components.MultiInput.TextWidth
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Type.Proxy (Proxy(..))
 import Web.Event.Event as Web.Event.Event
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 import Web.UIEvent.KeyboardEvent as Web.UIEvent.KeyboardEvent
 
 type Slot = Halogen.Slot Query Output
 
-type Component m = Halogen.Component Halogen.HTML.HTML Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
@@ -86,7 +86,7 @@ type ChildSlots =
   ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
   )
 
-_textWidth = SProxy :: SProxy "textWidth"
+_textWidth = Proxy :: Proxy "textWidth"
 
 component ::
   forall m.
@@ -420,7 +420,7 @@ measureTextWidth ::
   String ->
   ComponentM m (Maybe Number)
 measureTextWidth text = do
-  Halogen.query _textWidth unit <<< Halogen.request
+  Halogen.request _textWidth unit
     $ Ocelot.Components.MultiInput.TextWidth.GetWidth text
 
 preventDefault ::
@@ -514,11 +514,11 @@ renderItemDisplay index text =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes itemDisplayClasses ]
     [ Halogen.HTML.span
-        [ Halogen.HTML.Events.onClick \_ -> Just (EditItem index) ]
+        [ Halogen.HTML.Events.onClick \_ -> EditItem index ]
         [ Halogen.HTML.text text ]
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
-        , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
+        , Halogen.HTML.Events.onClick \_ -> RemoveOne index
         ]
         [ Ocelot.Block.Icon.delete_ ]
     ]
@@ -535,7 +535,7 @@ renderItemEdit placeholder index inputBox =
     [ renderAutoSizeInput placeholder index false inputBox
     , Halogen.HTML.button
         [ Halogen.HTML.Properties.classes closeButtonClasses
-        , Halogen.HTML.Events.onClick \_ -> Just (RemoveOne index)
+        , Halogen.HTML.Events.onClick \_ -> RemoveOne index
         ]
         [ Ocelot.Block.Icon.delete_ ]
     ]
@@ -553,9 +553,9 @@ renderAutoSizeInput placeholder index new inputBox =
     [ Halogen.HTML.input
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
-        , Halogen.HTML.Events.onBlur \_ -> Just (OnBlur index)
-        , Halogen.HTML.Events.onKeyDown (Just <<< OnKeyDown index)
-        , Halogen.HTML.Events.onValueInput (Just <<< OnInput index)
+        , Halogen.HTML.Events.onBlur \_ -> OnBlur index
+        , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
+        , Halogen.HTML.Events.onValueInput (OnInput index)
         , Halogen.HTML.Properties.placeholder case new of
             false -> ""
             true

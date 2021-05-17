@@ -3,7 +3,7 @@ module UIGuide.Component.Dialogs where
 import Prelude
 
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+import Data.Show.Generic (genericShow)
 import Data.Maybe (Maybe(..))
 import Data.Time.Duration (Milliseconds(..))
 import Effect.Aff (delay)
@@ -45,7 +45,7 @@ type Message = Void
 component
   :: ∀ m
    . MonadAff m
-  => H.Component HH.HTML Query Input Message m
+  => H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const { toast: Nothing }
@@ -101,7 +101,7 @@ component =
                 [ Format.caption_
                   [ HH.text "Success" ]
                 , Button.button
-                  [ HE.onClick $ const $ Just $ Toggle Success ]
+                  [ HE.onClick \_ -> Toggle Success ]
                   [ HH.text "Success" ]
                 , Toast.toast
                   [ Toast.visible $ state.toast == Just Success ]
@@ -120,7 +120,7 @@ component =
                 [ Format.caption_
                   [ HH.text "Error" ]
                 , Button.button
-                  [ HE.onClick $ const $ Just $ Toggle Error ]
+                  [ HE.onClick \_ -> Toggle Error ]
                   [ HH.text "Error" ]
                 , Toast.toast
                   [ Toast.visible $ state.toast == Just Error ]

@@ -1,11 +1,11 @@
 module UIGuide.Component.ExpansionCards where
 
 import Prelude
+
 import Data.Array (head, take)
 import Data.Lens (Lens', over)
 import Data.Lens.Record (prop)
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -19,8 +19,9 @@ import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toggle as Toggle
-import Ocelot.Typeahead as TA
 import Ocelot.HTML.Properties (css)
+import Ocelot.Typeahead as TA
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 import UIGuide.Utility.Async as Async
@@ -51,17 +52,17 @@ type ChildSlot =
   , cp4 :: TA.Slot Action Array Async.Location Int
   )
 
-_cp1 = SProxy :: SProxy "cp1"
-_cp2 = SProxy :: SProxy "cp2"
-_cp3 = SProxy :: SProxy "cp3"
-_cp4 = SProxy :: SProxy "cp4"
+_cp1 = Proxy :: Proxy "cp1"
+_cp2 = Proxy :: Proxy "cp2"
+_cp3 = Proxy :: Proxy "cp3"
+_cp4 = Proxy :: Proxy "cp4"
 
 ----------
 -- Component definition
 
 component :: ∀ m
   . MonadAff m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState
@@ -92,40 +93,40 @@ component =
         H.put (over lens not st)
 
       Initialize -> do
-        _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems Loading
-        _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp1 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp2 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp3 $ H.mkTell $ TA.ReplaceItems Loading
+        _ <- H.queryAll _cp4 $ H.mkTell $ TA.ReplaceItems Loading
 
         remoteLocations <- H.liftAff $ Async.loadFromSource Async.locations ""
         _ <- case remoteLocations of
           items@(Success _) -> do
-            _ <- H.queryAll _cp3 $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _cp4 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp3 $ H.mkTell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp4 $ H.mkTell $ TA.ReplaceItems items
             pure unit
           otherwise -> pure unit
 
         remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
         _ <- case remoteUsers of
           items@(Success _) -> do
-            _ <- H.queryAll _cp1 $ H.tell $ TA.ReplaceItems items
-            _ <- H.queryAll _cp2 $ H.tell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp1 $ H.mkTell $ TA.ReplaceItems items
+            _ <- H.queryAll _cp2 $ H.mkTell $ TA.ReplaceItems items
             pure unit
           otherwise -> pure unit
 
         selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
         _ <- case selectedLocations of
           Success xs -> do
-            _ <- H.query _cp3 1 $ H.tell $ TA.ReplaceSelected (head xs)
-            _ <- H.query _cp4 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            _ <- H.tell _cp3 1 $ TA.ReplaceSelected (head xs)
+            _ <- H.tell _cp4 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
           otherwise -> pure unit
 
         selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
         case selectedUsers of
           Success xs -> do
-            _ <- H.query _cp1 1 $ H.tell $ TA.ReplaceSelected (head xs)
-            _ <- H.query _cp2 3 $ H.tell $ TA.ReplaceSelected (take 4 xs)
+            _ <- H.tell _cp1 1 $ TA.ReplaceSelected (head xs)
+            _ <- H.tell _cp2 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
           otherwise -> pure unit
 
@@ -134,16 +135,16 @@ component =
 -- HTML
 
 _singleLocation :: Lens' State Expandable.Status
-_singleLocation = prop (SProxy :: SProxy "singleLocation")
+_singleLocation = prop (Proxy :: Proxy "singleLocation")
 
 _singleUser :: Lens' State Expandable.Status
-_singleUser = prop (SProxy :: SProxy "singleUser")
+_singleUser = prop (Proxy :: Proxy "singleUser")
 
 _multiLocation :: Lens' State Expandable.Status
-_multiLocation = prop (SProxy :: SProxy "multiLocation")
+_multiLocation = prop (Proxy :: Proxy "multiLocation")
 
 _multiUser :: Lens' State Expandable.Status
-_multiUser = prop (SProxy :: SProxy "multiUser")
+_multiUser = prop (Proxy :: Proxy "multiUser")
 
 cnDocumentationBlocks :: ∀ m
   . MonadAff m
@@ -174,7 +175,7 @@ cnDocumentationBlocks st =
           [ Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick $ const $ Just $ ToggleCard _singleLocation
+                [ HE.onClick \_ -> ToggleCard _singleLocation
                 , Expandable.status st.singleLocation
                 ]
                 [ Format.subHeading_ [ HH.text "Locations" ]
@@ -188,7 +189,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location"
                   }
-                  [ HH.slot _cp3 0 TA.single
+                  [ HH.slot_ _cp3 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -198,7 +199,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "location"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary Location"
@@ -206,7 +206,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "location-hydrated"
                   }
-                  [ HH.slot _cp3 1 TA.single
+                  [ HH.slot_ _cp3 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                       , itemToObject: Async.locationToObject
@@ -216,7 +216,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "location-hydrated"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 ]
               ]
@@ -224,7 +223,7 @@ cnDocumentationBlocks st =
           , Backdrop.content_
             [ Card.card_
               [ Expandable.heading
-                [ HE.onClick $ const $ Just $ ToggleCard _singleUser
+                [ HE.onClick \_ -> ToggleCard _singleUser
                 , Expandable.status st.singleUser
                 ]
                 [ Format.subHeading_ [ HH.text "Users" ] ]
@@ -236,7 +235,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user"
                   }
-                  [ HH.slot _cp1 0 TA.single
+                  [ HH.slot_ _cp1 0 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -246,7 +245,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "user"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 , FormField.field_
                   { label: HH.text "Secondary User"
@@ -254,7 +252,7 @@ cnDocumentationBlocks st =
                   , error: []
                   , inputId: "user-hydrated"
                   }
-                  [ HH.slot _cp1 1 TA.single
+                  [ HH.slot_ _cp1 1 TA.single
                     ( TA.asyncSingle
                       { renderFuzzy: Async.renderFuzzyUser
                       , itemToObject: Async.userToObject
@@ -264,7 +262,6 @@ cnDocumentationBlocks st =
                       , HP.id_ "user-hydrated"
                       ]
                     )
-                    ( const Nothing )
                   ]
                 ]
               ]
@@ -293,7 +290,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-locations"
                 , HP.checked
                   $ Expandable.toBoolean st.multiLocation
-                , HE.onChange $ const $ Just $ ToggleCard _multiLocation
+                , HE.onChange \_ -> ToggleCard _multiLocation
                 ]
               ]
             , Expandable.content_
@@ -304,7 +301,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot _cp4 0 TA.multi
+                [ HH.slot_ _cp4 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -314,7 +311,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "locations"
                     ]
                   )
-                  ( const Nothing )
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Locations"
@@ -322,7 +318,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "locations"
                 }
-                [ HH.slot _cp4 1 TA.multi
+                [ HH.slot_ _cp4 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Async.locationToObject
@@ -332,7 +328,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "locations"
                     ]
                   )
-                  ( const Nothing )
                 ]
               ]
             ]
@@ -353,7 +348,7 @@ cnDocumentationBlocks st =
                 [ HP.id_ "enable-users"
                 , HP.checked
                   $ Expandable.toBoolean st.multiUser
-                , HE.onChange $ const $ Just $ ToggleCard _multiUser
+                , HE.onChange \_ -> ToggleCard _multiUser
                 ]
               ]
             , Expandable.content_
@@ -364,7 +359,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users"
                 }
-                [ HH.slot _cp2 0 TA.multi
+                [ HH.slot_ _cp2 0 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject
@@ -374,7 +369,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "users"
                     ]
                   )
-                  ( const Nothing )
                 ]
               , FormField.field_
                 { label: HH.text "Excluded Users"
@@ -382,7 +376,7 @@ cnDocumentationBlocks st =
                 , error: []
                 , inputId: "users-hydrated"
                 }
-                [ HH.slot _cp2 1 TA.multi
+                [ HH.slot_ _cp2 1 TA.multi
                   ( TA.asyncMulti
                     { renderFuzzy: Async.renderFuzzyUser
                     , itemToObject: Async.userToObject
@@ -392,7 +386,6 @@ cnDocumentationBlocks st =
                     , HP.id_ "users-hydrated"
                     ]
                   )
-                  ( const Nothing )
                 ]
               ]
             ]

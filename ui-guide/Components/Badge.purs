@@ -24,7 +24,7 @@ type Message = Void
 -- HTML
 
 component
-  :: ∀ m. H.Component HH.HTML Query Input Message m
+  :: ∀ m. H.Component Query Input Message m
 component
   = H.mkComponent
     { initialState: const unit

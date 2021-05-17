@@ -56,7 +56,7 @@ data Message
  = Searched String
 
 -- | The standard search bar
-component :: ∀ m. MonadAff m => H.Component HH.HTML Query Input Message m
+component :: ∀ m. MonadAff m => H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState
@@ -76,7 +76,7 @@ component =
 
 -- | A search bar which allows the user to specify if it should
 -- | stay open when unfocused
-component' :: ∀ m. MonadAff m => H.Component HH.HTML Query Input' Message m
+component' :: ∀ m. MonadAff m => H.Component Query Input' Message m
 component' =
   H.mkComponent
     { initialState
@@ -171,7 +171,7 @@ render :: forall m.
 render st@{ query, open } =
   HH.label
     [ HP.classes $ containerClasses <> containerCondClasses
-    , HE.onClick (Just <<< const Open)
+    , HE.onClick \_ -> Open
     ]
     [ HH.div
       [ HP.classes $ iconClasses <> iconCondClasses ]
@@ -179,16 +179,16 @@ render st@{ query, open } =
     , HH.div
       [ css "flex-grow" ]
       [ HH.input
-        [ HE.onValueInput (Just <<< Search)
+        [ HE.onValueInput Search
         , HP.placeholder "Search"
         , HP.value query
         , HP.classes $ inputClasses <> inputCondClasses
-        , HE.onBlur (Just <<< const Blur)
+        , HE.onBlur \_ -> Blur
         , HP.tabIndex 0
         ]
       ]
     , HH.button
-      [ HE.onClick $ Just <<< Clear
+      [ HE.onClick Clear
       , HP.type_ HP.ButtonButton
       , HP.classes $ buttonClasses <> buttonCondClasses <> hideClearClasses
       ]

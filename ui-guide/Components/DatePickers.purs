@@ -3,7 +3,6 @@ module UIGuide.Component.DatePickers where
 import Prelude
 import Data.DateTime (DateTime(..))
 import Data.Maybe (Maybe(..))
-import Data.Symbol (SProxy(..))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
@@ -12,11 +11,12 @@ import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
+import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.DatePicker as DatePicker
 import Ocelot.DateTimePicker as DateTimePicker
-import Ocelot.TimePicker as TimePicker
-import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
+import Ocelot.TimePicker as TimePicker
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -41,16 +41,16 @@ type ChildSlot =
   , dtp :: DateTimePicker.Slot Int
   )
 
-_datePicker = SProxy :: SProxy "datePicker"
-_timePicker = SProxy :: SProxy "timePicker"
-_dtp = SProxy :: SProxy "dtp"
+_datePicker = Proxy :: Proxy "datePicker"
+_timePicker = Proxy :: Proxy "timePicker"
+_dtp = Proxy :: Proxy "dtp"
 
 ----------
 -- Component definition
 
 component :: ∀ m
   . MonadAff m
- => H.Component HH.HTML Query Unit Void m
+ => H.Component Query Unit Void m
 component =
   H.mkComponent
   { initialState
@@ -63,12 +63,12 @@ component =
     handleAction = case _ of  
       ToggleDisabled -> do
         st <- H.modify \s -> s { disabled = not s.disabled }
-        void $ H.query _datePicker 0 $ H.tell $ DatePicker.SetDisabled st.disabled
-        void $ H.query _datePicker 1 $ H.tell $ DatePicker.SetDisabled st.disabled
-        void $ H.query _timePicker 0 $ H.tell $ TimePicker.SetDisabled st.disabled
-        void $ H.query _timePicker 1 $ H.tell $ TimePicker.SetDisabled st.disabled
-        void $ H.query _dtp 0 $ H.tell $ DateTimePicker.SetDisabled st.disabled
-        void $ H.query _dtp 1 $ H.tell $ DateTimePicker.SetDisabled st.disabled
+        void $ H.tell _datePicker 0 $ DatePicker.SetDisabled st.disabled
+        void $ H.tell _datePicker 1 $ DatePicker.SetDisabled st.disabled
+        void $ H.tell _timePicker 0 $ TimePicker.SetDisabled st.disabled
+        void $ H.tell _timePicker 1 $ TimePicker.SetDisabled st.disabled
+        void $ H.tell _dtp 0 $ DateTimePicker.SetDisabled st.disabled
+        void $ H.tell _dtp 1 $ DateTimePicker.SetDisabled st.disabled
         
     initialState :: Unit -> State
     initialState _ = { disabled: false }
@@ -101,7 +101,7 @@ cnDocumentationBlocks =
         [ css "inline mr-4" ]
         [ HH.text "You can toggle between enabled/disabled states" ]
       , Button.button
-        [ HE.onClick $ const $ Just ToggleDisabled ]
+        [ HE.onClick \_ -> ToggleDisabled ]
         [ HH.text "Toggle" ]
       ]
     , HH.div_
@@ -116,12 +116,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start-date"
               }
-              [ HH.slot _datePicker 0 DatePicker.component
+              [ HH.slot_ _datePicker 0 DatePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
@@ -130,12 +129,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start-date-disabled"
               }
-              [ HH.slot _datePicker 2 DatePicker.component
+              [ HH.slot_ _datePicker 2 DatePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
@@ -149,12 +147,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-date"
               }
-              [ HH.slot _datePicker 1 DatePicker.component
+              [ HH.slot_ _datePicker 1 DatePicker.component
                 { targetDate: Nothing
                 , selection: Just $ unsafeMkDate 2019 1 1
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
             , FormField.fieldMid_
@@ -163,12 +160,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-date-disabled"
               }
-              [ HH.slot _datePicker 3 DatePicker.component
+              [ HH.slot_ _datePicker 3 DatePicker.component
                 { targetDate: Nothing
                 , selection: Just $ unsafeMkDate 2019 1 1
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
@@ -189,11 +185,10 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start-time"
               }
-              [ HH.slot _timePicker 0 TimePicker.component
+              [ HH.slot_ _timePicker 0 TimePicker.component
                 { selection: Nothing
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
@@ -202,11 +197,10 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start-time-disabled"
               }
-              [ HH.slot _timePicker 2 TimePicker.component
+              [ HH.slot_ _timePicker 2 TimePicker.component
                 { selection: Nothing
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
@@ -220,11 +214,10 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-time"
               }
-              [ HH.slot _timePicker 1 TimePicker.component
+              [ HH.slot_ _timePicker 1 TimePicker.component
                 { selection: Just $ unsafeMkTime 12 0 0 0
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
             , FormField.fieldMid_
@@ -233,11 +226,10 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-time-disabled"
               }
-              [ HH.slot _timePicker 3 TimePicker.component
+              [ HH.slot_ _timePicker 3 TimePicker.component
                 { selection: Just $ unsafeMkTime 12 0 0 0
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
@@ -258,12 +250,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start"
               }
-              [ HH.slot _dtp 0 DateTimePicker.component
+              [ HH.slot_ _dtp 0 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.field_
@@ -272,12 +263,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "start-disabled"
               }
-              [ HH.slot _dtp 2 DateTimePicker.component
+              [ HH.slot_ _dtp 2 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Nothing
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
@@ -291,12 +281,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end"
               }
-              [ HH.slot _dtp 1 DateTimePicker.component
+              [ HH.slot_ _dtp 1 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                 , disabled: false
                 }
-                (const Nothing)
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
             , FormField.field_
@@ -305,12 +294,11 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "end-disabled"
               }
-              [ HH.slot _dtp 3 DateTimePicker.component
+              [ HH.slot_ _dtp 3 DateTimePicker.component
                 { targetDate: Nothing
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                 , disabled: true
                 }
-                (const Nothing)
               ]
             ]
           ]
