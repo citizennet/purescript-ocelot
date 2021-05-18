@@ -185,6 +185,7 @@ embeddedHandleAction = case _ of
   OnBlur -> do
     { selection } <- H.get
     when (isNothing selection) handleSearch
+    H.modify_ _ { visibility = S.Off }
 
 embeddedHandleMessage
   :: forall m
@@ -321,9 +322,8 @@ handleSearch = do
     "" -> setSelection Nothing
     _  -> case guessTime search of
       Nothing -> pure unit
-      Just t  -> do
-        setSelection (Just t)
-        H.modify_ _ { visibility = S.Off }
+      Just t  -> setSelection (Just t)
+  H.modify_ _ { visibility = S.Off }
   H.raise $ Searched search
 
 initialState :: Input -> State
