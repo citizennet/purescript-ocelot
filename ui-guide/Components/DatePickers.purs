@@ -1,22 +1,32 @@
 module UIGuide.Component.DatePickers where
 
 import Prelude
+
+import Data.Array as Data.Array
 import Data.DateTime (DateTime(..))
+import Data.Int as Data.Int
 import Data.Maybe (Maybe(..))
 import Data.Symbol (SProxy(..))
+import Data.Time as Data.Time
 import Effect.Aff.Class (class MonadAff)
+import Effect.Class.Console as Effect.Class.Console
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as HE
+import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
+import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
+import Ocelot.Data.DateTime as Ocelot.Data.DateTime
 import Ocelot.DatePicker as DatePicker
 import Ocelot.DateTimePicker as DateTimePicker
-import Ocelot.TimePicker as TimePicker
-import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.HTML.Properties (css)
+import Ocelot.Slider as Ocelot.Slider
+import Ocelot.Slider.Render as Ocelot.Slider.Render
+import Ocelot.TimePicker as TimePicker
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -26,11 +36,14 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = 
   { disabled :: Boolean -- | Global enable/disable toggle
+  , timeInterval :: TimePicker.Interval
   }
 
 data Query a
 data Action 
-  = ToggleDisabled
+  = HandleTimeSlider Ocelot.Slider.Output
+  | Initialize
+  | ToggleDisabled
 
 ----------
 -- Child paths
@@ -39,11 +52,13 @@ type ChildSlot =
   ( datePicker :: DatePicker.Slot Int
   , timePicker :: TimePicker.Slot Int
   , dtp :: DateTimePicker.Slot Int
+  , timeSlider :: Ocelot.Slider.Slot String
   )
 
 _datePicker = SProxy :: SProxy "datePicker"
 _timePicker = SProxy :: SProxy "timePicker"
 _dtp = SProxy :: SProxy "dtp"
+_timeSlider = SProxy :: SProxy "timeSlider"
 
 ----------
 -- Component definition
@@ -57,10 +72,32 @@ component =
   , render
   , eval: H.mkEval H.defaultEval
     { handleAction = handleAction
+    , initialize = Just Initialize
     }
   }
   where
     handleAction = case _ of  
+      HandleTimeSlider output -> case output of
+        Ocelot.Slider.ValueChanged points -> case points of
+          [ startPercent, endPercent ] -> do
+            let
+              getIndex :: { percent :: Number } -> Int
+              getIndex = Data.Int.round <<< (_ * 0.24) <<< _.percent
+
+              start :: Maybe Data.Time.Time
+              start = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex startPercent)
+
+              end :: Maybe Data.Time.Time
+              end = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex endPercent)
+
+            H.liftEffect <<< Effect.Class.Console.log $
+              ( "start: " <> show (map Ocelot.Data.DateTime.formatTime start)
+                  <> ", end: " <> show (map Ocelot.Data.DateTime.formatTime end)
+              )
+            H.modify_ _ { timeInterval = { start, end } }
+          _ -> pure unit
+      Initialize -> do
+        void $ H.queryAll _timeSlider $ H.tell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 } , { percent: 100.0 }]
       ToggleDisabled -> do
         st <- H.modify \s -> s { disabled = not s.disabled }
         void $ H.query _datePicker 0 $ H.tell $ DatePicker.SetDisabled st.disabled
@@ -71,12 +108,18 @@ component =
         void $ H.query _dtp 1 $ H.tell $ DateTimePicker.SetDisabled st.disabled
         
     initialState :: Unit -> State
-    initialState _ = { disabled: false }
+    initialState _ =
+      { disabled: false
+      , timeInterval:
+          { start: Data.Array.head Ocelot.Data.DateTime.defaultTimeRange
+          , end: Data.Array.last Ocelot.Data.DateTime.defaultTimeRange
+          }
+      }
 
     render
       :: State
       -> H.ComponentHTML Action ChildSlot m
-    render _ = cnDocumentationBlocks
+    render = cnDocumentationBlocks
 
 ----------
 -- HTML
@@ -86,8 +129,8 @@ content = Backdrop.content [ css "flex" ]
 
 cnDocumentationBlocks :: ∀ m
   . MonadAff m
- => H.ComponentHTML Action ChildSlot m
-cnDocumentationBlocks =
+ => State -> H.ComponentHTML Action ChildSlot m
+cnDocumentationBlocks state =
   HH.div_
     [ HH.h1
       [ css "font-normal mb-6" ] 
@@ -178,70 +221,83 @@ cnDocumentationBlocks =
       { header: "Time Pickers"
       , subheader: "It's a time picker. Deal with it."
       }
-      [ Backdrop.backdrop_
-        [ content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Standard" ]
-            , FormField.fieldMid_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start time." ]
-              , error: []
-              , inputId: "start-time"
-              }
-              [ HH.slot _timePicker 0 TimePicker.component
-                { disabled: false
-                , interval: Nothing
-                , selection: Nothing
-                }
-                (const Nothing)
-              ]
-            , Format.caption_ [ HH.text "Standard Disabled" ]
-            , FormField.fieldMid_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start time." ]
-              , error: []
-              , inputId: "start-time-disabled"
-              }
-              [ HH.slot _timePicker 2 TimePicker.component
-                { disabled: true
-                , interval: Nothing
-                , selection: Nothing
-                }
-                (const Nothing)
+      [ Halogen.HTML.div
+        [ css "flex-1" ]
+        [ Backdrop.backdrop_
+          [ Backdrop.content_
+            [ Card.card_
+              [ Halogen.HTML.slot _timeSlider "Time Pickers"
+                Ocelot.Slider.component
+                timeSliderInput
+                (Just <<< HandleTimeSlider)
               ]
             ]
           ]
-        , content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Hydrated" ]
-            , FormField.fieldMid_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end time." ]
-              , error: []
-              , inputId: "end-time"
-              }
-              [ HH.slot _timePicker 1 TimePicker.component
-                { disabled: false
-                , interval: Nothing
-                , selection: Just $ unsafeMkTime 12 0 0 0
+        , Backdrop.backdrop_
+          [ content
+            [ Card.card
+              [ css "flex-1" ]
+              [ Format.caption_ [ HH.text "Standard" ]
+              , FormField.fieldMid_
+                { label: HH.text "Start"
+                , helpText: [ HH.text "Choose a start time." ]
+                , error: []
+                , inputId: "start-time"
                 }
-                (const Nothing)
+                [ HH.slot _timePicker 0 TimePicker.component
+                  { disabled: false
+                  , interval: Just state.timeInterval
+                  , selection: Nothing
+                  }
+                  (const Nothing)
+                ]
+              , Format.caption_ [ HH.text "Standard Disabled" ]
+              , FormField.fieldMid_
+                { label: HH.text "Start"
+                , helpText: [ HH.text "Choose a start time." ]
+                , error: []
+                , inputId: "start-time-disabled"
+                }
+                [ HH.slot _timePicker 2 TimePicker.component
+                  { disabled: true
+                  , interval: Just state.timeInterval
+                  , selection: Nothing
+                  }
+                  (const Nothing)
+                ]
               ]
-            , Format.caption_ [ HH.text "Hydrated Disabled" ]
-            , FormField.fieldMid_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end time." ]
-              , error: []
-              , inputId: "end-time-disabled"
-              }
-              [ HH.slot _timePicker 3 TimePicker.component
-                { disabled: true
-                , interval: Nothing
-                , selection: Just $ unsafeMkTime 12 0 0 0
+            ]
+          , content
+            [ Card.card
+              [ css "flex-1" ]
+              [ Format.caption_ [ HH.text "Hydrated" ]
+              , FormField.fieldMid_
+                { label: HH.text "End"
+                , helpText: [ HH.text "Choose an end time." ]
+                , error: []
+                , inputId: "end-time"
                 }
-                (const Nothing)
+                [ HH.slot _timePicker 1 TimePicker.component
+                  { disabled: false
+                  , interval: Just state.timeInterval
+                  , selection: Just $ unsafeMkTime 12 0 0 0
+                  }
+                  (const Nothing)
+                ]
+              , Format.caption_ [ HH.text "Hydrated Disabled" ]
+              , FormField.fieldMid_
+                { label: HH.text "End"
+                , helpText: [ HH.text "Choose an end time." ]
+                , error: []
+                , inputId: "end-time-disabled"
+                }
+                [ HH.slot _timePicker 3 TimePicker.component
+                  { disabled: true
+                  , interval: Just state.timeInterval
+                  , selection: Just $ unsafeMkTime 12 0 0 0
+                  }
+                  (const Nothing)
+                ]
               ]
             ]
           ]
@@ -321,3 +377,50 @@ cnDocumentationBlocks =
         ]
       ]
     ]
+
+timeSliderInput :: Ocelot.Slider.Input
+timeSliderInput =
+  { axis: Just axis
+  , disabled: false
+  , layout: config
+  , marks: Just marks
+  , minDistance: Just { percent: 4.16 }
+  , renderIntervals: Data.Array.foldMap renderInterval
+  }
+  where
+  axis :: Array { label :: String, percent :: Number }
+  axis = Data.Array.mapWithIndex toLabel Ocelot.Data.DateTime.defaultTimeRange
+    where
+    toLabel :: Int -> Data.Time.Time -> { label :: String, percent :: Number }
+    toLabel index time =
+      { label: Ocelot.Data.DateTime.formatTime time
+      , percent: (Data.Int.toNumber index) / 0.24
+      }
+
+  marks :: Array { percent :: Number }
+  marks = Data.Array.mapWithIndex toMark Ocelot.Data.DateTime.defaultTimeRange
+    where
+    toMark :: Int -> Data.Time.Time -> { percent :: Number }
+    toMark index time = { percent: (Data.Int.toNumber index) / 0.24 }
+
+  renderInterval :: Ocelot.Slider.Interval -> Array Halogen.HTML.PlainHTML
+  renderInterval = case _ of
+    Ocelot.Slider.StartToThumb _ -> []
+    Ocelot.Slider.BetweenThumbs { left, right } ->
+      [ Ocelot.Slider.Render.interval config
+          { start: left, end: right }
+          [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
+      ]
+    Ocelot.Slider.ThumbToEnd _ -> []
+
+  config :: Ocelot.Slider.Render.Config
+  config =
+    { axisHeight: 30.0
+    , betweenThumbAndAxis: 30.0
+    , betweenTopAndThumb: 20.0
+    , frameWidth: { px: 1000.0 }
+    , margin: 50.0
+    , trackWidth: 1800.0
+    , trackRadius: 5.0
+    , thumbRadius: 20.0
+    }
