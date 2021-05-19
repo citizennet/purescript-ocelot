@@ -148,7 +148,10 @@ render { date, time, targetDate, disabled } =
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
-        { selection: time, disabled }
+        { disabled
+        , interval: Nothing -- TODO AS-1344
+        , selection: time
+        }
         HandleTime
       ]
     ]

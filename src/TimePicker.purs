@@ -100,8 +100,9 @@ data EmbeddedAction
 type EmbeddedChildSlots = () -- No extension
 
 type Input =
-  { selection :: Maybe Time
-  , disabled :: Boolean
+  { disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Time
   }
 
 type Interval =
@@ -138,9 +139,10 @@ type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeI
 type State = Record StateRow
 
 type StateRow =
-  ( selection :: Maybe Time
+  ( disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Time
   , timeUnits :: Array TimeUnit
-  , disabled :: Boolean
   )
 
 data TimeUnit
@@ -228,14 +230,15 @@ embeddedHandleQuery = case _ of
     setSelectionWithoutRaising selection
 
 embeddedInput :: State -> CompositeInput
-embeddedInput { selection, timeUnits, disabled } =
-  { inputType: S.Text
-  , search: Nothing
-  , debounceTime: Nothing
+embeddedInput state =
+  { debounceTime: Nothing
+  , disabled: state.disabled
   , getItemCount: Array.length <<< _.timeUnits
-  , selection
-  , timeUnits
-  , disabled
+  , inputType: S.Text
+  , interval: state.interval
+  , search: Nothing
+  , selection: state.selection
+  , timeUnits: state.timeUnits
   }
 
 embeddedRender :: forall m. CompositeComponentRender m
@@ -335,10 +338,11 @@ handleSearch = do
   H.raise $ Searched search
 
 initialState :: Input -> State
-initialState { selection, disabled } =
-  { selection
-  , timeUnits: generateTimes selection
-  , disabled
+initialState input =
+  { disabled: input.disabled
+  , interval: input.interval
+  , selection: input.selection
+  , timeUnits: generateTimes input.selection
   }
 
 -- check if a time point is within a **closed** interval

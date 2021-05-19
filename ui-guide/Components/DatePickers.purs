@@ -186,8 +186,9 @@ cnDocumentationBlocks =
               , inputId: "start-time"
               }
               [ HH.slot_ _timePicker 0 TimePicker.component
-                { selection: Nothing
-                , disabled: false
+                { disabled: false
+                , interval: Nothing
+                , selection: Nothing
                 }
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
@@ -198,8 +199,9 @@ cnDocumentationBlocks =
               , inputId: "start-time-disabled"
               }
               [ HH.slot_ _timePicker 2 TimePicker.component
-                { selection: Nothing
-                , disabled: true
+                { disabled: true
+                , interval: Nothing
+                , selection: Nothing
                 }
               ]
             ]
@@ -215,8 +217,9 @@ cnDocumentationBlocks =
               , inputId: "end-time"
               }
               [ HH.slot_ _timePicker 1 TimePicker.component
-                { selection: Just $ unsafeMkTime 12 0 0 0
-                , disabled: false
+                { disabled: false
+                , interval: Nothing
+                , selection: Just $ unsafeMkTime 12 0 0 0
                 }
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
@@ -227,8 +230,9 @@ cnDocumentationBlocks =
               , inputId: "end-time-disabled"
               }
               [ HH.slot_ _timePicker 3 TimePicker.component
-                { selection: Just $ unsafeMkTime 12 0 0 0
-                , disabled: true
+                { disabled: true
+                , interval: Nothing
+                , selection: Just $ unsafeMkTime 12 0 0 0
                 }
               ]
             ]
