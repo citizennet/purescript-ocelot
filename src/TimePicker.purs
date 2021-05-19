@@ -63,6 +63,7 @@ import Web.UIEvent.KeyboardEvent as KE
 
 data Action
   = PassingOutput Output
+  | PassingReceive Input
 
 type ChildSlots =
   ( select :: S.Slot Query EmbeddedChildSlots Output Unit
@@ -96,6 +97,7 @@ data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
   | OnBlur
+  | Receive CompositeInput
 
 type EmbeddedChildSlots = () -- No extension
 
@@ -158,6 +160,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
     { handleAction = handleAction
     , handleQuery = handleQuery
+    , receive = Just <<< PassingReceive
     }
   }
 
@@ -196,6 +199,7 @@ embeddedHandleAction = case _ of
     { selection } <- H.get
     when (isNothing selection) handleSearch
     H.modify_ _ { visibility = S.Off }
+  Receive input -> embeddedReceive input
 
 embeddedHandleMessage
   :: forall m
@@ -240,6 +244,20 @@ embeddedInput state =
   , selection: state.selection
   , timeUnits: state.timeUnits
   }
+
+embeddedReceive :: forall m. CompositeInput -> CompositeComponentM m Unit
+embeddedReceive input = case input.interval of
+  Nothing -> pure unit
+  Just interval -> do
+    old <- H.get
+    H.modify_ _ { interval = input.interval }
+    case old.selection of
+      Just selection
+        | isWithinInterval interval selection -> synchronize
+        | otherwise -> do
+            H.modify_ _ { search = "" }
+            setSelectionWithoutRaising Nothing
+      Nothing -> synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
@@ -315,6 +333,8 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   PassingOutput output ->
     H.raise output
+  PassingReceive input -> do
+    H.modify_ _ { interval = input.interval }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
@@ -453,6 +473,7 @@ spec = S.defaultSpec
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   , initialize = Just Initialize
+  , receive = Just <<< Receive
   }
 
 synchronize :: forall m. CompositeComponentM m Unit
