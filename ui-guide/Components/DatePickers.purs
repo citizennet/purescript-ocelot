@@ -372,7 +372,7 @@ timeSliderInput =
   , disabled: false
   , layout: config
   , marks: Just marks
-  , minDistance: Just { percent: 4.16 }
+  , minDistance: Nothing
   , renderIntervals: Data.Array.foldMap renderInterval
   }
   where
