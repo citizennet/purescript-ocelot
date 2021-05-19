@@ -16,6 +16,7 @@ module Ocelot.TimePicker
   , EmbeddedAction(..)
   , EmbeddedChildSlots
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -24,6 +25,7 @@ module Ocelot.TimePicker
   , StateRow
   , TimeUnit
   , component
+  , isWithinInterval
   ) where
 
 import Prelude
@@ -33,6 +35,7 @@ import Data.Array as Array
 import Data.Array.NonEmpty (catMaybes, head)
 import Data.DateTime (time)
 import Data.Either (either, hush)
+import Data.Foldable as Data.Foldable
 import Data.Formatter.DateTime (unformatDateTime)
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Maybe (Maybe(..), fromMaybe, isNothing, maybe)
@@ -99,6 +102,11 @@ type EmbeddedChildSlots = () -- No extension
 type Input =
   { selection :: Maybe Time
   , disabled :: Boolean
+  }
+
+type Interval =
+  { start :: Maybe Time
+  , end :: Maybe Time
   }
 
 data Meridiem
@@ -332,6 +340,14 @@ initialState { selection, disabled } =
   , timeUnits: generateTimes selection
   , disabled
   }
+
+-- check if a time point is within a **closed** interval
+isWithinInterval :: Interval -> Time -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.or
+    [ maybe true (_ <= x) interval.start
+    , maybe true (x <= _) interval.end
+    ]
 
 meridiemToString :: Meridiem -> String
 meridiemToString = case _ of
