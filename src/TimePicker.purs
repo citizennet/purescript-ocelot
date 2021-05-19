@@ -272,9 +272,15 @@ embeddedRender s =
 -- Generate a standard set of time intervals.
 generateTimes
   :: Maybe Time
+  -> Maybe Interval
   -> Array TimeUnit
-generateTimes selection =
-  ODT.defaultTimeRange <#> (generateTimeUnit selection)
+generateTimes selection mInterval =
+  (filterTimeRange ODT.defaultTimeRange) <#> (generateTimeUnit selection)
+  where
+  filterTimeRange :: Array Time -> Array Time
+  filterTimeRange = case mInterval of
+    Nothing -> identity
+    Just interval -> Array.filter (isWithinInterval interval)
 
 generateTimeUnit
   :: Maybe Time
@@ -362,7 +368,7 @@ initialState input =
   { disabled: input.disabled
   , interval: input.interval
   , selection: input.selection
-  , timeUnits: generateTimes input.selection
+  , timeUnits: generateTimes input.selection input.interval
   }
 
 -- check if a time point is within a **closed** interval
@@ -478,8 +484,8 @@ spec = S.defaultSpec
 
 synchronize :: forall m. CompositeComponentM m Unit
 synchronize = do
-  { selection } <- H.get
-  H.modify_ _ { timeUnits = generateTimes selection }
+  { interval, selection } <- H.get
+  H.modify_ _ { timeUnits = generateTimes selection interval }
   case selection of
     Nothing -> pure unit
     Just time -> H.modify_ _ { search = ODT.formatTime time }
