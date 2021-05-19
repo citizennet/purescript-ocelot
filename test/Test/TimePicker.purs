@@ -108,6 +108,25 @@ isWithinIntervalTests =
           given = Ocelot.Data.DateTime.unsafeMkTime 19 0 0 0
         isWithinInterval interval given false
 
+    Test.Unit.suite "invalid interval" do
+      -- ,6h] [18h,
+      let
+        interval :: Ocelot.TimePicker.Interval
+        interval =
+          { start: Just (Ocelot.Data.DateTime.unsafeMkTime 18 0 0 0)
+          , end: Just (Ocelot.Data.DateTime.unsafeMkTime 6 0 0 0)
+          }
+      Test.Unit.test "within left boundary" do -- ,6h] [18h, 19h
+        let
+          given :: Data.Time.Time
+          given = Ocelot.Data.DateTime.unsafeMkTime 19 0 0 0
+        isWithinInterval interval given false
+      Test.Unit.test "within right boundary" do -- 5h ,6h] [18h,
+        let
+          given :: Data.Time.Time
+          given = Ocelot.Data.DateTime.unsafeMkTime 5 0 0 0
+        isWithinInterval interval given false
+
 isWithinInterval ::
   Ocelot.TimePicker.Interval ->
   Data.Time.Time ->
