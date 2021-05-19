@@ -190,8 +190,9 @@ cnDocumentationBlocks =
               , inputId: "start-time"
               }
               [ HH.slot _timePicker 0 TimePicker.component
-                { selection: Nothing
-                , disabled: false
+                { disabled: false
+                , interval: Nothing
+                , selection: Nothing
                 }
                 (const Nothing)
               ]
@@ -203,8 +204,9 @@ cnDocumentationBlocks =
               , inputId: "start-time-disabled"
               }
               [ HH.slot _timePicker 2 TimePicker.component
-                { selection: Nothing
-                , disabled: true
+                { disabled: true
+                , interval: Nothing
+                , selection: Nothing
                 }
                 (const Nothing)
               ]
@@ -221,8 +223,9 @@ cnDocumentationBlocks =
               , inputId: "end-time"
               }
               [ HH.slot _timePicker 1 TimePicker.component
-                { selection: Just $ unsafeMkTime 12 0 0 0
-                , disabled: false
+                { disabled: false
+                , interval: Nothing
+                , selection: Just $ unsafeMkTime 12 0 0 0
                 }
                 (const Nothing)
               ]
@@ -234,8 +237,9 @@ cnDocumentationBlocks =
               , inputId: "end-time-disabled"
               }
               [ HH.slot _timePicker 3 TimePicker.component
-                { selection: Just $ unsafeMkTime 12 0 0 0
-                , disabled: true
+                { disabled: true
+                , interval: Nothing
+                , selection: Just $ unsafeMkTime 12 0 0 0
                 }
                 (const Nothing)
               ]
