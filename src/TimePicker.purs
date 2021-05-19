@@ -344,7 +344,7 @@ initialState { selection, disabled } =
 -- check if a time point is within a **closed** interval
 isWithinInterval :: Interval -> Time -> Boolean
 isWithinInterval interval x =
-  Data.Foldable.or
+  Data.Foldable.and
     [ maybe true (_ <= x) interval.start
     , maybe true (x <= _) interval.end
     ]
