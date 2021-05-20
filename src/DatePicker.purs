@@ -1,5 +1,6 @@
 module Ocelot.DatePicker
   ( Action
+  , Aligned
   , CalendarItem
   , ChildSlots
   , Component
@@ -168,6 +169,7 @@ type State = Record StateRow
 type StateRow =
   ( targetDate :: Year /\ Month
   , selection :: Maybe Date
+  , aligned :: Aligned
   , calendarItems :: Array CalendarItem
   , disabled :: Boolean
   )
@@ -274,21 +276,14 @@ embeddedHandleAction = case _ of
     let
       d' = fromMaybe d selection
       targetDate = (year d') /\ (month d')
+      { aligned, calendarItems } = generateCalendarRows selection (fst targetDate) (snd targetDate)
     H.modify_
       _ { targetDate = targetDate
-        , calendarItems =
-            generateCalendarRows selection (fst targetDate) (snd targetDate)
+        , aligned = aligned
+        , calendarItems = calendarItems
         }
     synchronize
-  ToggleMonth dir -> do
-    st <- H.get
-    let y = fst st.targetDate
-        m = snd st.targetDate
-        newDate = case dir of
-            Next -> ODT.nextMonth (canonicalDate y m bottom)
-            Prev -> ODT.prevMonth (canonicalDate y m bottom)
-    H.modify_ _ { targetDate = (year newDate) /\ (month newDate) }
-    synchronize
+  ToggleMonth dir -> toggleMonth dir
   Key ev -> do
     H.modify_ _ { visibility = S.On }
     let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
@@ -317,10 +312,14 @@ embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- We'll want to select the item here, set its status, and raise
     -- a message about its selection.
-    { calendarItems } <- H.get
+    { aligned, calendarItems } <- H.get
     case calendarItems !! idx of
       Nothing -> pure unit
       Just (CalendarItem _ _ _ date) -> do
+        when (isInPreviousMonth aligned date) do
+          toggleMonth Prev
+        when (isInNextMonth aligned date) do
+          toggleMonth Next
         H.modify_
           _ { selection = Just date
             , visibility = S.Off
@@ -349,13 +348,14 @@ embeddedInitialize = Just Initialize
 
 -- NOTE configure Select
 embeddedInput :: State -> CompositeInput
-embeddedInput { targetDate, selection, calendarItems, disabled } =
+embeddedInput { targetDate, selection, aligned, calendarItems, disabled } =
   { inputType: S.Text
   , search: Nothing
   , debounceTime: Nothing
   , getItemCount: Array.length <<< _.calendarItems
   , targetDate
   , selection
+  , aligned
   , calendarItems
   , disabled
   }
@@ -391,10 +391,13 @@ generateCalendarRows
   :: Maybe Date
   -> Year
   -> Month
-  -> Array CalendarItem
-generateCalendarRows selection y m = lastMonth <> thisMonth <> nextMonth
+  -> { calendarItems :: Array CalendarItem, aligned :: Aligned }
+generateCalendarRows selection y m =
+  { calendarItems: lastMonth <> thisMonth <> nextMonth
+  , aligned
+  }
   where
-    { pre, body, post, all } = alignByWeek y m
+    aligned@{ pre, body, post, all } = alignByWeek y m
     outOfBounds = map (generateCalendarItem selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post
@@ -461,12 +464,20 @@ initialState :: Input -> State
 initialState { targetDate, selection, disabled } =
   let targetDate'
         = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) targetDate
+      { aligned, calendarItems }= generateCalendarRows selection (fst targetDate') (snd targetDate')
   in
     { targetDate: targetDate'
     , selection
-    , calendarItems: generateCalendarRows selection (fst targetDate') (snd targetDate')
+    , aligned
+    , calendarItems
     , disabled
     }
+
+isInPreviousMonth :: Aligned -> Date -> Boolean
+isInPreviousMonth aligned date = Array.elem date aligned.pre
+
+isInNextMonth :: Aligned -> Date -> Boolean
+isInNextMonth aligned date = Array.elem date aligned.post
 
 -- Represents the number of days that will need to be "filled in"
 -- when the last day of the month is this weekday. For example, if the
@@ -650,15 +661,31 @@ spec =
 synchronize :: forall m. MonadAff m => CompositeComponentM m Unit
 synchronize = do
   ({ targetDate: y /\ m, selection }) <- H.get
-  let calendarItems = generateCalendarRows selection y m
+  let { aligned, calendarItems } = generateCalendarRows selection y m
   H.modify_
-    _ { calendarItems = calendarItems
+    _ { aligned = aligned
+      , calendarItems = calendarItems
       , highlightedIndex = Nothing
       }
   let update = case selection of
         Nothing -> identity
         Just date -> _ { search = ODT.formatDate date }
   H.modify_ (update <<< _ { calendarItems = calendarItems })
+
+toggleMonth ::
+  forall m.
+  MonadAff m =>
+  Direction ->
+  CompositeComponentM m Unit
+toggleMonth dir = do
+  st <- H.get
+  let y = fst st.targetDate
+      m = snd st.targetDate
+      newDate = case dir of
+        Next -> ODT.nextMonth (canonicalDate y m bottom)
+        Prev -> ODT.prevMonth (canonicalDate y m bottom)
+  H.modify_ _ { targetDate = (year newDate) /\ (month newDate) }
+  synchronize
 
 toObject :: Date -> Object String
 toObject d =
