@@ -279,6 +279,7 @@ embeddedHandleAction = case _ of
       { aligned, calendarItems } = generateCalendarRows selection (fst targetDate) (snd targetDate)
     H.modify_
       _ { targetDate = targetDate
+        , aligned = aligned
         , calendarItems = calendarItems
         }
     synchronize
@@ -311,10 +312,14 @@ embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- We'll want to select the item here, set its status, and raise
     -- a message about its selection.
-    { calendarItems } <- H.get
+    { aligned, calendarItems } <- H.get
     case calendarItems !! idx of
       Nothing -> pure unit
       Just (CalendarItem _ _ _ date) -> do
+        when (isInPreviousMonth aligned date) do
+          toggleMonth Prev
+        when (isInNextMonth aligned date) do
+          toggleMonth Next
         H.modify_
           _ { selection = Just date
             , visibility = S.Off
@@ -467,6 +472,12 @@ initialState { targetDate, selection, disabled } =
     , calendarItems
     , disabled
     }
+
+isInPreviousMonth :: Aligned -> Date -> Boolean
+isInPreviousMonth aligned date = Array.elem date aligned.pre
+
+isInNextMonth :: Aligned -> Date -> Boolean
+isInNextMonth aligned date = Array.elem date aligned.post
 
 -- Represents the number of days that will need to be "filled in"
 -- when the last day of the month is this weekday. For example, if the
