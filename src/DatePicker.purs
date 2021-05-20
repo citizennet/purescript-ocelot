@@ -74,6 +74,7 @@ import Web.UIEvent.KeyboardEvent as KE
 -- re-raise output messages from the embedded component
 data Action
   = PassingOutput Output
+  | PassingReceive Input
 
 -- A type to help assist making grid-based calendar layouts. Calendars
 -- can use dates directly or use array lengths as offsets.
@@ -127,6 +128,7 @@ data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
   | OnBlur
+  | Receive CompositeInput
   | ToggleMonth Direction
   | ToggleYear  Direction
 
@@ -193,6 +195,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
       { handleAction = handleAction
       , handleQuery = handleQuery
+      , receive = Just <<< PassingReceive
       }
   }
 
@@ -307,6 +310,7 @@ embeddedHandleAction = case _ of
       otherwise -> pure unit
   OnBlur -> do
     handleSearch
+  Receive input -> embeddedReceive input
   ToggleYear dir -> do
     st <- H.get
     let y = fst st.targetDate
@@ -370,6 +374,26 @@ embeddedInput state =
   , selection: state.selection
   , targetDate: state.targetDate
   }
+
+embeddedReceive ::
+  forall m.
+  MonadAff m =>
+  CompositeInput ->
+  CompositeComponentM m Unit
+embeddedReceive input = do
+  old <- H.get
+  H.modify_ _ { interval = input.interval }
+  case input.interval of
+    Nothing -> pure unit
+    Just interval -> do
+      case old.selection of
+        Just selection
+          | isWithinInterval interval selection -> pure unit
+          | otherwise -> do
+            H.modify_ _ { search = ""}
+            setSelection Nothing
+        Nothing -> pure unit
+  synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender st =
@@ -446,6 +470,8 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   PassingOutput output ->
     H.raise output
+  PassingReceive input -> do
+    H.modify_ _ { interval = input.interval }
 
 -- NOTE passing query to the embedded component
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
@@ -676,6 +702,7 @@ spec =
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   , initialize = embeddedInitialize
+  , receive = Just <<< Receive
   }
 
 synchronize :: forall m. MonadAff m => CompositeComponentM m Unit

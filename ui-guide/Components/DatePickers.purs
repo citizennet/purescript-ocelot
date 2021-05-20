@@ -3,6 +3,7 @@ module UIGuide.Component.DatePickers where
 import Prelude
 
 import Data.Array as Data.Array
+import Data.Date as Data.Date
 import Data.DateTime (DateTime(..))
 import Data.Int as Data.Int
 import Data.Maybe (Maybe(..))
@@ -36,12 +37,14 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = 
   { disabled :: Boolean -- | Global enable/disable toggle
+  , dateInterval :: DatePicker.Interval
   , timeInterval :: TimePicker.Interval
   }
 
 data Query a
 data Action 
-  = HandleDateSlider Ocelot.Slider.Output
+  = HandleDatePicker DatePicker.Output
+  | HandleDateSlider Ocelot.Slider.Output
   | HandleTimePicker TimePicker.Output
   | HandleTimeSlider Ocelot.Slider.Output
   | Initialize
@@ -81,6 +84,12 @@ component =
   }
   where
     handleAction = case _ of  
+      HandleDatePicker output -> case output of
+        DatePicker.SelectionChanged mDate -> do
+          H.liftEffect $ Effect.Class.Console.log $ "DatePicker SelectionChanged: " <> show mDate
+        DatePicker.VisibilityChanged _ -> pure unit
+        DatePicker.Searched query -> do
+          H.liftEffect $ Effect.Class.Console.log $ "DatePicker Searched: " <> query
       HandleDateSlider output -> case output of
         Ocelot.Slider.ValueChanged points -> case points of
           [ startPercent, endPercent ] -> do
@@ -88,17 +97,21 @@ component =
               getIndex :: { percent :: Number } -> Int
               getIndex = Data.Int.round <<< (_ / yearScalar) <<< _.percent
 
-              start :: Maybe Int
-              start = Data.Array.index years (getIndex startPercent)
+              start :: Maybe Data.Date.Date
+              start = do
+                year <- Data.Array.index years (getIndex startPercent)
+                pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
 
-              end :: Maybe Int
-              end = Data.Array.index years (getIndex endPercent)
+              end :: Maybe Data.Date.Date
+              end = do
+                year <- Data.Array.index years (getIndex endPercent)
+                pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
 
             H.liftEffect <<< Effect.Class.Console.log $
-              ( "start year: " <> show start
-                <> ", end year: " <> show end
+              ( "start: " <> show start
+                <> ", end: " <> show end
               )
-            pure unit -- TODO AS-1349 update interval on DatePickers
+            H.modify_ _ { dateInterval = { start, end } }
           _ -> pure unit
       HandleTimePicker output -> case output of
         TimePicker.SelectionChanged mTime -> do
@@ -140,6 +153,14 @@ component =
     initialState :: Unit -> State
     initialState _ =
       { disabled: false
+      , dateInterval:
+          { start: do
+              year <- Data.Array.head years
+              pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
+          , end: do
+              year <- Data.Array.last years
+              pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
+          }
       , timeInterval:
           { start: Data.Array.head Ocelot.Data.DateTime.defaultTimeRange
           , end: Data.Array.last Ocelot.Data.DateTime.defaultTimeRange
@@ -202,11 +223,11 @@ cnDocumentationBlocks state =
               }
               [ HH.slot _datePicker 0 DatePicker.component
                 { disabled: false
-                , interval: Nothing -- TODO AS-1249
+                , interval: Just state.dateInterval
                 , selection: Nothing
                 , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
@@ -217,11 +238,11 @@ cnDocumentationBlocks state =
               }
               [ HH.slot _datePicker 2 DatePicker.component
                 { disabled: true
-                , interval: Nothing -- TODO AS-1249
+                , interval: Just state.dateInterval
                 , selection: Nothing
                 , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             ]
           ]
@@ -237,11 +258,11 @@ cnDocumentationBlocks state =
               }
               [ HH.slot _datePicker 1 DatePicker.component
                 { disabled: false
-                , interval: Nothing -- TODO AS-1249
+                , interval: Just state.dateInterval
                 , selection: Just $ unsafeMkDate 2019 1 1
                 , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
             , FormField.fieldMid_
@@ -252,11 +273,11 @@ cnDocumentationBlocks state =
               }
               [ HH.slot _datePicker 3 DatePicker.component
                 { disabled: true
-                , interval: Nothing -- TODO AS-1249
+                , interval: Just state.dateInterval
                 , selection: Just $ unsafeMkDate 2019 1 1
                 , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             ]
           ]
