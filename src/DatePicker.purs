@@ -282,15 +282,7 @@ embeddedHandleAction = case _ of
         , calendarItems = calendarItems
         }
     synchronize
-  ToggleMonth dir -> do
-    st <- H.get
-    let y = fst st.targetDate
-        m = snd st.targetDate
-        newDate = case dir of
-            Next -> ODT.nextMonth (canonicalDate y m bottom)
-            Prev -> ODT.prevMonth (canonicalDate y m bottom)
-    H.modify_ _ { targetDate = (year newDate) /\ (month newDate) }
-    synchronize
+  ToggleMonth dir -> toggleMonth dir
   Key ev -> do
     H.modify_ _ { visibility = S.On }
     let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
@@ -668,6 +660,21 @@ synchronize = do
         Nothing -> identity
         Just date -> _ { search = ODT.formatDate date }
   H.modify_ (update <<< _ { calendarItems = calendarItems })
+
+toggleMonth ::
+  forall m.
+  MonadAff m =>
+  Direction ->
+  CompositeComponentM m Unit
+toggleMonth dir = do
+  st <- H.get
+  let y = fst st.targetDate
+      m = snd st.targetDate
+      newDate = case dir of
+        Next -> ODT.nextMonth (canonicalDate y m bottom)
+        Prev -> ODT.prevMonth (canonicalDate y m bottom)
+  H.modify_ _ { targetDate = (year newDate) /\ (month newDate) }
+  synchronize
 
 toObject :: Date -> Object String
 toObject d =
