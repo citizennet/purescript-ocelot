@@ -19,6 +19,7 @@ module Ocelot.DatePicker
   , EmbeddedAction(..)
   , EmbeddedChildSlots
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -34,6 +35,7 @@ import Data.Date (Date, Month, Weekday(..), Year, canonicalDate, day, month, wee
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
 import Data.Enum (fromEnum)
+import Data.Foldable as Data.Foldable
 import Data.Formatter.DateTime (formatDateTime)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Data.Fuzzy
@@ -134,6 +136,11 @@ type Input =
   { targetDate :: Maybe (Year /\ Month)
   , selection :: Maybe Date
   , disabled :: Boolean
+  }
+
+type Interval =
+  { start :: Maybe Date
+  , end :: Maybe Date
   }
 
 -- Generates a date range to search through for search term, if it doesn't
@@ -478,6 +485,14 @@ isInPreviousMonth aligned date = Array.elem date aligned.pre
 
 isInNextMonth :: Aligned -> Date -> Boolean
 isInNextMonth aligned date = Array.elem date aligned.post
+
+-- check if a date is within a **closed** interval
+isWithinInterval :: Interval -> Date -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.and
+    [ maybe true (_ <= x) interval.start
+    , maybe true (x <= _) interval.end
+    ]
 
 -- Represents the number of days that will need to be "filled in"
 -- when the last day of the month is this weekday. For example, if the
