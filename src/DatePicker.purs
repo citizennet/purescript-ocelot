@@ -495,16 +495,19 @@ handleQuery = case _ of
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
-  search <- H.gets _.search
+  state <- H.get
   today <- H.liftEffect nowDate
-  _ <- case search of
+  _ <- case state.search of
     "" -> setSelection Nothing
-    _  -> case guessDate today (MaxYears 5) search of
+    _  -> case guessDate today (MaxYears 5) state.search of
       Nothing -> pure unit
-      Just d  -> do
-        setSelection (Just d)
+      Just d  -> case state.interval of
+        Nothing -> setSelection (Just d)
+        Just interval
+          | isWithinInterval interval d -> setSelection (Just d)
+          | otherwise -> pure unit
   H.modify_ _ { visibility = S.Off }
-  H.raise $ Searched search
+  H.raise $ Searched state.search
 
 initialState :: Input -> State
 initialState input =
