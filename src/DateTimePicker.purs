@@ -139,9 +139,10 @@ render { date, time, targetDate, disabled } =
     [ HH.div
       [ css "w-1/2 mr-2" ]
       [ HH.slot _datepicker unit DatePicker.component
-        { targetDate
+        { disabled
+        , interval: Nothing -- TODO AS-1344
         , selection: date
-        , disabled
+        , targetDate
         }
         (Just <<< HandleDate)
       ]
