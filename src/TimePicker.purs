@@ -354,14 +354,18 @@ handleQuery = case _ of
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
-  search <- H.gets _.search
-  case search of
+  state <- H.get
+  case state.search of
     "" -> setSelection Nothing
-    _  -> case guessTime search of
+    _  -> case guessTime state.search of
       Nothing -> pure unit
-      Just t  -> setSelection (Just t)
+      Just t  -> case state.interval of
+        Nothing -> setSelection (Just t)
+        Just interval
+          | isWithinInterval interval t -> setSelection (Just t)
+          | otherwise -> pure unit
   H.modify_ _ { visibility = S.Off }
-  H.raise $ Searched search
+  H.raise $ Searched state.search
 
 initialState :: Input -> State
 initialState input =
