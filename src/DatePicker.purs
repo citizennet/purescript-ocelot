@@ -133,9 +133,10 @@ data EmbeddedAction
 type EmbeddedChildSlots = () -- NOTE no extension
 
 type Input =
-  { targetDate :: Maybe (Year /\ Month)
+  { disabled :: Boolean
+  , interval :: Maybe Interval
   , selection :: Maybe Date
-  , disabled :: Boolean
+  , targetDate :: Maybe (Year /\ Month)
   }
 
 type Interval =
@@ -174,11 +175,12 @@ type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeI
 type State = Record StateRow
 
 type StateRow =
-  ( targetDate :: Year /\ Month
-  , selection :: Maybe Date
-  , aligned :: Aligned
+  ( aligned :: Aligned
   , calendarItems :: Array CalendarItem
   , disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Date
+  , targetDate :: Year /\ Month
   )
 
 ------------
@@ -270,9 +272,10 @@ calendarNav y m =
 
 defaultInput :: Input
 defaultInput =
-  { targetDate: Nothing
+  { disabled: false
+  , interval: Nothing
   , selection: Nothing
-  , disabled: false
+  , targetDate: Nothing
   }
 
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
@@ -355,16 +358,17 @@ embeddedInitialize = Just Initialize
 
 -- NOTE configure Select
 embeddedInput :: State -> CompositeInput
-embeddedInput { targetDate, selection, aligned, calendarItems, disabled } =
-  { inputType: S.Text
-  , search: Nothing
+embeddedInput state =
+  { aligned: state.aligned
+  , calendarItems: state.calendarItems
   , debounceTime: Nothing
+  , disabled: state.disabled
   , getItemCount: Array.length <<< _.calendarItems
-  , targetDate
-  , selection
-  , aligned
-  , calendarItems
-  , disabled
+  , inputType: S.Text
+  , interval: state.interval
+  , search: Nothing
+  , selection: state.selection
+  , targetDate: state.targetDate
   }
 
 embeddedRender :: forall m. CompositeComponentRender m
@@ -468,16 +472,17 @@ handleSearch = do
   H.raise $ Searched search
 
 initialState :: Input -> State
-initialState { targetDate, selection, disabled } =
-  let targetDate'
-        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) targetDate
-      { aligned, calendarItems }= generateCalendarRows selection (fst targetDate') (snd targetDate')
+initialState input =
+  let targetDate
+        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) input.targetDate
+      { aligned, calendarItems }= generateCalendarRows input.selection (fst targetDate) (snd targetDate)
   in
-    { targetDate: targetDate'
-    , selection
-    , aligned
+    { aligned
     , calendarItems
-    , disabled
+    , disabled: input.disabled
+    , interval: input.interval
+    , selection: input.selection
+    , targetDate
     }
 
 isInPreviousMonth :: Aligned -> Date -> Boolean

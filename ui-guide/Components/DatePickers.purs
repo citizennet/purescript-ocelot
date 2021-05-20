@@ -201,9 +201,10 @@ cnDocumentationBlocks state =
               , inputId: "start-date"
               }
               [ HH.slot_ _datePicker 0 DatePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Nothing -- TODO AS-1249
                 , selection: Nothing
-                , disabled: false
+                , targetDate: Nothing
                 }
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
@@ -214,9 +215,10 @@ cnDocumentationBlocks state =
               , inputId: "start-date-disabled"
               }
               [ HH.slot_ _datePicker 2 DatePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Nothing -- TODO AS-1249
                 , selection: Nothing
-                , disabled: true
+                , targetDate: Nothing
                 }
               ]
             ]
@@ -232,9 +234,10 @@ cnDocumentationBlocks state =
               , inputId: "end-date"
               }
               [ HH.slot_ _datePicker 1 DatePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Nothing -- TODO AS-1249
                 , selection: Just $ unsafeMkDate 2019 1 1
-                , disabled: false
+                , targetDate: Nothing
                 }
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
@@ -245,9 +248,10 @@ cnDocumentationBlocks state =
               , inputId: "end-date-disabled"
               }
               [ HH.slot_ _datePicker 3 DatePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Nothing -- TODO AS-1249
                 , selection: Just $ unsafeMkDate 2019 1 1
-                , disabled: true
+                , targetDate: Nothing
                 }
               ]
             ]
