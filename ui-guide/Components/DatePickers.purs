@@ -41,7 +41,8 @@ type State =
 
 data Query a
 data Action 
-  = HandleTimeSlider Ocelot.Slider.Output
+  = HandleTimePicker TimePicker.Output
+  | HandleTimeSlider Ocelot.Slider.Output
   | Initialize
   | ToggleDisabled
 
@@ -77,6 +78,12 @@ component =
   }
   where
     handleAction = case _ of  
+      HandleTimePicker output -> case output of
+        TimePicker.SelectionChanged mTime -> do
+          H.liftEffect $ Effect.Class.Console.log $ "TimePicker SelectionChanged: " <> show mTime
+        TimePicker.VisibilityChanged _ -> pure unit
+        TimePicker.Searched query -> do
+          H.liftEffect $ Effect.Class.Console.log $ "TimePicker Searched: " <> query
       HandleTimeSlider output -> case output of
         Ocelot.Slider.ValueChanged points -> case points of
           [ startPercent, endPercent ] -> do
@@ -249,7 +256,7 @@ cnDocumentationBlocks state =
                   , interval: Just state.timeInterval
                   , selection: Nothing
                   }
-                  (const Nothing)
+                  (Just <<< HandleTimePicker)
                 ]
               , Format.caption_ [ HH.text "Standard Disabled" ]
               , FormField.fieldMid_
@@ -263,7 +270,7 @@ cnDocumentationBlocks state =
                   , interval: Just state.timeInterval
                   , selection: Nothing
                   }
-                  (const Nothing)
+                  (Just <<< HandleTimePicker)
                 ]
               ]
             ]
@@ -282,7 +289,7 @@ cnDocumentationBlocks state =
                   , interval: Just state.timeInterval
                   , selection: Just $ unsafeMkTime 12 0 0 0
                   }
-                  (const Nothing)
+                  (Just <<< HandleTimePicker)
                 ]
               , Format.caption_ [ HH.text "Hydrated Disabled" ]
               , FormField.fieldMid_
@@ -296,7 +303,7 @@ cnDocumentationBlocks state =
                   , interval: Just state.timeInterval
                   , selection: Just $ unsafeMkTime 12 0 0 0
                   }
-                  (const Nothing)
+                  (Just <<< HandleTimePicker)
                 ]
               ]
             ]

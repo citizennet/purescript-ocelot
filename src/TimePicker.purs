@@ -256,7 +256,7 @@ embeddedReceive input = case input.interval of
         | isWithinInterval interval selection -> synchronize
         | otherwise -> do
             H.modify_ _ { search = "" }
-            setSelectionWithoutRaising Nothing
+            setSelection Nothing
       Nothing -> synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
