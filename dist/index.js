@@ -56637,18 +56637,18 @@ var rowsFromAligned = function (v) {
 var renderSearch = function (search) {
     return Ocelot_Block_Input.input(Select_Setters.setInputProps([ Halogen_HTML_Events.onBlur(function (v) {
         return new Select.Action(OnBlur.value);
-    }), Halogen_HTML_Events.onKeyDown(function ($210) {
-        return Select.Action.create(Key.create($210));
+    }), Halogen_HTML_Events.onKeyDown(function ($225) {
+        return Select.Action.create(Key.create($225));
     }), Halogen_HTML_Properties.value(search) ]));
 };
 var renderItem = function (index) {
     return function (item) {
         var printDay = function (v) {
             var printDay$prime = (function () {
-                var $211 = Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn));
-                var $212 = Data_Formatter_DateTime.formatDateTime("D");
-                return function ($213) {
-                    return $211($212(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($213))));
+                var $226 = Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn));
+                var $227 = Data_Formatter_DateTime.formatDateTime("D");
+                return function ($228) {
+                    return $226($227(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($228))));
                 };
             })();
             return printDay$prime(v.value3);
@@ -56725,7 +56725,7 @@ var padPrev = function (v) {
     if (v instanceof Data_Date_Component.Saturday) {
         return -6.0;
     };
-    throw new Error("Failed pattern match at Ocelot.DatePicker (line 488, column 1 - line 488, column 29): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.DatePicker (line 499, column 1 - line 499, column 29): " + [ v.constructor.name ]);
 };
 var padNext = function (v) {
     if (v instanceof Data_Date_Component.Sunday) {
@@ -56749,7 +56749,17 @@ var padNext = function (v) {
     if (v instanceof Data_Date_Component.Saturday) {
         return 0.0;
     };
-    throw new Error("Failed pattern match at Ocelot.DatePicker (line 475, column 1 - line 475, column 29): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.DatePicker (line 486, column 1 - line 486, column 29): " + [ v.constructor.name ]);
+};
+var isInPreviousMonth = function (aligned) {
+    return function (date) {
+        return Data_Array.elem(Data_Date.eqDate)(date)(aligned.pre);
+    };
+};
+var isInNextMonth = function (aligned) {
+    return function (date) {
+        return Data_Array.elem(Data_Date.eqDate)(date)(aligned.post);
+    };
 };
 var handleAction = function (v) {
     return Halogen_Query_HalogenM.raise(v.value0);
@@ -56776,12 +56786,12 @@ var firstMatch = (function () {
     var match$prime = function (v) {
         return Data_Eq.eq(Data_Ratio.eqRatio(Data_Eq.eqInt))(v.value0.ratio)(Data_Ratio.reduce(Data_Ord.ordInt)(Data_EuclideanRing.euclideanRingInt)(1)(1));
     };
-    var $214 = Data_Maybe.maybe(Data_Maybe.Nothing.value)(function ($217) {
-        return Data_Maybe.Just.create(Data_Tuple.fst($217));
+    var $229 = Data_Maybe.maybe(Data_Maybe.Nothing.value)(function ($232) {
+        return Data_Maybe.Just.create(Data_Tuple.fst($232));
     });
-    var $215 = Data_Array.find(match$prime);
-    return function ($216) {
-        return $214($215($216));
+    var $230 = Data_Array.find(match$prime);
+    return function ($231) {
+        return $229($230($231));
     };
 })();
 var guessDate = function (start) {
@@ -56814,7 +56824,7 @@ var guessDate = function (start) {
                             return guess(Ocelot_Data_DateTime.dateRange(Ocelot_Data_DateTime.yearsForward(v2)(start))(Ocelot_Data_DateTime.yearsForward(v2 + 1 | 0)(start)))(v2 + 1 | 0);
                         };
                     };
-                    throw new Error("Failed pattern match at Ocelot.DatePicker (line 423, column 7 - line 423, column 56): " + [ v1.constructor.name, v2.constructor.name ]);
+                    throw new Error("Failed pattern match at Ocelot.DatePicker (line 426, column 7 - line 426, column 56): " + [ v1.constructor.name, v2.constructor.name ]);
                 };
             };
             return guess(Ocelot_Data_DateTime.dateRange(start)(Ocelot_Data_DateTime.nextYear(start)))(0);
@@ -56826,13 +56836,14 @@ var embeddedInput = function (v) {
         inputType: Select.Text.value,
         search: Data_Maybe.Nothing.value,
         debounceTime: Data_Maybe.Nothing.value,
-        getItemCount: function ($218) {
+        getItemCount: function ($233) {
             return Data_Array.length((function (v1) {
                 return v1.calendarItems;
-            })($218));
+            })($233));
         },
         targetDate: v.targetDate,
         selection: v.selection,
+        aligned: v.aligned,
         calendarItems: v.calendarItems,
         disabled: v.disabled
     };
@@ -56846,19 +56857,19 @@ var defaultInput = {
 var calendarNav = function (y) {
     return function (m) {
         var fmtMonthYear = (function () {
-            var $219 = Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn));
-            var $220 = Data_Formatter_DateTime.formatDateTime("MMMM YYYY");
-            return function ($221) {
-                return $219($220(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($221))));
+            var $234 = Data_Either.either(Data_Function["const"]("-"))(Control_Category.identity(Control_Category.categoryFn));
+            var $235 = Data_Formatter_DateTime.formatDateTime("MMMM YYYY");
+            return function ($236) {
+                return $234($235(Data_DateTime_Instant.toDateTime(Data_DateTime_Instant.fromDate($236))));
             };
         })();
         var monthYear = fmtMonthYear(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
         var dateHeader = Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ Halogen_HTML_Core.text(monthYear) ]);
         var arrowButton = function (q) {
             return Ocelot_Block_Button.buttonClear([ Halogen_HTML_Events.onClick((function () {
-                var $222 = Data_Function["const"](q);
-                return function ($223) {
-                    return Select.Action.create($222($223));
+                var $237 = Data_Function["const"](q);
+                return function ($238) {
+                    return Select.Action.create($237($238));
                 };
             })()), Ocelot_HTML_Properties.css("text-grey-70 p-3") ]);
         };
@@ -56884,8 +56895,8 @@ var renderSelect = function (y) {
         return function (visibility) {
             return function (calendarItems) {
                 return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("relative") ])((function () {
-                    var $113 = Data_Eq.eq(Select.eqVisibility)(visibility)(Select.On.value);
-                    if ($113) {
+                    var $118 = Data_Eq.eq(Select.eqVisibility)(visibility)(Select.On.value);
+                    if ($118) {
                         return [ renderCalendar(y)(m)(calendarItems) ];
                     };
                     return [  ];
@@ -56905,8 +56916,8 @@ var alignByWeek = function (y) {
         var start = Ocelot_Data_DateTime.firstDateOfMonth(y)(m);
         var pre = (function () {
             var pad = padPrev(Data_Date.weekday(start));
-            var $115 = pad === 0.0;
-            if ($115) {
+            var $120 = pad === 0.0;
+            if ($120) {
                 return [  ];
             };
             return Ocelot_Data_DateTime.dateRange(Ocelot_Data_DateTime.adjustDaysBy(pad)(start))(Ocelot_Data_DateTime.prevDay(start));
@@ -56914,8 +56925,8 @@ var alignByWeek = function (y) {
         var end = Ocelot_Data_DateTime.lastDateOfMonth(y)(m);
         var post = (function () {
             var pad = padNext(Data_Date.weekday(end));
-            var $116 = pad === 0.0;
-            if ($116) {
+            var $121 = pad === 0.0;
+            if ($121) {
                 return [  ];
             };
             return Ocelot_Data_DateTime.dateRange(Ocelot_Data_DateTime.nextDay(end))(Ocelot_Data_DateTime.adjustDaysBy(pad)(end));
@@ -56937,111 +56948,71 @@ var generateCalendarRows = function (selection) {
             var outOfBounds = Data_Functor.map(Data_Functor.functorArray)(generateCalendarItem(selection)(OutOfBounds.value));
             var nextMonth = outOfBounds(v.post);
             var lastMonth = outOfBounds(v.pre);
-            return Data_Semigroup.append(Data_Semigroup.semigroupArray)(lastMonth)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(thisMonth)(nextMonth));
+            return {
+                calendarItems: Data_Semigroup.append(Data_Semigroup.semigroupArray)(lastMonth)(Data_Semigroup.append(Data_Semigroup.semigroupArray)(thisMonth)(nextMonth)),
+                aligned: v
+            };
         };
     };
 };
 var initialState = function (v) {
     var targetDate$prime = Data_Maybe.fromMaybe(new Data_Tuple.Tuple(Ocelot_Data_DateTime.unsafeMkYear(2001), Ocelot_Data_DateTime.unsafeMkMonth(1)))(v.targetDate);
+    var v1 = generateCalendarRows(v.selection)(Data_Tuple.fst(targetDate$prime))(Data_Tuple.snd(targetDate$prime));
     return {
         targetDate: targetDate$prime,
         selection: v.selection,
-        calendarItems: generateCalendarRows(v.selection)(Data_Tuple.fst(targetDate$prime))(Data_Tuple.snd(targetDate$prime)),
+        aligned: v1.aligned,
+        calendarItems: v1.calendarItems,
         disabled: v.disabled
     };
 };
 var synchronize = function (dictMonadAff) {
     return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v) {
-        var calendarItems = generateCalendarRows(v.selection)(v.targetDate.value0)(v.targetDate.value1);
-        return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-            var $127 = {};
-            for (var $128 in v1) {
-                if ({}.hasOwnProperty.call(v1, $128)) {
-                    $127[$128] = v1[$128];
+        var v1 = generateCalendarRows(v.selection)(v.targetDate.value0)(v.targetDate.value1);
+        return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
+            var $136 = {};
+            for (var $137 in v2) {
+                if ({}.hasOwnProperty.call(v2, $137)) {
+                    $136[$137] = v2[$137];
                 };
             };
-            $127.calendarItems = calendarItems;
-            $127.highlightedIndex = Data_Maybe.Nothing.value;
-            return $127;
+            $136.aligned = v1.aligned;
+            $136.calendarItems = v1.calendarItems;
+            $136.highlightedIndex = Data_Maybe.Nothing.value;
+            return $136;
         }))(function () {
             var update = (function () {
                 if (v.selection instanceof Data_Maybe.Nothing) {
                     return Control_Category.identity(Control_Category.categoryFn);
                 };
                 if (v.selection instanceof Data_Maybe.Just) {
-                    return function (v1) {
-                        var $131 = {};
-                        for (var $132 in v1) {
-                            if ({}.hasOwnProperty.call(v1, $132)) {
-                                $131[$132] = v1[$132];
+                    return function (v2) {
+                        var $140 = {};
+                        for (var $141 in v2) {
+                            if ({}.hasOwnProperty.call(v2, $141)) {
+                                $140[$141] = v2[$141];
                             };
                         };
-                        $131.search = Ocelot_Data_DateTime.formatDate(v.selection.value0);
-                        return $131;
+                        $140.search = Ocelot_Data_DateTime.formatDate(v.selection.value0);
+                        return $140;
                     };
                 };
-                throw new Error("Failed pattern match at Ocelot.DatePicker (line 658, column 16 - line 660, column 56): " + [ v.selection.constructor.name ]);
+                throw new Error("Failed pattern match at Ocelot.DatePicker (line 670, column 16 - line 672, column 56): " + [ v.selection.constructor.name ]);
             })();
-            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function ($224) {
-                return update((function (v1) {
-                    var $135 = {};
-                    for (var $136 in v1) {
-                        if ({}.hasOwnProperty.call(v1, $136)) {
-                            $135[$136] = v1[$136];
+            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function ($239) {
+                return update((function (v2) {
+                    var $144 = {};
+                    for (var $145 in v2) {
+                        if ({}.hasOwnProperty.call(v2, $145)) {
+                            $144[$145] = v2[$145];
                         };
                     };
-                    $135.calendarItems = calendarItems;
-                    return $135;
-                })($224));
+                    $144.calendarItems = v1.calendarItems;
+                    return $144;
+                })($239));
             });
         });
     });
-};
-var embeddedHandleMessage = function (dictMonadAff) {
-    return function (v) {
-        if (v instanceof Select.Selected) {
-            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
-                var v2 = Data_Array.index(v1.calendarItems)(v.value0);
-                if (v2 instanceof Data_Maybe.Nothing) {
-                    return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
-                };
-                if (v2 instanceof Data_Maybe.Just) {
-                    return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
-                        var $145 = {};
-                        for (var $146 in v3) {
-                            if ({}.hasOwnProperty.call(v3, $146)) {
-                                $145[$146] = v3[$146];
-                            };
-                        };
-                        $145.selection = new Data_Maybe.Just(v2.value0.value3);
-                        $145.visibility = Select.Off.value;
-                        return $145;
-                    }))(function () {
-                        return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(SelectionChanged.create(new Data_Maybe.Just(v2.value0.value3))))(function () {
-                            return synchronize(dictMonadAff);
-                        });
-                    });
-                };
-                throw new Error("Failed pattern match at Ocelot.DatePicker (line 321, column 5 - line 329, column 20): " + [ v2.constructor.name ]);
-            });
-        };
-        if (v instanceof Select.Searched) {
-            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                var $155 = {};
-                for (var $156 in v1) {
-                    if ({}.hasOwnProperty.call(v1, $156)) {
-                        $155[$156] = v1[$156];
-                    };
-                };
-                $155.search = v.value0;
-                return $155;
-            });
-        };
-        if (v instanceof Select.VisibilityChanged) {
-            return Halogen_Query_HalogenM.raise(new VisibilityChanged(v.value0));
-        };
-        throw new Error("Failed pattern match at Ocelot.DatePicker (line 316, column 25 - line 335, column 43): " + [ v.constructor.name ]);
-    };
 };
 var setSelectionWithoutRaising = function (dictMonadAff) {
     return function (selection) {
@@ -57050,15 +57021,15 @@ var setSelectionWithoutRaising = function (dictMonadAff) {
                 return new Data_Tuple.Tuple(Data_Date.year(d), Data_Date.month(d));
             })(selection);
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
-                var $160 = {};
-                for (var $161 in v) {
-                    if ({}.hasOwnProperty.call(v, $161)) {
-                        $160[$161] = v[$161];
+                var $153 = {};
+                for (var $154 in v) {
+                    if ({}.hasOwnProperty.call(v, $154)) {
+                        $153[$154] = v[$154];
                     };
                 };
-                $160.selection = selection;
-                $160.targetDate = targetDate;
-                return $160;
+                $153.selection = selection;
+                $153.targetDate = targetDate;
+                return $153;
             }))(function () {
                 return synchronize(dictMonadAff);
             });
@@ -57074,20 +57045,20 @@ var embeddedHandleQuery = function (dictMonadAff) {
         };
         if (v instanceof SetDisabled) {
             return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                var $167 = {};
-                for (var $168 in v1) {
-                    if ({}.hasOwnProperty.call(v1, $168)) {
-                        $167[$168] = v1[$168];
+                var $160 = {};
+                for (var $161 in v1) {
+                    if ({}.hasOwnProperty.call(v1, $161)) {
+                        $160[$161] = v1[$161];
                     };
                 };
-                $167.disabled = v.value0;
-                return $167;
+                $160.disabled = v.value0;
+                return $160;
             }));
         };
         if (v instanceof SetSelection) {
             return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(setSelectionWithoutRaising(dictMonadAff)(v.value0));
         };
-        throw new Error("Failed pattern match at Ocelot.DatePicker (line 338, column 23 - line 345, column 41): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at Ocelot.DatePicker (line 337, column 23 - line 344, column 41): " + [ v.constructor.name ]);
     };
 };
 var setSelection = function (dictMonadAff) {
@@ -57113,23 +57084,52 @@ var handleSearch = function (dictMonadAff) {
                 if (v instanceof Data_Maybe.Just) {
                     return setSelection(dictMonadAff)(new Data_Maybe.Just(v.value0));
                 };
-                throw new Error("Failed pattern match at Ocelot.DatePicker (line 453, column 11 - line 456, column 30): " + [ v.constructor.name ]);
+                throw new Error("Failed pattern match at Ocelot.DatePicker (line 456, column 11 - line 459, column 30): " + [ v.constructor.name ]);
             })())(function () {
                 return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
-                    var $177 = {};
-                    for (var $178 in v) {
-                        if ({}.hasOwnProperty.call(v, $178)) {
-                            $177[$178] = v[$178];
+                    var $170 = {};
+                    for (var $171 in v) {
+                        if ({}.hasOwnProperty.call(v, $171)) {
+                            $170[$171] = v[$171];
                         };
                     };
-                    $177.visibility = Select.Off.value;
-                    return $177;
+                    $170.visibility = Select.Off.value;
+                    return $170;
                 }))(function () {
                     return Halogen_Query_HalogenM.raise(new Searched(search));
                 });
             });
         });
     });
+};
+var toggleMonth = function (dictMonadAff) {
+    return function (dir) {
+        return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (st) {
+            var y = Data_Tuple.fst(st.targetDate);
+            var m = Data_Tuple.snd(st.targetDate);
+            var newDate = (function () {
+                if (dir instanceof Next) {
+                    return Ocelot_Data_DateTime.nextMonth(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
+                };
+                if (dir instanceof Prev) {
+                    return Ocelot_Data_DateTime.prevMonth(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
+                };
+                throw new Error("Failed pattern match at Ocelot.DatePicker (line 684, column 17 - line 686, column 57): " + [ dir.constructor.name ]);
+            })();
+            return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v) {
+                var $174 = {};
+                for (var $175 in v) {
+                    if ({}.hasOwnProperty.call(v, $175)) {
+                        $174[$175] = v[$175];
+                    };
+                };
+                $174.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
+                return $174;
+            }))(function () {
+                return synchronize(dictMonadAff);
+            });
+        });
+    };
 };
 var embeddedHandleAction = function (dictMonadAff) {
     return function (v) {
@@ -57138,16 +57138,18 @@ var embeddedHandleAction = function (dictMonadAff) {
                 return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Now.nowDate))(function (d) {
                     var d$prime = Data_Maybe.fromMaybe(d)(v1.selection);
                     var targetDate = new Data_Tuple.Tuple(Data_Date.year(d$prime), Data_Date.month(d$prime));
-                    return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                        var $182 = {};
-                        for (var $183 in v2) {
-                            if ({}.hasOwnProperty.call(v2, $183)) {
-                                $182[$183] = v2[$183];
+                    var v2 = generateCalendarRows(v1.selection)(Data_Tuple.fst(targetDate))(Data_Tuple.snd(targetDate));
+                    return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
+                        var $180 = {};
+                        for (var $181 in v3) {
+                            if ({}.hasOwnProperty.call(v3, $181)) {
+                                $180[$181] = v3[$181];
                             };
                         };
-                        $182.targetDate = targetDate;
-                        $182.calendarItems = generateCalendarRows(v1.selection)(Data_Tuple.fst(targetDate))(Data_Tuple.snd(targetDate));
-                        return $182;
+                        $180.targetDate = targetDate;
+                        $180.aligned = v2.aligned;
+                        $180.calendarItems = v2.calendarItems;
+                        return $180;
                     }))(function () {
                         return synchronize(dictMonadAff);
                     });
@@ -57155,42 +57157,18 @@ var embeddedHandleAction = function (dictMonadAff) {
             });
         };
         if (v instanceof ToggleMonth) {
-            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (st) {
-                var y = Data_Tuple.fst(st.targetDate);
-                var m = Data_Tuple.snd(st.targetDate);
-                var newDate = (function () {
-                    if (v.value0 instanceof Next) {
-                        return Ocelot_Data_DateTime.nextMonth(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
-                    };
-                    if (v.value0 instanceof Prev) {
-                        return Ocelot_Data_DateTime.prevMonth(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
-                    };
-                    throw new Error("Failed pattern match at Ocelot.DatePicker (line 287, column 19 - line 289, column 61): " + [ v.value0.constructor.name ]);
-                })();
-                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                    var $187 = {};
-                    for (var $188 in v1) {
-                        if ({}.hasOwnProperty.call(v1, $188)) {
-                            $187[$188] = v1[$188];
-                        };
-                    };
-                    $187.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
-                    return $187;
-                }))(function () {
-                    return synchronize(dictMonadAff);
-                });
-            });
+            return toggleMonth(dictMonadAff)(v.value0);
         };
         if (v instanceof Key) {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                var $191 = {};
-                for (var $192 in v1) {
-                    if ({}.hasOwnProperty.call(v1, $192)) {
-                        $191[$192] = v1[$192];
+                var $187 = {};
+                for (var $188 in v1) {
+                    if ({}.hasOwnProperty.call(v1, $188)) {
+                        $187[$188] = v1[$188];
                     };
                 };
-                $191.visibility = Select.On.value;
-                return $191;
+                $187.visibility = Select.On.value;
+                return $187;
             }))(function () {
                 var preventIt = Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Web_Event_Event.preventDefault(Web_UIEvent_KeyboardEvent.toEvent(v.value0)));
                 var v1 = Web_UIEvent_KeyboardEvent.code(v.value0);
@@ -57202,14 +57180,14 @@ var embeddedHandleAction = function (dictMonadAff) {
                 if (v1 === "Escape") {
                     return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(preventIt)(function () {
                         return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v2) {
-                            var $195 = {};
-                            for (var $196 in v2) {
-                                if ({}.hasOwnProperty.call(v2, $196)) {
-                                    $195[$196] = v2[$196];
+                            var $191 = {};
+                            for (var $192 in v2) {
+                                if ({}.hasOwnProperty.call(v2, $192)) {
+                                    $191[$192] = v2[$192];
                                 };
                             };
-                            $195.visibility = Select.Off.value;
-                            return $195;
+                            $191.visibility = Select.Off.value;
+                            return $191;
                         });
                     });
                 };
@@ -57230,23 +57208,73 @@ var embeddedHandleAction = function (dictMonadAff) {
                     if (v.value0 instanceof Prev) {
                         return Ocelot_Data_DateTime.prevYear(Data_Date.canonicalDate(y)(m)(Data_Bounded.bottom(Data_Date_Component.boundedDay)));
                     };
-                    throw new Error("Failed pattern match at Ocelot.DatePicker (line 309, column 19 - line 311, column 60): " + [ v.value0.constructor.name ]);
+                    throw new Error("Failed pattern match at Ocelot.DatePicker (line 304, column 19 - line 306, column 60): " + [ v.value0.constructor.name ]);
                 })();
                 return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                    var $200 = {};
-                    for (var $201 in v1) {
-                        if ({}.hasOwnProperty.call(v1, $201)) {
-                            $200[$201] = v1[$201];
+                    var $196 = {};
+                    for (var $197 in v1) {
+                        if ({}.hasOwnProperty.call(v1, $197)) {
+                            $196[$197] = v1[$197];
                         };
                     };
-                    $200.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
-                    return $200;
+                    $196.targetDate = new Data_Tuple.Tuple(Data_Date.year(newDate), Data_Date.month(newDate));
+                    return $196;
                 }))(function () {
                     return synchronize(dictMonadAff);
                 });
             });
         };
-        throw new Error("Failed pattern match at Ocelot.DatePicker (line 270, column 24 - line 313, column 16): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at Ocelot.DatePicker (line 272, column 24 - line 308, column 16): " + [ v.constructor.name ]);
+    };
+};
+var embeddedHandleMessage = function (dictMonadAff) {
+    return function (v) {
+        if (v instanceof Select.Selected) {
+            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (v1) {
+                var v2 = Data_Array.index(v1.calendarItems)(v.value0);
+                if (v2 instanceof Data_Maybe.Nothing) {
+                    return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
+                };
+                if (v2 instanceof Data_Maybe.Just) {
+                    return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Applicative.when(Halogen_Query_HalogenM.applicativeHalogenM)(isInPreviousMonth(v1.aligned)(v2.value0.value3))(toggleMonth(dictMonadAff)(Prev.value)))(function () {
+                        return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Applicative.when(Halogen_Query_HalogenM.applicativeHalogenM)(isInNextMonth(v1.aligned)(v2.value0.value3))(toggleMonth(dictMonadAff)(Next.value)))(function () {
+                            return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v3) {
+                                var $203 = {};
+                                for (var $204 in v3) {
+                                    if ({}.hasOwnProperty.call(v3, $204)) {
+                                        $203[$204] = v3[$204];
+                                    };
+                                };
+                                $203.selection = new Data_Maybe.Just(v2.value0.value3);
+                                $203.visibility = Select.Off.value;
+                                return $203;
+                            }))(function () {
+                                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(SelectionChanged.create(new Data_Maybe.Just(v2.value0.value3))))(function () {
+                                    return synchronize(dictMonadAff);
+                                });
+                            });
+                        });
+                    });
+                };
+                throw new Error("Failed pattern match at Ocelot.DatePicker (line 316, column 5 - line 328, column 20): " + [ v2.constructor.name ]);
+            });
+        };
+        if (v instanceof Select.Searched) {
+            return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
+                var $214 = {};
+                for (var $215 in v1) {
+                    if ({}.hasOwnProperty.call(v1, $215)) {
+                        $214[$215] = v1[$215];
+                    };
+                };
+                $214.search = v.value0;
+                return $214;
+            });
+        };
+        if (v instanceof Select.VisibilityChanged) {
+            return Halogen_Query_HalogenM.raise(new VisibilityChanged(v.value0));
+        };
+        throw new Error("Failed pattern match at Ocelot.DatePicker (line 311, column 25 - line 334, column 43): " + [ v.constructor.name ]);
     };
 };
 var spec = function (dictMonadAff) {
@@ -57270,8 +57298,8 @@ var handleQuery = function (v) {
     if (v instanceof GetSelection) {
         return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query.request()(new Data_Symbol.IsSymbol(function () {
             return "select";
-        }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(function ($225) {
-            return Select.Query.create(GetSelection.create($225));
+        }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)(function ($240) {
+            return Select.Query.create(GetSelection.create($240));
         }))(function (response) {
             return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Functor.map(Data_Maybe.functorMaybe)(v.value0)(response));
         });
@@ -57280,9 +57308,9 @@ var handleQuery = function (v) {
         return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Halogen_Query.tell()(new Data_Symbol.IsSymbol(function () {
             return "select";
         }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)((function () {
-            var $226 = SetDisabled.create(v.value0);
-            return function ($227) {
-                return Select.Query.create($226($227));
+            var $241 = SetDisabled.create(v.value0);
+            return function ($242) {
+                return Select.Query.create($241($242));
             };
         })()));
     };
@@ -57290,13 +57318,13 @@ var handleQuery = function (v) {
         return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Halogen_Query.tell()(new Data_Symbol.IsSymbol(function () {
             return "select";
         }))(Data_Ord.ordUnit)(_select)(Data_Unit.unit)((function () {
-            var $228 = SetSelection.create(v.value0);
-            return function ($229) {
-                return Select.Query.create($228($229));
+            var $243 = SetSelection.create(v.value0);
+            return function ($244) {
+                return Select.Query.create($243($244));
             };
         })()));
     };
-    throw new Error("Failed pattern match at Ocelot.DatePicker (line 438, column 15 - line 445, column 61): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.DatePicker (line 441, column 15 - line 448, column 61): " + [ v.constructor.name ]);
 };
 var render = function (dictMonadAff) {
     return function (st) {
