@@ -284,12 +284,12 @@ defaultInput =
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
 embeddedHandleAction = case _ of
   Initialize -> do
-    { selection } <- H.get
+    { interval, selection } <- H.get
     d <- H.liftEffect nowDate
     let
       d' = fromMaybe d selection
       targetDate = (year d') /\ (month d')
-      { aligned, calendarItems } = generateCalendarRows selection (fst targetDate) (snd targetDate)
+      { aligned, calendarItems } = generateCalendarRows interval selection (fst targetDate) (snd targetDate)
     H.modify_
       _ { targetDate = targetDate
         , aligned = aligned
@@ -411,32 +411,41 @@ firstMatch = maybe Nothing (Just <<< fst) <<< find match'
     match' (Tuple (Fuzzy { ratio }) _) = ratio == (1 % 1)
 
 generateCalendarItem
-  :: Maybe Date
+  :: Maybe Interval
+  -> Maybe Date
   -> BoundaryStatus
   -> Date
   -> CalendarItem
-generateCalendarItem Nothing bound i =
-  CalendarItem Selectable NotSelected bound i
-generateCalendarItem (Just d) bound i
-  | d == i = CalendarItem Selectable Selected bound i
-  | otherwise = CalendarItem Selectable NotSelected bound i
+generateCalendarItem mInterval selection bound i = case selection of
+  Nothing -> CalendarItem selectableStatus NotSelected bound i
+  Just d
+    | d == i -> CalendarItem selectableStatus Selected bound i
+    | otherwise -> CalendarItem selectableStatus NotSelected bound i
+  where
+  selectableStatus :: SelectableStatus
+  selectableStatus = case mInterval of
+    Nothing -> Selectable
+    Just interval
+      | isWithinInterval interval i -> Selectable
+      | otherwise -> NotSelectable
 
 -- Generate a standard set of dates from a year and month.
 generateCalendarRows
-  :: Maybe Date
+  :: Maybe Interval
+  -> Maybe Date
   -> Year
   -> Month
   -> { calendarItems :: Array CalendarItem, aligned :: Aligned }
-generateCalendarRows selection y m =
+generateCalendarRows mInterval selection y m =
   { calendarItems: lastMonth <> thisMonth <> nextMonth
   , aligned
   }
   where
     aligned@{ pre, body, post, all } = alignByWeek y m
-    outOfBounds = map (generateCalendarItem selection OutOfBounds)
+    outOfBounds = map (generateCalendarItem mInterval selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post
-    thisMonth = body <#> (generateCalendarItem selection InBounds)
+    thisMonth = body <#> (generateCalendarItem mInterval selection InBounds)
 
 guessDate :: Date -> MaxYears -> String -> Maybe Date
 guessDate start (MaxYears max) text =
@@ -501,7 +510,7 @@ initialState :: Input -> State
 initialState input =
   let targetDate
         = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) input.targetDate
-      { aligned, calendarItems }= generateCalendarRows input.selection (fst targetDate) (snd targetDate)
+      { aligned, calendarItems }= generateCalendarRows input.interval input.selection (fst targetDate) (snd targetDate)
   in
     { aligned
     , calendarItems
@@ -616,7 +625,7 @@ renderItem index item =
       where
         getSelectableStyles :: CalendarItem -> String
         getSelectableStyles (CalendarItem NotSelectable _ _ _) =
-          mempty
+          "line-through"
         getSelectableStyles _ =
           "cursor-pointer hover:border hover:border-blue-88"
 
@@ -707,8 +716,8 @@ spec =
 
 synchronize :: forall m. MonadAff m => CompositeComponentM m Unit
 synchronize = do
-  ({ targetDate: y /\ m, selection }) <- H.get
-  let { aligned, calendarItems } = generateCalendarRows selection y m
+  ({ targetDate: y /\ m, selection, interval }) <- H.get
+  let { aligned, calendarItems } = generateCalendarRows interval selection y m
   H.modify_
     _ { aligned = aligned
       , calendarItems = calendarItems
