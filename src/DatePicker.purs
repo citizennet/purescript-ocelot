@@ -40,6 +40,7 @@ import Data.Formatter.DateTime (formatDateTime)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.Maybe as Data.Maybe
 import Data.Rational ((%))
 import Data.String (trim)
 import Data.String.Regex (parseFlags, regex, replace)
@@ -309,7 +310,10 @@ embeddedHandleAction = case _ of
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
   OnBlur -> do
-    handleSearch
+    state <- H.get
+    when (Data.Maybe.isNothing state.selection) do
+      handleSearch
+    H.modify_ _ { visibility = S.Off }
   Receive input -> embeddedReceive input
   ToggleYear dir -> do
     st <- H.get
