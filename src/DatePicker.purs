@@ -609,7 +609,10 @@ renderItem index item =
       ]
     )
     -- printDay will format our item correctly
-    [ HH.text $ printDay item ]
+    [ HH.span
+      [ css (getLabelStyles item) ]
+      [ HH.text $ printDay item ]
+    ]
   where
     -- If the calendar item is selectable,
     -- then augment the props with the correct click events.
@@ -628,7 +631,7 @@ renderItem index item =
       where
         getSelectableStyles :: CalendarItem -> String
         getSelectableStyles (CalendarItem NotSelectable _ _ _) =
-          "line-through"
+          ""
         getSelectableStyles _ =
           "cursor-pointer hover:border hover:border-blue-88"
 
@@ -642,6 +645,14 @@ renderItem index item =
         getBoundaryStyles (CalendarItem _ _ OutOfBounds _) =
           "text-grey-90"
         getBoundaryStyles _ = mempty
+
+    getLabelStyles :: CalendarItem -> String
+    getLabelStyles = case _ of
+      CalendarItem NotSelectable _ InBounds _ ->
+        "border-black strike-through"
+      CalendarItem NotSelectable _ OutOfBounds _ ->
+        "border-grey-90 strike-through"
+      _ -> ""
 
     -- Just a simple helper to format our CalendarItem into a day
     -- we can print out
