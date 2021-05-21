@@ -32,6 +32,7 @@ import Type.Data.Symbol (SProxy(..))
 data Action
   = HandleDate DatePicker.Output
   | HandleTime TimePicker.Output
+  | Receive Input
 
 type ChildSlots =
   ( datepicker :: DatePicker.Slot Unit
@@ -90,6 +91,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
       { handleAction = handleAction
       , handleQuery = handleQuery
+      , receive = Just <<< Receive
       }
   }
 
@@ -113,6 +115,8 @@ handleAction = case _ of
       H.raise $ SelectionChanged (DateTime <$> date' <*> time')
       H.modify_ _ { time = time' }
     _ -> H.raise $ TimeOutput msg
+  Receive input -> do
+    H.modify_ _ { interval = input.interval }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
