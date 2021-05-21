@@ -16,6 +16,7 @@ module Ocelot.TimePicker
   , EmbeddedAction(..)
   , EmbeddedChildSlots
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -24,6 +25,7 @@ module Ocelot.TimePicker
   , StateRow
   , TimeUnit
   , component
+  , isWithinInterval
   ) where
 
 import Prelude
@@ -33,6 +35,7 @@ import Data.Array as Array
 import Data.Array.NonEmpty (catMaybes, head)
 import Data.DateTime (time)
 import Data.Either (either, hush)
+import Data.Foldable as Data.Foldable
 import Data.Formatter.DateTime (unformatDateTime)
 import Data.FunctorWithIndex (mapWithIndex)
 import Data.Maybe (Maybe(..), fromMaybe, isNothing, maybe)
@@ -60,6 +63,7 @@ import Web.UIEvent.KeyboardEvent as KE
 
 data Action
   = PassingOutput Output
+  | PassingReceive Input
 
 type ChildSlots =
   ( select :: S.Slot Query EmbeddedChildSlots Output Unit
@@ -93,12 +97,19 @@ data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
   | OnBlur
+  | Receive CompositeInput
 
 type EmbeddedChildSlots = () -- No extension
 
 type Input =
-  { selection :: Maybe Time
-  , disabled :: Boolean
+  { disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Time
+  }
+
+type Interval =
+  { start :: Maybe Time
+  , end :: Maybe Time
   }
 
 data Meridiem
@@ -130,9 +141,10 @@ type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeI
 type State = Record StateRow
 
 type StateRow =
-  ( selection :: Maybe Time
+  ( disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Time
   , timeUnits :: Array TimeUnit
-  , disabled :: Boolean
   )
 
 data TimeUnit
@@ -148,6 +160,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
     { handleAction = handleAction
     , handleQuery = handleQuery
+    , receive = Just <<< PassingReceive
     }
   }
 
@@ -185,6 +198,8 @@ embeddedHandleAction = case _ of
   OnBlur -> do
     { selection } <- H.get
     when (isNothing selection) handleSearch
+    H.modify_ _ { visibility = S.Off }
+  Receive input -> embeddedReceive input
 
 embeddedHandleMessage
   :: forall m
@@ -219,15 +234,32 @@ embeddedHandleQuery = case _ of
     setSelectionWithoutRaising selection
 
 embeddedInput :: State -> CompositeInput
-embeddedInput { selection, timeUnits, disabled } =
-  { inputType: S.Text
-  , search: Nothing
-  , debounceTime: Nothing
+embeddedInput state =
+  { debounceTime: Nothing
+  , disabled: state.disabled
   , getItemCount: Array.length <<< _.timeUnits
-  , selection
-  , timeUnits
-  , disabled
+  , inputType: S.Text
+  , interval: state.interval
+  , search: Nothing
+  , selection: state.selection
+  , timeUnits: state.timeUnits
   }
+
+embeddedReceive :: forall m. CompositeInput -> CompositeComponentM m Unit
+embeddedReceive input = do
+  old <- H.get
+  H.modify_ _ { interval = input.interval }
+  case input.interval of
+    Nothing -> pure unit
+    Just interval -> do
+      case old.selection of
+        Just selection
+          | isWithinInterval interval selection -> pure unit
+          | otherwise -> do
+              H.modify_ _ { search = "" }
+              setSelection Nothing
+        Nothing -> pure unit
+  synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
@@ -242,9 +274,15 @@ embeddedRender s =
 -- Generate a standard set of time intervals.
 generateTimes
   :: Maybe Time
+  -> Maybe Interval
   -> Array TimeUnit
-generateTimes selection =
-  ODT.defaultTimeRange <#> (generateTimeUnit selection)
+generateTimes selection mInterval =
+  (filterTimeRange ODT.defaultTimeRange) <#> (generateTimeUnit selection)
+  where
+  filterTimeRange :: Array Time -> Array Time
+  filterTimeRange = case mInterval of
+    Nothing -> identity
+    Just interval -> Array.filter (isWithinInterval interval)
 
 generateTimeUnit
   :: Maybe Time
@@ -303,6 +341,8 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   PassingOutput output ->
     H.raise output
+  PassingReceive input -> do
+    H.modify_ _ { interval = input.interval }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
@@ -316,22 +356,34 @@ handleQuery = case _ of
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
-  search <- H.gets _.search
-  case search of
+  state <- H.get
+  case state.search of
     "" -> setSelection Nothing
-    _  -> case guessTime search of
+    _  -> case guessTime state.search of
       Nothing -> pure unit
-      Just t  -> do
-        setSelection (Just t)
-        H.modify_ _ { visibility = S.Off }
-  H.raise $ Searched search
+      Just t  -> case state.interval of
+        Nothing -> setSelection (Just t)
+        Just interval
+          | isWithinInterval interval t -> setSelection (Just t)
+          | otherwise -> pure unit
+  H.modify_ _ { visibility = S.Off }
+  H.raise $ Searched state.search
 
 initialState :: Input -> State
-initialState { selection, disabled } =
-  { selection
-  , timeUnits: generateTimes selection
-  , disabled
+initialState input =
+  { disabled: input.disabled
+  , interval: input.interval
+  , selection: input.selection
+  , timeUnits: generateTimes input.selection input.interval
   }
+
+-- check if a time point is within a **closed** interval
+isWithinInterval :: Interval -> Time -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.and
+    [ maybe true (_ <= x) interval.start
+    , maybe true (x <= _) interval.end
+    ]
 
 meridiemToString :: Meridiem -> String
 meridiemToString = case _ of
@@ -433,12 +485,13 @@ spec = S.defaultSpec
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   , initialize = Just Initialize
+  , receive = Just <<< Receive
   }
 
 synchronize :: forall m. CompositeComponentM m Unit
 synchronize = do
-  { selection } <- H.get
-  H.modify_ _ { timeUnits = generateTimes selection }
+  { interval, selection } <- H.get
+  H.modify_ _ { timeUnits = generateTimes selection interval }
   case selection of
     Nothing -> pure unit
     Just time -> H.modify_ _ { search = ODT.formatTime time }

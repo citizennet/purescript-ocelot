@@ -3,7 +3,8 @@
 -- |   * mark: static node on track
 -- | * axis
 module Ocelot.Slider
-  ( Interval(..)
+  ( Input
+  , Interval(..)
   , Output(..)
   , Query(..)
   , Slot
