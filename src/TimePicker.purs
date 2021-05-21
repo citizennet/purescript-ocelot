@@ -246,18 +246,20 @@ embeddedInput state =
   }
 
 embeddedReceive :: forall m. CompositeInput -> CompositeComponentM m Unit
-embeddedReceive input = case input.interval of
-  Nothing -> pure unit
-  Just interval -> do
-    old <- H.get
-    H.modify_ _ { interval = input.interval }
-    case old.selection of
-      Just selection
-        | isWithinInterval interval selection -> synchronize
-        | otherwise -> do
-            H.modify_ _ { search = "" }
-            setSelection Nothing
-      Nothing -> synchronize
+embeddedReceive input = do
+  old <- H.get
+  H.modify_ _ { interval = input.interval }
+  case input.interval of
+    Nothing -> pure unit
+    Just interval -> do
+      case old.selection of
+        Just selection
+          | isWithinInterval interval selection -> pure unit
+          | otherwise -> do
+              H.modify_ _ { search = "" }
+              setSelection Nothing
+        Nothing -> pure unit
+  synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
