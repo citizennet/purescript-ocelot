@@ -6,6 +6,7 @@ module Ocelot.DateTimePicker
   , ComponentM
   , ComponentRender
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -46,9 +47,15 @@ type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 type ComponentRender m = State -> ComponentHTML m
 
 type Input =
-  { selection :: Maybe DateTime
+  { disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe DateTime
   , targetDate :: Maybe (Year /\ Month)
-  , disabled :: Boolean
+  }
+
+type Interval =
+  { start :: Maybe DateTime
+  , end :: Maybe DateTime
   }
 
 data Output
@@ -67,9 +74,10 @@ type Slot = H.Slot Query Output
 
 type State =
   { date :: Maybe Date
-  , time :: Maybe Time
-  , targetDate :: Maybe (Year /\ Month)
   , disabled :: Boolean
+  , interval :: Maybe Interval
+  , targetDate :: Maybe (Year /\ Month)
+  , time :: Maybe Time
   }
 
 ------------
@@ -125,11 +133,12 @@ handleQuery = case _ of
   SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
 
 initialState :: Input -> State
-initialState { selection, targetDate, disabled } =
-  { date: date <$> selection
-  , time: time <$> selection
-  , targetDate
-  , disabled
+initialState input =
+  { date: date <$> input.selection
+  , disabled: input.disabled
+  , interval: input.interval
+  , targetDate: input.targetDate
+  , time: time <$> input.selection
   }
 
 render :: forall m. MonadAff m => ComponentRender m

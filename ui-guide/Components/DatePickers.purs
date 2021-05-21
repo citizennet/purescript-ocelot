@@ -385,9 +385,10 @@ cnDocumentationBlocks state =
               , inputId: "start"
               }
               [ HH.slot_ _dtp 0 DateTimePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Nothing -- TODO AS-1358
                 , selection: Nothing
-                , disabled: false
+                , targetDate: Nothing
                 }
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
@@ -398,9 +399,10 @@ cnDocumentationBlocks state =
               , inputId: "start-disabled"
               }
               [ HH.slot_ _dtp 2 DateTimePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Nothing -- TODO AS-1358
                 , selection: Nothing
-                , disabled: true
+                , targetDate: Nothing
                 }
               ]
             ]
@@ -416,9 +418,10 @@ cnDocumentationBlocks state =
               , inputId: "end"
               }
               [ HH.slot_ _dtp 1 DateTimePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Nothing -- TODO AS-1358
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                , disabled: false
+                , targetDate: Nothing
                 }
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
@@ -429,9 +432,10 @@ cnDocumentationBlocks state =
               , inputId: "end-disabled"
               }
               [ HH.slot_ _dtp 3 DateTimePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Nothing -- TODO AS-1358
                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                , disabled: true
+                , targetDate: Nothing
                 }
               ]
             ]
