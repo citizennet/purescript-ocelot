@@ -15,7 +15,8 @@ module Ocelot.DateTimePicker
   ) where
 
 import Prelude
-import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
+import Data.DateTime (Date, DateTime(..), Month, Time, Year)
+import Data.DateTime as Date.DateTime
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
 import Data.Tuple.Nested (type (/\))
@@ -129,8 +130,8 @@ handleQuery = case _ of
     void $ H.tell _datepicker unit $ DatePicker.SetDisabled disabled
     void $ H.tell _timepicker unit $ TimePicker.SetDisabled disabled
   SetSelection dateTime a -> Just a <$ do
-    let date' = date <$> dateTime
-        time' = time <$> dateTime
+    let date' = dateTime <#> Date.DateTime.date
+        time' = dateTime <#> Date.DateTime.time
     void $ H.tell _datepicker unit $ DatePicker.SetSelection date'
     void $ H.tell _timepicker unit $ TimePicker.SetSelection time'
     H.modify_ _ { date = date', time = time' }
@@ -139,11 +140,11 @@ handleQuery = case _ of
 
 initialState :: Input -> State
 initialState input =
-  { date: date <$> input.selection
+  { date: input.selection <#> Date.DateTime.date
   , disabled: input.disabled
   , interval: input.interval
   , targetDate: input.targetDate
-  , time: time <$> input.selection
+  , time: input.selection <#> Date.DateTime.time
   }
 
 render :: forall m. MonadAff m => ComponentRender m
