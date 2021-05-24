@@ -17,6 +17,7 @@ module Ocelot.DateTimePicker
 import Prelude
 import Data.DateTime (Date, DateTime(..), Month, Time, Year)
 import Data.DateTime as Date.DateTime
+import Data.Foldable as Data.Foldable
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
 import Data.Tuple.Nested (type (/\))
@@ -107,14 +108,14 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   HandleDate msg -> case msg of
     DatePicker.SelectionChanged date' -> do
-      time' <- H.gets _.time
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      state <- H.get
+      raiseSelectionChanged state.interval date' state.time
       H.modify_ _ { date = date' }
     _ -> H.raise $ DateOutput msg
   HandleTime msg -> case msg of
     TimePicker.SelectionChanged time' -> do
-      date' <- H.gets _.date
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      state <- H.get
+      raiseSelectionChanged state.interval state.date time'
       H.modify_ _ { time = time' }
     _ -> H.raise $ TimeOutput msg
   Receive input -> do
@@ -146,6 +147,32 @@ initialState input =
   , targetDate: input.targetDate
   , time: input.selection <#> Date.DateTime.time
   }
+
+-- check if a datetime is within a **closed** interval
+isWithinInterval :: Interval -> DateTime -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.and
+    [ Data.Maybe.maybe true (_ <= x) interval.start
+    , Data.Maybe.maybe true (x <= _) interval.end
+    ]
+
+raiseSelectionChanged ::
+  forall m.
+  Maybe Interval ->
+  Maybe Date ->
+  Maybe Time ->
+  ComponentM m Unit
+raiseSelectionChanged mInterval mDate mTime = case mInterval of
+  Nothing -> H.raise $ SelectionChanged mDateTime
+  Just interval -> case mDateTime of
+    Nothing -> H.raise $ SelectionChanged mDateTime
+    Just dateTime
+      | isWithinInterval interval dateTime -> H.raise $ SelectionChanged mDateTime
+      | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
+  where
+  mDateTime :: Maybe DateTime
+  mDateTime = DateTime <$> mDate <*> mTime
+
 
 render :: forall m. MonadAff m => ComponentRender m
 render state =
