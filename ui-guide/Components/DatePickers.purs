@@ -45,6 +45,7 @@ data Query a
 data Action 
   = HandleDatePicker DatePicker.Output
   | HandleDateSlider Ocelot.Slider.Output
+  | HandleDateTimePicker DateTimePicker.Output
   | HandleTimePicker TimePicker.Output
   | HandleTimeSlider Ocelot.Slider.Output
   | Initialize
@@ -113,6 +114,11 @@ component =
               )
             H.modify_ _ { dateInterval = { start, end } }
           _ -> pure unit
+      HandleDateTimePicker output -> case output of
+        DateTimePicker.SelectionChanged mDateTime -> do
+          H.liftEffect $ Effect.Class.Console.log $ "DateTimePicker SelectionChanged: " <> show mDateTime
+        DateTimePicker.DateOutput _ -> pure unit
+        DateTimePicker.TimeOutput _ -> pure unit
       HandleTimePicker output -> case output of
         TimePicker.SelectionChanged mTime -> do
           H.liftEffect $ Effect.Class.Console.log $ "TimePicker SelectionChanged: " <> show mTime
@@ -373,74 +379,150 @@ cnDocumentationBlocks state =
       { header: "DateTime Pickers"
       , subheader: "We've combined them. Deal with it."
       }
-      [ Backdrop.backdrop_
-        [ content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Standard" ]
-            , FormField.field_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start date and time." ]
-              , error: []
-              , inputId: "start"
-              }
-              [ HH.slot _dtp 0 DateTimePicker.component
-                { disabled: false
-                , interval: Nothing -- TODO AS-1358
-                , selection: Nothing
-                , targetDate: Nothing
-                }
-                (const Nothing)
-              ]
-            , Format.caption_ [ HH.text "Standard Disabled" ]
-            , FormField.field_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start date and time." ]
-              , error: []
-              , inputId: "start-disabled"
-              }
-              [ HH.slot _dtp 2 DateTimePicker.component
-                { disabled: true
-                , interval: Nothing -- TODO AS-1358
-                , selection: Nothing
-                , targetDate: Nothing
-                }
-                (const Nothing)
+      [ Halogen.HTML.div
+        [ css "flex-1" ]
+        [ Backdrop.backdrop_
+          [ Backdrop.content_
+            [ Card.card_
+              [ Halogen.HTML.slot _dateSlider "DateTime Pickers"
+                Ocelot.Slider.component
+                dateSliderInput
+                (Just <<< HandleDateSlider)
+              , Halogen.HTML.slot _timeSlider "DateTime Pickers"
+                Ocelot.Slider.component
+                timeSliderInput
+                (Just <<< HandleTimeSlider)
+              , Halogen.HTML.div
+                [ css "flex" ]
+                [ Halogen.HTML.div
+                  [ css "flex-1" ]
+                  [ Format.caption_ [ HH.text "Standard - With Interval" ]
+                  , FormField.field_
+                    { label: HH.text "Start"
+                    , helpText: [ HH.text "Choose a start date and time." ]
+                    , error: []
+                    , inputId: "start"
+                    }
+                    [ HH.slot _dtp 4 DateTimePicker.component
+                      { disabled: false
+                      , interval:
+                        Just
+                        { start:
+                          DateTime
+                          <$> state.dateInterval.start
+                          <*> state.timeInterval.start
+                        , end:
+                          DateTime
+                          <$> state.dateInterval.end
+                          <*> state.timeInterval.end
+                        }
+                      , selection: Nothing
+                      , targetDate: Nothing
+                      }
+                      (Just <<< HandleDateTimePicker)
+                    ]
+                  ]
+                , Halogen.HTML.div
+                  [ css "flex-1 ml-16" ]
+                  [ Format.caption_ [ HH.text "Hydrated - With Interval" ]
+                  , FormField.field_
+                    { label: HH.text "End"
+                    , helpText: [ HH.text "Choose an end date and time." ]
+                    , error: []
+                    , inputId: "end"
+                    }
+                    [ HH.slot _dtp 5 DateTimePicker.component
+                      { disabled: false
+                      , interval:
+                          Just
+                            { start:
+                              DateTime
+                              <$> state.dateInterval.start
+                              <*> state.timeInterval.start
+                            , end:
+                              DateTime
+                              <$> state.dateInterval.end
+                              <*> state.timeInterval.end
+                            }
+                      , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                      , targetDate: Nothing
+                      }
+                      (Just <<< HandleDateTimePicker)
+                    ]
+                  ]
+                ]
               ]
             ]
           ]
-        , content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Hydrated" ]
-            , FormField.field_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end date and time." ]
-              , error: []
-              , inputId: "end"
-              }
-              [ HH.slot _dtp 1 DateTimePicker.component
-                { disabled: false
-                , interval: Nothing -- TODO AS-1358
-                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                , targetDate: Nothing
+        , Backdrop.backdrop_
+          [ content
+            [ Card.card
+              [ css "flex-1" ]
+              [ Format.caption_ [ HH.text "Standard - Without Interval" ]
+              , FormField.field_
+                { label: HH.text "Start"
+                , helpText: [ HH.text "Choose a start date and time." ]
+                , error: []
+                , inputId: "start"
                 }
-                (const Nothing)
+                [ HH.slot _dtp 0 DateTimePicker.component
+                  { disabled: false
+                  , interval: Nothing
+                  , selection: Nothing
+                  , targetDate: Nothing
+                  }
+                  (Just <<< HandleDateTimePicker)
+                ]
+              , Format.caption_ [ HH.text "Standard Disabled" ]
+              , FormField.field_
+                { label: HH.text "Start"
+                , helpText: [ HH.text "Choose a start date and time." ]
+                , error: []
+                , inputId: "start-disabled"
+                }
+                [ HH.slot _dtp 2 DateTimePicker.component
+                  { disabled: true
+                  , interval: Nothing
+                  , selection: Nothing
+                  , targetDate: Nothing
+                  }
+                  (Just <<< HandleDateTimePicker)
+                ]
               ]
-            , Format.caption_ [ HH.text "Hydrated Disabled" ]
-            , FormField.field_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end date and time." ]
-              , error: []
-              , inputId: "end-disabled"
-              }
-              [ HH.slot _dtp 3 DateTimePicker.component
-                { disabled: true
-                , interval: Nothing -- TODO AS-1358
-                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                , targetDate: Nothing
+            ]
+          , content
+            [ Card.card
+              [ css "flex-1" ]
+              [ Format.caption_ [ HH.text "Hydrated - Without Interval" ]
+              , FormField.field_
+                { label: HH.text "End"
+                , helpText: [ HH.text "Choose an end date and time." ]
+                , error: []
+                , inputId: "end"
                 }
-                (const Nothing)
+                [ HH.slot _dtp 1 DateTimePicker.component
+                  { disabled: false
+                  , interval: Nothing
+                  , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                  , targetDate: Nothing
+                  }
+                  (Just <<< HandleDateTimePicker)
+                ]
+              , Format.caption_ [ HH.text "Hydrated Disabled" ]
+              , FormField.field_
+                { label: HH.text "End"
+                , helpText: [ HH.text "Choose an end date and time." ]
+                , error: []
+                , inputId: "end-disabled"
+                }
+                [ HH.slot _dtp 3 DateTimePicker.component
+                  { disabled: true
+                  , interval: Nothing
+                  , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                  , targetDate: Nothing
+                  }
+                  (Just <<< HandleDateTimePicker)
+                ]
               ]
             ]
           ]
