@@ -386,7 +386,7 @@ embeddedReceive ::
   CompositeComponentM m Unit
 embeddedReceive input = do
   old <- H.get
-  H.modify_ _ { interval = input.interval }
+  H.modify_ _ { disabled = input.disabled, interval = input.interval }
   case input.interval of
     Nothing -> pure unit
     Just interval -> do
@@ -484,7 +484,7 @@ handleAction = case _ of
   PassingOutput output ->
     H.raise output
   PassingReceive input -> do
-    H.modify_ _ { interval = input.interval }
+    H.modify_ _ { disabled = input.disabled, interval = input.interval }
 
 -- NOTE passing query to the embedded component
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)

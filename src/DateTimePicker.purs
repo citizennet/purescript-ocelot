@@ -17,6 +17,7 @@ module Ocelot.DateTimePicker
 import Prelude
 import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
 import Data.Maybe (Maybe(..))
+import Data.Maybe as Data.Maybe
 import Data.Tuple.Nested (type (/\))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -146,7 +147,7 @@ initialState input =
   }
 
 render :: forall m. MonadAff m => ComponentRender m
-render { date, time, targetDate, disabled } =
+render { date, time, targetDate, disabled, interval } =
   HH.div
     [ css "flex" ]
     [ HH.div
@@ -162,7 +163,9 @@ render { date, time, targetDate, disabled } =
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
-        { disabled
+        { disabled:
+            disabled
+              || (Data.Maybe.isJust interval && Data.Maybe.isNothing date)
         , interval: Nothing -- TODO AS-1344
         , selection: time
         }
