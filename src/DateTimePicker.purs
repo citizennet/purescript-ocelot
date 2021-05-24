@@ -148,16 +148,21 @@ initialState input =
   }
 
 render :: forall m. MonadAff m => ComponentRender m
-render { date, time, targetDate, disabled, interval } =
+render state =
   HH.div
     [ css "flex" ]
     [ HH.div
       [ css "w-1/2 mr-2" ]
       [ HH.slot _datepicker unit DatePicker.component
-        { disabled
-        , interval: Nothing -- TODO AS-1344
-        , selection: date
-        , targetDate
+        { disabled: state.disabled
+        , interval: do
+            interval <- state.interval
+            pure
+              { start: interval.start <#> Date.DateTime.date
+              , end: interval.end <#> Date.DateTime.date
+              }
+        , selection: state.date
+        , targetDate: state.targetDate
         }
         (Just <<< HandleDate)
       ]
@@ -165,10 +170,23 @@ render { date, time, targetDate, disabled, interval } =
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
         { disabled:
-            disabled
-              || (Data.Maybe.isJust interval && Data.Maybe.isNothing date)
-        , interval: Nothing -- TODO AS-1344
-        , selection: time
+            state.disabled
+              || (Data.Maybe.isJust state.interval && Data.Maybe.isNothing state.date)
+        , interval: do
+            interval <- state.interval
+            pure
+              { start:
+                  if (interval.start <#> Date.DateTime.date) == state.date then
+                    interval.start <#> Date.DateTime.time
+                  else
+                    Nothing
+              , end:
+                  if (interval.end <#> Date.DateTime.date) == state.date then
+                    interval.end <#> Date.DateTime.time
+                  else
+                    Nothing
+              }
+        , selection: state.time
         }
         (Just <<< HandleTime)
       ]
