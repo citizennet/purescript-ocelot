@@ -19,6 +19,7 @@ module Ocelot.DatePicker
   , EmbeddedAction(..)
   , EmbeddedChildSlots
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -34,10 +35,12 @@ import Data.Date (Date, Month, Weekday(..), Year, canonicalDate, day, month, wee
 import Data.DateTime.Instant (fromDate, toDateTime)
 import Data.Either (either)
 import Data.Enum (fromEnum)
+import Data.Foldable as Data.Foldable
 import Data.Formatter.DateTime (formatDateTime)
 import Data.Fuzzy (Fuzzy(..))
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..), fromMaybe, maybe)
+import Data.Maybe as Data.Maybe
 import Data.Rational ((%))
 import Data.String (trim)
 import Data.String.Regex (parseFlags, regex, replace)
@@ -72,6 +75,7 @@ import Web.UIEvent.KeyboardEvent as KE
 -- re-raise output messages from the embedded component
 data Action
   = PassingOutput Output
+  | PassingReceive Input
 
 -- A type to help assist making grid-based calendar layouts. Calendars
 -- can use dates directly or use array lengths as offsets.
@@ -125,15 +129,22 @@ data EmbeddedAction
   = Initialize
   | Key KeyboardEvent
   | OnBlur
+  | Receive CompositeInput
   | ToggleMonth Direction
   | ToggleYear  Direction
 
 type EmbeddedChildSlots = () -- NOTE no extension
 
 type Input =
-  { targetDate :: Maybe (Year /\ Month)
+  { disabled :: Boolean
+  , interval :: Maybe Interval
   , selection :: Maybe Date
-  , disabled :: Boolean
+  , targetDate :: Maybe (Year /\ Month)
+  }
+
+type Interval =
+  { start :: Maybe Date
+  , end :: Maybe Date
   }
 
 -- Generates a date range to search through for search term, if it doesn't
@@ -167,11 +178,12 @@ type Spec m = S.Spec StateRow Query EmbeddedAction EmbeddedChildSlots CompositeI
 type State = Record StateRow
 
 type StateRow =
-  ( targetDate :: Year /\ Month
-  , selection :: Maybe Date
-  , aligned :: Aligned
+  ( aligned :: Aligned
   , calendarItems :: Array CalendarItem
   , disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe Date
+  , targetDate :: Year /\ Month
   )
 
 ------------
@@ -184,6 +196,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
       { handleAction = handleAction
       , handleQuery = handleQuery
+      , receive = Just <<< PassingReceive
       }
   }
 
@@ -263,20 +276,21 @@ calendarNav y m =
 
 defaultInput :: Input
 defaultInput =
-  { targetDate: Nothing
+  { disabled: false
+  , interval: Nothing
   , selection: Nothing
-  , disabled: false
+  , targetDate: Nothing
   }
 
 embeddedHandleAction :: forall m. MonadAff m => EmbeddedAction -> CompositeComponentM m Unit
 embeddedHandleAction = case _ of
   Initialize -> do
-    { selection } <- H.get
+    { interval, selection } <- H.get
     d <- H.liftEffect nowDate
     let
       d' = fromMaybe d selection
       targetDate = (year d') /\ (month d')
-      { aligned, calendarItems } = generateCalendarRows selection (fst targetDate) (snd targetDate)
+      { aligned, calendarItems } = generateCalendarRows interval selection (fst targetDate) (snd targetDate)
     H.modify_
       _ { targetDate = targetDate
         , aligned = aligned
@@ -296,7 +310,11 @@ embeddedHandleAction = case _ of
         H.modify_ _ { visibility = S.Off }
       otherwise -> pure unit
   OnBlur -> do
-    handleSearch
+    state <- H.get
+    when (Data.Maybe.isNothing state.selection) do
+      handleSearch
+    H.modify_ _ { visibility = S.Off }
+  Receive input -> embeddedReceive input
   ToggleYear dir -> do
     st <- H.get
     let y = fst st.targetDate
@@ -348,17 +366,38 @@ embeddedInitialize = Just Initialize
 
 -- NOTE configure Select
 embeddedInput :: State -> CompositeInput
-embeddedInput { targetDate, selection, aligned, calendarItems, disabled } =
-  { inputType: S.Text
-  , search: Nothing
+embeddedInput state =
+  { aligned: state.aligned
+  , calendarItems: state.calendarItems
   , debounceTime: Nothing
+  , disabled: state.disabled
   , getItemCount: Array.length <<< _.calendarItems
-  , targetDate
-  , selection
-  , aligned
-  , calendarItems
-  , disabled
+  , inputType: S.Text
+  , interval: state.interval
+  , search: Nothing
+  , selection: state.selection
+  , targetDate: state.targetDate
   }
+
+embeddedReceive ::
+  forall m.
+  MonadAff m =>
+  CompositeInput ->
+  CompositeComponentM m Unit
+embeddedReceive input = do
+  old <- H.get
+  H.modify_ _ { interval = input.interval }
+  case input.interval of
+    Nothing -> pure unit
+    Just interval -> do
+      case old.selection of
+        Just selection
+          | isWithinInterval interval selection -> pure unit
+          | otherwise -> do
+            H.modify_ _ { search = ""}
+            setSelection Nothing
+        Nothing -> pure unit
+  synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender st =
@@ -376,32 +415,41 @@ firstMatch = maybe Nothing (Just <<< fst) <<< find match'
     match' (Tuple (Fuzzy { ratio }) _) = ratio == (1 % 1)
 
 generateCalendarItem
-  :: Maybe Date
+  :: Maybe Interval
+  -> Maybe Date
   -> BoundaryStatus
   -> Date
   -> CalendarItem
-generateCalendarItem Nothing bound i =
-  CalendarItem Selectable NotSelected bound i
-generateCalendarItem (Just d) bound i
-  | d == i = CalendarItem Selectable Selected bound i
-  | otherwise = CalendarItem Selectable NotSelected bound i
+generateCalendarItem mInterval selection bound i = case selection of
+  Nothing -> CalendarItem selectableStatus NotSelected bound i
+  Just d
+    | d == i -> CalendarItem selectableStatus Selected bound i
+    | otherwise -> CalendarItem selectableStatus NotSelected bound i
+  where
+  selectableStatus :: SelectableStatus
+  selectableStatus = case mInterval of
+    Nothing -> Selectable
+    Just interval
+      | isWithinInterval interval i -> Selectable
+      | otherwise -> NotSelectable
 
 -- Generate a standard set of dates from a year and month.
 generateCalendarRows
-  :: Maybe Date
+  :: Maybe Interval
+  -> Maybe Date
   -> Year
   -> Month
   -> { calendarItems :: Array CalendarItem, aligned :: Aligned }
-generateCalendarRows selection y m =
+generateCalendarRows mInterval selection y m =
   { calendarItems: lastMonth <> thisMonth <> nextMonth
   , aligned
   }
   where
     aligned@{ pre, body, post, all } = alignByWeek y m
-    outOfBounds = map (generateCalendarItem selection OutOfBounds)
+    outOfBounds = map (generateCalendarItem mInterval selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post
-    thisMonth = body <#> (generateCalendarItem selection InBounds)
+    thisMonth = body <#> (generateCalendarItem mInterval selection InBounds)
 
 guessDate :: Date -> MaxYears -> String -> Maybe Date
 guessDate start (MaxYears max) text =
@@ -435,6 +483,8 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   PassingOutput output ->
     H.raise output
+  PassingReceive input -> do
+    H.modify_ _ { interval = input.interval }
 
 -- NOTE passing query to the embedded component
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
@@ -449,28 +499,32 @@ handleQuery = case _ of
 
 handleSearch :: forall m. MonadAff m => CompositeComponentM m Unit
 handleSearch = do
-  search <- H.gets _.search
+  state <- H.get
   today <- H.liftEffect nowDate
-  _ <- case search of
+  _ <- case state.search of
     "" -> setSelection Nothing
-    _  -> case guessDate today (MaxYears 5) search of
+    _  -> case guessDate today (MaxYears 5) state.search of
       Nothing -> pure unit
-      Just d  -> do
-        setSelection (Just d)
+      Just d  -> case state.interval of
+        Nothing -> setSelection (Just d)
+        Just interval
+          | isWithinInterval interval d -> setSelection (Just d)
+          | otherwise -> pure unit
   H.modify_ _ { visibility = S.Off }
-  H.raise $ Searched search
+  H.raise $ Searched state.search
 
 initialState :: Input -> State
-initialState { targetDate, selection, disabled } =
-  let targetDate'
-        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) targetDate
-      { aligned, calendarItems }= generateCalendarRows selection (fst targetDate') (snd targetDate')
+initialState input =
+  let targetDate
+        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) input.targetDate
+      { aligned, calendarItems }= generateCalendarRows input.interval input.selection (fst targetDate) (snd targetDate)
   in
-    { targetDate: targetDate'
-    , selection
-    , aligned
+    { aligned
     , calendarItems
-    , disabled
+    , disabled: input.disabled
+    , interval: input.interval
+    , selection: input.selection
+    , targetDate
     }
 
 isInPreviousMonth :: Aligned -> Date -> Boolean
@@ -478,6 +532,14 @@ isInPreviousMonth aligned date = Array.elem date aligned.pre
 
 isInNextMonth :: Aligned -> Date -> Boolean
 isInNextMonth aligned date = Array.elem date aligned.post
+
+-- check if a date is within a **closed** interval
+isWithinInterval :: Interval -> Date -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.and
+    [ maybe true (_ <= x) interval.start
+    , maybe true (x <= _) interval.end
+    ]
 
 -- Represents the number of days that will need to be "filled in"
 -- when the last day of the month is this weekday. For example, if the
@@ -551,7 +613,10 @@ renderItem index item =
       ]
     )
     -- printDay will format our item correctly
-    [ HH.text $ printDay item ]
+    [ HH.span
+      [ css (getLabelStyles item) ]
+      [ HH.text $ printDay item ]
+    ]
   where
     -- If the calendar item is selectable,
     -- then augment the props with the correct click events.
@@ -570,7 +635,7 @@ renderItem index item =
       where
         getSelectableStyles :: CalendarItem -> String
         getSelectableStyles (CalendarItem NotSelectable _ _ _) =
-          mempty
+          ""
         getSelectableStyles _ =
           "cursor-pointer hover:border hover:border-blue-88"
 
@@ -584,6 +649,14 @@ renderItem index item =
         getBoundaryStyles (CalendarItem _ _ OutOfBounds _) =
           "text-grey-90"
         getBoundaryStyles _ = mempty
+
+    getLabelStyles :: CalendarItem -> String
+    getLabelStyles = case _ of
+      CalendarItem NotSelectable _ InBounds _ ->
+        "border-black strike-through"
+      CalendarItem NotSelectable _ OutOfBounds _ ->
+        "border-grey-90 strike-through"
+      _ -> ""
 
     -- Just a simple helper to format our CalendarItem into a day
     -- we can print out
@@ -656,12 +729,13 @@ spec =
   , handleQuery = embeddedHandleQuery
   , handleEvent = embeddedHandleMessage
   , initialize = embeddedInitialize
+  , receive = Just <<< Receive
   }
 
 synchronize :: forall m. MonadAff m => CompositeComponentM m Unit
 synchronize = do
-  ({ targetDate: y /\ m, selection }) <- H.get
-  let { aligned, calendarItems } = generateCalendarRows selection y m
+  ({ targetDate: y /\ m, selection, interval }) <- H.get
+  let { aligned, calendarItems } = generateCalendarRows interval selection y m
   H.modify_
     _ { aligned = aligned
       , calendarItems = calendarItems
