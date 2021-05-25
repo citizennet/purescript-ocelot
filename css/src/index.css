@@ -128,6 +128,25 @@ dt {
 .before\:scale-0:before { @apply .scale-0; }
 .before\:scale-1:before { @apply .scale-1; }
 
+.strike-through {
+	position: relative;
+}
+
+.strike-through::before {
+	position: absolute;
+	content: "";
+	left: 0;
+	top: 50%;
+	right: 0;
+	border-top: 1px solid;
+	border-color: inherit;
+	-webkit-transform: rotate(-5deg);
+	-moz-transform: rotate(-5deg);
+	-ms-transform: rotate(-5deg);
+	-o-transform: rotate(-5deg);
+	transform: rotate(-5deg);
+}
+
 /* legacy variant & pseudo utilities */
 .before\:absolute:before { @apply .absolute; }
 .before\:transition-1\/4:before { @apply .transition-1/4; }

@@ -3,6 +3,7 @@ module UIGuide.Component.DatePickers where
 import Prelude
 
 import Data.Array as Data.Array
+import Data.Date as Data.Date
 import Data.DateTime (DateTime(..))
 import Data.Int as Data.Int
 import Data.Maybe (Maybe(..))
@@ -36,12 +37,15 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = 
   { disabled :: Boolean -- | Global enable/disable toggle
+  , dateInterval :: DatePicker.Interval
   , timeInterval :: TimePicker.Interval
   }
 
 data Query a
 data Action 
-  = HandleTimePicker TimePicker.Output
+  = HandleDatePicker DatePicker.Output
+  | HandleDateSlider Ocelot.Slider.Output
+  | HandleTimePicker TimePicker.Output
   | HandleTimeSlider Ocelot.Slider.Output
   | Initialize
   | ToggleDisabled
@@ -53,12 +57,14 @@ type ChildSlot =
   ( datePicker :: DatePicker.Slot Int
   , timePicker :: TimePicker.Slot Int
   , dtp :: DateTimePicker.Slot Int
+  , dateSlider :: Ocelot.Slider.Slot String
   , timeSlider :: Ocelot.Slider.Slot String
   )
 
 _datePicker = SProxy :: SProxy "datePicker"
 _timePicker = SProxy :: SProxy "timePicker"
 _dtp = SProxy :: SProxy "dtp"
+_dateSlider = SProxy :: SProxy "dateSlider"
 _timeSlider = SProxy :: SProxy "timeSlider"
 
 ----------
@@ -78,6 +84,35 @@ component =
   }
   where
     handleAction = case _ of  
+      HandleDatePicker output -> case output of
+        DatePicker.SelectionChanged mDate -> do
+          H.liftEffect $ Effect.Class.Console.log $ "DatePicker SelectionChanged: " <> show mDate
+        DatePicker.VisibilityChanged _ -> pure unit
+        DatePicker.Searched query -> do
+          H.liftEffect $ Effect.Class.Console.log $ "DatePicker Searched: " <> query
+      HandleDateSlider output -> case output of
+        Ocelot.Slider.ValueChanged points -> case points of
+          [ startPercent, endPercent ] -> do
+            let
+              getIndex :: { percent :: Number } -> Int
+              getIndex = Data.Int.round <<< (_ / yearScalar) <<< _.percent
+
+              start :: Maybe Data.Date.Date
+              start = do
+                year <- Data.Array.index years (getIndex startPercent)
+                pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
+
+              end :: Maybe Data.Date.Date
+              end = do
+                year <- Data.Array.index years (getIndex endPercent)
+                pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
+
+            H.liftEffect <<< Effect.Class.Console.log $
+              ( "start: " <> show start
+                <> ", end: " <> show end
+              )
+            H.modify_ _ { dateInterval = { start, end } }
+          _ -> pure unit
       HandleTimePicker output -> case output of
         TimePicker.SelectionChanged mTime -> do
           H.liftEffect $ Effect.Class.Console.log $ "TimePicker SelectionChanged: " <> show mTime
@@ -104,6 +139,7 @@ component =
             H.modify_ _ { timeInterval = { start, end } }
           _ -> pure unit
       Initialize -> do
+        void $ H.queryAll _dateSlider $ H.tell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 } , { percent: 100.0 }]
         void $ H.queryAll _timeSlider $ H.tell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 } , { percent: 100.0 }]
       ToggleDisabled -> do
         st <- H.modify \s -> s { disabled = not s.disabled }
@@ -117,6 +153,14 @@ component =
     initialState :: Unit -> State
     initialState _ =
       { disabled: false
+      , dateInterval:
+          { start: do
+              year <- Data.Array.head years
+              pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
+          , end: do
+              year <- Data.Array.last years
+              pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
+          }
       , timeInterval:
           { start: Data.Array.head Ocelot.Data.DateTime.defaultTimeRange
           , end: Data.Array.last Ocelot.Data.DateTime.defaultTimeRange
@@ -156,6 +200,17 @@ cnDocumentationBlocks state =
       ]
     , HH.div_
       [ Backdrop.backdrop_
+        [ Backdrop.content_
+          [ Card.card
+            [ css "flex justify-center"]
+            [ Halogen.HTML.slot _dateSlider "Date Pickers"
+              Ocelot.Slider.component
+              dateSliderInput
+              (Just <<< HandleDateSlider)
+            ]
+          ]
+        ]
+      , Backdrop.backdrop_
         [ content
           [ Card.card
             [ css "flex-1" ]
@@ -167,11 +222,12 @@ cnDocumentationBlocks state =
               , inputId: "start-date"
               }
               [ HH.slot _datePicker 0 DatePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Just state.dateInterval
                 , selection: Nothing
-                , disabled: false
+                , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             , Format.caption_ [ HH.text "Standard Disabled" ]
             , FormField.fieldMid_
@@ -181,11 +237,12 @@ cnDocumentationBlocks state =
               , inputId: "start-date-disabled"
               }
               [ HH.slot _datePicker 2 DatePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Just state.dateInterval
                 , selection: Nothing
-                , disabled: true
+                , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             ]
           ]
@@ -200,11 +257,12 @@ cnDocumentationBlocks state =
               , inputId: "end-date"
               }
               [ HH.slot _datePicker 1 DatePicker.component
-                { targetDate: Nothing
+                { disabled: false
+                , interval: Just state.dateInterval
                 , selection: Just $ unsafeMkDate 2019 1 1
-                , disabled: false
+                , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             , Format.caption_ [ HH.text "Hydrated Disabled" ]
             , FormField.fieldMid_
@@ -214,11 +272,12 @@ cnDocumentationBlocks state =
               , inputId: "end-date-disabled"
               }
               [ HH.slot _datePicker 3 DatePicker.component
-                { targetDate: Nothing
+                { disabled: true
+                , interval: Just state.dateInterval
                 , selection: Just $ unsafeMkDate 2019 1 1
-                , disabled: true
+                , targetDate: Nothing
                 }
-                (const Nothing)
+                (Just <<< HandleDatePicker)
               ]
             ]
           ]
@@ -384,6 +443,65 @@ cnDocumentationBlocks state =
         ]
       ]
     ]
+
+dateSliderInput :: Ocelot.Slider.Input
+dateSliderInput =
+  { axis: Just axis
+  , disabled: false
+  , layout: config
+  , marks: Just marks
+  , minDistance: Nothing
+  , renderIntervals: Data.Array.foldMap renderInterval
+  }
+  where
+  axis :: Array { label :: String, percent :: Number }
+  axis = Data.Array.mapWithIndex toLabel years
+    where
+    toLabel :: Int -> Int -> { label :: String, percent :: Number }
+    toLabel index year =
+      { label: show year
+      , percent: (Data.Int.toNumber index) * yearScalar
+      }
+
+  marks :: Array { percent :: Number }
+  marks = Data.Array.mapWithIndex toMark years
+    where
+    toMark :: Int -> Int -> { percent :: Number }
+    toMark index _ = { percent: (Data.Int.toNumber index) * yearScalar }
+
+  renderInterval :: Ocelot.Slider.Interval -> Array Halogen.HTML.PlainHTML
+  renderInterval = case _ of
+    Ocelot.Slider.StartToThumb _ -> []
+    Ocelot.Slider.BetweenThumbs { left, right } ->
+      [ Ocelot.Slider.Render.interval config
+          { start: left, end: right }
+          [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
+      ]
+    Ocelot.Slider.ThumbToEnd _ -> []
+
+  config :: Ocelot.Slider.Render.Config
+  config =
+    { axisHeight: 30.0
+    , betweenThumbAndAxis: 30.0
+    , betweenTopAndThumb: 20.0
+    , frameWidth: { px: 400.0 }
+    , margin: 50.0
+    , trackWidth: 400.0
+    , trackRadius: 5.0
+    , thumbRadius: 20.0
+    }
+
+yearScalar :: Number
+yearScalar = 100.0 / (Data.Int.toNumber (Data.Array.length years - 1))
+
+years :: Array Int
+years =
+  [ 2019
+  , 2020
+  , 2021
+  , 2022
+  , 2023
+  ]
 
 timeSliderInput :: Ocelot.Slider.Input
 timeSliderInput =
