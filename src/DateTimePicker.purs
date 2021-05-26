@@ -6,6 +6,7 @@ module Ocelot.DateTimePicker
   , ComponentM
   , ComponentRender
   , Input
+  , Interval
   , Output(..)
   , Query(..)
   , Slot
@@ -14,8 +15,11 @@ module Ocelot.DateTimePicker
   ) where
 
 import Prelude
-import Data.DateTime (Date, DateTime(..), Month, Time, Year, date, time)
+import Data.DateTime (Date, DateTime(..), Month, Time, Year)
+import Data.DateTime as Date.DateTime
+import Data.Foldable as Data.Foldable
 import Data.Maybe (Maybe(..))
+import Data.Maybe as Data.Maybe
 import Data.Tuple.Nested (type (/\))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
@@ -31,6 +35,7 @@ import Type.Proxy (Proxy(..))
 data Action
   = HandleDate DatePicker.Output
   | HandleTime TimePicker.Output
+  | Receive Input
 
 type ChildSlots =
   ( datepicker :: DatePicker.Slot Unit
@@ -46,9 +51,15 @@ type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 type ComponentRender m = State -> ComponentHTML m
 
 type Input =
-  { selection :: Maybe DateTime
+  { disabled :: Boolean
+  , interval :: Maybe Interval
+  , selection :: Maybe DateTime
   , targetDate :: Maybe (Year /\ Month)
-  , disabled :: Boolean
+  }
+
+type Interval =
+  { start :: Maybe DateTime
+  , end :: Maybe DateTime
   }
 
 data Output
@@ -67,9 +78,10 @@ type Slot = H.Slot Query Output
 
 type State =
   { date :: Maybe Date
-  , time :: Maybe Time
-  , targetDate :: Maybe (Year /\ Month)
   , disabled :: Boolean
+  , interval :: Maybe Interval
+  , targetDate :: Maybe (Year /\ Month)
+  , time :: Maybe Time
   }
 
 ------------
@@ -82,6 +94,7 @@ component = H.mkComponent
   , eval: H.mkEval H.defaultEval
       { handleAction = handleAction
       , handleQuery = handleQuery
+      , receive = Just <<< Receive
       }
   }
 
@@ -95,16 +108,18 @@ handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
   HandleDate msg -> case msg of
     DatePicker.SelectionChanged date' -> do
-      time' <- H.gets _.time
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      state <- H.get
+      raiseSelectionChanged state.interval date' state.time
       H.modify_ _ { date = date' }
     _ -> H.raise $ DateOutput msg
   HandleTime msg -> case msg of
     TimePicker.SelectionChanged time' -> do
-      date' <- H.gets _.date
-      H.raise $ SelectionChanged (DateTime <$> date' <*> time')
+      state <- H.get
+      raiseSelectionChanged state.interval state.date time'
       H.modify_ _ { time = time' }
     _ -> H.raise $ TimeOutput msg
+  Receive input -> do
+    H.modify_ _ { interval = input.interval }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
@@ -116,8 +131,8 @@ handleQuery = case _ of
     void $ H.tell _datepicker unit $ DatePicker.SetDisabled disabled
     void $ H.tell _timepicker unit $ TimePicker.SetDisabled disabled
   SetSelection dateTime a -> Just a <$ do
-    let date' = date <$> dateTime
-        time' = time <$> dateTime
+    let date' = dateTime <#> Date.DateTime.date
+        time' = dateTime <#> Date.DateTime.time
     void $ H.tell _datepicker unit $ DatePicker.SetSelection date'
     void $ H.tell _timepicker unit $ TimePicker.SetSelection time'
     H.modify_ _ { date = date', time = time' }
@@ -125,33 +140,78 @@ handleQuery = case _ of
   SendTimeQuery q a -> Just a <$ H.query _timepicker unit q
 
 initialState :: Input -> State
-initialState { selection, targetDate, disabled } =
-  { date: date <$> selection
-  , time: time <$> selection
-  , targetDate
-  , disabled
+initialState input =
+  { date: input.selection <#> Date.DateTime.date
+  , disabled: input.disabled
+  , interval: input.interval
+  , targetDate: input.targetDate
+  , time: input.selection <#> Date.DateTime.time
   }
 
+-- check if a datetime is within a **closed** interval
+isWithinInterval :: Interval -> DateTime -> Boolean
+isWithinInterval interval x =
+  Data.Foldable.and
+    [ Data.Maybe.maybe true (_ <= x) interval.start
+    , Data.Maybe.maybe true (x <= _) interval.end
+    ]
+
+raiseSelectionChanged ::
+  forall m.
+  Maybe Interval ->
+  Maybe Date ->
+  Maybe Time ->
+  ComponentM m Unit
+raiseSelectionChanged mInterval mDate mTime = case mInterval of
+  Nothing -> H.raise $ SelectionChanged mDateTime
+  Just interval -> case mDateTime of
+    Nothing -> H.raise $ SelectionChanged mDateTime
+    Just dateTime
+      | isWithinInterval interval dateTime -> H.raise $ SelectionChanged mDateTime
+      | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
+  where
+  mDateTime :: Maybe DateTime
+  mDateTime = DateTime <$> mDate <*> mTime
+
+
 render :: forall m. MonadAff m => ComponentRender m
-render { date, time, targetDate, disabled } =
+render state =
   HH.div
     [ css "flex" ]
     [ HH.div
       [ css "w-1/2 mr-2" ]
       [ HH.slot _datepicker unit DatePicker.component
-        { disabled
-        , interval: Nothing -- TODO AS-1344
-        , selection: date
-        , targetDate
+        { disabled: state.disabled
+        , interval: do
+            interval <- state.interval
+            pure
+              { start: interval.start <#> Date.DateTime.date
+              , end: interval.end <#> Date.DateTime.date
+              }
+        , selection: state.date
+        , targetDate: state.targetDate
         }
         HandleDate
       ]
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
-        { disabled
-        , interval: Nothing -- TODO AS-1344
-        , selection: time
+        { disabled: state.disabled
+        , interval: do
+            interval <- state.interval
+            pure
+              { start:
+                  if (interval.start <#> Date.DateTime.date) == state.date then
+                    interval.start <#> Date.DateTime.time
+                  else
+                    Nothing
+              , end:
+                  if (interval.end <#> Date.DateTime.date) == state.date then
+                    interval.end <#> Date.DateTime.time
+                  else
+                    Nothing
+              }
+        , selection: state.time
         }
         HandleTime
       ]
