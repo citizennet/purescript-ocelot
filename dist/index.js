@@ -56810,11 +56810,12 @@ var handleAction = function (v) {
                     $110[$111] = v1[$111];
                 };
             };
+            $110.disabled = v.value0.disabled;
             $110.interval = v.value0.interval;
             return $110;
         });
     };
-    throw new Error("Failed pattern match at Ocelot.DatePicker (line 483, column 16 - line 487, column 46): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.DatePicker (line 483, column 16 - line 487, column 73): " + [ v.constructor.name ]);
 };
 var generateCalendarItem = function (mInterval) {
     return function (selection) {
@@ -57151,6 +57152,7 @@ var embeddedReceive = function (dictMonadAff) {
                         $175[$176] = v[$176];
                     };
                 };
+                $175.disabled = input.disabled;
                 $175.interval = input.interval;
                 return $175;
             }))(function () {
@@ -57521,8 +57523,13 @@ var Control_Applicative = require("../Control.Applicative/index.js");
 var Control_Apply = require("../Control.Apply/index.js");
 var Control_Bind = require("../Control.Bind/index.js");
 var Control_Monad_State_Class = require("../Control.Monad.State.Class/index.js");
+var Data_Boolean = require("../Data.Boolean/index.js");
+var Data_Date = require("../Data.Date/index.js");
 var Data_DateTime = require("../Data.DateTime/index.js");
+var Data_Eq = require("../Data.Eq/index.js");
+var Data_Foldable = require("../Data.Foldable/index.js");
 var Data_Functor = require("../Data.Functor/index.js");
+var Data_HeytingAlgebra = require("../Data.HeytingAlgebra/index.js");
 var Data_Maybe = require("../Data.Maybe/index.js");
 var Data_Ord = require("../Data.Ord/index.js");
 var Data_Symbol = require("../Data.Symbol/index.js");
@@ -57638,30 +57645,72 @@ var HandleTime = (function () {
     };
     return HandleTime;
 })();
-var initialState = function (v) {
+var Receive = (function () {
+    function Receive(value0) {
+        this.value0 = value0;
+    };
+    Receive.create = function (value0) {
+        return new Receive(value0);
+    };
+    return Receive;
+})();
+var isWithinInterval = function (interval) {
+    return function (x) {
+        return Data_Foldable.and(Data_Foldable.foldableArray)(Data_HeytingAlgebra.heytingAlgebraBoolean)([ Data_Maybe.maybe(true)(function (v) {
+            return Data_Ord.lessThanOrEq(Data_DateTime.ordDateTime)(v)(x);
+        })(interval.start), Data_Maybe.maybe(true)(function (v) {
+            return Data_Ord.lessThanOrEq(Data_DateTime.ordDateTime)(x)(v);
+        })(interval.end) ]);
+    };
+};
+var raiseSelectionChanged = function (mInterval) {
+    return function (mDate) {
+        return function (mTime) {
+            var mDateTime = Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(mDate))(mTime);
+            if (mInterval instanceof Data_Maybe.Nothing) {
+                return Halogen_Query_HalogenM.raise(new SelectionChanged(mDateTime));
+            };
+            if (mInterval instanceof Data_Maybe.Just) {
+                if (mDateTime instanceof Data_Maybe.Nothing) {
+                    return Halogen_Query_HalogenM.raise(new SelectionChanged(mDateTime));
+                };
+                if (mDateTime instanceof Data_Maybe.Just) {
+                    if (isWithinInterval(mInterval.value0)(mDateTime.value0)) {
+                        return Halogen_Query_HalogenM.raise(new SelectionChanged(mDateTime));
+                    };
+                    if (Data_Boolean.otherwise) {
+                        return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
+                    };
+                };
+                throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 167, column 20 - line 171, column 31): " + [ mDateTime.constructor.name ]);
+            };
+            throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 165, column 47 - line 171, column 31): " + [ mInterval.constructor.name ]);
+        };
+    };
+};
+var initialState = function (input) {
     return {
-        date: Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.date)(v.selection),
-        time: Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.time)(v.selection),
-        targetDate: v.targetDate,
-        disabled: v.disabled
+        date: Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(input.selection)(Data_DateTime.date),
+        disabled: input.disabled,
+        interval: input.interval,
+        targetDate: input.targetDate,
+        time: Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(input.selection)(Data_DateTime.time)
     };
 };
 var handleAction = function (v) {
     if (v instanceof HandleDate) {
         if (v.value0 instanceof Ocelot_DatePicker.SelectionChanged) {
-            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                return v1.time;
-            }))(function (time$prime) {
-                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(v.value0.value0))(time$prime))))(function () {
+            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (state) {
+                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(raiseSelectionChanged(state.interval)(v.value0.value0)(state.time))(function () {
                     return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                        var $20 = {};
-                        for (var $21 in v1) {
-                            if ({}.hasOwnProperty.call(v1, $21)) {
-                                $20[$21] = v1[$21];
+                        var $19 = {};
+                        for (var $20 in v1) {
+                            if ({}.hasOwnProperty.call(v1, $20)) {
+                                $19[$20] = v1[$20];
                             };
                         };
-                        $20.date = v.value0.value0;
-                        return $20;
+                        $19.date = v.value0.value0;
+                        return $19;
                     });
                 });
             });
@@ -57670,26 +57719,36 @@ var handleAction = function (v) {
     };
     if (v instanceof HandleTime) {
         if (v.value0 instanceof Ocelot_TimePicker.SelectionChanged) {
-            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.gets(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                return v1.date;
-            }))(function (date$prime) {
-                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Halogen_Query_HalogenM.raise(new SelectionChanged(Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(date$prime))(v.value0.value0))))(function () {
+            return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.get(Halogen_Query_HalogenM.monadStateHalogenM))(function (state) {
+                return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(raiseSelectionChanged(state.interval)(state.date)(v.value0.value0))(function () {
                     return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                        var $26 = {};
-                        for (var $27 in v1) {
-                            if ({}.hasOwnProperty.call(v1, $27)) {
-                                $26[$27] = v1[$27];
+                        var $25 = {};
+                        for (var $26 in v1) {
+                            if ({}.hasOwnProperty.call(v1, $26)) {
+                                $25[$26] = v1[$26];
                             };
                         };
-                        $26.time = v.value0.value0;
-                        return $26;
+                        $25.time = v.value0.value0;
+                        return $25;
                     });
                 });
             });
         };
         return Halogen_Query_HalogenM.raise(new TimeOutput(v.value0));
     };
-    throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 95, column 16 - line 107, column 34): " + [ v.constructor.name ]);
+    if (v instanceof Receive) {
+        return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
+            var $30 = {};
+            for (var $31 in v1) {
+                if ({}.hasOwnProperty.call(v1, $31)) {
+                    $30[$31] = v1[$31];
+                };
+            };
+            $30.interval = v.value0.interval;
+            return $30;
+        });
+    };
+    throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 108, column 16 - line 122, column 46): " + [ v.constructor.name ]);
 };
 var _timepicker = Type_Proxy["Proxy"].value;
 var _datepicker = Type_Proxy["Proxy"].value;
@@ -57701,14 +57760,14 @@ var handleQuery = function (v) {
     };
     if (v instanceof SetDisabled) {
         return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))(Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-            var $36 = {};
-            for (var $37 in v1) {
-                if ({}.hasOwnProperty.call(v1, $37)) {
-                    $36[$37] = v1[$37];
+            var $39 = {};
+            for (var $40 in v1) {
+                if ({}.hasOwnProperty.call(v1, $40)) {
+                    $39[$40] = v1[$40];
                 };
             };
-            $36.disabled = v.value0;
-            return $36;
+            $39.disabled = v.value0;
+            return $39;
         }))(function () {
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query.tell()(new Data_Symbol.IsSymbol(function () {
                 return "datepicker";
@@ -57721,8 +57780,8 @@ var handleQuery = function (v) {
     };
     if (v instanceof SetSelection) {
         return Data_Functor.voidRight(Halogen_Query_HalogenM.functorHalogenM)(new Data_Maybe.Just(v.value1))((function () {
-            var time$prime = Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.time)(v.value0);
-            var date$prime = Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.date)(v.value0);
+            var time$prime = Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(v.value0)(Data_DateTime.time);
+            var date$prime = Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(v.value0)(Data_DateTime.date);
             return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query.tell()(new Data_Symbol.IsSymbol(function () {
                 return "datepicker";
             }))(Data_Ord.ordUnit)(_datepicker)(Data_Unit.unit)(Ocelot_DatePicker.SetSelection.create(date$prime))))(function () {
@@ -57730,15 +57789,15 @@ var handleQuery = function (v) {
                     return "timepicker";
                 }))(Data_Ord.ordUnit)(_timepicker)(Data_Unit.unit)(Ocelot_TimePicker.SetSelection.create(time$prime))))(function () {
                     return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                        var $41 = {};
-                        for (var $42 in v1) {
-                            if ({}.hasOwnProperty.call(v1, $42)) {
-                                $41[$42] = v1[$42];
+                        var $44 = {};
+                        for (var $45 in v1) {
+                            if ({}.hasOwnProperty.call(v1, $45)) {
+                                $44[$45] = v1[$45];
                             };
                         };
-                        $41.date = date$prime;
-                        $41.time = time$prime;
-                        return $41;
+                        $44.date = date$prime;
+                        $44.time = time$prime;
+                        return $44;
                     });
                 });
             });
@@ -57754,23 +57813,45 @@ var handleQuery = function (v) {
             return "timepicker";
         }))(Data_Ord.ordUnit)(_timepicker)(Data_Unit.unit)(v.value0));
     };
-    throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 110, column 15 - line 125, column 60): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.DateTimePicker (line 125, column 15 - line 140, column 60): " + [ v.constructor.name ]);
 };
 var render = function (dictMonadAff) {
-    return function (v) {
+    return function (state) {
         return Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex") ])([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("w-1/2 mr-2") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "datepicker";
         }))(Data_Ord.ordUnit)(_datepicker)(Data_Unit.unit)(Ocelot_DatePicker.component(dictMonadAff))({
-            disabled: v.disabled,
-            interval: Data_Maybe.Nothing.value,
-            selection: v.date,
-            targetDate: v.targetDate
+            disabled: state.disabled,
+            interval: Control_Bind.bind(Data_Maybe.bindMaybe)(state.interval)(function (interval) {
+                return Control_Applicative.pure(Data_Maybe.applicativeMaybe)({
+                    start: Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.start)(Data_DateTime.date),
+                    end: Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.end)(Data_DateTime.date)
+                });
+            }),
+            selection: state.date,
+            targetDate: state.targetDate
         })(HandleDate.create) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "timepicker";
         }))(Data_Ord.ordUnit)(_timepicker)(Data_Unit.unit)(Ocelot_TimePicker.component(dictMonadAff))({
-            disabled: v.disabled,
-            interval: Data_Maybe.Nothing.value,
-            selection: v.time
+            disabled: state.disabled,
+            interval: Control_Bind.bind(Data_Maybe.bindMaybe)(state.interval)(function (interval) {
+                return Control_Applicative.pure(Data_Maybe.applicativeMaybe)({
+                    start: (function () {
+                        var $53 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Date.eqDate))(Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.start)(Data_DateTime.date))(state.date);
+                        if ($53) {
+                            return Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.start)(Data_DateTime.time);
+                        };
+                        return Data_Maybe.Nothing.value;
+                    })(),
+                    end: (function () {
+                        var $54 = Data_Eq.eq(Data_Maybe.eqMaybe(Data_Date.eqDate))(Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.end)(Data_DateTime.date))(state.date);
+                        if ($54) {
+                            return Data_Functor.mapFlipped(Data_Maybe.functorMaybe)(interval.end)(Data_DateTime.time);
+                        };
+                        return Data_Maybe.Nothing.value;
+                    })()
+                });
+            }),
+            selection: state.time
         })(HandleTime.create) ]) ]);
     };
 };
@@ -57781,7 +57862,9 @@ var component = function (dictMonadAff) {
         "eval": Halogen_Component.mkEval({
             handleAction: handleAction,
             handleQuery: handleQuery,
-            receive: Halogen_Component.defaultEval.receive,
+            receive: function ($55) {
+                return Data_Maybe.Just.create(Receive.create($55));
+            },
             initialize: Halogen_Component.defaultEval.initialize,
             finalize: Halogen_Component.defaultEval.finalize
         })
@@ -57799,7 +57882,7 @@ module.exports = {
     component: component
 };
 
-},{"../Control.Applicative/index.js":13,"../Control.Apply/index.js":15,"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":46,"../Data.DateTime/index.js":110,"../Data.Functor/index.js":145,"../Data.Maybe/index.js":182,"../Data.Ord/index.js":203,"../Data.Symbol/index.js":242,"../Data.Unit/index.js":257,"../Halogen.Component/index.js":297,"../Halogen.HTML.Elements/index.js":301,"../Halogen.HTML/index.js":305,"../Halogen.Query.HalogenM/index.js":308,"../Halogen.Query/index.js":311,"../Ocelot.DatePicker/index.js":363,"../Ocelot.HTML.Properties/index.js":367,"../Ocelot.TimePicker/index.js":372,"../Type.Proxy/index.js":405}],365:[function(require,module,exports){
+},{"../Control.Applicative/index.js":13,"../Control.Apply/index.js":15,"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":46,"../Data.Boolean/index.js":94,"../Data.Date/index.js":106,"../Data.DateTime/index.js":110,"../Data.Eq/index.js":118,"../Data.Foldable/index.js":123,"../Data.Functor/index.js":145,"../Data.HeytingAlgebra/index.js":152,"../Data.Maybe/index.js":182,"../Data.Ord/index.js":203,"../Data.Symbol/index.js":242,"../Data.Unit/index.js":257,"../Halogen.Component/index.js":297,"../Halogen.HTML.Elements/index.js":301,"../Halogen.HTML/index.js":305,"../Halogen.Query.HalogenM/index.js":308,"../Halogen.Query/index.js":311,"../Ocelot.DatePicker/index.js":363,"../Ocelot.HTML.Properties/index.js":367,"../Ocelot.TimePicker/index.js":372,"../Type.Proxy/index.js":405}],365:[function(require,module,exports){
 // Generated by purs version 0.14.1
 "use strict";
 var Control_Applicative = require("../Control.Applicative/index.js");
@@ -60141,11 +60224,12 @@ var handleAction = function (v) {
                     $68[$69] = v1[$69];
                 };
             };
+            $68.disabled = v.value0.disabled;
             $68.interval = v.value0.interval;
             return $68;
         });
     };
-    throw new Error("Failed pattern match at Ocelot.TimePicker (line 341, column 16 - line 345, column 46): " + [ v.constructor.name ]);
+    throw new Error("Failed pattern match at Ocelot.TimePicker (line 341, column 16 - line 345, column 73): " + [ v.constructor.name ]);
 };
 var guessTime = function (v) {
     if (v === "") {
@@ -60340,6 +60424,7 @@ var embeddedReceive = function (input) {
                     $102[$103] = v[$103];
                 };
             };
+            $102.disabled = input.disabled;
             $102.interval = input.interval;
             return $102;
         }))(function () {
@@ -65955,6 +66040,7 @@ module.exports = {
 // Generated by purs version 0.14.1
 "use strict";
 var Control_Applicative = require("../Control.Applicative/index.js");
+var Control_Apply = require("../Control.Apply/index.js");
 var Control_Bind = require("../Control.Bind/index.js");
 var Control_Monad_State_Class = require("../Control.Monad.State.Class/index.js");
 var Data_Array = require("../Data.Array/index.js");
@@ -66010,6 +66096,15 @@ var HandleDateSlider = (function () {
         return new HandleDateSlider(value0);
     };
     return HandleDateSlider;
+})();
+var HandleDateTimePicker = (function () {
+    function HandleDateTimePicker(value0) {
+        this.value0 = value0;
+    };
+    HandleDateTimePicker.create = function (value0) {
+        return new HandleDateTimePicker(value0);
+    };
+    return HandleDateTimePicker;
 })();
 var HandleTimePicker = (function () {
     function HandleTimePicker(value0) {
@@ -66081,7 +66176,7 @@ var timeSliderInput = (function () {
         if (v instanceof Ocelot_Slider.ThumbToEnd) {
             return [  ];
         };
-        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 528, column 20 - line 535, column 37): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 618, column 20 - line 625, column 37): " + [ v.constructor.name ]);
     };
     var axis = (function () {
         var toLabel = function (index) {
@@ -66139,7 +66234,7 @@ var dateSliderInput = (function () {
         if (v instanceof Ocelot_Slider.ThumbToEnd) {
             return [  ];
         };
-        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 469, column 20 - line 476, column 37): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 559, column 20 - line 566, column 37): " + [ v.constructor.name ]);
     };
     var axis = (function () {
         var toLabel = function (index) {
@@ -66273,51 +66368,89 @@ var cnDocumentationBlocks = function (dictMonadAff) {
         })(HandleTimePicker.create) ]) ]) ]) ]) ]) ]), UIGuide_Block_Documentation.block_({
             header: "DateTime Pickers",
             subheader: "We've combined them. Deal with it."
-        })([ UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard") ]), Ocelot_Block_FormField.field_({
+        })([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ UIGuide_Block_Backdrop.backdrop_([ UIGuide_Block_Backdrop.content_([ Ocelot_Block_Card.card_([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+            return "dateSlider";
+        }))(Data_Ord.ordString)(_dateSlider)("DateTime Pickers")(Ocelot_Slider.component(dictMonadAff))(dateSliderInput)(HandleDateSlider.create), Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+            return "timeSlider";
+        }))(Data_Ord.ordString)(_timeSlider)("DateTime Pickers")(Ocelot_Slider.component(dictMonadAff))(timeSliderInput)(HandleTimeSlider.create), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex") ])([ Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard - With Interval") ]), Ocelot_Block_FormField.field_({
             label: Halogen_HTML_Core.text("Start"),
             helpText: [ Halogen_HTML_Core.text("Choose a start date and time.") ],
             error: [  ],
             inputId: "start"
-        })([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "dtp";
-        }))(Data_Ord.ordInt)(_dtp)(0)(Ocelot_DateTimePicker.component(dictMonadAff))({
-            targetDate: Data_Maybe.Nothing.value,
+        }))(Data_Ord.ordInt)(_dtp)(4)(Ocelot_DateTimePicker.component(dictMonadAff))({
+            disabled: false,
+            interval: new Data_Maybe.Just({
+                start: Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(state.dateInterval.start))(state.timeInterval.start),
+                end: Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(state.dateInterval.end))(state.timeInterval.end)
+            }),
             selection: Data_Maybe.Nothing.value,
-            disabled: false
-        }) ]), Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard Disabled") ]), Ocelot_Block_FormField.field_({
-            label: Halogen_HTML_Core.text("Start"),
-            helpText: [ Halogen_HTML_Core.text("Choose a start date and time.") ],
-            error: [  ],
-            inputId: "start-disabled"
-        })([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
-            return "dtp";
-        }))(Data_Ord.ordInt)(_dtp)(2)(Ocelot_DateTimePicker.component(dictMonadAff))({
-            targetDate: Data_Maybe.Nothing.value,
-            selection: Data_Maybe.Nothing.value,
-            disabled: true
-        }) ]) ]) ]), content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated") ]), Ocelot_Block_FormField.field_({
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]) ]), Halogen_HTML_Elements.div([ Ocelot_HTML_Properties.css("flex-1 ml-16") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated - With Interval") ]), Ocelot_Block_FormField.field_({
             label: Halogen_HTML_Core.text("End"),
             helpText: [ Halogen_HTML_Core.text("Choose an end date and time.") ],
             error: [  ],
             inputId: "end"
-        })([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+            return "dtp";
+        }))(Data_Ord.ordInt)(_dtp)(5)(Ocelot_DateTimePicker.component(dictMonadAff))({
+            disabled: false,
+            interval: new Data_Maybe.Just({
+                start: Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(state.dateInterval.start))(state.timeInterval.start),
+                end: Control_Apply.apply(Data_Maybe.applyMaybe)(Data_Functor.map(Data_Maybe.functorMaybe)(Data_DateTime.DateTime.create)(state.dateInterval.end))(state.timeInterval.end)
+            }),
+            selection: Data_Maybe.Just.create(new Data_DateTime.DateTime(Ocelot_Data_DateTime.unsafeMkDate(2019)(1)(1), Ocelot_Data_DateTime.unsafeMkTime(0)(0)(0)(0))),
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]) ]) ]) ]) ]) ]), UIGuide_Block_Backdrop.backdrop_([ content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard - Without Interval") ]), Ocelot_Block_FormField.field_({
+            label: Halogen_HTML_Core.text("Start"),
+            helpText: [ Halogen_HTML_Core.text("Choose a start date and time.") ],
+            error: [  ],
+            inputId: "start"
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+            return "dtp";
+        }))(Data_Ord.ordInt)(_dtp)(0)(Ocelot_DateTimePicker.component(dictMonadAff))({
+            disabled: false,
+            interval: Data_Maybe.Nothing.value,
+            selection: Data_Maybe.Nothing.value,
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]), Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Standard Disabled") ]), Ocelot_Block_FormField.field_({
+            label: Halogen_HTML_Core.text("Start"),
+            helpText: [ Halogen_HTML_Core.text("Choose a start date and time.") ],
+            error: [  ],
+            inputId: "start-disabled"
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
+            return "dtp";
+        }))(Data_Ord.ordInt)(_dtp)(2)(Ocelot_DateTimePicker.component(dictMonadAff))({
+            disabled: true,
+            interval: Data_Maybe.Nothing.value,
+            selection: Data_Maybe.Nothing.value,
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]) ]) ]), content([ Ocelot_Block_Card.card([ Ocelot_HTML_Properties.css("flex-1") ])([ Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated - Without Interval") ]), Ocelot_Block_FormField.field_({
+            label: Halogen_HTML_Core.text("End"),
+            helpText: [ Halogen_HTML_Core.text("Choose an end date and time.") ],
+            error: [  ],
+            inputId: "end"
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "dtp";
         }))(Data_Ord.ordInt)(_dtp)(1)(Ocelot_DateTimePicker.component(dictMonadAff))({
-            targetDate: Data_Maybe.Nothing.value,
+            disabled: false,
+            interval: Data_Maybe.Nothing.value,
             selection: Data_Maybe.Just.create(new Data_DateTime.DateTime(Ocelot_Data_DateTime.unsafeMkDate(2019)(1)(1), Ocelot_Data_DateTime.unsafeMkTime(0)(0)(0)(0))),
-            disabled: false
-        }) ]), Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated Disabled") ]), Ocelot_Block_FormField.field_({
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]), Ocelot_Block_Format.caption_([ Halogen_HTML_Core.text("Hydrated Disabled") ]), Ocelot_Block_FormField.field_({
             label: Halogen_HTML_Core.text("End"),
             helpText: [ Halogen_HTML_Core.text("Choose an end date and time.") ],
             error: [  ],
             inputId: "end-disabled"
-        })([ Halogen_HTML.slot_()(new Data_Symbol.IsSymbol(function () {
+        })([ Halogen_HTML.slot()(new Data_Symbol.IsSymbol(function () {
             return "dtp";
         }))(Data_Ord.ordInt)(_dtp)(3)(Ocelot_DateTimePicker.component(dictMonadAff))({
-            targetDate: Data_Maybe.Nothing.value,
+            disabled: true,
+            interval: Data_Maybe.Nothing.value,
             selection: Data_Maybe.Just.create(new Data_DateTime.DateTime(Ocelot_Data_DateTime.unsafeMkDate(2019)(1)(1), Ocelot_Data_DateTime.unsafeMkTime(0)(0)(0)(0))),
-            disabled: true
-        }) ]) ]) ]) ]) ]) ]);
+            targetDate: Data_Maybe.Nothing.value
+        })(HandleDateTimePicker.create) ]) ]) ]) ]) ]) ]) ]);
     };
 };
 var component = function (dictMonadAff) {
@@ -66350,16 +66483,16 @@ var component = function (dictMonadAff) {
             if (v.value0 instanceof Ocelot_DatePicker.Searched) {
                 return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("DatePicker Searched: " + v.value0.value0));
             };
-            throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 87, column 34 - line 92, column 85): " + [ v.value0.constructor.name ]);
+            throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 88, column 34 - line 93, column 85): " + [ v.value0.constructor.name ]);
         };
         if (v instanceof HandleDateSlider) {
             if (v.value0.value0.length === 2) {
-                var getIndex = function ($61) {
+                var getIndex = function ($66) {
                     return Data_Int.round((function (v1) {
                         return v1 / yearScalar;
                     })((function (v1) {
                         return v1.percent;
-                    })($61)));
+                    })($66)));
                 };
                 var start = Control_Bind.bind(Data_Maybe.bindMaybe)(Data_Array.index(years)(getIndex(v["value0"]["value0"][0])))(function (year) {
                     return Control_Applicative.pure(Data_Maybe.applicativeMaybe)(Ocelot_Data_DateTime.unsafeMkDate(year)(1)(1));
@@ -66385,6 +66518,18 @@ var component = function (dictMonadAff) {
             };
             return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
         };
+        if (v instanceof HandleDateTimePicker) {
+            if (v.value0 instanceof Ocelot_DateTimePicker.SelectionChanged) {
+                return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("DateTimePicker SelectionChanged: " + Data_Show.show(Data_Maybe.showMaybe(Data_DateTime.showDateTime))(v.value0.value0)));
+            };
+            if (v.value0 instanceof Ocelot_DateTimePicker.DateOutput) {
+                return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
+            };
+            if (v.value0 instanceof Ocelot_DateTimePicker.TimeOutput) {
+                return Control_Applicative.pure(Halogen_Query_HalogenM.applicativeHalogenM)(Data_Unit.unit);
+            };
+            throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 117, column 38 - line 121, column 49): " + [ v.value0.constructor.name ]);
+        };
         if (v instanceof HandleTimePicker) {
             if (v.value0 instanceof Ocelot_TimePicker.SelectionChanged) {
                 return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("TimePicker SelectionChanged: " + Data_Show.show(Data_Maybe.showMaybe(Data_Time.showTime))(v.value0.value0)));
@@ -66395,32 +66540,32 @@ var component = function (dictMonadAff) {
             if (v.value0 instanceof Ocelot_TimePicker.Searched) {
                 return Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("TimePicker Searched: " + v.value0.value0));
             };
-            throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 116, column 34 - line 121, column 85): " + [ v.value0.constructor.name ]);
+            throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 122, column 34 - line 127, column 85): " + [ v.value0.constructor.name ]);
         };
         if (v instanceof HandleTimeSlider) {
             if (v.value0.value0.length === 2) {
-                var getIndex = function ($62) {
+                var getIndex = function ($67) {
                     return Data_Int.round((function (v1) {
                         return v1 * 0.24;
                     })((function (v1) {
                         return v1.percent;
-                    })($62)));
+                    })($67)));
                 };
                 var start = Data_Array.index(Ocelot_Data_DateTime.defaultTimeRange)(getIndex(v["value0"]["value0"][0]));
                 var end = Data_Array.index(Ocelot_Data_DateTime.defaultTimeRange)(getIndex(v["value0"]["value0"][1]));
                 return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Effect_Class.liftEffect(Halogen_Query_HalogenM.monadEffectHalogenM(dictMonadAff.MonadEffect0()))(Effect_Class_Console.log(Effect_Class.monadEffectEffect)("start: " + (Data_Show.show(Data_Maybe.showMaybe(Data_Show.showString))(Data_Functor.map(Data_Maybe.functorMaybe)(Ocelot_Data_DateTime.formatTime)(start)) + (", end: " + Data_Show.show(Data_Maybe.showMaybe(Data_Show.showString))(Data_Functor.map(Data_Maybe.functorMaybe)(Ocelot_Data_DateTime.formatTime)(end)))))))(function () {
                     return Control_Monad_State_Class.modify_(Halogen_Query_HalogenM.monadStateHalogenM)(function (v1) {
-                        var $51 = {};
-                        for (var $52 in v1) {
-                            if ({}.hasOwnProperty.call(v1, $52)) {
-                                $51[$52] = v1[$52];
+                        var $56 = {};
+                        for (var $57 in v1) {
+                            if ({}.hasOwnProperty.call(v1, $57)) {
+                                $56[$57] = v1[$57];
                             };
                         };
-                        $51.timeInterval = {
+                        $56.timeInterval = {
                             start: start,
                             end: end
                         };
-                        return $51;
+                        return $56;
                     });
                 });
             };
@@ -66445,14 +66590,14 @@ var component = function (dictMonadAff) {
         };
         if (v instanceof ToggleDisabled) {
             return Control_Bind.bind(Halogen_Query_HalogenM.bindHalogenM)(Control_Monad_State_Class.modify(Halogen_Query_HalogenM.monadStateHalogenM)(function (s) {
-                var $58 = {};
-                for (var $59 in s) {
-                    if ({}.hasOwnProperty.call(s, $59)) {
-                        $58[$59] = s[$59];
+                var $63 = {};
+                for (var $64 in s) {
+                    if ({}.hasOwnProperty.call(s, $64)) {
+                        $63[$64] = s[$64];
                     };
                 };
-                $58.disabled = !s.disabled;
-                return $58;
+                $63.disabled = !s.disabled;
+                return $63;
             }))(function (st) {
                 return Control_Bind.discard(Control_Bind.discardUnit)(Halogen_Query_HalogenM.bindHalogenM)(Data_Functor["void"](Halogen_Query_HalogenM.functorHalogenM)(Halogen_Query.tell()(new Data_Symbol.IsSymbol(function () {
                     return "datePicker";
@@ -66479,7 +66624,7 @@ var component = function (dictMonadAff) {
                 });
             });
         };
-        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 86, column 20 - line 151, column 70): " + [ v.constructor.name ]);
+        throw new Error("Failed pattern match at UIGuide.Component.DatePickers (line 87, column 20 - line 157, column 70): " + [ v.constructor.name ]);
     };
     return Halogen_Component.mkComponent({
         initialState: initialState,
@@ -66496,6 +66641,7 @@ var component = function (dictMonadAff) {
 module.exports = {
     HandleDatePicker: HandleDatePicker,
     HandleDateSlider: HandleDateSlider,
+    HandleDateTimePicker: HandleDateTimePicker,
     HandleTimePicker: HandleTimePicker,
     HandleTimeSlider: HandleTimeSlider,
     Initialize: Initialize,
@@ -66514,7 +66660,7 @@ module.exports = {
     timeSliderInput: timeSliderInput
 };
 
-},{"../Control.Applicative/index.js":13,"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":46,"../Data.Array/index.js":90,"../Data.Date/index.js":106,"../Data.DateTime/index.js":110,"../Data.Functor/index.js":145,"../Data.Int/index.js":155,"../Data.Maybe/index.js":182,"../Data.Monoid/index.js":192,"../Data.Ord/index.js":203,"../Data.Show/index.js":226,"../Data.Symbol/index.js":242,"../Data.Time/index.js":245,"../Data.Unit/index.js":257,"../Effect.Class.Console/index.js":267,"../Effect.Class/index.js":268,"../Halogen.Component/index.js":297,"../Halogen.HTML.Core/index.js":300,"../Halogen.HTML.Elements/index.js":301,"../Halogen.HTML.Events/index.js":302,"../Halogen.HTML/index.js":305,"../Halogen.Query.HalogenM/index.js":308,"../Halogen.Query/index.js":311,"../Halogen.Svg.Attributes/index.js":314,"../Ocelot.Block.Button/index.js":335,"../Ocelot.Block.Card/index.js":336,"../Ocelot.Block.FormField/index.js":342,"../Ocelot.Block.Format/index.js":343,"../Ocelot.Data.DateTime/index.js":360,"../Ocelot.DatePicker/index.js":363,"../Ocelot.DateTimePicker/index.js":364,"../Ocelot.HTML.Properties/index.js":367,"../Ocelot.Slider.Render/index.js":370,"../Ocelot.Slider/index.js":371,"../Ocelot.TimePicker/index.js":372,"../Type.Proxy/index.js":405,"../UIGuide.Block.Backdrop/index.js":408,"../UIGuide.Block.Documentation/index.js":409}],413:[function(require,module,exports){
+},{"../Control.Applicative/index.js":13,"../Control.Apply/index.js":15,"../Control.Bind/index.js":19,"../Control.Monad.State.Class/index.js":46,"../Data.Array/index.js":90,"../Data.Date/index.js":106,"../Data.DateTime/index.js":110,"../Data.Functor/index.js":145,"../Data.Int/index.js":155,"../Data.Maybe/index.js":182,"../Data.Monoid/index.js":192,"../Data.Ord/index.js":203,"../Data.Show/index.js":226,"../Data.Symbol/index.js":242,"../Data.Time/index.js":245,"../Data.Unit/index.js":257,"../Effect.Class.Console/index.js":267,"../Effect.Class/index.js":268,"../Halogen.Component/index.js":297,"../Halogen.HTML.Core/index.js":300,"../Halogen.HTML.Elements/index.js":301,"../Halogen.HTML.Events/index.js":302,"../Halogen.HTML/index.js":305,"../Halogen.Query.HalogenM/index.js":308,"../Halogen.Query/index.js":311,"../Halogen.Svg.Attributes/index.js":314,"../Ocelot.Block.Button/index.js":335,"../Ocelot.Block.Card/index.js":336,"../Ocelot.Block.FormField/index.js":342,"../Ocelot.Block.Format/index.js":343,"../Ocelot.Data.DateTime/index.js":360,"../Ocelot.DatePicker/index.js":363,"../Ocelot.DateTimePicker/index.js":364,"../Ocelot.HTML.Properties/index.js":367,"../Ocelot.Slider.Render/index.js":370,"../Ocelot.Slider/index.js":371,"../Ocelot.TimePicker/index.js":372,"../Type.Proxy/index.js":405,"../UIGuide.Block.Backdrop/index.js":408,"../UIGuide.Block.Documentation/index.js":409}],413:[function(require,module,exports){
 // Generated by purs version 0.14.1
 "use strict";
 var Control_Applicative = require("../Control.Applicative/index.js");
