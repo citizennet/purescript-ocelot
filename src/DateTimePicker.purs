@@ -196,9 +196,7 @@ render state =
     , HH.div
       [ css "flex-1" ]
       [ HH.slot _timepicker unit TimePicker.component
-        { disabled:
-            state.disabled
-              || (Data.Maybe.isJust state.interval && Data.Maybe.isNothing state.date)
+        { disabled: state.disabled
         , interval: do
             interval <- state.interval
             pure
