@@ -18,7 +18,7 @@ module Ocelot.Typeahead
   , DefaultSyncTypeaheadInput
   , EmbeddedAction(..)
   , EmbeddedChildSlots
-  , Input 
+  , Input
   , Insertable(..)
   , Operations
   , Output(..)
@@ -101,49 +101,49 @@ type ChildSlots action f item =
   ( select :: Select.Slot (Query f item) EmbeddedChildSlots (Output action f item) Unit
   )
 
-type Component action f item m 
+type Component action f item m
   = Halogen.Component (Query f item) (Input action f item m) (Output action f item) m
 
-type ComponentHTML action f item m 
+type ComponentHTML action f item m
   = Halogen.ComponentHTML (Action action f item m) (ChildSlots action f item) m
 
-type ComponentRender action f item m 
+type ComponentRender action f item m
   = State f item m -> ComponentHTML action f item m
 
-type ComponentM action f item m a 
+type ComponentM action f item m a
   = Halogen.HalogenM (StateStore action f item m) (Action action f item m) (ChildSlots action f item) (Output action f item) m a
 
-type CompositeAction action f item m 
+type CompositeAction action f item m
   = Select.Action (EmbeddedAction action f item m)
 
-type CompositeComponent action f item m 
+type CompositeComponent action f item m
   = Halogen.Component (CompositeQuery f item) (CompositeInput f item m) (Output action f item) m
 
-type CompositeComponentHTML action f item m 
+type CompositeComponentHTML action f item m
   = Halogen.ComponentHTML (CompositeAction action f item m) EmbeddedChildSlots m
 
-type CompositeComponentM action f item m a 
+type CompositeComponentM action f item m a
   = Halogen.HalogenM (CompositeState f item m) (CompositeAction action f item m) EmbeddedChildSlots (Output action f item) m a
 
-type CompositeComponentRender action f item m 
+type CompositeComponentRender action f item m
   = (CompositeState f item m) -> CompositeComponentHTML action f item m
 
-type CompositeInput f item m 
+type CompositeInput f item m
   = Select.Input (StateRow f item m)
 
-type CompositeQuery f item 
+type CompositeQuery f item
   = Select.Query (Query f item) EmbeddedChildSlots
 
-type CompositeState f item m 
+type CompositeState f item m
   = Select.State (StateRow f item m)
 
-type DefaultAsyncTypeaheadInput item m 
+type DefaultAsyncTypeaheadInput item m
   = { itemToObject :: item -> Foreign.Object.Object String
     , renderFuzzy :: Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML
     , async :: String -> m (Network.RemoteData.RemoteData String (Array item))
     }
 
-type DefaultSyncTypeaheadInput item 
+type DefaultSyncTypeaheadInput item
   = { itemToObject :: item -> Foreign.Object.Object String
     , renderFuzzy :: Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML
     }
@@ -154,10 +154,10 @@ data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
   | RemoveAll
   | Raise action
 
-type EmbeddedChildSlots 
+type EmbeddedChildSlots
   = () :: Row Type -- NOTE no extension
 
-type Input action f item m 
+type Input action f item m
   = { items :: Network.RemoteData.RemoteData String (Array item)
     , insertable :: Insertable item
     , keepOpen :: Boolean
@@ -172,7 +172,7 @@ data Insertable item
   = NotInsertable
   | Insertable (String -> item)
 
-type Operations f item 
+type Operations f item
   = { runSelect :: item -> f item -> f item
     , runRemove :: item -> f item -> f item
     , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
@@ -201,16 +201,16 @@ data SelectionCause
 
 derive instance eqSelectionCause :: Eq SelectionCause
 
-type Slot action f item id 
+type Slot action f item id
   = Halogen.Slot (Query f item) (Output action f item) id
 
-type Spec action f item m 
+type Spec action f item m
   = Select.Spec (StateRow f item m) (Query f item) (EmbeddedAction action f item m) EmbeddedChildSlots (CompositeInput f item m) (Output action f item) m
 
-type State f item m 
+type State f item m
   = Record (StateRow f item m)
 
-type StateRow f item m 
+type StateRow f item m
   = ( items :: Network.RemoteData.RemoteData String (Array item) -- NOTE pst.items, Parent(Typeahead)
     , insertable :: Insertable item
     , keepOpen :: Boolean
@@ -223,7 +223,7 @@ type StateRow f item m
     , fuzzyItems :: Array (Data.Fuzzy.Fuzzy item) -- NOTE cst.items, Child(Select)
     )
 
-type StateStore action f item m 
+type StateStore action f item m
   = Control.Comonad.Store.Store (State f item m) (ComponentHTML action f item m)
 
 -------------
@@ -264,9 +264,9 @@ singleHighlightOnly ::
   forall action item m.
   Eq item =>
   Effect.Aff.Class.MonadAff m =>
-  Component action Maybe item m 
+  Component action Maybe item m
 singleHighlightOnly = component
-  { runSelect: const <<< Just 
+  { runSelect: const <<< Just
   , runRemove: const (const Nothing)
   , runFilterFuzzy: identity
   , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
@@ -293,7 +293,7 @@ multiHighlightOnly ::
   Eq item =>
   Effect.Aff.Class.MonadAff m =>
   Component action Array item m
-multiHighlightOnly = component 
+multiHighlightOnly = component
   { runSelect: (:)
   , runRemove: Data.Array.filter <<< (/=)
   , runFilterFuzzy: identity
@@ -409,8 +409,8 @@ defFilterFuzzy ::
   Eq item =>
   Array (Data.Fuzzy.Fuzzy item) ->
   Array (Data.Fuzzy.Fuzzy item)
-defFilterFuzzy = 
-  Data.Array.sort 
+defFilterFuzzy =
+  Data.Array.sort
     <<< Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
 
 defRenderContainer
@@ -515,11 +515,11 @@ embeddedHandleQuery = case _ of
     Halogen.modify_ _ { items = items }
     synchronize
   Reset a -> Just a <$ do
-    st <- 
-      Halogen.modify 
-        _ 
+    st <-
+      Halogen.modify
+        _
           { selected = Control.Alternate.empty :: f item
-          , items = Network.RemoteData.NotAsked 
+          , items = Network.RemoteData.NotAsked
           }
     Halogen.raise $ SelectionChanged ResetQuery st.selected
     synchronize
@@ -548,18 +548,18 @@ embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async,
   , config: { debounceTime } -- NOTE overhead
   }
 
-getNewItems :: 
-  forall f item m. 
-  Effect.Aff.Class.MonadAff m => 
-  Eq item => 
-  CompositeState f item m -> 
+getNewItems ::
+  forall f item m.
+  Effect.Aff.Class.MonadAff m =>
+  Eq item =>
+  CompositeState f item m ->
   Network.RemoteData.RemoteData String (Array (Data.Fuzzy.Fuzzy item))
-getNewItems st = st.items <#> \items -> 
-  getNewItems' 
-    { insertable: st.insertable 
+getNewItems st = st.items <#> \items ->
+  getNewItems'
+    { insertable: st.insertable
     , itemToObject: st.itemToObject
     , runFilterFuzzy: st.ops.runFilterFuzzy
-    , runFilterItems: st.ops.runFilterItems 
+    , runFilterItems: st.ops.runFilterItems
     , search: st.search
     , selected: st.selected
     }
@@ -568,7 +568,7 @@ getNewItems st = st.items <#> \items ->
 getNewItems' ::
   forall f item state.
   { insertable :: Insertable item
-  , itemToObject :: item -> Foreign.Object.Object String 
+  , itemToObject :: item -> Foreign.Object.Object String
   , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
   , runFilterItems :: Array item -> f item -> Array item
   , search :: String
@@ -656,17 +656,17 @@ inputProps disabled iprops = if disabled
   then iprops'
   else Select.Setters.setInputProps iprops'
   where
-    iprops' = 
+    iprops' =
       [ Halogen.HTML.Properties.disabled disabled
       , Halogen.HTML.Properties.autocomplete false
-      , Ocelot.HTML.Properties.css "focus:next:text-blue-88" 
-      ] 
+      , Ocelot.HTML.Properties.css "focus:next:text-blue-88"
+      ]
       <&> iprops
 
 isDisabled :: ∀ i. Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput i) -> Boolean
 isDisabled = Data.Array.foldr f false
   where
-    f (Halogen.HTML.Properties.IProp (Halogen.HTML.Core.Property "disabled" disabled)) 
+    f (Halogen.HTML.Properties.IProp (Halogen.HTML.Core.Property "disabled" disabled))
       | coercePropValue disabled == true = (||) true
     f _ = (||) false
 
