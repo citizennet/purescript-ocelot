@@ -155,7 +155,7 @@ data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
   | Raise action
 
 type EmbeddedChildSlots 
-  = () -- NOTE no extension
+  = () :: Row Type -- NOTE no extension
 
 type Input action f item m 
   = { items :: Network.RemoteData.RemoteData String (Array item)
@@ -925,7 +925,7 @@ synchronize = do
   case getNewItems st of
     Network.RemoteData.Success items -> do
       Halogen.modify_ _ { fuzzyItems = items }
-    Network.RemoteData.Failure err -> do
+    Network.RemoteData.Failure _ -> do
       Halogen.modify_
         _ { visibility = Select.Off
           , fuzzyItems = []

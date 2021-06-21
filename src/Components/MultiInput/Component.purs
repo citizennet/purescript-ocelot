@@ -195,8 +195,8 @@ handleEditItem index = do
       $ updateItem index
         ( \item -> case item of
             Display _ -> Edit { inputBox: { text, width }, previous: text }
-            Edit status -> item
-            New status -> item
+            Edit _ -> item
+            New _ -> item
         )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
@@ -369,7 +369,7 @@ cancelEditing index = do
         Display _ -> pure unit
         Edit { previous } -> do
           void $ updateItem index (\_ -> Display { text: previous })
-        New { inputBox: { text } } -> do
+        New _ -> do
           void $ updateItem index (\_ -> old.new)
 
 commitEditing ::
