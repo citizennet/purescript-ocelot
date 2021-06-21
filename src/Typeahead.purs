@@ -55,7 +55,7 @@ module Ocelot.Typeahead
   ) where
 
 import Prelude
-import Control.Alternative as Control.Alternate
+import Control.Alternative as Control.Alternative
 import Control.Comonad as Control.Comonad
 import Control.Comonad.Store as Control.Comonad.Store
 import DOM.HTML.Indexed as DOM.HTML.Indexed
@@ -231,7 +231,7 @@ type StateStore action f item m
 
 component
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -439,7 +439,7 @@ disabledClasses = Halogen.HTML.ClassName <$>
 embeddedHandleAction
   :: forall action f item m
   . Eq item
-  => Control.Alternate.Plus f
+  => Control.Alternative.Plus f
   => Effect.Aff.Class.MonadAff m
   => EmbeddedAction action f item m
   -> CompositeComponentM action f item m Unit
@@ -452,7 +452,7 @@ embeddedHandleAction = case _ of
     synchronize
   RemoveAll -> do
     st <- Halogen.modify \st ->
-      st { selected = Control.Alternate.empty :: f item
+      st { selected = Control.Alternative.empty :: f item
          , visibility = Select.Off
          }
     Halogen.raise $ SelectionChanged RemovalQuery st.selected
@@ -495,7 +495,7 @@ embeddedHandleMessage = case _ of
 
 embeddedHandleQuery
   :: forall action f item m a
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Query f item a
@@ -518,7 +518,7 @@ embeddedHandleQuery = case _ of
     st <-
       Halogen.modify
         _
-          { selected = Control.Alternate.empty :: f item
+          { selected = Control.Alternative.empty :: f item
           , items = Network.RemoteData.NotAsked
           }
     Halogen.raise $ SelectionChanged ResetQuery st.selected
@@ -596,7 +596,7 @@ getNewItems' st =
 -- NOTE update Dropdown render function if it relies on external state
 handleAction
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Action action f item m
@@ -626,7 +626,7 @@ handleQuery = case _ of
 
 initialState
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -643,7 +643,7 @@ initialState ops
       , disabled
       , ops
       , config: {debounceTime}
-      , selected: Control.Alternate.empty :: f item
+      , selected: Control.Alternative.empty :: f item
       , fuzzyItems: []
       }
 
@@ -680,7 +680,7 @@ linkClasses = if _
 
 renderAdapter
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m
@@ -898,7 +898,7 @@ replaceSelected selected = do
 
 spec
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m
