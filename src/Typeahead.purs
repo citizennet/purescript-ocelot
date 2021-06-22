@@ -82,6 +82,7 @@ import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Block.Input as Ocelot.Block.Input
 import Ocelot.Block.ItemContainer as Ocelot.Block.ItemContainer
 import Ocelot.Block.Loading as Ocelot.Block.Loading
+import Ocelot.Components.MultiInput.Component as Ocelot.Components.MultiInput.Component
 import Ocelot.HTML.Properties ((<&>))
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
@@ -149,10 +150,11 @@ type DefaultSyncTypeaheadInput item
     }
 
 data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
-  = Initialize
+  = HandleMultiInput Ocelot.Components.MultiInput.Component.Output
+  | Initialize
+  | Raise action
   | Remove item
   | RemoveAll
-  | Raise action
 
 type EmbeddedChildSlots
   = () :: Row Type -- NOTE no extension
@@ -444,6 +446,7 @@ embeddedHandleAction
   => EmbeddedAction action f item m
   -> CompositeComponentM action f item m Unit
 embeddedHandleAction = case _ of
+  HandleMultiInput output -> embeddedHandleMultiInput output
   Initialize -> do
     synchronize
   Remove item -> do
@@ -492,6 +495,32 @@ embeddedHandleMessage = case _ of
     Halogen.raise $ Searched text
     synchronize
   _ -> pure unit
+
+embeddedHandleMultiInput
+  :: forall action f item m
+  . Control.Alternative.Plus f
+  => Eq item
+  => Effect.Aff.Class.MonadAff m
+  => Ocelot.Components.MultiInput.Component.Output
+  -> CompositeComponentM action f item m Unit
+embeddedHandleMultiInput = case _ of
+  Ocelot.Components.MultiInput.Component.ItemsUpdated _ -> pure unit
+  Ocelot.Components.MultiInput.Component.On htmlEvents -> case htmlEvents of
+    Ocelot.Components.MultiInput.Component.Blur ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.SetVisibility Select.Off
+    Ocelot.Components.MultiInput.Component.Focus ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.SetVisibility Select.On
+    Ocelot.Components.MultiInput.Component.KeyDown keyboardEvent ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.Key keyboardEvent
+    Ocelot.Components.MultiInput.Component.MouseDown mouseEvent ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.ToggleClick mouseEvent
+    Ocelot.Components.MultiInput.Component.ValueInput text ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.Search text
 
 embeddedHandleQuery
   :: forall action f item m a

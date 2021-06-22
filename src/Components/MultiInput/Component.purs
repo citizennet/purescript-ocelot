@@ -1,5 +1,7 @@
 module Ocelot.Components.MultiInput.Component
-  ( Output(..)
+  ( HTMLEvents(..)
+  , Input
+  , Output(..)
   , Query(..)
   , Slot
   , component
@@ -25,6 +27,7 @@ import Type.Proxy (Proxy(..))
 import Web.Event.Event as Web.Event.Event
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 import Web.UIEvent.KeyboardEvent as Web.UIEvent.KeyboardEvent
+import Web.UIEvent.MouseEvent as Web.UIEvent.MouseEvent
 
 type Slot = Halogen.Slot Query Output
 
@@ -58,8 +61,10 @@ data Action
   = EditItem Int
   | Initialize
   | OnBlur Int
+  | OnFocus Int
   | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
+  | OnMouseDown Int Web.UIEvent.MouseEvent.MouseEvent
   | Receive Input
   | RemoveOne Int
 
@@ -81,6 +86,14 @@ type Input =
 
 data Output
   = ItemsUpdated (Array String) -- caused by user actions
+  | On HTMLEvents
+
+data HTMLEvents
+  = Blur
+  | Focus
+  | KeyDown Web.UIEvent.KeyboardEvent.KeyboardEvent
+  | MouseDown Web.UIEvent.MouseEvent.MouseEvent
+  | ValueInput String
 
 type ChildSlots =
   ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
@@ -155,8 +168,12 @@ handleAction = case _ of
   EditItem index -> handleEditItem index
   Initialize -> handleInitialize
   OnBlur index -> handleOnBlur index
+  OnFocus index -> handleOnFocus index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
+  OnMouseDown index mouseEvent -> do
+    focusItem index
+    Halogen.raise (On (MouseDown mouseEvent))
   Receive input -> handleReceive input
   RemoveOne index -> handleRemoveOne index
 
@@ -215,6 +232,28 @@ handleOnBlur ::
   ComponentM m Unit
 handleOnBlur index = do
   commitEditing index
+  Halogen.raise (On Blur)
+
+handleOnFocus ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+handleOnFocus index = do
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    item <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
+        Data.Array.index old.items index
+    Control.Monad.Maybe.Trans.lift do
+      case item of
+        Display _ -> pure unit
+        Edit { inputBox: { text } } -> do
+          Halogen.raise (On (ValueInput text ))
+          Halogen.raise (On Focus)
+        New { inputBox: { text }} -> do
+          Halogen.raise (On (ValueInput text ))
+          Halogen.raise (On Focus)
 
 handleOnInput ::
   forall m.
@@ -242,6 +281,7 @@ handleOnInput index text = do
               Edit status -> Edit status { inputBox { width = width } }
               New status -> New status { inputBox { width = max minWidth width } }
         )
+  Halogen.raise (On (ValueInput text))
 
 handleOnKeyDown ::
   forall m.
@@ -250,6 +290,7 @@ handleOnKeyDown ::
   Web.UIEvent.KeyboardEvent.KeyboardEvent ->
   ComponentM m Unit
 handleOnKeyDown index keyboardEvent = do
+  Halogen.raise (On (KeyDown keyboardEvent))
   case Web.UIEvent.KeyboardEvent.key keyboardEvent of
     "Enter" -> do
       preventDefault keyboardEvent
@@ -554,7 +595,9 @@ renderAutoSizeInput placeholder index new inputBox =
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
         , Halogen.HTML.Events.onBlur \_ -> OnBlur index
+        , Halogen.HTML.Events.onFocus \_ -> OnFocus index
         , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
+        , Halogen.HTML.Events.onMouseDown (OnMouseDown index)
         , Halogen.HTML.Events.onValueInput (OnInput index)
         , Halogen.HTML.Properties.placeholder case new of
             false -> ""
