@@ -64,6 +64,7 @@ import Control.Comonad.Store as Control.Comonad.Store
 import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Data.Array ((!!), (:))
 import Data.Array as Data.Array
+import Data.Foldable as Data.Foldable
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
@@ -238,6 +239,7 @@ type StateStore action f item m
 component
   :: forall action f item m
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -587,6 +589,7 @@ embeddedHandleMultiInput = case _ of
 embeddedHandleQuery
   :: forall action f item m a
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Query f item a
@@ -699,6 +702,7 @@ getNewItems' st =
 handleAction
   :: forall action f item m
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Action action f item m
@@ -729,6 +733,7 @@ handleQuery = case _ of
 initialState
   :: forall action f item m
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -783,6 +788,7 @@ linkClasses = if _
 renderAdapter
   :: forall action f item m
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m
@@ -1008,18 +1014,26 @@ renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
 
 replaceSelected
   :: forall action f item m
-  . Eq item
+  . Data.Foldable.Foldable f
+  => Eq item
   => Effect.Aff.Class.MonadAff m
   => f item
   -> CompositeComponentM action f item m Unit
 replaceSelected selected = do
   st <- Halogen.modify _ { selected = selected }
+  Halogen.tell _multiInput unit
+    $ Ocelot.Components.MultiInput.Component.SetItems
+        ( Data.Array.mapMaybe (Data.Array.head <<< Foreign.Object.values <<< st.itemToObject)
+            <<< Data.Array.fromFoldable
+            $ selected
+        )
   Halogen.raise $ SelectionChanged ReplacementQuery st.selected
   synchronize
 
 spec
   :: forall action f item m
   . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m

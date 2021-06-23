@@ -88,6 +88,7 @@ component =
           [ fetchAndSetLocations
           , fetchAndSetUsers
           , void $ H.queryAll _multiInput $ H.mkTell $ TA.ReplaceItems (pure ["new", "space", "citizennet", "conde"])
+          , H.tell _multiInput 1 $ TA.ReplaceSelected ["new", "conde"]
           ]
 
         _ <- Control.Parallel.parSequence_
@@ -352,6 +353,30 @@ cnDocumentationBlocks =
               , inputId: "tags"
               }
               [ HH.slot_ _multiInput 0 TA.multi
+                ( ( TA.syncMultiInput
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+                    }
+                    []
+                    { minWidth: 50.0
+                    , placeholder:
+                      { primary: "At least one of these values..."
+                      , secondary: "And..."
+                      }
+                    }
+                  ) { insertable = TA.Insertable identity }
+                )
+              ]
+            , HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Standard Hydrated" ]
+            , FormField.field_
+              { label: HH.text "Tag"
+              , helpText: []
+              , error: []
+              , inputId: "tags"
+              }
+              [ HH.slot_ _multiInput 1 TA.multi
                 ( ( TA.syncMultiInput
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
