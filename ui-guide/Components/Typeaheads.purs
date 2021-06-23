@@ -6,6 +6,7 @@ import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
 import Effect.Aff.Class (class MonadAff)
+import Foreign.Object as Foreign.Object
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -38,12 +39,14 @@ type ChildSlot =
   , cp2 :: TA.Slot Action Array Async.User Int
   , cp3 :: TA.Slot Action Maybe Async.Location Int
   , cp4 :: TA.Slot Action Array Async.Location Int
+  , multiInput :: TA.Slot Action Array String Int
   )
 
 _singleUser = Proxy :: Proxy "cp1"
 _multiUser = Proxy :: Proxy "cp2"
 _singleLocation = Proxy :: Proxy "cp3"
 _multiLocation = Proxy :: Proxy "cp4"
+_multiInput = Proxy :: Proxy "multiInput"
 
 
 ----------
@@ -82,7 +85,10 @@ component =
           ]
 
         _ <- Control.Parallel.parSequence_
-          [ fetchAndSetLocations, fetchAndSetUsers ]
+          [ fetchAndSetLocations
+          , fetchAndSetUsers
+          , void $ H.queryAll _multiInput $ H.mkTell $ TA.ReplaceItems (pure ["new", "space", "citizennet", "conde"])
+          ]
 
         _ <- Control.Parallel.parSequence_
           [ H.query _singleLocation 4 $ H.mkTell $ TA.ReplaceItems $ Failure ""
@@ -322,6 +328,42 @@ cnDocumentationBlocks =
                   [ HP.placeholder "Search users..."
                   , HP.id_ "user"
                   ]
+                )
+              ]
+            ]
+          ]
+        ]
+      ]
+    , Documentation.block_
+      { header: "Typeaheads - Multi-Input"
+      , subheader: "Uses string input to search predetermined entries. User selects one or more of these entries"
+      }
+      [ Backdrop.backdrop_
+        [ content
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Standard" ]
+            , FormField.field_
+              { label: HH.text "Tag"
+              , helpText: []
+              , error: []
+              , inputId: "tags"
+              }
+              [ HH.slot_ _multiInput 0 TA.multi
+                ( ( TA.syncMultiInput
+                    { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                    , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
+                    }
+                    []
+                    { minWidth: 50.0
+                    , placeholder:
+                      { primary: "At least one of these values..."
+                      , secondary: "And..."
+                      }
+                    }
+                  ) { insertable = TA.Insertable identity }
                 )
               ]
             ]
