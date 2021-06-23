@@ -30,6 +30,7 @@ module Ocelot.Typeahead
   , StateRow
   , StateStore
   , asyncMulti
+  , asyncMultiInput
   , asyncSingle
   , component
   , defFilterFuzzy
@@ -44,6 +45,7 @@ module Ocelot.Typeahead
   , renderError
   , renderHeaderSearchDropdown
   , renderMulti
+  , renderMultiInput
   , renderSearchDropdown
   , renderSingle
   , renderToolbarSearchDropdown
@@ -51,6 +53,7 @@ module Ocelot.Typeahead
   , singleHighlightOnly
   , spinner
   , syncMulti
+  , syncMultiInput
   , syncSingle
   ) where
 
@@ -157,7 +160,8 @@ data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
   | RemoveAll
 
 type EmbeddedChildSlots
-  = () :: Row Type -- NOTE no extension
+  = ( multiInput :: Ocelot.Components.MultiInput.Component.Slot Unit
+    )
 
 type Input action f item m
   = { items :: Network.RemoteData.RemoteData String (Array item)
@@ -344,6 +348,27 @@ asyncMulti { async, itemToObject, renderFuzzy } props =
       (defRenderContainer renderFuzzy)
   }
 
+asyncMultiInput
+  :: ∀ action item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => DefaultAsyncTypeaheadInput item m
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
+  -> Ocelot.Components.MultiInput.Component.Input
+  -> Input action Array item m
+asyncMultiInput { async, itemToObject, renderFuzzy } props input =
+  { items: Network.RemoteData.NotAsked
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject
+  , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
+  , async: Just async
+  , disabled: isDisabled props
+  , render: renderMultiInput
+      input
+      (defRenderContainer renderFuzzy)
+  }
+
 syncSingle
   :: ∀ action item m
    . Eq item
@@ -364,6 +389,28 @@ syncSingle { itemToObject, renderFuzzy } props =
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
       (defRenderContainer renderFuzzy)
   }
+
+syncMultiInput
+  :: ∀ action item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => DefaultSyncTypeaheadInput item
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
+  -> Ocelot.Components.MultiInput.Component.Input
+  -> Input action Array item m
+syncMultiInput { itemToObject, renderFuzzy } props input =
+  { items: Network.RemoteData.NotAsked
+  , insertable: NotInsertable
+  , keepOpen: false
+  , itemToObject
+  , debounceTime: Nothing
+  , async: Nothing
+  , disabled: isDisabled props
+  , render: renderMultiInput
+      input
+      (defRenderContainer renderFuzzy)
+  }
+
 
 syncMulti
   :: ∀ action item m
@@ -388,6 +435,8 @@ syncMulti { itemToObject, renderFuzzy } props =
 
 ---------
 -- Values
+
+_multiInput = Proxy :: Proxy "multiInput"
 
 _select = Proxy :: Proxy "select"
 
@@ -802,6 +851,25 @@ renderMulti iprops renderItem renderContainer st =
     ]
   where
   disabled = st.disabled
+
+renderMultiInput
+  :: ∀ action item m
+  . Effect.Aff.Class.MonadAff m
+  => Ocelot.Components.MultiInput.Component.Input
+  -> CompositeComponentRender action Array item m
+  -> CompositeComponentRender action Array item m
+renderMultiInput input renderContainer st =
+  Halogen.HTML.div
+    [ Ocelot.HTML.Properties.css "relative" ]
+    [ Halogen.HTML.slot _multiInput unit
+        Ocelot.Components.MultiInput.Component.component
+        input
+        (Select.Action <<< HandleMultiInput)
+    , Ocelot.Block.Conditional.conditional (st.visibility == Select.On)
+        [ Ocelot.HTML.Properties.css "relative block" ]
+        [ renderContainer st ]
+    , renderError $ Network.RemoteData.isFailure st.items
+    ]
 
 renderSearchDropdown
   :: ∀ action item m
