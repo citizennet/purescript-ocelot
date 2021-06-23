@@ -556,6 +556,17 @@ embeddedHandleMultiInput
   -> CompositeComponentM action f item m Unit
 embeddedHandleMultiInput = case _ of
   Ocelot.Components.MultiInput.Component.ItemsUpdated _ -> pure unit
+  Ocelot.Components.MultiInput.Component.ItemRemoved text -> do
+    state <- Halogen.get
+    case
+      do
+        items <- Network.RemoteData.toMaybe state.items
+        Data.Array.find
+          (Data.Array.elem text <<< Foreign.Object.values <<< state.itemToObject)
+          items
+      of
+      Nothing -> pure unit
+      Just item -> embeddedRemove item
   Ocelot.Components.MultiInput.Component.On htmlEvents -> case htmlEvents of
     Ocelot.Components.MultiInput.Component.Blur ->
       Select.handleAction embeddedHandleAction embeddedHandleMessage

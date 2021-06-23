@@ -87,6 +87,7 @@ type Input =
 
 data Output
   = ItemsUpdated (Array String) -- caused by user actions
+  | ItemRemoved String
   | On HTMLEvents
 
 data HTMLEvents
@@ -429,12 +430,13 @@ commitEditing index = do
     Control.Monad.Maybe.Trans.lift do
       case item of
         Display _ -> pure unit
-        Edit { inputBox: { text } }
+        Edit { inputBox: { text }, previous }
           | Data.String.null text -> do
             removeItem index
             raiseItemUpdated
           | otherwise -> do
             void $ updateItem index (\_ -> Display { text })
+            Halogen.raise (ItemRemoved previous)
             raiseItemUpdated
         New { inputBox: { text } }
           | Data.String.null text -> pure unit
@@ -487,14 +489,27 @@ removeItem ::
   Int ->
   ComponentM m Unit
 removeItem index = do
-  new <- Halogen.modify \old ->
-    old
-      { items =
-          Data.Array.deleteAt index old.items
-            # fromMaybe old.items
-      }
-  when (Data.Array.null new.items) do
-    appendNewItem
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    item <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure
+        $ Data.Array.index old.items index
+    new <-
+      Control.Monad.Maybe.Trans.lift
+        $ Halogen.modify
+            _
+              { items =
+                  Data.Array.deleteAt index old.items
+                    # fromMaybe old.items
+              }
+    case getText item of
+      Nothing -> pure unit
+      Just text -> do
+        Control.Monad.Maybe.Trans.lift
+          $ Halogen.raise (ItemRemoved text)
+    when (Data.Array.null new.items) do
+      Control.Monad.Maybe.Trans.lift
+        appendNewItem
 
 selectItem ::
   forall m.
