@@ -71,6 +71,7 @@ data Action
 data Query a
   = GetItems (Array String -> a)
   | SetItems (Array String) a
+  | SelectItem String a
 
 -- | * minWidth: minimum width of input box for new item
 -- | * placeholder: placeholder text in new item input
@@ -189,6 +190,7 @@ handleQuery = case _ of
   SetItems items a -> do
     handleSetItems items
     pure (Just a)
+  SelectItem text a -> selectItem text $> Just a
 
 handleEditItem ::
   forall m.
@@ -493,6 +495,40 @@ removeItem index = do
       }
   when (Data.Array.null new.items) do
     appendNewItem
+
+selectItem ::
+  forall m.
+  MonadAff m =>
+  String ->
+  ComponentM m Unit
+selectItem text = do
+  old <- Halogen.get
+  void $ Control.Monad.Maybe.Trans.runMaybeT do
+    index <-
+      Control.Monad.Maybe.Trans.MaybeT <<< pure
+        $ Data.Array.findIndex isEditable old.items
+    width <-
+      Control.Monad.Maybe.Trans.MaybeT
+         $ measureTextWidth text
+    void <<< Control.Monad.Maybe.Trans.lift
+        $ updateItem index
+          ( \item -> case item of
+              Display _ -> item
+              Edit status -> Edit status { inputBox = { width, text } }
+              New status -> New status { inputBox = { width, text } }
+          )
+    Control.Monad.Maybe.Trans.lift do
+      commitEditing index
+      when (isLastIndex index old.items) do
+        new <- Halogen.get
+        focusItem (getLastIndex new.items)
+
+  where
+  isEditable :: InputStatus -> Boolean
+  isEditable = case _ of
+    Display _ -> false
+    Edit _ -> true
+    New _ -> true
 
 updateItem ::
   forall m.

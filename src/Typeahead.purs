@@ -524,6 +524,11 @@ embeddedHandleMessage = case _ of
         st <- Halogen.modify \st -> st { selected = st.ops.runSelect item st.selected }
         when (not st.keepOpen) do
           Halogen.modify_ _ { visibility = Select.Off }
+        case Data.Array.head (Foreign.Object.values (st.itemToObject item )) of
+          Nothing -> pure unit
+          Just text -> do
+            void $ Halogen.tell _multiInput unit
+              $ Ocelot.Components.MultiInput.Component.SelectItem text
         Halogen.raise $ SelectionChanged SelectionMessage st.selected
         Halogen.raise $ Selected item
         synchronize
