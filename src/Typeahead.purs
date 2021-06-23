@@ -449,10 +449,7 @@ embeddedHandleAction = case _ of
   HandleMultiInput output -> embeddedHandleMultiInput output
   Initialize -> do
     synchronize
-  Remove item -> do
-    st <- Halogen.modify \st -> st { selected = st.ops.runRemove item st.selected }
-    Halogen.raise $ SelectionChanged RemovalQuery st.selected
-    synchronize
+  Remove item -> embeddedRemove item
   RemoveAll -> do
     st <- Halogen.modify \st ->
       st { selected = Control.Alternative.empty :: f item
@@ -576,6 +573,17 @@ embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async,
   , disabled
   , config: { debounceTime } -- NOTE overhead
   }
+
+embeddedRemove
+  :: forall action f item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => item
+  -> CompositeComponentM action f item m Unit
+embeddedRemove item = do
+  st <- Halogen.modify \st -> st { selected = st.ops.runRemove item st.selected }
+  Halogen.raise $ SelectionChanged RemovalQuery st.selected
+  synchronize
 
 getNewItems ::
   forall f item m.
