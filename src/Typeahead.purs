@@ -165,13 +165,13 @@ type EmbeddedChildSlots
     )
 
 type Input action f item m
-  = { items :: Network.RemoteData.RemoteData String (Array item)
-    , insertable :: Insertable item
-    , keepOpen :: Boolean
-    , itemToObject :: item -> Foreign.Object.Object String
-    , async :: Maybe (String -> m (Network.RemoteData.RemoteData String (Array item)))
-    , disabled :: Boolean
+  = { async :: Maybe (String -> m (Network.RemoteData.RemoteData String (Array item)))
     , debounceTime :: Maybe Data.Time.Duration.Milliseconds
+    , disabled :: Boolean
+    , insertable :: Insertable item
+    , itemToObject :: item -> Foreign.Object.Object String
+    , items :: Network.RemoteData.RemoteData String (Array item)
+    , keepOpen :: Boolean
     , render :: CompositeComponentRender action f item m
     }
 
@@ -316,13 +316,13 @@ asyncSingle
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Maybe item m))
   -> Input action Maybe item m
 asyncSingle { async, itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Just async
   , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
-  , async: Just async
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderSingle
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -337,13 +337,13 @@ asyncMulti
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
   -> Input action Array item m
 asyncMulti { async, itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: true
-  , itemToObject
+  { async: Just async
   , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
-  , async: Just async
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: true
   , render: renderMulti
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -359,13 +359,13 @@ asyncMultiInput
   -> Ocelot.Components.MultiInput.Component.Input
   -> Input action Array item m
 asyncMultiInput { async, itemToObject, renderFuzzy } props input =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Just async
   , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
-  , async: Just async
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderMultiInput
       input
       (defRenderContainer renderFuzzy)
@@ -379,13 +379,13 @@ syncSingle
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Maybe item m))
   -> Input action Maybe item m
 syncSingle { itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Nothing
   , debounceTime: Nothing
-  , async: Nothing
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderSingle
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -401,13 +401,13 @@ syncMultiInput
   -> Ocelot.Components.MultiInput.Component.Input
   -> Input action Array item m
 syncMultiInput { itemToObject, renderFuzzy } props input =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Nothing
   , debounceTime: Nothing
-  , async: Nothing
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderMultiInput
       input
       (defRenderContainer renderFuzzy)
@@ -422,13 +422,13 @@ syncMulti
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
   -> Input action Array item m
 syncMulti { itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: true
-  , itemToObject
+  { async: Nothing
   , debounceTime: Nothing
-  , async: Nothing
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: true
   , render: renderMulti
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -626,20 +626,20 @@ embeddedInitialize = Just Initialize
 -- NOTE configure Select
 embeddedInput :: forall f item m. State f item m -> CompositeInput f item m
 embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async, fuzzyItems, config: { debounceTime }, disabled } =
-  { inputType: Select.Text
-  , search: Nothing
-  , debounceTime
-  , getItemCount: Data.Array.length <<< _.fuzzyItems
-  , items
-  , selected
-  , insertable
-  , keepOpen
-  , itemToObject
-  , ops
-  , async
-  , fuzzyItems
-  , disabled
+  { async
   , config: { debounceTime } -- NOTE overhead
+  , debounceTime
+  , disabled
+  , fuzzyItems
+  , getItemCount: Data.Array.length <<< _.fuzzyItems
+  , inputType: Select.Text
+  , insertable
+  , itemToObject
+  , items
+  , keepOpen
+  , ops
+  , search: Nothing
+  , selected
   }
 
 embeddedRemove
@@ -742,16 +742,16 @@ initialState
 initialState ops
   { items, insertable, keepOpen, itemToObject, async, debounceTime, render, disabled }
   = Control.Comonad.Store.store (renderAdapter render)
-      { items
-      , insertable
-      , keepOpen
-      , itemToObject
-      , async
-      , disabled
-      , ops
+      { async
       , config: {debounceTime}
-      , selected: Control.Alternative.empty :: f item
+      , disabled
       , fuzzyItems: []
+      , insertable
+      , itemToObject
+      , items
+      , keepOpen
+      , ops
+      , selected: Control.Alternative.empty :: f item
       }
 
 inputProps
