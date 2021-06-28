@@ -244,19 +244,16 @@ handleOnFocus ::
   ComponentM m Unit
 handleOnFocus index = do
   old <- Halogen.get
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    item <-
-      Control.Monad.Maybe.Trans.MaybeT <<< pure $ do
-        Data.Array.index old.items index
-    Control.Monad.Maybe.Trans.lift do
-      case item of
-        Display _ -> pure unit
-        Edit { inputBox: { text } } -> do
-          Halogen.raise (On (ValueInput text ))
-          Halogen.raise (On Focus)
-        New { inputBox: { text }} -> do
-          Halogen.raise (On (ValueInput text ))
-          Halogen.raise (On Focus)
+  case Data.Array.index old.items index of
+    Nothing -> pure unit
+    Just item -> case item of
+      Display _ -> pure unit
+      Edit { inputBox: { text } } -> do
+        Halogen.raise (On (ValueInput text ))
+        Halogen.raise (On Focus)
+      New { inputBox: { text }} -> do
+        Halogen.raise (On (ValueInput text ))
+        Halogen.raise (On Focus)
 
 handleOnInput ::
   forall m.
@@ -490,26 +487,21 @@ removeItem ::
   ComponentM m Unit
 removeItem index = do
   old <- Halogen.get
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    item <-
-      Control.Monad.Maybe.Trans.MaybeT <<< pure
-        $ Data.Array.index old.items index
-    new <-
-      Control.Monad.Maybe.Trans.lift
-        $ Halogen.modify
-            _
-              { items =
-                  Data.Array.deleteAt index old.items
-                    # fromMaybe old.items
-              }
-    case getText item of
-      Nothing -> pure unit
-      Just text -> do
-        Control.Monad.Maybe.Trans.lift
-          $ Halogen.raise (ItemRemoved text)
-    when (Data.Array.null new.items) do
-      Control.Monad.Maybe.Trans.lift
-        appendNewItem
+  case Data.Array.index old.items index of
+    Nothing -> pure unit
+    Just item -> do
+      new <-
+        Halogen.modify
+          _
+            { items =
+                Data.Array.deleteAt index old.items
+                # fromMaybe old.items
+            }
+      case getText item of
+        Nothing -> pure unit
+        Just text -> Halogen.raise (ItemRemoved text)
+      when (Data.Array.null new.items) do
+          appendNewItem
 
 selectItem ::
   forall m.
@@ -518,26 +510,24 @@ selectItem ::
   ComponentM m Unit
 selectItem text = do
   old <- Halogen.get
-  void $ Control.Monad.Maybe.Trans.runMaybeT do
-    index <-
-      Control.Monad.Maybe.Trans.MaybeT <<< pure
-        $ Data.Array.findIndex isEditable old.items
-    width <-
-      Control.Monad.Maybe.Trans.MaybeT
-         $ measureTextWidth text
-    void <<< Control.Monad.Maybe.Trans.lift
-        $ updateItem index
-          ( \item -> case item of
-              Display _ -> item
-              Edit status -> Edit status { inputBox = { width, text } }
-              New status -> New status { inputBox = { width, text } }
-          )
-    Control.Monad.Maybe.Trans.lift do
+  mWidth <- measureTextWidth text
+  case
+    {index: _, width: _ }
+      <$> Data.Array.findIndex isEditable old.items
+      <*> mWidth
+    of
+    Nothing -> pure unit
+    Just { index, width } -> do
+      void $ updateItem index
+        ( \item -> case item of
+             Display _ -> item
+             Edit status -> Edit status { inputBox = { width, text } }
+             New status -> New status { inputBox = { width, text } }
+        )
       commitEditing index
       when (isLastIndex index old.items) do
         new <- Halogen.get
         focusItem (getLastIndex new.items)
-
   where
   isEditable :: InputStatus -> Boolean
   isEditable = case _ of
