@@ -1,5 +1,7 @@
 module Ocelot.Components.MultiInput.Component
-  ( Output(..)
+  ( HTMLEvents(..)
+  , Input
+  , Output(..)
   , Query(..)
   , Slot
   , component
@@ -25,6 +27,7 @@ import Type.Proxy (Proxy(..))
 import Web.Event.Event as Web.Event.Event
 import Web.HTML.HTMLElement as Web.HTML.HTMLElement
 import Web.UIEvent.KeyboardEvent as Web.UIEvent.KeyboardEvent
+import Web.UIEvent.MouseEvent as Web.UIEvent.MouseEvent
 
 type Slot = Halogen.Slot Query Output
 
@@ -58,14 +61,17 @@ data Action
   = EditItem Int
   | Initialize
   | OnBlur Int
+  | OnFocus Int
   | OnInput Int String
   | OnKeyDown Int Web.UIEvent.KeyboardEvent.KeyboardEvent
+  | OnMouseDown Int Web.UIEvent.MouseEvent.MouseEvent
   | Receive Input
   | RemoveOne Int
 
 data Query a
   = GetItems (Array String -> a)
   | SetItems (Array String) a
+  | SelectItem String a
 
 -- | * minWidth: minimum width of input box for new item
 -- | * placeholder: placeholder text in new item input
@@ -81,6 +87,15 @@ type Input =
 
 data Output
   = ItemsUpdated (Array String) -- caused by user actions
+  | ItemRemoved String
+  | On HTMLEvents
+
+data HTMLEvents
+  = Blur
+  | Focus
+  | KeyDown Web.UIEvent.KeyboardEvent.KeyboardEvent
+  | MouseDown Web.UIEvent.MouseEvent.MouseEvent
+  | ValueInput String
 
 type ChildSlots =
   ( textWidth :: Ocelot.Components.MultiInput.TextWidth.Slot Unit
@@ -155,8 +170,12 @@ handleAction = case _ of
   EditItem index -> handleEditItem index
   Initialize -> handleInitialize
   OnBlur index -> handleOnBlur index
+  OnFocus index -> handleOnFocus index
   OnInput index text -> handleOnInput index text
   OnKeyDown index keyboardEvent -> handleOnKeyDown index keyboardEvent
+  OnMouseDown index mouseEvent -> do
+    focusItem index
+    Halogen.raise (On (MouseDown mouseEvent))
   Receive input -> handleReceive input
   RemoveOne index -> handleRemoveOne index
 
@@ -172,6 +191,7 @@ handleQuery = case _ of
   SetItems items a -> do
     handleSetItems items
     pure (Just a)
+  SelectItem text a -> selectItem text $> Just a
 
 handleEditItem ::
   forall m.
@@ -195,8 +215,8 @@ handleEditItem index = do
       $ updateItem index
         ( \item -> case item of
             Display _ -> Edit { inputBox: { text, width }, previous: text }
-            Edit status -> item
-            New status -> item
+            Edit _ -> item
+            New _ -> item
         )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
@@ -215,6 +235,25 @@ handleOnBlur ::
   ComponentM m Unit
 handleOnBlur index = do
   commitEditing index
+  Halogen.raise (On Blur)
+
+handleOnFocus ::
+  forall m.
+  MonadAff m =>
+  Int ->
+  ComponentM m Unit
+handleOnFocus index = do
+  old <- Halogen.get
+  case Data.Array.index old.items index of
+    Nothing -> pure unit
+    Just item -> case item of
+      Display _ -> pure unit
+      Edit { inputBox: { text } } -> do
+        Halogen.raise (On (ValueInput text ))
+        Halogen.raise (On Focus)
+      New { inputBox: { text }} -> do
+        Halogen.raise (On (ValueInput text ))
+        Halogen.raise (On Focus)
 
 handleOnInput ::
   forall m.
@@ -242,6 +281,7 @@ handleOnInput index text = do
               Edit status -> Edit status { inputBox { width = width } }
               New status -> New status { inputBox { width = max minWidth width } }
         )
+  Halogen.raise (On (ValueInput text))
 
 handleOnKeyDown ::
   forall m.
@@ -250,6 +290,7 @@ handleOnKeyDown ::
   Web.UIEvent.KeyboardEvent.KeyboardEvent ->
   ComponentM m Unit
 handleOnKeyDown index keyboardEvent = do
+  Halogen.raise (On (KeyDown keyboardEvent))
   case Web.UIEvent.KeyboardEvent.key keyboardEvent of
     "Enter" -> do
       preventDefault keyboardEvent
@@ -369,7 +410,7 @@ cancelEditing index = do
         Display _ -> pure unit
         Edit { previous } -> do
           void $ updateItem index (\_ -> Display { text: previous })
-        New { inputBox: { text } } -> do
+        New _ -> do
           void $ updateItem index (\_ -> old.new)
 
 commitEditing ::
@@ -386,12 +427,13 @@ commitEditing index = do
     Control.Monad.Maybe.Trans.lift do
       case item of
         Display _ -> pure unit
-        Edit { inputBox: { text } }
+        Edit { inputBox: { text }, previous }
           | Data.String.null text -> do
             removeItem index
             raiseItemUpdated
           | otherwise -> do
             void $ updateItem index (\_ -> Display { text })
+            Halogen.raise (ItemRemoved previous)
             raiseItemUpdated
         New { inputBox: { text } }
           | Data.String.null text -> pure unit
@@ -444,14 +486,54 @@ removeItem ::
   Int ->
   ComponentM m Unit
 removeItem index = do
-  new <- Halogen.modify \old ->
-    old
-      { items =
-          Data.Array.deleteAt index old.items
-            # fromMaybe old.items
-      }
-  when (Data.Array.null new.items) do
-    appendNewItem
+  old <- Halogen.get
+  case Data.Array.index old.items index of
+    Nothing -> pure unit
+    Just item -> do
+      new <-
+        Halogen.modify
+          _
+            { items =
+                Data.Array.deleteAt index old.items
+                # fromMaybe old.items
+            }
+      case getText item of
+        Nothing -> pure unit
+        Just text -> Halogen.raise (ItemRemoved text)
+      when (Data.Array.null new.items) do
+          appendNewItem
+
+selectItem ::
+  forall m.
+  MonadAff m =>
+  String ->
+  ComponentM m Unit
+selectItem text = do
+  old <- Halogen.get
+  mWidth <- measureTextWidth text
+  case
+    {index: _, width: _ }
+      <$> Data.Array.findIndex isEditable old.items
+      <*> mWidth
+    of
+    Nothing -> pure unit
+    Just { index, width } -> do
+      void $ updateItem index
+        ( \item -> case item of
+             Display _ -> item
+             Edit status -> Edit status { inputBox = { width, text } }
+             New status -> New status { inputBox = { width, text } }
+        )
+      commitEditing index
+      when (isLastIndex index old.items) do
+        new <- Halogen.get
+        focusItem (getLastIndex new.items)
+  where
+  isEditable :: InputStatus -> Boolean
+  isEditable = case _ of
+    Display _ -> false
+    Edit _ -> true
+    New _ -> true
 
 updateItem ::
   forall m.
@@ -554,7 +636,9 @@ renderAutoSizeInput placeholder index new inputBox =
         [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
         , Halogen.HTML.Properties.classes inputClasses
         , Halogen.HTML.Events.onBlur \_ -> OnBlur index
+        , Halogen.HTML.Events.onFocus \_ -> OnFocus index
         , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
+        , Halogen.HTML.Events.onMouseDown (OnMouseDown index)
         , Halogen.HTML.Events.onValueInput (OnInput index)
         , Halogen.HTML.Properties.placeholder case new of
             false -> ""

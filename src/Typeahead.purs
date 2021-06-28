@@ -18,7 +18,7 @@ module Ocelot.Typeahead
   , DefaultSyncTypeaheadInput
   , EmbeddedAction(..)
   , EmbeddedChildSlots
-  , Input 
+  , Input
   , Insertable(..)
   , Operations
   , Output(..)
@@ -30,6 +30,7 @@ module Ocelot.Typeahead
   , StateRow
   , StateStore
   , asyncMulti
+  , asyncMultiInput
   , asyncSingle
   , component
   , defFilterFuzzy
@@ -44,6 +45,7 @@ module Ocelot.Typeahead
   , renderError
   , renderHeaderSearchDropdown
   , renderMulti
+  , renderMultiInput
   , renderSearchDropdown
   , renderSingle
   , renderToolbarSearchDropdown
@@ -51,16 +53,18 @@ module Ocelot.Typeahead
   , singleHighlightOnly
   , spinner
   , syncMulti
+  , syncMultiInput
   , syncSingle
   ) where
 
 import Prelude
-import Control.Alternative as Control.Alternate
+import Control.Alternative as Control.Alternative
 import Control.Comonad as Control.Comonad
 import Control.Comonad.Store as Control.Comonad.Store
 import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Data.Array ((!!), (:))
 import Data.Array as Data.Array
+import Data.Foldable as Data.Foldable
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
@@ -82,6 +86,7 @@ import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Block.Input as Ocelot.Block.Input
 import Ocelot.Block.ItemContainer as Ocelot.Block.ItemContainer
 import Ocelot.Block.Loading as Ocelot.Block.Loading
+import Ocelot.Components.MultiInput.Component as Ocelot.Components.MultiInput.Component
 import Ocelot.HTML.Properties ((<&>))
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Renderless.State as Renderless.State
@@ -101,70 +106,72 @@ type ChildSlots action f item =
   ( select :: Select.Slot (Query f item) EmbeddedChildSlots (Output action f item) Unit
   )
 
-type Component action f item m 
+type Component action f item m
   = Halogen.Component (Query f item) (Input action f item m) (Output action f item) m
 
-type ComponentHTML action f item m 
+type ComponentHTML action f item m
   = Halogen.ComponentHTML (Action action f item m) (ChildSlots action f item) m
 
-type ComponentRender action f item m 
+type ComponentRender action f item m
   = State f item m -> ComponentHTML action f item m
 
-type ComponentM action f item m a 
+type ComponentM action f item m a
   = Halogen.HalogenM (StateStore action f item m) (Action action f item m) (ChildSlots action f item) (Output action f item) m a
 
-type CompositeAction action f item m 
+type CompositeAction action f item m
   = Select.Action (EmbeddedAction action f item m)
 
-type CompositeComponent action f item m 
+type CompositeComponent action f item m
   = Halogen.Component (CompositeQuery f item) (CompositeInput f item m) (Output action f item) m
 
-type CompositeComponentHTML action f item m 
+type CompositeComponentHTML action f item m
   = Halogen.ComponentHTML (CompositeAction action f item m) EmbeddedChildSlots m
 
-type CompositeComponentM action f item m a 
+type CompositeComponentM action f item m a
   = Halogen.HalogenM (CompositeState f item m) (CompositeAction action f item m) EmbeddedChildSlots (Output action f item) m a
 
-type CompositeComponentRender action f item m 
+type CompositeComponentRender action f item m
   = (CompositeState f item m) -> CompositeComponentHTML action f item m
 
-type CompositeInput f item m 
+type CompositeInput f item m
   = Select.Input (StateRow f item m)
 
-type CompositeQuery f item 
+type CompositeQuery f item
   = Select.Query (Query f item) EmbeddedChildSlots
 
-type CompositeState f item m 
+type CompositeState f item m
   = Select.State (StateRow f item m)
 
-type DefaultAsyncTypeaheadInput item m 
+type DefaultAsyncTypeaheadInput item m
   = { itemToObject :: item -> Foreign.Object.Object String
     , renderFuzzy :: Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML
     , async :: String -> m (Network.RemoteData.RemoteData String (Array item))
     }
 
-type DefaultSyncTypeaheadInput item 
+type DefaultSyncTypeaheadInput item
   = { itemToObject :: item -> Foreign.Object.Object String
     , renderFuzzy :: Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML
     }
 
 data EmbeddedAction action (f :: Type -> Type) item (m :: Type -> Type)
-  = Initialize
+  = HandleMultiInput Ocelot.Components.MultiInput.Component.Output
+  | Initialize
+  | Raise action
   | Remove item
   | RemoveAll
-  | Raise action
 
-type EmbeddedChildSlots 
-  = () -- NOTE no extension
+type EmbeddedChildSlots
+  = ( multiInput :: Ocelot.Components.MultiInput.Component.Slot Unit
+    )
 
-type Input action f item m 
-  = { items :: Network.RemoteData.RemoteData String (Array item)
-    , insertable :: Insertable item
-    , keepOpen :: Boolean
-    , itemToObject :: item -> Foreign.Object.Object String
-    , async :: Maybe (String -> m (Network.RemoteData.RemoteData String (Array item)))
-    , disabled :: Boolean
+type Input action f item m
+  = { async :: Maybe (String -> m (Network.RemoteData.RemoteData String (Array item)))
     , debounceTime :: Maybe Data.Time.Duration.Milliseconds
+    , disabled :: Boolean
+    , insertable :: Insertable item
+    , itemToObject :: item -> Foreign.Object.Object String
+    , items :: Network.RemoteData.RemoteData String (Array item)
+    , keepOpen :: Boolean
     , render :: CompositeComponentRender action f item m
     }
 
@@ -172,7 +179,7 @@ data Insertable item
   = NotInsertable
   | Insertable (String -> item)
 
-type Operations f item 
+type Operations f item
   = { runSelect :: item -> f item -> f item
     , runRemove :: item -> f item -> f item
     , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
@@ -201,16 +208,16 @@ data SelectionCause
 
 derive instance eqSelectionCause :: Eq SelectionCause
 
-type Slot action f item id 
+type Slot action f item id
   = Halogen.Slot (Query f item) (Output action f item) id
 
-type Spec action f item m 
+type Spec action f item m
   = Select.Spec (StateRow f item m) (Query f item) (EmbeddedAction action f item m) EmbeddedChildSlots (CompositeInput f item m) (Output action f item) m
 
-type State f item m 
+type State f item m
   = Record (StateRow f item m)
 
-type StateRow f item m 
+type StateRow f item m
   = ( items :: Network.RemoteData.RemoteData String (Array item) -- NOTE pst.items, Parent(Typeahead)
     , insertable :: Insertable item
     , keepOpen :: Boolean
@@ -223,7 +230,7 @@ type StateRow f item m
     , fuzzyItems :: Array (Data.Fuzzy.Fuzzy item) -- NOTE cst.items, Child(Select)
     )
 
-type StateStore action f item m 
+type StateStore action f item m
   = Control.Comonad.Store.Store (State f item m) (ComponentHTML action f item m)
 
 -------------
@@ -231,7 +238,8 @@ type StateStore action f item m
 
 component
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -264,9 +272,9 @@ singleHighlightOnly ::
   forall action item m.
   Eq item =>
   Effect.Aff.Class.MonadAff m =>
-  Component action Maybe item m 
+  Component action Maybe item m
 singleHighlightOnly = component
-  { runSelect: const <<< Just 
+  { runSelect: const <<< Just
   , runRemove: const (const Nothing)
   , runFilterFuzzy: identity
   , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
@@ -293,7 +301,7 @@ multiHighlightOnly ::
   Eq item =>
   Effect.Aff.Class.MonadAff m =>
   Component action Array item m
-multiHighlightOnly = component 
+multiHighlightOnly = component
   { runSelect: (:)
   , runRemove: Data.Array.filter <<< (/=)
   , runFilterFuzzy: identity
@@ -308,13 +316,13 @@ asyncSingle
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Maybe item m))
   -> Input action Maybe item m
 asyncSingle { async, itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Just async
   , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
-  , async: Just async
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderSingle
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -329,16 +337,37 @@ asyncMulti
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
   -> Input action Array item m
 asyncMulti { async, itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: true
-  , itemToObject
+  { async: Just async
   , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
-  , async: Just async
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: true
   , render: renderMulti
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
+      (defRenderContainer renderFuzzy)
+  }
+
+asyncMultiInput
+  :: ∀ action item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => DefaultAsyncTypeaheadInput item m
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
+  -> Ocelot.Components.MultiInput.Component.Input
+  -> Input action Array item m
+asyncMultiInput { async, itemToObject, renderFuzzy } props input =
+  { async: Just async
+  , debounceTime: Just $ Data.Time.Duration.Milliseconds 300.0
+  , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
+  , render: renderMultiInput
+      input
       (defRenderContainer renderFuzzy)
   }
 
@@ -350,18 +379,40 @@ syncSingle
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Maybe item m))
   -> Input action Maybe item m
 syncSingle { itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: false
-  , itemToObject
+  { async: Nothing
   , debounceTime: Nothing
-  , async: Nothing
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
   , render: renderSingle
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
       (defRenderContainer renderFuzzy)
   }
+
+syncMultiInput
+  :: ∀ action item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => DefaultSyncTypeaheadInput item
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
+  -> Ocelot.Components.MultiInput.Component.Input
+  -> Input action Array item m
+syncMultiInput { itemToObject, renderFuzzy } props input =
+  { async: Nothing
+  , debounceTime: Nothing
+  , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: false
+  , render: renderMultiInput
+      input
+      (defRenderContainer renderFuzzy)
+  }
+
 
 syncMulti
   :: ∀ action item m
@@ -371,13 +422,13 @@ syncMulti
   -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput (CompositeAction action Array item m))
   -> Input action Array item m
 syncMulti { itemToObject, renderFuzzy } props =
-  { items: Network.RemoteData.NotAsked
-  , insertable: NotInsertable
-  , keepOpen: true
-  , itemToObject
+  { async: Nothing
   , debounceTime: Nothing
-  , async: Nothing
   , disabled: isDisabled props
+  , insertable: NotInsertable
+  , itemToObject
+  , items: Network.RemoteData.NotAsked
+  , keepOpen: true
   , render: renderMulti
       props
       (renderFuzzy <<< Data.Fuzzy.match false itemToObject "")
@@ -386,6 +437,8 @@ syncMulti { itemToObject, renderFuzzy } props =
 
 ---------
 -- Values
+
+_multiInput = Proxy :: Proxy "multiInput"
 
 _select = Proxy :: Proxy "select"
 
@@ -409,8 +462,8 @@ defFilterFuzzy ::
   Eq item =>
   Array (Data.Fuzzy.Fuzzy item) ->
   Array (Data.Fuzzy.Fuzzy item)
-defFilterFuzzy = 
-  Data.Array.sort 
+defFilterFuzzy =
+  Data.Array.sort
     <<< Data.Array.filter (\(Data.Fuzzy.Fuzzy { ratio }) -> ratio > (2 % 3))
 
 defRenderContainer
@@ -439,20 +492,18 @@ disabledClasses = Halogen.HTML.ClassName <$>
 embeddedHandleAction
   :: forall action f item m
   . Eq item
-  => Control.Alternate.Plus f
+  => Control.Alternative.Plus f
   => Effect.Aff.Class.MonadAff m
   => EmbeddedAction action f item m
   -> CompositeComponentM action f item m Unit
 embeddedHandleAction = case _ of
+  HandleMultiInput output -> embeddedHandleMultiInput output
   Initialize -> do
     synchronize
-  Remove item -> do
-    st <- Halogen.modify \st -> st { selected = st.ops.runRemove item st.selected }
-    Halogen.raise $ SelectionChanged RemovalQuery st.selected
-    synchronize
+  Remove item -> embeddedRemove item
   RemoveAll -> do
     st <- Halogen.modify \st ->
-      st { selected = Control.Alternate.empty :: f item
+      st { selected = Control.Alternative.empty :: f item
          , visibility = Select.Off
          }
     Halogen.raise $ SelectionChanged RemovalQuery st.selected
@@ -475,6 +526,11 @@ embeddedHandleMessage = case _ of
         st <- Halogen.modify \st -> st { selected = st.ops.runSelect item st.selected }
         when (not st.keepOpen) do
           Halogen.modify_ _ { visibility = Select.Off }
+        case Data.Array.head (Foreign.Object.values (st.itemToObject item )) of
+          Nothing -> pure unit
+          Just text -> do
+            void $ Halogen.tell _multiInput unit
+              $ Ocelot.Components.MultiInput.Component.SelectItem text
         Halogen.raise $ SelectionChanged SelectionMessage st.selected
         Halogen.raise $ Selected item
         synchronize
@@ -493,9 +549,47 @@ embeddedHandleMessage = case _ of
     synchronize
   _ -> pure unit
 
+embeddedHandleMultiInput
+  :: forall action f item m
+  . Control.Alternative.Plus f
+  => Eq item
+  => Effect.Aff.Class.MonadAff m
+  => Ocelot.Components.MultiInput.Component.Output
+  -> CompositeComponentM action f item m Unit
+embeddedHandleMultiInput = case _ of
+  Ocelot.Components.MultiInput.Component.ItemsUpdated _ -> pure unit
+  Ocelot.Components.MultiInput.Component.ItemRemoved text -> do
+    state <- Halogen.get
+    case
+      do
+        items <- Network.RemoteData.toMaybe state.items
+        Data.Array.find
+          (Data.Array.elem text <<< Foreign.Object.values <<< state.itemToObject)
+          items
+      of
+      Nothing -> pure unit
+      Just item -> embeddedRemove item
+  Ocelot.Components.MultiInput.Component.On htmlEvents -> case htmlEvents of
+    Ocelot.Components.MultiInput.Component.Blur ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.SetVisibility Select.Off
+    Ocelot.Components.MultiInput.Component.Focus ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.SetVisibility Select.On
+    Ocelot.Components.MultiInput.Component.KeyDown keyboardEvent ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.Key keyboardEvent
+    Ocelot.Components.MultiInput.Component.MouseDown mouseEvent ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.ToggleClick mouseEvent
+    Ocelot.Components.MultiInput.Component.ValueInput text ->
+      Select.handleAction embeddedHandleAction embeddedHandleMessage
+        $ Select.Search text
+
 embeddedHandleQuery
   :: forall action f item m a
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Query f item a
@@ -515,11 +609,11 @@ embeddedHandleQuery = case _ of
     Halogen.modify_ _ { items = items }
     synchronize
   Reset a -> Just a <$ do
-    st <- 
-      Halogen.modify 
-        _ 
-          { selected = Control.Alternate.empty :: f item
-          , items = Network.RemoteData.NotAsked 
+    st <-
+      Halogen.modify
+        _
+          { selected = Control.Alternative.empty :: f item
+          , items = Network.RemoteData.NotAsked
           }
     Halogen.raise $ SelectionChanged ResetQuery st.selected
     synchronize
@@ -532,34 +626,45 @@ embeddedInitialize = Just Initialize
 -- NOTE configure Select
 embeddedInput :: forall f item m. State f item m -> CompositeInput f item m
 embeddedInput { items, selected, insertable, keepOpen, itemToObject, ops, async, fuzzyItems, config: { debounceTime }, disabled } =
-  { inputType: Select.Text
-  , search: Nothing
-  , debounceTime
-  , getItemCount: Data.Array.length <<< _.fuzzyItems
-  , items
-  , selected
-  , insertable
-  , keepOpen
-  , itemToObject
-  , ops
-  , async
-  , fuzzyItems
-  , disabled
+  { async
   , config: { debounceTime } -- NOTE overhead
+  , debounceTime
+  , disabled
+  , fuzzyItems
+  , getItemCount: Data.Array.length <<< _.fuzzyItems
+  , inputType: Select.Text
+  , insertable
+  , itemToObject
+  , items
+  , keepOpen
+  , ops
+  , search: Nothing
+  , selected
   }
 
-getNewItems :: 
-  forall f item m. 
-  Effect.Aff.Class.MonadAff m => 
-  Eq item => 
-  CompositeState f item m -> 
+embeddedRemove
+  :: forall action f item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => item
+  -> CompositeComponentM action f item m Unit
+embeddedRemove item = do
+  st <- Halogen.modify \st -> st { selected = st.ops.runRemove item st.selected }
+  Halogen.raise $ SelectionChanged RemovalQuery st.selected
+  synchronize
+
+getNewItems ::
+  forall f item m.
+  Effect.Aff.Class.MonadAff m =>
+  Eq item =>
+  CompositeState f item m ->
   Network.RemoteData.RemoteData String (Array (Data.Fuzzy.Fuzzy item))
-getNewItems st = st.items <#> \items -> 
-  getNewItems' 
-    { insertable: st.insertable 
+getNewItems st = st.items <#> \items ->
+  getNewItems'
+    { insertable: st.insertable
     , itemToObject: st.itemToObject
     , runFilterFuzzy: st.ops.runFilterFuzzy
-    , runFilterItems: st.ops.runFilterItems 
+    , runFilterItems: st.ops.runFilterItems
     , search: st.search
     , selected: st.selected
     }
@@ -568,7 +673,7 @@ getNewItems st = st.items <#> \items ->
 getNewItems' ::
   forall f item state.
   { insertable :: Insertable item
-  , itemToObject :: item -> Foreign.Object.Object String 
+  , itemToObject :: item -> Foreign.Object.Object String
   , runFilterFuzzy :: Array (Data.Fuzzy.Fuzzy item) -> Array (Data.Fuzzy.Fuzzy item)
   , runFilterItems :: Array item -> f item -> Array item
   , search :: String
@@ -596,7 +701,8 @@ getNewItems' st =
 -- NOTE update Dropdown render function if it relies on external state
 handleAction
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Action action f item m
@@ -626,7 +732,8 @@ handleQuery = case _ of
 
 initialState
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => Operations f item
@@ -635,16 +742,16 @@ initialState
 initialState ops
   { items, insertable, keepOpen, itemToObject, async, debounceTime, render, disabled }
   = Control.Comonad.Store.store (renderAdapter render)
-      { items
-      , insertable
-      , keepOpen
-      , itemToObject
-      , async
-      , disabled
-      , ops
+      { async
       , config: {debounceTime}
-      , selected: Control.Alternate.empty :: f item
+      , disabled
       , fuzzyItems: []
+      , insertable
+      , itemToObject
+      , items
+      , keepOpen
+      , ops
+      , selected: Control.Alternative.empty :: f item
       }
 
 inputProps
@@ -656,17 +763,17 @@ inputProps disabled iprops = if disabled
   then iprops'
   else Select.Setters.setInputProps iprops'
   where
-    iprops' = 
+    iprops' =
       [ Halogen.HTML.Properties.disabled disabled
       , Halogen.HTML.Properties.autocomplete false
-      , Ocelot.HTML.Properties.css "focus:next:text-blue-88" 
-      ] 
+      , Ocelot.HTML.Properties.css "focus:next:text-blue-88"
+      ]
       <&> iprops
 
 isDisabled :: ∀ i. Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLinput i) -> Boolean
 isDisabled = Data.Array.foldr f false
   where
-    f (Halogen.HTML.Properties.IProp (Halogen.HTML.Core.Property "disabled" disabled)) 
+    f (Halogen.HTML.Properties.IProp (Halogen.HTML.Core.Property "disabled" disabled))
       | coercePropValue disabled == true = (||) true
     f _ = (||) false
 
@@ -680,7 +787,8 @@ linkClasses = if _
 
 renderAdapter
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m
@@ -765,6 +873,25 @@ renderMulti iprops renderItem renderContainer st =
     ]
   where
   disabled = st.disabled
+
+renderMultiInput
+  :: ∀ action item m
+  . Effect.Aff.Class.MonadAff m
+  => Ocelot.Components.MultiInput.Component.Input
+  -> CompositeComponentRender action Array item m
+  -> CompositeComponentRender action Array item m
+renderMultiInput input renderContainer st =
+  Halogen.HTML.div
+    [ Ocelot.HTML.Properties.css "relative" ]
+    [ Halogen.HTML.slot _multiInput unit
+        Ocelot.Components.MultiInput.Component.component
+        input
+        (Select.Action <<< HandleMultiInput)
+    , Ocelot.Block.Conditional.conditional (st.visibility == Select.On)
+        [ Ocelot.HTML.Properties.css "relative block" ]
+        [ renderContainer st ]
+    , renderError $ Network.RemoteData.isFailure st.items
+    ]
 
 renderSearchDropdown
   :: ∀ action item m
@@ -887,18 +1014,26 @@ renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
 
 replaceSelected
   :: forall action f item m
-  . Eq item
+  . Data.Foldable.Foldable f
+  => Eq item
   => Effect.Aff.Class.MonadAff m
   => f item
   -> CompositeComponentM action f item m Unit
 replaceSelected selected = do
   st <- Halogen.modify _ { selected = selected }
+  Halogen.tell _multiInput unit
+    $ Ocelot.Components.MultiInput.Component.SetItems
+        ( Data.Array.mapMaybe (Data.Array.head <<< Foreign.Object.values <<< st.itemToObject)
+            <<< Data.Array.fromFoldable
+            $ selected
+        )
   Halogen.raise $ SelectionChanged ReplacementQuery st.selected
   synchronize
 
 spec
   :: forall action f item m
-  . Control.Alternate.Plus f
+  . Control.Alternative.Plus f
+  => Data.Foldable.Foldable f
   => Eq item
   => Effect.Aff.Class.MonadAff m
   => CompositeComponentRender action f item m
@@ -925,7 +1060,7 @@ synchronize = do
   case getNewItems st of
     Network.RemoteData.Success items -> do
       Halogen.modify_ _ { fuzzyItems = items }
-    Network.RemoteData.Failure err -> do
+    Network.RemoteData.Failure _ -> do
       Halogen.modify_
         _ { visibility = Select.Off
           , fuzzyItems = []
