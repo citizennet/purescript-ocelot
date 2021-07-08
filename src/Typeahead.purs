@@ -70,6 +70,7 @@ import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
 import Data.Newtype as Data.Newtype
 import Data.Rational ((%))
+import Data.String as Data.String
 import Data.Time.Duration as Data.Time.Duration
 import Effect.Aff.Class as Effect.Aff.Class
 import Foreign.Object as Foreign.Object
@@ -588,7 +589,8 @@ embeddedHandleMultiInput = case _ of
     Ocelot.Components.MultiInput.Component.Blur -> do
       state <- Halogen.get
       Data.Foldable.for_ state.highlightedIndex \idx -> do
-        embeddedHandleSelected false idx
+        when (not Data.String.null state.search) do
+          embeddedHandleSelected false idx
       Select.handleAction embeddedHandleAction embeddedHandleMessage
         $ Select.SetVisibility Select.Off
     Ocelot.Components.MultiInput.Component.Focus ->
