@@ -518,22 +518,7 @@ embeddedHandleMessage
   => Select.Event
   -> CompositeComponentM action f item m Unit
 embeddedHandleMessage = case _ of
-  Select.Selected idx -> do
-    { fuzzyItems } <- Halogen.get
-    case fuzzyItems !! idx of
-      Nothing -> pure unit
-      Just (Data.Fuzzy.Fuzzy { original: item }) -> do
-        st <- Halogen.modify \st -> st { selected = st.ops.runSelect item st.selected }
-        when (not st.keepOpen) do
-          Halogen.modify_ _ { visibility = Select.Off }
-        case Data.Array.head (Foreign.Object.values (st.itemToObject item )) of
-          Nothing -> pure unit
-          Just text -> do
-            void $ Halogen.tell _multiInput unit
-              $ Ocelot.Components.MultiInput.Component.SelectItem text
-        Halogen.raise $ SelectionChanged SelectionMessage st.selected
-        Halogen.raise $ Selected item
-        synchronize
+  Select.Selected idx -> embeddedHandleSelected true idx
   -- Perform a new search, fetching data if Async.
   Select.Searched text -> do
     Halogen.modify_ _ { search = text }
@@ -548,6 +533,31 @@ embeddedHandleMessage = case _ of
     Halogen.raise $ Searched text
     synchronize
   _ -> pure unit
+
+embeddedHandleSelected
+  :: forall action f item m
+  . Eq item
+  => Effect.Aff.Class.MonadAff m
+  => Boolean
+  -> Int
+  -> CompositeComponentM action f item m Unit
+embeddedHandleSelected updateMultiInput idx = do
+  { fuzzyItems } <- Halogen.get
+  case fuzzyItems !! idx of
+    Nothing -> pure unit
+    Just (Data.Fuzzy.Fuzzy { original: item }) -> do
+      st <- Halogen.modify \st -> st { selected = st.ops.runSelect item st.selected }
+      when (not st.keepOpen) do
+        Halogen.modify_ _ { visibility = Select.Off }
+      when updateMultiInput do
+        case Data.Array.head (Foreign.Object.values (st.itemToObject item )) of
+          Nothing -> pure unit
+          Just text -> do
+            void $ Halogen.tell _multiInput unit
+              $ Ocelot.Components.MultiInput.Component.SelectItem text
+      Halogen.raise $ SelectionChanged SelectionMessage st.selected
+      Halogen.raise $ Selected item
+      synchronize
 
 embeddedHandleMultiInput
   :: forall action f item m
@@ -570,7 +580,10 @@ embeddedHandleMultiInput = case _ of
       Nothing -> pure unit
       Just item -> embeddedRemove item
   Ocelot.Components.MultiInput.Component.On htmlEvents -> case htmlEvents of
-    Ocelot.Components.MultiInput.Component.Blur ->
+    Ocelot.Components.MultiInput.Component.Blur -> do
+      state <- Halogen.get
+      Data.Foldable.for_ state.highlightedIndex \idx -> do
+        embeddedHandleSelected false idx
       Select.handleAction embeddedHandleAction embeddedHandleMessage
         $ Select.SetVisibility Select.Off
     Ocelot.Components.MultiInput.Component.Focus ->
