@@ -571,11 +571,16 @@ embeddedHandleMultiInput = case _ of
   Ocelot.Components.MultiInput.Component.ItemRemoved text -> do
     state <- Halogen.get
     case
-      do
-        items <- Network.RemoteData.toMaybe state.items
-        Data.Array.find
-          (Data.Array.elem text <<< Foreign.Object.values <<< state.itemToObject)
-          items
+      Data.Foldable.oneOf
+        [ do
+            items <- Network.RemoteData.toMaybe state.items
+            Data.Array.find
+              (Data.Array.elem text <<< Foreign.Object.values <<< state.itemToObject)
+              items
+        , case state.insertable of
+            NotInsertable -> Nothing
+            Insertable insert -> Just (insert text)
+        ]
       of
       Nothing -> pure unit
       Just item -> embeddedRemove item
