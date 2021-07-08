@@ -1,11 +1,13 @@
 module UIGuide.Component.Typeaheads where
 
 import Prelude
+
 import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
 import Effect.Aff.Class (class MonadAff)
+import Effect.Class.Console as Effect.Class.Console
 import Foreign.Object as Foreign.Object
 import Halogen as H
 import Halogen.HTML as HH
@@ -30,6 +32,7 @@ type State = Unit
 data Query a
 data Action
   = Initialize
+  | HandleMultiInput (TA.Output Action Array String)
 
 ----------
 -- Child paths
@@ -76,6 +79,10 @@ component =
       :: Action
       -> H.HalogenM State Action ChildSlot Void m Unit
     handleAction = case _ of
+      HandleMultiInput output -> case output of
+        TA.SelectionChanged _ xs -> do
+          Effect.Class.Console.log $ "MultiInput Selection Changed: " <> show xs
+        _ -> pure unit
       Initialize -> do
         _ <- Control.Parallel.parSequence_
           [ H.queryAll _singleUser $ H.mkTell $ TA.ReplaceItems Loading
@@ -352,7 +359,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "tags"
               }
-              [ HH.slot_ _multiInput 0 TA.multi
+              [ HH.slot _multiInput 0 TA.multi
                 ( ( TA.syncMultiInput
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
@@ -366,6 +373,7 @@ cnDocumentationBlocks =
                     }
                   ) { insertable = TA.Insertable identity }
                 )
+                HandleMultiInput
               ]
             , HH.h3
               [ HP.classes Format.captionClasses ]
@@ -376,7 +384,7 @@ cnDocumentationBlocks =
               , error: []
               , inputId: "tags"
               }
-              [ HH.slot_ _multiInput 1 TA.multi
+              [ HH.slot _multiInput 1 TA.multi
                 ( ( TA.syncMultiInput
                     { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
                     , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
@@ -390,6 +398,7 @@ cnDocumentationBlocks =
                     }
                   ) { insertable = TA.Insertable identity }
                 )
+                HandleMultiInput
               ]
             ]
           ]
