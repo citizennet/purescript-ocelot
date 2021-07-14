@@ -128,27 +128,24 @@ let halogen-renderless =
 
 let html-parser-halogen =
       { dependencies = [ "string-parsers", "halogen" ]
-      , repo =
-          "https://github.com/rnons/purescript-html-parser-halogen.git"
+      , repo = "https://github.com/rnons/purescript-html-parser-halogen.git"
       , version = "v1.0.0-rc.2"
       }
 
 let svg-parser =
       { dependencies = [ "prelude", "string-parsers" ]
-      , repo =
-          "https://github.com/citizennet/purescript-svg-parser.git"
+      , repo = "https://github.com/citizennet/purescript-svg-parser.git"
       , version = "v2.0.0"
       }
 
 let svg-parser-halogen =
       { dependencies = [ "svg-parser", "halogen" ]
-      , repo =
-          "https://github.com/rnons/purescript-svg-parser-halogen.git"
+      , repo = "https://github.com/rnons/purescript-svg-parser-halogen.git"
       , version = "v2.0.0-rc.1"
       }
 
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.1-20210506/packages.dhall sha256:d199e142515f9cc15838d8e6d724a98cd0ca776ceb426b7b36e841311643e3ef
+      https://github.com/purescript/package-sets/releases/download/psc-0.14.2-20210713/packages.dhall sha256:654c3148cb995f642c73b4508d987d9896e2ad3ea1d325a1e826c034c0d3cd7b
 
 let overrides = {=}
 
