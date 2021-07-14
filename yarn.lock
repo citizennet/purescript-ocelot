@@ -5181,10 +5181,10 @@ purescript-installer@^0.2.0:
     which "^1.3.1"
     zen-observable "^0.8.14"
 
-purescript@0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.1.tgz#dac33e11391bc35361b187ae85f19578a286747a"
-  integrity sha512-dh87XeDP/JGe/3DKBMglkRuIRfGLGkL8beuLIl9KemzckgyuD+j7VK15eVb9n5Exp3DIr6SNEuGG4FjuQQ7Rpg==
+purescript@0.14.3:
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.3.tgz#8a725c5dc640afeebb1fe9e2512477827ca05ee8"
+  integrity sha512-lAzHU/tcmxF4n3YUwUTwG/sIwHzjUq1zsIOBNmaVpbm7hxM+RhOTKMJdwdbTeCjxlilyVPWOLUQ6Exll4DYuMA==
   dependencies:
     purescript-installer "^0.2.0"
 
