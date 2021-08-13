@@ -37,7 +37,7 @@ type State =
   , multiUser :: Expandable.Status
   }
 
-data Query a
+data Query (a :: Type)
 data Action
   = ToggleCard (Lens' State Expandable.Status)
   | Initialize

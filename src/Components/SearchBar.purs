@@ -41,7 +41,7 @@ data Action
   | Open
   | Blur
 
-data Query a
+data Query (a :: Type)
   = SetText String a
 
 type Slot = H.Slot Query Message

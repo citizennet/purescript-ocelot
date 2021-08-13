@@ -22,7 +22,7 @@ type State =
   { page :: Int
   }
 
-data Query a
+data Query (a :: Type)
 
 data Action
   = Page Int Web.UIEvent.MouseEvent.MouseEvent

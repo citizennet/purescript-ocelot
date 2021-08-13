@@ -29,7 +29,7 @@ import UIGuide.Utility.Async as Async
 
 type State = Unit
 
-data Query a
+data Query (a :: Type)
 data Action
   = Initialize
   | HandleMultiInput (TA.Output Action Array String)

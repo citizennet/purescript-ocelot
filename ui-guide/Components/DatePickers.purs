@@ -41,7 +41,7 @@ type State =
   , timeInterval :: TimePicker.Interval
   }
 
-data Query a
+data Query (a :: Type)
 data Action 
   = HandleDatePicker DatePicker.Output
   | HandleDateSlider Ocelot.Slider.Output

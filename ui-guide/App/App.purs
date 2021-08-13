@@ -5,7 +5,6 @@
 
 module UIGuide.App
   ( Stories
-  , StoryQuery
   , Page(..)
   , Group(..)
   , runStorybook
@@ -34,7 +33,7 @@ import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import Web.HTML.HTMLElement (HTMLElement)
 
-data Query a = RouteChange String a
+data Query (a :: Type) = RouteChange String a
 type Action = Unit
 
 type State m =
@@ -43,13 +42,11 @@ type State m =
   , partitions :: M.Map Group (Stories m)
   }
 
-type StoryQuery = Const Void
-
 type Stories m = M.Map String (Page m)
 
 type Page m =
   { anchor :: String
-  , component :: H.Component StoryQuery Unit Void m
+  , component :: H.Component (Const Void) Unit Void m
   , group :: Group
   }
 
@@ -68,7 +65,7 @@ instance showGroup :: Show Group where
 type HTML m = H.ComponentHTML Action Slots m
 
 type Slots =
-  ( child :: H.Slot StoryQuery Void String )
+  ( child :: H.Slot (Const Void) Void String )
 _child = Proxy :: Proxy "child"
 
 -- | Takes stories config and mount element, and renders the storybook.

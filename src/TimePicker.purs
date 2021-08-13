@@ -99,7 +99,8 @@ data EmbeddedAction
   | OnBlur
   | Receive CompositeInput
 
-type EmbeddedChildSlots = () -- No extension
+type EmbeddedChildSlots
+  = () :: Row Type
 
 type Input =
   { disabled :: Boolean
@@ -121,7 +122,7 @@ data Output
   | VisibilityChanged S.Visibility
   | Searched String
 
-data Query a
+data Query (a :: Type)
   = GetSelection (Time -> a)
   | SetDisabled Boolean a
   | SetSelection (Maybe Time) a

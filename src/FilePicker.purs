@@ -54,14 +54,14 @@ data Action
   | DropFile Web.HTML.Event.DragEvent.DragEvent
   | PreventDefault Web.Event.Event.Event
 
-data Query a
+data Query (a :: Type)
 
 type Input = Unit
 
 data Output
   = Selected (Array Web.File.File.File)
 
-type ChildSlots = ()
+type ChildSlots = () :: Row Type
 
 component ::
   forall m.

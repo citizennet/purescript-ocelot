@@ -26,7 +26,7 @@ import UIGuide.Block.Documentation as Documentation
 type State =
   { toast :: Maybe ToastType }
 
-data Query a
+data Query (a :: Type)
 data Action = Toggle ToastType
 
 data ToastType

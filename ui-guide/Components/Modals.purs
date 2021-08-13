@@ -45,7 +45,7 @@ type State =
   , toast :: Boolean
   }
 
-data Query a
+data Query (a :: Type)
 
 data Action
   = Close ComponentType

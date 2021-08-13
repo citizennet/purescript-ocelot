@@ -133,7 +133,8 @@ data EmbeddedAction
   | ToggleMonth Direction
   | ToggleYear  Direction
 
-type EmbeddedChildSlots = () -- NOTE no extension
+type EmbeddedChildSlots
+  = () :: Row Type
 
 type Input =
   { disabled :: Boolean
@@ -158,7 +159,7 @@ data Output
   | Searched String
 
 -- NOTE the container and the embedded components share the same query algebra
-data Query a
+data Query (a :: Type)
   = GetSelection (Date -> a)
   | SetDisabled Boolean a
   | SetSelection (Maybe Date) a

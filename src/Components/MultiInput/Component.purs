@@ -68,7 +68,7 @@ data Action
   | Receive Input
   | RemoveOne Int
 
-data Query a
+data Query (a :: Type)
   = GetItems (Array String -> a)
   | SetItems (Array String) a
   | SelectItem String a

@@ -32,7 +32,7 @@ type State
 data Action
   = HandleFilePicker Ocelot.FilePicker.Output
 
-data Query a
+data Query (a :: Type)
 
 type Input
   = Unit

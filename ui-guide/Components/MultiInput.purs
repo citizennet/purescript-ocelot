@@ -28,7 +28,7 @@ type State
 data Action
   = Initialize
 
-data Query a
+data Query (a :: Type)
 
 type Input
   = Unit

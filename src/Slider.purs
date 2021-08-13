@@ -76,7 +76,7 @@ data Action
   | MouseMoveWithThumb Web.UIEvent.MouseEvent.MouseEvent
   | MouseUpFromThumb Web.UIEvent.MouseEvent.MouseEvent
 
-data Query a
+data Query (a :: Type)
   = ReplaceThumbs (Array { percent :: Number }) a
   | SetDisabled Boolean a
   | SetThumbCount Int a
@@ -109,8 +109,8 @@ data Interval
 data Output
   = ValueChanged (Array { percent :: Number })
 
-type ChildSlots =
-  ()
+type ChildSlots
+  = () :: Row Type
 
 component ::
   forall m.

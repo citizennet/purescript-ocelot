@@ -67,7 +67,7 @@ data Output
   | DateOutput DatePicker.Output
   | TimeOutput TimePicker.Output
 
-data Query a
+data Query (a :: Type)
   = GetSelection (DateTime -> a)
   | SetSelection (Maybe DateTime) a
   | SendDateQuery (DatePicker.Query Unit) a

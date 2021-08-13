@@ -24,7 +24,7 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a
+data Query (a :: Type)
 data Action = HandleSearch SearchBar.Message
 
 type Input = Unit

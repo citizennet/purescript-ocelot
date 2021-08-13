@@ -12,7 +12,7 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a
+data Query (a :: Type)
 type Action = Unit
 
 type Input = Unit
