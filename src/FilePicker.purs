@@ -54,14 +54,14 @@ data Action
   | DropFile Web.HTML.Event.DragEvent.DragEvent
   | PreventDefault Web.Event.Event.Event
 
-data Query a
+data Query (a :: Type)
 
 type Input = Unit
 
 data Output
   = Selected (Array Web.File.File.File)
 
-type ChildSlots = ()
+type ChildSlots = () :: Row Type
 
 component ::
   forall m.
@@ -80,7 +80,7 @@ component config =
     }
 
 initialState :: Config -> Input -> State
-initialState config input =
+initialState config _ =
   { config
   , dragOver: false
   }
@@ -267,7 +267,7 @@ renderInput ::
 renderInput state =
   Halogen.HTML.input
     ( [ Ocelot.HTMl.Properties.css "hidden"
-      , Halogen.HTML.Properties.id_ state.config.id
+      , Halogen.HTML.Properties.id state.config.id
       , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
       , Ocelot.HTML.Events.onFileUpload ChooseFile
       , Halogen.HTML.Properties.multiple state.config.multiple

@@ -26,7 +26,7 @@ instance read :: Read Status where
   read = case _ of
     "collapsed" -> pure Collapsed
     "expanded"  -> pure Expanded
-    otherwise   -> Nothing
+    _   -> Nothing
 
 instance isPropStatus :: IsProp Status where
   toPropValue = propFromString <<< toProp

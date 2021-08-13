@@ -86,7 +86,7 @@ parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
     =<< (+) <$> dollarsPlace dollars <*> BigInt.fromString (take 2 $ cents <> "0")
 
   -- Unable to parse
-  otherwise -> Nothing
+  _ -> Nothing
 
   where
     -- Expects only the dollars place, no cents. Cents will overstate

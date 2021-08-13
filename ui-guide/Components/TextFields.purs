@@ -24,7 +24,7 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = Unit
 
-data Query a
+data Query (a :: Type)
 data Action = HandleSearch SearchBar.Message
 
 type Input = Unit
@@ -81,7 +81,7 @@ cnDocumentationBlocks =
             }
             [ Input.input
               [ HP.placeholder "address@gmail.com"
-              , HP.id_ "email"
+              , HP.id "email"
               ]
             ]
           , HH.h3
@@ -98,7 +98,7 @@ cnDocumentationBlocks =
             }
             [ Input.input
               [ HP.placeholder "address@gmail.com"
-              , HP.id_ "email-error"
+              , HP.id "email-error"
               ]
             ]
           ]
@@ -117,7 +117,7 @@ cnDocumentationBlocks =
             }
             [ Input.input
               [ HP.value "jeff@citizennet.com"
-              , HP.id_ "email-hydrated"
+              , HP.id "email-hydrated"
               ]
             ]
           , HH.h3
@@ -131,7 +131,7 @@ cnDocumentationBlocks =
             }
             [ Input.input
               [ HP.value "jeff@citizennet.com"
-              , HP.id_ "email-disabled"
+              , HP.id "email-disabled"
               , HP.disabled true
               ]
             ]
@@ -157,7 +157,7 @@ cnDocumentationBlocks =
             , inputId: "daily-goal"
             }
             [ Input.percentage_
-              [ HP.id_ "daily-goal"
+              [ HP.id "daily-goal"
               ]
             ]
           , HH.h3
@@ -171,7 +171,7 @@ cnDocumentationBlocks =
             }
             [ Input.percentage_
               [ HP.value "200"
-              , HP.id_ "daily-goal-error"
+              , HP.id "daily-goal-error"
               ]
             ]
           ]
@@ -190,7 +190,7 @@ cnDocumentationBlocks =
             }
             [ Input.percentage_
               [ HP.value "25"
-              , HP.id_ "daily-goal-hydrated"
+              , HP.id "daily-goal-hydrated"
               ]
             ]
           , HH.h3
@@ -204,7 +204,7 @@ cnDocumentationBlocks =
             }
             [ Input.percentage_
               [ HP.value "25"
-              , HP.id_ "daily-goal-disabled"
+              , HP.id "daily-goal-disabled"
               , HP.disabled true
               ]
             ]
@@ -230,7 +230,7 @@ cnDocumentationBlocks =
             , inputId: "budget"
             }
             [ Input.currency_
-              [ HP.id_ "budget"
+              [ HP.id "budget"
               ]
             ]
           , HH.h3
@@ -243,7 +243,7 @@ cnDocumentationBlocks =
             , inputId: "budget-error"
             }
             [ Input.currency_
-              [ HP.id_ "budget-error"
+              [ HP.id "budget-error"
               ]
             ]
           ]
@@ -262,7 +262,7 @@ cnDocumentationBlocks =
             }
             [ Input.currency_
               [ HP.value "50,000"
-              , HP.id_ "budget-hydrated"
+              , HP.id "budget-hydrated"
               ]
             ]
           , HH.h3
@@ -276,7 +276,7 @@ cnDocumentationBlocks =
             }
             [ Input.currency_
               [ HP.value "50,000"
-              , HP.id_ "budget-disabled"
+              , HP.id "budget-disabled"
               , HP.disabled true
               ]
             ]
@@ -303,7 +303,7 @@ cnDocumentationBlocks =
             }
             [ Input.inputGroup_
               [ Input.inputCenter
-                [ HP.id_ "search"
+                [ HP.id "search"
                 , HP.class_ $ HH.ClassName "focus:next:text-blue-88"
                 ]
               , Input.addonLeft_ [ Icon.search_ ]
@@ -329,7 +329,7 @@ cnDocumentationBlocks =
             [ Input.inputGroup_
               [ Input.inputCenter
                 [ HP.class_ $ HH.ClassName "focus:next:text-blue-88"
-                , HP.id_ "search-loading"
+                , HP.id "search-loading"
                 , HP.value "Something"
                 ]
               , Input.addonCenter_ [ Loading.spinner [ HP.class_ $ HH.ClassName "w-6 text-blue-88" ] ]
@@ -362,7 +362,7 @@ cnDocumentationBlocks =
             }
             [ Input.textarea
               [ HP.placeholder "Be nice."
-              , HP.id_ "comment"
+              , HP.id "comment"
               ]
             ]
           , HH.h3
@@ -376,7 +376,7 @@ cnDocumentationBlocks =
             }
             [ Input.textarea
               [ HP.placeholder "Be nice."
-              , HP.id_ "comment-error"
+              , HP.id "comment-error"
               ]
             ]
           ]
@@ -395,7 +395,7 @@ cnDocumentationBlocks =
             }
             [ Input.textarea
               [ HP.value "Forest drinks on the job"
-              , HP.id_ "comment-hydrated"
+              , HP.id "comment-hydrated"
               ]
             ]
           , HH.h3
@@ -409,7 +409,7 @@ cnDocumentationBlocks =
             }
             [ Input.textarea
               [ HP.value "Forest drinks on the job"
-              , HP.id_ "comment-disabled"
+              , HP.id "comment-disabled"
               , HP.disabled true
               ]
             ]

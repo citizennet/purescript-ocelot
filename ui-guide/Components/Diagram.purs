@@ -22,7 +22,7 @@ type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
 type State = Unit
 
-data Query a
+data Query (a :: Type)
 
 type Action = Unit
 
@@ -30,8 +30,7 @@ type Input = Unit
 
 type Output = Void
 
-type ChildSlots =
-  ()
+type ChildSlots = () :: Row Type
 
 ----------
 -- HTML
@@ -116,9 +115,6 @@ render _ =
 
   percentB :: Number
   percentB = 100.0
-
-  trackHeight :: Number
-  trackHeight = trackRadius * 2.0
 
   -- | NOTE assume thumbRadius > trackRadius
   config :: Ocelot.Slider.Render.Config

@@ -37,7 +37,7 @@ type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 type State =
   { formPanelIsOpen :: Boolean }
 
-data Query a
+data Query (a :: Type)
 data Action
   = HandleFormHeaderClick MouseEvent
   | HandleSlider Ocelot.Slider.Output
@@ -100,7 +100,7 @@ render ::
   MonadAff m =>
   State ->
   ComponentHTML m
-render state =
+render _ =
   let content = Backdrop.content [ css "flex" ]
       accessibilityCallout =
         Documentation.callout_

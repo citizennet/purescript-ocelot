@@ -14,6 +14,7 @@
     "parcel": "1.12.4",
     "parcel-bundler": "1.12.3",
     "purescript": "0.14.3",
+    "purescript-psa": "0.8.2",
     "spago": "^0.15.2"
   },
   "dependencies": {

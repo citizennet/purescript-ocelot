@@ -1,5 +1,6 @@
 module Ocelot.HTML.Properties
   ( IProp(..)
+  , append'
   , appendIProps
   , css
   , extract

@@ -50,7 +50,7 @@ suite =
             go x acc
               | x <= 0     = acc
               | otherwise  = go (x - 1) (ipropsA <&> ipropsB)
-            run = go 10000 []
+            _ = go 10000 []
         end <- Effect.Class.liftEffect Effect.Now.now
         _ <- Test.Unit.Console.log $ "End time: " <> show end
         let (Milliseconds start') = unInstant start

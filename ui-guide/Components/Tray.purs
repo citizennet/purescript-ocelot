@@ -14,7 +14,7 @@ import UIGuide.Block.Documentation as Documentation
 
 type State = { open :: Boolean }
 
-data Query a
+data Query (a :: Type)
 data Action = Toggle
 
 type Input = Unit

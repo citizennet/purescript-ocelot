@@ -102,7 +102,8 @@ type CompositeState item
 
 type EmbeddedAction = Void
 
-type EmbeddedChildSlots = () -- NOTE no extension
+type EmbeddedChildSlots
+  = () :: Row Type
 
 type Input item m =
   { disabled :: Boolean

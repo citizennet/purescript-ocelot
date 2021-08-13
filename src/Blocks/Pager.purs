@@ -5,7 +5,6 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Data.Array ((..))
 import Data.FoldableWithIndex (foldlWithIndex)
-import Data.Maybe (Maybe)
 import Foreign.Object as Foreign.Object
 import Halogen.HTML as HH
 import Halogen.HTML.Core (ClassName(..))
@@ -44,17 +43,17 @@ pager skip last query =
       foldlWithIndex makePagingButtons' [] makeList
 
     makePagingButtons' :: Int -> Array (HH.HTML p i) -> Int -> Array (HH.HTML p i)
-    makePagingButtons' 0 btns btn =
+    makePagingButtons' 0 _ btn =
       (if skip == 1 then [] else [backArrow]) <> [button btn]
     makePagingButtons' 1 btns btn | btn /= 2 =
       btns <> [ellipsis] <> [button btn]
-    makePagingButtons' idx btns btn | btn == last && last < 7 && skip /= last =
+    makePagingButtons' _ btns btn | btn == last && last < 7 && skip /= last =
       btns <> [button btn] <> [forwardArrow]
-    makePagingButtons' idx btns btn | btn == last && last < 7 =
+    makePagingButtons' _ btns btn | btn == last && last < 7 =
       btns <> [button btn]
-    makePagingButtons' idx btns btn | btn == last && skip < (last - 3) =
+    makePagingButtons' _ btns btn | btn == last && skip < (last - 3) =
       btns <> [ellipsis] <> [button btn] <> [forwardArrow]
-    makePagingButtons' idx btns btn | btn == last =
+    makePagingButtons' _ btns btn | btn == last =
       btns <> [button btn] <> (if skip == last then [] else [forwardArrow])
     makePagingButtons' _ btns btn =
       btns <> [button btn]
@@ -122,17 +121,17 @@ makePagingButtonsNew skip last query = foldlWithIndex makePagingButtons' [] make
   makeList = [1] <> (skip - 2) .. (skip + 2) <> [last]
 
   makePagingButtons' :: Int -> Array (HH.HTML p i) -> Int -> Array (HH.HTML p i)
-  makePagingButtons' 0 btns btn =
+  makePagingButtons' 0 _ btn =
     (if skip == 1 then [] else [backArrow]) <> [button btn]
   makePagingButtons' 1 btns btn | btn /= 2 =
     btns <> [ellipsis] <> [button btn]
-  makePagingButtons' idx btns btn | btn == last && last < 7 && skip /= last =
+  makePagingButtons' _ btns btn | btn == last && last < 7 && skip /= last =
     btns <> [button btn] <> [forwardArrow]
-  makePagingButtons' idx btns btn | btn == last && last < 7 =
+  makePagingButtons' _ btns btn | btn == last && last < 7 =
     btns <> [button btn]
-  makePagingButtons' idx btns btn | btn == last && skip < (last - 3) =
+  makePagingButtons' _ btns btn | btn == last && skip < (last - 3) =
     btns <> [ellipsis] <> [button btn] <> [forwardArrow]
-  makePagingButtons' idx btns btn | btn == last =
+  makePagingButtons' _ btns btn | btn == last =
     btns <> [button btn] <> (if skip == last then [] else [forwardArrow])
   makePagingButtons' _ btns btn =
     btns <> [button btn]
