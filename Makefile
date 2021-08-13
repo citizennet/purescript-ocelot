@@ -13,7 +13,7 @@ UI_GUIDE_DIR ?= $(ROOT_DIR)/ui-guide
 CLEAN_DEPS :=
 BUILD_DEPS := build-ui
 DEPS := $(BUILD_DIR)/.deps
-FIND_SRC_FILES_ARGS := \( -name '*.purs' -o -name '*.js' \) -type f
+FIND_SRC_FILES_ARGS := -name '*.purs' -type f
 NODE_MODULES := $(ROOT_DIR)/node_modules/.stamp
 PACKAGE_JSON := $(ROOT_DIR)/package.json
 PSA_ARGS ?= --censor-lib --stash=$(BUILD_DIR)/.psa_stash --is-lib=.spago --strict --censor-codes=UserDefinedWarning
@@ -80,7 +80,7 @@ $(OUTPUT_DIR)/Main/index.js: $(DEPS) $(SRC_FILES) $(UI_GUIDE_FILES)
 	$(NPX) psa $(PSA_ARGS) $(RTS_ARGS) $(shell cat $(DEPS)) $(UI_GUIDE_FILES)
 
 $(OUTPUT_DIR)/Test.Main/index.js: $(DEPS) $(SRC_FILES) $(TEST_FILES)
-	$(NPX) psa $(PSA_ARGS) $(RTS_ARGS) $(shell cat $(DEPS)) $(TEST_FILES)
+	$(NPX) psa $(PSA_ARGS) $(RTS_ARGS) $(shell cat $(DEPS))
 
 .PHONY: build
 build: $(BUILD_DEPS) ## Build everything — all the CSS, and the UI Guide — installing any missing dependencies along the way
