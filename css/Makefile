@@ -13,7 +13,7 @@ DIST_CSS_DEV_SCOPED := $(DIST_DIR)/$(DIST_CSS_FILENAME).scoped.css
 DIST_CSS_PROD_GLOBAL := $(DIST_DIR)/$(DIST_CSS_FILENAME).min.css
 DIST_CSS_PROD_SCOPED := $(DIST_DIR)/$(DIST_CSS_FILENAME).scoped.min.css
 
-CSS_YARN := cd $(CSS_DIR) && yarn
+CSS_NPX := cd $(CSS_DIR) && npx
 
 .DEFAULT_GOAL := build-css
 
@@ -23,20 +23,20 @@ BUILD_DEPS += build-css
 CLEAN_DEPS += clean-css
 
 $(CSS_NODE_MODULES): $(CSS_PACKAGE_JSON) $(CSS_YARN_LOCK)
-	$(CSS_YARN) install
+	$(CSS_NPX) yarn install
 	touch $@
 
 $(DIST_CSS_DEV_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(CSS_YARN) run webpack
+	$(CSS_NPX) webpack
 
 $(DIST_CSS_DEV_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(CSS_YARN) run webpack --env=scoped
+	$(CSS_NPX) webpack --env=scoped
 
 $(DIST_CSS_PROD_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(CSS_YARN) run webpack --env=prod
+	$(CSS_NPX) webpack --env=prod
 
 $(DIST_CSS_PROD_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
-	$(CSS_YARN) run webpack --env=prod,scoped
+	$(CSS_NPX) webpack --env=prod,scoped
 
 $(DIST_DIR):
 	mkdir -p $@
