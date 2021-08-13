@@ -5,7 +5,6 @@ import Prelude
 import DOM.HTML.Indexed (HTMLdiv)
 import Data.Array ((..))
 import Data.FoldableWithIndex (foldlWithIndex)
-import Data.Maybe (Maybe)
 import Foreign.Object as Foreign.Object
 import Halogen.HTML as HH
 import Halogen.HTML.Core (ClassName(..))
