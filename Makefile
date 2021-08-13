@@ -16,6 +16,7 @@ DEPS := $(BUILD_DIR)/.deps
 FIND_SRC_FILES_ARGS := \( -name '*.purs' -o -name '*.js' \) -type f
 NODE_MODULES := $(ROOT_DIR)/node_modules/.stamp
 PACKAGE_JSON := $(ROOT_DIR)/package.json
+PSA_ARGS ?= --censor-lib --stash=$(BUILD_DIR)/.psa_stash --is-lib=.spago --strict --censor-codes=MissingKindDeclaration,UnusedDeclaration,UnusedName,UserDefinedWarning
 SRC_FILES := $(shell find $(SRC_DIR) $(FIND_SRC_FILES_ARGS))
 TEST_FILES := $(shell find $(TEST_DIR) $(FIND_SRC_FILES_ARGS))
 UI_GUIDE_FILES := $(shell find $(UI_GUIDE_DIR) $(FIND_SRC_FILES_ARGS))
@@ -58,7 +59,7 @@ $(BUILD_DIR)/test.out: $(BUILD_DIR)/test.js
 
 $(DEPS): packages.dhall spago.dhall $(NODE_MODULES) | $(BUILD_DIR)
 	$(NPX) spago install $(RTS_ARGS)
-	touch $@
+	$(NPX) spago sources | sed -e "s/\(.*\)/'\1'/" | tr '\n' ' ' > $(DEPS)
 
 $(DIST_DIR)/bundled.js: $(OUTPUT_DIR)/Main/index.js
 	$(NPX) purs bundle \
@@ -75,11 +76,11 @@ $(NODE_MODULES): $(PACKAGE_JSON) $(YARN_LOCK)
 	$(NPX) yarn install
 	touch $@
 
-$(OUTPUT_DIR)/Main/index.js: $(SRC_FILES) $(UI_GUIDE_FILES) $(DEPS)
-	$(NPX) spago build -p "$(UI_GUIDE_DIR)/**/*.purs" -u "$(RTS_ARGS)"
+$(OUTPUT_DIR)/Main/index.js: $(DEPS) $(SRC_FILES) $(UI_GUIDE_FILES)
+	$(NPX) psa $(PSA_ARGS) $(RTS_ARGS) $(shell cat $(DEPS)) $(UI_GUIDE_FILES)
 
-$(OUTPUT_DIR)/Test.Main/index.js: $(SRC_FILES) $(TEST_FILES) $(DEPS)
-	$(NPX) spago build -p "$(TEST_DIR)/Main.purs $(TEST_DIR)/Test/**/*.purs" -u "$(RTS_ARGS)"
+$(OUTPUT_DIR)/Test.Main/index.js: $(DEPS) $(SRC_FILES) $(TEST_FILES)
+	$(NPX) psa $(PSA_ARGS) $(RTS_ARGS) $(shell cat $(DEPS)) $(TEST_FILES)
 
 .PHONY: build
 build: $(BUILD_DEPS) ## Build everything — all the CSS, and the UI Guide — installing any missing dependencies along the way
