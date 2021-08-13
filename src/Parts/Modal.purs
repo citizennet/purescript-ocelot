@@ -60,7 +60,7 @@ modal
   -> Array (HH.IProp HTMLdiv action)
   -> Array (H.ComponentHTML action slots m)
   -> H.ComponentHTML action slots m
-modal click iprops html =
+modal _ iprops html =
   HH.div
     [ HP.classes backgroundClasses ]
     [ HH.div

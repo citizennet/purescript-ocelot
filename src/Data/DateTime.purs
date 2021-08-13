@@ -112,12 +112,12 @@ adjustDaysBy n = unsafePartial fromJust <<< next n
 nextMonth :: Date -> Date
 nextMonth d = case (month d) of
   December -> canonicalDate (unsafeSucc (year d)) January (day d)
-  other    -> canonicalDate (year d) (unsafeSucc (month d)) (day d)
+  _    -> canonicalDate (year d) (unsafeSucc (month d)) (day d)
 
 prevMonth :: Date -> Date
 prevMonth d = case (month d) of
   January -> canonicalDate (unsafePred (year d)) December (day d)
-  other   -> canonicalDate (year d) (unsafePred (month d)) (day d)
+  _   -> canonicalDate (year d) (unsafePred (month d)) (day d)
 
 -- Years
 -- Note: Attempts to preserve the same day, but due to the use of

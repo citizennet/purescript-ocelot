@@ -100,7 +100,7 @@ render ::
   MonadAff m =>
   State ->
   ComponentHTML m
-render state =
+render _ =
   let content = Backdrop.content [ css "flex" ]
       accessibilityCallout =
         Documentation.callout_

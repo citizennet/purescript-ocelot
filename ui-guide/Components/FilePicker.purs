@@ -80,7 +80,7 @@ render ::
   MonadAff m =>
   State ->
   ComponentHTML m
-render state =
+render _ =
   Halogen.HTML.div_
   [ Documentation.customBlock_
     { header: "File Picker"

@@ -398,7 +398,7 @@ handleMouseUpFromThumb ::
   Web.UIEvent.MouseEvent.MouseEvent ->
   EditingState ->
   ComponentM m Unit
-handleMouseUpFromThumb mouseEvent { static, moving, subscriptions } = do
+handleMouseUpFromThumb _ { static, moving, subscriptions } = do
   muteAllListeners subscriptions
   let
     new :: Array { percent :: Number }

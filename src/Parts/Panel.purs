@@ -63,7 +63,7 @@ panelLeft ::
   Array (Halogen.HTML.IProp HTMLdiv action) ->
   Array (Halogen.ComponentHTML action slots m) ->
   Halogen.ComponentHTML action slots m
-panelLeft visible click iprops html =
+panelLeft visible _ iprops html =
   Halogen.HTML.div
     (if visible then backgroundOpenProperties else backgroundClosedProperties)
     [ Halogen.HTML.div
@@ -88,7 +88,7 @@ panelRight ::
   Array (Halogen.HTML.IProp HTMLdiv action) ->
   Array (Halogen.ComponentHTML action slots m) ->
   Halogen.ComponentHTML action slots m
-panelRight visible click iprops html =
+panelRight visible _ iprops html =
   Halogen.HTML.div
     (if visible then backgroundOpenProperties else backgroundClosedProperties)
     [ Halogen.HTML.div

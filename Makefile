@@ -16,7 +16,7 @@ DEPS := $(BUILD_DIR)/.deps
 FIND_SRC_FILES_ARGS := \( -name '*.purs' -o -name '*.js' \) -type f
 NODE_MODULES := $(ROOT_DIR)/node_modules/.stamp
 PACKAGE_JSON := $(ROOT_DIR)/package.json
-PSA_ARGS ?= --censor-lib --stash=$(BUILD_DIR)/.psa_stash --is-lib=.spago --strict --censor-codes=UnusedName,UserDefinedWarning
+PSA_ARGS ?= --censor-lib --stash=$(BUILD_DIR)/.psa_stash --is-lib=.spago --strict --censor-codes=UserDefinedWarning
 SRC_FILES := $(shell find $(SRC_DIR) $(FIND_SRC_FILES_ARGS))
 TEST_FILES := $(shell find $(TEST_DIR) $(FIND_SRC_FILES_ARGS))
 UI_GUIDE_FILES := $(shell find $(UI_GUIDE_DIR) $(FIND_SRC_FILES_ARGS))

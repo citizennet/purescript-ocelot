@@ -219,7 +219,7 @@ decodeLocation json = do
   pure $ Location { name, population }
 
 locationToObject :: Location -> Object String
-locationToObject (Location { name, population }) =
+locationToObject (Location { name }) =
   fromFoldable [ Tuple "name" name ]
 
 stringToLocation :: String -> Location
@@ -257,4 +257,4 @@ colorToCSSColor color =
     "silver" -> "grey-lighter"
     "brown mottle" -> "orange-darker"
     "mottled green" -> "green-dark"
-    otherwise -> "transparent"
+    _ -> "transparent"

@@ -80,7 +80,7 @@ component config =
     }
 
 initialState :: Config -> Input -> State
-initialState config input =
+initialState config _ =
   { config
   , dragOver: false
   }

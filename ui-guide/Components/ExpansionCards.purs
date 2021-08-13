@@ -104,7 +104,7 @@ component =
             _ <- H.queryAll _cp3 $ H.mkTell $ TA.ReplaceItems items
             _ <- H.queryAll _cp4 $ H.mkTell $ TA.ReplaceItems items
             pure unit
-          otherwise -> pure unit
+          _ -> pure unit
 
         remoteUsers <- H.liftAff $ Async.loadFromSource Async.users ""
         _ <- case remoteUsers of
@@ -112,7 +112,7 @@ component =
             _ <- H.queryAll _cp1 $ H.mkTell $ TA.ReplaceItems items
             _ <- H.queryAll _cp2 $ H.mkTell $ TA.ReplaceItems items
             pure unit
-          otherwise -> pure unit
+          _ -> pure unit
 
         selectedLocations <- H.liftAff $ Async.loadFromSource Async.locations "an"
         _ <- case selectedLocations of
@@ -120,7 +120,7 @@ component =
             _ <- H.tell _cp3 1 $ TA.ReplaceSelected (head xs)
             _ <- H.tell _cp4 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
-          otherwise -> pure unit
+          _ -> pure unit
 
         selectedUsers <- H.liftAff $ Async.loadFromSource Async.users "an"
         case selectedUsers of
@@ -128,7 +128,7 @@ component =
             _ <- H.tell _cp1 1 $ TA.ReplaceSelected (head xs)
             _ <- H.tell _cp2 3 $ TA.ReplaceSelected (take 4 xs)
             pure unit
-          otherwise -> pure unit
+          _ -> pure unit
 
 
 ----------

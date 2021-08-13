@@ -57,7 +57,7 @@ component =
     handleAction :: Action -> H.HalogenM State Action () Message m Unit
     handleAction = case _ of
       Toggle t -> do
-        st <- H.modify _ { toast = Just t }
+        H.modify_ _ { toast = Just t }
         H.liftAff $ delay $ Milliseconds 3000.0
         H.modify_ _ { toast = Nothing }
 

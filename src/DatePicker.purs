@@ -305,7 +305,7 @@ embeddedHandleAction = case _ of
       "Escape" -> do
         preventIt
         H.modify_ _ { visibility = S.Off }
-      otherwise -> pure unit
+      _ -> pure unit
   OnBlur -> do
     state <- H.get
     when (Data.Maybe.isNothing state.selection) do
@@ -442,7 +442,7 @@ generateCalendarRows mInterval selection y m =
   , aligned
   }
   where
-    aligned@{ pre, body, post, all } = alignByWeek y m
+    aligned@{ pre, body, post } = alignByWeek y m
     outOfBounds = map (generateCalendarItem mInterval selection OutOfBounds)
     lastMonth   = outOfBounds pre
     nextMonth   = outOfBounds post

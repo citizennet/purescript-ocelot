@@ -251,11 +251,6 @@ component =
         ]
 
       where
-        disableToggleText :: String
-        disableToggleText
-          | state.disabled = "Enable"
-          | otherwise = "Disable"
-
         items :: Array String
         items =
           [ "Lagavulin 16"

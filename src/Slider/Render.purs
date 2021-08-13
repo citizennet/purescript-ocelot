@@ -29,12 +29,11 @@ axisContainer ::
   { betweenThumbAndAxis :: Number
   , betweenTopAndThumb :: Number
   , thumbRadius :: Number
-  , trackWidth :: Number
   | config
   } ->
   Array (Halogen.HTML.HTML p a) ->
   Halogen.HTML.HTML p a
-axisContainer { betweenThumbAndAxis, betweenTopAndThumb, trackWidth, thumbRadius }  =
+axisContainer { betweenThumbAndAxis, betweenTopAndThumb, thumbRadius }  =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
       [ Halogen.Svg.Attributes.Translate

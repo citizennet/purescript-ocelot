@@ -116,9 +116,6 @@ render _ =
   percentB :: Number
   percentB = 100.0
 
-  trackHeight :: Number
-  trackHeight = trackRadius * 2.0
-
   -- | NOTE assume thumbRadius > trackRadius
   config :: Ocelot.Slider.Render.Config
   config = { axisHeight, betweenThumbAndAxis, betweenTopAndThumb, frameWidth, margin, trackWidth, trackRadius, thumbRadius }

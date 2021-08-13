@@ -195,7 +195,7 @@ embeddedHandleAction = case _ of
       "Escape" -> do
         preventIt
         H.modify_ _ { visibility = S.Off }
-      otherwise -> pure unit
+      _ -> pure unit
   OnBlur -> do
     { selection } <- H.get
     when (isNothing selection) handleSearch
