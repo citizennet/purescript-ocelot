@@ -273,7 +273,7 @@ renderContent label =
         , async: Async.loadFromSource Async.locations
         }
         [ HP.placeholder "Search locations..."
-        , HP.id_ "locations"
+        , HP.id "locations"
         ]
       )
     ]
@@ -293,7 +293,7 @@ renderContent label =
         , async: Async.loadFromSource Async.users
         }
         [ HP.placeholder "Search users..."
-        , HP.id_ "users"
+        , HP.id "users"
         ]
       )
     ]

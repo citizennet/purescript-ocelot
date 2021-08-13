@@ -267,7 +267,7 @@ renderInput ::
 renderInput state =
   Halogen.HTML.input
     ( [ Ocelot.HTMl.Properties.css "hidden"
-      , Halogen.HTML.Properties.id_ state.config.id
+      , Halogen.HTML.Properties.id state.config.id
       , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputFile
       , Ocelot.HTML.Events.onFileUpload ChooseFile
       , Halogen.HTML.Properties.multiple state.config.multiple

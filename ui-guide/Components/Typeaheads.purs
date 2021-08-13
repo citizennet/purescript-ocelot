@@ -167,7 +167,7 @@ cnDocumentationBlocks =
                     , itemToObject: Async.locationToObject
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "location"
+                    , HP.id "location"
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
@@ -189,7 +189,7 @@ cnDocumentationBlocks =
                     , async: Async.loadFromSource Async.locations
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "location-hydrated"
+                    , HP.id "location-hydrated"
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
@@ -215,7 +215,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "user"
+                  , HP.id "user"
                   ]
                 )
               ]
@@ -235,7 +235,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "user-hydrated"
+                  , HP.id "user-hydrated"
                   ]
                 )
               ]
@@ -267,7 +267,7 @@ cnDocumentationBlocks =
                     , async: Async.loadFromSource Async.locations
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "locations"
+                    , HP.id "locations"
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
@@ -288,7 +288,7 @@ cnDocumentationBlocks =
                     , async: Async.loadFromSource Async.locations
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "locations"
+                    , HP.id "locations"
                     ]
                   ) { insertable = TA.Insertable Async.stringToLocation }
                 )
@@ -314,7 +314,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "user"
+                  , HP.id "user"
                   ]
                 )
               ]
@@ -334,7 +334,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "user"
+                  , HP.id "user"
                   ]
                 )
               ]
@@ -428,7 +428,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
-                  , HP.id_ "disabled-locations-empty"
+                  , HP.id "disabled-locations-empty"
                   , HP.disabled true
                   ]
                 )
@@ -449,7 +449,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
-                  , HP.id_ "disabled-locations-hydrated"
+                  , HP.id "disabled-locations-hydrated"
                   , HP.disabled true
                   ]
                 )
@@ -470,7 +470,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
-                  , HP.id_ "error-locations"
+                  , HP.id "error-locations"
                   ]
                 )
               ]
@@ -490,7 +490,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.locations
                   }
                   [ HP.placeholder "Search locations..."
-                  , HP.id_ "loading-locations"
+                  , HP.id "loading-locations"
                   ]
                 )
               ]
@@ -516,7 +516,7 @@ cnDocumentationBlocks =
                   }
                   [ HP.placeholder "Search users..."
                   , HP.disabled true
-                  , HP.id_ "disabled-users-empty"
+                  , HP.id "disabled-users-empty"
                   ]
                 )
               ]
@@ -537,7 +537,7 @@ cnDocumentationBlocks =
                   }
                   [ HP.placeholder "Search users..."
                   , HP.disabled true
-                  , HP.id_ "disabled-users-hydrated"
+                  , HP.id "disabled-users-hydrated"
                   ]
                 )
               ]
@@ -557,7 +557,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "error-users"
+                  , HP.id "error-users"
                   ]
                 )
               ]
@@ -577,7 +577,7 @@ cnDocumentationBlocks =
                   , async: Async.loadFromSource Async.users
                   }
                   [ HP.placeholder "Search users..."
-                  , HP.id_ "loading-users"
+                  , HP.id "loading-users"
                   ]
                 )
               ]

@@ -196,7 +196,7 @@ cnDocumentationBlocks st =
                       , async: Async.loadFromSource Async.locations
                       }
                       [ HP.placeholder "Search locations..."
-                      , HP.id_ "location"
+                      , HP.id "location"
                       ]
                     )
                   ]
@@ -213,7 +213,7 @@ cnDocumentationBlocks st =
                       , async: Async.loadFromSource Async.locations
                       }
                       [ HP.placeholder "Search locations..."
-                      , HP.id_ "location-hydrated"
+                      , HP.id "location-hydrated"
                       ]
                     )
                   ]
@@ -242,7 +242,7 @@ cnDocumentationBlocks st =
                       , async: Async.loadFromSource Async.users
                       }
                       [ HP.placeholder "Search users..."
-                      , HP.id_ "user"
+                      , HP.id "user"
                       ]
                     )
                   ]
@@ -259,7 +259,7 @@ cnDocumentationBlocks st =
                       , async: Async.loadFromSource Async.users
                       }
                       [ HP.placeholder "Search users..."
-                      , HP.id_ "user-hydrated"
+                      , HP.id "user-hydrated"
                       ]
                     )
                   ]
@@ -287,7 +287,7 @@ cnDocumentationBlocks st =
               , inputId: "enable-locations"
               }
               [ Toggle.toggle
-                [ HP.id_ "enable-locations"
+                [ HP.id "enable-locations"
                 , HP.checked
                   $ Expandable.toBoolean st.multiLocation
                 , HE.onChange \_ -> ToggleCard _multiLocation
@@ -308,7 +308,7 @@ cnDocumentationBlocks st =
                     , async: Async.loadFromSource Async.locations
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "locations"
+                    , HP.id "locations"
                     ]
                   )
                 ]
@@ -325,7 +325,7 @@ cnDocumentationBlocks st =
                     , async: Async.loadFromSource Async.locations
                     }
                     [ HP.placeholder "Search locations..."
-                    , HP.id_ "locations"
+                    , HP.id "locations"
                     ]
                   )
                 ]
@@ -345,7 +345,7 @@ cnDocumentationBlocks st =
               , inputId: "enable-users"
               }
               [ Toggle.toggle
-                [ HP.id_ "enable-users"
+                [ HP.id "enable-users"
                 , HP.checked
                   $ Expandable.toBoolean st.multiUser
                 , HE.onChange \_ -> ToggleCard _multiUser
@@ -366,7 +366,7 @@ cnDocumentationBlocks st =
                     , async: Async.loadFromSource Async.users
                     }
                     [ HP.placeholder "Search users..."
-                    , HP.id_ "users"
+                    , HP.id "users"
                     ]
                   )
                 ]
@@ -383,7 +383,7 @@ cnDocumentationBlocks st =
                     , async: Async.loadFromSource Async.users
                     }
                     [ HP.placeholder "Search users..."
-                    , HP.id_ "users-hydrated"
+                    , HP.id "users-hydrated"
                     ]
                   )
                 ]

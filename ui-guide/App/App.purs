@@ -135,7 +135,7 @@ app =
   renderSidebar :: State m -> HTML m
   renderSidebar state =
     Backdrop.backdrop
-    [ HP.id_ "sidebar"
+    [ HP.id "sidebar"
     , HP.classes
       ( HH.ClassName <$>
         [ "hidden"
