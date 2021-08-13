@@ -26,6 +26,7 @@ module Ocelot.DatePicker
   , State
   , StateRow
   , component
+  , defaultInput
   ) where
 
 import Prelude
@@ -205,11 +206,6 @@ component = H.mkComponent
 -- Values
 
 _select = Proxy :: Proxy "select"
-
--- Summary helper function that creates a full grid calendar layout
--- from a year and a month.
-align :: Year -> Month -> Array (Array Date)
-align y m = rowsFromAligned (alignByWeek y m)
 
 -- A special case for when you need to match days of the month to a grid
 -- that's bound to weekdays Sun - Sat.
@@ -698,10 +694,6 @@ renderSelect y m visibility calendarItems =
     $ if visibility == S.On
       then [ renderCalendar y m calendarItems ]
       else []
-
--- Break a set of Sunday-aligned dates into rows, each 7 in length.
-rowsFromAligned :: Aligned -> Array (Array Date)
-rowsFromAligned { all } = rowsFromArray all
 
 -- Break a set of Sunday-aligned dates into rows, each 7 in length.
 rowsFromArray :: ∀ a. Array a -> Array (Array a)
