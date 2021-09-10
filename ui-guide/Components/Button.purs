@@ -7,6 +7,7 @@ module UIGuide.Component.Button
 
 import Prelude
 
+import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -49,7 +50,10 @@ _clipboard = Proxy :: Proxy "clipboard"
 ----------
 -- HTML
 
-component :: forall m. Component m
+component ::
+  forall m.
+  MonadAff m =>
+  Component m
 component =
   H.mkComponent
     { initialState: const unit
@@ -57,7 +61,11 @@ component =
     , eval: H.mkEval H.defaultEval
     }
 
-render :: forall m. State -> ComponentHTML m
+render ::
+  forall m.
+  MonadAff m =>
+  State ->
+  ComponentHTML m
 render _ =
   HH.div_
   [ renderButtons
@@ -388,7 +396,10 @@ renderButtonGroups =
       ]
     ]
 
-renderClipboardButtons :: forall m. ComponentHTML m
+renderClipboardButtons ::
+  forall m.
+  MonadAff m =>
+  ComponentHTML m
 renderClipboardButtons =
   Documentation.block_
     { header: "Clipboard Buttons"
