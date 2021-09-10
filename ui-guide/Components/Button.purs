@@ -12,7 +12,9 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
+import Ocelot.Clipboard as Ocelot.Clipboard
 import Ocelot.HTML.Properties (css)
+import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -39,7 +41,10 @@ type Input = Unit
 type Message = Void
 
 type ChildSlot =
-  () :: Row Type
+  ( clipboard :: Ocelot.Clipboard.Slot Unit
+  )
+
+_clipboard = Proxy :: Proxy "clipboard"
 
 ----------
 -- HTML
@@ -57,6 +62,7 @@ render _ =
   HH.div_
   [ renderButtons
   , renderButtonGroups
+  , renderClipboardButtons
   ]
 
 renderButtons :: forall m. ComponentHTML m
@@ -377,6 +383,26 @@ renderButtonGroups =
                 [ HH.text "Fast-Forward" ]
               ]
             ]
+          ]
+        ]
+      ]
+    ]
+
+renderClipboardButtons :: forall m. ComponentHTML m
+renderClipboardButtons =
+  Documentation.block_
+    { header: "Clipboard Buttons"
+    , subheader: "copy to clipboard"
+    }
+    [ Backdrop.backdrop_
+      [ Backdrop.content_
+        [ HH.div
+          [ css "mb-6" ]
+          [ Format.caption_
+            [ HH.text "Standard" ]
+          , HH.slot_ _clipboard unit
+              Ocelot.Clipboard.component
+              unit
           ]
         ]
       ]
