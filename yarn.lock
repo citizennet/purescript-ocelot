@@ -5774,10 +5774,10 @@ source-map@^0.5.0, source-map@^0.5.6, source-map@~0.5.3:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
-spago@^0.15.2:
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/spago/-/spago-0.15.2.tgz#4ef59ae21f269fdab1d903d6c83c0cba1e415c06"
-  integrity sha512-RaH7AaY8Dzb9uhzDdhN5fMXAYQm5/Js7Qnb7M9NgbapV29dS7gMy7vQ6i6FAoLEqzbvBDzbSjQ+VabLQmaGbEQ==
+spago@0.20.3:
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/spago/-/spago-0.20.3.tgz#f72a096456f580f6eb64fc850c371f8cb97b139f"
+  integrity sha512-R4CWLP5IbaWoNIpS1QAUuDK2LKlKYqT5gBKVZL7ILilvCwdwS72u3NbGZbvx7VCRRZz4lG7zXUkqKNow7zh6wQ==
   dependencies:
     request "^2.88.0"
     tar "^4.4.8"
