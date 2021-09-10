@@ -413,7 +413,7 @@ renderClipboardButtons =
             [ HH.text "Standard" ]
           , HH.slot_ _clipboard unit
               Ocelot.Clipboard.component
-              unit
+              { text: "copied from UIGuide" }
           ]
         ]
       ]

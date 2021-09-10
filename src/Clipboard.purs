@@ -30,15 +30,18 @@ type ComponentM m
   = Halogen.HalogenM State Action ChildSlot Output m
 
 type State
-  = { copied :: Boolean }
+  = { copied :: Boolean
+    , input :: Input
+    }
 
 data Action
   = Copy
+  | Receive Input
 
 data Query (a :: Type)
 
 type Input
-  = Unit
+  = { text :: String }
 
 type Output
   = Void
@@ -56,14 +59,16 @@ component =
         Halogen.mkEval
           Halogen.defaultEval
             { handleAction = handleAction
+            , receive = Just <<< Receive
             }
     , initialState
     , render
     }
 
 initialState :: Input -> State
-initialState _ =
+initialState input =
   { copied: false
+  , input
   }
 
 handleAction ::
@@ -73,6 +78,7 @@ handleAction ::
   ComponentM m Unit
 handleAction = case _ of
   Copy -> copy
+  Receive input -> receive input
 
 copy ::
   forall m.
@@ -84,6 +90,13 @@ copy = do
     Halogen.liftAff
       $ Effect.Aff.delay (Effect.Aff.Milliseconds 1000.0)
     Halogen.modify_ _ { copied = false }
+
+receive ::
+  forall m.
+  Input ->
+  ComponentM m Unit
+receive input = do
+  Halogen.modify_ _ { input = input }
 
 render ::
   forall m.
