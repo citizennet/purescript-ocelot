@@ -22,6 +22,9 @@ import Ocelot.Block.Icon as Icon
 import Ocelot.Data.Tree (ItemPath, Node(..), IndexPath, _expanded, _selected, _children)
 import Ocelot.HTML.Properties (css)
 
+type ComponentM item m =
+ H.HalogenM (State item) (Action item) () (Message item) m
+
 type State item =
   { items :: Array (Node item)
   , initial :: Array (Node item)
@@ -36,6 +39,7 @@ data Action item
 data Query item a
   = SetItems (Array (Node item)) a
   | SetSelections (Array (ItemPath item)) a
+  | ToggleSingle (ItemPath item) Boolean a
 
 type Input item =
   { renderItem :: item -> HH.PlainHTML
@@ -146,10 +150,23 @@ handleQuery = case _ of
   SetSelections itemPaths a -> do
     { items, initial } <- H.get
     let paths = flip itemPathToIndexPath items <$> itemPaths
-        updates = (\p r -> r { items = expandPath p r.items }) <$> paths
+        updates = (\p r -> r { items = expandPath true p r.items }) <$> paths
         updater = A.foldl (>>>) (_ { items = initial }) updates
     H.modify_ updater
     pure $ Just a
+
+  ToggleSingle itemPath checked a -> toggleSingle itemPath checked $> Just a
+
+toggleSingle ::
+  forall item m.
+  Eq item =>
+  ItemPath item ->
+  Boolean ->
+  ComponentM item m Unit
+toggleSingle itemPath checked = do
+  H.modify_ \old ->
+    old { items = expandPath checked (itemPathToIndexPath itemPath old.items) old.items }
+
 
 -----
 -- Helper functions for expanding paths, toggling checkboxes, etc.
@@ -176,8 +193,8 @@ pathToLens path lastProp = (<<<) _items <$> pathToLens'
 
 -- TODO : update this to use lenses, possibly using pathToLens on increasing subsections of array
 --   e.g. [pathToLens [0] _expanded, pathToLens [0, 2] _expanded, pathToLens [0, 2, 1] _checked]
-expandPath :: ∀ a. IndexPath -> Array (Node a) -> Array (Node a)
-expandPath path traits = do
+expandPath :: ∀ a. Boolean -> IndexPath -> Array (Node a) -> Array (Node a)
+expandPath checked path traits = do
   expandPath' (A.head path) (A.tail path) traits
   where
     expandPath' (Just ix) (Just p) ts | A.length p > 0 = fromMaybe [] $ A.modifyAt ix (expand p) ts
@@ -187,7 +204,7 @@ expandPath path traits = do
       { expanded = true
       , children = expandPath' (A.head p) (A.tail p) t.children
       }
-    check (Node t) = Node $ t { selected = true }
+    check (Node t) = Node $ t { selected = checked }
 
 itemPathToIndexPath :: ∀ a. Eq a => ItemPath a -> Array (Node a) -> IndexPath
 itemPathToIndexPath path ns =
