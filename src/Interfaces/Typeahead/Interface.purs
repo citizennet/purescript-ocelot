@@ -300,8 +300,10 @@ searchDropdownInputToToolbarSingleInput r =
   , disabled: false
   , render: renderToolbarSearchDropdown
       r.placeholder
-      r.resetLabel
-      renderLabel
+      ( case _ of
+          Nothing -> HH.text r.resetLabel
+          Just x -> renderLabel x
+      )
       renderFuzzy
   }
   where
