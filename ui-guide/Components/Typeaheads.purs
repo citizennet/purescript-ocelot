@@ -4,6 +4,7 @@ import Prelude
 
 import Control.Parallel as Control.Parallel
 import Data.Array (head, take)
+import Data.Array as Data.Array
 import Data.Maybe (Maybe(..))
 import Data.Newtype (unwrap)
 import Effect.Aff.Class (class MonadAff)
@@ -647,8 +648,42 @@ cnDocumentationBlocks =
               , disabled: false
               , render: TA.renderToolbarSearchDropdown
                 "All Locations"
+                ( case _ of
+                    Nothing -> HH.text "All Locations"
+                    Just (Async.Location x) -> HH.text x.name
+                )
+                (HH.span_ <<< IC.boldMatches "name")
+              }
+            ]
+          ]
+        , content
+          [ Card.card
+            [ HP.class_ $ HH.ClassName "flex-1" ]
+            [ HH.h3
+              [ HP.classes Format.captionClasses ]
+              [ HH.text "Multi - Searchable Dropdown in a Toolbar (e.g. for filtering)" ]
+            , HH.slot_ _multiLocation 11
+              ( TA.component
+                { runSelect: Data.Array.cons
+                , runRemove: Data.Array.filter <<< (/=)
+                , runFilterFuzzy: identity
+                , runFilterItems: const
+                }
+              )
+              { items: NotAsked
+              , insertable: TA.NotInsertable
+              , keepOpen: true
+              , debounceTime: Nothing
+              , async: Nothing
+              , itemToObject: Async.locationToObject
+              , disabled: false
+              , render: TA.renderToolbarSearchDropdown
                 "All Locations"
-                (HH.text <<< _.name <<< unwrap)
+                ( case _ of
+                    [] -> HH.text "All Locations"
+                    [ Async.Location x ] -> HH.text x.name
+                    xs -> HH.text (show (Data.Array.length xs) <> " Locations Selected")
+                )
                 (HH.span_ <<< IC.boldMatches "name")
               }
             ]

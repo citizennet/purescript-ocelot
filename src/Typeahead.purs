@@ -68,7 +68,6 @@ import Data.Foldable as Data.Foldable
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
-import Data.Newtype as Data.Newtype
 import Data.Rational ((%))
 import Data.String as Data.String
 import Data.Time.Duration as Data.Time.Duration
@@ -914,12 +913,13 @@ renderMultiInput input renderContainer st =
     ]
 
 renderSearchDropdown
-  :: ∀ action item m
+  :: ∀ action f item m
    . Eq item
+  => Data.Foldable.Foldable f
   => String
   -> Halogen.HTML.PlainHTML
   -> (Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML)
-  -> CompositeComponentRender action Maybe item m
+  -> CompositeComponentRender action f item m
 renderSearchDropdown resetLabel label renderFuzzy st =
   Halogen.HTML.label
     [ Ocelot.HTML.Properties.css "relative" ]
@@ -934,12 +934,14 @@ renderSearchDropdown resetLabel label renderFuzzy st =
       [ Ocelot.Block.ItemContainer.dropdownContainer
         [ renderInput, renderReset ]
         renderFuzzy
-        ((==) st.selected <<< Just <<< _.original <<< Data.Newtype.unwrap)
+        isSelected
         st.fuzzyItems
         st.highlightedIndex
       ]
     ]
   where
+  isSelected :: Data.Fuzzy.Fuzzy item -> Boolean
+  isSelected (Data.Fuzzy.Fuzzy { original }) = Data.Foldable.elem original st.selected
   renderInput =
     Halogen.HTML.div
       [ Ocelot.HTML.Properties.css "m-4 border-b-2 border-blue-88 pb-2 flex" ]
@@ -954,7 +956,7 @@ renderSearchDropdown resetLabel label renderFuzzy st =
       [ Halogen.HTML.Events.onClick \_ -> Select.Action $ RemoveAll
       ]
       [ Halogen.HTML.text resetLabel ]
-      ( Data.Maybe.isNothing st.selected )
+      ( Data.Foldable.null st.selected )
       false
 
 renderSingle
@@ -1013,14 +1015,14 @@ renderSingle iprops renderItem renderContainer st =
   showSelected = Data.Maybe.isJust st.selected && st.visibility == Select.Off
 
 renderToolbarSearchDropdown
-  :: ∀ action item m
+  :: ∀ action f item m
    . Eq item
+  => Data.Foldable.Foldable f
   => String
-  -> String
-  -> (item -> Halogen.HTML.PlainHTML)
+  -> (f item -> Halogen.HTML.PlainHTML)
   -> (Data.Fuzzy.Fuzzy item -> Halogen.HTML.PlainHTML)
-  -> CompositeComponentRender action Maybe item m
-renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
+  -> CompositeComponentRender action f item m
+renderToolbarSearchDropdown resetLabel renderText renderFuzzy st =
   renderSearchDropdown resetLabel label renderFuzzy st
   where
     label = Ocelot.Block.ItemContainer.dropdownButton
@@ -1030,7 +1032,7 @@ renderToolbarSearchDropdown defaultLabel resetLabel renderItem renderFuzzy st =
         : Ocelot.Block.Button.buttonMainClasses
         <> Ocelot.Block.Button.buttonClearClasses
       ]
-      [ Data.Maybe.maybe (Halogen.HTML.text defaultLabel) (Halogen.HTML.fromPlainHTML <<< renderItem) st.selected ]
+      [ (Halogen.HTML.fromPlainHTML <<< renderText) st.selected ]
 
 replaceSelected
   :: forall action f item m
