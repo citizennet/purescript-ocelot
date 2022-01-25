@@ -32,6 +32,12 @@ icon className iprops =
         []
     ]
 
+adSet :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+adSet = icon "icon-adset"
+
+adSet_ :: ∀ p i. HH.HTML p i
+adSet_ = adSet []
+
 add :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 add = icon "icon-add"
 
@@ -73,6 +79,12 @@ back = icon "icon-back"
 
 back_ :: ∀ p i. HH.HTML p i
 back_ = back []
+
+campaign :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+campaign = icon "icon-campaign"
+
+campaign_ :: ∀ p i. HH.HTML p i
+campaign_ = campaign []
 
 caratDown :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratDown = icon "icon-carat-down"

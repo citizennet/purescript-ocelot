@@ -115,6 +115,8 @@ component =
             , Tuple "Navigate" Icon.navigate_
             , Tuple "Data Sources" Icon.dataSources_
             , Tuple "Demographics" Icon.demographics_
+            , Tuple "Ad Set" Icon.adSet_
+            , Tuple "Campaign" Icon.campaign_
             ]
           )
         ]
