@@ -46,7 +46,9 @@
 .icon-tiktok:before,
 .icon-twitter:before,
 .icon-youtube:before,
-.icon-demographics:before {
+.icon-demographics:before,
+.icon-adset:before,
+.icon-campaign:before {
     font-family: "ocelot-icon-v2" !important;
 }
 
@@ -54,7 +56,7 @@
   content: attr(data-icon);
 }
 
-/* 2021-02-03 icon updates */
+/* 2022-01-24 icon updates */
 .icon-facebook:before { content: '\e800'; }
 .icon-google:before { content: '\e801'; }
 .icon-instagram:before { content: '\e802'; }
@@ -67,6 +69,8 @@
 .icon-twitter:before { content: '\e809'; }
 .icon-youtube:before { content: '\e80a'; }
 .icon-demographics:before { content: '\e80b'; }
+.icon-adset:before { content: '\e80c'; }
+.icon-campaign:before { content: '\e80d'; }
 
 /* legacy icons */
 .icon-add:before {
