@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
@@ -16,6 +16,8 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      annotations:
+        timestamp: "{{ date "20060102150405" now }}"
       labels:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
@@ -66,6 +68,4 @@ spec:
           hostPath:
             type: Directory
             path: {{ .Values.persistence.path }}
-      nodeSelector: {}
-      affinity: {}
       tolerations: []
