@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Release.Name }}
@@ -19,6 +19,9 @@ spec:
       http:
         paths:
           - path: /ocelot(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: {{ .Release.Name }}
-              servicePort: http
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: 80

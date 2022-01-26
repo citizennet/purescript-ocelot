@@ -11,7 +11,7 @@ docker build -t ocelot-local .
 With that out of the way, run the following to kick off a local deployment:
 
 ```bash
-helm install --name ocelot .k8s/ --set ingress.host=$(hostname),persistence.path=/home/$USER/src/purescript-ocelot
+helm upgrade --install ocelot .k8s/ --set ingress.host=$(hostname),persistence.path=/home/$USER/src/purescript-ocelot
 ```
 
 If you don't have `hostname` configured or your project repo is not set up in `~/src`, then you'll have to manually substitute the value for `ingress.host` with your hostname, and the value for `persistence.path` with your actual project location.
