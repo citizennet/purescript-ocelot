@@ -107,4 +107,4 @@ test: $(BUILD_DIR)/test.out ## Build and run tests
 
 .PHONY: ui-guide
 ui-guide: build-css $(OUTPUT_DIR)/Main/index.js $(NODE_MODULES) | $(PARCEL_DIR) ## Build the UI Guide using ParcelJS for hot reloading (experimental, may not work on all environments)
-	npx parcel $(DIST_DIR)/parcel.html --out-dir $(PARCEL_DIR) --no-cache
+	npx parcel serve $(DIST_DIR)/parcel.html --dist-dir $(PARCEL_DIR) --no-cache
