@@ -20,5 +20,8 @@
     "big-integer": "^1.6.31",
     "request": "^2.88.0",
     "yarn": "^1.16.0"
+  },
+  "alias": {
+    "xhr2": false
   }
 }

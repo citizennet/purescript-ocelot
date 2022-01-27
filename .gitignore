@@ -12,6 +12,7 @@ generated-docs
 *.tix
 .spago
 .purs-repl
+.parcel-cache
 
 
 # Allow the CSS file only; Circle CI will overwrite whatever you
