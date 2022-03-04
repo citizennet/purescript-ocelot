@@ -5,8 +5,10 @@ import Prelude
 import Ocelot.Data.Currency (Cents(..), formatCentsToStrDollars, parseCentsFromDollarStr, parseCentsFromMicroDollars)
 import Data.BigInt as BigInt
 import Data.Maybe (Maybe(..))
+import Test.QuickCheck ((===))
 import Test.Unit as Test.Unit
 import Test.Unit.Assert as Test.Unit.Assert
+import Test.Unit.QuickCheck as Test.Unit.QuickCheck
 
 suite :: Test.Unit.TestSuite
 suite = do
@@ -56,6 +58,11 @@ suite = do
           result = parseCentsFromDollarStr "1,234."
       Test.Unit.Assert.equal expect result
 
+    Test.Unit.test "parseCentsFromDollarStr -1,234.50" do
+      let expect = Just $ Cents $ BigInt.fromInt (-123450)
+          result = parseCentsFromDollarStr "-1,234.50"
+      Test.Unit.Assert.equal expect result
+
     Test.Unit.test "formatCentsToStrDollars 0.00" do
       let result = formatCentsToStrDollars $ Cents $ BigInt.fromInt 0
       Test.Unit.Assert.equal "0.00" result
@@ -71,3 +78,12 @@ suite = do
     Test.Unit.test "formatCentsToStrDollars 1,234.00" do
       let result = formatCentsToStrDollars $ Cents $ BigInt.fromInt 123400
       Test.Unit.Assert.equal "1,234.00" result
+
+    Test.Unit.test "formatCentsToStrDollars -1,234.50" do
+      let result = formatCentsToStrDollars $ Cents $ BigInt.fromInt (-123450)
+      Test.Unit.Assert.equal "-1,234.50" result
+
+    Test.Unit.test "Just cents === parseCentsFromDollarStr (formatCentsToStrDollars cents)" do
+      Test.Unit.QuickCheck.quickCheck \int -> do
+        let cents = Cents $ BigInt.fromInt int
+        Just cents === parseCentsFromDollarStr (formatCentsToStrDollars cents)

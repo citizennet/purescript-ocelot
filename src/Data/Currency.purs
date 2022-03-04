@@ -14,6 +14,7 @@ import Data.Foldable (foldr)
 import Data.Int (fromString) as Int
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Newtype (class Newtype, unwrap)
+import Data.Ord (abs)
 import Data.String (Pattern(..), Replacement(..), length, replaceAll, split, take, null)
 import Data.String.CodeUnits (toCharArray, fromCharArray)
 import Data.Tuple (Tuple(..), snd)
@@ -81,9 +82,11 @@ parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
 
   -- There is one decimal; truncate the cents to 2 places and
   -- add them to the dollars
-  [ dollars, cents ] ->
-    bigIntIs64Bit
-    =<< (+) <$> dollarsPlace dollars <*> BigInt.fromString (take 2 $ cents <> "0")
+  [ dollars, cents ] -> do
+    dollars' <- dollarsPlace dollars
+    cents' <- BigInt.fromString (take 2 $ cents <> "0")
+    let bigInt = if dollars' < zero then dollars' - cents' else dollars' + cents'
+    bigIntIs64Bit bigInt
 
   -- Unable to parse
   _ -> Nothing
@@ -115,8 +118,8 @@ parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
 -- in dollars.
 formatCentsToStrDollars :: Cents -> String
 formatCentsToStrDollars (Cents n)
-  | BigInt.toNumber n < 10.0  = "0.0" <> BigInt.toString n
-  | BigInt.toNumber n < 100.0 = "0." <> BigInt.toString n
+  | abs (BigInt.toNumber n) < 10.0  = (if n < zero then "-" else "") <> "0.0" <> BigInt.toString n
+  | abs (BigInt.toNumber n) < 100.0 = (if n < zero then "-" else "") <> "0." <> BigInt.toString n
   | otherwise = fromCharArray <<< snd $ foldr formatCentsToDollars' (Tuple 0 []) (chars n)
     where
       chars :: BigInt -> Array Char
