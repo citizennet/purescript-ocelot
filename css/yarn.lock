@@ -484,14 +484,15 @@ browserify-zlib@^0.2.0:
     pako "~1.0.5"
 
 browserslist@^4.0.0:
-  version "4.12.0"
-  resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.12.0.tgz"
-  integrity sha512-UH2GkcEDSI0k/lRkuDSzFl9ZZ87skSy9w2XAn1MsZnL+4c4rqbBd3e82UWHbYDpztABrPBhZsTEeuxVfHppqDg==
+  version "4.20.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.20.3.tgz#eb7572f49ec430e054f56d52ff0ebe9be915f8bf"
+  integrity sha512-NBhymBQl1zM0Y5dQT/O+xiLP9/rzOIQdKM/eMJBAq7yBgaB6krIYLGejrwVYnSHZdqjscB1SPuAjHwxjvN6Wdg==
   dependencies:
-    caniuse-lite "^1.0.30001043"
-    electron-to-chromium "^1.3.413"
-    node-releases "^1.1.53"
-    pkg-up "^2.0.0"
+    caniuse-lite "^1.0.30001332"
+    electron-to-chromium "^1.4.118"
+    escalade "^3.1.1"
+    node-releases "^2.0.3"
+    picocolors "^1.0.0"
 
 buffer-from@^1.0.0:
   version "1.1.1"
@@ -592,10 +593,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001043:
-  version "1.0.30001066"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001066.tgz"
-  integrity sha512-Gfj/WAastBtfxLws0RCh2sDbTK/8rJuSeZMecrSkNGYxPcv7EzblmDGfWQCFEQcSqYE2BRgQiJh8HOD07N5hIw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001332:
+  version "1.0.30001346"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001346.tgz#e895551b46b9cc9cc9de852facd42f04839a8fbe"
+  integrity sha512-q6ibZUO2t88QCIPayP/euuDREq+aMAxFE5S70PkrLh0iTDj/zEhgvJRKC2+CvXY6EWc6oQwUR48lL5vCW6jiXQ==
 
 chalk@^1.1.3:
   version "1.1.3"
@@ -1180,10 +1181,10 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
-electron-to-chromium@^1.3.413:
-  version "1.3.455"
-  resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.455.tgz"
-  integrity sha512-4lwnxp+ArqOX9hiLwLpwhfqvwzUHFuDgLz4NTiU3lhygUzWtocIJ/5Vix+mWVNE2HQ9aI1k2ncGe5H/0OktMvA==
+electron-to-chromium@^1.4.118:
+  version "1.4.145"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.145.tgz#5be3aa470cae3c2bccd20afc4d2a5efdca337b7b"
+  integrity sha512-g4VQCi61gA0t5fJHsalxAc8NpvxC/CEwLAGLfJ+DmkRXTEyntJA7H01771uVD6X6nnViv3GToPgb0QOVA8ivOQ==
 
 elliptic@^6.0.0, elliptic@^6.5.2:
   version "6.5.2"
@@ -1268,6 +1269,11 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+escalade@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
+  integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -1439,13 +1445,6 @@ find-cache-dir@^2.1.0:
     commondir "^1.0.1"
     make-dir "^2.0.0"
     pkg-dir "^3.0.0"
-
-find-up@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/find-up/-/find-up-2.1.0.tgz"
-  integrity sha1-RdG35QbHF93UgndaK3eSCjwMV6c=
-  dependencies:
-    locate-path "^2.0.0"
 
 find-up@^3.0.0:
   version "3.0.0"
@@ -2181,14 +2180,6 @@ loader-utils@^1.0.2, loader-utils@^1.1.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
-locate-path@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/locate-path/-/locate-path-2.0.0.tgz"
-  integrity sha1-K1aLJl7slExtnA3pw9u7ygNUzY4=
-  dependencies:
-    p-locate "^2.0.0"
-    path-exists "^3.0.0"
-
 locate-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/locate-path/-/locate-path-3.0.0.tgz"
@@ -2468,10 +2459,10 @@ node-libs-browser@^2.0.0:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
-node-releases@^1.1.53:
-  version "1.1.57"
-  resolved "https://registry.npmjs.org/node-releases/-/node-releases-1.1.57.tgz"
-  integrity sha512-ZQmnWS7adi61A9JsllJ2gdj2PauElcjnOwTp2O011iGzoakTxUsDGSe+6vD7wXbKdqhSFymC0OSx35aAMhrSdw==
+node-releases@^2.0.3:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.5.tgz#280ed5bc3eba0d96ce44897d8aee478bfb3d9666"
+  integrity sha512-U9h1NLROZTq9uE1SNffn6WuPDg8icmi3ns4rEl/oTfIle4iLjTliCzgTsbaIFMq/Xn078/lfY/BL0GWZ+psK4Q==
 
 normalize-path@^2.1.1:
   version "2.1.1"
@@ -2619,13 +2610,6 @@ p-is-promise@^2.0.0:
   resolved "https://registry.npmjs.org/p-is-promise/-/p-is-promise-2.1.0.tgz"
   integrity sha512-Y3W0wlRPK8ZMRbNq97l4M5otioeA5lm1z7bkNkxCka8HSPjR0xRWmpCmc9utiaLP9Jb1eD8BgeIxTW4AIF45Pg==
 
-p-limit@^1.1.0:
-  version "1.3.0"
-  resolved "https://registry.npmjs.org/p-limit/-/p-limit-1.3.0.tgz"
-  integrity sha512-vvcXsLAJ9Dr5rQOPk7toZQZJApBl2K4J6dANSsEuh6QI41JYcsS/qhTGa9ErIUUgK3WNQoJYvylxvjqmiqEA9Q==
-  dependencies:
-    p-try "^1.0.0"
-
 p-limit@^2.0.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/p-limit/-/p-limit-2.3.0.tgz"
@@ -2633,24 +2617,12 @@ p-limit@^2.0.0:
   dependencies:
     p-try "^2.0.0"
 
-p-locate@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/p-locate/-/p-locate-2.0.0.tgz"
-  integrity sha1-IKAQOyIqcMj9OcwuWAaA893l7EM=
-  dependencies:
-    p-limit "^1.1.0"
-
 p-locate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/p-locate/-/p-locate-3.0.0.tgz"
   integrity sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==
   dependencies:
     p-limit "^2.0.0"
-
-p-try@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/p-try/-/p-try-1.0.0.tgz"
-  integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
 
 p-try@^2.0.0:
   version "2.2.0"
@@ -2753,6 +2725,11 @@ perfectionist@^2.4.0:
     vendors "^1.0.0"
     write-file-stdout "0.0.2"
 
+picocolors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
+  integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
+
 picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.2.2"
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.2.2.tgz"
@@ -2769,13 +2746,6 @@ pkg-dir@^3.0.0:
   integrity sha512-/E57AYkoeQ25qkxMj5PBOVgF8Kiu/h7cYS30Z5+R7WaiCCBfLq58ZI/dSeaEKb9WVJV5n/03QwrN3IeWIFllvw==
   dependencies:
     find-up "^3.0.0"
-
-pkg-up@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/pkg-up/-/pkg-up-2.0.0.tgz"
-  integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
-  dependencies:
-    find-up "^2.1.0"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
