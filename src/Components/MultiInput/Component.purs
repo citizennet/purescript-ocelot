@@ -571,7 +571,8 @@ render ::
 render state =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes containerClasses  ]
-    [ Halogen.HTML.div_
+    [ Halogen.HTML.div
+        [ Ocelot.HTML.Properties.css "flex flex-wrap items-start" ]
         (Data.FunctorWithIndex.mapWithIndex (renderItem state.placeholder) state.items)
     , renderTextWidth
     ]
@@ -585,7 +586,7 @@ renderItem ::
 renderItem placeholder index = case _ of
   Display { text } -> renderItemDisplay index text
   Edit { inputBox } -> renderItemEdit placeholder index inputBox
-  New { inputBox } -> renderAutoSizeInput placeholder index true inputBox
+  New { inputBox } -> renderItemNew placeholder index inputBox
 
 renderItemDisplay ::
   forall m.
@@ -622,6 +623,17 @@ renderItemEdit placeholder index inputBox =
         [ Ocelot.Block.Icon.delete_ ]
     ]
 
+renderItemNew ::
+  forall m.
+  Placeholder ->
+  Int ->
+  InputBox ->
+  ComponentHTML m
+renderItemNew placeholder index inputBox =
+  Halogen.HTML.div
+    [ Ocelot.HTML.Properties.css "block flex-1" ]
+    [ renderAutoSizeInput placeholder index true inputBox ]
+
 renderAutoSizeInput ::
   forall m.
   Placeholder ->
@@ -630,29 +642,30 @@ renderAutoSizeInput ::
   InputBox ->
   ComponentHTML m
 renderAutoSizeInput placeholder index new inputBox =
-  Halogen.HTML.div
-    [ Ocelot.HTML.Properties.css "inline-block" ]
-    [ Halogen.HTML.input
-        [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
-        , Halogen.HTML.Properties.classes inputClasses
-        , Halogen.HTML.Events.onBlur \_ -> OnBlur index
-        , Halogen.HTML.Events.onFocus \_ -> OnFocus index
-        , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
-        , Halogen.HTML.Events.onMouseDown (OnMouseDown index)
-        , Halogen.HTML.Events.onValueInput (OnInput index)
-        , Halogen.HTML.Properties.placeholder case new of
-            false -> ""
-            true
-              | index == 0 -> placeholder.primary.text
-              | otherwise -> placeholder.secondary.text
-        , Halogen.HTML.Properties.ref (inputRef index)
-        , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputText
-        , Halogen.HTML.Properties.value inputBox.text
-        ]
+  Halogen.HTML.input
+    [ Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style") css
+    , Halogen.HTML.Properties.classes inputClasses
+    , Halogen.HTML.Events.onBlur \_ -> OnBlur index
+    , Halogen.HTML.Events.onFocus \_ -> OnFocus index
+    , Halogen.HTML.Events.onKeyDown (OnKeyDown index)
+    , Halogen.HTML.Events.onMouseDown (OnMouseDown index)
+    , Halogen.HTML.Events.onValueInput (OnInput index)
+    , Halogen.HTML.Properties.placeholder case new of
+        false -> ""
+        true
+          | index == 0 -> placeholder.primary.text
+          | otherwise -> placeholder.secondary.text
+    , Halogen.HTML.Properties.ref (inputRef index)
+    , Halogen.HTML.Properties.type_ Halogen.HTML.Properties.InputText
+    , Halogen.HTML.Properties.value inputBox.text
     ]
   where
   css :: String
-  css = "width: " <> show width <> "px"
+  css =
+    if new then
+      "min-width: " <> show width <> "px"
+    else
+      "width: " <> show width <> "px"
 
   width :: Number
   width
@@ -713,6 +726,7 @@ inputClasses =
   [ "my-1"
   , "outline-none"
   , "px-1"
+  , "w-full"
   ]
     <#> Halogen.ClassName
 
