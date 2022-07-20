@@ -31,3 +31,4 @@ dist/*
 *.swp
 *.psc-ide-port
 *.vscode/
+.DS_Store

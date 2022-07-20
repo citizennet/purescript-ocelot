@@ -6,21 +6,21 @@
     "build-all": "make build",
     "clean": "make clean",
     "build-ui": "make build-ui",
-    "build-css": "make build-css",
-    "debug": "yarn parcel dist/parcel.html --out-dir .build/parcel --no-cache"
+    "build-css": "make build-css"
   },
   "devDependencies": {
-    "browserify": "^16.5.1",
-    "parcel": "2.2.1",
-    "purescript": "0.14.4",
+    "cssnano": "^5.1.12",
+    "postcss-cli": "^10.0.0",
+    "postcss-import": "^14.1.0",
+    "purescript": "0.15.3",
     "purescript-psa": "0.8.2",
-    "spago": "0.20.3",
-    "yarn-audit-fix": "^9.0.9"
+    "spago": "0.20.9",
+    "tailwindcss": "^3.1.6",
+    "yarn": "^1.22.19"
   },
   "dependencies": {
     "big-integer": "^1.6.31",
-    "request": "^2.88.0",
-    "yarn": "^1.16.0"
+    "request": "^2.88.0"
   },
   "alias": {
     "xhr2": false

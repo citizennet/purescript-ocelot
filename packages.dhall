@@ -119,40 +119,26 @@ let additions =
 -------------------------
 -- Additional Packages --
 -------------------------
-let halogen-renderless =
-      { dependencies = [ "prelude", "control" ]
-      , repo =
-          "https://github.com/purescript-deprecated/purescript-halogen-renderless"
-      , version = "v0.0.4"
-      }
-
 let html-parser-halogen =
       { dependencies = [ "string-parsers", "halogen" ]
-      , repo = "https://github.com/rnons/purescript-html-parser-halogen.git"
-      , version = "v1.0.0-rc.2"
-      }
-
-let svg-parser =
-      { dependencies = [ "prelude", "string-parsers" ]
-      , repo = "https://github.com/citizennet/purescript-svg-parser.git"
-      , version = "v2.0.0"
+      , repo = "https://github.com/afcondon/purescript-html-parser-halogen.git"
+      , version = "b840a5347530c208e9736c4af798db8a72e81ea8"
       }
 
 let svg-parser-halogen =
-      { dependencies = [ "svg-parser", "halogen" ]
+      { dependencies = [ "halogen" ]
       , repo = "https://github.com/rnons/purescript-svg-parser-halogen.git"
-      , version = "v2.0.0-rc.1"
+      , version = "21ebcd2f3d05c5b81c7593b7c001efbad21bac0a"
       }
 
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.4-20210905/packages.dhall sha256:140f3630801f2b02d5f3a405d4872e0af317e4ef187016a6b00f97d59d6275c6
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.3-20220712/packages.dhall
+        sha256:ffc496e19c93f211b990f52e63e8c16f31273d4369dbae37c7cf6ea852d4442f
 
 let overrides = {=}
 
 let additions =
-      { halogen-renderless
-      , html-parser-halogen
-      , svg-parser
+      { html-parser-halogen
       , svg-parser-halogen
       }
 
