@@ -2,13 +2,13 @@ module Ocelot.Button where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLbutton, HTMLdiv)
-import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
+import DOM.HTML.Indexed as DOM.HTML.Indexed
+import Halogen.HTML as Halogen.HTML
+import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Ocelot.HTML.Properties ((<&>))
 
-buttonSharedClasses :: Array HH.ClassName
-buttonSharedClasses = HH.ClassName <$>
+buttonSharedClasses :: Array Halogen.HTML.ClassName
+buttonSharedClasses = Halogen.HTML.ClassName <$>
   [ "no-outline"
   , "px-4"
   , "py-2"
@@ -19,15 +19,15 @@ buttonSharedClasses = HH.ClassName <$>
   , "!disabled:cursor-pointer"
   ]
 
-buttonMainClasses :: Array HH.ClassName
+buttonMainClasses :: Array Halogen.HTML.ClassName
 buttonMainClasses = buttonSharedClasses <>
-  ( HH.ClassName <$>
+  ( Halogen.HTML.ClassName <$>
     [ "rounded"
     ]
   )
 
-buttonClasses :: Array HH.ClassName
-buttonClasses = HH.ClassName <$>
+buttonClasses :: Array Halogen.HTML.ClassName
+buttonClasses = Halogen.HTML.ClassName <$>
   [ "bg-grey-50-a20"
   , "border-grey-50-a20"
   , "hover:!disabled:bg-grey-50-a30"
@@ -35,8 +35,8 @@ buttonClasses = HH.ClassName <$>
   , "text-black-20"
   ]
 
-buttonPrimaryClasses :: Array HH.ClassName
-buttonPrimaryClasses = HH.ClassName <$>
+buttonPrimaryClasses :: Array Halogen.HTML.ClassName
+buttonPrimaryClasses = Halogen.HTML.ClassName <$>
   [ "bg-blue-88"
   , "border-blue-88"
   , "hover:!disabled:bg-blue-82"
@@ -44,8 +44,8 @@ buttonPrimaryClasses = HH.ClassName <$>
   , "text-white"
   ]
 
-buttonDarkClasses :: Array HH.ClassName
-buttonDarkClasses = HH.ClassName <$>
+buttonDarkClasses :: Array Halogen.HTML.ClassName
+buttonDarkClasses = Halogen.HTML.ClassName <$>
   [ "bg-grey-70-a30"
   , "border-grey-70-a30"
   , "hover:!disabled:bg-grey-70-a40"
@@ -53,8 +53,8 @@ buttonDarkClasses = HH.ClassName <$>
   , "text-white"
   ]
 
-buttonClearClasses :: Array HH.ClassName
-buttonClearClasses = HH.ClassName <$>
+buttonClearClasses :: Array Halogen.HTML.ClassName
+buttonClearClasses = Halogen.HTML.ClassName <$>
   [ "bg-transparent"
   , "border-transparent"
   , "text-grey-70"
@@ -62,277 +62,277 @@ buttonClearClasses = HH.ClassName <$>
   , "focus:text-grey-70-a30"
   ]
 
-buttonGroupClasses :: Array HH.ClassName
-buttonGroupClasses = HH.ClassName <$>
+buttonGroupClasses :: Array Halogen.HTML.ClassName
+buttonGroupClasses = Halogen.HTML.ClassName <$>
   [ "flex"
   , "items-center"
   ]
 
-centerClasses :: Array HH.ClassName
-centerClasses = HH.ClassName <$>
+centerClasses :: Array Halogen.HTML.ClassName
+centerClasses = Halogen.HTML.ClassName <$>
   [ "mr-px"
   ]
 
-leftClasses :: Array HH.ClassName
-leftClasses = HH.ClassName <$>
+leftClasses :: Array Halogen.HTML.ClassName
+leftClasses = Halogen.HTML.ClassName <$>
   [ "mr-px"
   , "rounded-l"
   ]
 
-rightClasses :: Array HH.ClassName
-rightClasses = HH.ClassName <$>
+rightClasses :: Array Halogen.HTML.ClassName
+rightClasses = Halogen.HTML.ClassName <$>
   [ "rounded-r"
   ]
 
 buttonBuilder
   :: ∀ p i
-   . Array HH.ClassName
-  -> Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array Halogen.HTML.ClassName
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonBuilder classes iprops =
-  HH.button
-    ( [ HP.classes $ buttonMainClasses <> classes ] <&> iprops )
+  Halogen.HTML.button
+    ( [ Halogen.HTML.Properties.classes $ buttonMainClasses <> classes ] <&> iprops )
 
 button
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 button =
   buttonBuilder buttonClasses
 
 button_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 button_ = button []
 
 buttonPrimary
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimary =
   buttonBuilder buttonPrimaryClasses
 
 buttonPrimary_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimary_ = buttonPrimary []
 
 buttonDark
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDark =
   buttonBuilder buttonDarkClasses
 
 buttonDark_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDark_ = buttonDark []
 
 buttonClear
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClear =
   buttonBuilder buttonClearClasses
 
 buttonClear_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClear_ = buttonClear []
 
 buttonGroup
   :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLdiv i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonGroup iprops =
-  HH.div
-    ( [ HP.classes buttonGroupClasses ] <&> iprops )
+  Halogen.HTML.div
+    ( [ Halogen.HTML.Properties.classes buttonGroupClasses ] <&> iprops )
 
 buttonGroup_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonGroup_ = buttonGroup []
 
 buttonGroupBuilder
   :: ∀ p i
-   . Array HH.ClassName
-  -> Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array Halogen.HTML.ClassName
+  -> Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonGroupBuilder classes iprops =
-  HH.button
-    ( [ HP.classes $ buttonSharedClasses <> classes ] <&> iprops )
+  Halogen.HTML.button
+    ( [ Halogen.HTML.Properties.classes $ buttonSharedClasses <> classes ] <&> iprops )
 
 buttonCenter
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonCenter =
   buttonGroupBuilder $ buttonClasses <> centerClasses
 
 buttonCenter_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonCenter_ = buttonCenter []
 
 buttonPrimaryCenter
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryCenter =
   buttonGroupBuilder $ buttonPrimaryClasses <> centerClasses
 
 buttonPrimaryCenter_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryCenter_ = buttonPrimaryCenter []
 
 buttonDarkCenter
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkCenter =
   buttonGroupBuilder $ buttonDarkClasses <> centerClasses
 
 buttonDarkCenter_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkCenter_ = buttonDarkCenter []
 
 buttonClearCenter
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClearCenter =
   buttonGroupBuilder $ buttonClearClasses <> centerClasses
 
 buttonLeft
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonLeft =
   buttonGroupBuilder $ buttonClasses <> leftClasses
 
 buttonLeft_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonLeft_ = buttonLeft []
 
 buttonPrimaryLeft
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryLeft =
   buttonGroupBuilder $ buttonPrimaryClasses <> leftClasses
 
 buttonPrimaryLeft_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryLeft_ = buttonPrimaryLeft []
 
 buttonDarkLeft
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkLeft =
   buttonGroupBuilder $ buttonDarkClasses <> leftClasses
 
 buttonDarkLeft_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkLeft_ = buttonDarkLeft []
 
 buttonClearLeft
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClearLeft =
   buttonGroupBuilder $ buttonClearClasses <> leftClasses
 
 buttonClearLeft_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClearLeft_ = buttonClearLeft []
 
 buttonRight
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonRight =
   buttonGroupBuilder $ buttonClasses <> rightClasses
 
 buttonRight_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonRight_ = buttonRight []
 
 buttonPrimaryRight
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryRight =
   buttonGroupBuilder $ buttonPrimaryClasses <> rightClasses
 
 buttonPrimaryRight_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonPrimaryRight_ = buttonPrimaryRight []
 
 buttonDarkRight
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkRight =
   buttonGroupBuilder $ buttonDarkClasses <> rightClasses
 
 buttonDarkRight_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonDarkRight_ = buttonDarkRight []
 
 buttonClearRight
   :: ∀ p i
-   . Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+  -> Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClearRight =
   buttonGroupBuilder $ buttonClearClasses <> rightClasses
 
 buttonClearRight_
   :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
 buttonClearRight_ = buttonClearRight []
