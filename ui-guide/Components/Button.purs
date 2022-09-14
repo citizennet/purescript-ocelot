@@ -11,8 +11,8 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
+import Ocelot.Button as Button
 import Ocelot.Clipboard as Ocelot.Clipboard
 import Ocelot.HTML.Properties (css)
 import Type.Proxy (Proxy(..))

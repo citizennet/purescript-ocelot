@@ -79,13 +79,13 @@ import Halogen.HTML.Core as Halogen.HTML.Core
 import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as Halogen.HTML.Properties
 import Network.RemoteData as Network.RemoteData
-import Ocelot.Block.Button as Ocelot.Block.Button
 import Ocelot.Block.Conditional as Ocelot.Block.Conditional
 import Ocelot.Block.Format as Ocelot.Block.Format
 import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Block.Input as Ocelot.Block.Input
 import Ocelot.Block.ItemContainer as Ocelot.Block.ItemContainer
 import Ocelot.Block.Loading as Ocelot.Block.Loading
+import Ocelot.Button as Ocelot.Button
 import Ocelot.Components.MultiInput.Component as Ocelot.Components.MultiInput.Component
 import Ocelot.HTML.Properties ((<&>))
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
@@ -1029,8 +1029,8 @@ renderToolbarSearchDropdown resetLabel renderText renderFuzzy st =
       Halogen.HTML.span
       [ Halogen.HTML.Properties.classes
         $ Halogen.HTML.ClassName "whitespace-no-wrap"
-        : Ocelot.Block.Button.buttonMainClasses
-        <> Ocelot.Block.Button.buttonClearClasses
+        : Ocelot.Button.buttonMainClasses
+        <> Ocelot.Button.buttonClearClasses
       ]
       [ (Halogen.HTML.fromPlainHTML <<< renderText) st.selected ]
 

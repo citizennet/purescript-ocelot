@@ -6,12 +6,12 @@ import Data.Ratio ((%))
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Checkbox as Checkbox
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Pager as Ocelot.Block.Pager
 import Ocelot.Block.Progress as Progress
 import Ocelot.Block.Table as Table
+import Ocelot.Button as Button
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

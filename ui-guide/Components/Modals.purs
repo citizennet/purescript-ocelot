@@ -9,13 +9,13 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.ItemContainer (boldMatches) as IC
 import Ocelot.Block.Toast as Ocelot.Block.Toast
+import Ocelot.Button as Button
 import Ocelot.HTML.Properties (css)
 import Ocelot.Part.Modal as Modal
 import Ocelot.Part.Panel as Panel

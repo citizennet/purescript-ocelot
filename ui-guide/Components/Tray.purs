@@ -6,8 +6,8 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Ocelot.Block.Badge as Badge
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Tray as Tray
+import Ocelot.Button as Button
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
