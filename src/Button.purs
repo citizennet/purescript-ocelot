@@ -6,6 +6,7 @@ module Ocelot.Button
   , buttonClasses
   , buttonClear
   , buttonClearCenter
+  , buttonClearCenter_
   , buttonClearClasses
   , buttonClearLeft
   , buttonClearLeft_
@@ -121,6 +122,12 @@ buttonClearCenter
   -> Halogen.HTML.HTML p i
 buttonClearCenter =
   buttonGroupBuilder $ buttonClearClasses <> centerClasses
+
+buttonClearCenter_
+  :: ∀ p i
+   . Array (Halogen.HTML.HTML p i)
+  -> Halogen.HTML.HTML p i
+buttonClearCenter_ = buttonClearCenter []
 
 buttonClearClasses :: Array Halogen.HTML.ClassName
 buttonClearClasses = Halogen.HTML.ClassName <$>
