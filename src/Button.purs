@@ -1,5 +1,7 @@
 module Ocelot.Button
-  ( button
+  ( Decorator(..)
+  , PillStyle(..)
+  , button
   , buttonBuilder
   , buttonCenter
   , buttonCenter_
@@ -44,16 +46,40 @@ module Ocelot.Button
   , button_
   , centerClasses
   , leftClasses
+  , pill
+  , pillAnchor
+  , pillAnchor_
+  , pillButton
+  , pillButton_
+  , pillClasses
+  , pillPrimaryClasses
+  , pill_
   , rightClasses
   )
   where
 
 import Prelude
 
+import Data.Array as Data.Array
 import DOM.HTML.Indexed as DOM.HTML.Indexed
 import Halogen.HTML as Halogen.HTML
+import Halogen.HTML.Elements as Halogen.HTML.Elements
 import Halogen.HTML.Properties as Halogen.HTML.Properties
+import Data.Maybe (Maybe(..))
 import Ocelot.HTML.Properties ((<&>))
+import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Option as Option
+
+data Decorator i p
+  = Left (Halogen.HTML.HTML p i)
+  | Right (Halogen.HTML.HTML p i)
+
+data PillStyle
+  = Default
+  | Primary
+
+type IProp r i
+  = Halogen.HTML.IProp ( class :: String | r ) i
 
 button
   :: ∀ p i
@@ -388,4 +414,140 @@ leftClasses = Halogen.HTML.ClassName <$>
 rightClasses :: Array Halogen.HTML.ClassName
 rightClasses = Halogen.HTML.ClassName <$>
   [ "rounded-r"
+  ]
+
+pill ::
+  forall i options r p.
+  Option.FromRecord
+    options
+    ()
+    ( decorator :: Decorator i p
+    , props :: Array (IProp r i)
+    , style :: PillStyle
+    ) =>
+  Halogen.HTML.Elements.Node ( class :: String | r ) p i ->
+  Record options ->
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pill elem optionsRecord html =
+  elem ([ Halogen.HTML.Properties.classes classes ] <&> props)
+    case options.decorator of
+      Nothing -> html
+      Just (Left decorator) ->
+        Data.Array.cons
+          ( Halogen.HTML.span 
+            [ Ocelot.HTML.Properties.css "pr-2" ]
+            [ decorator ]
+          ) 
+          html
+      Just (Right decorator) ->
+        Data.Array.snoc
+          html
+          ( Halogen.HTML.span 
+            [ Ocelot.HTML.Properties.css "pl-2" ]
+            [ decorator ]
+          )
+  where
+  classes :: Array Halogen.HTML.ClassName
+  classes = pillSharedClasses <> case options.style of
+    Nothing -> pillClasses
+    Just style -> case style of
+      Default -> pillClasses
+      Primary -> pillPrimaryClasses
+
+  options ::
+    { decorator :: Maybe (Decorator i p)
+    , props :: Maybe (Array (IProp r i))
+    , style :: Maybe PillStyle
+    }
+  options = Option.toRecord optionsOption
+
+  optionsOption ::
+    Option.Option
+      ( decorator :: Decorator i p
+      , props :: Array (IProp r i)
+      , style :: PillStyle
+      )
+  optionsOption = Option.fromRecord optionsRecord
+
+  props :: Array (IProp r i)
+  props = case options.props of
+    Nothing -> []
+    Just props' -> props'
+
+pill_ ::
+  forall i r p.
+  Halogen.HTML.Elements.Node ( class :: String | r ) p i ->
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pill_ elem = pill elem {}
+
+pillAnchor ::
+  forall i options p.
+  Option.FromRecord
+    options
+    ()
+    ( decorator :: Decorator i p
+    , props :: Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLa i)
+    , style :: PillStyle
+    ) =>
+  Record options ->
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pillAnchor = pill Halogen.HTML.a
+
+pillAnchor_ ::
+  forall i p.
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pillAnchor_ = pillAnchor {}
+
+pillButton ::
+  forall i options p.
+  Option.FromRecord
+    options
+    ()
+    ( decorator :: Decorator i p
+    , props :: Array (Halogen.HTML.IProp DOM.HTML.Indexed.HTMLbutton i)
+    , style :: PillStyle
+    ) =>
+  Record options ->
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pillButton = pill Halogen.HTML.button
+
+pillButton_ ::
+  forall i p.
+  Array (Halogen.HTML.HTML p i) ->
+  Halogen.HTML.HTML p i
+pillButton_ = pillButton {}
+
+pillClasses :: Array Halogen.HTML.ClassName
+pillClasses = Halogen.HTML.ClassName <$>
+  [ "bg-grey-97" 
+  , "border"
+  , "border-grey-70"
+  , "flex"
+  , "items-center"
+  ]
+
+pillPrimaryClasses :: Array Halogen.HTML.ClassName
+pillPrimaryClasses = Halogen.HTML.ClassName <$>
+  [ "bg-blue-88-a40" 
+  , "border"
+  , "border-blue-75"
+  ]
+
+pillSharedClasses :: Array Halogen.HTML.ClassName
+pillSharedClasses = Halogen.HTML.ClassName <$>
+  [ "!active:border-b-2"
+  , "active:border-t-2"
+  , "disabled:opacity-50"
+  , "disabled:cursor-default"
+  , "!disabled:cursor-pointer"
+  , "inline-block"
+  , "no-outline"
+  , "px-4"
+  , "py-2"
+  , "rounded"
   ]
