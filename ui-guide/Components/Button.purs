@@ -12,6 +12,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Format as Format
+import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.Button as Button
 import Ocelot.Clipboard as Ocelot.Clipboard
 import Ocelot.HTML.Properties (css)
@@ -71,6 +72,7 @@ render _ =
   [ renderButtons
   , renderButtonGroups
   , renderClipboardButtons
+  , renderPills
   ]
 
 renderButtons :: forall m. ComponentHTML m
@@ -414,6 +416,98 @@ renderClipboardButtons =
           , HH.slot_ _clipboard unit
               Ocelot.Clipboard.component
               { text: "copied from UIGuide" }
+          ]
+        ]
+      ]
+    ]
+
+renderPills :: forall m. ComponentHTML m
+renderPills =
+  Documentation.customBlock_
+    { header: "Pills"
+    , subheader: "These might be used for displaying selected filters."
+    }
+    [ Documentation.callout_
+      [ Backdrop.backdrop_
+        [ Backdrop.content_
+          [ HH.div
+            [ css "mb-6 flex" ]
+            [ HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Standard Button" ]
+              , Button.pillButton
+                { decorator: Button.Left Ocelot.Block.Icon.plus_ }
+                [ HH.text "Add Filter" ]
+              ]
+            , HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Disabled Button" ]
+              , Button.pillButton
+                { decorator: Button.Left Ocelot.Block.Icon.plus_ 
+                , props: [ HP.disabled true ]
+                }
+                [ HH.text "Add Filter" ]
+              ]
+            ]
+          , HH.div
+            [ css "mb-6 flex" ]
+            [ HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Primary Anchor" ]
+              , Button.pillAnchor
+                { decorator: Button.Right Ocelot.Block.Icon.delete_
+                , style: Button.Primary
+                }
+                [ HH.text "Color: Primary" ]
+              ]
+            , HH.div 
+              [ css "flex-1" ]
+              []
+            ]
+          ]
+        ]
+      , Backdrop.backdropWhite_
+        [ Backdrop.content_
+          [ HH.div
+            [ css "mb-6 flex" ]
+            [ HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Standard Button" ]
+              , Button.pillButton
+                { decorator: Button.Left Ocelot.Block.Icon.plus_ }
+                [ HH.text "Add Filter" ]
+              ]
+            , HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Disabled Button" ]
+              , Button.pillButton
+                { decorator: Button.Left Ocelot.Block.Icon.plus_ 
+                , props: [ HP.disabled true ]
+                }
+                [ HH.text "Add Filter" ]
+              ]
+            ]
+          , HH.div
+            [ css "mb-6 flex" ]
+            [ HH.div 
+              [ css "flex-1" ]
+              [ Format.caption_
+                [ HH.text "Primary Anchor" ]
+              , Button.pillAnchor
+                { decorator: Button.Right Ocelot.Block.Icon.delete_
+                , style: Button.Primary
+                }
+                [ HH.text "Color: Primary" ]
+              ]
+            , HH.div 
+              [ css "flex-1" ]
+              []
+            ]
           ]
         ]
       ]
