@@ -1399,6 +1399,10 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .bg-blue-88-a40 {
+  background-color: #00bbe060;
+}
+
 .ocelot-scoped .bg-facebook-blue {
   background-color: #3b5998;
 }
@@ -1833,6 +1837,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:bg-blue-88 {
   background-color: #00bbe0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:bg-blue-88-a40 {
+  background-color: #00bbe060;
 }
 
 .ocelot-scoped .group:hover .group-hover\:bg-facebook-blue {
@@ -2271,6 +2279,10 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .hover\:bg-blue-88-a40:hover {
+  background-color: #00bbe060;
+}
+
 .ocelot-scoped .hover\:bg-facebook-blue:hover {
   background-color: #3b5998;
 }
@@ -2707,6 +2719,10 @@ body .ocelot-scoped {
   background-color: #00bbe0;
 }
 
+.ocelot-scoped .focus\:bg-blue-88-a40:focus {
+  background-color: #00bbe060;
+}
+
 .ocelot-scoped .focus\:bg-facebook-blue:focus {
   background-color: #3b5998;
 }
@@ -3141,6 +3157,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .active\:bg-blue-88:active {
   background-color: #00bbe0;
+}
+
+.ocelot-scoped .active\:bg-blue-88-a40:active {
+  background-color: #00bbe060;
 }
 
 .ocelot-scoped .active\:bg-facebook-blue:active {
@@ -3651,6 +3671,10 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .border-blue-88-a40 {
+  border-color: #00bbe060;
+}
+
 .ocelot-scoped .border-facebook-blue {
   border-color: #3b5998;
 }
@@ -4085,6 +4109,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .group:hover .group-hover\:border-blue-88 {
   border-color: #00bbe0;
+}
+
+.ocelot-scoped .group:hover .group-hover\:border-blue-88-a40 {
+  border-color: #00bbe060;
 }
 
 .ocelot-scoped .group:hover .group-hover\:border-facebook-blue {
@@ -4523,6 +4551,10 @@ body .ocelot-scoped {
   border-color: #00bbe0;
 }
 
+.ocelot-scoped .hover\:border-blue-88-a40:hover {
+  border-color: #00bbe060;
+}
+
 .ocelot-scoped .hover\:border-facebook-blue:hover {
   border-color: #3b5998;
 }
@@ -4957,6 +4989,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .focus\:border-blue-88:focus {
   border-color: #00bbe0;
+}
+
+.ocelot-scoped .focus\:border-blue-88-a40:focus {
+  border-color: #00bbe060;
 }
 
 .ocelot-scoped .focus\:border-facebook-blue:focus {
@@ -9337,6 +9373,10 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .text-blue-88-a40 {
+  color: #00bbe060;
+}
+
 .ocelot-scoped .text-facebook-blue {
   color: #3b5998;
 }
@@ -9773,6 +9813,10 @@ body .ocelot-scoped {
   color: #00bbe0;
 }
 
+.ocelot-scoped .group:hover .group-hover\:text-blue-88-a40 {
+  color: #00bbe060;
+}
+
 .ocelot-scoped .group:hover .group-hover\:text-facebook-blue {
   color: #3b5998;
 }
@@ -10207,6 +10251,10 @@ body .ocelot-scoped {
 
 .ocelot-scoped .hover\:text-blue-88:hover {
   color: #00bbe0;
+}
+
+.ocelot-scoped .hover\:text-blue-88-a40:hover {
+  color: #00bbe060;
 }
 
 .ocelot-scoped .hover\:text-facebook-blue:hover {
@@ -11188,8 +11236,16 @@ body .ocelot-scoped {
   border-bottom-width: 1px;
 }
 
+.ocelot-scoped .\!active\:border-b-2:not(:active) {
+  border-bottom-width: 2px;
+}
+
 .ocelot-scoped .active\:border-t:active {
   border-top-width: 1px;
+}
+
+.ocelot-scoped .active\:border-t-2:active {
+  border-top-width: 2px;
 }
 
 .ocelot-scoped .disabled\:opacity-50:disabled {
@@ -11779,6 +11835,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:bg-blue-88-a40 {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:bg-facebook-blue {
     background-color: #3b5998;
   }
@@ -12213,6 +12273,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .sm\:group-hover\:bg-blue-88 {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:bg-blue-88-a40 {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:bg-facebook-blue {
@@ -12651,6 +12715,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:hover\:bg-blue-88-a40:hover {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:hover\:bg-facebook-blue:hover {
     background-color: #3b5998;
   }
@@ -13087,6 +13155,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:focus\:bg-blue-88-a40:focus {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:focus\:bg-facebook-blue:focus {
     background-color: #3b5998;
   }
@@ -13521,6 +13593,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:active\:bg-blue-88:active {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .sm\:active\:bg-blue-88-a40:active {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .sm\:active\:bg-facebook-blue:active {
@@ -14023,6 +14099,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:border-blue-88-a40 {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:border-facebook-blue {
     border-color: #3b5998;
   }
@@ -14457,6 +14537,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .sm\:group-hover\:border-blue-88 {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .sm\:group-hover\:border-blue-88-a40 {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .sm\:group-hover\:border-facebook-blue {
@@ -14895,6 +14979,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:hover\:border-blue-88-a40:hover {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:hover\:border-facebook-blue:hover {
     border-color: #3b5998;
   }
@@ -15329,6 +15417,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .sm\:focus\:border-blue-88-a40:focus {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .sm\:focus\:border-facebook-blue:focus {
@@ -19693,6 +19785,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .sm\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .sm\:text-facebook-blue {
     color: #3b5998;
   }
@@ -20129,6 +20225,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .sm\:group-hover\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .group:hover .sm\:group-hover\:text-facebook-blue {
     color: #3b5998;
   }
@@ -20563,6 +20663,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .sm\:hover\:text-blue-88:hover {
     color: #00bbe0;
+  }
+
+  .ocelot-scoped .sm\:hover\:text-blue-88-a40:hover {
+    color: #00bbe060;
   }
 
   .ocelot-scoped .sm\:hover\:text-facebook-blue:hover {
@@ -21508,6 +21612,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:bg-blue-88-a40 {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:bg-facebook-blue {
     background-color: #3b5998;
   }
@@ -21942,6 +22050,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .md\:group-hover\:bg-blue-88 {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:bg-blue-88-a40 {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:bg-facebook-blue {
@@ -22380,6 +22492,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:hover\:bg-blue-88-a40:hover {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:hover\:bg-facebook-blue:hover {
     background-color: #3b5998;
   }
@@ -22816,6 +22932,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:focus\:bg-blue-88-a40:focus {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:focus\:bg-facebook-blue:focus {
     background-color: #3b5998;
   }
@@ -23250,6 +23370,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:active\:bg-blue-88:active {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .md\:active\:bg-blue-88-a40:active {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .md\:active\:bg-facebook-blue:active {
@@ -23752,6 +23876,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:border-blue-88-a40 {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:border-facebook-blue {
     border-color: #3b5998;
   }
@@ -24186,6 +24314,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .md\:group-hover\:border-blue-88 {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .md\:group-hover\:border-blue-88-a40 {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .md\:group-hover\:border-facebook-blue {
@@ -24624,6 +24756,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:hover\:border-blue-88-a40:hover {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:hover\:border-facebook-blue:hover {
     border-color: #3b5998;
   }
@@ -25058,6 +25194,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .md\:focus\:border-blue-88-a40:focus {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .md\:focus\:border-facebook-blue:focus {
@@ -29422,6 +29562,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .md\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .md\:text-facebook-blue {
     color: #3b5998;
   }
@@ -29858,6 +30002,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .md\:group-hover\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .group:hover .md\:group-hover\:text-facebook-blue {
     color: #3b5998;
   }
@@ -30292,6 +30440,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .md\:hover\:text-blue-88:hover {
     color: #00bbe0;
+  }
+
+  .ocelot-scoped .md\:hover\:text-blue-88-a40:hover {
+    color: #00bbe060;
   }
 
   .ocelot-scoped .md\:hover\:text-facebook-blue:hover {
@@ -31237,6 +31389,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:bg-blue-88-a40 {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:bg-facebook-blue {
     background-color: #3b5998;
   }
@@ -31671,6 +31827,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .lg\:group-hover\:bg-blue-88 {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:bg-blue-88-a40 {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:bg-facebook-blue {
@@ -32109,6 +32269,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:hover\:bg-blue-88-a40:hover {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:hover\:bg-facebook-blue:hover {
     background-color: #3b5998;
   }
@@ -32545,6 +32709,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:focus\:bg-blue-88-a40:focus {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:focus\:bg-facebook-blue:focus {
     background-color: #3b5998;
   }
@@ -32979,6 +33147,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:active\:bg-blue-88:active {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .lg\:active\:bg-blue-88-a40:active {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .lg\:active\:bg-facebook-blue:active {
@@ -33481,6 +33653,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:border-blue-88-a40 {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:border-facebook-blue {
     border-color: #3b5998;
   }
@@ -33915,6 +34091,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .lg\:group-hover\:border-blue-88 {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .lg\:group-hover\:border-blue-88-a40 {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .lg\:group-hover\:border-facebook-blue {
@@ -34353,6 +34533,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:hover\:border-blue-88-a40:hover {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:hover\:border-facebook-blue:hover {
     border-color: #3b5998;
   }
@@ -34787,6 +34971,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .lg\:focus\:border-blue-88-a40:focus {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .lg\:focus\:border-facebook-blue:focus {
@@ -39151,6 +39339,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .lg\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .lg\:text-facebook-blue {
     color: #3b5998;
   }
@@ -39587,6 +39779,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .lg\:group-hover\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .group:hover .lg\:group-hover\:text-facebook-blue {
     color: #3b5998;
   }
@@ -40021,6 +40217,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .lg\:hover\:text-blue-88:hover {
     color: #00bbe0;
+  }
+
+  .ocelot-scoped .lg\:hover\:text-blue-88-a40:hover {
+    color: #00bbe060;
   }
 
   .ocelot-scoped .lg\:hover\:text-facebook-blue:hover {
@@ -40966,6 +41166,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:bg-blue-88-a40 {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:bg-facebook-blue {
     background-color: #3b5998;
   }
@@ -41400,6 +41604,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .xl\:group-hover\:bg-blue-88 {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:bg-blue-88-a40 {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:bg-facebook-blue {
@@ -41838,6 +42046,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:hover\:bg-blue-88-a40:hover {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:hover\:bg-facebook-blue:hover {
     background-color: #3b5998;
   }
@@ -42274,6 +42486,10 @@ body .ocelot-scoped {
     background-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:focus\:bg-blue-88-a40:focus {
+    background-color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:focus\:bg-facebook-blue:focus {
     background-color: #3b5998;
   }
@@ -42708,6 +42924,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:active\:bg-blue-88:active {
     background-color: #00bbe0;
+  }
+
+  .ocelot-scoped .xl\:active\:bg-blue-88-a40:active {
+    background-color: #00bbe060;
   }
 
   .ocelot-scoped .xl\:active\:bg-facebook-blue:active {
@@ -43210,6 +43430,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:border-blue-88-a40 {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:border-facebook-blue {
     border-color: #3b5998;
   }
@@ -43644,6 +43868,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .group:hover .xl\:group-hover\:border-blue-88 {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .group:hover .xl\:group-hover\:border-blue-88-a40 {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .group:hover .xl\:group-hover\:border-facebook-blue {
@@ -44082,6 +44310,10 @@ body .ocelot-scoped {
     border-color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:hover\:border-blue-88-a40:hover {
+    border-color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:hover\:border-facebook-blue:hover {
     border-color: #3b5998;
   }
@@ -44516,6 +44748,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:focus\:border-blue-88:focus {
     border-color: #00bbe0;
+  }
+
+  .ocelot-scoped .xl\:focus\:border-blue-88-a40:focus {
+    border-color: #00bbe060;
   }
 
   .ocelot-scoped .xl\:focus\:border-facebook-blue:focus {
@@ -48880,6 +49116,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .xl\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .xl\:text-facebook-blue {
     color: #3b5998;
   }
@@ -49316,6 +49556,10 @@ body .ocelot-scoped {
     color: #00bbe0;
   }
 
+  .ocelot-scoped .group:hover .xl\:group-hover\:text-blue-88-a40 {
+    color: #00bbe060;
+  }
+
   .ocelot-scoped .group:hover .xl\:group-hover\:text-facebook-blue {
     color: #3b5998;
   }
@@ -49750,6 +49994,10 @@ body .ocelot-scoped {
 
   .ocelot-scoped .xl\:hover\:text-blue-88:hover {
     color: #00bbe0;
+  }
+
+  .ocelot-scoped .xl\:hover\:text-blue-88-a40:hover {
+    color: #00bbe060;
   }
 
   .ocelot-scoped .xl\:hover\:text-facebook-blue:hover {
