@@ -9,13 +9,13 @@ import Effect.Console (log)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Loading as Loading
+import Ocelot.Button as Button
 import Ocelot.Component.SearchBar as SearchBar
 import Ocelot.HTML.Properties (css)
 import Type.Proxy (Proxy(..))

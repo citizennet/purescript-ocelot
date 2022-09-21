@@ -11,10 +11,10 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Choice as Choice
 import Ocelot.Block.Format (caption_) as Format
 import Ocelot.Block.Icon as Icon
+import Ocelot.Button as Button
 import Ocelot.Dropdown as Ocelot.Dropdown
 import Ocelot.HTML.Properties (css)
 import Select as Select

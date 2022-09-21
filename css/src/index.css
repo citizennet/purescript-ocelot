@@ -191,7 +191,9 @@ dt {
 .group:hover .group-hover\:\!focus\:\!disabled\:sibling\:border-grey-70:not(:focus):not(:disabled) ~ * { @apply .border-grey-70; }
 .focus\:next\:text-blue-88:focus + * { @apply .text-blue-88; }
 .\!active\:border-b:not(:active) { @apply .border-b; }
+.\!active\:border-b-2:not(:active) { @apply .border-b-2; }
 .active\:border-t:active { @apply .border-t; }
+.active\:border-t-2:active { @apply .border-t-2; }
 .disabled\:opacity-50:disabled { @apply .opacity-50; }
 .disabled\:cursor-default:disabled { @apply .cursor-default; }
 .\!disabled\:cursor-pointer:not(:disabled) { @apply .cursor-pointer; }

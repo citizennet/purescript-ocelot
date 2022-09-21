@@ -66,6 +66,7 @@ config.colors = Object.assign(config.colors, {
   'blue-75': '#009FBF',
   'blue-82': '#00ABD1',
   'blue-88': '#00BBE0',
+  'blue-88-a40': '#00BBE060',
   'facebook-blue': '#3B5998',
   'fb-blue': '#3B5998',
   'google-blue': '#4285F4',

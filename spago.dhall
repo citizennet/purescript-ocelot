@@ -33,6 +33,7 @@ Authors:
   , "js-timers"
   , "js-uri"
   , "numbers"
+  , "option"
   , "psci-support"
   , "read"
   , "remotedata"

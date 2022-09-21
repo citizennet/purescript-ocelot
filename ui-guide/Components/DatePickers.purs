@@ -15,10 +15,10 @@ import Halogen.HTML as HH
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as HE
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Card as Card
 import Ocelot.Block.FormField as FormField
 import Ocelot.Block.Format as Format
+import Ocelot.Button as Button
 import Ocelot.Data.DateTime (unsafeMkDate, unsafeMkTime)
 import Ocelot.Data.DateTime as Ocelot.Data.DateTime
 import Ocelot.DatePicker as DatePicker

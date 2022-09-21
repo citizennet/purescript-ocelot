@@ -16,8 +16,8 @@ import Halogen as Halogen
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Events as Halogen.HTML.Events
 import Halogen.HTML.Properties as Halogen.HTML.Propetires
-import Ocelot.Block.Button as Ocelot.Block.Button
 import Ocelot.Block.Icon as Ocelot.Block.Icon
+import Ocelot.Button as Ocelot.Button
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Web.HTML as Web.HTML
 import Web.HTML.Navigator as Web.HTML.Navigator
@@ -125,7 +125,7 @@ render state
 
 renderActive :: forall m. ComponentHTML m
 renderActive =
-  Ocelot.Block.Button.button
+  Ocelot.Button.button
     [ Halogen.HTML.Events.onClick \_ -> Copy ]
     [ Ocelot.Block.Icon.dataSources_
     , Halogen.HTML.span
@@ -135,7 +135,7 @@ renderActive =
 
 renderDone :: forall m. ComponentHTML m
 renderDone =
-  Ocelot.Block.Button.button
+  Ocelot.Button.button
     [ Halogen.HTML.Propetires.disabled true ]
     [ Ocelot.Block.Icon.success
         [ Ocelot.HTML.Properties.css "text-green"]

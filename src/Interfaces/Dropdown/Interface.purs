@@ -13,7 +13,7 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Aff.Compat (EffectFn1, EffectFn2, mkEffectFn1, mkEffectFn2)
 import Foreign.Object (Object, lookup)
 import Halogen.VDom.Driver (runUI)
-import Ocelot.Block.Button (button)
+import Ocelot.Button (button)
 import Ocelot.Dropdown (Input, Output(..), Query(..), component, defDropdown)
 import Ocelot.Interface.Utilities (mkSubscription, Interface)
 import Select (Visibility(..)) as Select

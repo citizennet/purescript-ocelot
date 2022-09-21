@@ -54,11 +54,11 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Format as Format
 import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input as Input
 import Ocelot.Block.Layout as Layout
+import Ocelot.Button as Button
 import Ocelot.Data.DateTime (adjustDaysBy, dateRange, firstDateOfMonth, lastDateOfMonth, nextDay, nextYear, prevDay, yearsForward)
 import Ocelot.Data.DateTime as ODT
 import Ocelot.HTML.Properties (css)

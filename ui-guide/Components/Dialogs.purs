@@ -11,7 +11,6 @@ import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
-import Ocelot.Block.Button as Button
 import Ocelot.Block.Card (card) as Card
 import Ocelot.Block.FormField (field) as FormField
 import Ocelot.Block.Format as Format
@@ -19,6 +18,7 @@ import Ocelot.Block.Icon as Icon
 import Ocelot.Block.Input (input) as Input
 import Ocelot.Block.Toast as Toast
 import Ocelot.Block.Tooltip (tooltip_) as Tooltip
+import Ocelot.Button as Button
 import Ocelot.HTML.Properties (css)
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation

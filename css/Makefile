@@ -4,6 +4,7 @@ CSS_DIR ?= $(ROOT_DIR)/css
 DIST_DIR ?= $(ROOT_DIR)/dist
 
 # Variables that we control.
+CSS_SRC := $(CSS_DIR)/src/*
 CSS_NODE_MODULES := $(CSS_DIR)/node_modules/.stamp
 CSS_PACKAGE_JSON := $(CSS_DIR)/package.json
 CSS_YARN_LOCK := $(CSS_DIR)/yarn.lock
@@ -26,16 +27,16 @@ $(CSS_NODE_MODULES): $(CSS_PACKAGE_JSON) $(CSS_YARN_LOCK)
 	$(CSS_NPX) yarn install
 	touch $@
 
-$(DIST_CSS_DEV_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
+$(DIST_CSS_DEV_GLOBAL): $(CSS_SRC) $(CSS_NODE_MODULES) | $(DIST_DIR)
 	$(CSS_NPX) webpack
 
-$(DIST_CSS_DEV_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
+$(DIST_CSS_DEV_SCOPED): $(CSS_SRC) $(CSS_NODE_MODULES) | $(DIST_DIR)
 	$(CSS_NPX) webpack --env=scoped
 
-$(DIST_CSS_PROD_GLOBAL): $(CSS_NODE_MODULES) | $(DIST_DIR)
+$(DIST_CSS_PROD_GLOBAL): $(CSS_SRC) $(CSS_NODE_MODULES) | $(DIST_DIR)
 	$(CSS_NPX) webpack --env=prod
 
-$(DIST_CSS_PROD_SCOPED): $(CSS_NODE_MODULES) | $(DIST_DIR)
+$(DIST_CSS_PROD_SCOPED): $(CSS_SRC) $(CSS_NODE_MODULES) | $(DIST_DIR)
 	$(CSS_NPX) webpack --env=prod,scoped
 
 $(DIST_DIR):
