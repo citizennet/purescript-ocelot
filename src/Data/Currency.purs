@@ -27,6 +27,7 @@ import Prim.TypeError (class Warn, Text)
 newtype Cents = Cents BigInt
 derive instance newtypeCents :: Newtype Cents _
 derive newtype instance eqCents :: Eq Cents
+derive newtype instance ordCents :: Ord Cents
 
 instance encodeJsonCents :: EncodeJson Cents where
   encodeJson = encodeJson <<< centsToNumber
