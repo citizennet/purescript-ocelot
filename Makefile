@@ -17,10 +17,18 @@ FIND_SRC_FILES_ARGS := -name '*.purs' -type f
 NODE_MODULES := $(ROOT_DIR)/node_modules/.stamp
 PACKAGE_JSON := $(ROOT_DIR)/package.json
 PSA_ARGS ?= --censor-lib --stash=$(BUILD_DIR)/.psa_stash --is-lib=.spago --strict --censor-codes=UserDefinedWarning
+PURS_TIDY ?= purs-tidy
 SRC_FILES := $(shell find $(SRC_DIR) $(FIND_SRC_FILES_ARGS))
 TEST_FILES := $(shell find $(TEST_DIR) $(FIND_SRC_FILES_ARGS))
 UI_GUIDE_FILES := $(shell find $(UI_GUIDE_DIR) $(FIND_SRC_FILES_ARGS))
 YARN_LOCK := $(ROOT_DIR)/yarn.lock
+
+FORMAT_SRC_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-src-purs-tidy-stamp
+FORMAT_TEST_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-test-purs-tidy-stamp
+
+FORMAT_DEPENDENCIES := \
+	$(FORMAT_SRC_PURS_TIDY_STAMP) \
+	$(FORMAT_TEST_PURS_TIDY_STAMP)
 
 # Colors for printing
 CYAN := \033[0;36m
@@ -72,6 +80,14 @@ $(DIST_DIR)/bundled.js: $(OUTPUT_DIR)/Main/index.js
 $(DIST_DIR)/index.js: $(OUTPUT_DIR)/Main/index.js
 	$(NPX) browserify dist/main.js --outfile $@
 
+$(FORMAT_SRC_PURS_TIDY_STAMP): $(SRC_FILES) $(NODE_MODULES_STAMP) | $(BUILD)
+	$(PURS_TIDY) $(PURS_TIDY_CMD) $(SRC_DIR)
+	@touch $@
+
+$(FORMAT_TEST_PURS_TIDY_STAMP): $(TEST_FILES) $(NODE_MODULES_STAMP) | $(BUILD)
+	$(PURS_TIDY) $(PURS_TIDY_CMD) $(TEST_DIR)
+	@touch $@
+
 $(NODE_MODULES): $(PACKAGE_JSON) $(YARN_LOCK)
 	$(NPX) yarn install
 	touch $@
@@ -88,6 +104,18 @@ build: $(BUILD_DEPS) ## Build everything — all the CSS, and the UI Guide — i
 .PHONY: build-ui
 build-ui: $(DIST_DIR)/index.js ## Build the UI Guide, installing any missing dependencies along the way
 
+.PHONY: check-format
+check-format: PURS_TIDY_CMD=check
+check-format: $(FORMAT_DEPENDENCIES) ## Validate formatting of all code
+
+.PHONY: check-format-src
+check-format-src: PURS_TIDY_CMD=check
+check-format-src: $(FORMAT_SRC_PURS_TIDY_STAMP) ## Validate formatting of the `src` directory
+
+.PHONY: check-format-test
+check-format-test: PURS_TIDY_CMD=check
+check-format-test: $(FORMAT_TEST_PURS_TIDY_STAMP) ## Validate formatting of the `test` directory
+
 .PHONY: clean
 clean: $(CLEAN_DEPS) ## Remove all dependencies and build artifacts, starting with a clean slate
 	rm -fr \
@@ -97,6 +125,18 @@ clean: $(CLEAN_DEPS) ## Remove all dependencies and build artifacts, starting wi
 		$(OUTPUT_DIR) \
 		$(ROOT_DIR)/.spago \
 		$(ROOT_DIR)/node_modules
+
+.PHONY: format
+format: PURS_TIDY_CMD=format-in-place
+format: $(FORMAT_DEPENDENCIES) ## Format all code
+
+.PHONY: format-src
+format-src: PURS_TIDY_CMD=format-in-place
+format-src: $(FORMAT_SRC_PURS_TIDY_STAMP) ## Format the `src` directory
+
+.PHONY: format-test
+format-test: PURS_TIDY_CMD=format-in-place
+format-test: $(FORMAT_TEST_PURS_TIDY_STAMP) ## Format the `test` directory
 
 .PHONY: help
 help: $(BUILD_DIR)/help ## Display this help message
