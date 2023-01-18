@@ -69,6 +69,7 @@ import Data.Foldable as Data.Foldable
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..))
 import Data.Maybe as Data.Maybe
+import Data.Monoid as Data.Monoid
 import Data.Rational ((%))
 import Data.String as Data.String
 import Data.Time.Duration as Data.Time.Duration
@@ -970,9 +971,10 @@ renderSingle iprops renderItem renderContainer st =
               )
               st.selected
         , Ocelot.Block.Input.borderRight
-            [ Halogen.HTML.Properties.classes $ linkClasses disabled
-            , Halogen.HTML.Events.onClick Select.ToggleClick
-            ]
+            ( [ Halogen.HTML.Properties.classes $ linkClasses disabled ]
+                <> Data.Monoid.guard (not disabled)
+                  [ Halogen.HTML.Events.onClick Select.ToggleClick ]
+            )
             [ Halogen.HTML.text "Change" ]
         ]
     , Ocelot.Block.Input.inputGroup
