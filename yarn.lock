@@ -4393,10 +4393,10 @@ purescript-psa@0.8.2:
   resolved "https://registry.yarnpkg.com/purescript-psa/-/purescript-psa-0.8.2.tgz#ee20c40f02cd0c5ed6dd3dd93ef02d9c466f17bc"
   integrity sha512-4Olf0aQQrNCfcDLXQI3gJgINEQ+3U+4QPLmQ2LHX2L/YOXSwM7fOGIUs/wMm/FQnwERUyQmHKQTJKB4LIjE2fg==
 
-purescript@0.14.4:
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.4.tgz#16096b589a5c81aa5813c805dc16c0b9f5b7a854"
-  integrity sha512-9Lq2qvyVkQoKUBSNOEBKIJjtD5sDwThurSt3SRdtSseaA03p1Fk7VxbUr9HV/gHLVZPIkOhPtjvZGUNs5U2PDA==
+purescript@0.14.9:
+  version "0.14.9"
+  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.9.tgz#fc4700aa66fb878a20b8bc33cc00919a34b9da48"
+  integrity sha512-r0J2JX/QuKYBSj8LDDYKQAY+tz/RtIm9erHrqWV7Y8RpUc6TZu14AxWcnSrohbBcEXImY/o0pMpouZrUeyriKQ==
   dependencies:
     purescript-installer "^0.2.0"
 

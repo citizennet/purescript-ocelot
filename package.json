@@ -12,7 +12,7 @@
   "devDependencies": {
     "browserify": "^16.5.1",
     "parcel": "2.2.1",
-    "purescript": "0.14.4",
+    "purescript": "0.14.9",
     "purescript-psa": "0.8.2",
     "spago": "0.20.3",
     "yarn-audit-fix": "^9.0.9"
