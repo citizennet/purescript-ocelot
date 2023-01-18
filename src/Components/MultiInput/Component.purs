@@ -213,11 +213,11 @@ handleEditItem index = do
         $ measureTextWidth text
     void <<< Control.Monad.Maybe.Trans.lift
       $ updateItem index
-        ( \item -> case item of
-            Display _ -> Edit { inputBox: { text, width }, previous: text }
-            Edit _ -> item
-            New _ -> item
-        )
+          ( \item -> case item of
+              Display _ -> Edit { inputBox: { text, width }, previous: text }
+              Edit _ -> item
+              New _ -> item
+          )
     Control.Monad.Maybe.Trans.lift
       $ focusItem index
 
@@ -249,10 +249,10 @@ handleOnFocus index = do
     Just item -> case item of
       Display _ -> pure unit
       Edit { inputBox: { text } } -> do
-        Halogen.raise (On (ValueInput text ))
+        Halogen.raise (On (ValueInput text))
         Halogen.raise (On Focus)
-      New { inputBox: { text }} -> do
-        Halogen.raise (On (ValueInput text ))
+      New { inputBox: { text } } -> do
+        Halogen.raise (On (ValueInput text))
         Halogen.raise (On Focus)
 
 handleOnInput ::
@@ -265,22 +265,22 @@ handleOnInput index text = do
   minWidth <- Halogen.gets _.input.minWidth
   void
     $ updateItem index
-      ( \item -> case item of
-          Display _ -> item
-          Edit status -> Edit status { inputBox { text = text } }
-          New status -> New status { inputBox { text = text } }
-      )
+        ( \item -> case item of
+            Display _ -> item
+            Edit status -> Edit status { inputBox { text = text } }
+            New status -> New status { inputBox { text = text } }
+        )
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     width <-
       Control.Monad.Maybe.Trans.MaybeT
         $ measureTextWidth text
     Control.Monad.Maybe.Trans.lift
       $ updateItem index
-        ( \item -> case item of
+          ( \item -> case item of
               Display _ -> item
               Edit status -> Edit status { inputBox { width = width } }
               New status -> New status { inputBox { width = max minWidth width } }
-        )
+          )
   Halogen.raise (On (ValueInput text))
 
 handleOnKeyDown ::
@@ -374,7 +374,7 @@ blurItem index = do
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     htmlElement <-
       Control.Monad.Maybe.Trans.MaybeT
-      $ Halogen.getHTMLElementRef (inputRef index)
+        $ Halogen.getHTMLElementRef (inputRef index)
     Halogen.liftEffect
       $ Web.HTML.HTMLElement.blur htmlElement
 
@@ -387,12 +387,12 @@ calibratePlaceholderWidth = do
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     width <-
       Control.Monad.Maybe.Trans.MaybeT
-      $ measureTextWidth state.placeholder.primary.text
+        $ measureTextWidth state.placeholder.primary.text
     Halogen.modify _ { placeholder { primary { width = width } } }
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     width <-
       Control.Monad.Maybe.Trans.MaybeT
-      $ measureTextWidth state.placeholder.secondary.text
+        $ measureTextWidth state.placeholder.secondary.text
     Halogen.modify_ _ { placeholder { secondary { width = width } } }
 
 cancelEditing ::
@@ -429,19 +429,19 @@ commitEditing index = do
         Display _ -> pure unit
         Edit { inputBox: { text }, previous }
           | Data.String.null text -> do
-            removeItem index
-            raiseItemUpdated
+              removeItem index
+              raiseItemUpdated
           | otherwise -> do
-            void $ updateItem index (\_ -> Display { text })
-            Halogen.raise (ItemRemoved previous)
-            raiseItemUpdated
+              void $ updateItem index (\_ -> Display { text })
+              Halogen.raise (ItemRemoved previous)
+              raiseItemUpdated
         New { inputBox: { text } }
           | Data.String.null text -> pure unit
           | otherwise -> do
-            new <- updateItem index (\_ -> Display { text })
-            when (isLastIndex index new.items) do
-              appendNewItem
-            raiseItemUpdated
+              new <- updateItem index (\_ -> Display { text })
+              when (isLastIndex index new.items) do
+                appendNewItem
+              raiseItemUpdated
 
 focusItem ::
   forall m.
@@ -452,7 +452,7 @@ focusItem index = do
   void $ Control.Monad.Maybe.Trans.runMaybeT do
     htmlElement <-
       Control.Monad.Maybe.Trans.MaybeT
-      $ Halogen.getHTMLElementRef (inputRef index)
+        $ Halogen.getHTMLElementRef (inputRef index)
     Halogen.liftEffect
       $ Web.HTML.HTMLElement.focus htmlElement
 
@@ -495,13 +495,13 @@ removeItem index = do
           _
             { items =
                 Data.Array.deleteAt index old.items
-                # fromMaybe old.items
+                  # fromMaybe old.items
             }
       case getText item of
         Nothing -> pure unit
         Just text -> Halogen.raise (ItemRemoved text)
       when (Data.Array.null new.items) do
-          appendNewItem
+        appendNewItem
 
 selectItem ::
   forall m.
@@ -512,7 +512,7 @@ selectItem text = do
   old <- Halogen.get
   mWidth <- measureTextWidth text
   case
-    {index: _, width: _ }
+    { index: _, width: _ }
       <$> Data.Array.findIndex isEditable old.items
       <*> mWidth
     of
@@ -520,9 +520,9 @@ selectItem text = do
     Just { index, width } -> do
       void $ updateItem index
         ( \item -> case item of
-             Display _ -> item
-             Edit status -> Edit status { inputBox = { width, text } }
-             New status -> New status { inputBox = { width, text } }
+            Display _ -> item
+            Edit status -> Edit status { inputBox = { width, text } }
+            New status -> New status { inputBox = { width, text } }
         )
       commitEditing index
       when (isLastIndex index old.items) do
@@ -570,7 +570,7 @@ render ::
   ComponentHTML m
 render state =
   Halogen.HTML.div
-    [ Halogen.HTML.Properties.classes containerClasses  ]
+    [ Halogen.HTML.Properties.classes containerClasses ]
     [ Halogen.HTML.div
         [ Ocelot.HTML.Properties.css "flex flex-wrap items-start" ]
         (Data.FunctorWithIndex.mapWithIndex (renderItem state.placeholder) state.items)
@@ -670,10 +670,10 @@ renderAutoSizeInput placeholder index new inputBox =
   width :: Number
   width
     | Data.String.null inputBox.text && new =
-      if index == 0 then
-        placeholder.primary.width
-      else
-        placeholder.secondary.width
+        if index == 0 then
+          placeholder.primary.width
+        else
+          placeholder.secondary.width
     | otherwise = inputBox.width
 
 renderTextWidth ::

@@ -3,6 +3,7 @@
 module Ocelot.Interface.Typeahead where
 
 import Prelude
+
 import Control.Promise (Promise)
 import Control.Promise as Promise
 import Data.Array (head)
@@ -27,9 +28,9 @@ import Halogen.VDom.Driver (runUI)
 import Html.Renderer.Halogen as Parser
 import Network.RemoteData (RemoteData(..))
 import Ocelot.Block.ItemContainer (boldMatches)
-import Ocelot.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), defFilterFuzzy, defRenderContainer, multi, renderMulti, renderSingle, single, component, renderHeaderSearchDropdown, renderSearchDropdown, renderToolbarSearchDropdown)
 import Ocelot.HTML.Properties (css)
 import Ocelot.Interface.Utilities (Interface, mkSubscription)
+import Ocelot.Typeahead (Component, Input, Insertable(..), Output(..), Query(..), component, defFilterFuzzy, defRenderContainer, multi, renderHeaderSearchDropdown, renderMulti, renderSearchDropdown, renderSingle, renderToolbarSearchDropdown, single)
 import Partial.Unsafe (unsafePartial)
 import Prim.TypeError (class Warn, Text)
 import Web.HTML (HTMLElement)
@@ -65,7 +66,7 @@ convertSingleToMessageVariant :: forall action. Output action Maybe (Object Stri
 convertSingleToMessageVariant = case _ of
   Searched str -> inj (SProxy :: SProxy "searched") str
   Selected obj -> inj (SProxy :: SProxy "selected") obj
-  SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [i]
+  SelectionChanged _ (Just i) -> inj (SProxy :: SProxy "selectionChanged") [ i ]
   SelectionChanged _ Nothing -> inj (SProxy :: SProxy "selectionChanged") []
   Emit _ -> inj (SProxy :: SProxy "emit") "emitted"
 
@@ -105,10 +106,10 @@ type DropdownInput =
 
 -- | An adapter to simplify types necessary in JS to control the typeahead
 -- | component. Items are specialized to Object String.
-typeaheadInputToSingleInput
-  :: ∀ m action
-   . TypeaheadInput
-  -> Input action Maybe (Object String) m
+typeaheadInputToSingleInput ::
+  forall m action.
+  TypeaheadInput ->
+  Input action Maybe (Object String) m
 typeaheadInputToSingleInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -123,14 +124,14 @@ typeaheadInputToSingleInput r =
       (defRenderContainer renderFuzzy)
   }
   where
-    renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
-      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
-      Nothing -> span_ (boldMatches r.key item)
+  renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
+    Just src -> span_ ([ img [ HP.src src, css "align-text-top h-5 mr-1" ] ] <> boldMatches r.key item)
+    Nothing -> span_ (boldMatches r.key item)
 
-typeaheadInputToMultiInput
-  :: ∀ m action
-   . TypeaheadInput
-  -> Input action Array (Object String) m
+typeaheadInputToMultiInput ::
+  forall m action.
+  TypeaheadInput ->
+  Input action Array (Object String) m
 typeaheadInputToMultiInput r =
   { items: Success r.items
   , insertable: if r.insertable then Insertable (Object.singleton r.key) else NotInsertable
@@ -145,14 +146,14 @@ typeaheadInputToMultiInput r =
       (defRenderContainer renderFuzzy)
   }
   where
-    renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
-      Just src -> span_ ([ img [HP.src src, css "align-text-top h-5 mr-1"] ] <> boldMatches r.key item)
-      Nothing -> span_ (boldMatches r.key item)
+  renderFuzzy item@(Fuzzy x) = case Object.lookup r.imageSource x.original of
+    Just src -> span_ ([ img [ HP.src src, css "align-text-top h-5 mr-1" ] ] <> boldMatches r.key item)
+    Nothing -> span_ (boldMatches r.key item)
 
-dropdownInputToSingleInput
-  :: ∀ m action
-   . DropdownInput
-  -> Input action Maybe (Object String) m
+dropdownInputToSingleInput ::
+  forall m action.
+  DropdownInput ->
+  Input action Maybe (Object String) m
 dropdownInputToSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -164,13 +165,13 @@ dropdownInputToSingleInput r =
   , render
   }
   where
-    renderFuzzy = span_ <<< boldMatches r.key
+  renderFuzzy = span_ <<< boldMatches r.key
 
-    render pst = renderSearchDropdown
-      r.resetLabel
-      (Parser.render [] $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
-      renderFuzzy
-      pst
+  render pst = renderSearchDropdown
+    r.resetLabel
+    (Parser.render [] $ r.labelHTML (fromMaybe r.defaultLabel (Object.lookup r.key =<< pst.selected)))
+    renderFuzzy
+    pst
 
 mountMultiTypeahead :: EffectFn2 HTMLElement TypeaheadInput (Interface MessageVariant QueryRow)
 mountMultiTypeahead = mkEffectFn2 \el ext -> do
@@ -209,11 +210,11 @@ mountSingleTypeahead = mkSingleTypeaheadMounter single typeaheadInputToSingleInp
 mountDropdownTypeahead :: EffectFn2 HTMLElement DropdownInput (Interface MessageVariant QueryRow)
 mountDropdownTypeahead = mkSingleTypeaheadMounter single' dropdownInputToSingleInput
 
-mkSingleTypeaheadMounter
-  :: ∀ input action
-   . Component action Maybe (Object String) Aff
-  -> (input -> Input action Maybe (Object String) Aff)
-  -> EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
+mkSingleTypeaheadMounter ::
+  forall input action.
+  Component action Maybe (Object String) Aff ->
+  (input -> Input action Maybe (Object String) Aff) ->
+  EffectFn2 HTMLElement input (Interface MessageVariant QueryRow)
 mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
   ioVar <- AVar.empty
   launchAff_ do
@@ -243,7 +244,7 @@ mkSingleTypeaheadMounter component inputTransformer = mkEffectFn2 \el ext -> do
         io.query $ Reset unit
     }
 
-single' :: ∀ action item. Eq item => Component action Maybe item Aff
+single' :: forall action item. Eq item => Component action Maybe item Aff
 single' = component
   { runSelect: const <<< Just
   , runRemove: const (const Nothing)
@@ -260,11 +261,11 @@ type SearchDropdownInput =
   , key :: String
   }
 
-searchDropdownInputToHeaderSingleInput
-  :: ∀ m action
-   . Warn (Text "This function is deprecated")
-  => SearchDropdownInput
-  -> Input action Maybe (Object String) m
+searchDropdownInputToHeaderSingleInput ::
+  forall m action.
+  Warn (Text "This function is deprecated") =>
+  SearchDropdownInput ->
+  Input action Maybe (Object String) m
 searchDropdownInputToHeaderSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -280,16 +281,16 @@ searchDropdownInputToHeaderSingleInput r =
       renderFuzzy
   }
   where
-    renderFuzzy = span_ <<< boldMatches r.key
+  renderFuzzy = span_ <<< boldMatches r.key
 
-    renderLabel item =
-      HH.text (fromMaybe "" $ Object.lookup r.key item)
+  renderLabel item =
+    HH.text (fromMaybe "" $ Object.lookup r.key item)
 
-searchDropdownInputToToolbarSingleInput
-  :: ∀ m action
-   . Warn (Text "This function is deprecated")
-  => SearchDropdownInput
-  -> Input action Maybe (Object String) m
+searchDropdownInputToToolbarSingleInput ::
+  forall m action.
+  Warn (Text "This function is deprecated") =>
+  SearchDropdownInput ->
+  Input action Maybe (Object String) m
 searchDropdownInputToToolbarSingleInput r =
   { items: Success r.items
   , insertable: NotInsertable
@@ -307,11 +308,10 @@ searchDropdownInputToToolbarSingleInput r =
       renderFuzzy
   }
   where
-    renderFuzzy = span_ <<< boldMatches r.key
+  renderFuzzy = span_ <<< boldMatches r.key
 
-    renderLabel item =
-      HH.text (fromMaybe "" $ Object.lookup r.key item)
-
+  renderLabel item =
+    HH.text (fromMaybe "" $ Object.lookup r.key item)
 
 mountHeaderTypeahead :: EffectFn2 HTMLElement SearchDropdownInput (Interface MessageVariant QueryRow)
 mountHeaderTypeahead = mkSingleTypeaheadMounter single' searchDropdownInputToHeaderSingleInput

@@ -73,28 +73,28 @@ checkboxClasses = HH.ClassName <$>
   , "after:shadow"
   ]
 
-checkbox
-  :: ∀ p i
-   . Array (HH.IProp HTMLlabel i)
-  -> Array (HH.IProp HTMLinput i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+checkbox ::
+  forall p i.
+  Array (HH.IProp HTMLlabel i) ->
+  Array (HH.IProp HTMLinput i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 checkbox iprops inprops html =
   HH.label
-    ( [ HP.classes labelClasses ] <&> iprops )
+    ([ HP.classes labelClasses ] <&> iprops)
     ( [ HH.input
-        ( [ HP.classes inputClasses
-          , HP.type_ InputCheckbox
-          ] <&> inprops
-        )
+          ( [ HP.classes inputClasses
+            , HP.type_ InputCheckbox
+            ] <&> inprops
+          )
       , HH.span [ HP.classes checkboxClasses ] []
       ]
-      <> html
+        <> html
     )
 
-checkbox_
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+checkbox_ ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 checkbox_ = checkbox []

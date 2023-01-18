@@ -20,47 +20,46 @@ innerCardClasses = HH.ClassName <$>
   [ "m-6"
   ]
 
-baseCard
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+baseCard ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 baseCard iprops =
   HH.div
-    ( [ HP.classes baseCardClasses ] <&> iprops )
+    ([ HP.classes baseCardClasses ] <&> iprops)
 
-baseCard_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+baseCard_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 baseCard_ = baseCard []
 
-
-innerCard
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+innerCard ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 innerCard iprops =
   HH.div
-    ( [ HP.classes innerCardClasses ] <&> iprops )
+    ([ HP.classes innerCardClasses ] <&> iprops)
 
-innerCard_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+innerCard_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 innerCard_ = innerCard []
 
-card
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+card ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 card iprops html =
   baseCard iprops [ innerCard_ html ]
 
-card_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+card_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 card_ = card []

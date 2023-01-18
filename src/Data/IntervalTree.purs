@@ -17,9 +17,9 @@ import Prelude
 import Data.Array as Data.Array
 import Data.FoldableWithIndex as Data.FoldableWithIndex
 import Data.Generic.Rep as Data.Generic.Rep
-import Data.Show.Generic as Data.Show.Generic
 import Data.Map as Data.Map
 import Data.Maybe (Maybe(..))
+import Data.Show.Generic as Data.Show.Generic
 import Data.Tuple as Data.Tuple
 
 type IntervalTree a = Data.Map.Map a IntervalPoint
@@ -67,39 +67,39 @@ insertInterval ::
 insertInterval old { start, end }
   | start >= end = old
   | otherwise = old # mergeStart >>> mergeEnd >>> clearBetween
-  where
-  mergeStart :: IntervalTree a -> IntervalTree a
-  mergeStart xs = case Data.Map.lookup start xs of
-    Nothing -> Data.Map.insert start StartPoint  xs
-    Just intervalPoint -> case intervalPoint of
-      StartPoint -> xs
-      EndPoint -> Data.Map.delete start xs
+      where
+      mergeStart :: IntervalTree a -> IntervalTree a
+      mergeStart xs = case Data.Map.lookup start xs of
+        Nothing -> Data.Map.insert start StartPoint xs
+        Just intervalPoint -> case intervalPoint of
+          StartPoint -> xs
+          EndPoint -> Data.Map.delete start xs
 
-  mergeEnd :: IntervalTree a -> IntervalTree a
-  mergeEnd xs = case Data.Map.lookup end xs of
-    Nothing -> Data.Map.insert end EndPoint xs
-    Just intervalPoint -> case intervalPoint of
-      StartPoint -> Data.Map.delete end xs
-      EndPoint -> xs
+      mergeEnd :: IntervalTree a -> IntervalTree a
+      mergeEnd xs = case Data.Map.lookup end xs of
+        Nothing -> Data.Map.insert end EndPoint xs
+        Just intervalPoint -> case intervalPoint of
+          StartPoint -> Data.Map.delete end xs
+          EndPoint -> xs
 
-  clearBetween :: IntervalTree a -> IntervalTree a
-  clearBetween xs =
-    Data.Map.submap Nothing (Just lowerBound) xs
-      `Data.Map.union` Data.Map.submap (Just upperBound) Nothing xs
+      clearBetween :: IntervalTree a -> IntervalTree a
+      clearBetween xs =
+        Data.Map.submap Nothing (Just lowerBound) xs
+          `Data.Map.union` Data.Map.submap (Just upperBound) Nothing xs
 
-  lowerBound :: a
-  lowerBound = case findGreatestLowerBound start old of
-    Nothing -> start
-    Just greatestLowerBound -> case greatestLowerBound.value of
-      StartPoint -> greatestLowerBound.key
-      EndPoint -> start
+      lowerBound :: a
+      lowerBound = case findGreatestLowerBound start old of
+        Nothing -> start
+        Just greatestLowerBound -> case greatestLowerBound.value of
+          StartPoint -> greatestLowerBound.key
+          EndPoint -> start
 
-  upperBound :: a
-  upperBound = case findLeastUpperBound end old of
-    Nothing -> end
-    Just leastUpperBound -> case leastUpperBound.value of
-      StartPoint -> end
-      EndPoint -> leastUpperBound.key
+      upperBound :: a
+      upperBound = case findLeastUpperBound end old of
+        Nothing -> end
+        Just leastUpperBound -> case leastUpperBound.value of
+          StartPoint -> end
+          EndPoint -> leastUpperBound.key
 
 -- | Get immediate interval around a point
 -- | O(log n)
@@ -169,7 +169,7 @@ toIntervals ::
 toIntervals = partitionsToIntervals <<< partitionIntervalTree
   where
   partitionsToIntervals ::
-    { start :: Array a , end :: Array a } ->
+    { start :: Array a, end :: Array a } ->
     Array { start :: a, end :: a }
   partitionsToIntervals partition =
     map (Data.Tuple.uncurry { start: _, end: _ })

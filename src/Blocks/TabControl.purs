@@ -2,7 +2,7 @@ module Ocelot.Block.TabControl where
 
 import Prelude
 
-import DOM.HTML.Indexed (HTMLdiv, HTMLa)
+import DOM.HTML.Indexed (HTMLa, HTMLdiv)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.Block.Icon as Icon
@@ -82,60 +82,60 @@ errorIconClasses = HH.ClassName <$>
   , "my-px"
   ]
 
-tabControl
-  :: ∀ p i page
-   . Eq page
-  => TabConfig (Tab i) page
-  -> Array (HH.IProp HTMLdiv i)
-  -> HH.HTML p i
+tabControl ::
+  forall p i page.
+  Eq page =>
+  TabConfig (Tab i) page ->
+  Array (HH.IProp HTMLdiv i) ->
+  HH.HTML p i
 tabControl { tabs, activePage } props =
   HH.div
     [ HP.classes outerClasses ]
     [ HH.ul
-      ( [ HP.classes innerClasses ] <&> props )
-      $ singleTab activePage <$> tabs
+        ([ HP.classes innerClasses ] <&> props)
+        $ singleTab activePage <$> tabs
     ]
 
-tabControl_
-  :: ∀ p i page
-   . Eq page
-  => TabConfig (Tab i) page
-  -> HH.HTML p i
+tabControl_ ::
+  forall p i page.
+  Eq page =>
+  TabConfig (Tab i) page ->
+  HH.HTML p i
 tabControl_ config = tabControl config []
 
-singleTab
-  :: ∀ p i page
-   . Eq page
-  => page
-  -> Tab i page
-  -> HH.HTML p i
+singleTab ::
+  forall p i page.
+  Eq page =>
+  page ->
+  Tab i page ->
+  HH.HTML p i
 singleTab activePage tab =
   HH.li
     [ HP.class_ $ HH.ClassName "mr-12" ]
     [ HH.a
-      ( tab.props
-        <> [ HP.classes $ tabClasses <> conditionalTabClasses isActive ]
-      )
-      ( errorIcon
-        <>
-        [ HH.span
-          [ HP.classes tabTextClasses ]
-          [ HH.text tab.name ]
-        ]
-      )
+        ( tab.props
+            <> [ HP.classes $ tabClasses <> conditionalTabClasses isActive ]
+        )
+        ( errorIcon
+            <>
+              [ HH.span
+                  [ HP.classes tabTextClasses ]
+                  [ HH.text tab.name ]
+              ]
+        )
     ]
   where
-    isActive :: Boolean
-    isActive = tab.page == activePage
+  isActive :: Boolean
+  isActive = tab.page == activePage
 
-    errorIcon :: Array (HH.HTML p i)
-    errorIcon
-      | tab.errors > 0 && isActive == false =
+  errorIcon :: Array (HH.HTML p i)
+  errorIcon
+    | tab.errors > 0 && isActive == false =
         [ Icon.error
-          [ HP.classes $ errorIconClasses ]
+            [ HP.classes $ errorIconClasses ]
         ]
-      | otherwise = []
+    | otherwise = []
 
-    conditionalTabClasses :: IsActive -> Array HH.ClassName
-    conditionalTabClasses true = activeTabClasses
-    conditionalTabClasses false = inactiveTabClasses
+  conditionalTabClasses :: IsActive -> Array HH.ClassName
+  conditionalTabClasses true = activeTabClasses
+  conditionalTabClasses false = inactiveTabClasses

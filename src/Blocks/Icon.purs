@@ -8,315 +8,315 @@ import Halogen.HTML.Properties as HP
 import Halogen.HTML.Properties.ARIA as HA
 import Ocelot.HTML.Properties ((<&>))
 
-icon
-  :: ∀ p i
-   . String
-  -> Array (HH.IProp HTMLspan i)
-  -> HH.HTML p i
+icon ::
+  forall p i.
+  String ->
+  Array (HH.IProp HTMLspan i) ->
+  HH.HTML p i
 icon className iprops =
   HH.span
     [ HA.label className
     , HP.classes $ HH.ClassName <$>
-      [ "inline-block"
-      ]
+        [ "inline-block"
+        ]
     ]
     [ HH.span
         ( iprops <&>
-          [ HA.hidden "true"
-          , HP.classes $ HH.ClassName <$>
-            [ className
-            , "inline-block"
+            [ HA.hidden "true"
+            , HP.classes $ HH.ClassName <$>
+                [ className
+                , "inline-block"
+                ]
             ]
-          ]
         )
         []
     ]
 
-adSet :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+adSet :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 adSet = icon "icon-adset"
 
-adSet_ :: ∀ p i. HH.HTML p i
+adSet_ :: forall p i. HH.HTML p i
 adSet_ = adSet []
 
-add :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+add :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 add = icon "icon-add"
 
-add_ :: ∀ p i. HH.HTML p i
+add_ :: forall p i. HH.HTML p i
 add_ = add []
 
-added :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+added :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 added = icon "icon-added"
 
-added_ :: ∀ p i. HH.HTML p i
+added_ :: forall p i. HH.HTML p i
 added_ = added []
 
-arrowDown :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowDown :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 arrowDown = icon "icon-arrow-down"
 
-arrowDown_ :: ∀ p i. HH.HTML p i
+arrowDown_ :: forall p i. HH.HTML p i
 arrowDown_ = arrowDown []
 
-arrowLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowLeft :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 arrowLeft = icon "icon-arrow-left"
 
-arrowLeft_ :: ∀ p i. HH.HTML p i
+arrowLeft_ :: forall p i. HH.HTML p i
 arrowLeft_ = arrowLeft []
 
-arrowRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowRight :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 arrowRight = icon "icon-arrow-right"
 
-arrowRight_ :: ∀ p i. HH.HTML p i
+arrowRight_ :: forall p i. HH.HTML p i
 arrowRight_ = arrowRight []
 
-arrowUp :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+arrowUp :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 arrowUp = icon "icon-arrow-up"
 
-arrowUp_ :: ∀ p i. HH.HTML p i
+arrowUp_ :: forall p i. HH.HTML p i
 arrowUp_ = arrowUp []
 
-back :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+back :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 back = icon "icon-back"
 
-back_ :: ∀ p i. HH.HTML p i
+back_ :: forall p i. HH.HTML p i
 back_ = back []
 
-campaign :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+campaign :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 campaign = icon "icon-campaign"
 
-campaign_ :: ∀ p i. HH.HTML p i
+campaign_ :: forall p i. HH.HTML p i
 campaign_ = campaign []
 
-caratDown :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+caratDown :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratDown = icon "icon-carat-down"
 
-caratDown_ :: ∀ p i. HH.HTML p i
+caratDown_ :: forall p i. HH.HTML p i
 caratDown_ = caratDown []
 
-caratLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+caratLeft :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratLeft = icon "icon-carat-left"
 
-caratLeft_ :: ∀ p i. HH.HTML p i
+caratLeft_ :: forall p i. HH.HTML p i
 caratLeft_ = caratLeft []
 
-caratRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+caratRight :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratRight = icon "icon-carat-right"
 
-caratRight_ :: ∀ p i. HH.HTML p i
+caratRight_ :: forall p i. HH.HTML p i
 caratRight_ = caratRight []
 
-caratUp :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+caratUp :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 caratUp = icon "icon-carat-up"
 
-caratUp_ :: ∀ p i. HH.HTML p i
+caratUp_ :: forall p i. HH.HTML p i
 caratUp_ = caratUp []
 
-chevronLeft :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+chevronLeft :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 chevronLeft = icon "icon-chevron-left"
 
-chevronLeft_ :: ∀ p i. HH.HTML p i
+chevronLeft_ :: forall p i. HH.HTML p i
 chevronLeft_ = chevronLeft []
 
-chevronRight :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+chevronRight :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 chevronRight = icon "icon-chevron-right"
 
-chevronRight_ :: ∀ p i. HH.HTML p i
+chevronRight_ :: forall p i. HH.HTML p i
 chevronRight_ = chevronRight []
 
-close :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+close :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 close = icon "icon-close"
 
-close_ :: ∀ p i. HH.HTML p i
+close_ :: forall p i. HH.HTML p i
 close_ = close []
 
-collapse :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+collapse :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 collapse = icon "icon-collapse"
 
-collapse_ :: ∀ p i. HH.HTML p i
+collapse_ :: forall p i. HH.HTML p i
 collapse_ = collapse []
 
-dataSources :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+dataSources :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 dataSources = icon "icon-data-sources"
 
-dataSources_ :: ∀ p i. HH.HTML p i
+dataSources_ :: forall p i. HH.HTML p i
 dataSources_ = dataSources []
 
-delete :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+delete :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 delete = icon "icon-delete"
 
-delete_ :: ∀ p i. HH.HTML p i
+delete_ :: forall p i. HH.HTML p i
 delete_ = delete []
 
-deleteCircle :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+deleteCircle :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 deleteCircle = icon "icon-delete-circle"
 
-deleteCircle_ :: ∀ p i. HH.HTML p i
+deleteCircle_ :: forall p i. HH.HTML p i
 deleteCircle_ = deleteCircle []
 
-demographics :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+demographics :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 demographics = icon "icon-demographics"
 
-demographics_ :: ∀ p i. HH.HTML p i
+demographics_ :: forall p i. HH.HTML p i
 demographics_ = demographics []
 
-download :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+download :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 download = icon "icon-download"
 
-download_ :: ∀ p i. HH.HTML p i
+download_ :: forall p i. HH.HTML p i
 download_ = download []
 
-error :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+error :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 error = icon "icon-error"
 
-error_ :: ∀ p i. HH.HTML p i
+error_ :: forall p i. HH.HTML p i
 error_ = error []
 
-expand :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+expand :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 expand = icon "icon-expand"
 
-expand_ :: ∀ p i. HH.HTML p i
+expand_ :: forall p i. HH.HTML p i
 expand_ = expand []
 
-facebook :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+facebook :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 facebook = icon "icon-facebook"
 
-facebook_ :: ∀ p i. HH.HTML p i
+facebook_ :: forall p i. HH.HTML p i
 facebook_ = facebook []
 
-google :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+google :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 google = icon "icon-google"
 
-google_ :: ∀ p i. HH.HTML p i
+google_ :: forall p i. HH.HTML p i
 google_ = google []
 
-info :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+info :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 info = icon "icon-info"
 
-info_ :: ∀ p i. HH.HTML p i
+info_ :: forall p i. HH.HTML p i
 info_ = info []
 
-instagram :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+instagram :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 instagram = icon "icon-instagram"
 
-instagram_ :: ∀ p i. HH.HTML p i
+instagram_ :: forall p i. HH.HTML p i
 instagram_ = instagram []
 
-linkedIn :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+linkedIn :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 linkedIn = icon "icon-linkedin"
 
-linkedIn_ :: ∀ p i. HH.HTML p i
+linkedIn_ :: forall p i. HH.HTML p i
 linkedIn_ = linkedIn []
 
-menu :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+menu :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 menu = icon "icon-menu"
 
-menu_ :: ∀ p i. HH.HTML p i
+menu_ :: forall p i. HH.HTML p i
 menu_ = menu []
 
-navigate :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+navigate :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 navigate = icon "icon-navigate"
 
-navigate_ :: ∀ p i. HH.HTML p i
+navigate_ :: forall p i. HH.HTML p i
 navigate_ = navigate []
 
-options :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+options :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 options = icon "icon-options"
 
-options_ :: ∀ p i. HH.HTML p i
+options_ :: forall p i. HH.HTML p i
 options_ = options []
 
-pinterest :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+pinterest :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 pinterest = icon "icon-pinterest"
 
-pinterest_ :: ∀ p i. HH.HTML p i
+pinterest_ :: forall p i. HH.HTML p i
 pinterest_ = pinterest []
 
-plus :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+plus :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 plus = icon "icon-plus"
 
-plus_ :: ∀ p i. HH.HTML p i
+plus_ :: forall p i. HH.HTML p i
 plus_ = plus []
 
-reddit :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+reddit :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 reddit = icon "icon-reddit"
 
-reddit_ :: ∀ p i. HH.HTML p i
+reddit_ :: forall p i. HH.HTML p i
 reddit_ = reddit []
 
-refresh :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+refresh :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 refresh = icon "icon-refresh"
 
-refresh_ :: ∀ p i. HH.HTML p i
+refresh_ :: forall p i. HH.HTML p i
 refresh_ = refresh []
 
-search :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+search :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 search = icon "icon-search"
 
-search_ :: ∀ p i. HH.HTML p i
+search_ :: forall p i. HH.HTML p i
 search_ = search []
 
-selected :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+selected :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 selected = icon "icon-selected"
 
-selected_ :: ∀ p i. HH.HTML p i
+selected_ :: forall p i. HH.HTML p i
 selected_ = selected []
 
-settings :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+settings :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 settings = icon "icon-settings"
 
-settings_ :: ∀ p i. HH.HTML p i
+settings_ :: forall p i. HH.HTML p i
 settings_ = settings []
 
-share :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+share :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 share = icon "icon-share"
 
-share_ :: ∀ p i. HH.HTML p i
+share_ :: forall p i. HH.HTML p i
 share_ = share []
 
-snapchat :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+snapchat :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 snapchat = icon "icon-snapchat"
 
-snapchat_ :: ∀ p i. HH.HTML p i
+snapchat_ :: forall p i. HH.HTML p i
 snapchat_ = snapchat []
 
-success :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+success :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 success = icon "icon-success"
 
-success_ :: ∀ p i. HH.HTML p i
+success_ :: forall p i. HH.HTML p i
 success_ = success []
 
-taboola :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+taboola :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 taboola = icon "icon-taboola"
 
-taboola_ :: ∀ p i. HH.HTML p i
+taboola_ :: forall p i. HH.HTML p i
 taboola_ = taboola []
 
-tiktok :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+tiktok :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 tiktok = icon "icon-tiktok"
 
-tiktok_ :: ∀ p i. HH.HTML p i
+tiktok_ :: forall p i. HH.HTML p i
 tiktok_ = tiktok []
 
-timeline :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+timeline :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 timeline = icon "icon-timeline"
 
-timeline_ :: ∀ p i. HH.HTML p i
+timeline_ :: forall p i. HH.HTML p i
 timeline_ = timeline []
 
-tip :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+tip :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 tip = icon "icon-tip"
 
-tip_ :: ∀ p i. HH.HTML p i
+tip_ :: forall p i. HH.HTML p i
 tip_ = tip []
 
-twitter :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+twitter :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 twitter = icon "icon-twitter"
 
-twitter_ :: ∀ p i. HH.HTML p i
+twitter_ :: forall p i. HH.HTML p i
 twitter_ = twitter []
 
-youtube :: ∀ p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+youtube :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 youtube = icon "icon-youtube"
 
-youtube_ :: ∀ p i. HH.HTML p i
+youtube_ :: forall p i. HH.HTML p i
 youtube_ = youtube []
 

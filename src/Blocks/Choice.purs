@@ -18,19 +18,19 @@ choiceClasses = HH.ClassName <$>
   , "overflow-hidden"
   ]
 
-choice
-  :: ∀ p i
-   .  Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+choice ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 choice iprops =
   HH.div
-    ( [ HP.classes choiceClasses ] <&> iprops )
+    ([ HP.classes choiceClasses ] <&> iprops)
 
-choice_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+choice_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 choice_ =
   choice []
 
@@ -44,38 +44,38 @@ headerClasses = HH.ClassName <$>
   , "border-grey-90"
   ]
 
-header
-  :: ∀ p i
-   .  Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+header ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 header iprops =
   HH.div
-    ( [ HP.classes headerClasses ] <&> iprops )
+    ([ HP.classes headerClasses ] <&> iprops)
 
-header_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+header_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 header_ =
   header []
 
 bodyClasses :: Array HH.ClassName
 bodyClasses = HH.ClassName <$> [ "flex" ]
 
-body
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+body ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body iprops =
   HH.div
-    ( [ HP.classes bodyClasses ] <&> iprops )
+    ([ HP.classes bodyClasses ] <&> iprops)
 
-body_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+body_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body_ =
   body []
 
@@ -91,19 +91,19 @@ optionClasses = HH.ClassName <$>
   , "cursor-pointer"
   ]
 
-option
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+option ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 option iprops =
   HH.div
-    ( [ HP.classes optionClasses ] <&> iprops )
+    ([ HP.classes optionClasses ] <&> iprops)
 
-option_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+option_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 option_ =
   option []
 

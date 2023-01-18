@@ -14,19 +14,19 @@ bodyClasses = HH.ClassName <$>
   , "w-90"
   ]
 
-body
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+body ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body iprops =
   HH.div
-    ( [ HP.classes bodyClasses ] <&> iprops )
+    ([ HP.classes bodyClasses ] <&> iprops)
 
-body_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+body_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body_ =
   body []
 
@@ -39,19 +39,19 @@ optionClasses = HH.ClassName <$>
   , "cursor-pointer"
   ]
 
-option
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+option ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 option iprops =
   HH.div
-    ( [ HP.classes optionClasses ] <&> iprops )
+    ([ HP.classes optionClasses ] <&> iprops)
 
-option_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+option_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 option_ =
   option []
 

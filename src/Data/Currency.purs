@@ -2,9 +2,9 @@ module Ocelot.Data.Currency where
 
 import Prelude
 
-import Data.Argonaut (class DecodeJson, decodeJson, JsonDecodeError(..))
-import Data.Argonaut.Encode (class EncodeJson, encodeJson)
+import Data.Argonaut (class DecodeJson, JsonDecodeError(..), decodeJson)
 import Data.Argonaut.Core as Data.Argonaut.Core
+import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Array (all, drop, head, (:))
 import Data.Bifunctor (lmap)
 import Data.BigInt (BigInt)
@@ -15,8 +15,8 @@ import Data.Int (fromString) as Int
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Newtype (class Newtype, unwrap)
 import Data.Ord (abs)
-import Data.String (Pattern(..), Replacement(..), length, replaceAll, split, take, null)
-import Data.String.CodeUnits (toCharArray, fromCharArray)
+import Data.String (Pattern(..), Replacement(..), length, null, replaceAll, split, take)
+import Data.String.CodeUnits (fromCharArray, toCharArray)
 import Data.Tuple (Tuple(..), snd)
 import Prim.TypeError (class Warn, Text)
 
@@ -25,6 +25,7 @@ import Prim.TypeError (class Warn, Text)
 
 -- | Cents represent USD as a BigInt
 newtype Cents = Cents BigInt
+
 derive instance newtypeCents :: Newtype Cents _
 derive newtype instance eqCents :: Eq Cents
 derive newtype instance ordCents :: Ord Cents
@@ -64,10 +65,10 @@ parseCentsFromNumber = map Cents <<< BigInt.fromNumber
 parseCentsFromString :: String -> Maybe Cents
 parseCentsFromString = map Cents <<< BigInt.fromString
 
-parseCentsFromMicroDollars
-  :: Warn (Text "parseCentsFromMicroDollars is deprecated and will be removed in a future release")
-  => Number
-  -> Maybe Cents
+parseCentsFromMicroDollars ::
+  Warn (Text "parseCentsFromMicroDollars is deprecated and will be removed in a future release") =>
+  Number ->
+  Maybe Cents
 parseCentsFromMicroDollars = parseCentsFromNumber <<< (_ / 10000.0)
 
 -----------
@@ -93,36 +94,39 @@ parseCentsFromDollarStr str = Cents <$> case split (Pattern ".") str of
   _ -> Nothing
 
   where
-    -- Expects only the dollars place, no cents. Cents will overstate
-    -- by 100x! Verifies within 64 bit bounds.
-    dollarsPlace :: String -> Maybe BigInt
-    dollarsPlace s
-      | null s = Nothing
-      | otherwise = pure
+  -- Expects only the dollars place, no cents. Cents will overstate
+  -- by 100x! Verifies within 64 bit bounds.
+  dollarsPlace :: String -> Maybe BigInt
+  dollarsPlace s
+    | null s = Nothing
+    | otherwise =
+        pure
           <<< (*) (BigInt.fromInt 100)
           =<< BigInt.fromString
           =<< cleanDollars s
 
-    cleanDollars :: String -> Maybe String
-    cleanDollars s =
-      let split = splitCommas s
-          verified = noCommas s || checkHead split && checkTail split
-       in if verified then Just (stripCommas s) else Nothing
+  cleanDollars :: String -> Maybe String
+  cleanDollars s =
+    let
+      split = splitCommas s
+      verified = noCommas s || checkHead split && checkTail split
+    in
+      if verified then Just (stripCommas s) else Nothing
 
-    noCommas s = s == stripCommas s
-    splitCommas = split (Pattern ",")
-    stripCommas = replaceAll (Pattern ",") (Replacement "")
-    checkHead = fromMaybe false <<< map ((_ <= 3) <<< length) <<< head
-    checkTail = all (_ == 3) <<< map length <<< drop 1
+  noCommas s = s == stripCommas s
+  splitCommas = split (Pattern ",")
+  stripCommas = replaceAll (Pattern ",") (Replacement "")
+  checkHead = fromMaybe false <<< map ((_ <= 3) <<< length) <<< head
+  checkTail = all (_ == 3) <<< map length <<< drop 1
 
 -- Given some cents, format a string representation
 -- in dollars.
 formatCentsToStrDollars :: Cents -> String
 formatCentsToStrDollars (Cents n)
-  | abs (BigInt.toNumber n) < 10.0  = (if n < zero then "-" else "") <> "0.0" <> BigInt.toString n
+  | abs (BigInt.toNumber n) < 10.0 = (if n < zero then "-" else "") <> "0.0" <> BigInt.toString n
   | abs (BigInt.toNumber n) < 100.0 = (if n < zero then "-" else "") <> "0." <> BigInt.toString n
   | otherwise = fromCharArray <<< snd $ foldr formatCentsToDollars' (Tuple 0 []) (chars n)
-    where
+      where
       chars :: BigInt -> Array Char
       chars = toCharArray <<< BigInt.toString
 
@@ -144,9 +148,8 @@ canParseToBigInt = isJust <<< BigInt.fromString
 bigIntIs64Bit :: BigInt -> Maybe BigInt
 bigIntIs64Bit n = do
   max <- BigInt.fromString "9223372036854775807"
-  if n <= max
-    then pure n
-    else Nothing
+  if n <= max then pure n
+  else Nothing
 
 -- | Simple check to see if the parsed int would fit within
 -- 64 bits (9,223,372,036,854,775,807)

@@ -19,7 +19,6 @@ import Data.Time.Duration (Days(..), Hours(..), Minutes(..), negateDuration)
 import Data.Tuple (Tuple(..), snd)
 import Partial.Unsafe (unsafePartial)
 
-
 ----------
 -- Defaults
 defaultTime :: Time
@@ -30,7 +29,7 @@ defaultDate = unsafeMkDate 2000 1 1
 
 -- Array of 23 hour intervals, and one 59 min one
 defaultTimeRange :: Array Time
-defaultTimeRange = hourRange defaultTime 23 <> [prevMinute defaultTime]
+defaultTimeRange = hourRange defaultTime 23 <> [ prevMinute defaultTime ]
 
 ----------
 -- Time Ranges
@@ -39,10 +38,9 @@ defaultTimeRange = hourRange defaultTime 23 <> [prevMinute defaultTime]
 hourRange :: Time -> Int -> Array Time
 hourRange start hrs = go start 0 []
   where
-    go cur count acc
-      | count == hrs = acc <> [cur]
-      | otherwise    = go (nextHour cur) (count + 1) (acc <> [cur])
-
+  go cur count acc
+    | count == hrs = acc <> [ cur ]
+    | otherwise = go (nextHour cur) (count + 1) (acc <> [ cur ])
 
 ----------
 -- Date Ranges
@@ -51,8 +49,8 @@ hourRange start hrs = go start 0 []
 monthRange :: Year -> Month -> Array Date
 monthRange y m = dateRange start end
   where
-    start = firstDateOfMonth y m
-    end   = lastDateOfMonth y m
+  start = firstDateOfMonth y m
+  end = lastDateOfMonth y m
 
 -- Provided two dates, generates the range (inclusive) between them.
 -- Note: Preserves ordering. If you provide a future then past date,
@@ -60,11 +58,10 @@ monthRange y m = dateRange start end
 dateRange :: Date -> Date -> Array Date
 dateRange = \s e -> go s e []
   where
-    go start end acc
-      | start == end = reverse $ [start] <> acc
-      | start >  end = reverse $ go end start acc
-      | otherwise    = go (nextDay start) end ([start] <> acc)
-
+  go start end acc
+    | start == end = reverse $ [ start ] <> acc
+    | start > end = reverse $ go end start acc
+    | otherwise = go (nextDay start) end ([ start ] <> acc)
 
 ----------
 -- Time Manipulation
@@ -74,7 +71,6 @@ nextHour = snd <<< T.adjust (Hours 1.0)
 prevMinute :: Time -> Time
 prevMinute = snd <<< T.adjust (negateDuration $ Minutes 1.0)
 
-
 ----------
 -- Conditional Selections
 
@@ -83,7 +79,6 @@ firstDateOfMonth y m = canonicalDate y m bottom
 
 lastDateOfMonth :: Year -> Month -> Date
 lastDateOfMonth y m = canonicalDate y m (lastDayOfMonth y m)
-
 
 ----------
 -- Round
@@ -103,8 +98,8 @@ prevDay = adjustDaysBy (-1.0)
 adjustDaysBy :: Number -> Date -> Date
 adjustDaysBy n = unsafePartial fromJust <<< next n
   where
-    next :: Number -> Date -> Maybe Date
-    next dur d = DT.date <$> (DT.adjust (Days dur) (toDateTime $ fromDate d))
+  next :: Number -> Date -> Maybe Date
+  next dur d = DT.date <$> (DT.adjust (Days dur) (toDateTime $ fromDate d))
 
 -- Months
 -- Note: Attempts to preserve the same day, but due to the use of
@@ -112,12 +107,12 @@ adjustDaysBy n = unsafePartial fromJust <<< next n
 nextMonth :: Date -> Date
 nextMonth d = case (month d) of
   December -> canonicalDate (unsafeSucc (year d)) January (day d)
-  _    -> canonicalDate (year d) (unsafeSucc (month d)) (day d)
+  _ -> canonicalDate (year d) (unsafeSucc (month d)) (day d)
 
 prevMonth :: Date -> Date
 prevMonth d = case (month d) of
   January -> canonicalDate (unsafePred (year d)) December (day d)
-  _   -> canonicalDate (year d) (unsafePred (month d)) (day d)
+  _ -> canonicalDate (year d) (unsafePred (month d)) (day d)
 
 -- Years
 -- Note: Attempts to preserve the same day, but due to the use of
@@ -130,12 +125,14 @@ prevYear :: Date -> Date
 prevYear d = canonicalDate (unsafePred (year d)) (month d) (day d)
 
 yearsForward :: Int -> Date -> Date
-yearsForward n d | n <= 0    = d
-                 | otherwise = yearsForward (n - 1) (nextYear d)
+yearsForward n d
+  | n <= 0 = d
+  | otherwise = yearsForward (n - 1) (nextYear d)
 
 yearsBackward :: Int -> Date -> Date
-yearsBackward n d | n <= 0   = d
-                  | otherwise = yearsBackward (n - 1) (prevYear d)
+yearsBackward n d
+  | n <= 0 = d
+  | otherwise = yearsBackward (n - 1) (prevYear d)
 
 extractYearMonth :: Date -> Tuple Year Month
 extractYearMonth d = Tuple (year d) (month d)
@@ -151,8 +148,7 @@ formatDate :: Date -> String
 formatDate = Formatter.format readableFormat <<< flip DateTime defaultTime
 
 readableFormat :: Formatter
-readableFormat
-  = Formatter.DayOfWeekNameShort
+readableFormat = Formatter.DayOfWeekNameShort
   : Formatter.Placeholder ", "
   : Formatter.MonthShort
   : Formatter.Placeholder " "
@@ -168,10 +164,10 @@ readableFormat
 -- you are providing is valid; they buy you some convenience.
 
 -- Pred & Succ
-unsafeSucc :: ∀ a. Enum a => a -> a
+unsafeSucc :: forall a. Enum a => a -> a
 unsafeSucc = unsafePartial fromJust <<< succ
 
-unsafePred :: ∀ a. Enum a => a -> a
+unsafePred :: forall a. Enum a => a -> a
 unsafePred = unsafePartial fromJust <<< pred
 
 -- Provide a year, month, and day to construct a date. Due to the
@@ -180,9 +176,9 @@ unsafePred = unsafePartial fromJust <<< pred
 unsafeMkDate :: Int -> Int -> Int -> Date
 unsafeMkDate y m d = canonicalDate year month day
   where
-    year  = unsafeMkYear y
-    month = unsafeMkMonth m
-    day   = unsafeMkDay d
+  year = unsafeMkYear y
+  month = unsafeMkMonth m
+  day = unsafeMkDay d
 
 unsafeMkYear :: Int -> Year
 unsafeMkYear = unsafePartial fromJust <<< toEnum
@@ -196,10 +192,10 @@ unsafeMkDay = unsafePartial fromJust <<< toEnum
 unsafeMkTime :: Int -> Int -> Int -> Int -> Time
 unsafeMkTime h m s ms = Time hour minute second millisecond
   where
-    hour        = unsafeMkHour h
-    minute      = unsafeMkMinute m
-    second      = unsafeMkSecond s
-    millisecond = unsafeMkMillisecond ms
+  hour = unsafeMkHour h
+  minute = unsafeMkMinute m
+  second = unsafeMkSecond s
+  millisecond = unsafeMkMillisecond ms
 
 unsafeMkHour :: Int -> Hour
 unsafeMkHour = unsafePartial fromJust <<< toEnum

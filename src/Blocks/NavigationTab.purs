@@ -19,28 +19,28 @@ type TabConfig page =
   , activePage :: page
   }
 
-navigationTabs
-  :: ∀ p i page
-   . Eq page
-  => TabConfig page
-  -> Array (HH.IProp HTMLdiv i)
-  -> HH.HTML p i
+navigationTabs ::
+  forall p i page.
+  Eq page =>
+  TabConfig page ->
+  Array (HH.IProp HTMLdiv i) ->
+  HH.HTML p i
 navigationTabs { tabs, activePage } props =
   TabControl.tabControl config props
   where
-    config =
-      { tabs: toGeneric <$> tabs, activePage }
+  config =
+    { tabs: toGeneric <$> tabs, activePage }
 
-    toGeneric tab =
-      { name: tab.name
-      , props: [ HP.href tab.link ]
-      , page: tab.page
-      , errors: tab.errors
-      }
+  toGeneric tab =
+    { name: tab.name
+    , props: [ HP.href tab.link ]
+    , page: tab.page
+    , errors: tab.errors
+    }
 
-navigationTabs_
-  :: ∀ p i page
-   . Eq page
-  => TabConfig page
-  -> HH.HTML p i
+navigationTabs_ ::
+  forall p i page.
+  Eq page =>
+  TabConfig page ->
+  HH.HTML p i
 navigationTabs_ config = navigationTabs config []

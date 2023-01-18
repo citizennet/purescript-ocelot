@@ -1,6 +1,7 @@
 module Test.Main where
 
 import Prelude
+
 import Effect (Effect)
 import Test.Ocelot.Data.Currency as Test.Ocelot.Data.Currency
 import Test.Ocelot.Data.IntervalTree as Test.Ocelot.Data.IntervalTree

@@ -1,6 +1,7 @@
 module Test.Ocelot.Typeahead (suite) where
 
 import Prelude
+
 import Data.Array as Data.Array
 import Data.Fuzzy as Data.Fuzzy
 import Data.Maybe (Maybe(..))
@@ -10,7 +11,7 @@ import Foreign.Object as Foreign.Object
 import Ocelot.Typeahead as Ocelot.Typeahead
 import Test.Unit as Test.Unit
 import Test.Unit.Assert as Test.Unit.Assert
-  
+
 suite :: Test.Unit.TestSuite
 suite =
   Test.Unit.suite "Ocelot.Typeahead" do
@@ -19,46 +20,46 @@ suite =
         let
           actual =
             Ocelot.Typeahead.getNewItems'
-              { insertable: Ocelot.Typeahead.NotInsertable 
+              { insertable: Ocelot.Typeahead.NotInsertable
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
               , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
-              , runFilterItems: Data.Array.difference 
+              , runFilterItems: Data.Array.difference
               , search: "foo"
-              , selected: ["foo", "bar"]
+              , selected: [ "foo", "bar" ]
               }
-              ["foo", "boof", "fooboo", "food", "baz"]
+              [ "foo", "boof", "fooboo", "food", "baz" ]
 
-          expected = ["food", "fooboo"]
+          expected = [ "food", "fooboo" ]
         unfuzzyTestResults { actual, expected }
       Test.Unit.test "filters out selected Maybe item and poor matches, and sorts results" do
         let
           actual =
             Ocelot.Typeahead.getNewItems'
-              { insertable: Ocelot.Typeahead.NotInsertable 
+              { insertable: Ocelot.Typeahead.NotInsertable
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
               , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items -> Data.Maybe.maybe items (\item -> Data.Array.filter (_ /= item) items)
               , search: "foo"
               , selected: Just "foo"
               }
-              ["foo", "boof", "fooboo", "food", "baz"]
+              [ "foo", "boof", "fooboo", "food", "baz" ]
 
-          expected = ["food", "fooboo"]
+          expected = [ "food", "fooboo" ]
         unfuzzyTestResults { actual, expected }
       Test.Unit.test "doesn't filter poor matches or sort results" do
         let
           actual =
             Ocelot.Typeahead.getNewItems'
-              { insertable: Ocelot.Typeahead.NotInsertable 
+              { insertable: Ocelot.Typeahead.NotInsertable
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
               , runFilterFuzzy: identity
-              , runFilterItems: Data.Array.difference 
+              , runFilterItems: Data.Array.difference
               , search: "foo"
-              , selected: ["foo", "bar"]
+              , selected: [ "foo", "bar" ]
               }
-              ["foo", "food", "boof", "fooboo", "baz"]
+              [ "foo", "food", "boof", "fooboo", "baz" ]
 
-          expected = ["food", "boof", "fooboo", "baz"]
+          expected = [ "food", "boof", "fooboo", "baz" ]
         unfuzzyTestResults { actual, expected }
       Test.Unit.test "inserts search to results without a perfect match" do
         let
@@ -69,26 +70,26 @@ suite =
               , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items _ -> items
               , search: "foo"
-              , selected: Nothing 
+              , selected: Nothing
               }
-              ["food"]
+              [ "food" ]
 
-          expected = ["foo", "food"]
+          expected = [ "foo", "food" ]
         unfuzzyTestResults { actual, expected }
       Test.Unit.test "doesn't insert search into non-empty results" do
         let
-          actual  =
+          actual =
             Ocelot.Typeahead.getNewItems'
               { insertable: Ocelot.Typeahead.Insertable identity
               , itemToObject: Foreign.Object.fromHomogeneous <<< { name: _ }
               , runFilterFuzzy: Ocelot.Typeahead.defFilterFuzzy
               , runFilterItems: \items _ -> items
               , search: "foo"
-              , selected: Nothing 
+              , selected: Nothing
               }
-              ["foo", "food"]
+              [ "foo", "food" ]
 
-          expected = ["foo", "food"]
+          expected = [ "foo", "food" ]
         unfuzzyTestResults { actual, expected }
 
 unfuzzyTestResults ::

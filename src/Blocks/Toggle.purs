@@ -51,18 +51,18 @@ toggleClasses = HH.ClassName <$>
   , "before:shadow"
   ]
 
-toggle
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+toggle ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 toggle iprops =
   HH.label
     [ HP.classes labelClasses ]
     [ HH.input iprops'
     , HH.span [ HP.classes toggleClasses ] []
     ]
-    where
-      iprops' = iprops <>
-        [ HP.classes inputClasses
-        , HP.type_ InputCheckbox
-        ]
+  where
+  iprops' = iprops <>
+    [ HP.classes inputClasses
+    , HP.type_ InputCheckbox
+    ]

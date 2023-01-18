@@ -25,8 +25,8 @@ data Status
 instance read :: Read Status where
   read = case _ of
     "collapsed" -> pure Collapsed
-    "expanded"  -> pure Expanded
-    _   -> Nothing
+    "expanded" -> pure Expanded
+    _ -> Nothing
 
 instance isPropStatus :: IsProp Status where
   toPropValue = propFromString <<< toProp
@@ -34,7 +34,7 @@ instance isPropStatus :: IsProp Status where
 toProp :: Status -> String
 toProp = case _ of
   Collapsed -> "collapsed"
-  Expanded  -> "expanded"
+  Expanded -> "expanded"
 
 toBoolean :: Status -> Boolean
 toBoolean Collapsed = false
@@ -82,91 +82,93 @@ contentSharedClasses = HH.ClassName <$>
 contentClasses :: Status -> Array HH.ClassName
 contentClasses status_ = contentSharedClasses <>
   ( case status_ of
-    Collapsed -> HH.ClassName <$>
-      [ "max-h-0"
-      , "opacity-0"
-      , "overflow-hidden"
-      , "transition-1/4-in"
-      ]
-    Expanded -> HH.ClassName <$>
-      [ "max-h-full"
-      , "opacity-1"
-      , "transition-1/2-out"
-      ]
+      Collapsed -> HH.ClassName <$>
+        [ "max-h-0"
+        , "opacity-0"
+        , "overflow-hidden"
+        , "transition-1/4-in"
+        ]
+      Expanded -> HH.ClassName <$>
+        [ "max-h-full"
+        , "opacity-1"
+        , "transition-1/2-out"
+        ]
   )
 
-type HTMLexpandable = Interactive ( expanded :: Status )
+type HTMLexpandable = Interactive (expanded :: Status)
 
-status :: ∀ r i. Status -> HP.IProp ( expanded :: Status | r ) i
+status :: forall r i. Status -> HP.IProp (expanded :: Status | r) i
 status = HP.prop (PropName "expanded")
 
 -- Takes a row of `IProps` containing the `expanded` label
 -- and returns a `Tuple` containing the extracted value as
 -- well as the original row, minus the `expanded` label
-extractStatus
-  :: ∀ r i
-   . Array (HH.IProp ( expanded :: Status | r) i)
-  -> Tuple Status (Array (HH.IProp r i))
+extractStatus ::
+  forall r i.
+  Array (HH.IProp (expanded :: Status | r) i) ->
+  Tuple Status (Array (HH.IProp r i))
 extractStatus =
   foldr f (Tuple Expanded [])
   where
-    f (HP.IProp (Property "expanded" expanded)) =
-      lmap (const $ coerceExpanded expanded)
-    f iprop = rmap $ (flip snoc) $ coerceR iprop
+  f (HP.IProp (Property "expanded" expanded)) =
+    lmap (const $ coerceExpanded expanded)
+  f iprop = rmap $ (flip snoc) $ coerceR iprop
 
-    coerceExpanded :: PropValue -> Status
-    coerceExpanded = fromMaybe Expanded <<< read <<< unsafeCoerce
+  coerceExpanded :: PropValue -> Status
+  coerceExpanded = fromMaybe Expanded <<< read <<< unsafeCoerce
 
-    coerceR :: HH.IProp ( expanded :: Status | r ) i -> HH.IProp r i
-    coerceR = unsafeCoerce
+  coerceR :: HH.IProp (expanded :: Status | r) i -> HH.IProp r i
+  coerceR = unsafeCoerce
 
-heading
-  :: ∀ p i
-   . Array (HH.IProp HTMLexpandable i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+heading ::
+  forall p i.
+  Array (HH.IProp HTMLexpandable i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 heading iprops html =
-  let (Tuple status_ iprops') = extractStatus iprops in
-  HH.header
-    ( [ HP.classes headingClasses ] <&> iprops' )
-    [ HH.div
-      [ HP.classes headingInnerClasses ]
-      html
-    , HH.div_
-      [ chevron_ status_ ]
-    ]
+  let
+    (Tuple status_ iprops') = extractStatus iprops
+  in
+    HH.header
+      ([ HP.classes headingClasses ] <&> iprops')
+      [ HH.div
+          [ HP.classes headingInnerClasses ]
+          html
+      , HH.div_
+          [ chevron_ status_ ]
+      ]
 
-chevron
-  :: ∀ p i
-   . Status
-  -> Array (HH.IProp HTMLspan i)
-  -> HH.HTML p i
+chevron ::
+  forall p i.
+  Status ->
+  Array (HH.IProp HTMLspan i) ->
+  HH.HTML p i
 chevron status_ iprops =
   ( case status_ of
-    Collapsed -> Icon.expand
-    Expanded  -> Icon.collapse
+      Collapsed -> Icon.expand
+      Expanded -> Icon.collapse
   )
-  ( [ HP.classes chevronClasses ] <&> iprops )
+    ([ HP.classes chevronClasses ] <&> iprops)
 
-chevron_
-  :: ∀ p i
-   . Status
-  -> HH.HTML p i
+chevron_ ::
+  forall p i.
+  Status ->
+  HH.HTML p i
 chevron_ status_ = chevron status_ []
 
-content
-  :: ∀ p i
-   . Status
-  -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+content ::
+  forall p i.
+  Status ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 content status_ iprops =
   HH.div
-    ( [ HP.classes $ contentClasses status_ ] <&> iprops )
+    ([ HP.classes $ contentClasses status_ ] <&> iprops)
 
-content_
-  :: ∀ p i
-   . Status
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+content_ ::
+  forall p i.
+  Status ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 content_ status_ = content status_ []

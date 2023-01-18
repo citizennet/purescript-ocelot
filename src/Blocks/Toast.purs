@@ -13,11 +13,11 @@ import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
 import Unsafe.Coerce (unsafeCoerce)
 
-type Toast r = ( visible :: Boolean | r )
+type Toast r = (visible :: Boolean | r)
 
 type HTMLtoast = Toast HTMLdiv
 
-visible :: ∀ r i. Boolean -> HP.IProp ( visible :: Boolean | r ) i
+visible :: forall r i. Boolean -> HP.IProp (visible :: Boolean | r) i
 visible = HP.prop (HH.PropName "visible")
 
 -- Necessary for centering the toast
@@ -56,38 +56,36 @@ toastClasses = HH.ClassName <$>
   , "flex"
   ]
 
-toast
-  :: ∀ p i
-   . Array (HH.IProp HTMLtoast i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+toast ::
+  forall p i.
+  Array (HH.IProp HTMLtoast i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 toast iprops html =
   HH.div
-  [ HP.classes $ toastContainerClasses <> containerClasses' ]
-  [ HH.div
-    ( [ HP.classes toastClasses ] <&> iprops' )
-    html
-  ]
+    [ HP.classes $ toastContainerClasses <> containerClasses' ]
+    [ HH.div
+        ([ HP.classes toastClasses ] <&> iprops')
+        html
+    ]
   where
-    Tuple visible iprops' = pullVisibleProp iprops
-    containerClasses' =
-      if visible
-        then containerVisibleClasses
-        else containerClosedClasses
+  Tuple visible iprops' = pullVisibleProp iprops
+  containerClasses' =
+    if visible then containerVisibleClasses
+    else containerClosedClasses
 
-
-pullVisibleProp
-  :: ∀ r i
-   . Array (HH.IProp ( visible :: Boolean | r ) i)
-  -> Tuple Boolean (Array (HH.IProp r i))
+pullVisibleProp ::
+  forall r i.
+  Array (HH.IProp (visible :: Boolean | r) i) ->
+  Tuple Boolean (Array (HH.IProp r i))
 pullVisibleProp = foldr f (Tuple false [])
   where
-    f (HP.IProp (HC.Property "visible" x)) =
-      lmap $ const $ coerceExpanded x
-    f iprop = rmap $ (flip snoc) $ coerceR iprop
+  f (HP.IProp (HC.Property "visible" x)) =
+    lmap $ const $ coerceExpanded x
+  f iprop = rmap $ (flip snoc) $ coerceR iprop
 
-    coerceExpanded :: HC.PropValue -> Boolean
-    coerceExpanded = unsafeCoerce
+  coerceExpanded :: HC.PropValue -> Boolean
+  coerceExpanded = unsafeCoerce
 
-    coerceR :: HH.IProp ( visible :: Boolean | r ) i -> HH.IProp r i
-    coerceR = unsafeCoerce
+  coerceR :: HH.IProp (visible :: Boolean | r) i -> HH.IProp r i
+  coerceR = unsafeCoerce

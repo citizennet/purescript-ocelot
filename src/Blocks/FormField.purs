@@ -17,10 +17,10 @@ fieldClasses = HH.ClassName <$>
 helpTextClasses :: Array HH.ClassName
 helpTextClasses = Format.mutedClasses <>
   ( HH.ClassName <$>
-    [ "block"
-    , "font-light"
-    , "pt-3"
-    ]
+      [ "block"
+      , "font-light"
+      , "pt-3"
+      ]
   )
 
 errorTextClasses :: Array HH.ClassName
@@ -46,133 +46,133 @@ type FieldConfig p i =
   , error :: Array (HH.HTML p i)
   }
 
-field'
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.IProp HTMLdiv i)
-  -> HH.HTML p i
-  -> HH.HTML p i
+field' ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.IProp HTMLdiv i) ->
+  HH.HTML p i ->
+  HH.HTML p i
 field' config iprops html =
   HH.div
-    ( [ HP.classes fieldClasses ] <&> iprops )
+    ([ HP.classes fieldClasses ] <&> iprops)
     [ HH.label
-      [ HP.classes labelClasses
-      , HP.for config.inputId
-      ]
-      [ HH.fromPlainHTML config.label ]
+        [ HP.classes labelClasses
+        , HP.for config.inputId
+        ]
+        [ HH.fromPlainHTML config.label ]
     , html
     , error_ config.error
     , helpText_ config.helpText
     ]
 
-field
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+field ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 field config iprops html =
   field'
     config
     iprops
-    ( HH.div [ css "my-1" ] html )
+    (HH.div [ css "my-1" ] html)
 
-field_
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+field_ ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 field_ config = field config []
 
-fieldSmall
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldSmall ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldSmall config iprops html =
   field'
     config
     iprops
-    ( HH.div [ css "my-1 md:w-1/4" ] html )
+    (HH.div [ css "my-1 md:w-1/4" ] html)
 
-fieldSmall_
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldSmall_ ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldSmall_ config = fieldSmall config []
 
-fieldMid
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldMid ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldMid config iprops html =
   field'
     config
     iprops
-    ( HH.div [ css "my-1 md:w-1/2" ] html )
+    (HH.div [ css "my-1 md:w-1/2" ] html)
 
-fieldMid_
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldMid_ ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldMid_ config = fieldMid config []
 
-fieldset
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldset ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldset config iprops html =
   HH.div
-    ( [ HP.classes fieldClasses ] <&> iprops )
+    ([ HP.classes fieldClasses ] <&> iprops)
     [ HH.fieldset
-      []
-      [ HH.legend
-        [ HP.classes labelClasses ]
-        [ HH.fromPlainHTML config.label ]
-      , HH.div
-        [ css "my-1" ]
-        html
-      , error_ config.error
-      , helpText_ config.helpText
-      ]
+        []
+        [ HH.legend
+            [ HP.classes labelClasses ]
+            [ HH.fromPlainHTML config.label ]
+        , HH.div
+            [ css "my-1" ]
+            html
+        , error_ config.error
+        , helpText_ config.helpText
+        ]
     ]
 
-fieldset_
-  :: ∀ p i
-   . FieldConfig p i
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+fieldset_ ::
+  forall p i.
+  FieldConfig p i ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 fieldset_ config = fieldset config []
 
-error
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+error ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 error iprops = HH.div $ [ HP.classes errorTextClasses ] <&> iprops
 
-error_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+error_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 error_ = error []
 
-helpText
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+helpText ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 helpText iprops = HH.div $ [ HP.classes helpTextClasses ] <&> iprops
 
-helpText_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+helpText_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 helpText_ = helpText []

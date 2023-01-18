@@ -1,5 +1,5 @@
 module Ocelot.TimePicker
-  ( Action 
+  ( Action
   , ChildSlots
   , Component
   , ComponentHTML
@@ -29,8 +29,9 @@ module Ocelot.TimePicker
   ) where
 
 import Prelude
+
 import Control.Alt ((<|>))
-import Data.Array ((!!), length)
+import Data.Array (length, (!!))
 import Data.Array as Array
 import Data.Array.NonEmpty (catMaybes, head)
 import Data.DateTime (time)
@@ -99,8 +100,7 @@ data EmbeddedAction
   | OnBlur
   | Receive CompositeInput
 
-type EmbeddedChildSlots
-  = () :: Row Type
+type EmbeddedChildSlots = () :: Row Type
 
 type Input =
   { disabled :: Boolean
@@ -148,8 +148,7 @@ type StateRow =
   , timeUnits :: Array TimeUnit
   )
 
-data TimeUnit
-  = TimeUnit SelectableStatus SelectedStatus Time
+data TimeUnit = TimeUnit SelectableStatus SelectedStatus Time
 
 -------------
 -- Components
@@ -159,10 +158,10 @@ component = H.mkComponent
   { initialState
   , render
   , eval: H.mkEval H.defaultEval
-    { handleAction = handleAction
-    , handleQuery = handleQuery
-    , receive = Just <<< PassingReceive
-    }
+      { handleAction = handleAction
+      , handleQuery = handleQuery
+      , receive = Just <<< PassingReceive
+      }
   }
 
 ---------
@@ -189,7 +188,7 @@ embeddedHandleAction = case _ of
     H.modify_ _ { visibility = S.Off }
     let preventIt = H.liftEffect $ preventDefault $ KE.toEvent ev
     case KE.code ev of
-      "Enter"   -> do
+      "Enter" -> do
         preventIt
         handleSearch
       "Escape" -> do
@@ -202,10 +201,10 @@ embeddedHandleAction = case _ of
     H.modify_ _ { visibility = S.Off }
   Receive input -> embeddedReceive input
 
-embeddedHandleMessage
-  :: forall m
-   . S.Event
-  -> CompositeComponentM m Unit
+embeddedHandleMessage ::
+  forall m.
+  S.Event ->
+  CompositeComponentM m Unit
 embeddedHandleMessage = case _ of
   S.Selected idx -> do
     -- We'll want to select the item here, set its status, and raise
@@ -219,8 +218,8 @@ embeddedHandleMessage = case _ of
         synchronize
   S.Searched text -> do
     H.modify_ _ { search = text, selection = Nothing }
-    -- we don't actually want to match on search, we want to wait
-    -- until they hit ENTER and then we'll try to match their search
+  -- we don't actually want to match on search, we want to wait
+  -- until they hit ENTER and then we'll try to match their search
   S.VisibilityChanged visibility -> do
     H.raise $ VisibilityChanged visibility
 
@@ -264,19 +263,18 @@ embeddedReceive input = do
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender s =
-  if s.disabled
-    then Input.input [ HP.disabled true, HP.value s.search ]
-    else
-      HH.div_
-        [ renderSearch s.search
-        , renderSelect s.visibility s.timeUnits
-        ]
+  if s.disabled then Input.input [ HP.disabled true, HP.value s.search ]
+  else
+    HH.div_
+      [ renderSearch s.search
+      , renderSelect s.visibility s.timeUnits
+      ]
 
 -- Generate a standard set of time intervals.
-generateTimes
-  :: Maybe Time
-  -> Maybe Interval
-  -> Array TimeUnit
+generateTimes ::
+  Maybe Time ->
+  Maybe Interval ->
+  Array TimeUnit
 generateTimes selection mInterval =
   (filterTimeRange ODT.defaultTimeRange) <#> (generateTimeUnit selection)
   where
@@ -285,10 +283,10 @@ generateTimes selection mInterval =
     Nothing -> identity
     Just interval -> Array.filter (isWithinInterval interval)
 
-generateTimeUnit
-  :: Maybe Time
-  -> Time
-  -> TimeUnit
+generateTimeUnit ::
+  Maybe Time ->
+  Time ->
+  TimeUnit
 generateTimeUnit Nothing i =
   TimeUnit Selectable NotSelected i
 generateTimeUnit (Just t) i
@@ -296,47 +294,49 @@ generateTimeUnit (Just t) i
   | otherwise = TimeUnit Selectable NotSelected i
 
 guessTime :: String -> Maybe Time
-guessTime ""   = Nothing
+guessTime "" = Nothing
 guessTime text =
-  let meridiem :: Maybe Meridiem
-      meridiem = do
-        let
-          regexFlags = parseFlags "i"
-        regexA <- hush (regex "a" $ regexFlags)
-        regexP <- hush (regex "p" $ regexFlags)
-        matched <- match regexA text <|> match regexP text
-        meridiemString <- head matched
-        case toLower meridiemString of
-          "a" -> Just AM
-          "p" -> Just PM
-          _ -> Nothing
-
-      digits :: Array String
-      digits = either
-        (const [])
-        (\r -> fromMaybe [] (catMaybes <$> match r text))
-        (regex "\\d" $ parseFlags "g")
-
-      digits' :: String
-      digits' = joinWith "" digits
-
-      hourMin :: Maybe String
-      hourMin = case length digits of
-        1 -> pure $ "0" <> digits' <> "00"
-        2 -> pure $ digits' <> "00"
-        3 -> pure $ "0" <> digits'
-        4 -> pure $ digits'
+  let
+    meridiem :: Maybe Meridiem
+    meridiem = do
+      let
+        regexFlags = parseFlags "i"
+      regexA <- hush (regex "a" $ regexFlags)
+      regexP <- hush (regex "p" $ regexFlags)
+      matched <- match regexA text <|> match regexP text
+      meridiemString <- head matched
+      case toLower meridiemString of
+        "a" -> Just AM
+        "p" -> Just PM
         _ -> Nothing
 
-      format :: String
-      format = (maybe "HHmm" (const "hhmm a") meridiem)
+    digits :: Array String
+    digits = either
+      (const [])
+      (\r -> fromMaybe [] (catMaybes <$> match r text))
+      (regex "\\d" $ parseFlags "g")
 
-      suffix :: String
-      suffix = maybe "" (\m -> " " <> meridiemToString m) meridiem
+    digits' :: String
+    digits' = joinWith "" digits
 
-      guess :: Maybe String
-      guess = (_ <> suffix) <$> hourMin
-   in time <$> (join $ hush <<< unformatDateTime format <$> guess)
+    hourMin :: Maybe String
+    hourMin = case length digits of
+      1 -> pure $ "0" <> digits' <> "00"
+      2 -> pure $ digits' <> "00"
+      3 -> pure $ "0" <> digits'
+      4 -> pure $ digits'
+      _ -> Nothing
+
+    format :: String
+    format = (maybe "HHmm" (const "hhmm a") meridiem)
+
+    suffix :: String
+    suffix = maybe "" (\m -> " " <> meridiemToString m) meridiem
+
+    guess :: Maybe String
+    guess = (_ <> suffix) <$> hourMin
+  in
+    time <$> (join $ hush <<< unformatDateTime format <$> guess)
 
 handleAction :: forall m. Action -> ComponentM m Unit
 handleAction = case _ of
@@ -351,7 +351,7 @@ handleQuery = case _ of
     response <- H.request _select unit (S.Query <<< GetSelection)
     pure $ reply <$> response
   SetDisabled disabled a -> Just a <$ do
-    void $ H.tell _select unit (S.Query <<<  SetDisabled disabled)
+    void $ H.tell _select unit (S.Query <<< SetDisabled disabled)
   SetSelection selection a -> Just a <$ do
     H.tell _select unit (S.Query <<< SetSelection selection)
 
@@ -360,9 +360,9 @@ handleSearch = do
   state <- H.get
   case state.search of
     "" -> setSelection Nothing
-    _  -> case guessTime state.search of
+    _ -> case guessTime state.search of
       Nothing -> pure unit
-      Just t  -> case state.interval of
+      Just t -> case state.interval of
         Nothing -> setSelection (Just t)
         Just interval
           | isWithinInterval interval t -> setSelection (Just t)
@@ -393,81 +393,81 @@ meridiemToString = case _ of
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =
-    HH.slot _select unit (S.component identity spec) (embeddedInput st) PassingOutput
+  HH.slot _select unit (S.component identity spec) (embeddedInput st) PassingOutput
 
 renderItem :: forall m. Int -> TimeUnit -> CompositeComponentHTML m
 renderItem index item =
   HH.div
-  -- Here's the place to use info from the item to render it in different
-  -- states.
-  -- if highlightedIndex == Just index then 'highlight' else 'dont'
+    -- Here's the place to use info from the item to render it in different
+    -- states.
+    -- if highlightedIndex == Just index then 'highlight' else 'dont'
     ( maybeSetItemProps index item
-      [ css
-        $ trim
-        $ "relative p-3 transition-1/4 "
-          <> (getTimeStyles item)
-      ]
+        [ css
+            $ trim
+            $ "relative p-3 transition-1/4 "
+                <> (getTimeStyles item)
+        ]
     )
     -- printDay will format our item correctly
     [ HH.text $ printTime item ]
   where
-    -- If the timeunit is selectable,
-    -- then augment the props with the correct click events.
-    -- if not, then just don't provide the props at all.
-    -- this is an easy way to "disable" functionality in the calendar.
-    maybeSetItemProps i (TimeUnit Selectable _ _) props =
-      Setters.setItemProps i props
-    maybeSetItemProps _ _ props = props
+  -- If the timeunit is selectable,
+  -- then augment the props with the correct click events.
+  -- if not, then just don't provide the props at all.
+  -- this is an easy way to "disable" functionality in the calendar.
+  maybeSetItemProps i (TimeUnit Selectable _ _) props =
+    Setters.setItemProps i props
+  maybeSetItemProps _ _ props = props
 
-    -- Get the correct styles for a time unit, dependent on its statuses
-    getTimeStyles :: TimeUnit -> String
-    getTimeStyles i
-      = trim $ getSelectableStyles i
-      <> " " <> getSelectedStyles i
-      where
-        getSelectableStyles :: TimeUnit -> String
-        getSelectableStyles (TimeUnit NotSelectable _ _) =
-          mempty
-        getSelectableStyles _ =
-          "cursor-pointer hover:bg-grey-97"
+  -- Get the correct styles for a time unit, dependent on its statuses
+  getTimeStyles :: TimeUnit -> String
+  getTimeStyles i = trim $ getSelectableStyles i
+    <> " "
+    <> getSelectedStyles i
+    where
+    getSelectableStyles :: TimeUnit -> String
+    getSelectableStyles (TimeUnit NotSelectable _ _) =
+      mempty
+    getSelectableStyles _ =
+      "cursor-pointer hover:bg-grey-97"
 
-        getSelectedStyles :: TimeUnit -> String
-        getSelectedStyles (TimeUnit _ Selected _) =
-          "text-blue-88"
-        getSelectedStyles _ =
-          mempty
+    getSelectedStyles :: TimeUnit -> String
+    getSelectedStyles (TimeUnit _ Selected _) =
+      "text-blue-88"
+    getSelectedStyles _ =
+      mempty
 
-    -- Just a simple helper to format our TimeUnit into a day
-    -- we can print out
-    printTime :: TimeUnit -> String
-    printTime (TimeUnit _ _ t) = ODT.formatTime t
+  -- Just a simple helper to format our TimeUnit into a day
+  -- we can print out
+  printTime :: TimeUnit -> String
+  printTime (TimeUnit _ _ t) = ODT.formatTime t
 
 -- The page element that will hold focus, capture key events, etcetera
 renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
     ( Setters.setInputProps
-      [ HE.onBlur \_ -> S.Action OnBlur
-      , HE.onKeyDown $ S.Action <<< Key
-      , HP.value search
-      ]
+        [ HE.onBlur \_ -> S.Action OnBlur
+        , HE.onKeyDown $ S.Action <<< Key
+        , HP.value search
+        ]
     )
 
 renderSelect :: forall m. S.Visibility -> Array TimeUnit -> CompositeComponentHTML m
 renderSelect visibility timeUnits =
   HH.div
     [ css "relative" ]
-    $ if visibility == S.On
-      then [ renderTimes ]
-      else [ ]
+    $
+      if visibility == S.On then [ renderTimes ]
+      else []
   where
   -- The overall container for the time dropdown
   renderTimes =
     Layout.popover
       ( Setters.setContainerProps
-        [ HP.classes dropdownClasses ]
+          [ HP.classes dropdownClasses ]
       )
-      ( mapWithIndex renderItem timeUnits )
+      (mapWithIndex renderItem timeUnits)
 
 setSelection :: forall m. Maybe Time -> CompositeComponentM m Unit
 setSelection selection = do

@@ -106,11 +106,9 @@ data Interval
   | BetweenThumbs { left :: { percent :: Number }, right :: { percent :: Number } }
   | ThumbToEnd { thumb :: { percent :: Number }, end :: { percent :: Number } }
 
-data Output
-  = ValueChanged (Array { percent :: Number })
+data Output = ValueChanged (Array { percent :: Number })
 
-type ChildSlots
-  = () :: Row Type
+type ChildSlots = () :: Row Type
 
 component ::
   forall m.
@@ -178,10 +176,10 @@ handleQuery = case _ of
   SetThumbCount n a
     | n < 1 -> pure Nothing
     | otherwise -> do
-      state <- Halogen.get
-      case state.thumbs of
-        Idle idleState -> handleSetThumbCount a n state.input idleState
-        Editing _ -> pure Nothing
+        state <- Halogen.get
+        case state.thumbs of
+          Idle idleState -> handleSetThumbCount a n state.input idleState
+          Editing _ -> pure Nothing
 
 handleSetThumbCount ::
   forall a m.
@@ -236,6 +234,7 @@ addNewThumbs a input diff thumbs = case input.minDistance of
       newThumbs = case input.marks of
         Nothing -> newThumbsContinuous minDistance diff neighborTree
         Just marks -> newThumbsDiscrete minDistance diff neighborTree marks
+
       new :: Array { percent :: Number }
       new = Data.Array.sort (thumbs <> newThumbs)
     if Data.Array.length newThumbs == diff then do
@@ -308,19 +307,20 @@ newThumbsDiscrete minDistance diff neighborTree marks =
       let
         availablePositions :: Array { percent :: Number }
         availablePositions = getAvailablePositions x.neighborTree x.marks
-      in case Data.Array.uncons availablePositions of
-        Nothing -> Control.Monad.Rec.Class.Done x.newThumbs
-        Just { head, tail } ->
-          Control.Monad.Rec.Class.Loop
-            { minDistance: x.minDistance
-            , n: x.n - 1
-            , neighborTree:
-                Ocelot.Data.IntervalTree.insertInterval
-                  x.neighborTree
-                  { start: head - x.minDistance, end: head + x.minDistance }
-            , marks: tail
-            , newThumbs: Data.Array.snoc x.newThumbs head
-            }
+      in
+        case Data.Array.uncons availablePositions of
+          Nothing -> Control.Monad.Rec.Class.Done x.newThumbs
+          Just { head, tail } ->
+            Control.Monad.Rec.Class.Loop
+              { minDistance: x.minDistance
+              , n: x.n - 1
+              , neighborTree:
+                  Ocelot.Data.IntervalTree.insertInterval
+                    x.neighborTree
+                    { start: head - x.minDistance, end: head + x.minDistance }
+              , marks: tail
+              , newThumbs: Data.Array.snoc x.newThumbs head
+              }
 
 getAvailablePositions ::
   Ocelot.Data.IntervalTree.IntervalTree { percent :: Number } ->
@@ -336,12 +336,13 @@ getAvailablePositions neighborTree marks = Data.Array.filter filter marks
         , right :: Maybe { key :: { percent :: Number }, value :: Ocelot.Data.IntervalTree.IntervalPoint }
         }
       surrounding = Ocelot.Data.IntervalTree.lookupInterval mark neighborTree
-    in case surrounding.left, surrounding.right of
-      Just left, Just right -> case left.value, right.value of
-        Ocelot.Data.IntervalTree.StartPoint, Ocelot.Data.IntervalTree.EndPoint
-          | mark /= left.key && mark /= right.key -> false
+    in
+      case surrounding.left, surrounding.right of
+        Just left, Just right -> case left.value, right.value of
+          Ocelot.Data.IntervalTree.StartPoint, Ocelot.Data.IntervalTree.EndPoint
+            | mark /= left.key && mark /= right.key -> false
+          _, _ -> true
         _, _ -> true
-      _, _ -> true
 
 handleMouseDownOnThumb ::
   forall m.
@@ -358,9 +359,9 @@ handleMouseDownOnThumb index mouseEvent thumbs = case unsnocAt index thumbs of
       { thumbs =
           Editing
             { start:
-              { positionX: getPositionX mouseEvent
-              , value: item
-              }
+                { positionX: getPositionX mouseEvent
+                , value: item
+                }
             , static: rest
             , moving: item
             , subscriptions
@@ -448,23 +449,24 @@ trimNeighbor mMinDistance { start, static } x = case mMinDistance of
           <<< Ocelot.Data.IntervalTree.fromIntervals
           <<< getNeighbors minDistance
           $ static
-    in case surrounding.left, surrounding.right of
-      Just left, Just right -> case left.value, right.value of
-        Ocelot.Data.IntervalTree.StartPoint, Ocelot.Data.IntervalTree.EndPoint
-         | absDistance x left.key <= absDistance x right.key
-            && isWithinBoundary left.key -> left.key
-         | absDistance x left.key <= absDistance x right.key
-            && not isWithinBoundary left.key
-            && isWithinBoundary right.key -> right.key
-         | absDistance x left.key >= absDistance x right.key
-            && isWithinBoundary right.key -> right.key
-         | absDistance x left.key >= absDistance x right.key
-            && not isWithinBoundary right.key
-            && isWithinBoundary left.key -> left.key
-         | otherwise -> start
-        Ocelot.Data.IntervalTree.EndPoint, Ocelot.Data.IntervalTree.StartPoint -> x
+    in
+      case surrounding.left, surrounding.right of
+        Just left, Just right -> case left.value, right.value of
+          Ocelot.Data.IntervalTree.StartPoint, Ocelot.Data.IntervalTree.EndPoint
+            | absDistance x left.key <= absDistance x right.key
+                && isWithinBoundary left.key -> left.key
+            | absDistance x left.key <= absDistance x right.key
+                && not isWithinBoundary left.key
+                && isWithinBoundary right.key -> right.key
+            | absDistance x left.key >= absDistance x right.key
+                && isWithinBoundary right.key -> right.key
+            | absDistance x left.key >= absDistance x right.key
+                && not isWithinBoundary right.key
+                && isWithinBoundary left.key -> left.key
+            | otherwise -> start
+          Ocelot.Data.IntervalTree.EndPoint, Ocelot.Data.IntervalTree.StartPoint -> x
+          _, _ -> x
         _, _ -> x
-      _, _ -> x
 
 getNeighbors ::
   { percent :: Number } ->
@@ -486,13 +488,13 @@ alignToMarks ::
 alignToMarks mMinDistance { marks, start, static } x
   | marks == [] = x
   | otherwise =
-    Data.Maybe.fromMaybe start
-      $ findClosest x filteredByMinDistance
-  where
-  filteredByMinDistance :: Array { percent :: Number }
-  filteredByMinDistance = case mMinDistance of
-    Nothing -> marks
-    Just minDistance -> filterByMinDistance { minDistance, static } marks
+      Data.Maybe.fromMaybe start
+        $ findClosest x filteredByMinDistance
+      where
+      filteredByMinDistance :: Array { percent :: Number }
+      filteredByMinDistance = case mMinDistance of
+        Nothing -> marks
+        Just minDistance -> filterByMinDistance { minDistance, static } marks
 
 filterByMinDistance ::
   { minDistance :: { percent :: Number }
@@ -654,9 +656,9 @@ renderTrack :: forall m. State -> ComponentHTML m
 renderTrack state =
   Ocelot.Slider.Render.trackContainer state.input.layout
     ( [ Ocelot.Slider.Render.track state.input.layout
-        [ Halogen.Svg.Attributes.fill
-            (Just (Halogen.Svg.Attributes.RGB 229 229 229))
-        ]
+          [ Halogen.Svg.Attributes.fill
+              (Just (Halogen.Svg.Attributes.RGB 229 229 229))
+          ]
       , renderMarks state
       ]
         <> renderIntervals state
@@ -702,7 +704,7 @@ renderIntervals state =
       ([ first ] <> middle)
       (middle <> [ last ])
 
-unsnocAt :: forall a. Int -> Array a -> Maybe { item :: a , rest :: Array a }
+unsnocAt :: forall a. Int -> Array a -> Maybe { item :: a, rest :: Array a }
 unsnocAt index xs = do
   item <- Data.Array.index xs index
   rest <- Data.Array.deleteAt index xs

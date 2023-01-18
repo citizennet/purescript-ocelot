@@ -30,7 +30,8 @@ module Ocelot.DatePicker
   ) where
 
 import Prelude
-import Data.Array ((!!), drop, find, mapWithIndex, reverse, sort, take)
+
+import Data.Array (drop, find, mapWithIndex, reverse, sort, take, (!!))
 import Data.Array as Array
 import Data.Date (Date, Month, Weekday(..), Year, canonicalDate, day, month, weekday, year)
 import Data.DateTime.Instant (fromDate, toDateTime)
@@ -81,18 +82,17 @@ data Action
 -- A type to help assist making grid-based calendar layouts. Calendars
 -- can use dates directly or use array lengths as offsets.
 type Aligned =
-  { pre  :: Array Date   -- Dates before the first of the month
-  , body :: Array Date   -- Dates within the month
-  , post :: Array Date   -- Dates after the last of the month
-  , all  :: Array Date   -- The full 35-day range
+  { pre :: Array Date -- Dates before the first of the month
+  , body :: Array Date -- Dates within the month
+  , post :: Array Date -- Dates after the last of the month
+  , all :: Array Date -- The full 35-day range
   }
 
 data BoundaryStatus
   = OutOfBounds
   | InBounds
 
-data CalendarItem
-  = CalendarItem SelectableStatus SelectedStatus BoundaryStatus Date
+data CalendarItem = CalendarItem SelectableStatus SelectedStatus BoundaryStatus Date
 
 type ChildSlots =
   ( select :: S.Slot Query EmbeddedChildSlots Output Unit
@@ -132,10 +132,9 @@ data EmbeddedAction
   | OnBlur
   | Receive CompositeInput
   | ToggleMonth Direction
-  | ToggleYear  Direction
+  | ToggleYear Direction
 
-type EmbeddedChildSlots
-  = () :: Row Type
+type EmbeddedChildSlots = () :: Row Type
 
 type Input =
   { disabled :: Boolean
@@ -211,29 +210,33 @@ _select = Proxy :: Proxy "select"
 -- that's bound to weekdays Sun - Sat.
 alignByWeek :: Year -> Month -> Aligned
 alignByWeek y m = { pre: pre, body: body, post: post, all: pre <> body <> post }
- where
-   start = firstDateOfMonth y m
-   end = lastDateOfMonth y m
-   body = dateRange start end
-   pre =
-     let pad = padPrev $ weekday start
-      in if pad == 0.0 then [] else dateRange (adjustDaysBy pad start) (prevDay start)
-   post =
-     let pad = padNext $ weekday end
-      in if pad == 0.0 then [] else dateRange (nextDay end) (adjustDaysBy pad end)
+  where
+  start = firstDateOfMonth y m
+  end = lastDateOfMonth y m
+  body = dateRange start end
+  pre =
+    let
+      pad = padPrev $ weekday start
+    in
+      if pad == 0.0 then [] else dateRange (adjustDaysBy pad start) (prevDay start)
+  post =
+    let
+      pad = padNext $ weekday end
+    in
+      if pad == 0.0 then [] else dateRange (nextDay end) (adjustDaysBy pad end)
 
 calendarHeader :: forall m. CompositeComponentHTML m
 calendarHeader =
   HH.div
     [ css "flex text-grey-70" ]
     ( headers <#>
-      \day ->
-        HH.div
-          [ css "w-14 h-14 flex items-center justify-center" ]
-          [ HH.text day ]
+        \day ->
+          HH.div
+            [ css "w-14 h-14 flex items-center justify-center" ]
+            [ HH.text day ]
     )
   where
-    headers = [ "S", "M", "T", "W", "T", "F", "S" ]
+  headers = [ "S", "M", "T", "W", "T", "F", "S" ]
 
 -- Given a string ("Month YYYY"), creates the calendar navigation.
 -- Could be much better in rendering
@@ -246,30 +249,30 @@ calendarNav y m =
     , arrowButton (ToggleMonth Next) [ Icon.chevronRight_ ]
     ]
   where
-    -- A helper function that will turn a date into a year/month date string
-    fmtMonthYear = either (const "-") identity
-                   <<< formatDateTime "MMMM YYYY"
-                   <<< toDateTime
-                   <<< fromDate
+  -- A helper function that will turn a date into a year/month date string
+  fmtMonthYear = either (const "-") identity
+    <<< formatDateTime "MMMM YYYY"
+    <<< toDateTime
+    <<< fromDate
 
-    -- We generally will use this value: the current month and year
-    monthYear = fmtMonthYear $ canonicalDate y m bottom
+  -- We generally will use this value: the current month and year
+  monthYear = fmtMonthYear $ canonicalDate y m bottom
 
-    -- We need to embed functionality into these arrow buttons so they trigger
-    -- queries in the parent. Let's do that here. To make this work, remember
-    -- you're writing in `Select`'s HTML type and you have to wrap your constructors
-    -- in Raise.
-    arrowButton q =
-      Button.buttonClear
-        [ HE.onClick $ S.Action <<< const q
-        , css "text-grey-70 p-3"
-        ]
+  -- We need to embed functionality into these arrow buttons so they trigger
+  -- queries in the parent. Let's do that here. To make this work, remember
+  -- you're writing in `Select`'s HTML type and you have to wrap your constructors
+  -- in Raise.
+  arrowButton q =
+    Button.buttonClear
+      [ HE.onClick $ S.Action <<< const q
+      , css "text-grey-70 p-3"
+      ]
 
-    -- Show the month and year
-    dateHeader =
-      HH.div
-        [ css "flex-1" ]
-        [ HH.text monthYear ]
+  -- Show the month and year
+  dateHeader =
+    HH.div
+      [ css "flex-1" ]
+      [ HH.text monthYear ]
 
 defaultInput :: Input
 defaultInput =
@@ -289,7 +292,8 @@ embeddedHandleAction = case _ of
       targetDate = (year d') /\ (month d')
       { aligned, calendarItems } = generateCalendarRows interval selection (fst targetDate) (snd targetDate)
     H.modify_
-      _ { targetDate = targetDate
+      _
+        { targetDate = targetDate
         , aligned = aligned
         , calendarItems = calendarItems
         }
@@ -314,11 +318,12 @@ embeddedHandleAction = case _ of
   Receive input -> embeddedReceive input
   ToggleYear dir -> do
     st <- H.get
-    let y = fst st.targetDate
-        m = snd st.targetDate
-        newDate = case dir of
-            Next -> ODT.nextYear (canonicalDate y m bottom)
-            Prev -> ODT.prevYear (canonicalDate y m bottom)
+    let
+      y = fst st.targetDate
+      m = snd st.targetDate
+      newDate = case dir of
+        Next -> ODT.nextYear (canonicalDate y m bottom)
+        Prev -> ODT.prevYear (canonicalDate y m bottom)
     H.modify_ _ { targetDate = Tuple (year newDate) (month newDate) }
     synchronize
 
@@ -336,22 +341,23 @@ embeddedHandleMessage = case _ of
         when (isInNextMonth aligned date) do
           toggleMonth Next
         H.modify_
-          _ { selection = Just date
+          _
+            { selection = Just date
             , visibility = S.Off
             }
         H.raise $ SelectionChanged $ Just date
         synchronize
   S.Searched text -> do
     H.modify_ _ { search = text }
-    -- we don't actually want to match on search, we want to wait
-    -- until they hit ENTER and then we'll try to match their search
+  -- we don't actually want to match on search, we want to wait
+  -- until they hit ENTER and then we'll try to match their search
   S.VisibilityChanged visibility -> do
     H.raise $ VisibilityChanged visibility
 
 embeddedHandleQuery :: forall m a. MonadAff m => Query a -> CompositeComponentM m (Maybe a)
 embeddedHandleQuery = case _ of
   GetSelection reply -> do
-    { selection }  <- H.get
+    { selection } <- H.get
     pure $ reply <$> selection
   SetDisabled disabled a -> Just a <$ do
     H.modify_ _ { disabled = disabled }
@@ -391,17 +397,16 @@ embeddedReceive input = do
         Just selection
           | isWithinInterval interval selection -> pure unit
           | otherwise -> do
-            H.modify_ _ { search = ""}
-            setSelection Nothing
+              H.modify_ _ { search = "" }
+              setSelection Nothing
         Nothing -> pure unit
   synchronize
 
 embeddedRender :: forall m. CompositeComponentRender m
 embeddedRender st =
-  if st.disabled
-    then Input.input [ HP.disabled true, HP.value st.search ]
-    else
-      HH.div_
+  if st.disabled then Input.input [ HP.disabled true, HP.value st.search ]
+  else
+    HH.div_
       [ renderSearch st.search
       , renderSelect (fst st.targetDate) (snd st.targetDate) st.visibility st.calendarItems
       ]
@@ -409,14 +414,14 @@ embeddedRender st =
 firstMatch :: Array (Tuple (Fuzzy Date) Int) -> Maybe (Fuzzy Date)
 firstMatch = maybe Nothing (Just <<< fst) <<< find match'
   where
-    match' (Tuple (Fuzzy { ratio }) _) = ratio == (1 % 1)
+  match' (Tuple (Fuzzy { ratio }) _) = ratio == (1 % 1)
 
-generateCalendarItem
-  :: Maybe Interval
-  -> Maybe Date
-  -> BoundaryStatus
-  -> Date
-  -> CalendarItem
+generateCalendarItem ::
+  Maybe Interval ->
+  Maybe Date ->
+  BoundaryStatus ->
+  Date ->
+  CalendarItem
 generateCalendarItem mInterval selection bound i = case selection of
   Nothing -> CalendarItem selectableStatus NotSelected bound i
   Just d
@@ -431,49 +436,51 @@ generateCalendarItem mInterval selection bound i = case selection of
       | otherwise -> NotSelectable
 
 -- Generate a standard set of dates from a year and month.
-generateCalendarRows
-  :: Maybe Interval
-  -> Maybe Date
-  -> Year
-  -> Month
-  -> { calendarItems :: Array CalendarItem, aligned :: Aligned }
+generateCalendarRows ::
+  Maybe Interval ->
+  Maybe Date ->
+  Year ->
+  Month ->
+  { calendarItems :: Array CalendarItem, aligned :: Aligned }
 generateCalendarRows mInterval selection y m =
   { calendarItems: lastMonth <> thisMonth <> nextMonth
   , aligned
   }
   where
-    aligned@{ pre, body, post } = alignByWeek y m
-    outOfBounds = map (generateCalendarItem mInterval selection OutOfBounds)
-    lastMonth   = outOfBounds pre
-    nextMonth   = outOfBounds post
-    thisMonth = body <#> (generateCalendarItem mInterval selection InBounds)
+  aligned@{ pre, body, post } = alignByWeek y m
+  outOfBounds = map (generateCalendarItem mInterval selection OutOfBounds)
+  lastMonth = outOfBounds pre
+  nextMonth = outOfBounds post
+  thisMonth = body <#> (generateCalendarItem mInterval selection InBounds)
 
 guessDate :: Date -> MaxYears -> String -> Maybe Date
 guessDate start (MaxYears max) text =
-  let text' :: String -- replace dashes and slashes with spaces
-      text' = either
-        (const text)
-        (\r -> replace r " " text)
-        (regex "-|\\/|," $ parseFlags "g")
+  let
+    text' :: String -- replace dashes and slashes with spaces
+    text' = either
+      (const text)
+      (\r -> replace r " " text)
+      (regex "-|\\/|," $ parseFlags "g")
 
-      text'' :: String -- consolidate all consecutive whitespaceg
-      text'' = either
-        (const text')
-        (\r -> replace r " " text')
-        (regex "\\s+" $ parseFlags "g")
+    text'' :: String -- consolidate all consecutive whitespaceg
+    text'' = either
+      (const text')
+      (\r -> replace r " " text')
+      (regex "\\s+" $ parseFlags "g")
 
-      matcher :: Int -> Date -> Tuple (Fuzzy Date) Int
-      matcher i d = Tuple (Data.Fuzzy.match true toObject text'' d) i
+    matcher :: Int -> Date -> Tuple (Fuzzy Date) Int
+    matcher i d = Tuple (Data.Fuzzy.match true toObject text'' d) i
 
-      guess :: Array Date -> Int -> Maybe Date
-      guess dates = findIn (firstMatch $ sort $ matcher `mapWithIndex` dates)
+    guess :: Array Date -> Int -> Maybe Date
+    guess dates = findIn (firstMatch $ sort $ matcher `mapWithIndex` dates)
 
-      findIn :: Maybe (Fuzzy Date) -> Int -> Maybe Date
-      findIn (Just (Fuzzy { original })) _ = Just original
-      findIn Nothing pass
-        | pass > max = Nothing
-        | otherwise  = guess (dateRange (yearsForward pass start) (yearsForward (pass + 1) start)) (pass + 1)
-   in guess (dateRange start $ nextYear start) 0
+    findIn :: Maybe (Fuzzy Date) -> Int -> Maybe Date
+    findIn (Just (Fuzzy { original })) _ = Just original
+    findIn Nothing pass
+      | pass > max = Nothing
+      | otherwise = guess (dateRange (yearsForward pass start) (yearsForward (pass + 1) start)) (pass + 1)
+  in
+    guess (dateRange start $ nextYear start) 0
 
 -- NOTE re-raise output messages from the embedded component
 handleAction :: forall m. Action -> ComponentM m Unit
@@ -500,9 +507,9 @@ handleSearch = do
   today <- H.liftEffect nowDate
   _ <- case state.search of
     "" -> setSelection Nothing
-    _  -> case guessDate today (MaxYears 5) state.search of
+    _ -> case guessDate today (MaxYears 5) state.search of
       Nothing -> pure unit
-      Just d  -> case state.interval of
+      Just d -> case state.interval of
         Nothing -> setSelection (Just d)
         Just interval
           | isWithinInterval interval d -> setSelection (Just d)
@@ -512,9 +519,9 @@ handleSearch = do
 
 initialState :: Input -> State
 initialState input =
-  let targetDate
-        = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) input.targetDate
-      { aligned, calendarItems }= generateCalendarRows input.interval input.selection (fst targetDate) (snd targetDate)
+  let
+    targetDate = fromMaybe (ODT.unsafeMkYear 2001 /\ ODT.unsafeMkMonth 1) input.targetDate
+    { aligned, calendarItems } = generateCalendarRows input.interval input.selection (fst targetDate) (snd targetDate)
   in
     { aligned
     , calendarItems
@@ -543,26 +550,26 @@ isWithinInterval interval x =
 -- last day of the month is Tuesday, then Wednesday through Saturday
 -- will need to be padded
 padNext :: Weekday -> Number
-padNext Sunday    = 6.0
-padNext Monday    = 5.0
-padNext Tuesday   = 4.0
+padNext Sunday = 6.0
+padNext Monday = 5.0
+padNext Tuesday = 4.0
 padNext Wednesday = 3.0
-padNext Thursday  = 2.0
-padNext Friday    = 1.0
-padNext Saturday  = 0.0
+padNext Thursday = 2.0
+padNext Friday = 1.0
+padNext Saturday = 0.0
 
 -- Represents the number of days that will need to be "filled in"
 -- when the first day of the month is this weekday. For example, if the
 -- first day of the month is Tuesday, then Sunday and Monday will need
 -- to be padded
 padPrev :: Weekday -> Number
-padPrev Sunday    = 0.0
-padPrev Monday    = (-1.0)
-padPrev Tuesday   = (-2.0)
+padPrev Sunday = 0.0
+padPrev Monday = (-1.0)
+padPrev Tuesday = (-2.0)
 padPrev Wednesday = (-3.0)
-padPrev Thursday  = (-4.0)
-padPrev Friday    = (-5.0)
-padPrev Saturday  = (-6.0)
+padPrev Thursday = (-4.0)
+padPrev Friday = (-5.0)
+padPrev Saturday = (-6.0)
 
 render :: forall m. MonadAff m => ComponentRender m
 render st =
@@ -572,135 +579,137 @@ renderCalendar :: forall m. Year -> Month -> Array CalendarItem -> CompositeComp
 renderCalendar y m calendarItems =
   Layout.popover
     ( SS.setContainerProps
-      [ HP.classes dropdownClasses ]
+        [ HP.classes dropdownClasses ]
     )
     [ calendarNav y m
     , calendarHeader
     , HH.div_ $ renderRows $ rowsFromArray calendarItems
     ]
   where
-    dropdownClasses :: Array HH.ClassName
-    dropdownClasses = HH.ClassName <$>
-      [ "pin-t"
-      , "pin-l"
-      , "p-6"
-      , "bg-white"
-      , "text-center"
-      , "text-lg"
-      ]
+  dropdownClasses :: Array HH.ClassName
+  dropdownClasses = HH.ClassName <$>
+    [ "pin-t"
+    , "pin-l"
+    , "p-6"
+    , "bg-white"
+    , "text-center"
+    , "text-lg"
+    ]
 
 renderItem :: forall m. Int -> CalendarItem -> CompositeComponentHTML m
 renderItem index item =
   HH.div
-  -- Here's the place to use info from the item to render it in different
-  -- states.
-  -- if highlightedIndex == Just index then 'highlight' else 'dont'
-  -- Because there are so many possible states, what about a helper like
-  -- getCalendarStyles?
+    -- Here's the place to use info from the item to render it in different
+    -- states.
+    -- if highlightedIndex == Just index then 'highlight' else 'dont'
+    -- Because there are so many possible states, what about a helper like
+    -- getCalendarStyles?
     ( maybeSetItemProps index item
-      [ css
-        $ trim
-        $ "w-14 h-14 rounded-full relative "
-          <> "flex items-center justify-center "
-          <> "transition-1/4 border border-white "
-          <> "before:no-content before:transition-1/4 "
-          <> "before:w-full before:h-full "
-          <> "before:absolute before:pin-t before:pin-l "
-          <> (getCalendarStyles item)
-      ]
+        [ css
+            $ trim
+            $ "w-14 h-14 rounded-full relative "
+                <> "flex items-center justify-center "
+                <> "transition-1/4 border border-white "
+                <> "before:no-content before:transition-1/4 "
+                <> "before:w-full before:h-full "
+                <> "before:absolute before:pin-t before:pin-l "
+                <> (getCalendarStyles item)
+        ]
     )
     -- printDay will format our item correctly
     [ HH.span
-      [ css (getLabelStyles item) ]
-      [ HH.text $ printDay item ]
+        [ css (getLabelStyles item) ]
+        [ HH.text $ printDay item ]
     ]
   where
-    -- If the calendar item is selectable,
-    -- then augment the props with the correct click events.
-    -- if not, then just don't provide the props at all.
-    -- this is an easy way to "disable" functionality in the calendar.
-    maybeSetItemProps i (CalendarItem Selectable _ _ _) props =
-      SS.setItemProps i props
-    maybeSetItemProps _ _ props = props
+  -- If the calendar item is selectable,
+  -- then augment the props with the correct click events.
+  -- if not, then just don't provide the props at all.
+  -- this is an easy way to "disable" functionality in the calendar.
+  maybeSetItemProps i (CalendarItem Selectable _ _ _) props =
+    SS.setItemProps i props
+  maybeSetItemProps _ _ props = props
 
-    -- Get the correct styles for a calendar item, dependent on its statuses
-    getCalendarStyles :: CalendarItem -> String
-    getCalendarStyles i
-      = trim $ getSelectableStyles i
-      <> " " <> getSelectedStyles i
-      <> " " <> getBoundaryStyles i
-      where
-        getSelectableStyles :: CalendarItem -> String
-        getSelectableStyles (CalendarItem NotSelectable _ _ _) =
-          ""
-        getSelectableStyles _ =
-          "cursor-pointer hover:border hover:border-blue-88"
+  -- Get the correct styles for a calendar item, dependent on its statuses
+  getCalendarStyles :: CalendarItem -> String
+  getCalendarStyles i = trim $ getSelectableStyles i
+    <> " "
+    <> getSelectedStyles i
+    <> " "
+    <> getBoundaryStyles i
+    where
+    getSelectableStyles :: CalendarItem -> String
+    getSelectableStyles (CalendarItem NotSelectable _ _ _) =
+      ""
+    getSelectableStyles _ =
+      "cursor-pointer hover:border hover:border-blue-88"
 
-        getSelectedStyles :: CalendarItem -> String
-        getSelectedStyles (CalendarItem _ Selected _ _) =
-          "bg-blue-88 text-white before:scale-1"
-        getSelectedStyles _ =
-          "before:scale-0"
+    getSelectedStyles :: CalendarItem -> String
+    getSelectedStyles (CalendarItem _ Selected _ _) =
+      "bg-blue-88 text-white before:scale-1"
+    getSelectedStyles _ =
+      "before:scale-0"
 
-        getBoundaryStyles :: CalendarItem -> String
-        getBoundaryStyles (CalendarItem _ _ OutOfBounds _) =
-          "text-grey-90"
-        getBoundaryStyles _ = mempty
+    getBoundaryStyles :: CalendarItem -> String
+    getBoundaryStyles (CalendarItem _ _ OutOfBounds _) =
+      "text-grey-90"
+    getBoundaryStyles _ = mempty
 
-    getLabelStyles :: CalendarItem -> String
-    getLabelStyles = case _ of
-      CalendarItem NotSelectable _ InBounds _ ->
-        "border-black strike-through"
-      CalendarItem NotSelectable _ OutOfBounds _ ->
-        "border-grey-90 strike-through"
-      _ -> ""
+  getLabelStyles :: CalendarItem -> String
+  getLabelStyles = case _ of
+    CalendarItem NotSelectable _ InBounds _ ->
+      "border-black strike-through"
+    CalendarItem NotSelectable _ OutOfBounds _ ->
+      "border-grey-90 strike-through"
+    _ -> ""
 
-    -- Just a simple helper to format our CalendarItem into a day
-    -- we can print out
-    printDay :: CalendarItem -> String
-    printDay (CalendarItem _ _ _ d) = printDay' d
-      where
-        printDay' :: Date -> String
-        printDay' = (either (const "-") identity)
-          <<< formatDateTime "D"
-          <<< toDateTime
-          <<< fromDate
+  -- Just a simple helper to format our CalendarItem into a day
+  -- we can print out
+  printDay :: CalendarItem -> String
+  printDay (CalendarItem _ _ _ d) = printDay' d
+    where
+    printDay' :: Date -> String
+    printDay' = (either (const "-") identity)
+      <<< formatDateTime "D"
+      <<< toDateTime
+      <<< fromDate
 
 -- Here we'll render out our dates as rows in the calendar.
 renderRows :: forall m. Array (Array CalendarItem) -> Array (CompositeComponentHTML m)
 renderRows =
   mapWithIndex (\row subArr -> renderRow (row * 7) subArr)
   where
-    renderRow offset items =
-      HH.div
-        [ css "flex font-light" ]
-        ( mapWithIndex
-          (\column item -> renderItem (column + offset) item) items
-        )
+  renderRow offset items =
+    HH.div
+      [ css "flex font-light" ]
+      ( mapWithIndex
+          (\column item -> renderItem (column + offset) item)
+          items
+      )
 
 renderSearch :: forall m. String -> CompositeComponentHTML m
 renderSearch search =
   Input.input
-  $ SS.setInputProps
-    [ HE.onBlur \_ -> S.Action OnBlur
-    , HE.onKeyDown $ S.Action <<< Key
-    , HP.value search
-    ]
+    $ SS.setInputProps
+        [ HE.onBlur \_ -> S.Action OnBlur
+        , HE.onKeyDown $ S.Action <<< Key
+        , HP.value search
+        ]
 
 renderSelect :: forall m. Year -> Month -> S.Visibility -> Array CalendarItem -> CompositeComponentHTML m
 renderSelect y m visibility calendarItems =
   HH.div
     [ css "relative" ]
-    $ if visibility == S.On
-      then [ renderCalendar y m calendarItems ]
+    $
+      if visibility == S.On then [ renderCalendar y m calendarItems ]
       else []
 
 -- Break a set of Sunday-aligned dates into rows, each 7 in length.
-rowsFromArray :: ∀ a. Array a -> Array (Array a)
+rowsFromArray :: forall a. Array a -> Array (Array a)
 rowsFromArray all = go all []
   where
-    go [] acc = reverse acc
-    go xs acc = go (drop 7 xs) ([take 7 xs] <> acc)
+  go [] acc = reverse acc
+  go xs acc = go (drop 7 xs) ([ take 7 xs ] <> acc)
 
 setSelection :: forall m. MonadAff m => Maybe Date -> CompositeComponentM m Unit
 setSelection selection = do
@@ -717,26 +726,28 @@ setSelectionWithoutRaising selection = do
 spec :: forall m. MonadAff m => Spec m
 spec =
   S.defaultSpec
-  { render = embeddedRender
-  , handleAction = embeddedHandleAction
-  , handleQuery = embeddedHandleQuery
-  , handleEvent = embeddedHandleMessage
-  , initialize = embeddedInitialize
-  , receive = Just <<< Receive
-  }
+    { render = embeddedRender
+    , handleAction = embeddedHandleAction
+    , handleQuery = embeddedHandleQuery
+    , handleEvent = embeddedHandleMessage
+    , initialize = embeddedInitialize
+    , receive = Just <<< Receive
+    }
 
 synchronize :: forall m. MonadAff m => CompositeComponentM m Unit
 synchronize = do
   ({ targetDate: y /\ m, selection, interval }) <- H.get
   let { aligned, calendarItems } = generateCalendarRows interval selection y m
   H.modify_
-    _ { aligned = aligned
+    _
+      { aligned = aligned
       , calendarItems = calendarItems
       , highlightedIndex = Nothing
       }
-  let update = case selection of
-        Nothing -> identity
-        Just date -> _ { search = ODT.formatDate date }
+  let
+    update = case selection of
+      Nothing -> identity
+      Just date -> _ { search = ODT.formatDate date }
   H.modify_ (update <<< _ { calendarItems = calendarItems })
 
 toggleMonth ::
@@ -746,11 +757,12 @@ toggleMonth ::
   CompositeComponentM m Unit
 toggleMonth dir = do
   st <- H.get
-  let y = fst st.targetDate
-      m = snd st.targetDate
-      newDate = case dir of
-        Next -> ODT.nextMonth (canonicalDate y m bottom)
-        Prev -> ODT.prevMonth (canonicalDate y m bottom)
+  let
+    y = fst st.targetDate
+    m = snd st.targetDate
+    newDate = case dir of
+      Next -> ODT.nextMonth (canonicalDate y m bottom)
+      Prev -> ODT.prevMonth (canonicalDate y m bottom)
   H.modify_ _ { targetDate = (year newDate) /\ (month newDate) }
   synchronize
 
@@ -764,8 +776,8 @@ toObject d =
     , Tuple "ymd" $ sYear <> " " <> sMonth <> " " <> sDay
     ]
   where
-    sYear = show $ fromEnum $ year d
-    sMonth = show $ fromEnum $ month d
-    sYearMonth = show $ month d
-    sDay = show $ fromEnum $ day d
-    sWeekDay = show $ weekday d
+  sYear = show $ fromEnum $ year d
+  sMonth = show $ fromEnum $ month d
+  sYearMonth = show $ month d
+  sDay = show $ fromEnum $ day d
+  sWeekDay = show $ weekday d

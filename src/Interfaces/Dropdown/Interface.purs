@@ -1,6 +1,7 @@
 module Ocelot.Interface.Dropdown where
 
 import Prelude
+
 import Control.Promise (Promise, fromAff)
 import Data.Array (head)
 import Data.Maybe (Maybe, fromMaybe)
@@ -15,7 +16,7 @@ import Foreign.Object (Object, lookup)
 import Halogen.VDom.Driver (runUI)
 import Ocelot.Button (button)
 import Ocelot.Dropdown (Input, Output(..), Query(..), component, defDropdown)
-import Ocelot.Interface.Utilities (mkSubscription, Interface)
+import Ocelot.Interface.Utilities (Interface, mkSubscription)
 import Select (Visibility(..)) as Select
 import Web.HTML (HTMLElement)
 
@@ -42,12 +43,11 @@ type ExternalInput =
   , key :: String
   }
 
-
-externalInputToInput
-  :: ∀ m
-   . MonadAff m
-  => ExternalInput
-  -> Input (Object String) m
+externalInputToInput ::
+  forall m.
+  MonadAff m =>
+  ExternalInput ->
+  Input (Object String) m
 externalInputToInput { items, selectedItem, key, placeholder } =
   { disabled: false
   , items
@@ -64,9 +64,9 @@ mountDropdown = mkEffectFn2 \el ext -> do
   pure
     { subscribe: mkSubscription ioVar convertMessageToVariant
     , setItems: mkEffectFn1 \arr -> fromAff do
-       io <- AffAVar.read ioVar
-       io.query $ SetItems arr unit
+        io <- AffAVar.read ioVar
+        io.query $ SetItems arr unit
     , setSelected: mkEffectFn1 \arr -> fromAff do
-       io <- AffAVar.read ioVar
-       io.query $ SetSelection (head arr) unit
+        io <- AffAVar.read ioVar
+        io.query $ SetSelection (head arr) unit
     }
