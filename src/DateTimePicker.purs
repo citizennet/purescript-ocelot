@@ -1,4 +1,4 @@
-module Ocelot.DateTimePicker 
+module Ocelot.DateTimePicker
   ( Action
   , ChildSlots
   , Component
@@ -15,6 +15,7 @@ module Ocelot.DateTimePicker
   ) where
 
 import Prelude
+
 import Data.DateTime (Date, DateTime(..), Month, Time, Year)
 import Data.DateTime as Date.DateTime
 import Data.Foldable as Data.Foldable
@@ -131,8 +132,9 @@ handleQuery = case _ of
     void $ H.tell _datepicker unit $ DatePicker.SetDisabled disabled
     void $ H.tell _timepicker unit $ TimePicker.SetDisabled disabled
   SetSelection dateTime a -> Just a <$ do
-    let date' = dateTime <#> Date.DateTime.date
-        time' = dateTime <#> Date.DateTime.time
+    let
+      date' = dateTime <#> Date.DateTime.date
+      time' = dateTime <#> Date.DateTime.time
     void $ H.tell _datepicker unit $ DatePicker.SetSelection date'
     void $ H.tell _timepicker unit $ TimePicker.SetSelection time'
     H.modify_ _ { date = date', time = time' }
@@ -173,46 +175,45 @@ raiseSelectionChanged mInterval mDate mTime = case mInterval of
   mDateTime :: Maybe DateTime
   mDateTime = DateTime <$> mDate <*> mTime
 
-
 render :: forall m. MonadAff m => ComponentRender m
 render state =
   HH.div
     [ css "flex" ]
     [ HH.div
-      [ css "w-1/2 mr-2" ]
-      [ HH.slot _datepicker unit DatePicker.component
-        { disabled: state.disabled
-        , interval: do
-            interval <- state.interval
-            pure
-              { start: interval.start <#> Date.DateTime.date
-              , end: interval.end <#> Date.DateTime.date
-              }
-        , selection: state.date
-        , targetDate: state.targetDate
-        }
-        HandleDate
-      ]
+        [ css "w-1/2 mr-2" ]
+        [ HH.slot _datepicker unit DatePicker.component
+            { disabled: state.disabled
+            , interval: do
+                interval <- state.interval
+                pure
+                  { start: interval.start <#> Date.DateTime.date
+                  , end: interval.end <#> Date.DateTime.date
+                  }
+            , selection: state.date
+            , targetDate: state.targetDate
+            }
+            HandleDate
+        ]
     , HH.div
-      [ css "flex-1" ]
-      [ HH.slot _timepicker unit TimePicker.component
-        { disabled: state.disabled
-        , interval: do
-            interval <- state.interval
-            pure
-              { start:
-                  if (interval.start <#> Date.DateTime.date) == state.date then
-                    interval.start <#> Date.DateTime.time
-                  else
-                    Nothing
-              , end:
-                  if (interval.end <#> Date.DateTime.date) == state.date then
-                    interval.end <#> Date.DateTime.time
-                  else
-                    Nothing
-              }
-        , selection: state.time
-        }
-        HandleTime
-      ]
+        [ css "flex-1" ]
+        [ HH.slot _timepicker unit TimePicker.component
+            { disabled: state.disabled
+            , interval: do
+                interval <- state.interval
+                pure
+                  { start:
+                      if (interval.start <#> Date.DateTime.date) == state.date then
+                        interval.start <#> Date.DateTime.time
+                      else
+                        Nothing
+                  , end:
+                      if (interval.end <#> Date.DateTime.date) == state.date then
+                        interval.end <#> Date.DateTime.time
+                      else
+                        Nothing
+                  }
+            , selection: state.time
+            }
+            HandleTime
+        ]
     ]

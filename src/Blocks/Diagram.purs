@@ -1,6 +1,7 @@
 module Ocelot.Block.Diagram where
 
 import Prelude
+
 import DOM.HTML.Indexed (HTMLdiv, HTMLspan)
 import Halogen.HTML as Halogen.HTML
 import Halogen.HTML.Properties as Halogen.HTML.Properties

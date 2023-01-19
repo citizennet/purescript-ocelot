@@ -62,28 +62,28 @@ radioClasses = HH.ClassName <$>
   , "before:shadow"
   ]
 
-radio
-  :: ∀ p i
-   . Array (HH.IProp HTMLlabel i)
-  -> Array (HH.IProp HTMLinput i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+radio ::
+  forall p i.
+  Array (HH.IProp HTMLlabel i) ->
+  Array (HH.IProp HTMLinput i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 radio iprops inprops html =
   HH.label
-    ( [ HP.classes labelClasses ] <&> iprops )
+    ([ HP.classes labelClasses ] <&> iprops)
     ( [ HH.input
-        ( [ HP.classes inputClasses
-          , HP.type_ InputRadio
-          ] <&> inprops
-        )
+          ( [ HP.classes inputClasses
+            , HP.type_ InputRadio
+            ] <&> inprops
+          )
       , HH.span [ HP.classes radioClasses ] []
       ]
-      <> html
+        <> html
     )
 
-radio_
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+radio_ ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 radio_ = radio []

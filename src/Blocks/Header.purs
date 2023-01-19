@@ -26,20 +26,20 @@ innerClasses = HH.ClassName <$>
   , "h-24"
   ]
 
-header
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+header ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 header iprops =
   HH.header [ HP.classes outerClasses ]
-  <<< pure
-  <<< HH.div ( [ HP.classes innerClasses ] <&> iprops )
+    <<< pure
+    <<< HH.div ([ HP.classes innerClasses ] <&> iprops)
 
-header_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+header_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 header_ = header []
 
 type FormHeaderProps p i =
@@ -49,51 +49,51 @@ type FormHeaderProps p i =
   , brand :: Maybe String
   }
 
-stickyFormHeader
-  :: ∀ p i page
-   . Eq page
-  => FormHeaderProps p i
-  -> NavigationTab.TabConfig page
-  -> HH.HTML p i
+stickyFormHeader ::
+  forall p i page.
+  Eq page =>
+  FormHeaderProps p i ->
+  NavigationTab.TabConfig page ->
+  HH.HTML p i
 stickyFormHeader hConfig tConfig =
   HH.div
     [ HP.class_ $ HH.ClassName "h-40" ]
     [ HH.div
-      [ HP.classes Layout.stickyClasses ]
-      [ formHeader hConfig
-      , NavigationTab.navigationTabs tConfig [ HP.class_ $ HH.ClassName "px-16" ]
-      ]
+        [ HP.classes Layout.stickyClasses ]
+        [ formHeader hConfig
+        , NavigationTab.navigationTabs tConfig [ HP.class_ $ HH.ClassName "px-16" ]
+        ]
     ]
 
-stickyHeader_ :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
+stickyHeader_ :: forall p i. FormHeaderProps p i -> HH.HTML p i
 stickyHeader_ config =
   HH.div
     [ HP.class_ $ HH.ClassName "h-24" ]
     [ HH.div
-      [ HP.classes Layout.stickyClasses ]
-      [ formHeader config ]
+        [ HP.classes Layout.stickyClasses ]
+        [ formHeader config ]
     ]
 
-formHeader :: ∀ p i. FormHeaderProps p i -> HH.HTML p i
+formHeader :: forall p i. FormHeaderProps p i -> HH.HTML p i
 formHeader props =
   header_ $
     case props.brand of
-      Just src  ->
+      Just src ->
         [ HH.div
-          [ css "w-16" ]
-          [ HH.img [ HP.src src ] ]
+            [ css "w-16" ]
+            [ HH.img [ HP.src src ] ]
         ]
       Nothing -> []
-    <>
-    [ HH.h2
-      [ css "flex-1 font-medium" ]
-        [ HH.span
-            [ css "text-lg text-grey-70 mr-4" ]
-            props.name
-        , HH.span
-            [ css "text-lg text-white" ]
-            props.title
+      <>
+        [ HH.h2
+            [ css "flex-1 font-medium" ]
+            [ HH.span
+                [ css "text-lg text-grey-70 mr-4" ]
+                props.name
+            , HH.span
+                [ css "text-lg text-white" ]
+                props.title
+            ]
         ]
-    ]
-    <>
-    props.buttons
+      <>
+        props.buttons

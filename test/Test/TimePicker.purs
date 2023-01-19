@@ -1,6 +1,7 @@
 module Test.Ocelot.TimePicker (suite) where
 
 import Prelude
+
 import Data.Maybe (Maybe(..))
 import Data.Time as Data.Time
 import Ocelot.Data.DateTime as Ocelot.Data.DateTime

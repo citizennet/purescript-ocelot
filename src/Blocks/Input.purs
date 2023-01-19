@@ -24,13 +24,13 @@ inputSharedClasses = HH.ClassName <$>
 inputClasses :: Array HH.ClassName
 inputClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "border-l-2"
-    , "border-r-2"
-    , "w-full"
-    , "px-3"
-    , "focus:border-blue-88"
-    , "!focus:!disabled:hover:border-grey-70"
-    ]
+      [ "border-l-2"
+      , "border-r-2"
+      , "w-full"
+      , "px-3"
+      , "focus:border-blue-88"
+      , "!focus:!disabled:hover:border-grey-70"
+      ]
   )
 
 inputGroupClasses :: Array HH.ClassName
@@ -43,39 +43,39 @@ inputGroupClasses = HH.ClassName <$>
 mainItemClasses :: Array HH.ClassName
 mainItemClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "w-full"
-    , "focus:border-blue-88"
-    , "focus:sibling:border-blue-88"
-    , "group-hover:!focus:!disabled:border-grey-70"
-    , "group-hover:!focus:!disabled:sibling:border-grey-70"
-    , "disabled:sibling:bg-grey-95"
-    ]
+      [ "w-full"
+      , "focus:border-blue-88"
+      , "focus:sibling:border-blue-88"
+      , "group-hover:!focus:!disabled:border-grey-70"
+      , "group-hover:!focus:!disabled:sibling:border-grey-70"
+      , "disabled:sibling:bg-grey-95"
+      ]
   )
 
 centerClasses :: Array HH.ClassName
 centerClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "pl-1"
-    , "pr-1"
-    ]
+      [ "pl-1"
+      , "pr-1"
+      ]
   )
 
 leftClasses :: Array HH.ClassName
 leftClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "border-l-2"
-    , "pl-3"
-    , "pr-1"
-    ]
+      [ "border-l-2"
+      , "pl-3"
+      , "pr-1"
+      ]
   )
 
 rightClasses :: Array HH.ClassName
 rightClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "border-r-2"
-    , "pr-3"
-    , "pl-1"
-    ]
+      [ "border-r-2"
+      , "pr-3"
+      , "pl-1"
+      ]
   )
 
 mainCenterClasses :: Array HH.ClassName
@@ -90,11 +90,11 @@ mainRightClasses = mainItemClasses <> rightClasses
 addonClasses :: Array HH.ClassName
 addonClasses = inputSharedClasses <>
   ( HH.ClassName <$>
-    [ "cursor-pointer"
-    , "flex"
-    , "items-center"
-    , "text-grey-70"
-    ]
+      [ "cursor-pointer"
+      , "flex"
+      , "items-center"
+      , "text-grey-70"
+      ]
   )
 
 addonCenterClasses :: Array HH.ClassName
@@ -103,8 +103,8 @@ addonCenterClasses = addonClasses <> centerClasses
 addonLeftClassess :: Array HH.ClassName
 addonLeftClassess = addonClasses <> leftClasses <>
   ( HH.ClassName <$>
-    [ "order-start"
-    ]
+      [ "order-start"
+      ]
   )
 
 addonRightClasses :: Array HH.ClassName
@@ -116,198 +116,198 @@ borderClasses = []
 borderLeftClasses :: Array HH.ClassName
 borderLeftClasses = borderClasses <>
   ( HH.ClassName <$>
-    [ "border-r"
-    , "pr-3"
-    , "order-start"
-    ]
+      [ "border-r"
+      , "pr-3"
+      , "order-start"
+      ]
   )
 
 borderRightClasses :: Array HH.ClassName
 borderRightClasses = borderClasses <>
   ( HH.ClassName <$>
-    [ "border-l"
-    , "pl-3"
-    ]
+      [ "border-l"
+      , "pl-3"
+      ]
   )
 
 textareaClasses :: Array HH.ClassName
 textareaClasses = inputClasses <>
   ( HH.ClassName <$>
-    [ "min-h-40"
-    ]
+      [ "min-h-40"
+      ]
   )
 
-input
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+input ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 input iprops =
-  HH.input ( [ HP.classes inputClasses ] <&> iprops )
+  HH.input ([ HP.classes inputClasses ] <&> iprops)
 
-inputGroup
-  :: ∀ p i
-   . Array (HH.IProp HTMLlabel i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+inputGroup ::
+  forall p i.
+  Array (HH.IProp HTMLlabel i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 inputGroup = inputGroup' HH.label
 
-inputGroup'
-  :: ∀ p r i
-   . (Array (HH.IProp (GlobalAttributes r) i) -> Array (HH.HTML p i) -> HH.HTML p i)
-  -> Array (HH.IProp (GlobalAttributes r) i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+inputGroup' ::
+  forall p r i.
+  (Array (HH.IProp (GlobalAttributes r) i) -> Array (HH.HTML p i) -> HH.HTML p i) ->
+  Array (HH.IProp (GlobalAttributes r) i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 inputGroup' elem iprops html =
   elem
-    ( [ HP.classes inputGroupClasses ] <&> iprops )
+    ([ HP.classes inputGroupClasses ] <&> iprops)
     html
 
-inputGroup_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+inputGroup_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 inputGroup_ = inputGroup []
 
-inputCenter
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+inputCenter ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 inputCenter iprops =
   HH.input
-    ( [ HP.classes mainCenterClasses ] <&> iprops )
+    ([ HP.classes mainCenterClasses ] <&> iprops)
 
-inputLeft
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+inputLeft ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 inputLeft iprops =
   HH.input
-    ( [ HP.classes mainLeftClasses ] <&> iprops )
+    ([ HP.classes mainLeftClasses ] <&> iprops)
 
-inputRight
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+inputRight ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 inputRight iprops =
   HH.input
-    ( [ HP.classes mainRightClasses ] <&> iprops )
+    ([ HP.classes mainRightClasses ] <&> iprops)
 
-addonCenter
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+addonCenter ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonCenter iprops html =
   HH.span
-    ( [ HP.classes addonCenterClasses ] <&> iprops )
+    ([ HP.classes addonCenterClasses ] <&> iprops)
     html
 
-addonCenter_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+addonCenter_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonCenter_ = addonCenter []
 
-addonLeft
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+addonLeft ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonLeft iprops html =
   HH.span
-    ( [ HP.classes addonLeftClassess ] <&> iprops )
+    ([ HP.classes addonLeftClassess ] <&> iprops)
     html
 
-addonLeft_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+addonLeft_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonLeft_ = addonLeft []
 
-addonRight
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+addonRight ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonRight iprops html =
   HH.span
-    ( [ HP.classes addonRightClasses ] <&> iprops )
+    ([ HP.classes addonRightClasses ] <&> iprops)
     html
 
-addonRight_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+addonRight_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 addonRight_ = addonRight []
 
-borderLeft
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+borderLeft ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 borderLeft iprops html =
   addonLeft_
     [ HH.span
-      ( [ HP.classes borderLeftClasses ] <&> iprops )
-      html
+        ([ HP.classes borderLeftClasses ] <&> iprops)
+        html
     ]
 
-borderLeft_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+borderLeft_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 borderLeft_ = borderLeft []
 
-borderRight
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+borderRight ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 borderRight iprops html =
   addonRight_
     [ HH.span
-      ( [ HP.classes borderRightClasses ] <&> iprops )
-      html
+        ([ HP.classes borderRightClasses ] <&> iprops)
+        html
     ]
 
-borderRight_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+borderRight_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 borderRight_ = borderRight []
 
-percentage
-  :: ∀ p i
-   . Array (HH.IProp HTMLlabel i)
-  -> Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+percentage ::
+  forall p i.
+  Array (HH.IProp HTMLlabel i) ->
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 percentage lprops iprops =
   inputGroup lprops [ inputLeft iprops, addonRight_ [ HH.text "%" ] ]
 
-percentage_
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+percentage_ ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 percentage_ = percentage []
 
-currency
-  :: ∀ p i
-   . Array (HH.IProp HTMLlabel i)
-  -> Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+currency ::
+  forall p i.
+  Array (HH.IProp HTMLlabel i) ->
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 currency lprops iprops =
   inputGroup lprops [ inputRight iprops, addonLeft_ [ HH.text "$" ] ]
 
-currency_
-  :: ∀ p i
-   . Array (HH.IProp HTMLinput i)
-  -> HH.HTML p i
+currency_ ::
+  forall p i.
+  Array (HH.IProp HTMLinput i) ->
+  HH.HTML p i
 currency_ = currency []
 
-textarea
-  :: ∀ p i
-   . Array (HH.IProp HTMLtextarea i)
-  -> HH.HTML p i
+textarea ::
+  forall p i.
+  Array (HH.IProp HTMLtextarea i) ->
+  HH.HTML p i
 textarea iprops =
   HH.textarea
-    ( [ HP.classes textareaClasses ] <&> iprops )
+    ([ HP.classes textareaClasses ] <&> iprops)

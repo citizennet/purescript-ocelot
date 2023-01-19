@@ -14,7 +14,7 @@ import Halogen.Subscription as Halogen.Subscription
 -- | A row containing the 'subscribe' function from Halogen so it
 -- | may be used to subscribe to the message variant in JS.
 type WithHalogen out r =
-  ( subscribe :: EffectFn1 (EffectFn1 out Unit) (Effect Unit) | r )
+  (subscribe :: EffectFn1 (EffectFn1 out Unit) (Effect Unit) | r)
 
 -- | A record containing the various queries available to be
 -- | triggered in JS and the various messages that may be passed
@@ -25,11 +25,11 @@ type Interface messages queries =
 -- | A helper to construct a coroutine for the `subscribe` function, allowing
 -- | JS callers to consume a stream of outputs from the component. For now this
 -- | is specialized to Aff.
-mkSubscription
-  :: ∀ f o o'
-   . AffAVar.AVar (HalogenIO f o Aff)
-  -> (o -> o')
-  -> EffectFn1 (EffectFn1 o' Unit) (Effect Unit)
+mkSubscription ::
+  forall f o o'.
+  AffAVar.AVar (HalogenIO f o Aff) ->
+  (o -> o') ->
+  EffectFn1 (EffectFn1 o' Unit) (Effect Unit)
 mkSubscription ioVar convertMessage = mkEffectFn1 \cb -> do
   fiber <- launchAff do
     io <- AffAVar.read ioVar

@@ -23,22 +23,18 @@ import Web.HTML as Web.HTML
 import Web.HTML.Navigator as Web.HTML.Navigator
 import Web.HTML.Window as Web.HTML.Window
 
-type Slot
-  = Halogen.Slot Query Output
+type Slot = Halogen.Slot Query Output
 
-type Component m
-  = Halogen.Component Query Input Output m
+type Component m = Halogen.Component Query Input Output m
 
-type ComponentHTML m
-  = Halogen.ComponentHTML Action ChildSlot m
+type ComponentHTML m = Halogen.ComponentHTML Action ChildSlot m
 
-type ComponentM m
-  = Halogen.HalogenM State Action ChildSlot Output m
+type ComponentM m = Halogen.HalogenM State Action ChildSlot Output m
 
-type State
-  = { copied :: Boolean
-    , input :: Input
-    }
+type State =
+  { copied :: Boolean
+  , input :: Input
+  }
 
 data Action
   = Copy
@@ -46,14 +42,11 @@ data Action
 
 data Query (a :: Type)
 
-type Input
-  = { text :: String }
+type Input = { text :: String }
 
-type Output
-  = Void
+type Output = Void
 
-type ChildSlot
-  = () :: Row Type
+type ChildSlot = () :: Row Type
 
 component ::
   forall m.
@@ -138,7 +131,7 @@ renderDone =
   Ocelot.Button.button
     [ Halogen.HTML.Propetires.disabled true ]
     [ Ocelot.Block.Icon.success
-        [ Ocelot.HTML.Properties.css "text-green"]
+        [ Ocelot.HTML.Properties.css "text-green" ]
     , Halogen.HTML.span
         [ Ocelot.HTML.Properties.css "ml-2" ]
         [ Halogen.HTML.text "Copied" ]

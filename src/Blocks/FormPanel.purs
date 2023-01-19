@@ -18,12 +18,12 @@ buttonClasses = HH.ClassName <$>
   , "text-blue-82"
   ]
 
-formPanel
-  :: ∀ p i
-   . FormPanelProps
-  -> Array (HH.IProp HTMLbutton i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+formPanel ::
+  forall p i.
+  FormPanelProps ->
+  Array (HH.IProp HTMLbutton i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 formPanel props iprops html =
   HH.div
     [ HP.class_ (HH.ClassName "w-full") ]
@@ -35,7 +35,6 @@ formPanel props iprops html =
         [ (HH.fromPlainHTML (props.renderToggle props.isOpen)) ]
     ]
   where
-    contentClasses =
-      if props.isOpen
-        then [ HH.ClassName "mb-6" ]
-        else [ HH.ClassName "hidden" ]
+  contentClasses =
+    if props.isOpen then [ HH.ClassName "mb-6" ]
+    else [ HH.ClassName "hidden" ]

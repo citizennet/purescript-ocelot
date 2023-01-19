@@ -34,15 +34,13 @@ type Debouncer =
   , fiber :: Fiber Unit
   }
 
-
 data Action
   = Clear ME.MouseEvent
   | Search String
   | Open
   | Blur
 
-data Query (a :: Type)
-  = SetText String a
+data Query (a :: Type) = SetText String a
 
 type Slot = H.Slot Query Message
 
@@ -52,11 +50,10 @@ type Input' =
   , keepOpen :: Boolean
   }
 
-data Message
- = Searched String
+data Message = Searched String
 
 -- | The standard search bar
-component :: ∀ m. MonadAff m => H.Component Query Input Message m
+component :: forall m. MonadAff m => H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState
@@ -65,18 +62,18 @@ component =
     }
 
   where
-    initialState :: Input -> State
-    initialState { debounceTime } =
-      { query: ""
-      , debouncer: Nothing
-      , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
-      , open: false
-      , keepOpen: false
-      }
+  initialState :: Input -> State
+  initialState { debounceTime } =
+    { query: ""
+    , debouncer: Nothing
+    , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
+    , open: false
+    , keepOpen: false
+    }
 
 -- | A search bar which allows the user to specify if it should
 -- | stay open when unfocused
-component' :: ∀ m. MonadAff m => H.Component Query Input' Message m
+component' :: forall m. MonadAff m => H.Component Query Input' Message m
 component' =
   H.mkComponent
     { initialState
@@ -85,16 +82,17 @@ component' =
     }
 
   where
-    initialState :: Input' -> State
-    initialState { debounceTime, keepOpen } =
-      { query: ""
-      , debouncer: Nothing
-      , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
-      , open: keepOpen
-      , keepOpen
-      }
+  initialState :: Input' -> State
+  initialState { debounceTime, keepOpen } =
+    { query: ""
+    , debouncer: Nothing
+    , debounceTime: fromMaybe (Milliseconds 0.0) debounceTime
+    , open: keepOpen
+    , keepOpen
+    }
 
-handleAction :: forall m.
+handleAction ::
+  forall m.
   MonadAff m =>
   Action ->
   H.HalogenM State Action () Message m Unit
@@ -136,9 +134,10 @@ handleAction = case _ of
           delay st.debounceTime
           AVar.put str var
 
-        H.modify_ _ { debouncer = Just { var, fiber: fiber' }}
+        H.modify_ _ { debouncer = Just { var, fiber: fiber' } }
 
-handleQuery :: forall m a.
+handleQuery ::
+  forall m a.
   MonadAff m =>
   Query a ->
   H.HalogenM State Action () Message m (Maybe a)
@@ -150,21 +149,24 @@ handleQuery = case _ of
     openIfHasQuery str
     pure $ Just a
 
-openIfHasQuery :: forall m.
+openIfHasQuery ::
+  forall m.
   MonadState State m =>
   String ->
   m Unit
 openIfHasQuery q =
   if null q then pure unit else H.modify_ _ { open = true }
 
-closeIfNullQuery :: forall m.
+closeIfNullQuery ::
+  forall m.
   MonadState State m =>
   String ->
   m Unit
 closeIfNullQuery q = do
   if null q then H.modify_ \st -> st { open = st.keepOpen } else pure unit
 
-render :: forall m.
+render ::
+  forall m.
   MonadAff m =>
   State ->
   H.ComponentHTML Action () m
@@ -174,82 +176,82 @@ render st@{ query, open } =
     , HE.onClick \_ -> Open
     ]
     [ HH.div
-      [ HP.classes $ iconClasses <> iconCondClasses ]
-      [ Icon.search_ ]
+        [ HP.classes $ iconClasses <> iconCondClasses ]
+        [ Icon.search_ ]
     , HH.div
-      [ css "flex-grow" ]
-      [ HH.input
-        [ HE.onValueInput Search
-        , HP.placeholder "Search"
-        , HP.value query
-        , HP.classes $ inputClasses <> inputCondClasses
-        , HE.onBlur \_ -> Blur
-        , HP.tabIndex 0
+        [ css "flex-grow" ]
+        [ HH.input
+            [ HE.onValueInput Search
+            , HP.placeholder "Search"
+            , HP.value query
+            , HP.classes $ inputClasses <> inputCondClasses
+            , HE.onBlur \_ -> Blur
+            , HP.tabIndex 0
+            ]
         ]
-      ]
     , HH.button
-      [ HE.onClick Clear
-      , HP.type_ HP.ButtonButton
-      , HP.classes $ buttonClasses <> buttonCondClasses <> hideClearClasses
-      ]
-      [ Icon.delete_ ]
+        [ HE.onClick Clear
+        , HP.type_ HP.ButtonButton
+        , HP.classes $ buttonClasses <> buttonCondClasses <> hideClearClasses
+        ]
+        [ Icon.delete_ ]
     ]
-   where
-     containerClasses = HH.ClassName <$>
-       [ "flex"
-       , "no-outline"
-       , "items-stretch"
-       , "transition-1/4"
-       , "border-b-2"
-       , "group"
-       ]
+  where
+  containerClasses = HH.ClassName <$>
+    [ "flex"
+    , "no-outline"
+    , "items-stretch"
+    , "transition-1/4"
+    , "border-b-2"
+    , "group"
+    ]
 
-     containerCondClasses =
-       ifOpen
-         [ "max-w-160", "border-blue-88" ]
-         [ "max-w-12", "border-transparent", "cursor-pointer" ]
+  containerCondClasses =
+    ifOpen
+      [ "max-w-160", "border-blue-88" ]
+      [ "max-w-12", "border-transparent", "cursor-pointer" ]
 
-     iconClasses = HH.ClassName <$>
-       [ "pr-3"
-       , "text-2xl"
-       , "group-hover:text-grey-50"
-       , "transition-1/4"
-       ]
+  iconClasses = HH.ClassName <$>
+    [ "pr-3"
+    , "text-2xl"
+    , "group-hover:text-grey-50"
+    , "transition-1/4"
+    ]
 
-     iconCondClasses =
-       ifOpen
-         [ "text-grey-50", "mb-0", "mt-0" ]
-         [ "text-grey-70", "-mb-1", "mt-1" ]
+  iconCondClasses =
+    ifOpen
+      [ "text-grey-50", "mb-0", "mt-0" ]
+      [ "text-grey-70", "-mb-1", "mt-1" ]
 
-     inputClasses = HH.ClassName <$>
-       [ "no-outline"
-       , "flex-1"
-       , "bg-transparent"
-       , "h-full"
-       , "transition-1/4"
-       ]
+  inputClasses = HH.ClassName <$>
+    [ "no-outline"
+    , "flex-1"
+    , "bg-transparent"
+    , "h-full"
+    , "transition-1/4"
+    ]
 
-     inputCondClasses =
-       ifOpen
-         [ "w-full" ]
-         [ "w-0" ]
+  inputCondClasses =
+    ifOpen
+      [ "w-full" ]
+      [ "w-0" ]
 
-     buttonClasses = HH.ClassName <$>
-       [ "no-outline"
-       , "text-grey-70"
-       , "hover:text-grey-50"
-       , "text-xs"
-       , "transition-1/4"
-       , "flex-shrink"
-       ]
+  buttonClasses = HH.ClassName <$>
+    [ "no-outline"
+    , "text-grey-70"
+    , "hover:text-grey-50"
+    , "text-xs"
+    , "transition-1/4"
+    , "flex-shrink"
+    ]
 
-     buttonCondClasses =
-       ifOpen
-         [ "opacity-100", "visible" ]
-         [ "opacity-0", "invisible" ]
+  buttonCondClasses =
+    ifOpen
+      [ "opacity-100", "visible" ]
+      [ "opacity-0", "invisible" ]
 
-     hideClearClasses = HH.ClassName <$>
-       if Data.String.null st.query then ["hidden"] else []
+  hideClearClasses = HH.ClassName <$>
+    if Data.String.null st.query then [ "hidden" ] else []
 
-     ifOpen openClasses closedClasses =
-       HH.ClassName <$> if open then openClasses else closedClasses
+  ifOpen openClasses closedClasses =
+    HH.ClassName <$> if open then openClasses else closedClasses

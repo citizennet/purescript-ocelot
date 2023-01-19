@@ -27,63 +27,63 @@ baseClasses = HH.ClassName <$>
 badgeClasses :: Array HH.ClassName
 badgeClasses = baseClasses <>
   ( HH.ClassName <$>
-    [ "w-8"
-    , "h-8"
-    ]
+      [ "w-8"
+      , "h-8"
+      ]
   )
 
-badge
-  :: ∀ p i
-   . Array (IProp HTMLspan i)
-  -> Array (HTML p i)
-  -> HTML p i
+badge ::
+  forall p i.
+  Array (IProp HTMLspan i) ->
+  Array (HTML p i) ->
+  HTML p i
 badge = blockBuilder HH.span badgeClasses
 
-badge_
-  :: ∀ p i
-   . Array (HTML p i)
-  -> HTML p i
+badge_ ::
+  forall p i.
+  Array (HTML p i) ->
+  HTML p i
 badge_ = badge []
 
 badgeSmallClasses :: Array HH.ClassName
 badgeSmallClasses = baseClasses <>
   ( HH.ClassName <$>
-    [ "w-6"
-    , "h-6"
-    , "text-sm"
-    ]
+      [ "w-6"
+      , "h-6"
+      , "text-sm"
+      ]
   )
 
-badgeSmall
-  :: ∀ p i
-   . Array (IProp HTMLspan i)
-  -> Array (HTML p i)
-  -> HTML p i
+badgeSmall ::
+  forall p i.
+  Array (IProp HTMLspan i) ->
+  Array (HTML p i) ->
+  HTML p i
 badgeSmall = blockBuilder HH.span badgeSmallClasses
 
-badgeSmall_
-  :: ∀ p i
-   . Array (HTML p i)
-  -> HTML p i
+badgeSmall_ ::
+  forall p i.
+  Array (HTML p i) ->
+  HTML p i
 badgeSmall_ = badgeSmall []
 
 badgeLargeClasses :: Array HH.ClassName
 badgeLargeClasses = baseClasses <>
   ( HH.ClassName <$>
-    [ "w-12"
-    , "h-12"
-    ]
+      [ "w-12"
+      , "h-12"
+      ]
   )
 
-badgeLarge
-  :: ∀ p i
-   . Array (IProp HTMLspan i)
-  -> Array (HTML p i)
-  -> HTML p i
+badgeLarge ::
+  forall p i.
+  Array (IProp HTMLspan i) ->
+  Array (HTML p i) ->
+  HTML p i
 badgeLarge = blockBuilder HH.span badgeLargeClasses
 
-badgeLarge_
-  :: ∀ p i
-   . Array (HTML p i)
-  -> HTML p i
+badgeLarge_ ::
+  forall p i.
+  Array (HTML p i) ->
+  HTML p i
 badgeLarge_ = badgeLarge []

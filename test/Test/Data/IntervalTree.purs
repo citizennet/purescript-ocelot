@@ -65,9 +65,9 @@ insertIntervalTests =
         expected :: Ocelot.Data.IntervalTree.IntervalTree Int
         expected =
           Data.Map.fromFoldable
-          [ 1 /\ Ocelot.Data.IntervalTree.StartPoint
-          , 7 /\ Ocelot.Data.IntervalTree.EndPoint
-          ]
+            [ 1 /\ Ocelot.Data.IntervalTree.StartPoint
+            , 7 /\ Ocelot.Data.IntervalTree.EndPoint
+            ]
 
         actual :: Ocelot.Data.IntervalTree.IntervalTree Int
         actual = Ocelot.Data.IntervalTree.insertInterval intervalTree interval
@@ -195,13 +195,13 @@ findLeastUpperBoundTests =
       intervalTree :: Ocelot.Data.IntervalTree.IntervalTree Int
       intervalTree =
         Data.Map.fromFoldable
-        [ 1 /\ Ocelot.Data.IntervalTree.StartPoint
-        , 4 /\ Ocelot.Data.IntervalTree.EndPoint
-        , 8 /\ Ocelot.Data.IntervalTree.StartPoint
-        , 10 /\ Ocelot.Data.IntervalTree.EndPoint
-        , 12 /\ Ocelot.Data.IntervalTree.StartPoint
-        , 15 /\ Ocelot.Data.IntervalTree.EndPoint
-        ]
+          [ 1 /\ Ocelot.Data.IntervalTree.StartPoint
+          , 4 /\ Ocelot.Data.IntervalTree.EndPoint
+          , 8 /\ Ocelot.Data.IntervalTree.StartPoint
+          , 10 /\ Ocelot.Data.IntervalTree.EndPoint
+          , 12 /\ Ocelot.Data.IntervalTree.StartPoint
+          , 15 /\ Ocelot.Data.IntervalTree.EndPoint
+          ]
     Test.Unit.test "Just" do
       let
         -- (1 4) (8 10) (12 15)

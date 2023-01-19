@@ -35,9 +35,9 @@ initializeWith toAction = do
   document <- Halogen.liftEffect $ Web.HTML.Window.document =<< Web.HTML.window
   Halogen.subscribe
     $ Halogen.Query.Event.eventListener
-      Web.UIEvent.KeyboardEvent.EventTypes.keydown
-      (Web.HTML.HTMLDocument.toEventTarget document)
-      (toAction <=< Web.UIEvent.KeyboardEvent.fromEvent)
+        Web.UIEvent.KeyboardEvent.EventTypes.keydown
+        (Web.HTML.HTMLDocument.toEventTarget document)
+        (toAction <=< Web.UIEvent.KeyboardEvent.fromEvent)
 
 whenClose ::
   forall state action slots output m.
@@ -219,7 +219,7 @@ body ::
   Halogen.HTML.HTML p i
 body iprops html =
   Halogen.HTML.div
-    ( [ Halogen.HTML.Properties.classes bodyClasses ] <&> iprops )
+    ([ Halogen.HTML.Properties.classes bodyClasses ] <&> iprops)
     html
 
 body_ ::
@@ -263,14 +263,14 @@ header props =
   Halogen.HTML.div
     [ Halogen.HTML.Properties.classes headerClasses ]
     [ Halogen.HTML.header
-      [ Halogen.HTML.Properties.classes outerHeaderClasses ]
-      ( [ Halogen.HTML.div
-        [ Halogen.HTML.Properties.classes innerHeaderClasses ]
-          [ Ocelot.Block.Format.subHeading
-            [ Ocelot.HTML.Properties.css "mb-0" ]
-            props.title
+        [ Halogen.HTML.Properties.classes outerHeaderClasses ]
+        ( [ Halogen.HTML.div
+              [ Halogen.HTML.Properties.classes innerHeaderClasses ]
+              [ Ocelot.Block.Format.subHeading
+                  [ Ocelot.HTML.Properties.css "mb-0" ]
+                  props.title
+              ]
           ]
-        ]
-        <> props.buttons
-      )
+            <> props.buttons
+        )
     ]

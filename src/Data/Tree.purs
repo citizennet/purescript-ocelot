@@ -33,11 +33,11 @@ type ItemPath a = Array a
 
 type IndexPath = Array Int
 
-_selected :: ∀ a. Lens' (Node a) Boolean
+_selected :: forall a. Lens' (Node a) Boolean
 _selected = _Newtype <<< prop (SProxy :: SProxy "selected")
 
-_expanded :: ∀ a. Lens' (Node a) Boolean
+_expanded :: forall a. Lens' (Node a) Boolean
 _expanded = _Newtype <<< prop (SProxy :: SProxy "expanded")
 
-_children :: ∀ a. Lens' (Node a) (Array (Node a))
+_children :: forall a. Lens' (Node a) (Array (Node a))
 _children = _Newtype <<< prop (SProxy :: SProxy "children")

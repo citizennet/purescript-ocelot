@@ -34,21 +34,17 @@ type State =
   , text :: String
   }
 
-data Action
-  = Receive Input
+data Action = Receive Input
 
-data Query (a :: Type)
-  = GetWidth String (Number -> a)
+data Query (a :: Type) = GetWidth String (Number -> a)
 
 type Input =
   { renderText :: String -> Halogen.HTML.PlainHTML
   }
 
-type Output
-  = Void
+type Output = Void
 
-type ChildSlots
-  = () :: Row Type
+type ChildSlots = () :: Row Type
 
 component ::
   forall m.

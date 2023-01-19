@@ -1510,9 +1510,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001286:
-  version "1.0.30001302"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001302.tgz#da57ce61c51177ef3661eeed7faef392d3790aaa"
-  integrity sha512-YYTMO+tfwvgUN+1ZnRViE53Ma1S/oETg+J2lISsqi/ZTNThj3ZYBOKP2rHwJc37oCsPqAzJ3w2puZHn0xlLPPw==
+  version "1.0.30001445"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001445.tgz"
+  integrity sha512-8sdQIdMztYmzfTMO6KfLny878Ln9c2M0fc7EH60IjlP4Dc4PiCy7K2Vl3ITmWgOyPgVQKa5x+UP/KqFsxj4mBg==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -4393,12 +4393,17 @@ purescript-psa@0.8.2:
   resolved "https://registry.yarnpkg.com/purescript-psa/-/purescript-psa-0.8.2.tgz#ee20c40f02cd0c5ed6dd3dd93ef02d9c466f17bc"
   integrity sha512-4Olf0aQQrNCfcDLXQI3gJgINEQ+3U+4QPLmQ2LHX2L/YOXSwM7fOGIUs/wMm/FQnwERUyQmHKQTJKB4LIjE2fg==
 
-purescript@0.14.4:
-  version "0.14.4"
-  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.4.tgz#16096b589a5c81aa5813c805dc16c0b9f5b7a854"
-  integrity sha512-9Lq2qvyVkQoKUBSNOEBKIJjtD5sDwThurSt3SRdtSseaA03p1Fk7VxbUr9HV/gHLVZPIkOhPtjvZGUNs5U2PDA==
+purescript@0.14.9:
+  version "0.14.9"
+  resolved "https://registry.yarnpkg.com/purescript/-/purescript-0.14.9.tgz#fc4700aa66fb878a20b8bc33cc00919a34b9da48"
+  integrity sha512-r0J2JX/QuKYBSj8LDDYKQAY+tz/RtIm9erHrqWV7Y8RpUc6TZu14AxWcnSrohbBcEXImY/o0pMpouZrUeyriKQ==
   dependencies:
     purescript-installer "^0.2.0"
+
+purs-tidy@0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/purs-tidy/-/purs-tidy-0.9.2.tgz#b67e4a18ee3125edb4562cd5e3244dafe747cfdd"
+  integrity sha512-v7Do4E9Tx2OqEhJXKl5tJxjRcmDilMObm0+XgYphpbMelkUQ+CfhtetIk294byhaL18OpEHqmO6BUkyNCBJDpQ==
 
 qs@~6.5.2:
   version "6.5.2"

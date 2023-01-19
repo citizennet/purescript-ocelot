@@ -15,7 +15,7 @@ import Data.Array (elem, foldl, nubByEq)
 import Data.Bifunctor (lmap, rmap)
 import Data.String (Pattern(..), null, split)
 import Data.String as Data.String
-import Data.String.CodeUnits (length, take, drop)
+import Data.String.CodeUnits (drop, length, take)
 import Data.Tuple (Tuple(..))
 import Foreign.Object as Foreign.Object
 import Halogen.HTML as HH
@@ -27,16 +27,16 @@ import Unsafe.Coerce (unsafeCoerce)
 
 type IProp r i = HH.IProp ("class" :: String | r) i
 
-testId
-  :: ∀ r i
-   . String
-  -> IProp r i
+testId ::
+  forall r i.
+  String ->
+  IProp r i
 testId = HP.attr (HH.AttrName "data-testid")
 
-css
-  :: ∀ r i
-   . String
-  -> IProp r i
+css ::
+  forall r i.
+  String ->
+  IProp r i
 css = HP.class_ <<< HH.ClassName
 
 style :: forall r i. Foreign.Object.Object String -> IProp r i
@@ -44,63 +44,59 @@ style =
   Halogen.HTML.Properties.attr (Halogen.HTML.AttrName "style")
     <<< Data.String.joinWith ";"
     <<< Foreign.Object.foldMap
-        (\key value -> [ key <> ":" <> value ])
+      (\key value -> [ key <> ":" <> value ])
 
-appendIProps
-  :: ∀ r i
-   . Array (IProp r i)
-  -> Array (IProp r i)
-  -> Array (IProp r i)
+appendIProps ::
+  forall r i.
+  Array (IProp r i) ->
+  Array (IProp r i) ->
+  Array (IProp r i)
 appendIProps ip ip' =
   iprops <> iprops' <> classNames
   where
-    (Tuple classes iprops) = extract ip
-    (Tuple classes' iprops') = extract ip'
-    classNames =
-      pure
+  (Tuple classes iprops) = extract ip
+  (Tuple classes' iprops') = extract ip'
+  classNames =
+    pure
       <<< HP.classes
-        $ HH.ClassName
-      <$> nubByEq
-          (\c c' -> classify c == classify c')
-          (classes' <> classes)
+      $ HH.ClassName
+          <$> nubByEq
+            (\c c' -> classify c == classify c')
+            (classes' <> classes)
 
 infixr 5 appendIProps as <&>
 
-extract
-  :: ∀ r i
-   . Array (IProp r i)
-  -> Tuple (Array String) (Array (IProp r i))
+extract ::
+  forall r i.
+  Array (IProp r i) ->
+  Tuple (Array String) (Array (IProp r i))
 extract =
   foldl f (Tuple [] [])
   where
-    f acc (HP.IProp (Property "className" className)) =
-      lmap (_ <> (split (Pattern " ") $ coerceClassName className)) acc
-    f acc iprop = rmap (_ <> [iprop]) acc
+  f acc (HP.IProp (Property "className" className)) =
+    lmap (_ <> (split (Pattern " ") $ coerceClassName className)) acc
+  f acc iprop = rmap (_ <> [ iprop ]) acc
 
-    coerceClassName :: PropValue -> String
-    coerceClassName = unsafeCoerce
+  coerceClassName :: PropValue -> String
+  coerceClassName = unsafeCoerce
 
-classify
-  :: String
-  -> String
+classify ::
+  String ->
+  String
 classify str
-  | startsWith "p" str && not null (classifySide $ drop 1 str)
-    = "padding" <-> classifySide (drop 1 str)
-  | startsWith "m" str && not null (classifySide $ drop 1 str)
-    = "margin" <-> classifySide (drop 1 str)
-  | startsWith "-m" str && not null (classifySide $ drop 2 str)
-    = "margin" <-> classifySide (drop 2 str)
+  | startsWith "p" str && not null (classifySide $ drop 1 str) = "padding" <-> classifySide (drop 1 str)
+  | startsWith "m" str && not null (classifySide $ drop 1 str) = "margin" <-> classifySide (drop 1 str)
+  | startsWith "-m" str && not null (classifySide $ drop 2 str) = "margin" <-> classifySide (drop 2 str)
   | startsWith "min-" str = "min" <-> classify (drop 4 str)
   | startsWith "max-" str = "max" <-> classify (drop 4 str)
   | startsWith "w-" str = "width"
   | startsWith "h-" str = "height"
-  | startsWith "overflow-" str && (classifyOverflow $ drop 9 str) /= drop 9 str
-    = "overflow" <-> (classifyOverflow $ drop 9 str)
+  | startsWith "overflow-" str && (classifyOverflow $ drop 9 str) /= drop 9 str = "overflow" <-> (classifyOverflow $ drop 9 str)
   | otherwise = str
 
-classifySide
-  :: String
-  -> String
+classifySide ::
+  String ->
+  String
 classifySide str
   | startsWith "t-" str = "top"
   | startsWith "r-" str = "right"
@@ -111,27 +107,27 @@ classifySide str
   | startsWith "-" str = "all"
   | otherwise = ""
 
-classifyOverflow
-  :: String
-  -> String
+classifyOverflow ::
+  String ->
+  String
 classifyOverflow str
   | startsWith "x-" str = "horizontal" <-> (classifyOverflow $ drop 2 str)
   | startsWith "y-" str = "vertical" <-> (classifyOverflow $ drop 2 str)
-  | elem str ["auto", "hidden", "visible", "scroll"] = ""
+  | elem str [ "auto", "hidden", "visible", "scroll" ] = ""
   | otherwise = str
 
-append'
-  :: String
-  -> String
-  -> String
+append' ::
+  String ->
+  String ->
+  String
 append' x "" = x
-append' x y  = x <> "-" <> y
+append' x y = x <> "-" <> y
 
 infixr 5 append' as <->
 
 -- | WARN: Not tested, written during 0.12 migration
-startsWith
-  :: String
-  -> String
-  -> Boolean
+startsWith ::
+  String ->
+  String ->
+  Boolean
 startsWith str0 str1 = str0 == (take (length str0) str1)

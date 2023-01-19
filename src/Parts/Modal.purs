@@ -24,26 +24,26 @@ import Web.UIEvent.KeyboardEvent.EventTypes as KET
 -- Eval Partials
 
 -- A function that will register an event source on the window
-initializeWith
-  :: ∀ state action slots output m
-   . MonadAff m
-  => (KE.KeyboardEvent -> Maybe action)
-  -> H.HalogenM state action slots output m H.SubscriptionId
+initializeWith ::
+  forall state action slots output m.
+  MonadAff m =>
+  (KE.KeyboardEvent -> Maybe action) ->
+  H.HalogenM state action slots output m H.SubscriptionId
 initializeWith toAction = do
   document <- H.liftEffect $ document =<< window
   H.subscribe
     $ ES.eventListener
-      KET.keydown
-      (HTMLDocument.toEventTarget document)
-      (toAction <=< KE.fromEvent)
+        KET.keydown
+        (HTMLDocument.toEventTarget document)
+        (toAction <=< KE.fromEvent)
 
-whenClose
-  :: ∀ state action slots output m
-   . MonadAff m
-  => KE.KeyboardEvent
-  -> H.SubscriptionId
-  -> H.HalogenM state action slots output m Unit
-  -> H.HalogenM state action slots output m Unit
+whenClose ::
+  forall state action slots output m.
+  MonadAff m =>
+  KE.KeyboardEvent ->
+  H.SubscriptionId ->
+  H.HalogenM state action slots output m Unit ->
+  H.HalogenM state action slots output m Unit
 whenClose ev sid close =
   when (KE.code ev == "Escape") do
     H.unsubscribe sid
@@ -54,27 +54,26 @@ whenClose ev sid close =
 
 -- Modals already come with the ClickOutside event baked in, while
 -- end users are responsible for handling it somehow.
-modal
-  :: ∀ action slots m
-   . action
-  -> Array (HH.IProp HTMLdiv action)
-  -> Array (H.ComponentHTML action slots m)
-  -> H.ComponentHTML action slots m
+modal ::
+  forall action slots m.
+  action ->
+  Array (HH.IProp HTMLdiv action) ->
+  Array (H.ComponentHTML action slots m) ->
+  H.ComponentHTML action slots m
 modal _ iprops html =
   HH.div
     [ HP.classes backgroundClasses ]
     [ HH.div
-        ( [ HP.classes modalClasses ] <&> iprops )
+        ([ HP.classes modalClasses ] <&> iprops)
         html
     ]
 
-modal_
-  :: ∀ action slots m
-   . action
-  -> Array (H.ComponentHTML action slots m)
-  -> H.ComponentHTML action slots m
+modal_ ::
+  forall action slots m.
+  action ->
+  Array (H.ComponentHTML action slots m) ->
+  H.ComponentHTML action slots m
 modal_ query = modal query []
-
 
 -----------
 -- Blocks
@@ -118,20 +117,20 @@ bodyClasses = HH.ClassName <$>
   , "rounded-b"
   ]
 
-body
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+body ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body iprops html =
   HH.div
-    ( [ HP.classes bodyClasses ] <&> iprops )
+    ([ HP.classes bodyClasses ] <&> iprops)
     html
 
-body_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+body_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 body_ = body []
 
 headerClasses :: Array HH.ClassName
@@ -158,22 +157,22 @@ innerHeaderClasses = HH.ClassName <$>
   , "flex"
   ]
 
-header
-  :: ∀ p i
-   . HeaderProps p i
-  -> HH.HTML p i
+header ::
+  forall p i.
+  HeaderProps p i ->
+  HH.HTML p i
 header props =
   HH.div
     [ HP.classes headerClasses ]
     [ HH.header
-      [ HP.classes outerHeaderClasses ]
-      ( [ HH.div
-        [ HP.classes innerHeaderClasses ]
-          [ Format.subHeading
-            [ css "mb-0" ]
-            props.title
+        [ HP.classes outerHeaderClasses ]
+        ( [ HH.div
+              [ HP.classes innerHeaderClasses ]
+              [ Format.subHeading
+                  [ css "mb-0" ]
+                  props.title
+              ]
           ]
-        ]
-        <> props.buttons
-      )
+            <> props.buttons
+        )
     ]

@@ -30,11 +30,11 @@ import Web.HTML.Event.DragEvent as Web.HTML.Event.DragEvent
 -- * multiple
 --   * true: allow selecting multiple files
 --   * false: only allow selecting a single file
-type Config
-  = { accept :: Maybe DOM.HTML.Indexed.InputAcceptType.InputAcceptType
-    , id :: String
-    , multiple :: Boolean
-    }
+type Config =
+  { accept :: Maybe DOM.HTML.Indexed.InputAcceptType.InputAcceptType
+  , id :: String
+  , multiple :: Boolean
+  }
 
 type Slot = Halogen.Slot Query Output
 
@@ -58,8 +58,7 @@ data Query (a :: Type)
 
 type Input = Unit
 
-data Output
-  = Selected (Array Web.File.File.File)
+data Output = Selected (Array Web.File.File.File)
 
 type ChildSlots = () :: Row Type
 
@@ -187,16 +186,16 @@ renderDropBox ::
   ComponentHTML m
 renderDropBox state
   | state.dragOver =
-    Halogen.HTML.div ipropDragOver
-      [ Halogen.HTML.div
-          [ Ocelot.HTMl.Properties.style <<< Foreign.Object.fromHomogeneous $
-            { "pointer-events": "none" } -- NOTE prevent event firing from children
-          ]
-          (renderContent state)
-      ]
+      Halogen.HTML.div ipropDragOver
+        [ Halogen.HTML.div
+            [ Ocelot.HTMl.Properties.style <<< Foreign.Object.fromHomogeneous $
+                { "pointer-events": "none" } -- NOTE prevent event firing from children
+            ]
+            (renderContent state)
+        ]
   | otherwise =
-    Halogen.HTML.div ipropIdle
-      (renderContent state)
+      Halogen.HTML.div ipropIdle
+        (renderContent state)
 
 ipropIdle :: Array (Halogen.HTML.Properties.IProp HTMLdiv Action)
 ipropIdle =
@@ -235,10 +234,10 @@ ipropDragOver =
   styleDragOver :: Foreign.Object.Object String
   styleDragOver =
     Foreign.Object.fromHomogeneous
-    { outline: "2px dashed #8f9eb3"
-    , "outline-offset": "-20px"
-    , transition: "outline-offset .15s ease-in-out, background-color .15s linear"
-    }
+      { outline: "2px dashed #8f9eb3"
+      , "outline-offset": "-20px"
+      , transition: "outline-offset .15s ease-in-out, background-color .15s linear"
+      }
 
 renderContent ::
   forall m.
@@ -249,7 +248,6 @@ renderContent state =
   , renderLabel state
   ]
 
-
 renderIcon ::
   forall m.
   ComponentHTML m
@@ -257,7 +255,7 @@ renderIcon =
   Halogen.HTML.div
     [ Ocelot.HTMl.Properties.css "text-grey-50 text-center w-full" ]
     [ Ocelot.Block.Icon.download
-      [ Ocelot.HTMl.Properties.css "text-5xl" ]
+        [ Ocelot.HTMl.Properties.css "text-5xl" ]
     ]
 
 renderInput ::
@@ -287,12 +285,12 @@ renderLabel state =
     , Halogen.HTML.Properties.for state.config.id
     ]
     [ Halogen.HTML.span
-      [ Ocelot.HTMl.Properties.css "group-hover:text-blue-88" ]
-      [ Halogen.HTML.text
-          if state.config.multiple then
-            "Choose file(s)"
-          else
-            "Choose a file"
-      ]
+        [ Ocelot.HTMl.Properties.css "group-hover:text-blue-88" ]
+        [ Halogen.HTML.text
+            if state.config.multiple then
+              "Choose file(s)"
+            else
+              "Choose a file"
+        ]
     , Halogen.HTML.text " or drag it here."
     ]

@@ -32,21 +32,21 @@ menuClasses = HH.ClassName <$>
 dropdownClasses :: Array HH.ClassName
 dropdownClasses = menuClasses <>
   ( HH.ClassName <$>
-    [ "absolute"
-    , "pin-t-full"
-    , "pin-l"
-    , "max-h-160"
-    , "overflow-y-auto"
-    ]
+      [ "absolute"
+      , "pin-t-full"
+      , "pin-l"
+      , "max-h-160"
+      , "overflow-y-auto"
+      ]
   )
 
 droprightClasses :: Array HH.ClassName
 droprightClasses = menuClasses <>
   ( HH.ClassName <$>
-    [ "absolute"
-    , "pin-t"
-    , "pin-l-full"
-    ]
+      [ "absolute"
+      , "pin-t"
+      , "pin-l-full"
+      ]
   )
 
 baseClasses :: Array HH.ClassName
@@ -61,22 +61,22 @@ baseClasses = HH.ClassName <$>
 selectionContainerClasses :: Array HH.ClassName
 selectionContainerClasses = baseClasses <>
   ( HH.ClassName <$>
-    [ "border-t-2"
-    ]
+      [ "border-t-2"
+      ]
   )
 
 itemContainerClasses :: Array HH.ClassName
 itemContainerClasses = baseClasses <>
   ( HH.ClassName <$>
-    [ "absolute"
-    , "shadow"
-    , "max-h-120"
-    , "overflow-y-auto"
-    , "z-50"
-    , "border-b-2"
-    , "pin-t-full"
-    , "pin-l"
-    ]
+      [ "absolute"
+      , "shadow"
+      , "max-h-120"
+      , "overflow-y-auto"
+      , "z-50"
+      , "border-b-2"
+      , "pin-t-full"
+      , "pin-l"
+      ]
   )
 
 ulClasses :: Array HH.ClassName
@@ -108,143 +108,140 @@ buttonClasses = HH.ClassName <$>
   , "group-hover:visible"
   ]
 
-dropdownButton
-  :: ∀ p r i
-   . (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i)
-  -> Array (IProp r i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+dropdownButton ::
+  forall p r i.
+  (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i) ->
+  Array (IProp r i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 dropdownButton button iprops html =
   button
-    ( [ css "font-medium flex items-center" ] <&> iprops )
+    ([ css "font-medium flex items-center" ] <&> iprops)
     $ html <> [ Icon.caratDown [ css "ml-3 text-xs" ] ]
 
-dropdownContainer
-  :: ∀ p action item
-   . Array (HH.HTML p (Select.Action action))
-  -> (item -> HH.PlainHTML)
-  -> (item -> Boolean)
-  -> Array item
-  -> Maybe Int
-  -> HH.HTML p (Select.Action action)
+dropdownContainer ::
+  forall p action item.
+  Array (HH.HTML p (Select.Action action)) ->
+  (item -> HH.PlainHTML) ->
+  (item -> Boolean) ->
+  Array item ->
+  Maybe Int ->
+  HH.HTML p (Select.Action action)
 dropdownContainer addlHTML renderItem selected items hix =
   HH.div
-    ( Setters.setContainerProps [ HP.classes dropdownClasses ] )
-    ( addlHTML <> renderItems )
+    (Setters.setContainerProps [ HP.classes dropdownClasses ])
+    (addlHTML <> renderItems)
   where
-    renderItems :: Array (HH.HTML p (Select.Action action))
-    renderItems =
-      [ HH.ul
+  renderItems :: Array (HH.HTML p (Select.Action action))
+  renderItems =
+    [ HH.ul
         [ HP.classes ulClasses ]
         $ mapWithIndex renderItem' items
-      ]
+    ]
 
-    renderItem' :: Int -> item -> HH.HTML p (Select.Action action)
-    renderItem' idx item =
-      dropdownItem HH.li
-        ( Setters.setItemProps idx [] )
-        [ HH.fromPlainHTML $ renderItem item ]
-        ( selected item )
-        ( hix == Just idx )
+  renderItem' :: Int -> item -> HH.HTML p (Select.Action action)
+  renderItem' idx item =
+    dropdownItem HH.li
+      (Setters.setItemProps idx [])
+      [ HH.fromPlainHTML $ renderItem item ]
+      (selected item)
+      (hix == Just idx)
 
-dropdownItem
-  :: ∀ p r i
-   . (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i)
-  -> Array (IProp r i)
-  -> Array (HH.HTML p i)
-  -> Boolean
-  -> Boolean
-  -> HH.HTML p i
+dropdownItem ::
+  forall p r i.
+  (Array (IProp r i) -> Array (HH.HTML p i) -> HH.HTML p i) ->
+  Array (IProp r i) ->
+  Array (HH.HTML p i) ->
+  Boolean ->
+  Boolean ->
+  HH.HTML p i
 dropdownItem elem props html selected highlighted =
   elem
-    ( props <&> [ HP.classes itemClasses ] )
+    (props <&> [ HP.classes itemClasses ])
     $ [ Icon.selected [ HP.classes checkmarkClass ] ] <> html
   where
-    itemClasses :: Array HH.ClassName
-    itemClasses =
-      liClasses
+  itemClasses :: Array HH.ClassName
+  itemClasses =
+    liClasses
       <> [ HH.ClassName "flex" ]
-      <> ( if highlighted then [ HH.ClassName "bg-grey-lighter" ] else [] )
+      <> (if highlighted then [ HH.ClassName "bg-grey-lighter" ] else [])
       <> if selected then [ HH.ClassName "font-medium" ] else []
 
-    checkmarkClass :: Array HH.ClassName
-    checkmarkClass =
-      (HH.ClassName <$> [ "mr-2", "text-green" ])
+  checkmarkClass :: Array HH.ClassName
+  checkmarkClass =
+    (HH.ClassName <$> [ "mr-2", "text-green" ])
       <> if selected then [] else [ HH.ClassName "invisible" ]
 
 -- Provided an array of items and any additional HTML, renders the container
 -- Items should have already been treated with `boldMatches` by this point.
-itemContainer
-  :: ∀ p action
-   . Maybe Int
-  -> Array HH.PlainHTML
-  -> Array (HH.HTML p (Select.Action action))
-  -> HH.HTML p (Select.Action action)
+itemContainer ::
+  forall p action.
+  Maybe Int ->
+  Array HH.PlainHTML ->
+  Array (HH.HTML p (Select.Action action)) ->
+  HH.HTML p (Select.Action action)
 itemContainer highlightIndex itemsHTML addlHTML =
   HH.div
-    ( Setters.setContainerProps [ HP.classes itemContainerClasses ] )
-    ( renderItems <> addlHTML )
+    (Setters.setContainerProps [ HP.classes itemContainerClasses ])
+    (renderItems <> addlHTML)
   where
-    hover :: Int -> Array HH.ClassName
-    hover i = if highlightIndex == Just i then HH.ClassName <$> [ "bg-grey-lighter" ] else mempty
+  hover :: Int -> Array HH.ClassName
+  hover i = if highlightIndex == Just i then HH.ClassName <$> [ "bg-grey-lighter" ] else mempty
 
-    renderItems :: Array (HH.HTML p (Select.Action action))
-    renderItems =
-      [ HH.ul
+  renderItems :: Array (HH.HTML p (Select.Action action))
+  renderItems =
+    [ HH.ul
         [ HP.classes ulClasses ]
         $ mapWithIndex
-          ( \i h ->
-              HH.li
-                ( Setters.setItemProps i
-                  [ HP.classes $ liClasses <> hover i ]
-                )
-                [ HH.fromPlainHTML h ]
-          )
-          itemsHTML
-      ]
-
+            ( \i h ->
+                HH.li
+                  ( Setters.setItemProps i
+                      [ HP.classes $ liClasses <> hover i ]
+                  )
+                  [ HH.fromPlainHTML h ]
+            )
+            itemsHTML
+    ]
 
 -- Provided an array of selection items, renders them in a container
 -- Make sure the array of items includes the correct click handlers
-selectionContainer :: ∀ p i. Array (HH.HTML p i) -> HH.HTML p i
-selectionContainer []   =
+selectionContainer :: forall p i. Array (HH.HTML p i) -> HH.HTML p i
+selectionContainer [] =
   HH.div_ []
 selectionContainer html =
   HH.div
-  [ HP.classes selectionContainerClasses ]
-  [ HH.ul
-    [ HP.classes ulClasses ]
-    $ html <#>
-    ( \h ->
-        HH.li
-          [ HP.classes (HH.ClassName "py-2" : liClasses) ]
-          [ h ]
-    )
-  ]
+    [ HP.classes selectionContainerClasses ]
+    [ HH.ul
+        [ HP.classes ulClasses ]
+        $ html <#>
+            ( \h ->
+                HH.li
+                  [ HP.classes (HH.ClassName "py-2" : liClasses) ]
+                  [ h ]
+            )
+    ]
 
-
-selectionGroup
-  :: ∀ item i p
-   . (item -> HH.PlainHTML)
-  -> Array (HH.IProp HTMLdiv p)
-  -> Array (HH.IProp HTMLbutton p)
-  -> item
-  -> HH.HTML i p
+selectionGroup ::
+  forall item i p.
+  (item -> HH.PlainHTML) ->
+  Array (HH.IProp HTMLdiv p) ->
+  Array (HH.IProp HTMLbutton p) ->
+  item ->
+  HH.HTML i p
 selectionGroup f divprops btnprops item =
   HH.div
     ([ HP.classes $ selectionGroupClasses ] <&> divprops)
     [ HH.fromPlainHTML (f item)
     , HH.button
-      ([ HP.classes buttonClasses ] <&> btnprops)
-      [ HH.text "✕" ]
+        ([ HP.classes buttonClasses ] <&> btnprops)
+        [ HH.text "✕" ]
     ]
-
 
 -- Takes a key to the segment that you want to display highlighted.
 -- WARN: If the key you provided does not exist in the map, your item will not be
 -- rendered!
-boldMatches :: ∀ item i p. String -> Fuzzy item -> Array (HH.HTML i p)
+boldMatches :: forall item i p. String -> Fuzzy item -> Array (HH.HTML i p)
 boldMatches key (Fuzzy { segments }) = boldMatch <$> (fromMaybe [ Left key ] $ lookup key segments)
   where
-    boldMatch (Left str) = HH.text str
-    boldMatch (Right str) = HH.span [ HP.class_ $ HH.ClassName "font-bold" ] [ HH.text str ]
+  boldMatch (Left str) = HH.text str
+  boldMatch (Right str) = HH.span [ HP.class_ $ HH.ClassName "font-bold" ] [ HH.text str ]

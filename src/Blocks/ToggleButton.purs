@@ -7,17 +7,17 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Ocelot.HTML.Properties ((<&>))
 
-toggleButton
-  :: ∀ p i
-   . Array (HH.IProp HTMLspan i)
-  -> Array (HH.IProp HTMLinput i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+toggleButton ::
+  forall p i.
+  Array (HH.IProp HTMLspan i) ->
+  Array (HH.IProp HTMLinput i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 toggleButton iprops inprops html =
   HH.label_
-  [ HH.input inputProps
-  , HH.span labelProps html
-  ]
+    [ HH.input inputProps
+    , HH.span labelProps html
+    ]
   where
   inputProps =
     [ HP.classes inputClasses

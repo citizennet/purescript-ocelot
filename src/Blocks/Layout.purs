@@ -16,17 +16,17 @@ popoverClasses = HH.ClassName <$>
   , "rounded"
   ]
 
-popover
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+popover ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 popover = blockBuilder HH.div popoverClasses
 
-popover_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+popover_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 popover_ = popover []
 
 stickyClasses :: Array HH.ClassName
@@ -39,17 +39,17 @@ stickyClasses = HH.ClassName <$>
   , "z-60"
   ]
 
-sticky
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+sticky ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 sticky = blockBuilder HH.div stickyClasses
 
-sticky_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+sticky_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 sticky_ = sticky []
 
 containerClasses :: Array HH.ClassName
@@ -58,17 +58,17 @@ containerClasses = HH.ClassName <$>
   , "m-auto"
   ]
 
-container
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+container ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 container = blockBuilder HH.div containerClasses
 
-container_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+container_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 container_ = container []
 
 sectionClasses :: Array HH.ClassName
@@ -76,17 +76,17 @@ sectionClasses = HH.ClassName <$>
   [ "my-8"
   ]
 
-section
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+section ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 section = blockBuilder HH.div sectionClasses
 
-section_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+section_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 section_ = section []
 
 gridClasses :: Array HH.ClassName
@@ -97,17 +97,17 @@ gridClasses = HH.ClassName <$>
   , "flex"
   ]
 
-grid
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+grid ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 grid = blockBuilder HH.div gridClasses
 
-grid_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+grid_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 grid_ = grid []
 
 columnClasses :: Array HH.ClassName
@@ -116,17 +116,17 @@ columnClasses = HH.ClassName <$>
   , "p-8"
   ]
 
-column
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+column ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 column = blockBuilder HH.div columnClasses
 
-column_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+column_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 column_ = column []
 
 mainClasses :: Array HH.ClassName
@@ -135,17 +135,17 @@ mainClasses = HH.ClassName <$>
   , "p-8"
   ]
 
-main
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+main ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 main = blockBuilder HH.div mainClasses
 
-main_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+main_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 main_ = main []
 
 sideClasses :: Array HH.ClassName
@@ -154,15 +154,15 @@ sideClasses = HH.ClassName <$>
   , "p-8"
   ]
 
-side
-  :: ∀ p i
-   . Array (HH.IProp HTMLdiv i)
-  -> Array (HH.HTML p i)
-  -> HH.HTML p i
+side ::
+  forall p i.
+  Array (HH.IProp HTMLdiv i) ->
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 side = blockBuilder HH.div sideClasses
 
-side_
-  :: ∀ p i
-   . Array (HH.HTML p i)
-  -> HH.HTML p i
+side_ ::
+  forall p i.
+  Array (HH.HTML p i) ->
+  HH.HTML p i
 side_ = side []

@@ -33,13 +33,13 @@ axisContainer ::
   } ->
   Array (Halogen.HTML.HTML p a) ->
   Halogen.HTML.HTML p a
-axisContainer { betweenThumbAndAxis, betweenTopAndThumb, thumbRadius }  =
+axisContainer { betweenThumbAndAxis, betweenTopAndThumb, thumbRadius } =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
-      [ Halogen.Svg.Attributes.Translate
-        thumbRadius
-        (betweenTopAndThumb + thumbRadius * 2.0 + betweenThumbAndAxis)
-      ]
+        [ Halogen.Svg.Attributes.Translate
+            thumbRadius
+            (betweenTopAndThumb + thumbRadius * 2.0 + betweenThumbAndAxis)
+        ]
     ]
 
 axis ::
@@ -63,7 +63,7 @@ axisLabel label x =
   Halogen.Svg.Elements.text
     [ Halogen.Svg.Attributes.text_anchor Halogen.Svg.Attributes.AnchorMiddle
     , Halogen.Svg.Attributes.transform
-      [ Halogen.Svg.Attributes.Translate x 0.0 ]
+        [ Halogen.Svg.Attributes.Translate x 0.0 ]
     ]
     [ Halogen.HTML.text label ]
 
@@ -90,10 +90,10 @@ frame { axisHeight, betweenThumbAndAxis, betweenTopAndThumb, frameWidth, margin,
         <> iprops
     )
     [ Halogen.Svg.Elements.g
-      [ Halogen.Svg.Attributes.transform
-        [ Halogen.Svg.Attributes.Translate margin margin ]
-      ]
-      html
+        [ Halogen.Svg.Attributes.transform
+            [ Halogen.Svg.Attributes.Translate margin margin ]
+        ]
+        html
     ]
   where
   viewBoxHeight :: Number
@@ -118,7 +118,7 @@ interval { trackRadius, trackWidth } percent iprops =
     ( [ Halogen.Svg.Attributes.height (trackRadius * 2.0)
       , Halogen.Svg.Attributes.width (trackWidth * (percent.end.percent - percent.start.percent) / 100.0)
       , Halogen.Svg.Attributes.transform
-        [ Halogen.Svg.Attributes.Translate (trackWidth * percent.start.percent / 100.0) 0.0 ]
+          [ Halogen.Svg.Attributes.Translate (trackWidth * percent.start.percent / 100.0) 0.0 ]
       ]
         <> iprops
     )
@@ -133,7 +133,7 @@ markContainer ::
 markContainer { trackRadius } =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
-      [ Halogen.Svg.Attributes.Translate 0.0 trackRadius ]
+        [ Halogen.Svg.Attributes.Translate 0.0 trackRadius ]
     ]
 
 mark ::
@@ -149,7 +149,7 @@ mark { trackRadius, trackWidth } { percent } iprops =
   Halogen.Svg.Elements.circle
     ( [ Halogen.Svg.Attributes.r trackRadius
       , Halogen.Svg.Attributes.transform
-        [ Halogen.Svg.Attributes.Translate (trackWidth * percent / 100.0) 0.0 ]
+          [ Halogen.Svg.Attributes.Translate (trackWidth * percent / 100.0) 0.0 ]
       ]
         <> iprops
     )
@@ -165,10 +165,10 @@ thumbContainer ::
 thumbContainer { betweenTopAndThumb, thumbRadius } =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
-      [ Halogen.Svg.Attributes.Translate
-        thumbRadius
-        (betweenTopAndThumb + thumbRadius)
-      ]
+        [ Halogen.Svg.Attributes.Translate
+            thumbRadius
+            (betweenTopAndThumb + thumbRadius)
+        ]
     ]
 
 thumb ::
@@ -186,7 +186,7 @@ thumb { trackWidth, thumbRadius } { percent } iprops =
       , Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 255 255 255))
       , Halogen.Svg.Attributes.stroke (pure (Halogen.Svg.Attributes.RGB 0 0 0))
       , Halogen.Svg.Attributes.transform
-        [ Halogen.Svg.Attributes.Translate (trackWidth * percent / 100.0) 0.0 ]
+          [ Halogen.Svg.Attributes.Translate (trackWidth * percent / 100.0) 0.0 ]
       ]
         <> iprops
     )
@@ -203,7 +203,7 @@ trackContainer ::
 trackContainer { betweenTopAndThumb, thumbRadius, trackRadius } =
   Halogen.Svg.Elements.g
     [ Halogen.Svg.Attributes.transform
-      [ Halogen.Svg.Attributes.Translate thumbRadius (betweenTopAndThumb + thumbRadius - trackRadius) ]
+        [ Halogen.Svg.Attributes.Translate thumbRadius (betweenTopAndThumb + thumbRadius - trackRadius) ]
     ]
 
 track ::
@@ -236,5 +236,4 @@ pixelToPercent { frameWidth, margin, thumbRadius, trackWidth } x = { percent }
 
   percent :: Number
   percent = x.px * scale / trackWidth * 100.0
-
 
