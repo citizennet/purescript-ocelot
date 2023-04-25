@@ -145,6 +145,6 @@ help: $(BUILD_DIR)/help ## Display this help message
 .PHONY: test
 test: $(BUILD_DIR)/test.out ## Build and run tests
 
-.PHONY: ui-guide
-ui-guide: build-css $(OUTPUT_DIR)/Main/index.js $(NODE_MODULES) | $(PARCEL_DIR) ## Build the UI Guide using ParcelJS for hot reloading (experimental, may not work on all environments)
+.PHONY: ui-guide-local
+ui-guide-local: build-css $(OUTPUT_DIR)/Main/index.js $(NODE_MODULES) | $(PARCEL_DIR) ## Build the UI Guide using ParcelJS for hot reloading (experimental, may not work on all environments)
 	npx parcel serve $(DIST_DIR)/parcel.html --dist-dir $(PARCEL_DIR) --no-cache
