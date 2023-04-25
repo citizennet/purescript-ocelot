@@ -21,7 +21,7 @@ PURS_TIDY ?= purs-tidy
 SRC_FILES := $(shell find $(SRC_DIR) $(FIND_SRC_FILES_ARGS))
 TEST_FILES := $(shell find $(TEST_DIR) $(FIND_SRC_FILES_ARGS))
 UI_GUIDE_FILES := $(shell find $(UI_GUIDE_DIR) $(FIND_SRC_FILES_ARGS))
-YARN_LOCK := $(ROOT_DIR)/yarn.lock
+PACKAGE_LOCK := $(ROOT_DIR)/package-lock.json
 
 FORMAT_SRC_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-src-purs-tidy-stamp
 FORMAT_TEST_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-test-purs-tidy-stamp
@@ -88,8 +88,8 @@ $(FORMAT_TEST_PURS_TIDY_STAMP): $(TEST_FILES) $(NODE_MODULES_STAMP) | $(BUILD)
 	$(PURS_TIDY) $(PURS_TIDY_CMD) $(TEST_DIR)
 	@touch $@
 
-$(NODE_MODULES): $(PACKAGE_JSON) $(YARN_LOCK)
-	$(NPX) yarn install
+$(NODE_MODULES): $(PACKAGE_JSON) $(PACKAGE_LOCK)
+	npm install
 	touch $@
 
 $(OUTPUT_DIR)/Main/index.js: $(DEPS) $(SRC_FILES) $(UI_GUIDE_FILES)
