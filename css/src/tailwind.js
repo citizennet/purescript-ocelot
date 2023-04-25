@@ -73,6 +73,7 @@ config.colors = Object.assign(config.colors, {
   'ig-brown': '#675144',
   'instagram-purple': '#C13584',
   'linkedin-blue': '#0E76A8',
+  'outbrain-orange': '#EE6512',
   'pinterest-red': '#C8232C',
   'reddit-orange': '#FF4500',
   'snapchat-yellow': '#FFFC00',

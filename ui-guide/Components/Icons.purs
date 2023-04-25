@@ -64,6 +64,7 @@ component =
             , Tuple "Google" $ Icon.google [ css "text-google-blue" ]
             , Tuple "Instagram" $ Icon.instagram [ css "text-instagram-purple" ]
             , Tuple "LinkedIn" $ Icon.linkedIn [ css "text-linkedin-blue" ]
+            , Tuple "Outbrain" $ Icon.outbrain [ css "text-outbrain-orange" ]
             , Tuple "Pinterest" $ Icon.pinterest [ css "text-pinterest-red" ]
             , Tuple "Reddit" $ Icon.reddit [ css "text-reddit-orange" ]
             , Tuple "Snapchat" $ Icon.snapchat_
