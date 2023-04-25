@@ -71,6 +71,7 @@ component =
             , Tuple "Tiktok" $ Icon.tiktok [ css "text-tiktok-green" ]
             , Tuple "Twitter" $ Icon.twitter [ css "text-twitter-blue" ]
             , Tuple "Youtube" $ Icon.youtube [ css "text-youtube-red" ]
+            , Tuple "Outbrain" $ Icon.outbrain_
             ]
           )
         ]
