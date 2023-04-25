@@ -224,6 +224,12 @@ options = icon "icon-options"
 options_ :: forall p i. HH.HTML p i
 options_ = options []
 
+outbrain :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
+outbrain = icon "icon-outbrain"
+
+outbrain_ :: forall p i. HH.HTML p i
+outbrain_ = outbrain []
+
 pinterest :: forall p i. Array (HH.IProp HTMLspan i) -> HH.HTML p i
 pinterest = icon "icon-pinterest"
 
