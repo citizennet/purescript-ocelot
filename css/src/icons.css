@@ -48,7 +48,8 @@
 .icon-youtube:before,
 .icon-demographics:before,
 .icon-adset:before,
-.icon-campaign:before {
+.icon-campaign:before,
+.icon-outbrain:before {
     font-family: "ocelot-icon-v2" !important;
 }
 
@@ -56,7 +57,7 @@
   content: attr(data-icon);
 }
 
-/* 2022-01-24 icon updates */
+/* 2023-04-25 icon updates */
 .icon-facebook:before { content: '\e800'; }
 .icon-google:before { content: '\e801'; }
 .icon-instagram:before { content: '\e802'; }
@@ -71,6 +72,7 @@
 .icon-demographics:before { content: '\e80b'; }
 .icon-adset:before { content: '\e80c'; }
 .icon-campaign:before { content: '\e80d'; }
+.icon-outbrain:before { content: '\e80e'; }
 
 /* legacy icons */
 .icon-add:before {
