@@ -1432,6 +1432,10 @@ dt {
   background-color: #0e76a8;
 }
 
+.bg-outbrain-orange {
+  background-color: #ee6512;
+}
+
 .bg-pinterest-red {
   background-color: #c8232c;
 }
@@ -1870,6 +1874,10 @@ dt {
 
 .group:hover .group-hover\:bg-linkedin-blue {
   background-color: #0e76a8;
+}
+
+.group:hover .group-hover\:bg-outbrain-orange {
+  background-color: #ee6512;
 }
 
 .group:hover .group-hover\:bg-pinterest-red {
@@ -2312,6 +2320,10 @@ dt {
   background-color: #0e76a8;
 }
 
+.hover\:bg-outbrain-orange:hover {
+  background-color: #ee6512;
+}
+
 .hover\:bg-pinterest-red:hover {
   background-color: #c8232c;
 }
@@ -2752,6 +2764,10 @@ dt {
   background-color: #0e76a8;
 }
 
+.focus\:bg-outbrain-orange:focus {
+  background-color: #ee6512;
+}
+
 .focus\:bg-pinterest-red:focus {
   background-color: #c8232c;
 }
@@ -3190,6 +3206,10 @@ dt {
 
 .active\:bg-linkedin-blue:active {
   background-color: #0e76a8;
+}
+
+.active\:bg-outbrain-orange:active {
+  background-color: #ee6512;
 }
 
 .active\:bg-pinterest-red:active {
@@ -3704,6 +3724,10 @@ dt {
   border-color: #0e76a8;
 }
 
+.border-outbrain-orange {
+  border-color: #ee6512;
+}
+
 .border-pinterest-red {
   border-color: #c8232c;
 }
@@ -4142,6 +4166,10 @@ dt {
 
 .group:hover .group-hover\:border-linkedin-blue {
   border-color: #0e76a8;
+}
+
+.group:hover .group-hover\:border-outbrain-orange {
+  border-color: #ee6512;
 }
 
 .group:hover .group-hover\:border-pinterest-red {
@@ -4584,6 +4612,10 @@ dt {
   border-color: #0e76a8;
 }
 
+.hover\:border-outbrain-orange:hover {
+  border-color: #ee6512;
+}
+
 .hover\:border-pinterest-red:hover {
   border-color: #c8232c;
 }
@@ -5022,6 +5054,10 @@ dt {
 
 .focus\:border-linkedin-blue:focus {
   border-color: #0e76a8;
+}
+
+.focus\:border-outbrain-orange:focus {
+  border-color: #ee6512;
 }
 
 .focus\:border-pinterest-red:focus {
@@ -9406,6 +9442,10 @@ dt {
   color: #0e76a8;
 }
 
+.text-outbrain-orange {
+  color: #ee6512;
+}
+
 .text-pinterest-red {
   color: #c8232c;
 }
@@ -9846,6 +9886,10 @@ dt {
   color: #0e76a8;
 }
 
+.group:hover .group-hover\:text-outbrain-orange {
+  color: #ee6512;
+}
+
 .group:hover .group-hover\:text-pinterest-red {
   color: #c8232c;
 }
@@ -10284,6 +10328,10 @@ dt {
 
 .hover\:text-linkedin-blue:hover {
   color: #0e76a8;
+}
+
+.hover\:text-outbrain-orange:hover {
+  color: #ee6512;
 }
 
 .hover\:text-pinterest-red:hover {
@@ -11868,6 +11916,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .sm\:bg-outbrain-orange {
+    background-color: #ee6512;
+  }
+
   .sm\:bg-pinterest-red {
     background-color: #c8232c;
   }
@@ -12306,6 +12358,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .sm\:group-hover\:bg-linkedin-blue {
     background-color: #0e76a8;
+  }
+
+  .group:hover .sm\:group-hover\:bg-outbrain-orange {
+    background-color: #ee6512;
   }
 
   .group:hover .sm\:group-hover\:bg-pinterest-red {
@@ -12748,6 +12804,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .sm\:hover\:bg-outbrain-orange:hover {
+    background-color: #ee6512;
+  }
+
   .sm\:hover\:bg-pinterest-red:hover {
     background-color: #c8232c;
   }
@@ -13188,6 +13248,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .sm\:focus\:bg-outbrain-orange:focus {
+    background-color: #ee6512;
+  }
+
   .sm\:focus\:bg-pinterest-red:focus {
     background-color: #c8232c;
   }
@@ -13626,6 +13690,10 @@ input[type=range]::-ms-thumb {
 
   .sm\:active\:bg-linkedin-blue:active {
     background-color: #0e76a8;
+  }
+
+  .sm\:active\:bg-outbrain-orange:active {
+    background-color: #ee6512;
   }
 
   .sm\:active\:bg-pinterest-red:active {
@@ -14132,6 +14200,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .sm\:border-outbrain-orange {
+    border-color: #ee6512;
+  }
+
   .sm\:border-pinterest-red {
     border-color: #c8232c;
   }
@@ -14570,6 +14642,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .sm\:group-hover\:border-linkedin-blue {
     border-color: #0e76a8;
+  }
+
+  .group:hover .sm\:group-hover\:border-outbrain-orange {
+    border-color: #ee6512;
   }
 
   .group:hover .sm\:group-hover\:border-pinterest-red {
@@ -15012,6 +15088,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .sm\:hover\:border-outbrain-orange:hover {
+    border-color: #ee6512;
+  }
+
   .sm\:hover\:border-pinterest-red:hover {
     border-color: #c8232c;
   }
@@ -15450,6 +15530,10 @@ input[type=range]::-ms-thumb {
 
   .sm\:focus\:border-linkedin-blue:focus {
     border-color: #0e76a8;
+  }
+
+  .sm\:focus\:border-outbrain-orange:focus {
+    border-color: #ee6512;
   }
 
   .sm\:focus\:border-pinterest-red:focus {
@@ -19818,6 +19902,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .sm\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .sm\:text-pinterest-red {
     color: #c8232c;
   }
@@ -20258,6 +20346,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .group:hover .sm\:group-hover\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .group:hover .sm\:group-hover\:text-pinterest-red {
     color: #c8232c;
   }
@@ -20696,6 +20788,10 @@ input[type=range]::-ms-thumb {
 
   .sm\:hover\:text-linkedin-blue:hover {
     color: #0e76a8;
+  }
+
+  .sm\:hover\:text-outbrain-orange:hover {
+    color: #ee6512;
   }
 
   .sm\:hover\:text-pinterest-red:hover {
@@ -21645,6 +21741,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .md\:bg-outbrain-orange {
+    background-color: #ee6512;
+  }
+
   .md\:bg-pinterest-red {
     background-color: #c8232c;
   }
@@ -22083,6 +22183,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .md\:group-hover\:bg-linkedin-blue {
     background-color: #0e76a8;
+  }
+
+  .group:hover .md\:group-hover\:bg-outbrain-orange {
+    background-color: #ee6512;
   }
 
   .group:hover .md\:group-hover\:bg-pinterest-red {
@@ -22525,6 +22629,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .md\:hover\:bg-outbrain-orange:hover {
+    background-color: #ee6512;
+  }
+
   .md\:hover\:bg-pinterest-red:hover {
     background-color: #c8232c;
   }
@@ -22965,6 +23073,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .md\:focus\:bg-outbrain-orange:focus {
+    background-color: #ee6512;
+  }
+
   .md\:focus\:bg-pinterest-red:focus {
     background-color: #c8232c;
   }
@@ -23403,6 +23515,10 @@ input[type=range]::-ms-thumb {
 
   .md\:active\:bg-linkedin-blue:active {
     background-color: #0e76a8;
+  }
+
+  .md\:active\:bg-outbrain-orange:active {
+    background-color: #ee6512;
   }
 
   .md\:active\:bg-pinterest-red:active {
@@ -23909,6 +24025,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .md\:border-outbrain-orange {
+    border-color: #ee6512;
+  }
+
   .md\:border-pinterest-red {
     border-color: #c8232c;
   }
@@ -24347,6 +24467,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .md\:group-hover\:border-linkedin-blue {
     border-color: #0e76a8;
+  }
+
+  .group:hover .md\:group-hover\:border-outbrain-orange {
+    border-color: #ee6512;
   }
 
   .group:hover .md\:group-hover\:border-pinterest-red {
@@ -24789,6 +24913,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .md\:hover\:border-outbrain-orange:hover {
+    border-color: #ee6512;
+  }
+
   .md\:hover\:border-pinterest-red:hover {
     border-color: #c8232c;
   }
@@ -25227,6 +25355,10 @@ input[type=range]::-ms-thumb {
 
   .md\:focus\:border-linkedin-blue:focus {
     border-color: #0e76a8;
+  }
+
+  .md\:focus\:border-outbrain-orange:focus {
+    border-color: #ee6512;
   }
 
   .md\:focus\:border-pinterest-red:focus {
@@ -29595,6 +29727,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .md\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .md\:text-pinterest-red {
     color: #c8232c;
   }
@@ -30035,6 +30171,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .group:hover .md\:group-hover\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .group:hover .md\:group-hover\:text-pinterest-red {
     color: #c8232c;
   }
@@ -30473,6 +30613,10 @@ input[type=range]::-ms-thumb {
 
   .md\:hover\:text-linkedin-blue:hover {
     color: #0e76a8;
+  }
+
+  .md\:hover\:text-outbrain-orange:hover {
+    color: #ee6512;
   }
 
   .md\:hover\:text-pinterest-red:hover {
@@ -31422,6 +31566,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .lg\:bg-outbrain-orange {
+    background-color: #ee6512;
+  }
+
   .lg\:bg-pinterest-red {
     background-color: #c8232c;
   }
@@ -31860,6 +32008,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .lg\:group-hover\:bg-linkedin-blue {
     background-color: #0e76a8;
+  }
+
+  .group:hover .lg\:group-hover\:bg-outbrain-orange {
+    background-color: #ee6512;
   }
 
   .group:hover .lg\:group-hover\:bg-pinterest-red {
@@ -32302,6 +32454,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .lg\:hover\:bg-outbrain-orange:hover {
+    background-color: #ee6512;
+  }
+
   .lg\:hover\:bg-pinterest-red:hover {
     background-color: #c8232c;
   }
@@ -32742,6 +32898,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .lg\:focus\:bg-outbrain-orange:focus {
+    background-color: #ee6512;
+  }
+
   .lg\:focus\:bg-pinterest-red:focus {
     background-color: #c8232c;
   }
@@ -33180,6 +33340,10 @@ input[type=range]::-ms-thumb {
 
   .lg\:active\:bg-linkedin-blue:active {
     background-color: #0e76a8;
+  }
+
+  .lg\:active\:bg-outbrain-orange:active {
+    background-color: #ee6512;
   }
 
   .lg\:active\:bg-pinterest-red:active {
@@ -33686,6 +33850,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .lg\:border-outbrain-orange {
+    border-color: #ee6512;
+  }
+
   .lg\:border-pinterest-red {
     border-color: #c8232c;
   }
@@ -34124,6 +34292,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .lg\:group-hover\:border-linkedin-blue {
     border-color: #0e76a8;
+  }
+
+  .group:hover .lg\:group-hover\:border-outbrain-orange {
+    border-color: #ee6512;
   }
 
   .group:hover .lg\:group-hover\:border-pinterest-red {
@@ -34566,6 +34738,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .lg\:hover\:border-outbrain-orange:hover {
+    border-color: #ee6512;
+  }
+
   .lg\:hover\:border-pinterest-red:hover {
     border-color: #c8232c;
   }
@@ -35004,6 +35180,10 @@ input[type=range]::-ms-thumb {
 
   .lg\:focus\:border-linkedin-blue:focus {
     border-color: #0e76a8;
+  }
+
+  .lg\:focus\:border-outbrain-orange:focus {
+    border-color: #ee6512;
   }
 
   .lg\:focus\:border-pinterest-red:focus {
@@ -39372,6 +39552,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .lg\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .lg\:text-pinterest-red {
     color: #c8232c;
   }
@@ -39812,6 +39996,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .group:hover .lg\:group-hover\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .group:hover .lg\:group-hover\:text-pinterest-red {
     color: #c8232c;
   }
@@ -40250,6 +40438,10 @@ input[type=range]::-ms-thumb {
 
   .lg\:hover\:text-linkedin-blue:hover {
     color: #0e76a8;
+  }
+
+  .lg\:hover\:text-outbrain-orange:hover {
+    color: #ee6512;
   }
 
   .lg\:hover\:text-pinterest-red:hover {
@@ -41199,6 +41391,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .xl\:bg-outbrain-orange {
+    background-color: #ee6512;
+  }
+
   .xl\:bg-pinterest-red {
     background-color: #c8232c;
   }
@@ -41637,6 +41833,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .xl\:group-hover\:bg-linkedin-blue {
     background-color: #0e76a8;
+  }
+
+  .group:hover .xl\:group-hover\:bg-outbrain-orange {
+    background-color: #ee6512;
   }
 
   .group:hover .xl\:group-hover\:bg-pinterest-red {
@@ -42079,6 +42279,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .xl\:hover\:bg-outbrain-orange:hover {
+    background-color: #ee6512;
+  }
+
   .xl\:hover\:bg-pinterest-red:hover {
     background-color: #c8232c;
   }
@@ -42519,6 +42723,10 @@ input[type=range]::-ms-thumb {
     background-color: #0e76a8;
   }
 
+  .xl\:focus\:bg-outbrain-orange:focus {
+    background-color: #ee6512;
+  }
+
   .xl\:focus\:bg-pinterest-red:focus {
     background-color: #c8232c;
   }
@@ -42957,6 +43165,10 @@ input[type=range]::-ms-thumb {
 
   .xl\:active\:bg-linkedin-blue:active {
     background-color: #0e76a8;
+  }
+
+  .xl\:active\:bg-outbrain-orange:active {
+    background-color: #ee6512;
   }
 
   .xl\:active\:bg-pinterest-red:active {
@@ -43463,6 +43675,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .xl\:border-outbrain-orange {
+    border-color: #ee6512;
+  }
+
   .xl\:border-pinterest-red {
     border-color: #c8232c;
   }
@@ -43901,6 +44117,10 @@ input[type=range]::-ms-thumb {
 
   .group:hover .xl\:group-hover\:border-linkedin-blue {
     border-color: #0e76a8;
+  }
+
+  .group:hover .xl\:group-hover\:border-outbrain-orange {
+    border-color: #ee6512;
   }
 
   .group:hover .xl\:group-hover\:border-pinterest-red {
@@ -44343,6 +44563,10 @@ input[type=range]::-ms-thumb {
     border-color: #0e76a8;
   }
 
+  .xl\:hover\:border-outbrain-orange:hover {
+    border-color: #ee6512;
+  }
+
   .xl\:hover\:border-pinterest-red:hover {
     border-color: #c8232c;
   }
@@ -44781,6 +45005,10 @@ input[type=range]::-ms-thumb {
 
   .xl\:focus\:border-linkedin-blue:focus {
     border-color: #0e76a8;
+  }
+
+  .xl\:focus\:border-outbrain-orange:focus {
+    border-color: #ee6512;
   }
 
   .xl\:focus\:border-pinterest-red:focus {
@@ -49149,6 +49377,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .xl\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .xl\:text-pinterest-red {
     color: #c8232c;
   }
@@ -49589,6 +49821,10 @@ input[type=range]::-ms-thumb {
     color: #0e76a8;
   }
 
+  .group:hover .xl\:group-hover\:text-outbrain-orange {
+    color: #ee6512;
+  }
+
   .group:hover .xl\:group-hover\:text-pinterest-red {
     color: #c8232c;
   }
@@ -50027,6 +50263,10 @@ input[type=range]::-ms-thumb {
 
   .xl\:hover\:text-linkedin-blue:hover {
     color: #0e76a8;
+  }
+
+  .xl\:hover\:text-outbrain-orange:hover {
+    color: #ee6512;
   }
 
   .xl\:hover\:text-pinterest-red:hover {
