@@ -52,7 +52,8 @@ type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 type ComponentRender m = State -> ComponentHTML m
 
 type Input =
-  { disabled :: Boolean
+  { defaultTime :: Maybe Time
+  , disabled :: Boolean
   , interval :: Maybe Interval
   , selection :: Maybe DateTime
   , targetDate :: Maybe (Year /\ Month)
@@ -79,6 +80,7 @@ type Slot = H.Slot Query Output
 
 type State =
   { date :: Maybe Date
+  , defaultTime :: Maybe Time
   , disabled :: Boolean
   , interval :: Maybe Interval
   , targetDate :: Maybe (Year /\ Month)
@@ -110,14 +112,20 @@ handleAction = case _ of
   HandleDate msg -> case msg of
     DatePicker.SelectionChanged date' -> do
       state <- H.get
-      raiseSelectionChanged state.interval date' state.time
-      H.modify_ _ { date = date' }
+      case state.defaultTime, state.time of
+        Just defaultTime, Nothing -> do
+          H.tell _timepicker unit $ TimePicker.SetSelection $ Just defaultTime
+          H.modify_ _ { date = date', time = Just defaultTime }
+          raiseSelectionChanged state.interval date' (Just defaultTime)
+        _, _ -> do
+          H.modify_ _ { date = date' }
+          raiseSelectionChanged state.interval date' state.time
     _ -> H.raise $ DateOutput msg
   HandleTime msg -> case msg of
     TimePicker.SelectionChanged time' -> do
       state <- H.get
-      raiseSelectionChanged state.interval state.date time'
       H.modify_ _ { time = time' }
+      raiseSelectionChanged state.interval state.date time'
     _ -> H.raise $ TimeOutput msg
   Receive input -> do
     H.modify_ _ { interval = input.interval }
@@ -144,6 +152,7 @@ handleQuery = case _ of
 initialState :: Input -> State
 initialState input =
   { date: input.selection <#> Date.DateTime.date
+  , defaultTime: input.defaultTime
   , disabled: input.disabled
   , interval: input.interval
   , targetDate: input.targetDate
