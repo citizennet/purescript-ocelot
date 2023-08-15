@@ -128,7 +128,10 @@ handleAction = case _ of
       raiseSelectionChanged state.interval state.date time'
     _ -> H.raise $ TimeOutput msg
   Receive input -> do
-    H.modify_ _ { interval = input.interval }
+    H.modify_ _
+      { disabled = input.disabled
+      , interval = input.interval
+      }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
