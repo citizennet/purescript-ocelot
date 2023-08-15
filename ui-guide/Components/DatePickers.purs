@@ -408,7 +408,8 @@ cnDocumentationBlocks state =
                                     , inputId: "start"
                                     }
                                     [ HH.slot _dtp 4 DateTimePicker.component
-                                        { disabled: false
+                                        { defaultTime: Nothing
+                                        , disabled: false
                                         , interval:
                                             Just
                                               { start:
@@ -436,7 +437,8 @@ cnDocumentationBlocks state =
                                     , inputId: "end"
                                     }
                                     [ HH.slot _dtp 5 DateTimePicker.component
-                                        { disabled: false
+                                        { defaultTime: Nothing
+                                        , disabled: false
                                         , interval:
                                             Just
                                               { start:
@@ -470,7 +472,8 @@ cnDocumentationBlocks state =
                             , inputId: "start"
                             }
                             [ HH.slot _dtp 0 DateTimePicker.component
-                                { disabled: false
+                                { defaultTime: Just $ Ocelot.Data.DateTime.unsafeMkTime 1 30 0 0
+                                , disabled: false
                                 , interval: Nothing
                                 , selection: Nothing
                                 , targetDate: Nothing
@@ -485,7 +488,8 @@ cnDocumentationBlocks state =
                             , inputId: "start-disabled"
                             }
                             [ HH.slot _dtp 2 DateTimePicker.component
-                                { disabled: true
+                                { defaultTime: Nothing
+                                , disabled: true
                                 , interval: Nothing
                                 , selection: Nothing
                                 , targetDate: Nothing
@@ -505,7 +509,8 @@ cnDocumentationBlocks state =
                             , inputId: "end"
                             }
                             [ HH.slot _dtp 1 DateTimePicker.component
-                                { disabled: false
+                                { defaultTime: Nothing
+                                , disabled: false
                                 , interval: Nothing
                                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                                 , targetDate: Nothing
@@ -520,7 +525,8 @@ cnDocumentationBlocks state =
                             , inputId: "end-disabled"
                             }
                             [ HH.slot _dtp 3 DateTimePicker.component
-                                { disabled: true
+                                { defaultTime: Nothing
+                                , disabled: true
                                 , interval: Nothing
                                 , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
                                 , targetDate: Nothing
