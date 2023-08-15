@@ -25,10 +25,12 @@ PACKAGE_LOCK := $(ROOT_DIR)/package-lock.json
 
 FORMAT_SRC_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-src-purs-tidy-stamp
 FORMAT_TEST_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-test-purs-tidy-stamp
+FORMAT_UI_GUIDE_PURS_TIDY_STAMP := $(BUILD_DIR)/.format-ui-guide-purs-tidy-stamp
 
 FORMAT_DEPENDENCIES := \
 	$(FORMAT_SRC_PURS_TIDY_STAMP) \
-	$(FORMAT_TEST_PURS_TIDY_STAMP)
+	$(FORMAT_TEST_PURS_TIDY_STAMP) \
+	$(FORMAT_UI_GUIDE_PURS_TIDY_STAMP)
 
 # Colors for printing
 CYAN := \033[0;36m
@@ -88,6 +90,10 @@ $(FORMAT_TEST_PURS_TIDY_STAMP): $(TEST_FILES) $(NODE_MODULES_STAMP) | $(BUILD)
 	$(PURS_TIDY) $(PURS_TIDY_CMD) $(TEST_DIR)
 	@touch $@
 
+$(FORMAT_UI_GUIDE_PURS_TIDY_STAMP): $(TEST_FILES) $(NODE_MODULES_STAMP) | $(BUILD)
+	$(PURS_TIDY) $(PURS_TIDY_CMD) $(UI_GUIDE_DIR)
+	@touch $@
+
 $(NODE_MODULES): $(PACKAGE_JSON) $(PACKAGE_LOCK)
 	npm install
 	touch $@
@@ -116,6 +122,10 @@ check-format-src: $(FORMAT_SRC_PURS_TIDY_STAMP) ## Validate formatting of the `s
 check-format-test: PURS_TIDY_CMD=check
 check-format-test: $(FORMAT_TEST_PURS_TIDY_STAMP) ## Validate formatting of the `test` directory
 
+.PHONY: check-format-ui-guide
+check-format-ui-guide: PURS_TIDY_CMD=check
+check-format-ui-guide: $(FORMAT_UI-GUIDE_PURS_TIDY_STAMP) ## Validate formatting of the `test` directory
+
 .PHONY: clean
 clean: $(CLEAN_DEPS) ## Remove all dependencies and build artifacts, starting with a clean slate
 	rm -fr \
@@ -137,6 +147,10 @@ format-src: $(FORMAT_SRC_PURS_TIDY_STAMP) ## Format the `src` directory
 .PHONY: format-test
 format-test: PURS_TIDY_CMD=format-in-place
 format-test: $(FORMAT_TEST_PURS_TIDY_STAMP) ## Format the `test` directory
+
+.PHONY: format-ui-guide
+format-ui-guide: PURS_TIDY_CMD=format-in-place
+format-ui-guide: $(FORMAT_UI_GUIDE_PURS_TIDY_STAMP) ## Format the `test` directory
 
 .PHONY: help
 help: $(BUILD_DIR)/help ## Display this help message

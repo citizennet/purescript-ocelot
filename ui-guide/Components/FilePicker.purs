@@ -26,19 +26,15 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
-type State
-  = {}
+type State = {}
 
-data Action
-  = HandleFilePicker Ocelot.FilePicker.Output
+data Action = HandleFilePicker Ocelot.FilePicker.Output
 
 data Query (a :: Type)
 
-type Input
-  = Unit
+type Input = Unit
 
-type Output
-  = Void
+type Output = Void
 
 type ChildSlots =
   ( filePicker :: Ocelot.FilePicker.Slot String
@@ -55,10 +51,10 @@ component =
     { initialState
     , render
     , eval:
-      Halogen.mkEval
-        Halogen.defaultEval
-          { handleAction = handleAction
-          }
+        Halogen.mkEval
+          Halogen.defaultEval
+            { handleAction = handleAction
+            }
     }
 
 initialState :: Input -> State
@@ -82,77 +78,77 @@ render ::
   ComponentHTML m
 render _ =
   Halogen.HTML.div_
-  [ Documentation.customBlock_
-    { header: "File Picker"
-    , subheader: "Select File(s) from File System"
-    }
-    [ Backdrop.backdrop_
-      [ Backdrop.content_
-        [ Card.card
-          [ Ocelot.HTML.Properties.css "flex-1" ]
-          [ Halogen.HTML.h3
-            [ Halogen.HTML.Properties.classes Format.captionClasses ]
-            [ Halogen.HTML.text "Single" ]
-          , Halogen.HTML.slot _filePicker "Single"
-            ( Ocelot.FilePicker.component
-                { accept: Nothing
-                , id: "file-single"
-                , multiple: false
-                }
-            )
-            unit
-            HandleFilePicker
-          ]
-        , Card.card
-          [ Ocelot.HTML.Properties.css "flex-1" ]
-          [ Halogen.HTML.h3
-            [ Halogen.HTML.Properties.classes Format.captionClasses ]
-            [ Halogen.HTML.text "Multiple" ]
-          , Halogen.HTML.slot _filePicker "Multiple"
-            ( Ocelot.FilePicker.component
-                { accept: Nothing
-                , id: "file-multiple"
-                , multiple: true
-                }
-            )
-            unit
-            HandleFilePicker
-          ]
-        , Card.card
-          [ Ocelot.HTML.Properties.css "flex-1" ]
-          [ Halogen.HTML.h3
-            [ Halogen.HTML.Properties.classes Format.captionClasses ]
-            [ Halogen.HTML.text "Single - CSV" ]
-          , Halogen.HTML.slot _filePicker "Single - CSV"
-            ( Ocelot.FilePicker.component
-              { accept:
-                  Just
-                    $ DOM.HTML.Indexed.InputAcceptType.mediaType
-                        Data.MediaType.Common.textCSV
-              , id: "file-single-csv"
-              , multiple: true
-              }
-            )
-            unit
-            HandleFilePicker
-          ]
-        , Card.card
-          [ Ocelot.HTML.Properties.css "flex-1" ]
-          [ Halogen.HTML.h3
-            [ Halogen.HTML.Properties.classes Format.captionClasses ]
-            [ Halogen.HTML.text "Multiple - Image" ]
-          , Halogen.HTML.slot _filePicker "Multiple - Image"
-            ( Ocelot.FilePicker.component
-              { accept: Just Ocelot.Data.InputAcceptType.allImages
-              , id: "file-multiple-image"
-              , multiple: true
-              }
-            )
-            unit
-            HandleFilePicker
-          ]
+    [ Documentation.customBlock_
+        { header: "File Picker"
+        , subheader: "Select File(s) from File System"
+        }
+        [ Backdrop.backdrop_
+            [ Backdrop.content_
+                [ Card.card
+                    [ Ocelot.HTML.Properties.css "flex-1" ]
+                    [ Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "Single" ]
+                    , Halogen.HTML.slot _filePicker "Single"
+                        ( Ocelot.FilePicker.component
+                            { accept: Nothing
+                            , id: "file-single"
+                            , multiple: false
+                            }
+                        )
+                        unit
+                        HandleFilePicker
+                    ]
+                , Card.card
+                    [ Ocelot.HTML.Properties.css "flex-1" ]
+                    [ Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "Multiple" ]
+                    , Halogen.HTML.slot _filePicker "Multiple"
+                        ( Ocelot.FilePicker.component
+                            { accept: Nothing
+                            , id: "file-multiple"
+                            , multiple: true
+                            }
+                        )
+                        unit
+                        HandleFilePicker
+                    ]
+                , Card.card
+                    [ Ocelot.HTML.Properties.css "flex-1" ]
+                    [ Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "Single - CSV" ]
+                    , Halogen.HTML.slot _filePicker "Single - CSV"
+                        ( Ocelot.FilePicker.component
+                            { accept:
+                                Just
+                                  $ DOM.HTML.Indexed.InputAcceptType.mediaType
+                                      Data.MediaType.Common.textCSV
+                            , id: "file-single-csv"
+                            , multiple: true
+                            }
+                        )
+                        unit
+                        HandleFilePicker
+                    ]
+                , Card.card
+                    [ Ocelot.HTML.Properties.css "flex-1" ]
+                    [ Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "Multiple - Image" ]
+                    , Halogen.HTML.slot _filePicker "Multiple - Image"
+                        ( Ocelot.FilePicker.component
+                            { accept: Just Ocelot.Data.InputAcceptType.allImages
+                            , id: "file-multiple-image"
+                            , multiple: true
+                            }
+                        )
+                        unit
+                        HandleFilePicker
+                    ]
+                ]
+            ]
         ]
-      ]
     ]
-  ]
 

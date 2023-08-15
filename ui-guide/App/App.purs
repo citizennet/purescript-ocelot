@@ -65,15 +65,16 @@ instance showGroup :: Show Group where
 type HTML m = H.ComponentHTML Action Slots m
 
 type Slots =
-  ( child :: H.Slot (Const Void) Void String )
+  (child :: H.Slot (Const Void) Void String)
+
 _child = Proxy :: Proxy "child"
 
 -- | Takes stories config and mount element, and renders the storybook.
-runStorybook
- :: Stories Aff
- -> Array Group
- -> HTMLElement
- -> Aff Unit
+runStorybook ::
+  Stories Aff ->
+  Array Group ->
+  HTMLElement ->
+  Aff Unit
 runStorybook stories groups body = do
   app' <- runUI app { stories, groups } body
   void $ H.liftEffect $ hashes $ \_ next ->
@@ -84,7 +85,7 @@ type Input m =
   , groups :: Array Group
   }
 
-app :: ∀ m. H.Component Query (Input m) Void m
+app :: forall m. H.Component Query (Input m) Void m
 app =
   H.mkComponent
     { initialState
@@ -99,31 +100,32 @@ app =
   render :: State m -> HTML m
   render state =
     HH.body_
-    [ HH.div
-      [ HP.class_ $ HH.ClassName "min-h-screen" ]
-      [ renderSidebar state
-      , renderContainer state
+      [ HH.div
+          [ HP.class_ $ HH.ClassName "min-h-screen" ]
+          [ renderSidebar state
+          , renderContainer state
+          ]
       ]
-    ]
 
   renderContainer :: State m -> HTML m
   renderContainer state =
     HH.div
-    [ HP.class_ $ HH.ClassName "md:ml-80" ]
-    [ HH.div
-      [ HP.class_ $ HH.ClassName "fixed w-full" ]
+      [ HP.class_ $ HH.ClassName "md:ml-80" ]
       [ HH.div
-        [ HP.class_ $ HH.ClassName "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
-        [ HH.a
-          [ HP.class_ $ HH.ClassName "mx-auto inline-flex items-center"
-          , HP.href "" ]
-          [ HH.text "CitizenNet UI Guide" ]
-        ]
+          [ HP.class_ $ HH.ClassName "fixed w-full" ]
+          [ HH.div
+              [ HP.class_ $ HH.ClassName "pin-t bg-white md:hidden relative border-b border-grey-light h-12 py-8 flex items-center" ]
+              [ HH.a
+                  [ HP.class_ $ HH.ClassName "mx-auto inline-flex items-center"
+                  , HP.href ""
+                  ]
+                  [ HH.text "CitizenNet UI Guide" ]
+              ]
+          ]
+      , HH.div
+          [ HP.class_ $ HH.ClassName "p-12 w-full container mx-auto" ]
+          [ renderSlot state ]
       ]
-    , HH.div
-      [ HP.class_ $ HH.ClassName "p-12 w-full container mx-auto" ]
-      [ renderSlot state ]
-    ]
 
   renderSlot :: State m -> HTML m
   renderSlot state =
@@ -135,71 +137,71 @@ app =
   renderSidebar :: State m -> HTML m
   renderSidebar state =
     Backdrop.backdrop
-    [ HP.id "sidebar"
-    , HP.classes
-      ( HH.ClassName <$>
-        [ "hidden"
-        , "fixed"
-        , "pin-y"
-        , "pin-l"
-        , "overflow-y-auto"
-        , "md:overflow-visible"
-        , "scrolling-touch"
-        , "md:scrolling-auto"
-        , "w-4/5"
-        , "md:w-full"
-        , "md:max-w-xs"
-        , "flex-none"
-        -- , "border-r-2"
-        -- , "border-grey-light"
-        , "md:flex"
-        , "flex-col"
-        ]
-      )
-    ]
-    [ HH.div
-      [ HP.class_ $ HH.ClassName "flex-1 p-6 overflow-y-auto" ]
-      [ HH.header_
-        [ Format.heading
-          [ HP.class_ $ HH.ClassName "flex" ]
-          [ HH.img
-            [ HP.class_ $ HH.ClassName "mr-2"
-            , HP.src "https://citizennet.com/manager/images/logo.svg"
-            ]
-          , HH.text "Ocelot"
-          ]
-        ]
-      , HH.nav
-        [ HP.class_ $ HH.ClassName "text-base overflow-y-auto" ]
-        (renderGroups state)
+      [ HP.id "sidebar"
+      , HP.classes
+          ( HH.ClassName <$>
+              [ "hidden"
+              , "fixed"
+              , "pin-y"
+              , "pin-l"
+              , "overflow-y-auto"
+              , "md:overflow-visible"
+              , "scrolling-touch"
+              , "md:scrolling-auto"
+              , "w-4/5"
+              , "md:w-full"
+              , "md:max-w-xs"
+              , "flex-none"
+              -- , "border-r-2"
+              -- , "border-grey-light"
+              , "md:flex"
+              , "flex-col"
+              ]
+          )
       ]
-    ]
+      [ HH.div
+          [ HP.class_ $ HH.ClassName "flex-1 p-6 overflow-y-auto" ]
+          [ HH.header_
+              [ Format.heading
+                  [ HP.class_ $ HH.ClassName "flex" ]
+                  [ HH.img
+                      [ HP.class_ $ HH.ClassName "mr-2"
+                      , HP.src "https://citizennet.com/manager/images/logo.svg"
+                      ]
+                  , HH.text "Ocelot"
+                  ]
+              ]
+          , HH.nav
+              [ HP.class_ $ HH.ClassName "text-base overflow-y-auto" ]
+              (renderGroups state)
+          ]
+      ]
 
   renderGroups :: State m -> Array (HTML m)
   renderGroups state =
     mapFlipped (M.toUnfoldable state.partitions) $ \(Tuple group stories) ->
       HH.div
-      [ HP.class_ $ HH.ClassName "mb-6" ]
-      [ Format.caption_
-        [ HH.text $ show group ]
-      , renderGroup state.route stories
-      ]
+        [ HP.class_ $ HH.ClassName "mb-6" ]
+        [ Format.caption_
+            [ HH.text $ show group ]
+        , renderGroup state.route stories
+        ]
 
   renderGroup :: String -> Stories m -> HTML m
   renderGroup route stories =
-    HH.ul [ HP.class_ $ HH.ClassName "list-reset" ] $
-      mapFlipped (M.toUnfoldable stories) $ \(Tuple href { anchor }) ->
-        HH.li
-        [ HP.class_ $ HH.ClassName "mb-3" ]
-        [ HH.a
-          [ HP.classes $
-            Format.linkClasses <>
-            ( if href == route then [ HH.ClassName "font-medium" ] else [] )
-          , HP.href $ "#" <> unsafeEncodeURI href
-          ]
-          [ HH.text anchor ]
-        ]
-
+    HH.ul [ HP.class_ $ HH.ClassName "list-reset" ]
+      $ mapFlipped (M.toUnfoldable stories)
+      $ \(Tuple href { anchor }) ->
+          HH.li
+            [ HP.class_ $ HH.ClassName "mb-3" ]
+            [ HH.a
+                [ HP.classes $
+                    Format.linkClasses <>
+                      (if href == route then [ HH.ClassName "font-medium" ] else [])
+                , HP.href $ "#" <> unsafeEncodeURI href
+                ]
+                [ HH.text anchor ]
+            ]
 
   eval :: forall a. Query a -> H.HalogenM (State m) Action Slots Void m (Maybe a)
   eval (RouteChange route next) = do
@@ -209,7 +211,7 @@ app =
 ----------
 -- Helpers
 
-partitionByGroup :: ∀ m. Group -> Stories m -> Tuple Group (Stories m)
+partitionByGroup :: forall m. Group -> Stories m -> Tuple Group (Stories m)
 partitionByGroup g = Tuple g <<< M.filter (\{ group } -> group == g)
 
 unsafeEncodeURI :: String -> String

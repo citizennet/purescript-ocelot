@@ -23,7 +23,6 @@ import Halogen.HTML.Properties as HP
 import Network.RemoteData (RemoteData, fromEither)
 import Ocelot.Block.ItemContainer as ItemContainer
 
-
 ----------
 -- Async types
 
@@ -63,17 +62,16 @@ slow = users
 fail :: Source User
 fail = users
 
-
 ----------
 -- Functions
 
 -- Given a source, load the resulting data.
-loadFromSource
-  :: ∀ item m
-   . MonadAff m
-  => Source item
-  -> String
-  -> m (RemoteData Err (Array item))
+loadFromSource ::
+  forall item m.
+  MonadAff m =>
+  Source item ->
+  String ->
+  m (RemoteData Err (Array item))
 loadFromSource (Source { path, speed, decoder }) search =
   liftAff $ case speed of
     Fast -> decodeEither <$> get Response.json (path <> search)
@@ -88,11 +86,11 @@ loadFromSource (Source { path, speed, decoder }) search =
 ----------
 -- Types for the JSON API
 
-decodeWith
-  :: ∀ item
-   . (Json -> Either JsonDecodeError item)
-  -> Json
-  -> RemoteData Err (Array item)
+decodeWith ::
+  forall item.
+  (Json -> Either JsonDecodeError item) ->
+  Json ->
+  RemoteData Err (Array item)
 decodeWith decoder json =
   fromEither $ lmap printJsonDecodeError $ traverse decoder =<< decodeResults =<< decodeJson json
 
@@ -138,7 +136,7 @@ userToObject (User { name, eyeColor, hairColor, skinColor }) =
     , Tuple "skinColor" skinColor
     ]
 
-renderFuzzyUser :: ∀ p i. Fuzzy User -> HH.HTML p i
+renderFuzzyUser :: forall p i. Fuzzy User -> HH.HTML p i
 renderFuzzyUser f@(Fuzzy { original: u }) =
   HH.div
     [ HP.classes $ HH.ClassName <$> [ "flex", "items-center" ] ]
@@ -146,59 +144,61 @@ renderFuzzyUser f@(Fuzzy { original: u }) =
     , HH.span_ $ ItemContainer.boldMatches "name" f
     ]
 
-renderUserImg :: ∀ p i. User -> HH.HTML p i
+renderUserImg :: forall p i. User -> HH.HTML p i
 renderUserImg (User { eyeColor, hairColor, skinColor }) =
-  let skinColors = split (Pattern ", ") skinColor
-      skinColor1 = fromMaybe "" $ head skinColors
-      skinColor2 = fromMaybe skinColor1 $ last skinColors in
-  HH.span
-    [ HP.classes $ HH.ClassName <$>
-      [ "inline-block"
-      , "mr-3"
-      , "w-6"
-      , "h-6"
-      , "rounded-full"
-      , "overflow-hidden"
-      , "border-t-4"
-      , "border-l-2"
-      , "border-r-2"
-      , "border-" <> colorToCSSColor hairColor
-      , "bg-" <> colorToCSSColor skinColor1
-      , "relative"
-      , "shadow"
-      ]
-    ]
-    [ HH.span
+  let
+    skinColors = split (Pattern ", ") skinColor
+    skinColor1 = fromMaybe "" $ head skinColors
+    skinColor2 = fromMaybe skinColor1 $ last skinColors
+  in
+    HH.span
       [ HP.classes $ HH.ClassName <$>
-        [ "flex"
-        , "justify-around"
-        , "pt-1"
-        ]
+          [ "inline-block"
+          , "mr-3"
+          , "w-6"
+          , "h-6"
+          , "rounded-full"
+          , "overflow-hidden"
+          , "border-t-4"
+          , "border-l-2"
+          , "border-r-2"
+          , "border-" <> colorToCSSColor hairColor
+          , "bg-" <> colorToCSSColor skinColor1
+          , "relative"
+          , "shadow"
+          ]
       ]
-      ( ( \_ ->
-          HH.span
-            [ HP.classes $ HH.ClassName <$>
-              [ "w-1"
-              , "h-1"
-              , "rounded-full"
-              , "bg-" <> colorToCSSColor eyeColor
-              , "shadow-inner"
+      [ HH.span
+          [ HP.classes $ HH.ClassName <$>
+              [ "flex"
+              , "justify-around"
+              , "pt-1"
               ]
-            ]
-            []
-        ) <$> [ 1, 2 ]
-      )
-    , HH.span
-      [ HP.classes $ HH.ClassName <$>
-        [ "pin-b"
-        , "h-1"
-        , "w-full"
-        , "bg-" <> colorToCSSColor skinColor2
-        , "absolute"
-        ]
+          ]
+          ( ( \_ ->
+                HH.span
+                  [ HP.classes $ HH.ClassName <$>
+                      [ "w-1"
+                      , "h-1"
+                      , "rounded-full"
+                      , "bg-" <> colorToCSSColor eyeColor
+                      , "shadow-inner"
+                      ]
+                  ]
+                  []
+            ) <$> [ 1, 2 ]
+          )
+      , HH.span
+          [ HP.classes $ HH.ClassName <$>
+              [ "pin-b"
+              , "h-1"
+              , "w-full"
+              , "bg-" <> colorToCSSColor skinColor2
+              , "absolute"
+              ]
+          ]
+          []
       ]
-      []
-    ]
 
 newtype Location = Location
   { name :: String

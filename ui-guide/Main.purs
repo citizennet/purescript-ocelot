@@ -5,7 +5,7 @@ import Prelude
 import Effect (Effect)
 import Halogen.Aff as HA
 import UIGuide.App (runStorybook)
-import UIGuide.App.Routes (routes, groups)
+import UIGuide.App.Routes (groups, routes)
 
 main :: Effect Unit
 main = HA.runHalogenAff do

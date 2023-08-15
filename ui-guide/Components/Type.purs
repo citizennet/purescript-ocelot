@@ -19,18 +19,17 @@ type Input = Unit
 
 type Message = Void
 
-component :: ∀ m. H.Component Query Input Message m
+component :: forall m. H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const unit
     , render
     , eval: H.mkEval H.defaultEval
     }
-    where
+  where
 
-      render :: State -> H.ComponentHTML Action () m
-      render _ = cnDocumentationBlocks
-
+  render :: State -> H.ComponentHTML Action () m
+  render _ = cnDocumentationBlocks
 
 ----------
 -- HTML
@@ -39,54 +38,54 @@ cnDocumentationBlocks :: forall p i. HH.HTML p i
 cnDocumentationBlocks =
   HH.div_
     [ Documentation.block_
-      { header: "Type"
-      , subheader: "Various typography styles."
-      }
-      [ Backdrop.backdrop_
-        [ Backdrop.content_
-          [ HH.div
-            [ css "flex-1 flex flex-col justify-between" ]
-            [ Format.heading_
-              [ HH.text "H1 — heading" ]
-            , Format.subHeading_
-              [ HH.text "H2 — subHeading" ]
-            , Format.contentHeading_
-              [ HH.text "H3 — contentHeading" ]
-            , Format.caption_
-              [ HH.text "H4 — caption" ]
-            , Format.p_
-              [ HH.text "p — plain pragraph" ]
-            , Format.p
-              [ HP.classes Format.mutedClasses ]
-              [ HH.text ".muted" ]
-            , Format.p
-              [ HP.classes Format.linkClasses ]
-              [ HH.text ".link" ]
+        { header: "Type"
+        , subheader: "Various typography styles."
+        }
+        [ Backdrop.backdrop_
+            [ Backdrop.content_
+                [ HH.div
+                    [ css "flex-1 flex flex-col justify-between" ]
+                    [ Format.heading_
+                        [ HH.text "H1 — heading" ]
+                    , Format.subHeading_
+                        [ HH.text "H2 — subHeading" ]
+                    , Format.contentHeading_
+                        [ HH.text "H3 — contentHeading" ]
+                    , Format.caption_
+                        [ HH.text "H4 — caption" ]
+                    , Format.p_
+                        [ HH.text "p — plain pragraph" ]
+                    , Format.p
+                        [ HP.classes Format.mutedClasses ]
+                        [ HH.text ".muted" ]
+                    , Format.p
+                        [ HP.classes Format.linkClasses ]
+                        [ HH.text ".link" ]
+                    ]
+                ]
             ]
-          ]
-        ]
-      , Backdrop.backdropDark_
-        [ Backdrop.content_
-          [ HH.div
-            [ css "flex-1 flex flex-col justify-between" ]
-            [ Format.headingDark_
-              [ HH.text "H1 — headingDark" ]
-            , Format.subHeadingDark_
-              [ HH.text "H2 — subHeadingDark" ]
-            , Format.contentHeading_
-              [ HH.text "H3 — contentHeading" ]
-            , Format.caption_
-              [ HH.text "H4 — caption" ]
-            , Format.p_
-              [ HH.text "p — plain pragraph" ]
-            , Format.p
-              [ HP.classes Format.mutedClasses ]
-              [ HH.text ".muted" ]
-            , Format.p
-              [ HP.classes Format.linkDarkClasses ]
-              [ HH.text ".linkDark" ]
+        , Backdrop.backdropDark_
+            [ Backdrop.content_
+                [ HH.div
+                    [ css "flex-1 flex flex-col justify-between" ]
+                    [ Format.headingDark_
+                        [ HH.text "H1 — headingDark" ]
+                    , Format.subHeadingDark_
+                        [ HH.text "H2 — subHeadingDark" ]
+                    , Format.contentHeading_
+                        [ HH.text "H3 — contentHeading" ]
+                    , Format.caption_
+                        [ HH.text "H4 — caption" ]
+                    , Format.p_
+                        [ HH.text "p — plain pragraph" ]
+                    , Format.p
+                        [ HP.classes Format.mutedClasses ]
+                        [ HH.text ".muted" ]
+                    , Format.p
+                        [ HP.classes Format.linkDarkClasses ]
+                        [ HH.text ".linkDark" ]
+                    ]
+                ]
             ]
-          ]
         ]
-      ]
     ]
