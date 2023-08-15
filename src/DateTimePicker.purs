@@ -164,16 +164,22 @@ raiseSelectionChanged ::
   Maybe Date ->
   Maybe Time ->
   ComponentM m Unit
-raiseSelectionChanged mInterval mDate mTime = case mInterval of
-  Nothing -> H.raise $ SelectionChanged mDateTime
-  Just interval -> case mDateTime of
-    Nothing -> H.raise $ SelectionChanged mDateTime
-    Just dateTime
-      | isWithinInterval interval dateTime -> H.raise $ SelectionChanged mDateTime
-      | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
+raiseSelectionChanged mInterval mDate mTime = case maybeSelection of
+  Nothing -> pure unit
+  Just selection -> case mInterval of
+    Nothing -> H.raise $ SelectionChanged selection
+    Just interval -> case selection of
+      Nothing -> H.raise $ SelectionChanged selection
+      Just dateTime
+        | isWithinInterval interval dateTime -> H.raise $ SelectionChanged selection
+        | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
   where
-  mDateTime :: Maybe DateTime
-  mDateTime = DateTime <$> mDate <*> mTime
+  maybeSelection :: Maybe (Maybe DateTime)
+  maybeSelection = case mDate, mTime of
+    Nothing, Nothing -> Just Nothing
+    Nothing, Just _ -> Nothing
+    Just _, Nothing -> Nothing
+    Just date, Just time -> Just $ Just $ Date.DateTime.DateTime date time
 
 render :: forall m. MonadAff m => ComponentRender m
 render state =
