@@ -1,6 +1,7 @@
 module UIGuide.Component.Modals where
 
 import Prelude
+
 import Data.Foldable (traverse_)
 import Data.Map as Data.Map
 import Data.Maybe (Maybe(..), isJust)
@@ -74,10 +75,10 @@ component =
     { initialState
     , render
     , eval:
-      H.mkEval
-        H.defaultEval
-          { handleAction = handleAction
-          }
+        H.mkEval
+          H.defaultEval
+            { handleAction = handleAction
+            }
     }
 
 initialState :: Input -> State
@@ -136,48 +137,48 @@ render ::
   ComponentHTML m
 render st =
   HH.div_
-  [ Documentation.block_
-    { header: "Modals"
-    , subheader: "Forest's favorite UI implement"
-    }
-    [ Backdrop.backdrop
-      [ css "flex items-center" ]
-      [ Backdrop.content
-        [ css "mt-0 text-center" ]
-        [ Button.button
-          [ HE.onClick \_ -> Open PanelLeft ]
-          [ HH.text "Open Left Panel" ]
+    [ Documentation.block_
+        { header: "Modals"
+        , subheader: "Forest's favorite UI implement"
+        }
+        [ Backdrop.backdrop
+            [ css "flex items-center" ]
+            [ Backdrop.content
+                [ css "mt-0 text-center" ]
+                [ Button.button
+                    [ HE.onClick \_ -> Open PanelLeft ]
+                    [ HH.text "Open Left Panel" ]
+                ]
+            ]
+        , Backdrop.backdropDark
+            [ css "flex items-center" ]
+            [ Backdrop.content
+                [ css "mt-0 text-center" ]
+                [ Button.buttonPrimary
+                    [ HE.onClick \_ -> Open Modal ]
+                    [ HH.text "Open Modal" ]
+                ]
+            ]
+        , Backdrop.backdrop
+            [ css "flex items-center" ]
+            [ Backdrop.content
+                [ css "mt-0 text-center" ]
+                [ Button.button
+                    [ HE.onClick \_ -> Open PanelRight ]
+                    [ HH.text "Open Right Panel" ]
+                ]
+            ]
         ]
-      ]
-    , Backdrop.backdropDark
-      [ css "flex items-center" ]
-      [ Backdrop.content
-        [ css "mt-0 text-center" ]
-        [ Button.buttonPrimary
-          [ HE.onClick \_ -> Open Modal ]
-          [ HH.text "Open Modal" ]
+    , if isJust (Data.Map.lookup Modal st.ids) then renderModal else HH.text ""
+    , renderPanelLeft (isJust (Data.Map.lookup PanelLeft st.ids))
+    , renderPanelRight (isJust (Data.Map.lookup PanelRight st.ids))
+    , Ocelot.Block.Toast.toast
+        [ Ocelot.Block.Toast.visible st.toast ]
+        [ Icon.error
+            [ css "text-red text-2xl mr-2" ]
+        , HH.text "Failure"
         ]
-      ]
-    , Backdrop.backdrop
-      [ css "flex items-center" ]
-      [ Backdrop.content
-        [ css "mt-0 text-center" ]
-        [ Button.button
-          [ HE.onClick \_ -> Open PanelRight ]
-          [ HH.text "Open Right Panel" ]
-        ]
-      ]
     ]
-  , if isJust (Data.Map.lookup Modal st.ids) then renderModal else HH.text ""
-  , renderPanelLeft (isJust (Data.Map.lookup PanelLeft st.ids))
-  , renderPanelRight (isJust (Data.Map.lookup PanelRight st.ids))
-  , Ocelot.Block.Toast.toast
-      [ Ocelot.Block.Toast.visible st.toast ]
-      [ Icon.error
-        [ css "text-red text-2xl mr-2" ]
-      , HH.text "Failure"
-      ]
-  ]
 
 renderModal ::
   forall m.
@@ -185,21 +186,22 @@ renderModal ::
   ComponentHTML m
 renderModal =
   Modal.modal_ (Close Modal)
-  [ Modal.header
-    { buttons:
-      [ HH.a
-        [ HP.classes ( Format.linkDarkClasses <> [ HH.ClassName "mr-4" ] )
-        , HE.onClick \_ -> Close Modal ]
-        [ HH.text "Cancel" ]
-      , Button.buttonPrimary
-        [ HE.onClick \_ -> Toast ]
-        [ HH.text "Submit" ]
-      ]
-    , title: [ HH.text "Editing" ]
-    }
-  , Modal.body_
-    [ renderContent "modal-1" ]
-  ]
+    [ Modal.header
+        { buttons:
+            [ HH.a
+                [ HP.classes (Format.linkDarkClasses <> [ HH.ClassName "mr-4" ])
+                , HE.onClick \_ -> Close Modal
+                ]
+                [ HH.text "Cancel" ]
+            , Button.buttonPrimary
+                [ HE.onClick \_ -> Toast ]
+                [ HH.text "Submit" ]
+            ]
+        , title: [ HH.text "Editing" ]
+        }
+    , Modal.body_
+        [ renderContent "modal-1" ]
+    ]
 
 renderPanelLeft ::
   forall m.
@@ -208,22 +210,22 @@ renderPanelLeft ::
   ComponentHTML m
 renderPanelLeft visible =
   Panel.panelLeft_
-  visible
-  (Close PanelLeft)
-  [ Panel.header
-    { buttons:
-      [ Button.buttonClear
-        [ HE.onClick \_ -> Close PanelLeft ]
-        [ Icon.close_ ]
-      ]
-    , title: [ HH.text "Editing" ]
-    }
-  , Panel.body_
-    [ renderContent "left-panel-1"
-    , renderContent "left-panel-2"
-    , renderContent "left-panel-3"
+    visible
+    (Close PanelLeft)
+    [ Panel.header
+        { buttons:
+            [ Button.buttonClear
+                [ HE.onClick \_ -> Close PanelLeft ]
+                [ Icon.close_ ]
+            ]
+        , title: [ HH.text "Editing" ]
+        }
+    , Panel.body_
+        [ renderContent "left-panel-1"
+        , renderContent "left-panel-2"
+        , renderContent "left-panel-3"
+        ]
     ]
-  ]
 
 renderPanelRight ::
   forall m.
@@ -232,22 +234,22 @@ renderPanelRight ::
   ComponentHTML m
 renderPanelRight visible =
   Panel.panelRight_
-  visible
-  (Close PanelRight)
-  [ Panel.header
-    { buttons:
-      [ Button.buttonClear
-        [ HE.onClick \_ -> Close PanelRight ]
-        [ Icon.close_ ]
-      ]
-    , title: [ HH.text "Editing" ]
-    }
-  , Panel.body_
-    [ renderContent "right-panel-1"
-    , renderContent "right-panel-2"
-    , renderContent "right-panel-3"
+    visible
+    (Close PanelRight)
+    [ Panel.header
+        { buttons:
+            [ Button.buttonClear
+                [ HE.onClick \_ -> Close PanelRight ]
+                [ Icon.close_ ]
+            ]
+        , title: [ HH.text "Editing" ]
+        }
+    , Panel.body_
+        [ renderContent "right-panel-1"
+        , renderContent "right-panel-2"
+        , renderContent "right-panel-3"
+        ]
     ]
-  ]
 
 renderContent ::
   forall m.
@@ -256,45 +258,45 @@ renderContent ::
   ComponentHTML m
 renderContent label =
   Card.card
-  [ HP.class_ $ HH.ClassName "m-10" ]
-  [ HH.h3
-    [ HP.classes Format.captionClasses ]
-    [ HH.text "Standard" ]
-  , FormField.field_
-    { label: HH.text "Locations"
-    , helpText: [ HH.text "Search your top destinations." ]
-    , error: []
-    , inputId: "locations"
-    }
-    [ HH.slot_ _cp1 label TA.multi
-      ( TA.asyncMulti
-        { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
-        , itemToObject: Async.locationToObject
-        , async: Async.loadFromSource Async.locations
+    [ HP.class_ $ HH.ClassName "m-10" ]
+    [ HH.h3
+        [ HP.classes Format.captionClasses ]
+        [ HH.text "Standard" ]
+    , FormField.field_
+        { label: HH.text "Locations"
+        , helpText: [ HH.text "Search your top destinations." ]
+        , error: []
+        , inputId: "locations"
         }
-        [ HP.placeholder "Search locations..."
-        , HP.id "locations"
+        [ HH.slot_ _cp1 label TA.multi
+            ( TA.asyncMulti
+                { renderFuzzy: HH.span_ <<< IC.boldMatches "name"
+                , itemToObject: Async.locationToObject
+                , async: Async.loadFromSource Async.locations
+                }
+                [ HP.placeholder "Search locations..."
+                , HP.id "locations"
+                ]
+            )
         ]
-      )
-    ]
-  , HH.h3
-    [ HP.classes Format.captionClasses ]
-    [ HH.text "Standard Hydrated" ]
-  , FormField.field_
-    { label: HH.text "Users"
-    , helpText: [ HH.text "Search your favorite companion." ]
-    , error: []
-    , inputId: "users"
-    }
-    [ HH.slot_ _cp2 label TA.multi
-      ( TA.asyncMulti
-        { renderFuzzy: Async.renderFuzzyUser
-        , itemToObject: Async.userToObject
-        , async: Async.loadFromSource Async.users
+    , HH.h3
+        [ HP.classes Format.captionClasses ]
+        [ HH.text "Standard Hydrated" ]
+    , FormField.field_
+        { label: HH.text "Users"
+        , helpText: [ HH.text "Search your favorite companion." ]
+        , error: []
+        , inputId: "users"
         }
-        [ HP.placeholder "Search users..."
-        , HP.id "users"
+        [ HH.slot_ _cp2 label TA.multi
+            ( TA.asyncMulti
+                { renderFuzzy: Async.renderFuzzyUser
+                , itemToObject: Async.userToObject
+                , async: Async.loadFromSource Async.users
+                }
+                [ HP.placeholder "Search users..."
+                , HP.id "users"
+                ]
+            )
         ]
-      )
     ]
-  ]

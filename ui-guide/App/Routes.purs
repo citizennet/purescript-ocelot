@@ -1,8 +1,10 @@
 module UIGuide.App.Routes
-  ( routes, groups )
-where
+  ( routes
+  , groups
+  ) where
 
 import Prelude
+
 import Data.Const (Const)
 import Data.Map (Map, fromFoldable)
 import Data.Tuple (Tuple(..))
@@ -45,93 +47,93 @@ type RouteConfig =
 routes :: Map String RouteConfig
 routes = fromFoldable
   -- [ Tuple "tabs"
-    -- { anchor: "Tabs"
-    -- , component: proxy Tab.component
-    -- , group: FormElements
-    -- }
+  -- { anchor: "Tabs"
+  -- , component: proxy Tab.component
+  -- , group: FormElements
+  -- }
   [ Tuple "expandables"
-    { anchor: "Expansion Cards"
-    , component: proxy ExpansionCards.component
-    , group: Components
-    }
+      { anchor: "Expansion Cards"
+      , component: proxy ExpansionCards.component
+      , group: Components
+      }
   , Tuple "textfields"
-    { anchor: "Text Fields"
-    , component: proxy TextFields.component
-    , group: Components
-    }
+      { anchor: "Text Fields"
+      , component: proxy TextFields.component
+      , group: Components
+      }
   , Tuple "typeaheads"
-    { anchor: "Typeaheads"
-    , component: proxy Typeaheads.component
-    , group: Components
-    }
+      { anchor: "Typeaheads"
+      , component: proxy Typeaheads.component
+      , group: Components
+      }
   , Tuple "date-pickers"
-    { anchor: "Date Pickers"
-    , component: proxy DatePickers.component
-    , group: Components
-    }
+      { anchor: "Date Pickers"
+      , component: proxy DatePickers.component
+      , group: Components
+      }
   , Tuple "buttons"
-    { anchor: "Buttons"
-    , component: proxy Button.component
-    , group: Components
-    }
+      { anchor: "Buttons"
+      , component: proxy Button.component
+      , group: Components
+      }
   , Tuple "controls"
-    { anchor: "Controls"
-    , component: proxy FormControl.component
-    , group: Components
-    }
+      { anchor: "Controls"
+      , component: proxy FormControl.component
+      , group: Components
+      }
   , Tuple "modals"
-    { anchor: "Modals"
-    , component: proxy Modals.component
-    , group: Components
-    }
+      { anchor: "Modals"
+      , component: proxy Modals.component
+      , group: Components
+      }
   , Tuple "tables"
-    { anchor: "Tables"
-    , component: proxy Table.component
-    , group: Components
-    }
+      { anchor: "Tables"
+      , component: proxy Table.component
+      , group: Components
+      }
   , Tuple "dropdowns"
-    { anchor: "Dropdowns"
-    , component: proxy Dropdown.component
-    , group: Components
-    }
+      { anchor: "Dropdowns"
+      , component: proxy Dropdown.component
+      , group: Components
+      }
   , Tuple "type"
-    { anchor: "Type"
-    , component: proxy Type.component
-    , group: Basics
-    }
+      { anchor: "Type"
+      , component: proxy Type.component
+      , group: Basics
+      }
   , Tuple "icons"
-    { anchor: "Icons"
-    , component: proxy Icons.component
-    , group: Basics
-    }
+      { anchor: "Icons"
+      , component: proxy Icons.component
+      , group: Basics
+      }
   , Tuple "tray"
-    { anchor: "Tray"
-    , component: proxy Tray.component
-    , group: Components
-    }
+      { anchor: "Tray"
+      , component: proxy Tray.component
+      , group: Components
+      }
   , Tuple "dialogs"
-    { anchor: "Dialogs"
-    , component: proxy Dialogs.component
-    , group: Components
-    }
+      { anchor: "Dialogs"
+      , component: proxy Dialogs.component
+      , group: Components
+      }
   , Tuple "badge"
-    { anchor: "Badge"
-    , component: proxy Badge.component
-    , group: Basics
-    }
+      { anchor: "Badge"
+      , component: proxy Badge.component
+      , group: Basics
+      }
   , Tuple "multi-input"
-    { anchor: "Multi Input"
-    , component: proxy MultiInput.component
-    , group: Components
-    }
+      { anchor: "Multi Input"
+      , component: proxy MultiInput.component
+      , group: Components
+      }
   , Tuple "diagram"
-    { anchor: "Diagram"
-    , component: proxy Diagram.component
-    , group: Basics
-    }
+      { anchor: "Diagram"
+      , component: proxy Diagram.component
+      , group: Basics
+      }
   , Tuple "file-picker"
-    { anchor: "File Picker"
-    , component: proxy FilePicker.component
-    , group: Components
-    }
+      { anchor: "File Picker"
+      , component: proxy FilePicker.component
+      , group: Components
+      }
   ]

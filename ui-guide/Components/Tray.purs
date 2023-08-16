@@ -21,7 +21,7 @@ type Input = Unit
 
 type Message = Void
 
-component :: ∀ m . H.Component Query Input Message m
+component :: forall m. H.Component Query Input Message m
 component =
   H.mkComponent
     { initialState: const { open: true }
@@ -29,37 +29,37 @@ component =
     , eval: H.mkEval $ H.defaultEval { handleAction = handleAction }
     }
   where
-    handleAction :: Action -> H.HalogenM State Action () Message m Unit
-    handleAction = case _ of
-      Toggle -> do
-        state <- H.get
-        H.modify_ _ { open = not state.open }
+  handleAction :: Action -> H.HalogenM State Action () Message m Unit
+  handleAction = case _ of
+    Toggle -> do
+      state <- H.get
+      H.modify_ _ { open = not state.open }
 
-    render :: State -> H.ComponentHTML Action () m
-    render state =
-      HH.div_
+  render :: State -> H.ComponentHTML Action () m
+  render state =
+    HH.div_
       [ Documentation.customBlock_
-        { header: "Tray"
-        , subheader: "Interacting with Multiple Selected List Items"
-        }
-        [ Backdrop.backdrop_
-          [ Button.button
-            [ HE.onClick \_ -> Toggle ]
-            [ HH.text "toggle tray" ]
-          , Tray.tray
-            [ Tray.open state.open ]
-            [ Badge.badgeLarge
-              [ css "mr-2" ]
-              [ HH.text "2" ]
-            , HH.p
-              [ css "mr-10" ]
-              [ HH.text "Ads selected:" ]
-            , Button.button_
-              [ HH.text "View Ads" ]
-            , Button.button
-              [ css "ml-4" ]
-              [ HH.text "Dave's Design Patterns" ]
-            ]
+          { header: "Tray"
+          , subheader: "Interacting with Multiple Selected List Items"
+          }
+          [ Backdrop.backdrop_
+              [ Button.button
+                  [ HE.onClick \_ -> Toggle ]
+                  [ HH.text "toggle tray" ]
+              , Tray.tray
+                  [ Tray.open state.open ]
+                  [ Badge.badgeLarge
+                      [ css "mr-2" ]
+                      [ HH.text "2" ]
+                  , HH.p
+                      [ css "mr-10" ]
+                      [ HH.text "Ads selected:" ]
+                  , Button.button_
+                      [ HH.text "View Ads" ]
+                  , Button.button
+                      [ css "ml-4" ]
+                      [ HH.text "Dave's Design Patterns" ]
+                  ]
+              ]
           ]
-        ]
       ]

@@ -31,18 +31,17 @@ import Type.Proxy (Proxy(..))
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
-
 ----------
 -- Component Types
 
-type State = 
+type State =
   { disabled :: Boolean -- | Global enable/disable toggle
   , dateInterval :: DatePicker.Interval
   , timeInterval :: TimePicker.Interval
   }
 
 data Query (a :: Type)
-data Action 
+data Action
   = HandleDatePicker DatePicker.Output
   | HandleDateSlider Ocelot.Slider.Output
   | HandleDateTimePicker DateTimePicker.Output
@@ -71,112 +70,115 @@ _timeSlider = Proxy :: Proxy "timeSlider"
 ----------
 -- Component definition
 
-component :: ∀ m
-  . MonadAff m
- => H.Component Query Unit Void m
+component ::
+  forall m.
+  MonadAff m =>
+  H.Component Query Unit Void m
 component =
   H.mkComponent
-  { initialState
-  , render
-  , eval: H.mkEval H.defaultEval
-    { handleAction = handleAction
-    , initialize = Just Initialize
+    { initialState
+    , render
+    , eval: H.mkEval H.defaultEval
+        { handleAction = handleAction
+        , initialize = Just Initialize
+        }
     }
-  }
   where
-    handleAction = case _ of  
-      HandleDatePicker output -> case output of
-        DatePicker.SelectionChanged mDate -> do
-          H.liftEffect $ Effect.Class.Console.log $ "DatePicker SelectionChanged: " <> show mDate
-        DatePicker.VisibilityChanged _ -> pure unit
-        DatePicker.Searched query -> do
-          H.liftEffect $ Effect.Class.Console.log $ "DatePicker Searched: " <> query
-      HandleDateSlider output -> case output of
-        Ocelot.Slider.ValueChanged points -> case points of
-          [ startPercent, endPercent ] -> do
-            let
-              getIndex :: { percent :: Number } -> Int
-              getIndex = Data.Int.round <<< (_ / yearScalar) <<< _.percent
+  handleAction = case _ of
+    HandleDatePicker output -> case output of
+      DatePicker.SelectionChanged mDate -> do
+        H.liftEffect $ Effect.Class.Console.log $ "DatePicker SelectionChanged: " <> show mDate
+      DatePicker.VisibilityChanged _ -> pure unit
+      DatePicker.Searched query -> do
+        H.liftEffect $ Effect.Class.Console.log $ "DatePicker Searched: " <> query
+    HandleDateSlider output -> case output of
+      Ocelot.Slider.ValueChanged points -> case points of
+        [ startPercent, endPercent ] -> do
+          let
+            getIndex :: { percent :: Number } -> Int
+            getIndex = Data.Int.round <<< (_ / yearScalar) <<< _.percent
 
-              start :: Maybe Data.Date.Date
-              start = do
-                year <- Data.Array.index years (getIndex startPercent)
-                pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
-
-              end :: Maybe Data.Date.Date
-              end = do
-                year <- Data.Array.index years (getIndex endPercent)
-                pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
-
-            H.liftEffect <<< Effect.Class.Console.log $
-              ( "start: " <> show start
-                <> ", end: " <> show end
-              )
-            H.modify_ _ { dateInterval = { start, end } }
-          _ -> pure unit
-      HandleDateTimePicker output -> case output of
-        DateTimePicker.SelectionChanged mDateTime -> do
-          H.liftEffect $ Effect.Class.Console.log $ "DateTimePicker SelectionChanged: " <> show mDateTime
-        DateTimePicker.DateOutput _ -> pure unit
-        DateTimePicker.TimeOutput _ -> pure unit
-      HandleTimePicker output -> case output of
-        TimePicker.SelectionChanged mTime -> do
-          H.liftEffect $ Effect.Class.Console.log $ "TimePicker SelectionChanged: " <> show mTime
-        TimePicker.VisibilityChanged _ -> pure unit
-        TimePicker.Searched query -> do
-          H.liftEffect $ Effect.Class.Console.log $ "TimePicker Searched: " <> query
-      HandleTimeSlider output -> case output of
-        Ocelot.Slider.ValueChanged points -> case points of
-          [ startPercent, endPercent ] -> do
-            let
-              getIndex :: { percent :: Number } -> Int
-              getIndex = Data.Int.round <<< (_ * 0.24) <<< _.percent
-
-              start :: Maybe Data.Time.Time
-              start = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex startPercent)
-
-              end :: Maybe Data.Time.Time
-              end = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex endPercent)
-
-            H.liftEffect <<< Effect.Class.Console.log $
-              ( "start: " <> show (map Ocelot.Data.DateTime.formatTime start)
-                  <> ", end: " <> show (map Ocelot.Data.DateTime.formatTime end)
-              )
-            H.modify_ _ { timeInterval = { start, end } }
-          _ -> pure unit
-      Initialize -> do
-        void $ H.queryAll _dateSlider $ H.mkTell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 } , { percent: 100.0 }]
-        void $ H.queryAll _timeSlider $ H.mkTell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 } , { percent: 100.0 }]
-      ToggleDisabled -> do
-        st <- H.modify \s -> s { disabled = not s.disabled }
-        void $ H.tell _datePicker 0 $ DatePicker.SetDisabled st.disabled
-        void $ H.tell _datePicker 1 $ DatePicker.SetDisabled st.disabled
-        void $ H.tell _timePicker 0 $ TimePicker.SetDisabled st.disabled
-        void $ H.tell _timePicker 1 $ TimePicker.SetDisabled st.disabled
-        void $ H.tell _dtp 0 $ DateTimePicker.SetDisabled st.disabled
-        void $ H.tell _dtp 1 $ DateTimePicker.SetDisabled st.disabled
-        
-    initialState :: Unit -> State
-    initialState _ =
-      { disabled: false
-      , dateInterval:
-          { start: do
-              year <- Data.Array.head years
+            start :: Maybe Data.Date.Date
+            start = do
+              year <- Data.Array.index years (getIndex startPercent)
               pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
-          , end: do
-              year <- Data.Array.last years
-              pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
-          }
-      , timeInterval:
-          { start: Data.Array.head Ocelot.Data.DateTime.defaultTimeRange
-          , end: Data.Array.last Ocelot.Data.DateTime.defaultTimeRange
-          }
-      }
 
-    render
-      :: State
-      -> H.ComponentHTML Action ChildSlot m
-    render = cnDocumentationBlocks
+            end :: Maybe Data.Date.Date
+            end = do
+              year <- Data.Array.index years (getIndex endPercent)
+              pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
+
+          H.liftEffect <<< Effect.Class.Console.log $
+            ( "start: " <> show start
+                <> ", end: "
+                <> show end
+            )
+          H.modify_ _ { dateInterval = { start, end } }
+        _ -> pure unit
+    HandleDateTimePicker output -> case output of
+      DateTimePicker.SelectionChanged mDateTime -> do
+        H.liftEffect $ Effect.Class.Console.log $ "DateTimePicker SelectionChanged: " <> show mDateTime
+      DateTimePicker.DateOutput _ -> pure unit
+      DateTimePicker.TimeOutput _ -> pure unit
+    HandleTimePicker output -> case output of
+      TimePicker.SelectionChanged mTime -> do
+        H.liftEffect $ Effect.Class.Console.log $ "TimePicker SelectionChanged: " <> show mTime
+      TimePicker.VisibilityChanged _ -> pure unit
+      TimePicker.Searched query -> do
+        H.liftEffect $ Effect.Class.Console.log $ "TimePicker Searched: " <> query
+    HandleTimeSlider output -> case output of
+      Ocelot.Slider.ValueChanged points -> case points of
+        [ startPercent, endPercent ] -> do
+          let
+            getIndex :: { percent :: Number } -> Int
+            getIndex = Data.Int.round <<< (_ * 0.24) <<< _.percent
+
+            start :: Maybe Data.Time.Time
+            start = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex startPercent)
+
+            end :: Maybe Data.Time.Time
+            end = Data.Array.index Ocelot.Data.DateTime.defaultTimeRange (getIndex endPercent)
+
+          H.liftEffect <<< Effect.Class.Console.log $
+            ( "start: " <> show (map Ocelot.Data.DateTime.formatTime start)
+                <> ", end: "
+                <> show (map Ocelot.Data.DateTime.formatTime end)
+            )
+          H.modify_ _ { timeInterval = { start, end } }
+        _ -> pure unit
+    Initialize -> do
+      void $ H.queryAll _dateSlider $ H.mkTell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 }, { percent: 100.0 } ]
+      void $ H.queryAll _timeSlider $ H.mkTell $ Ocelot.Slider.ReplaceThumbs [ { percent: 0.0 }, { percent: 100.0 } ]
+    ToggleDisabled -> do
+      st <- H.modify \s -> s { disabled = not s.disabled }
+      void $ H.tell _datePicker 0 $ DatePicker.SetDisabled st.disabled
+      void $ H.tell _datePicker 1 $ DatePicker.SetDisabled st.disabled
+      void $ H.tell _timePicker 0 $ TimePicker.SetDisabled st.disabled
+      void $ H.tell _timePicker 1 $ TimePicker.SetDisabled st.disabled
+      void $ H.tell _dtp 0 $ DateTimePicker.SetDisabled st.disabled
+      void $ H.tell _dtp 1 $ DateTimePicker.SetDisabled st.disabled
+
+  initialState :: Unit -> State
+  initialState _ =
+    { disabled: false
+    , dateInterval:
+        { start: do
+            year <- Data.Array.head years
+            pure (Ocelot.Data.DateTime.unsafeMkDate year 1 1)
+        , end: do
+            year <- Data.Array.last years
+            pure (Ocelot.Data.DateTime.unsafeMkDate year 12 31)
+        }
+    , timeInterval:
+        { start: Data.Array.head Ocelot.Data.DateTime.defaultTimeRange
+        , end: Data.Array.last Ocelot.Data.DateTime.defaultTimeRange
+        }
+    }
+
+  render ::
+    State ->
+    H.ComponentHTML Action ChildSlot m
+  render = cnDocumentationBlocks
 
 ----------
 -- HTML
@@ -184,350 +186,358 @@ component =
 content :: forall t1 t2. Array (HH.HTML t2 t1) -> HH.HTML t2 t1
 content = Backdrop.content [ css "flex" ]
 
-cnDocumentationBlocks :: ∀ m
-  . MonadAff m
- => State -> H.ComponentHTML Action ChildSlot m
+cnDocumentationBlocks ::
+  forall m.
+  MonadAff m =>
+  State ->
+  H.ComponentHTML Action ChildSlot m
 cnDocumentationBlocks state =
   HH.div_
     [ HH.h1
-      [ css "font-normal mb-6" ] 
-      [ HH.text "Date Pickers" ]
+        [ css "font-normal mb-6" ]
+        [ HH.text "Date Pickers" ]
     , HH.h2
-      [ css "font-medium text-grey-50 text-xl mb-6" ]
-      [ HH.text "It's a date picker. Deal with it" ]
+        [ css "font-medium text-grey-50 text-xl mb-6" ]
+        [ HH.text "It's a date picker. Deal with it" ]
     , HH.div
-      [ css "mb-6" ]
-      [ HH.p
-        [ css "inline mr-4" ]
-        [ HH.text "You can toggle between enabled/disabled states" ]
-      , Button.button
-        [ HE.onClick \_ -> ToggleDisabled ]
-        [ HH.text "Toggle" ]
-      ]
+        [ css "mb-6" ]
+        [ HH.p
+            [ css "inline mr-4" ]
+            [ HH.text "You can toggle between enabled/disabled states" ]
+        , Button.button
+            [ HE.onClick \_ -> ToggleDisabled ]
+            [ HH.text "Toggle" ]
+        ]
     , HH.div_
-      [ Backdrop.backdrop_
-        [ Backdrop.content_
-          [ Card.card
-            [ css "flex justify-center"]
-            [ Halogen.HTML.slot _dateSlider "Date Pickers"
-              Ocelot.Slider.component
-              dateSliderInput
-              HandleDateSlider
-            ]
-          ]
-        ]
-      , Backdrop.backdrop_
-        [ content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Standard" ]
-            , FormField.fieldMid_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start date." ]
-              , error: []
-              , inputId: "start-date"
-              }
-              [ HH.slot _datePicker 0 DatePicker.component
-                { disabled: false
-                , interval: Just state.dateInterval
-                , selection: Nothing
-                , targetDate: Nothing
-                }
-                HandleDatePicker
-              ]
-            , Format.caption_ [ HH.text "Standard Disabled" ]
-            , FormField.fieldMid_
-              { label: HH.text "Start"
-              , helpText: [ HH.text "Choose a start date." ]
-              , error: []
-              , inputId: "start-date-disabled"
-              }
-              [ HH.slot _datePicker 2 DatePicker.component
-                { disabled: true
-                , interval: Just state.dateInterval
-                , selection: Nothing
-                , targetDate: Nothing
-                }
-                HandleDatePicker
-              ]
-            ]
-          ]
-        , content
-          [ Card.card
-            [ css "flex-1" ]
-            [ Format.caption_ [ HH.text "Hydrated" ]
-            , FormField.fieldMid_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end date." ]
-              , error: []
-              , inputId: "end-date"
-              }
-              [ HH.slot _datePicker 1 DatePicker.component
-                { disabled: false
-                , interval: Just state.dateInterval
-                , selection: Just $ unsafeMkDate 2019 1 1
-                , targetDate: Nothing
-                }
-                HandleDatePicker
-              ]
-            , Format.caption_ [ HH.text "Hydrated Disabled" ]
-            , FormField.fieldMid_
-              { label: HH.text "End"
-              , helpText: [ HH.text "Choose an end date." ]
-              , error: []
-              , inputId: "end-date-disabled"
-              }
-              [ HH.slot _datePicker 3 DatePicker.component
-                { disabled: true
-                , interval: Just state.dateInterval
-                , selection: Just $ unsafeMkDate 2019 1 1
-                , targetDate: Nothing
-                }
-                HandleDatePicker
-              ]
-            ]
-          ]
-        ]
-      ]
-    , Documentation.block_
-      { header: "Time Pickers"
-      , subheader: "It's a time picker. Deal with it."
-      }
-      [ Halogen.HTML.div
-        [ css "flex-1" ]
         [ Backdrop.backdrop_
-          [ Backdrop.content_
-            [ Card.card_
-              [ Halogen.HTML.slot _timeSlider "Time Pickers"
-                Ocelot.Slider.component
-                timeSliderInput
-                HandleTimeSlider
-              ]
+            [ Backdrop.content_
+                [ Card.card
+                    [ css "flex justify-center" ]
+                    [ Halogen.HTML.slot _dateSlider "Date Pickers"
+                        Ocelot.Slider.component
+                        dateSliderInput
+                        HandleDateSlider
+                    ]
+                ]
             ]
-          ]
         , Backdrop.backdrop_
-          [ content
-            [ Card.card
-              [ css "flex-1" ]
-              [ Format.caption_ [ HH.text "Standard" ]
-              , FormField.fieldMid_
-                { label: HH.text "Start"
-                , helpText: [ HH.text "Choose a start time." ]
-                , error: []
-                , inputId: "start-time"
-                }
-                [ HH.slot _timePicker 0 TimePicker.component
-                  { disabled: false
-                  , interval: Just state.timeInterval
-                  , selection: Nothing
-                  }
-                  HandleTimePicker
-                ]
-              , Format.caption_ [ HH.text "Standard Disabled" ]
-              , FormField.fieldMid_
-                { label: HH.text "Start"
-                , helpText: [ HH.text "Choose a start time." ]
-                , error: []
-                , inputId: "start-time-disabled"
-                }
-                [ HH.slot _timePicker 2 TimePicker.component
-                  { disabled: true
-                  , interval: Just state.timeInterval
-                  , selection: Nothing
-                  }
-                  HandleTimePicker
-                ]
-              ]
-            ]
-          , content
-            [ Card.card
-              [ css "flex-1" ]
-              [ Format.caption_ [ HH.text "Hydrated" ]
-              , FormField.fieldMid_
-                { label: HH.text "End"
-                , helpText: [ HH.text "Choose an end time." ]
-                , error: []
-                , inputId: "end-time"
-                }
-                [ HH.slot _timePicker 1 TimePicker.component
-                  { disabled: false
-                  , interval: Just state.timeInterval
-                  , selection: Just $ unsafeMkTime 12 0 0 0
-                  }
-                  HandleTimePicker
-                ]
-              , Format.caption_ [ HH.text "Hydrated Disabled" ]
-              , FormField.fieldMid_
-                { label: HH.text "End"
-                , helpText: [ HH.text "Choose an end time." ]
-                , error: []
-                , inputId: "end-time-disabled"
-                }
-                [ HH.slot _timePicker 3 TimePicker.component
-                  { disabled: true
-                  , interval: Just state.timeInterval
-                  , selection: Just $ unsafeMkTime 12 0 0 0
-                  }
-                  HandleTimePicker
-                ]
-              ]
-            ]
-          ]
-        ]
-      ]
-    , Documentation.block_
-      { header: "DateTime Pickers"
-      , subheader: "We've combined them. Deal with it."
-      }
-      [ Halogen.HTML.div
-        [ css "flex-1" ]
-        [ Backdrop.backdrop_
-          [ Backdrop.content_
-            [ Card.card_
-              [ Halogen.HTML.slot _dateSlider "DateTime Pickers"
-                Ocelot.Slider.component
-                dateSliderInput
-                HandleDateSlider
-              , Halogen.HTML.slot _timeSlider "DateTime Pickers"
-                Ocelot.Slider.component
-                timeSliderInput
-                HandleTimeSlider
-              , Halogen.HTML.div
-                [ css "flex" ]
-                [ Halogen.HTML.div
-                  [ css "flex-1" ]
-                  [ Format.caption_ [ HH.text "Standard - With Interval" ]
-                  , FormField.field_
-                    { label: HH.text "Start"
-                    , helpText: [ HH.text "Choose a start date and time." ]
-                    , error: []
-                    , inputId: "start"
-                    }
-                    [ HH.slot _dtp 4 DateTimePicker.component
-                      { disabled: false
-                      , interval:
-                        Just
-                        { start:
-                          DateTime
-                          <$> state.dateInterval.start
-                          <*> state.timeInterval.start
-                        , end:
-                          DateTime
-                          <$> state.dateInterval.end
-                          <*> state.timeInterval.end
+            [ content
+                [ Card.card
+                    [ css "flex-1" ]
+                    [ Format.caption_ [ HH.text "Standard" ]
+                    , FormField.fieldMid_
+                        { label: HH.text "Start"
+                        , helpText: [ HH.text "Choose a start date." ]
+                        , error: []
+                        , inputId: "start-date"
                         }
-                      , selection: Nothing
-                      , targetDate: Nothing
-                      }
-                      HandleDateTimePicker
-                    ]
-                  ]
-                , Halogen.HTML.div
-                  [ css "flex-1 ml-16" ]
-                  [ Format.caption_ [ HH.text "Hydrated - With Interval" ]
-                  , FormField.field_
-                    { label: HH.text "End"
-                    , helpText: [ HH.text "Choose an end date and time." ]
-                    , error: []
-                    , inputId: "end"
-                    }
-                    [ HH.slot _dtp 5 DateTimePicker.component
-                      { disabled: false
-                      , interval:
-                          Just
-                            { start:
-                              DateTime
-                              <$> state.dateInterval.start
-                              <*> state.timeInterval.start
-                            , end:
-                              DateTime
-                              <$> state.dateInterval.end
-                              <*> state.timeInterval.end
+                        [ HH.slot _datePicker 0 DatePicker.component
+                            { disabled: false
+                            , interval: Just state.dateInterval
+                            , selection: Nothing
+                            , targetDate: Nothing
                             }
-                      , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                      , targetDate: Nothing
-                      }
-                      HandleDateTimePicker
+                            HandleDatePicker
+                        ]
+                    , Format.caption_ [ HH.text "Standard Disabled" ]
+                    , FormField.fieldMid_
+                        { label: HH.text "Start"
+                        , helpText: [ HH.text "Choose a start date." ]
+                        , error: []
+                        , inputId: "start-date-disabled"
+                        }
+                        [ HH.slot _datePicker 2 DatePicker.component
+                            { disabled: true
+                            , interval: Just state.dateInterval
+                            , selection: Nothing
+                            , targetDate: Nothing
+                            }
+                            HandleDatePicker
+                        ]
                     ]
-                  ]
                 ]
-              ]
+            , content
+                [ Card.card
+                    [ css "flex-1" ]
+                    [ Format.caption_ [ HH.text "Hydrated" ]
+                    , FormField.fieldMid_
+                        { label: HH.text "End"
+                        , helpText: [ HH.text "Choose an end date." ]
+                        , error: []
+                        , inputId: "end-date"
+                        }
+                        [ HH.slot _datePicker 1 DatePicker.component
+                            { disabled: false
+                            , interval: Just state.dateInterval
+                            , selection: Just $ unsafeMkDate 2019 1 1
+                            , targetDate: Nothing
+                            }
+                            HandleDatePicker
+                        ]
+                    , Format.caption_ [ HH.text "Hydrated Disabled" ]
+                    , FormField.fieldMid_
+                        { label: HH.text "End"
+                        , helpText: [ HH.text "Choose an end date." ]
+                        , error: []
+                        , inputId: "end-date-disabled"
+                        }
+                        [ HH.slot _datePicker 3 DatePicker.component
+                            { disabled: true
+                            , interval: Just state.dateInterval
+                            , selection: Just $ unsafeMkDate 2019 1 1
+                            , targetDate: Nothing
+                            }
+                            HandleDatePicker
+                        ]
+                    ]
+                ]
             ]
-          ]
-        , Backdrop.backdrop_
-          [ content
-            [ Card.card
-              [ css "flex-1" ]
-              [ Format.caption_ [ HH.text "Standard - Without Interval" ]
-              , FormField.field_
-                { label: HH.text "Start"
-                , helpText: [ HH.text "Choose a start date and time." ]
-                , error: []
-                , inputId: "start"
-                }
-                [ HH.slot _dtp 0 DateTimePicker.component
-                  { disabled: false
-                  , interval: Nothing
-                  , selection: Nothing
-                  , targetDate: Nothing
-                  }
-                  HandleDateTimePicker
-                ]
-              , Format.caption_ [ HH.text "Standard Disabled" ]
-              , FormField.field_
-                { label: HH.text "Start"
-                , helpText: [ HH.text "Choose a start date and time." ]
-                , error: []
-                , inputId: "start-disabled"
-                }
-                [ HH.slot _dtp 2 DateTimePicker.component
-                  { disabled: true
-                  , interval: Nothing
-                  , selection: Nothing
-                  , targetDate: Nothing
-                  }
-                  HandleDateTimePicker
-                ]
-              ]
-            ]
-          , content
-            [ Card.card
-              [ css "flex-1" ]
-              [ Format.caption_ [ HH.text "Hydrated - Without Interval" ]
-              , FormField.field_
-                { label: HH.text "End"
-                , helpText: [ HH.text "Choose an end date and time." ]
-                , error: []
-                , inputId: "end"
-                }
-                [ HH.slot _dtp 1 DateTimePicker.component
-                  { disabled: false
-                  , interval: Nothing
-                  , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                  , targetDate: Nothing
-                  }
-                  HandleDateTimePicker
-                ]
-              , Format.caption_ [ HH.text "Hydrated Disabled" ]
-              , FormField.field_
-                { label: HH.text "End"
-                , helpText: [ HH.text "Choose an end date and time." ]
-                , error: []
-                , inputId: "end-disabled"
-                }
-                [ HH.slot _dtp 3 DateTimePicker.component
-                  { disabled: true
-                  , interval: Nothing
-                  , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
-                  , targetDate: Nothing
-                  }
-                  HandleDateTimePicker
-                ]
-              ]
-            ]
-          ]
         ]
-      ]
+    , Documentation.block_
+        { header: "Time Pickers"
+        , subheader: "It's a time picker. Deal with it."
+        }
+        [ Halogen.HTML.div
+            [ css "flex-1" ]
+            [ Backdrop.backdrop_
+                [ Backdrop.content_
+                    [ Card.card_
+                        [ Halogen.HTML.slot _timeSlider "Time Pickers"
+                            Ocelot.Slider.component
+                            timeSliderInput
+                            HandleTimeSlider
+                        ]
+                    ]
+                ]
+            , Backdrop.backdrop_
+                [ content
+                    [ Card.card
+                        [ css "flex-1" ]
+                        [ Format.caption_ [ HH.text "Standard" ]
+                        , FormField.fieldMid_
+                            { label: HH.text "Start"
+                            , helpText: [ HH.text "Choose a start time." ]
+                            , error: []
+                            , inputId: "start-time"
+                            }
+                            [ HH.slot _timePicker 0 TimePicker.component
+                                { disabled: false
+                                , interval: Just state.timeInterval
+                                , selection: Nothing
+                                }
+                                HandleTimePicker
+                            ]
+                        , Format.caption_ [ HH.text "Standard Disabled" ]
+                        , FormField.fieldMid_
+                            { label: HH.text "Start"
+                            , helpText: [ HH.text "Choose a start time." ]
+                            , error: []
+                            , inputId: "start-time-disabled"
+                            }
+                            [ HH.slot _timePicker 2 TimePicker.component
+                                { disabled: true
+                                , interval: Just state.timeInterval
+                                , selection: Nothing
+                                }
+                                HandleTimePicker
+                            ]
+                        ]
+                    ]
+                , content
+                    [ Card.card
+                        [ css "flex-1" ]
+                        [ Format.caption_ [ HH.text "Hydrated" ]
+                        , FormField.fieldMid_
+                            { label: HH.text "End"
+                            , helpText: [ HH.text "Choose an end time." ]
+                            , error: []
+                            , inputId: "end-time"
+                            }
+                            [ HH.slot _timePicker 1 TimePicker.component
+                                { disabled: false
+                                , interval: Just state.timeInterval
+                                , selection: Just $ unsafeMkTime 12 0 0 0
+                                }
+                                HandleTimePicker
+                            ]
+                        , Format.caption_ [ HH.text "Hydrated Disabled" ]
+                        , FormField.fieldMid_
+                            { label: HH.text "End"
+                            , helpText: [ HH.text "Choose an end time." ]
+                            , error: []
+                            , inputId: "end-time-disabled"
+                            }
+                            [ HH.slot _timePicker 3 TimePicker.component
+                                { disabled: true
+                                , interval: Just state.timeInterval
+                                , selection: Just $ unsafeMkTime 12 0 0 0
+                                }
+                                HandleTimePicker
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    , Documentation.block_
+        { header: "DateTime Pickers"
+        , subheader: "We've combined them. Deal with it."
+        }
+        [ Halogen.HTML.div
+            [ css "flex-1" ]
+            [ Backdrop.backdrop_
+                [ Backdrop.content_
+                    [ Card.card_
+                        [ Halogen.HTML.slot _dateSlider "DateTime Pickers"
+                            Ocelot.Slider.component
+                            dateSliderInput
+                            HandleDateSlider
+                        , Halogen.HTML.slot _timeSlider "DateTime Pickers"
+                            Ocelot.Slider.component
+                            timeSliderInput
+                            HandleTimeSlider
+                        , Halogen.HTML.div
+                            [ css "flex" ]
+                            [ Halogen.HTML.div
+                                [ css "flex-1" ]
+                                [ Format.caption_ [ HH.text "Standard - With Interval" ]
+                                , FormField.field_
+                                    { label: HH.text "Start"
+                                    , helpText: [ HH.text "Choose a start date and time." ]
+                                    , error: []
+                                    , inputId: "start"
+                                    }
+                                    [ HH.slot _dtp 4 DateTimePicker.component
+                                        { defaultTime: Nothing
+                                        , disabled: false
+                                        , interval:
+                                            Just
+                                              { start:
+                                                  DateTime
+                                                    <$> state.dateInterval.start
+                                                    <*> state.timeInterval.start
+                                              , end:
+                                                  DateTime
+                                                    <$> state.dateInterval.end
+                                                    <*> state.timeInterval.end
+                                              }
+                                        , selection: Nothing
+                                        , targetDate: Nothing
+                                        }
+                                        HandleDateTimePicker
+                                    ]
+                                ]
+                            , Halogen.HTML.div
+                                [ css "flex-1 ml-16" ]
+                                [ Format.caption_ [ HH.text "Hydrated - With Interval" ]
+                                , FormField.field_
+                                    { label: HH.text "End"
+                                    , helpText: [ HH.text "Choose an end date and time." ]
+                                    , error: []
+                                    , inputId: "end"
+                                    }
+                                    [ HH.slot _dtp 5 DateTimePicker.component
+                                        { defaultTime: Nothing
+                                        , disabled: false
+                                        , interval:
+                                            Just
+                                              { start:
+                                                  DateTime
+                                                    <$> state.dateInterval.start
+                                                    <*> state.timeInterval.start
+                                              , end:
+                                                  DateTime
+                                                    <$> state.dateInterval.end
+                                                    <*> state.timeInterval.end
+                                              }
+                                        , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                                        , targetDate: Nothing
+                                        }
+                                        HandleDateTimePicker
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            , Backdrop.backdrop_
+                [ content
+                    [ Card.card
+                        [ css "flex-1" ]
+                        [ Format.caption_ [ HH.text "Standard - Without Interval" ]
+                        , FormField.field_
+                            { label: HH.text "Start"
+                            , helpText: [ HH.text "Choose a start date and time." ]
+                            , error: []
+                            , inputId: "start"
+                            }
+                            [ HH.slot _dtp 0 DateTimePicker.component
+                                { defaultTime: Just $ Ocelot.Data.DateTime.unsafeMkTime 1 30 0 0
+                                , disabled: false
+                                , interval: Nothing
+                                , selection: Nothing
+                                , targetDate: Nothing
+                                }
+                                HandleDateTimePicker
+                            ]
+                        , Format.caption_ [ HH.text "Standard Disabled" ]
+                        , FormField.field_
+                            { label: HH.text "Start"
+                            , helpText: [ HH.text "Choose a start date and time." ]
+                            , error: []
+                            , inputId: "start-disabled"
+                            }
+                            [ HH.slot _dtp 2 DateTimePicker.component
+                                { defaultTime: Nothing
+                                , disabled: true
+                                , interval: Nothing
+                                , selection: Nothing
+                                , targetDate: Nothing
+                                }
+                                HandleDateTimePicker
+                            ]
+                        ]
+                    ]
+                , content
+                    [ Card.card
+                        [ css "flex-1" ]
+                        [ Format.caption_ [ HH.text "Hydrated - Without Interval" ]
+                        , FormField.field_
+                            { label: HH.text "End"
+                            , helpText: [ HH.text "Choose an end date and time." ]
+                            , error: []
+                            , inputId: "end"
+                            }
+                            [ HH.slot _dtp 1 DateTimePicker.component
+                                { defaultTime: Nothing
+                                , disabled: false
+                                , interval: Nothing
+                                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                                , targetDate: Nothing
+                                }
+                                HandleDateTimePicker
+                            ]
+                        , Format.caption_ [ HH.text "Hydrated Disabled" ]
+                        , FormField.field_
+                            { label: HH.text "End"
+                            , helpText: [ HH.text "Choose an end date and time." ]
+                            , error: []
+                            , inputId: "end-disabled"
+                            }
+                            [ HH.slot _dtp 3 DateTimePicker.component
+                                { defaultTime: Nothing
+                                , disabled: true
+                                , interval: Nothing
+                                , selection: Just $ DateTime (unsafeMkDate 2019 1 1) (unsafeMkTime 0 0 0 0)
+                                , targetDate: Nothing
+                                }
+                                HandleDateTimePicker
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
     ]
 
 dateSliderInput :: Ocelot.Slider.Input

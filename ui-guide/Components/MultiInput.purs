@@ -22,22 +22,18 @@ type ComponentHTML m = Halogen.ComponentHTML Action ChildSlots m
 
 type ComponentM m a = Halogen.HalogenM State Action ChildSlots Output m a
 
-type State
-  = {}
+type State = {}
 
-data Action
-  = Initialize
+data Action = Initialize
 
 data Query (a :: Type)
 
-type Input
-  = Unit
+type Input = Unit
 
-type Output
-  = Void
+type Output = Void
 
 type ChildSlots =
-  ( multiInput :: Ocelot.Components.MultiInput.Component.Slot MultiInputSlot)
+  (multiInput :: Ocelot.Components.MultiInput.Component.Slot MultiInputSlot)
 
 _multiInput = Proxy :: Proxy "multiInput"
 
@@ -58,11 +54,11 @@ component =
     { initialState
     , render
     , eval:
-      Halogen.mkEval
-        Halogen.defaultEval
-          { handleAction = handleAction
-          , initialize = Just Initialize
-          }
+        Halogen.mkEval
+          Halogen.defaultEval
+            { handleAction = handleAction
+            , initialize = Just Initialize
+            }
     }
 
 initialState :: Input -> State
@@ -81,49 +77,49 @@ render ::
   ComponentHTML m
 render _ =
   Halogen.HTML.div_
-  [ Documentation.customBlock_
-    { header: "Multi Input"
-    , subheader: "Text Input with Multiple Values"
-    }
-    [ Backdrop.backdrop_
-      [ Backdrop.content_
-        [ Card.card
-          [ Ocelot.HTML.Properties.css "flex-1 w-2/3" ]
-          [ Halogen.HTML.h3
-              [ Halogen.HTML.Properties.classes Format.captionClasses ]
-              [ Halogen.HTML.text "No Item" ]
-          , FormField.field_
-              { label: Halogen.HTML.text "Keywords*"
-              , helpText: []
-              , error: []
-              , inputId: "keywords-no-item"
-              }
-              [ Halogen.HTML.slot_ _multiInput NoItem
-                  Ocelot.Components.MultiInput.Component.component
-                  { minWidth
-                  , placeholder
-                  }
-              ]
-          , Halogen.HTML.h3
-              [ Halogen.HTML.Properties.classes Format.captionClasses ]
-              [ Halogen.HTML.text "With Items" ]
-          , FormField.field_
-              { label: Halogen.HTML.text "Keywords*"
-              , helpText: []
-              , error: []
-              , inputId: "keywords-with-items"
-              }
-              [ Halogen.HTML.slot_ _multiInput WithItems
-                  Ocelot.Components.MultiInput.Component.component
-                  { minWidth
-                  , placeholder
-                  }
-              ]
-          ]
+    [ Documentation.customBlock_
+        { header: "Multi Input"
+        , subheader: "Text Input with Multiple Values"
+        }
+        [ Backdrop.backdrop_
+            [ Backdrop.content_
+                [ Card.card
+                    [ Ocelot.HTML.Properties.css "flex-1 w-2/3" ]
+                    [ Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "No Item" ]
+                    , FormField.field_
+                        { label: Halogen.HTML.text "Keywords*"
+                        , helpText: []
+                        , error: []
+                        , inputId: "keywords-no-item"
+                        }
+                        [ Halogen.HTML.slot_ _multiInput NoItem
+                            Ocelot.Components.MultiInput.Component.component
+                            { minWidth
+                            , placeholder
+                            }
+                        ]
+                    , Halogen.HTML.h3
+                        [ Halogen.HTML.Properties.classes Format.captionClasses ]
+                        [ Halogen.HTML.text "With Items" ]
+                    , FormField.field_
+                        { label: Halogen.HTML.text "Keywords*"
+                        , helpText: []
+                        , error: []
+                        , inputId: "keywords-with-items"
+                        }
+                        [ Halogen.HTML.slot_ _multiInput WithItems
+                            Ocelot.Components.MultiInput.Component.component
+                            { minWidth
+                            , placeholder
+                            }
+                        ]
+                    ]
+                ]
+            ]
         ]
-      ]
     ]
-  ]
 
 minWidth :: Number
 minWidth = 50.0

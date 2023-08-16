@@ -24,8 +24,7 @@ type State =
 
 data Query (a :: Type)
 
-data Action
-  = Page Int Web.UIEvent.MouseEvent.MouseEvent
+data Action = Page Int Web.UIEvent.MouseEvent.MouseEvent
 
 type Input = Unit
 
@@ -40,10 +39,10 @@ component =
     { initialState
     , render
     , eval:
-      H.mkEval
-        H.defaultEval
-          { handleAction = handleAction
-          }
+        H.mkEval
+          H.defaultEval
+            { handleAction = handleAction
+            }
     }
 
 initialState :: Input -> State
@@ -62,49 +61,49 @@ handleAction = case _ of
 render :: forall m. State -> H.ComponentHTML Action () m
 render { page } =
   HH.div_
-  [ Documentation.block_
-    { header: "Table"
-    , subheader: "Tabular Data"
-    }
-    [ Backdrop.backdrop_
-      [ HH.div_
-        [ renderTable
-        , Ocelot.Block.Pager.pagerNew page 100
-          [ css "flex justify-end mt-6"]
-          (\index event -> Page index event)
+    [ Documentation.block_
+        { header: "Table"
+        , subheader: "Tabular Data"
+        }
+        [ Backdrop.backdrop_
+            [ HH.div_
+                [ renderTable
+                , Ocelot.Block.Pager.pagerNew page 100
+                    [ css "flex justify-end mt-6" ]
+                    (\index event -> Page index event)
+                ]
+            ]
         ]
-      ]
     ]
-  ]
   where
   renderTable =
     Table.table_ $
       [ renderHeader
       ]
-      <> renderBody
+        <> renderBody
 
   renderHeader =
     Table.row_
-      [ Table.header  [ css "w-10" ] [ HH.text "" ]
+      [ Table.header [ css "w-10" ] [ HH.text "" ]
       , Table.header_ [ HH.text "Icon" ]
-      , Table.header  [ css "w-2/3 text-left" ] [ HH.text "Description" ]
+      , Table.header [ css "w-2/3 text-left" ] [ HH.text "Description" ]
       , Table.header_ [ HH.text "" ]
       ]
 
   renderBody =
-    Table.row_ <$> ( renderData <$> tableData )
+    Table.row_ <$> (renderData <$> tableData)
 
-  renderData :: ∀ p i. TestData p i -> Array (HH.HTML p i)
+  renderData :: forall p i. TestData p i -> Array (HH.HTML p i)
   renderData { name, icon } =
     [ Table.cell_ [ Checkbox.checkbox_ [] [] ]
-    , Table.cell  [ css "text-2xl" ] [ icon ]
-    , Table.cell  [ css "text-left" ] [ HH.text name ]
-    , Table.cell  [ css "text-right" ] [ Button.button_ [ HH.text "Do Nothing" ] ]
+    , Table.cell [ css "text-2xl" ] [ icon ]
+    , Table.cell [ css "text-left" ] [ HH.text name ]
+    , Table.cell [ css "text-right" ] [ Button.button_ [ HH.text "Do Nothing" ] ]
     ]
 
 type TestData p i = { name :: String, icon :: HH.HTML p i }
 
-tableData :: ∀ p i. Array (TestData p i)
+tableData :: forall p i. Array (TestData p i)
 tableData =
   [ { name: "This is what a back arrow looks like"
     , icon: Icon.back_

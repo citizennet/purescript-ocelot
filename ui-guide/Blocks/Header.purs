@@ -12,7 +12,7 @@ headerClasses = HH.ClassName <$>
   , "w-full"
   ]
 
-header :: ∀ p i. HH.HTML p i
+header :: forall p i. HH.HTML p i
 header =
   HH.header
     [ HP.classes headerClasses ]

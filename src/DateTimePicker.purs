@@ -52,7 +52,8 @@ type ComponentM m a = H.HalogenM State Action ChildSlots Output m a
 type ComponentRender m = State -> ComponentHTML m
 
 type Input =
-  { disabled :: Boolean
+  { defaultTime :: Maybe Time
+  , disabled :: Boolean
   , interval :: Maybe Interval
   , selection :: Maybe DateTime
   , targetDate :: Maybe (Year /\ Month)
@@ -79,6 +80,7 @@ type Slot = H.Slot Query Output
 
 type State =
   { date :: Maybe Date
+  , defaultTime :: Maybe Time
   , disabled :: Boolean
   , interval :: Maybe Interval
   , targetDate :: Maybe (Year /\ Month)
@@ -110,17 +112,26 @@ handleAction = case _ of
   HandleDate msg -> case msg of
     DatePicker.SelectionChanged date' -> do
       state <- H.get
-      raiseSelectionChanged state.interval date' state.time
-      H.modify_ _ { date = date' }
+      case state.defaultTime, state.time of
+        Just defaultTime, Nothing -> do
+          H.tell _timepicker unit $ TimePicker.SetSelection $ Just defaultTime
+          H.modify_ _ { date = date', time = Just defaultTime }
+          raiseSelectionChanged state.interval date' (Just defaultTime)
+        _, _ -> do
+          H.modify_ _ { date = date' }
+          raiseSelectionChanged state.interval date' state.time
     _ -> H.raise $ DateOutput msg
   HandleTime msg -> case msg of
     TimePicker.SelectionChanged time' -> do
       state <- H.get
-      raiseSelectionChanged state.interval state.date time'
       H.modify_ _ { time = time' }
+      raiseSelectionChanged state.interval state.date time'
     _ -> H.raise $ TimeOutput msg
   Receive input -> do
-    H.modify_ _ { interval = input.interval }
+    H.modify_ _
+      { disabled = input.disabled
+      , interval = input.interval
+      }
 
 handleQuery :: forall m a. Query a -> ComponentM m (Maybe a)
 handleQuery = case _ of
@@ -144,6 +155,7 @@ handleQuery = case _ of
 initialState :: Input -> State
 initialState input =
   { date: input.selection <#> Date.DateTime.date
+  , defaultTime: input.defaultTime
   , disabled: input.disabled
   , interval: input.interval
   , targetDate: input.targetDate
@@ -164,16 +176,22 @@ raiseSelectionChanged ::
   Maybe Date ->
   Maybe Time ->
   ComponentM m Unit
-raiseSelectionChanged mInterval mDate mTime = case mInterval of
-  Nothing -> H.raise $ SelectionChanged mDateTime
-  Just interval -> case mDateTime of
-    Nothing -> H.raise $ SelectionChanged mDateTime
-    Just dateTime
-      | isWithinInterval interval dateTime -> H.raise $ SelectionChanged mDateTime
-      | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
+raiseSelectionChanged mInterval mDate mTime = case maybeSelection of
+  Nothing -> pure unit
+  Just selection -> case mInterval of
+    Nothing -> H.raise $ SelectionChanged selection
+    Just interval -> case selection of
+      Nothing -> H.raise $ SelectionChanged selection
+      Just dateTime
+        | isWithinInterval interval dateTime -> H.raise $ SelectionChanged selection
+        | otherwise -> pure unit -- NOTE transient state during parent-child synchronization
   where
-  mDateTime :: Maybe DateTime
-  mDateTime = DateTime <$> mDate <*> mTime
+  maybeSelection :: Maybe (Maybe DateTime)
+  maybeSelection = case mDate, mTime of
+    Nothing, Nothing -> Just Nothing
+    Nothing, Just _ -> Nothing
+    Just _, Nothing -> Nothing
+    Just date, Just time -> Just $ Just $ Date.DateTime.DateTime date time
 
 render :: forall m. MonadAff m => ComponentRender m
 render state =

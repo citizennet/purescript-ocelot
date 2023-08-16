@@ -9,8 +9,8 @@ import Halogen.HTML as Halogen.HTML
 import Halogen.Svg.Attributes as Halogen.Svg.Attributes
 import Ocelot.Block.Card as Card
 import Ocelot.Block.Diagram as Ocelot.Block.Diagram
-import Ocelot.Slider.Render as Ocelot.Slider.Render
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
+import Ocelot.Slider.Render as Ocelot.Slider.Render
 import UIGuide.Block.Backdrop as Backdrop
 import UIGuide.Block.Documentation as Documentation
 
@@ -46,69 +46,69 @@ component =
 render :: forall m. State -> ComponentHTML m
 render _ =
   Halogen.HTML.div_
-  [ Documentation.block_
-    { header: "Percentage Bar Graph"
-    , subheader: "Visualize a number in percentage"
-    }
-    [ Backdrop.backdrop_
-      [ Backdrop.content_
-        [ Card.card_
-          [ Halogen.HTML.p
-            [ Ocelot.HTML.Properties.css "flex items-center" ]
-            [ Halogen.HTML.span
-              [ Ocelot.HTML.Properties.css "min-w-5"]
-              [ Halogen.HTML.text "A:" ]
-            , Ocelot.Block.Diagram.percentBar percentA
-              [ Ocelot.HTML.Properties.css "h-4 pl-2 w-1/3" ]
-              [ Ocelot.HTML.Properties.css "bg-red"]
-            , Halogen.HTML.span
-              [ Ocelot.HTML.Properties.css "ml-4 text-red" ]
-              [ Halogen.HTML.text (show percentA <> "%")]
-            ]
-          , Halogen.HTML.p
-            [ Ocelot.HTML.Properties.css "flex items-center" ]
-            [ Halogen.HTML.span
-              [ Ocelot.HTML.Properties.css "min-w-5"]
-              [ Halogen.HTML.text "B:" ]
-            , Ocelot.Block.Diagram.percentBar percentB
-              [ Ocelot.HTML.Properties.css "h-4 pl-2 w-1/3" ]
-              [ Ocelot.HTML.Properties.css "bg-blue-82"]
-            , Halogen.HTML.span
-              [ Ocelot.HTML.Properties.css "ml-4 text-blue-82" ]
-              [ Halogen.HTML.text (show percentB <> "%")]
-            ]
-          ]
-        , Card.card_
-          [ Halogen.HTML.p
-            [ Ocelot.HTML.Properties.css "flex items-center" ]
-            [ Ocelot.Slider.Render.frame config []
-                [ Ocelot.Slider.Render.trackContainer config
-                  [ Ocelot.Slider.Render.track config
-                    [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 229 229 229))
+    [ Documentation.block_
+        { header: "Percentage Bar Graph"
+        , subheader: "Visualize a number in percentage"
+        }
+        [ Backdrop.backdrop_
+            [ Backdrop.content_
+                [ Card.card_
+                    [ Halogen.HTML.p
+                        [ Ocelot.HTML.Properties.css "flex items-center" ]
+                        [ Halogen.HTML.span
+                            [ Ocelot.HTML.Properties.css "min-w-5" ]
+                            [ Halogen.HTML.text "A:" ]
+                        , Ocelot.Block.Diagram.percentBar percentA
+                            [ Ocelot.HTML.Properties.css "h-4 pl-2 w-1/3" ]
+                            [ Ocelot.HTML.Properties.css "bg-red" ]
+                        , Halogen.HTML.span
+                            [ Ocelot.HTML.Properties.css "ml-4 text-red" ]
+                            [ Halogen.HTML.text (show percentA <> "%") ]
+                        ]
+                    , Halogen.HTML.p
+                        [ Ocelot.HTML.Properties.css "flex items-center" ]
+                        [ Halogen.HTML.span
+                            [ Ocelot.HTML.Properties.css "min-w-5" ]
+                            [ Halogen.HTML.text "B:" ]
+                        , Ocelot.Block.Diagram.percentBar percentB
+                            [ Ocelot.HTML.Properties.css "h-4 pl-2 w-1/3" ]
+                            [ Ocelot.HTML.Properties.css "bg-blue-82" ]
+                        , Halogen.HTML.span
+                            [ Ocelot.HTML.Properties.css "ml-4 text-blue-82" ]
+                            [ Halogen.HTML.text (show percentB <> "%") ]
+                        ]
                     ]
-                  , Ocelot.Slider.Render.markContainer config
-                    [ Ocelot.Slider.Render.mark config { percent: 0.0 } []
-                    , Ocelot.Slider.Render.mark config { percent: 10.0 } []
-                    , Ocelot.Slider.Render.mark config { percent: 20.0 } []
+                , Card.card_
+                    [ Halogen.HTML.p
+                        [ Ocelot.HTML.Properties.css "flex items-center" ]
+                        [ Ocelot.Slider.Render.frame config []
+                            [ Ocelot.Slider.Render.trackContainer config
+                                [ Ocelot.Slider.Render.track config
+                                    [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 229 229 229))
+                                    ]
+                                , Ocelot.Slider.Render.markContainer config
+                                    [ Ocelot.Slider.Render.mark config { percent: 0.0 } []
+                                    , Ocelot.Slider.Render.mark config { percent: 10.0 } []
+                                    , Ocelot.Slider.Render.mark config { percent: 20.0 } []
 
+                                    ]
+                                , Ocelot.Slider.Render.interval config
+                                    { start: { percent: percentA }, end: { percent: percentB } }
+                                    [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
+                                ]
+                            , Ocelot.Slider.Render.thumbContainer config
+                                [ Ocelot.Slider.Render.thumb config { percent: percentA } []
+                                , Ocelot.Slider.Render.thumb config { percent: percentB } []
+                                ]
+                            , Ocelot.Slider.Render.axisContainer config
+                                (Ocelot.Slider.Render.axis config axisData)
+                            ]
+                        ]
                     ]
-                  , Ocelot.Slider.Render.interval config
-                      { start: { percent: percentA } , end: { percent: percentB } }
-                      [ Halogen.Svg.Attributes.fill (pure (Halogen.Svg.Attributes.RGB 126 135 148)) ]
-                  ]
-                , Ocelot.Slider.Render.thumbContainer config
-                  [ Ocelot.Slider.Render.thumb config { percent: percentA } []
-                  , Ocelot.Slider.Render.thumb config { percent: percentB } []
-                  ]
-                , Ocelot.Slider.Render.axisContainer config
-                    (Ocelot.Slider.Render.axis config axisData)
                 ]
             ]
-          ]
         ]
-      ]
     ]
-  ]
   where
   percentA :: Number
   percentA = 30.0
