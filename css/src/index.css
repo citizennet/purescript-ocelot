@@ -1,7 +1,7 @@
 /* Import preflight before any of our CSS so we can override it. */
 @tailwind preflight;
 
-html, body { @apply .gotham; @apply .leading-normal; font-size: 12px; @apply .text-black-20; }
+html, body { @apply .metro; @apply .leading-normal; font-size: 12px; @apply .text-black-20; }
 button, input, optgroup, select, textarea { @apply .leading-normal; }
 
 /* Temp overrides */
@@ -69,7 +69,7 @@ dt {
 .transition-1\/2-out { transition: all 0.5s ease-out; }
 .transition-1-out { transition: all 1s ease-out; }
 .cc-blue-88 { caret-color: config('colors.blue-88'); }
-.gotham { font-family: "Gotham SSm A", "Gotham SSm B", sans-serif; }
+.metro { font-family: "Metropolis", sans-serif; }
 .no-content { content: ''; }
 .no-outline { outline: none !important; }
 .offscreen { @apply .fixed; left: -9999%; top: -9999%; z-index: -9999; }
