@@ -119,7 +119,7 @@ app =
                   [ HP.class_ $ HH.ClassName "mx-auto inline-flex items-center"
                   , HP.href ""
                   ]
-                  [ HH.text "CitizenNet UI Guide" ]
+                  [ HH.text "Ocelot UI Guide" ]
               ]
           ]
       , HH.div
@@ -164,11 +164,7 @@ app =
           [ HH.header_
               [ Format.heading
                   [ HP.class_ $ HH.ClassName "flex" ]
-                  [ HH.img
-                      [ HP.class_ $ HH.ClassName "mr-2"
-                      , HP.src "https://citizennet.com/manager/images/logo.svg"
-                      ]
-                  , HH.text "Ocelot"
+                  [ HH.text "Ocelot"
                   ]
               ]
           , HH.nav

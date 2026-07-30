@@ -1,10 +1,8 @@
 {
   "private": true,
-  "description": "Modified Tailwind for CitizenNet user interfaces",
-  "author": "Thomas Honeyman <hello@thomashoneyman.com>",
+  "description": "Modified Tailwind for Ocelot user interfaces",
   "keywords": [
     "tailwind",
-    "citizennet",
     "webpack"
   ],
   "scripts": {
