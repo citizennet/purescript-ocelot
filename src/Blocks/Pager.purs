@@ -14,9 +14,6 @@ import Ocelot.Block.Icon as Ocelot.Block.Icon
 import Ocelot.HTML.Properties as Ocelot.HTML.Properties
 import Web.UIEvent.MouseEvent (MouseEvent)
 
------
--- old CN pager (require citizennet.css)
-
 pager :: forall p i. Int -> Int -> (Int -> MouseEvent -> i) -> HH.HTML p i
 pager skip last query =
   HH.div

@@ -117,7 +117,7 @@ cnDocumentationBlocks =
                           , inputId: "email-hydrated"
                           }
                           [ Input.input
-                              [ HP.value "jeff@citizennet.com"
+                              [ HP.value "hello@world.com"
                               , HP.id "email-hydrated"
                               ]
                           ]
@@ -131,7 +131,7 @@ cnDocumentationBlocks =
                           , inputId: "email-disabled"
                           }
                           [ Input.input
-                              [ HP.value "jeff@citizennet.com"
+                              [ HP.value "hello@world.com"
                               , HP.id "email-disabled"
                               , HP.disabled true
                               ]

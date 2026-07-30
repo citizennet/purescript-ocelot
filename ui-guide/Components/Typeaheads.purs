@@ -95,7 +95,7 @@ component =
       _ <- Control.Parallel.parSequence_
         [ fetchAndSetLocations
         , fetchAndSetUsers
-        , void $ H.queryAll _multiInput $ H.mkTell $ TA.ReplaceItems (pure [ "new", "space", "citizennet", "conde" ])
+        , void $ H.queryAll _multiInput $ H.mkTell $ TA.ReplaceItems (pure [ "new", "space", "ocelot", "purescript" ])
         , H.tell _multiInput 1 $ TA.ReplaceSelected [ "new", "conde" ]
         ]
 

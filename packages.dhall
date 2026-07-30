@@ -134,7 +134,7 @@ let html-parser-halogen =
 
 let svg-parser =
       { dependencies = [ "prelude", "string-parsers" ]
-      , repo = "https://github.com/citizennet/purescript-svg-parser.git"
+      , repo = "https://github.com/davezuch/purescript-svg-parser.git"
       , version = "v2.0.0"
       }
 
